@@ -92,7 +92,7 @@ Discard active modifications and reload the preset as saved on disk.</string>
      </property>
      <property name="icon">
       <iconset resource="../../../../../res/icons/icons.qrc">
-       <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
+       <normaloff>:/icons/pen_2_current.lci</normaloff>:/icons/pen_2_current.lci</iconset>
      </property>
     </widget>
    </item>

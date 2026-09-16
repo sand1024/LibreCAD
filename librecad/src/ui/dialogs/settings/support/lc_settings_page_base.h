@@ -32,6 +32,8 @@
 #include "lc_setting.h"
 #include "qg_linetypebox.h"
 
+class LC_ActionGroupManager;
+class QSplitter;
 class QG_WidthBox;
 class LC_ColorButton;
 class QCheckBox;
@@ -155,8 +157,10 @@ class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
     void highlightSearchPattern(const QString& pattern) override;
     void clearSearchHighlight() override;
     void autoIndexLabels() override;
-
     void updateLivePreview() override;
+
+    void loadDialogData(LC_SettingsGroupDialog& group, bool loadPosition) override;
+    void saveDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
 signals:
     void navigateToPage(const QString& pageId);
     void livePreviewRequested();
@@ -230,8 +234,16 @@ protected:
     bool isSettingsDialogVisible() const;
 
     void setReadOnly(bool readOnly) override;
-
     QWidget* m_widget = nullptr;
+
+    void autoIndexActionGroupManager(LC_ActionGroupManager* agm, QWidget* searchTarget);
+
+    // fixme - sand - defaults for single splitter in page. if more?
+    void trackSplitter(QSplitter* splitter, int defaultLeftWidth = 480);
+
+    QSplitter* m_trackedSplitter{nullptr};
+    int m_trackedSplitterDefaultWidth{480};
+    int m_savedSplitterWidth{-1};
 private:
     QString m_id;
     QString m_parentId;

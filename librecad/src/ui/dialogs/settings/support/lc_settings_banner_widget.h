@@ -32,6 +32,12 @@ class QPushButton;
 class LC_SettingsBannerWidget : public QWidget {
     Q_OBJECT
 public:
+    enum class BannerType {
+        Info,
+        Warning,
+        Error
+    };
+
     explicit LC_SettingsBannerWidget(QWidget* parent = nullptr);
     ~LC_SettingsBannerWidget() override = default;
 
@@ -40,6 +46,12 @@ public:
                    std::function<void()> actionCallback = nullptr);
 
     void clearAction();
+    void setMessage(const QString& message,
+                  BannerType type = BannerType::Info,
+                  const QString& actionText = QString(),
+                  std::function<void()> actionCallback = nullptr);
+signals:
+    void linkActivated(const QString& link);
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:

@@ -30,7 +30,6 @@
 
 #include "lc_preset_manager_interface.h"
 #include "lc_settings_page_interface.h"
-#include "lc_style_editor_interface.h"
 
 class LC_SettingsDialog;
 
@@ -52,6 +51,7 @@ public:
         QString title = "Settings";
         bool useGlobalTransaction = true;
         bool expandAllCategories = false;
+        QString icon = "";
     };
 
     void configureDialog(const QString& dialogId, const DialogProperties& props);

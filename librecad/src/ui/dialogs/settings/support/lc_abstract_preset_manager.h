@@ -65,11 +65,16 @@ public:
         setDirtyState(true);
     }
 
+    bool isPresetModified() override { return m_isDirty; }
+
+    bool deletePreset(const QString& key) override;
+
 protected:
     // Helper to update dirty state and notify listeners in a single call
     void setDirtyState(bool dirty);
 
     virtual void applyActiveConfigToSystem(const QString& activeKey) = 0;
+    virtual bool doDeletePreset(const QString& key) = 0;
 
     QString m_activeKey;
     QString m_originalActiveKey;

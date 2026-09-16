@@ -23,8 +23,11 @@
 
 #include <QGroupBox>
 #include <QRadioButton>
+#include <QSplitter>
 
+#include "lc_action_group_manager.h"
 #include "lc_color_button.h"
+#include "lc_dialog.h"
 #include "lc_highlight_overlay.h"
 #include "lc_settings_banner_widget.h"
 #include "lc_settings_list_widget.h"
@@ -191,6 +194,69 @@ void LC_SettingsPageBase::setReadOnly(bool readOnly) {
         m_widget->setEnabled(!readOnly);
     }
 }
+
+void LC_SettingsPageBase::autoIndexActionGroupManager(LC_ActionGroupManager* agm, QWidget* searchTarget) {
+    if (agm == nullptr || searchTarget == nullptr) {
+        return;
+    }
+
+    for (const auto* group : agm->allGroupsList()) {
+        if (group == nullptr || !group->isActionMappingsMayBeConfigured()) {
+            continue;
+        }
+
+        for (const auto* action : group->actions()) {
+            if (action == nullptr) {
+                continue;
+            }
+
+            const QString name = action->text().remove('&').trimmed();
+            if (!name.isEmpty()) {
+                registerSearchTarget(searchTarget, name);
+            }
+            if (!action->toolTip().isEmpty()) {
+                registerSearchTarget(searchTarget, action->toolTip().trimmed());
+            }
+        }
+    }
+}
+void LC_SettingsPageBase::trackSplitter(QSplitter* splitter, int defaultLeftWidth) {
+    m_trackedSplitter = splitter;
+    m_trackedSplitterDefaultWidth = defaultLeftWidth;
+
+    if (m_trackedSplitter != nullptr) {
+        const int targetWidth = (m_savedSplitterWidth > 0) ? m_savedSplitterWidth : defaultLeftWidth;
+        const int currentWidth = m_trackedSplitter->width();
+        const int otherWidth = (currentWidth > targetWidth) ? (currentWidth - targetWidth) : defaultLeftWidth;
+        m_trackedSplitter->setSizes(QList<int>{targetWidth, otherWidth});
+    }
+}
+
+void LC_SettingsPageBase::loadDialogData(LC_SettingsGroupDialog& group, bool loadPosition) {
+    if (loadPosition) {
+        const QString key = id() + "SplitterWidth";
+        const int savedWidth = LC_Setting<int>(&group, key, m_trackedSplitterDefaultWidth).get();
+        if (savedWidth > 0) {
+            m_savedSplitterWidth = savedWidth;
+            if (m_trackedSplitter != nullptr) {
+                const int currentWidth = m_trackedSplitter->width();
+                const int otherWidth = (currentWidth > savedWidth) ? (currentWidth - savedWidth) : m_trackedSplitterDefaultWidth;
+                m_trackedSplitter->setSizes(QList<int>{savedWidth, otherWidth});
+            }
+        }
+    }
+}
+
+void LC_SettingsPageBase::saveDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {
+    if (savePositions && m_trackedSplitter != nullptr && m_widget != nullptr) {
+        const QList<int> sizes = m_trackedSplitter->sizes();
+        if (!sizes.isEmpty() && sizes.first() > 0) {
+            const QString key = id() + "SplitterWidth";
+            LC_Setting<int>(&group, key, m_trackedSplitterDefaultWidth).set(sizes.first());
+        }
+    }
+}
+
 
 void LC_SettingsPageBase::autoIndexLabels() {
     if (getEditingWidget() == nullptr) {

@@ -27,6 +27,7 @@
 #include <QWidget>
 #include "lc_settings_types.h"
 
+class LC_SettingsGroupDialog;
 class LC_PresetManagerInterface;
 
 class LC_LivePreview {
@@ -91,6 +92,9 @@ public:
     virtual QString gatedMessage() const { return QString(); }
     virtual QString gatedActionText() const { return QString(); }
     virtual std::function<void()> gatedActionCallback() const { return nullptr; }
+
+    virtual void loadDialogData([[maybe_unused]]LC_SettingsGroupDialog& group, [[maybe_unused]]bool loadPosition) {}
+    virtual void saveDialogData([[maybe_unused]]LC_SettingsGroupDialog& group, [[maybe_unused]]bool savePositions) const {}
 
 private:
     int m_sortWeight = 100;

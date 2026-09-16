@@ -43,6 +43,9 @@ LC_SettingsBannerWidget::LC_SettingsBannerWidget(QWidget* parent)
     m_lblMessage->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     layout->addWidget(m_lblMessage);
 
+    // Forward rich-text link clicks from label to banner widget signal
+    connect(m_lblMessage, &QLabel::linkActivated, this, &LC_SettingsBannerWidget::linkActivated);
+
     m_btnAction = new QPushButton(this);
     m_btnAction->setVisible(false);
     layout->addWidget(m_btnAction);
@@ -86,4 +89,31 @@ void LC_SettingsBannerWidget::setBanner(const QString& message,
 void LC_SettingsBannerWidget::clearAction() {
     m_actionCallback = nullptr;
     m_btnAction->setVisible(false);
+}
+
+void LC_SettingsBannerWidget::setMessage(const QString& message,
+                                         BannerType type,
+                                         const QString& actionText,
+                                         std::function<void()> actionCallback) {
+    m_lblMessage->setText(message);
+
+    QStyle::StandardPixmap iconPix = QStyle::SP_MessageBoxInformation;
+    if (type == BannerType::Warning) {
+        iconPix = QStyle::SP_MessageBoxWarning;
+    } else if (type == BannerType::Error) {
+        iconPix = QStyle::SP_MessageBoxCritical;
+    }
+
+    m_lblIcon->setPixmap(style()->standardIcon(iconPix).pixmap(20, 20));
+
+    m_actionCallback = std::move(actionCallback);
+    if (!actionText.isEmpty() && m_actionCallback != nullptr) {
+        m_btnAction->setText(actionText);
+        m_btnAction->setToolTip(actionText);
+        m_btnAction->setVisible(true);
+    } else {
+        m_btnAction->setVisible(false);
+    }
+
+    setVisible(!message.isEmpty());
 }

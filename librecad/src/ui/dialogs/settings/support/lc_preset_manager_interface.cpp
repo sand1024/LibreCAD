@@ -51,41 +51,23 @@ bool LC_PresetManagerInterface::promptSavePresetAs(QWidget* parentWidget, QStrin
         existingNames << p.first;
     }
 
-    bool ok = false;
-    QString name;
     QString suggestedName = currentPresetDisplayName();
     if (suggestedName == QObject::tr("Default") || getActivePresetKey() == DEFAULT_THEME_KEY) {
         suggestedName = strings.defaultNewPresetName;
     }
-    bool isNotUnique = false;
-    int i = 1;
 
-    do {
-        name = LC_InputTextDialog::getText(parentWidget, strings.saveAsDialogTitle, strings.saveAsDialogLabel,
-                                           existingNames, true, suggestedName, &ok);
-        name = name.trimmed();
+    QString name;
+    bool ok = promptForUniqueName(parentWidget, strings.saveAsDialogTitle, strings.saveAsDialogLabel, existingNames,
+        suggestedName, name);
 
-        if (ok) {
-            if (name.isEmpty()) {
-                isNotUnique = true;
-                continue;
+    if (ok) {
+        QString newKey;
+        if (savePresetAs(name, newKey)) {
+            if (outNewKey != nullptr) {
+                *outNewKey = newKey;
             }
-            isNotUnique = existingNames.contains(name, Qt::CaseInsensitive);
-            if (isNotUnique) {
-                suggestedName = name + "_" + QString::number(i++);
-            }
+            return true;
         }
-        else {
-            return false; // User canceled
-        }
-    } while (isNotUnique);
-
-    QString newKey;
-    if (savePresetAs(name, newKey)) {
-        if (outNewKey != nullptr) {
-            *outNewKey = newKey;
-        }
-        return true;
     }
     return false;
 }
@@ -125,4 +107,36 @@ bool LC_PresetManagerInterface::handlePromptDiscardOnReject(QWidget* parentWidge
         QMessageBox::Yes | QMessageBox::No);
 
     return (reply == QMessageBox::Yes);
+}
+
+bool LC_PresetManagerInterface::promptForUniqueName(QWidget* parentWidget, const QString& title, const QString& label, const QStringList& existingNames,
+    const QString& initialSuggestion, QString& outName) {
+    bool ok = false;
+    QString name;
+    QString suggestedName = initialSuggestion;
+
+    bool isNotUnique = false;
+    int i = 1;
+
+    do {
+        name = LC_InputTextDialog::getText(parentWidget, title, label,
+                                           existingNames, true, suggestedName, &ok);
+        name = name.trimmed();
+
+        if (ok) {
+            if (name.isEmpty()) {
+                isNotUnique = true;
+                continue;
+            }
+            isNotUnique = existingNames.contains(name, Qt::CaseInsensitive);
+            if (isNotUnique) {
+                suggestedName = name + "_" + QString::number(i++);
+            }
+        } else {
+            return false;
+        }
+    } while (isNotUnique);
+
+    outName = name;
+    return true;
 }

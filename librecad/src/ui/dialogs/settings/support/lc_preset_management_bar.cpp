@@ -118,8 +118,11 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
                                              QMessageBox::Yes | QMessageBox::No);
 
          if (result == QMessageBox::Yes) {
-             if (m_manager->deletePreset(currentPresetKey())) {
+            const QString keyToDelete = currentPresetKey();
+            if (m_manager->deletePreset(keyToDelete)) {
+                setDirty(false);
                  bindToManager(m_manager);
+                emit presetSelected(m_manager->getActivePresetKey());
              }
          }
     });

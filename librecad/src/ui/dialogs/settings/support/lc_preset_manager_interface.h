@@ -131,6 +131,12 @@ public:
     virtual bool handlePromptSaveOnAccept(QWidget* parentWidget);
     virtual bool handlePromptDiscardOnReject(QWidget* parentWidget);
 
+    static bool promptForUniqueName(QWidget* parentWidget, const QString& title,
+                         const QString& label,
+                         const QStringList& existingNames,
+                         const QString& initialSuggestion,
+                         QString& outName);
+
 protected:
     std::function<void()> m_resetCallback;
     std::function<void()> m_saveCommitCallback;

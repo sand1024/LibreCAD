@@ -60,6 +60,28 @@ void LC_AbstractPresetManager::setSaveCommitCallback(std::function<void()> callb
     m_saveCommitCallback = std::move(callback);
 }
 
+bool LC_AbstractPresetManager::deletePreset(const QString& key) {
+    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
+        return false;
+    }
+
+    if (!doDeletePreset(key)) {
+        return false;
+    }
+
+    if (m_activeKey == key) {
+        m_activeKey = DEFAULT_THEME_KEY;
+        loadPreset(DEFAULT_THEME_KEY);
+    }
+    if (m_originalActiveKey == key) {
+        m_originalActiveKey = DEFAULT_THEME_KEY;
+        applyActiveConfigToSystem(DEFAULT_THEME_KEY);
+    }
+
+    setDirtyState(false);
+    return true;
+}
+
 void LC_AbstractPresetManager::setDirtyState(bool dirty) {
     m_isDirty = dirty;
     if (m_changedCallback != nullptr) {

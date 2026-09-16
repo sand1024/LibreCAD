@@ -960,6 +960,12 @@ void LC_SettingsDialog::saveInnerDialogData(LC_SettingsGroupDialog& group, bool 
     }
     const QString searchHistory = ui->leSearch->history().join(";");
     CFG_InnerData.o_SearchHistory = searchHistory;
+
+    for (const auto& page : m_pages) {
+        if (page != nullptr) {
+            page->saveDialogData(group, savePositions);
+        }
+    }
 }
 
 void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool loadPosition) {
@@ -980,6 +986,12 @@ void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool 
         const QStringList historyItems = searchHistory.split(";");
         ui->leSearch->setHistory(historyItems);
     }
+
+    for (const auto& page : m_pages) {
+        if (page != nullptr) {
+            page->loadDialogData(group, loadPosition);
+        }
+    }
 }
 
 void LC_SettingsDialog::onPresetSelected(const QString& key){
@@ -992,6 +1004,17 @@ void LC_SettingsDialog::onPresetSelected(const QString& key){
         return;
     }
     if (manager->getActivePresetKey() == key) {
+        // Active key already matches (e.g. after deletion or reset).
+        // Reload settings into page widgets and re-evaluate gating.
+        for (const QString& pageId : m_initializedPages) {
+            auto it = m_pageMapByPageId.find(pageId);
+            if (it != m_pageMapByPageId.end()) {
+                it->second->loadSettings();
+            }
+        }
+        doUpdatePageLivePreview(m_activePage);
+        ui->presetBar->setDirty(false);
+        updateGatingState();
         return;
     }
 
