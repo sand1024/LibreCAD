@@ -30,8 +30,7 @@
 // fixme - sand - review all dialogs and actions and make all conversions (double/string, angle/string and vise versa consistent)!
 LC_Dialog::LC_Dialog(QWidget* parent, const QString& dlgName)
     :QDialog(parent)
-    ,m_dialogName(dlgName){
-
+    ,m_dialogName(dlgName), CFG_DlgSettings(m_dialogName){
 }
 
 int LC_Dialog::showModal() {
@@ -59,7 +58,6 @@ void LC_Dialog::showEvent(QShowEvent *event) {
 }
 
 void LC_Dialog::loadDialogPosition() {
-    LC_SettingsGroupDialog CFG_DlgSettings(m_dialogName);
     if (CFG_Appearance::o_PersistDialogPositions) {
         if (CFG_DlgSettings.o_hasPosition) {
             const int x = CFG_DlgSettings.o_X;
@@ -80,8 +78,8 @@ void LC_Dialog::loadDialogPosition() {
     }
 }
 
-void LC_Dialog::saveDialogPosition() const {
-    LC_SettingsGroupDialog CFG_DlgSettings(m_dialogName);
+void LC_Dialog::saveDialogPosition() {
+
     if (CFG_Appearance::o_PersistDialogPositions) {
         CFG_DlgSettings.o_hasPosition = true;
 

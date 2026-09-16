@@ -53,8 +53,11 @@ protected:
     QString m_dialogName;
     bool m_positionLoaded = false;
     void setDialogName(const QString& dialogName) {m_dialogName = dialogName;} ;
-    void saveDialogPosition() const;
+    void saveDialogPosition();
     void loadDialogPosition();
+
+    LC_SettingsGroupDialog CFG_DlgSettings;
+
     virtual void saveInnerDialogData([[maybe_unused]] LC_SettingsGroupDialog& group, [[maybe_unused]] bool savePositions) const {
     }
     virtual void loadInnerDialogData([[maybe_unused]] LC_SettingsGroupDialog& group, [[maybe_unused]] bool savePositions) {};
