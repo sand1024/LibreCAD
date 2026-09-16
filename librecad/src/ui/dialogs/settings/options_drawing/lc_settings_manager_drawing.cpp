@@ -47,7 +47,7 @@ void LC_SettingsManagerDrawing::initialize() {
 
     const QString dlgId = "drawing_preferences"; // fixme - to namespace
 
-    reg->configureDialog(dlgId, {QObject::tr("Drawing Preferences"), false, false});
+    reg->configureDialog(dlgId, {QObject::tr("Drawing Preferences"), false, false,":/icons/drawing_settings.lci"});
 
     auto addPage = [&](const QString& id, std::function<std::unique_ptr<LC_SettingsPageInterface>()> creator) {
         reg->registerPage(dlgId, id, "", creator);
