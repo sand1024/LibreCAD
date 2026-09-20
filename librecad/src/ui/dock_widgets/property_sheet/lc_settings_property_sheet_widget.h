@@ -43,7 +43,8 @@ namespace CFG_WidgetPropertySheet {
     inline const LC_Setting<bool> o_showComputed(&Group, "showComputed", true);
     inline const LC_Setting<bool> o_duplicateSelectionAction(&Group, "duplicateSelectionAction", true);
     inline const LC_Setting<bool> o_showToolOptions(&Group, "showToolOptions", true);
-    inline const LC_Setting<int> o_fontSize(&Group, "fontSize", 9);
+    inline const LC_Setting<int>  o_fontSize(&Group, "fontSize", 9);
+    inline const LC_Setting<bool> o_infoPanelCollapsed(&Group, "infoPanelCollapsed", false);
 }
 
 #endif

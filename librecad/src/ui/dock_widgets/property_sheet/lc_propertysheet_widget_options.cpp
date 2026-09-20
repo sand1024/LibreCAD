@@ -23,6 +23,8 @@
 
 #include "lc_propertysheet_widget_options.h"
 
+#include <QFont>
+
 #include "lc_settings_property_sheet_widget.h"
 #include "rs_settings.h"
 
@@ -43,7 +45,6 @@ void LC_PropertySheetWidgetOptions::save() const {
     o_showComputed = showComputed;
     o_duplicateSelectionAction = duplicateSelectionAction;
     o_showToolOptions = showToolOptions;
-    o_fontSize = fontSize;
 }
 
 void LC_PropertySheetWidgetOptions::load() {
@@ -63,5 +64,4 @@ void LC_PropertySheetWidgetOptions::load() {
     showComputed = o_showComputed;
     duplicateSelectionAction = o_duplicateSelectionAction;
     showToolOptions = o_showToolOptions;
-    fontSize = o_fontSize;
 }

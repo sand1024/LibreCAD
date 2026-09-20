@@ -77,6 +77,7 @@ public:
     void layerListModified(bool) override {refill();}
     void viewsListModified([[maybe_unused]]bool changed) override {refill();}
     LC_PropertySheetWidgetOptions* getOptions() const {return m_propertySheetOptions.get();}
+    void updatePropertiesSheetFont() const;
 public slots :
     void onUcsChanged(LC_UCS* ucs);
     void onViewDefaultActionActivated(bool defaultActionActivated, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
@@ -99,7 +100,6 @@ protected:
         MODE_TOOL_OPTIONS
     };
     void setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager);
-    void updatePropertiesSheetFont() const;
     void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
     void clearContextEntities();
     void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const;

@@ -40,7 +40,6 @@
 #include "lc_property_view_registrator.h"
 #include "lc_propertysheet_widget_options.h"
 #include "lc_settings_property_sheet_widget.h"
-#include "lc_shortcuts_manager.h"
 #include "qg_graphicview.h"
 #include "rs_debug.h"
 #include "rs_document.h"
@@ -127,8 +126,9 @@ LC_PropertySheetWidget::~LC_PropertySheetWidget() {
 }
 
 void LC_PropertySheetWidget::updatePropertiesSheetFont() const {
-    int fontSize = m_propertySheetOptions->fontSize;
-    ui->propertySheet->setFontSize(fontSize);
+    QFont retrievedFont = QApplication::font("LC_PropertySheetWidget");
+    const int fontPointsSize = retrievedFont.pointSize();
+    ui->propertySheet->setFontSize(fontPointsSize);
 }
 
 void LC_PropertySheetWidget::loadCollapsedSections() {
@@ -811,7 +811,7 @@ void LC_PropertySheetWidget::setCurrentQAction(const QAction* a) {
     }
     if (showIcon) {
         const QIcon icon = a->icon();
-        const QString text = LC_ShortcutsManager::getPlainActionToolTip(a);
+        const QString text =  a->text().remove('&').trimmed();
         ui->lblActionIcon->setVisible(!icon.isNull());
         constexpr int m_iconSize = 24;
         ui->lblActionIcon->setPixmap(icon.pixmap(m_iconSize));
