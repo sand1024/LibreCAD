@@ -44,6 +44,31 @@ class QLabel;
 Q_DECLARE_FLAGS(LC_PropertyWidgetAreas, LC_PropertyWidgetArea)
 Q_DECLARE_OPERATORS_FOR_FLAGS (LC_PropertyWidgetAreas)
 
+class LC_MovableSplitter: public QSplitter {
+public:
+    LC_MovableSplitter() = default;
+
+    LC_MovableSplitter(Qt::Orientation orientation, QWidget* parent)
+        : QSplitter(orientation, parent) {
+    }
+
+    void collapseSecondPart() {
+        // moveSplitter(10000, 0);
+        QList<int> sizesList = sizes();
+        int totalWidth = sizesList.at(0) + sizesList.at(1);
+
+        sizesList[0] = totalWidth;
+        sizesList[1] = 0;
+
+        setSizes(sizesList);
+    }
+
+    bool isCollapsedSecond() {
+        return sizes().at(1) == 0;
+    }
+};
+
+
 class LC_PropertiesSheetPanel : public QWidget, public LC_InplacePropertyEditingStopper {
     Q_OBJECT Q_DISABLE_COPY(LC_PropertiesSheetPanel)
 
@@ -61,7 +86,9 @@ public:
     void setFontSize(int fontSize);
 signals  :
     void propertySetChanged();
-
+protected:
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent* event) override;
 private:
     void updateParts();
     void setActiveProperty(const LC_Property* activeProperty) const;
@@ -71,7 +98,7 @@ private:
     QVBoxLayout* m_layout;
     QLabel* m_toolbar;
     LC_PropertiesSheet* m_propertiesSheet;
-    QWidget* m_descriptionSplitter;
+    LC_MovableSplitter* m_descriptionSplitter;
     QLabel* m_propertyInfoLabel;
 };
 

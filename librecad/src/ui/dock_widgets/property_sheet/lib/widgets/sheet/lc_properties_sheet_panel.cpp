@@ -29,6 +29,7 @@
 #include <QVBoxLayout>
 
 #include "lc_properties_sheet.h"
+#include "lc_settings_property_sheet_widget.h"
 
 class LC_SplitterDoubleClickEventsHandler : public QObject {
 public:
@@ -121,6 +122,7 @@ void LC_PropertiesSheetPanel::setFontSize(int fontSize) {
     }
 }
 
+
 void LC_PropertiesSheetPanel::updateParts() {
     while (!m_layout->isEmpty()) {
         m_layout->takeAt(0);
@@ -129,7 +131,7 @@ void LC_PropertiesSheetPanel::updateParts() {
         if (m_descriptionSplitter == nullptr) {
 
             Q_ASSERT(!m_propertyInfoLabel);
-            auto* splitter = new QSplitter(Qt::Vertical, this);
+            auto* splitter = new LC_MovableSplitter(Qt::Vertical, this);
 
             splitter->addWidget(m_propertiesSheet);
             createDescriptionLabel(splitter);
@@ -151,6 +153,24 @@ void LC_PropertiesSheetPanel::updateParts() {
             m_descriptionSplitter = nullptr;
             m_propertyInfoLabel = nullptr;
         }
+    }
+}
+
+void LC_PropertiesSheetPanel::showEvent(QShowEvent* event) {
+    QWidget::showEvent(event);
+    bool descriptionCollapsed = CFG_WidgetPropertySheet::o_infoPanelCollapsed;
+    if (descriptionCollapsed){
+        if (m_descriptionSplitter != nullptr) {
+            m_descriptionSplitter->collapseSecondPart();
+        }
+    }
+}
+
+void LC_PropertiesSheetPanel::hideEvent(QHideEvent* event) {
+    QWidget::hideEvent(event);
+    if (m_descriptionSplitter != nullptr) {
+        bool descriptionCollapsed = m_descriptionSplitter->isCollapsedSecond();
+        CFG_WidgetPropertySheet::o_infoPanelCollapsed = descriptionCollapsed;
     }
 }
 
