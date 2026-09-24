@@ -68,6 +68,7 @@ public:
      * @return Current directory.
      */
     static QString getCurrentDir();
+    QString getAppDir();
 
     /**
      * @return Application Data directory.

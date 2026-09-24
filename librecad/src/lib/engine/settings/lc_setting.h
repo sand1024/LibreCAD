@@ -104,6 +104,8 @@ public:
 
     T defaultValue() const { return m_defaultValue; }
 
+    void setDefaultValue(T& defaultValue) {m_defaultValue = defaultValue;}
+
     T get() const {
         return getFromBackend();
     }

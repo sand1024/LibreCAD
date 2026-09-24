@@ -30,7 +30,9 @@ class LC_SettingsExporter: public QObject{
 public:
    bool exportSettings(QWidget* parent = nullptr);
    bool importSettings(QWidget* parent = nullptr);
+    [[deprecated]]
    void exportCustomWidgetSettings(QWidget* parent, bool forMenu);
+    [[deprecated]]
    void importCustomWidgetSettings(QWidget* parent, bool forMenu);
 protected:
   bool obtainSettingsFileName(QWidget* parent, QString& fileName, bool forRead);

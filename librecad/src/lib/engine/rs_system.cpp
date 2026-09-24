@@ -1013,3 +1013,7 @@ QString RS_System::getTempDir() {
 QString RS_System::getCurrentDir() {
     return QDir::currentPath();
 }
+
+QString RS_System::getAppDir() {
+    return m_appDir;
+}
