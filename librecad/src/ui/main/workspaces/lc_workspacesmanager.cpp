@@ -260,11 +260,6 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
 
 void LC_WorkspacesManager::fillByState(LC_Workspace &workspace){
     QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
-    for (const auto* tb : appWin.findChildren<QToolBar*>()) {
-        if (tb != nullptr) {
-            LC_ERR << "[DEBUG_SAVE] Toolbar:" << tb->objectName() << "visible:" << tb->isVisible() << "hidden:" << tb->isHidden();
-        }
-    }
     const QString geometryB64 = appWin.saveGeometry().toBase64(QByteArray::Base64Encoding);
     const QString stateB64 = appWin.saveState().toBase64(QByteArray::Base64Encoding);
     workspace.geometry = geometryB64;
@@ -330,23 +325,8 @@ void LC_WorkspacesManager::restoreGeometryAndState(const LC_Workspace &workspace
         const auto widgetsState = QByteArray::fromBase64(workspace.widgetsState.toUtf8(), QByteArray::Base64Encoding);
         if (!widgetsState.isEmpty()) {
             const bool ok = appWin.restoreState(widgetsState);
-            LC_ERR << "[DEBUG_WS] appWin.restoreState() executed. Result:" << ok
-                   << "bytes:" << widgetsState.size();
-
-            for (const auto* tb : appWin.findChildren<QToolBar*>()) {
-                if (tb != nullptr) {
-                    LC_ERR << "[DEBUG_RESTORE_IMMEDIATE] Toolbar:" << tb->objectName() << "visible:" << tb->isVisible() << "hidden:" << tb->isHidden();
-                }
-            }
-        }
-        else {
-            LC_ERR << "[DEBUG_WS] widgetsState Base64 decoding failed!";
         }
     }
-    else {
-        LC_ERR << "[DEBUG_WS] workspace.widgetsState is EMPTY!";
-    }
-
     const auto& dockAreas = appWin.getDockAreaToggleActions();
     {
         const QSignalBlocker b1(dockAreas.left);

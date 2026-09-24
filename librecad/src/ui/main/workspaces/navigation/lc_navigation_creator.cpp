@@ -162,7 +162,6 @@ void LC_NavigationControlsCreator::onCustomToolbarVisibilityChanged(const bool v
     if (toolbar != nullptr) {
         const QString toolbarName = toolbar->objectName();
         updateInvisibleCustomToolbars(toolbarName, !visible);
-        // LC_ERR << "TB_Visible " << toolbarName << (visible ? " Yes" : " no");
     }
 }
 
@@ -427,7 +426,6 @@ bool LC_NavigationControlsCreator::hasSavedWidgetsState() const {
     const QString state = LC_GET_STR("StateOfWidgets", "");
     LC_GROUP_END();
     const bool hasState = !state.trimmed().isEmpty();
-    LC_ERR << "[DEBUG_NAV] hasSavedWidgetsState():" << hasState << "state length:" << state.length();
     return hasState;
 }
 
@@ -543,12 +541,8 @@ void LC_NavigationControlsCreator::applyToolbars(const NavigationLayoutConfig& c
                 connect(tb, &QToolBar::visibilityChanged, this, &LC_NavigationControlsCreator::onCustomToolbarVisibilityChanged);
             }
             else /*if (applyInitialVisibility)*/ {
-                LC_ERR << "[DEBUG_NAV] applyInitialVisibility TRUE -> setting" << objectName << "visible:" << tbDef.visible;
                 tb->setVisible(tbDef.visible);
             }
-            // else {
-            //     LC_ERR << "[DEBUG_NAV] applyInitialVisibility FALSE -> leaving" << objectName << "untouched";
-            // }
         }
         else {
             tb->setWindowTitle(toolbarTitle);

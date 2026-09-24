@@ -538,18 +538,8 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
     RS_DEBUG->print("QC_ApplicationWindow::initSettings()");
 
     const bool first_load = CFG_Startup::o_FirstLoad;
-    LC_ERR << "[DEBUG_WIN] initSettings(): first_load =" << first_load << "fromStartup =" << fromStartup;
     if (!first_load) {
-        LC_ERR << "[DEBUG_WIN] Calling m_workspacesInvoker->init()";
         m_workspacesInvoker->init();
-        for (const auto* tb : findChildren<QToolBar*>()) {
-            if (tb != nullptr && !tb->isVisible()) {
-                LC_ERR << "[DEBUG_POST_INIT] Toolbar currently hidden:" << tb->objectName();
-            }
-        }
-    }
-    else {
-        LC_ERR << "[DEBUG_WIN] WARNING: m_workspacesInvoker->init() SKIPPED because first_load is TRUE!";
     }
     fireWorkspacesChanged();
     if (!fromStartup) {
@@ -577,7 +567,6 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
  * Stores the global application settings to file or registry.
  */
 void QC_ApplicationWindow::storeSettings() const {
-    LC_ERR << "[DEBUG_WIN] storeSettings(): RS_Settings::saveIsAllowed =" << RS_Settings::saveIsAllowed;
     if (RS_Settings::saveIsAllowed) {
         m_workspacesInvoker->persist();
         m_penPaletteWidget->persist();
