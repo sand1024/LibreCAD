@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_style_index_helper.h"
+#include "lc_presets_index_helper.h"
 
 #include <QDir>
 #include <QFile>
@@ -30,8 +30,8 @@
 #define COMPRESS_INDEX
 
 // Loads the index map from a given index filepath on disk
-StyleIndexMap LC_StyleIndexHelper::loadIndex(const QString& indexFilePath) {
-    StyleIndexMap indexMap;
+PresetsIndexMap LC_PresetsIndexHelper::loadIndex(const QString& indexFilePath) {
+    PresetsIndexMap indexMap;
     QFile file(indexFilePath);
     if (!file.open(QIODevice::ReadOnly)) {
         return indexMap; // Return empty map if no index exists yet
@@ -56,7 +56,7 @@ StyleIndexMap LC_StyleIndexHelper::loadIndex(const QString& indexFilePath) {
 }
 
 // Writes the index map back to disk
-bool LC_StyleIndexHelper::saveIndex(const QString& indexFilePath, const StyleIndexMap& indexMap) {
+bool LC_PresetsIndexHelper::saveIndex(const QString& indexFilePath, const PresetsIndexMap& indexMap) {
     QJsonObject root;
     QJsonObject filesObj;
 
@@ -81,8 +81,9 @@ bool LC_StyleIndexHelper::saveIndex(const QString& indexFilePath, const StyleInd
 }
 
 // High-performance handshake: checks directory structure and returns files requiring a parse
-QStringList LC_StyleIndexHelper::getOutOfDateFiles(const QString& directoryPath, const QString& extension, const StyleIndexMap& indexMap,
-                                                   StyleIndexMap& outUpdatedIndex, bool& indexChanged) {
+QStringList LC_PresetsIndexHelper::getOutOfDateFiles(const QString& directoryPath, const QString& extension,
+                                                     const PresetsIndexMap& indexMap, PresetsIndexMap& outUpdatedIndex,
+                                                     bool& indexChanged) {
     QStringList outOfDateFiles;
     outUpdatedIndex = indexMap;
     indexChanged = false;

@@ -20,29 +20,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#ifndef LC_STYLE_INDEX_HELPER_H
-#define LC_STYLE_INDEX_HELPER_H
 
+#ifndef LC_PRESET_FILE_IO_H
+#define LC_PRESET_FILE_IO_H
+
+#include <QJsonObject>
 #include <QString>
+#include "lc_preset_error.h"
 
-struct IndexEntry {
-    QString displayName;
-    QString lastModified; // ISO 8601 string
-};
-typedef QMap<QString, IndexEntry> StyleIndexMap;
-
-class LC_StyleIndexHelper {
-public:
-    // Loads the index map from a given index filepath on disk
-    static StyleIndexMap loadIndex(const QString& indexFilePath);
-    // Writes the index map back to disk
-    static bool saveIndex(const QString& indexFilePath, const StyleIndexMap& indexMap);
-    // High-performance handshake: checks directory structure and returns files requiring a parse
-    static QStringList getOutOfDateFiles(const QString& directoryPath,
-                                         const QString& extension,
-                                         const StyleIndexMap& indexMap,
-                                         StyleIndexMap& outUpdatedIndex,
-                                         bool& indexChanged);
+namespace LC_PresetFileIO {
+    LC_PresetError readJsonFile(const QString& filePath, QJsonObject& outObject);
+    LC_PresetError writeJsonFile(const QString& filePath, const QJsonObject& object);
 };
 
 #endif
