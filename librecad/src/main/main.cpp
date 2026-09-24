@@ -195,7 +195,7 @@ int execApplication(LC_Application& app) {
     RS_DEBUG->print("main: exited Qt event loop");
 
     // Destroy the singleton
-    QC_ApplicationWindow::getAppWindow().reset();
+    QC_ApplicationWindow::destroySingleton();
     return return_code;
 }
 
@@ -400,10 +400,6 @@ int main(int argc, char** argv) {
 
     RS_DEBUG->print("main: creating main window..");
     QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
-    LC_UIStyleManager* styleManager = new LC_UIStyleManager();
-    styleManager->initialize(&appWin);
-    appWin.setUIStyleManager(styleManager);
-
     appWin.fireIconsRefresh();
 
 #ifdef __APPLE__
