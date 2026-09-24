@@ -40,7 +40,7 @@ void LC_ActionDrawGDTFeatureControlFrame::init(const int status) {
     if (status == ShowDialog) {
         // fixme - sand - potentially, we may reuse values were entered previously via settings or so .... not sure whether it's necessary, yet still
         const auto entity  = new LC_Tolerance(m_document, LC_ToleranceData{{0,0}, {0,0}, "", ""});
-        LC_DlgTolerance dlg(QC_ApplicationWindow::getAppWindow().get(), m_viewport, entity, true);
+        LC_DlgTolerance dlg(QC_ApplicationWindow::getAppWindow(), m_viewport, entity, true);
         if (dlg.showModal() == QDialog::Accepted) {
             m_actionData->entity = entity;
             setStatus(SetInsertionPoint);

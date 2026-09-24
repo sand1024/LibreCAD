@@ -96,7 +96,7 @@ bool LC_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch&
             select(m_entity);
             setStatus(InEditing);
             LC_EntityPropertiesDlg* editDialog{nullptr};
-            QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
+            QWidget* parent = QC_ApplicationWindow::getAppWindow();
             m_clonedEntity = m_entity->clone();
             bool hasDialog = true;
             switch (m_entity->rtti()) {

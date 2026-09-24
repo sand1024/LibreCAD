@@ -118,7 +118,7 @@ void LC_ActionSelectQuick::showDialog() {
         inputType = InteractiveInputInfo::NOTNEEDED;
     }
 
-    QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
+    QWidget* parent = QC_ApplicationWindow::getAppWindow();
     auto* dlg = new LC_DlgQuickSelection(parent,m_actionContext, inputType, m_savedState,
                                            interactiveInputValueOne, interactiveInputValueTwo);
     m_allowExternalTermination = false;
