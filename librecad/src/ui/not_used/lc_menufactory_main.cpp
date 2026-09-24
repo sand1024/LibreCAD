@@ -233,7 +233,7 @@ void LC_MenuFactoryMain::createToolsMenuExpanded(QMenuBar* menuBar, QList<QMenu*
     topMenuMenus << modify;
 
     const auto dims = menu(tr("&Dimensions"), "dims", menuBar);
-    dims->addActions(m_actionFactory->dimension_Actions);
+    dims->addActions(m_actionFactory->dimensionActions);
     topMenuMenus << dims;
 
     const auto info = menu(tr("&Info"), "info", menuBar);
@@ -262,7 +262,7 @@ void LC_MenuFactoryMain::createToolsMenuCombined(QMenuBar* menuBar, QList<QMenu*
                        m_actionFactory->selectActions);
     selectMenu->addAction(m_actionGroupManager->getActionByName("SelectionModeToggle"));
     subMenuWithActions(menuToolsCombined, tr("Dime&nsion"), "dimension", ":/icons/dim_horizontal.lci",
-                       m_actionFactory->dimension_Actions);
+                       m_actionFactory->dimensionActions);
     subMenuWithActions(menuToolsCombined, tr("Ot&her"), "other", ":/icons/text.lci",
                        m_actionFactory->otherDrawingActions);
     subMenuWithActions(menuToolsCombined, tr("&Modify"), "modify", ":/icons/move_rotate.lci",

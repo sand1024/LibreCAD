@@ -343,7 +343,7 @@ void LC_ToolbarFactory::createCADToolbars() const {
     auto *ellipse   = createCADToolbar(tr("Ellipse"), "Ellipse", ":/icons/ellipses.lci", tbPolicy, m_actionFactory->ellipseActions);
     auto *polyline  = createCADToolbar(tr("Polyline"), "Polyline", ":/icons/polylines.lci", tbPolicy, m_actionFactory->polylineActions);
     auto *select    = createCADToolbar(tr("Select"), "Select", ":/icons/select.lci", tbPolicy, m_actionFactory->selectActions);
-    auto *dimension = createCADToolbar(tr("Dimension"), "Dimension", ":/icons/dim_horizontal.lci", tbPolicy, m_actionFactory->dimension_Actions);
+    auto *dimension = createCADToolbar(tr("Dimension"), "Dimension", ":/icons/dim_horizontal.lci", tbPolicy, m_actionFactory->dimensionActions);
     auto *other     = createCADToolbar(tr("Other"), "other_drawing", ":/icons/text.lci", tbPolicy, m_actionFactory->otherDrawingActions);
     auto *modify    = createCADToolbar(tr("Modify"), "Modify", ":/icons/move_rotate.lci", tbPolicy, m_actionFactory->modifyActions);
     auto *info      = createCADToolbar(tr("Info"), "Info", ":/icons/measure.lci", tbPolicy, m_actionFactory->infoActions);
@@ -376,7 +376,7 @@ QToolBar *LC_ToolbarFactory::createCategoriesToolbar() {
     toolButton(toolbar, tr("Ellipses"), ":/icons/ellipses.lci", m_actionFactory->ellipseActions);
     toolButton(toolbar, tr("PolyLines"), ":/icons/polylines.lci", m_actionFactory->polylineActions);
     toolButton(toolbar, tr("Select"), ":/icons/select.lci", m_actionFactory->selectActions);
-    toolButton(toolbar, tr("Dimensions"), ":/icons/dim_horizontal.lci", m_actionFactory->dimension_Actions);
+    toolButton(toolbar, tr("Dimensions"), ":/icons/dim_horizontal.lci", m_actionFactory->dimensionActions);
     toolButton(toolbar, tr("Other"), ":/icons/text.lci", m_actionFactory->otherDrawingActions);
     toolButton(toolbar, tr("Modify"), ":/icons/move_rotate.lci", m_actionFactory->modifyActions);
     toolButton(toolbar, tr("Measure"), ":/icons/measure.lci", m_actionFactory->infoActions);
