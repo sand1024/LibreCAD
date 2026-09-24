@@ -31,14 +31,11 @@ namespace CFG_Startup {
     inline const LC_Setting<bool> o_TabMode(&Group, "TabMode", false);
     inline const LC_Setting<bool> o_Maximize(&Group, "Maximize", false);
     inline const LC_Setting<bool> o_EnableLeftSidebar(&Group, "EnableLeftSidebar", true);
-    inline const LC_Setting<bool> o_CADSideBarUngrouped(&Group, "CADSideBarUngrouped", false);
     inline const LC_Setting<bool> o_EnableCADToolbars(&Group, "EnableCADToolbars", true);
     inline const LC_Setting<bool> o_OpenLastOpenedFiles(&Group, "OpenLastOpenedFiles", true);
     inline const LC_Setting<bool> o_UseClassicStatusBar(&Group, "UseClassicStatusBar", false);
     inline const LC_Setting<bool> o_ShowCommandPromptInStatusBar(&Group, "ShowCommandPromptInStatusBar", true);
     inline const LC_Setting<bool> o_CheckForNewVersions(&Group, "CheckForNewVersions", true);
-    inline const LC_Setting<bool> o_ExpandedToolsMenu(&Group, "ExpandedToolsMenu", false);
-    inline const LC_Setting<bool> o_ExpandedToolsMenuTillEntity(&Group, "ExpandedToolsMenuTillEntity", false);
     inline const LC_Setting<bool> o_ShowToolbarsTooltip(&Group, "ShowToolbarsTooltip", true);
     inline const LC_Setting<bool> o_ShowVersionInTitle(&Group, "ShowVersionInTitle", true);
 

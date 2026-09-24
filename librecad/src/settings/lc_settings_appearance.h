@@ -38,10 +38,7 @@ namespace CFG_Appearance {
     inline const LC_Setting<bool> o_ScrollBars(&Group, "ScrollBars", true);
     inline const LC_Setting<bool> o_Antialiasing(&Group, "Antialiasing", false);
     inline const LC_Setting<bool> o_ClassicRenderer(&Group, "ClassicRenderer", true);
-    inline const LC_Setting<bool> o_Autopanning(&Group, "Autopanning", false);
-    inline const LC_Setting<bool> o_FirstTimeNoZoom(&Group, "FirstTimeNoZoom", false);
-    inline const LC_Setting<bool> o_PanOnZoom(&Group, "PanOnZoom", false);
-    inline const LC_Setting<int> o_ScrollZoomFactor(&Group, "ScrollZoomFactor", 1137);
+
     inline const LC_Setting<bool> o_VisualizeHovering(&Group, "VisualizeHovering", true);
     inline const LC_Setting<bool> o_VisualizeHoveringRefPoints(&Group, "VisualizeHoveringRefPoints", true);
     inline const LC_Setting<bool> o_VisualizePreviewRefPoints(&Group, "VisualizePreviewRefPoints", true);
@@ -49,10 +46,13 @@ namespace CFG_Appearance {
     // --- Dialogs & Tabs ---
     inline const LC_Setting<bool> o_PersistDialogPositions(&Group, "PersistDialogPositions", true);
     inline const LC_Setting<bool> o_PersistDialogRestoreSizeOnly(&Group, "PersistDialogRestoreSizeOnly", false);
+
     inline const LC_Setting<bool> o_ShowCloseButton(&Group, "ShowCloseButton", true);
     inline const LC_Setting<bool> o_ShowCloseButtonActiveOnly(&Group, "ShowCloseButtonActiveOnly", true);
+
     inline const LC_Setting<bool> o_ShowActionIconInOptions(&Group, "ShowActionIconInOptions", true);
     inline const LC_Setting<bool> o_ShowEntityIDs(&Group, "ShowEntityIDs", false);
+
     inline const LC_Setting<bool> o_ShowKeyboardShortcutsInTooltips(&Group, "ShowKeyboardShortcutsInTooltips", true);
 
     inline const LC_Setting<bool> o_ShowTooltipActionName(&Group, "ShowTooltipActionName", true);
@@ -60,7 +60,18 @@ namespace CFG_Appearance {
     // - menus
     inline const LC_Setting<bool> o_AllowMenusTearOff(&Group, "AllowMenusTearOff", true);
     inline const LC_Setting<bool> o_MainMenuVisible(&Group, "MainMenuVisible", true);
-    inline const LC_Setting<bool> o_ShowMainMenuIcons(&Group, "ShowMainMenuIcons", false);
+    inline const LC_Setting<bool> o_MainMenuTopLevelIconsOnly(&Group, "ShowMainMenuIcons", false);
+
+    enum MainMenuBarType {
+        MENU_Minimal = 0,
+        MENU_Compact = 1,
+        MENU_Extended = 2
+    };
+
+    inline const LC_Setting<int> o_MainMenuType(&Group, "MainMenuType", MENU_Compact);
+
+    // inline const LC_Setting<bool> o_ExpandedToolsMenu(&Group, "ExpandedToolsMenu", false);
+    // inline const LC_Setting<bool> o_ExpandedToolsMenuTillEntity(&Group, "ExpandedToolsMenuTillEntity", false);
 
     // --- Sizing & Metrics ---
     inline const LC_Setting<int> o_EntityHandleSize(&Group, "EntityHandleSize", 4);

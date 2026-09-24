@@ -26,6 +26,7 @@
 #include "lc_setting.h"
 
 namespace CFG_AppState {
+    inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT";
     inline const LC_SettingsGroupBase Group("AppState");
 
     inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", DEFAULT_THEME_KEY);
@@ -34,8 +35,6 @@ namespace CFG_AppState {
     inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
 
     inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
-
-
 }
 
 #endif

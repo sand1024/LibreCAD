@@ -25,6 +25,8 @@
 
 #include "lc_setting.h"
 #include "lc_palette_editor_shared.h" // fixme - sand - bad dependency!!
+#include "lc_settings_app_state.h"
+
 namespace CFG_AppStyling {
     inline const LC_SettingsGroupBase Group("AppStyling");
 
@@ -32,12 +34,16 @@ namespace CFG_AppStyling {
     inline const LC_Setting<bool> o_AllowStyle(&Group, "AllowStyle", false);
     inline const LC_Setting<QString> o_Style(&Group, "Style", "");
     inline const LC_Setting<QString> o_StyleSheet(&Group, "StyleSheet", "");
-    inline const LC_Setting<QString> o_ActiveTypographyName(&Group, "ActiveTypographyName", "Default");
-    inline const LC_Setting<QString> o_ActiveSkinName(&Group, "ActiveSkinName", "Default");
-    inline const LC_Setting<QString> o_ActiveMetricsName(&Group, "ActiveMetricsName", "Default");
-    inline const LC_Setting<QString> o_ActiveGraphicViewScheme(&Group, "ActiveGraphicViewScheme", "Default");
-    inline const LC_Setting<QString> o_ActivePalette(&Group, "ActivePaletteName", "Default");
     inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
+
+    inline const LC_Setting<QString> o_ActiveTypographyName(&Group, "ActiveTypographyName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionSkinName(&Group, "ActiveFusinSkinName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionMetricsName(&Group, "ActiveFusionMetricsName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionPaletteName(&Group, "ActiveFusionPaletteName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveDraftingSchemeName(&Group, "ActiveDraftingScheme", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveIconsStyleName(&Group, "ActiveIconsStyleName", CFG_AppState::DEFAULT_THEME_KEY);
+
+    inline const LC_Setting<bool> o_IgnoreIconStylingInPalette(&Group, "IgnoreIconStylingInPalette", false);
 
     inline const LC_Setting<QColor> o_ColorFilteredItem(&Group, "ColorSearchHighlight", QColor("#2a82da")); // Blue
     inline const LC_Setting<QColor> o_ColorConflictingItem(&Group, "ColorConflictingItem", QColor("#d9534f")); // Red

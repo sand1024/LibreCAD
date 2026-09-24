@@ -30,9 +30,6 @@
 
 namespace CFG_Paths {
     inline const LC_SettingsGroupBase Group("Paths");
-
-    // fixme - sand - settings - review default there. Probably we should rely on app dir!
-
     inline const LC_Setting<QString> o_Translations(&Group, "Translations", "");
     inline const LC_Setting<QString> o_Patterns(&Group, "Patterns", "");
     inline const LC_Setting<QString> o_Fonts(&Group, "Fonts", "");
@@ -40,11 +37,16 @@ namespace CFG_Paths {
     inline const LC_Setting<QString> o_Template(&Group, "Template", "");
     inline const LC_Setting<QString> o_VariableFile(&Group, "VariableFile", "");
     inline const LC_Setting<QString> o_OtherSettingsDir(&Group, "OtherSettingsDir", RS_System::instance()->getAppDataDir().trimmed()); // fixme - rework, one may be not intitialized?
-    inline const LC_Setting<QString> o_ExportSettingsDir(&Group, "ExportSettingsDir", RS_SYSTEM->getHomeDir());
+    inline const LC_Setting<QString> o_ExportSettingsDir(&Group, "ExportSettingsDir", QDir::homePath());
+    inline const LC_Setting<QString> o_IconOverridesDir(&Group, "IconOverridesDir", "");
 
     inline const LC_Setting<QString> o_Save(&Group, "Save", QDir::toNativeSeparators(QDir::homePath()));
     inline const LC_Setting<QString> o_SaveDrawingFilter(&Group, "SaveDrawingFilter",  "Drawing Exchange DXF 2007 (*.dxf)");
     inline const LC_Setting<QString> o_Open(&Group, "Open", QDir::toNativeSeparators(QDir::homePath()));
+
+    inline void updateDefaultPathValues(const QString& appDir, const QString& appDataDir){
+
+    }
 }
 
 

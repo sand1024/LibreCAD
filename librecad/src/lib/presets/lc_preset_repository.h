@@ -26,6 +26,8 @@
 #include <QString>
 #include <QStringList>
 
+#include "lc_preset_error.h"
+
 class LC_PresetRepository {
 public:
     virtual ~LC_PresetRepository() = default;
@@ -33,7 +35,13 @@ public:
     virtual bool removeByKey(const QString& name) = 0;
     virtual QStringList getAvailableNames() = 0;
     virtual QList<QPair<QString, QString>> getPresetChoices() const = 0;
-};
 
+    // Capabilities and storage control
+    virtual QString getFileExtension() const = 0;
+    virtual QString fileIdentifier() const = 0;
+    virtual bool isReady() const = 0;
+    virtual bool setConfigDir(const QString& newConfigDir) = 0;
+    virtual LC_PresetError lastError() const = 0;
+};
 
 #endif
