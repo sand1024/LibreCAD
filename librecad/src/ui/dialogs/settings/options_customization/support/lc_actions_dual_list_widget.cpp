@@ -30,7 +30,6 @@
 
 #include "lc_actions_tree_model.h"
 #include "lc_action_group_manager.h"
-#include "lc_actions_naming_utils.h"
 #include "lc_dlg_action_group_config.h"
 
 namespace {
@@ -114,7 +113,6 @@ LC_ActionsDualListWidget::~LC_ActionsDualListWidget() = default;
 
 void LC_ActionsDualListWidget::setActionGroupManager(LC_ActionGroupManager* manager, ActionsFilterMode mode) {
     m_actionGroupManager = manager;
-    m_namingService = m_actionGroupManager->getNamingService();
     if (m_availableModel != nullptr) {
         m_availableModel->setup(manager, mode);
         ui->tvAvailable->expandAll();
@@ -219,7 +217,7 @@ void LC_ActionsDualListWidget::updateChosenToolbarButtons() {
 void LC_ActionsDualListWidget::setNodes(const QList<ActionNode>& nodes) {
     m_blockSignals = true;
     ui->twChosen->clear();
-    populateTreeRecursive(nullptr, nodes, m_actionGroupManager->getNamingService());
+    populateTreeRecursive(nullptr, nodes);
     ui->twChosen->expandAll();
     m_blockSignals = false;
     updateChosenToolbarButtons();
@@ -243,8 +241,7 @@ void LC_ActionsDualListWidget::setReadOnly(bool readOnly) {
     updateChosenToolbarButtons();
 }
 
-void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem, const QList<ActionNode>& nodes,
-                                                     const LC_ActionNamingServiceInterface* namingService) {
+void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem, const QList<ActionNode>& nodes) {
     for (const auto& node : nodes) {
         auto* item = (parentItem != nullptr) ? new QTreeWidgetItem(parentItem) : new QTreeWidgetItem(ui->twChosen);
         item->setData(0, ROLE_NODE_TYPE, static_cast<int>(node.type));
@@ -255,7 +252,7 @@ void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem
         }
         else if (node.type == ActionNodeType::Action) {
             item->setData(0, ROLE_ACTION_NAME, node.actionName);
-            const auto* act = m_actionGroupManager->getActionByName(node.actionName);
+            const auto* act = (m_actionGroupManager != nullptr) ? m_actionGroupManager->getActionByName(node.actionName) : nullptr;
             if (act != nullptr) {
                 QString cleanText = act->text();
                 cleanText.remove('&');
@@ -272,7 +269,10 @@ void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
         }
         else if (node.type == ActionNodeType::Group) {
-            const QString cleanTitle = namingService->displayName(node.groupTitle, /*stripAmpersand=*/true);
+            const QString cleanTitle = (m_actionGroupManager != nullptr)
+                ? m_actionGroupManager->displayName(node.groupTitle, /*stripAmpersand=*/true)
+                : node.groupTitle;
+
             item->setText(0, cleanTitle);
             item->setData(0, ROLE_GROUP_RAW_TITLE, node.groupTitle);
             item->setData(0, ROLE_GROUP_ICON, node.groupIcon);
@@ -281,7 +281,7 @@ void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem
                 item->setIcon(0, QIcon(node.groupIcon));
             }
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            populateTreeRecursive(item, node.children, namingService);
+            populateTreeRecursive(item, node.children);
         }
     }
 }
@@ -372,13 +372,16 @@ void LC_ActionsDualListWidget::addGroupToChosen(const QString& title, const QStr
     groupItem->setData(0, ROLE_GROUP_RAW_TITLE, title);
 
     QString finalIconPath = iconPath;
-    if (finalIconPath.isEmpty()) {
-        finalIconPath = m_namingService->iconPath(title);
+    if (finalIconPath.isEmpty() && m_actionGroupManager != nullptr) {
+        finalIconPath = m_actionGroupManager->iconPath(title);
     }
     groupItem->setData(0, ROLE_GROUP_ICON, finalIconPath);
     groupItem->setData(0, ROLE_POPUP_MODE, static_cast<int>(ToolButtonPopupMode::InstantPopup));
 
-    const QString cleanTitle = m_namingService->displayName(title, /*stripAmpersand=*/true);
+    const QString cleanTitle = (m_actionGroupManager != nullptr)
+        ? m_actionGroupManager->displayName(title, /*stripAmpersand=*/true)
+        : title;
+
     groupItem->setText(0, cleanTitle);
     if (!finalIconPath.isEmpty()) {
         groupItem->setIcon(0, QIcon(finalIconPath));
@@ -437,7 +440,7 @@ void LC_ActionsDualListWidget::onAddClicked() {
         else {
             const bool forceTop = (m_groupsPolicy == GroupsPolicy::SingleLevelAtRoot && isGroup);
             const QString canonicalToken = m_availableModel->getCanonicalGroupToken(idx);
-            const QString iconPath = m_namingService->iconPath(canonicalToken);
+            const QString iconPath = m_actionGroupManager->iconPath(canonicalToken);
 
             addGroupToChosen(canonicalToken, iconPath, m_availableModel->getGroupActions(idx), forceTop);
         }
@@ -489,7 +492,7 @@ void LC_ActionsDualListWidget::onAvailableContextMenu(const QPoint& pos) {
         }
         else {
             const QString canonicalToken = m_availableModel->getCanonicalGroupToken(idx);
-            const QString iconPath = m_actionGroupManager->getNamingService()->iconPath(canonicalToken);
+            const QString iconPath = m_actionGroupManager->iconPath(canonicalToken);
 
             menu.addAction(QIcon(":/icons/chevron_right.lci"), tr("Add Entire Group"), this, [this, canonicalToken, iconPath, actions]() {
                 addGroupToChosen(canonicalToken, iconPath, actions, false);
@@ -641,7 +644,7 @@ void LC_ActionsDualListWidget::onAddSeparatorClicked() {
 }
 
 void LC_ActionsDualListWidget::onAddGroupClicked() {
-    LC_DlgActionGroupConfig dlg(this, !m_allowNestedGroups, m_namingService);
+    LC_DlgActionGroupConfig dlg(this, !m_allowNestedGroups, m_actionGroupManager);
     if (dlg.exec() != QDialog::Accepted) {
         return;
     }
@@ -730,7 +733,7 @@ void LC_ActionsDualListWidget::editGroupItem(QTreeWidgetItem* item) {
         return;
     }
 
-    LC_DlgActionGroupConfig dlg(this, !m_allowNestedGroups, m_namingService);
+    LC_DlgActionGroupConfig dlg(this, !m_allowNestedGroups, m_actionGroupManager);
     const QString rawTitle = item->data(0, ROLE_GROUP_RAW_TITLE).toString();
     const QString iconPath = item->data(0, ROLE_GROUP_ICON).toString();
     const auto popupMode = static_cast<ToolButtonPopupMode>(item->data(0, ROLE_POPUP_MODE).toInt());
@@ -739,7 +742,7 @@ void LC_ActionsDualListWidget::editGroupItem(QTreeWidgetItem* item) {
 
     if (dlg.exec() == QDialog::Accepted) {
         const QString newRawTitle = dlg.title();
-        const QString cleanTitle = m_namingService->displayName(newRawTitle, /*stripAmpersand=*/true);
+        const QString cleanTitle = m_actionGroupManager->displayName(newRawTitle, /*stripAmpersand=*/true);
 
         item->setText(0, cleanTitle);
         item->setData(0, ROLE_GROUP_RAW_TITLE, newRawTitle);

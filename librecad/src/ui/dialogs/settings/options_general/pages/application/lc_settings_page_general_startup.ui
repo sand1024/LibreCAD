@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>705</width>
-    <height>520</height>
+    <height>404</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_main">
@@ -133,6 +133,24 @@ If set, previously opened files during previous closing of the application will 
       <string>CAD Tools </string>
      </property>
      <layout class="QGridLayout" name="gridLayout_54">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cad_toolbars_checkbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>CAD Toolbars
+
+If checked, toolbars with commands will be enabled. </string>
+        </property>
+        <property name="text">
+         <string>Enable CAD toolbars</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbEnableCADDockWidgets">
         <property name="sizePolicy">
@@ -151,6 +169,16 @@ If checked, dock widgets with commands for left sidebar will be enabled. Otherwi
         </property>
        </widget>
       </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>CAD Tools include set of specialized toolbars and docking widgets that contains drawing editing buttons for fast access.  They may be enabled or disabled completely.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -163,55 +191,6 @@ If checked, dock widgets with commands for left sidebar will be enabled. Otherwi
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="cad_toolbars_checkbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>CAD Toolbars
-
-If checked, toolbars with commands will be enabled. </string>
-        </property>
-        <property name="text">
-         <string>Enable CAD toolbars</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="cbCADWidgetsUngroupped">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>CAD Tools Matrix
-
-If this option is selected, all tools will be shown in one group, so the screen space is used more efficiently.</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">margin-left:15px</string>
-        </property>
-        <property name="text">
-         <string>Show all CAD tools in one widget (tools matrix)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>CAD Tools include set of specialized toolbars and docking widgets that contains drawing editing buttons for fast access.  They may be enabled or disabled completely.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -234,24 +213,6 @@ If this option is selected, all tools will be shown in one group, so the screen 
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="cbStartupTBTooltips">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Tooltips for Toolbars
-
-If enabled, tooltips with toolbar name will be shown for toolbars.</string>
-        </property>
-        <property name="text">
-         <string>Show tooltips for toolbars</string>
-        </property>
-       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QCheckBox" name="cbDuplicateActionsPromptsInStatusBar">
@@ -290,24 +251,6 @@ Otherwise, statusbar is monolithic.</string>
         </property>
         <property name="text">
          <string>Use &quot;classic&quot; statusbar</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="cbAllowMenusDetaching">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Detached Floating Menus
-
-If enabled, drop-down menus may become floating (by pressing top item).</string>
-        </property>
-        <property name="text">
-         <string>Allow menus detaching</string>
         </property>
        </widget>
       </item>

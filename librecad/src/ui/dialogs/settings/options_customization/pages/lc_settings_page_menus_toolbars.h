@@ -52,15 +52,14 @@ private slots:
     void onTargetSelected(int index);
     void onActionsModified();
     void onDockAreaChanged(int index);
-    void onMakeActiveMenuClicked();
     void onNewToolbarClicked();
     void onRenameToolbarClicked();
     void onDeleteToolbarClicked();
 
 private:
     enum ContainerKind {
+      MenuMinimal,
       MenuCompact,
-      MenuCompactTools,
       MenuExtended,
       ToolbarItem,
       CadDockWidgetItem,

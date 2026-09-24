@@ -22,7 +22,7 @@
 
 #include "lc_settings_page_metrics_behavior.h"
 #include "ui_lc_settings_page_metrics_behavior.h"
-#include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_fusion_metrics.h"
 #include <QCheckBox>
 #include <QComboBox>
 
@@ -34,9 +34,9 @@ LC_SettingsPageMetricsBehavior::LC_SettingsPageMetricsBehavior(QObject* parent)
 LC_SettingsPageMetricsBehavior::~LC_SettingsPageMetricsBehavior() = default;
 
 void LC_SettingsPageMetricsBehavior::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerMetrics*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionMetrics*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();

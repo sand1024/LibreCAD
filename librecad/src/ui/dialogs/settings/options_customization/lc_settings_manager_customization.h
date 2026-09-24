@@ -25,6 +25,7 @@
 
 #include <QString>
 
+class QC_ApplicationWindow;
 class LC_CommandManager;
 class LC_GraphicViewContextMenuProvider;
 class LC_ActionFactory;
@@ -40,13 +41,12 @@ namespace LC_SettingsPagesCustomization {
     inline const QString PAGE_TOOLBARS = "toolbars";
     inline const QString PAGE_CONTEXT_MENUS = "context_menus";
     inline const QString PAGE_MENU_AND_TOOLBARS = "menu_toolbars";
+    inline const QString PAGE_PROFILE_EXCHANGE = "profile_exchange";
 }
 
 class LC_SettingsManagerCustomization {
 public:
-    static void initialize(LC_ActionGroupManager* groupManager, LC_NavigationControlsCreator* creatorInvoker,
-                           LC_GraphicViewContextMenuProvider* contextMenuProvider, LC_ActionFactory* actionFactory,
-                           LC_CommandManager* commandManager);
+    static void initialize(QC_ApplicationWindow* appWindow);
 
     static bool showCustomizationDialog(QWidget* parent = nullptr, const QString& initialPageId = "");
 };

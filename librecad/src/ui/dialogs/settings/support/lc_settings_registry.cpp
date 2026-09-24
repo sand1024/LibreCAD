@@ -56,7 +56,8 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
                                      const QString& initialPageId,
                                      QWidget* parent,
                                      const std::function<void(LC_SettingsDialog*)>& preExecHook,
-                                     const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook) {
+                                     const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook,
+                                     int* exitCode) {
     if (!m_registrations.contains(dialogId)) {
         Q_ASSERT_X(false, "LC_SettingsRegistry::showDialog", QString("Unknown Dialog requested: " + dialogId).toLatin1());
         return false;
@@ -106,7 +107,12 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
         dialog->selectPage(initialPageId);
     }
 
-    const bool accepted = (dialog->exec() == QDialog::Accepted);
+    int execResult = dialog->exec();
+    const bool accepted = (execResult == QDialog::Accepted);
+
+    if (exitCode != nullptr) {
+        *exitCode = dialog->customExitCode();
+    }
 
     // Run custom post-execution hook (e.g. preview controller detachment & teardown)
     if (postExecHook != nullptr) {
@@ -115,7 +121,7 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
 
     // Conditionally commit or rollback transaction
     if (reg.properties.useGlobalTransaction) {
-        if (accepted) {
+        if (accepted && dialog->shouldCommitTransaction()) {
             RS_Settings::instance()->commitTransaction();
         }
         else {

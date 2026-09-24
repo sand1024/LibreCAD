@@ -60,16 +60,18 @@ void LC_SettingsPageMaintenance::importSettings() {
 }
 
 void LC_SettingsPageMaintenance::clearGeometry() {
+    // fixme - confirmation?
     RS_Settings::instance()->clearGeometry();
-    QMessageBox::information(getEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
+    requestDialogClose(true, 1);
 }
 
 void LC_SettingsPageMaintenance::clearAllSettings() {
     const QMessageBox::StandardButton reply = QMessageBox::question(getEditingWidget(), tr("Clear settings"),
-                                                              tr("This will also include custom menus and toolbars. Continue?"),
+                                                              tr("Application settings and ui layout will be reset to default values. Continue?"),
                                                               QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         RS_Settings::instance()->clearAll();
-        QMessageBox::information(getEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
+        requestDialogClose(false, 2);
+        // QMessageBox::information(getEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
     }
 }

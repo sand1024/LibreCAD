@@ -121,6 +121,13 @@ QString LC_SettingsPageFusionTheme::gatedMessage() const {
     return QString();
 }
 
+QString LC_SettingsPageFusionTheme::gatedIcon() const {
+    if (isPageGated()) {
+        return LC_SettingsManagerStyling::fusionGatedMessage(tr("Enable Fusion theme"));
+    }
+    return QString();
+}
+
 QString LC_SettingsPageFusionTheme::gatedActionText() const {
     if (isPageGated()) {
         return LC_SettingsManagerStyling::fusionGatedActionText();
@@ -161,7 +168,7 @@ void LC_SettingsPageFusionTheme::applyTransientTheme() {
 
     CFG_AppStyling::o_ThemeModeOverride.set(themeModeOverride);
     m_styleManager->setThemeModeOverride(themeModeOverride);
-    m_styleManager->setIgnoreIconStylingInTheme(ignoreIcons);
+    m_styleManager->setIgnoreIconStylingInPalette(ignoreIcons);
 
     const QString paletteKey = m_styleManager->getActivePalette();
     const QString skinKey = m_styleManager->getActiveSkin();
@@ -186,7 +193,7 @@ bool LC_SettingsPageFusionTheme::saveSettings() {
     const bool success = LC_SettingsPageBase::saveSettings();
     if (success && m_styleManager != nullptr) {
         m_styleManager->setThemeModeOverride(static_cast<ThemeModeOverride>(ui->cbThemeModeOverride->currentData().toInt()));
-        m_styleManager->setIgnoreIconStylingInTheme(ui->cbIgnoreIconStylingInTheme->isChecked());
+        m_styleManager->setIgnoreIconStylingInPalette(ui->cbIgnoreIconStylingInTheme->isChecked());
         m_styleManager->applyActiveStyleAndTheme();
     }
     return success;

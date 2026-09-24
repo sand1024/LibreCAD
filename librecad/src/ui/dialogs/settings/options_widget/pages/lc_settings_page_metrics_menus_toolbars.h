@@ -29,7 +29,7 @@ namespace Ui {
     class LC_SettingsPageMetricsMenusToolbars;
 }
 
-class LC_PresetManagerMetrics;
+class LC_PresetManagerFusionMetrics;
 
 class LC_SettingsPageMetricsMenusToolbars : public LC_SettingsPageBase {
     Q_OBJECT
@@ -53,7 +53,7 @@ private:
     void populateUiFromWorkingConfig();
     void syncUiToWorkingConfig();
 
-    LC_PresetManagerMetrics* m_presetManager = nullptr;
+    LC_PresetManagerFusionMetrics* m_presetManager = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageMetricsMenusToolbars> ui;
     bool m_blockSignals = false;
 };

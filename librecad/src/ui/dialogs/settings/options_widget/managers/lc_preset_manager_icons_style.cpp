@@ -23,13 +23,14 @@
 
 #include "lc_icons_style_manager.h"
 #include "lc_palette_color_utils.h"
+#include "qc_applicationwindow.h"
 
-LC_PresetManagerIconsStyle::LC_PresetManagerIconsStyle(QObject* parent)
-    : LC_PresetManagerBase(
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager(),
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getIconsStyleRepository(),
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getActiveIconStyle(),
-          parent)
+LC_PresetManagerIconsStyle::LC_PresetManagerIconsStyle(LC_UIStyleManager* styleManager)
+    : LC_PresetManagerStylingBase<IconStyleConfig, LC_RepositoryIconsStyle>(
+          styleManager,
+          styleManager != nullptr ? styleManager->getIconsStyleRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getActiveIconStyle() : QString(),
+          nullptr)
     , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
     loadPreset(m_activeKey);
 }
@@ -49,54 +50,30 @@ LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Icons Style");
     s.deleteConfirmTitle = tr("Delete Icon Style");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the icon style '%1'?");
-    s.presetFileFilter = tr("Icon Style Files (*.lcis)");
+    s.presetFileFilter = tr("LibreCAD Icon Style Files (*%1);All Files (*.*)")
+                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
-    s.defaultReadOnlyMessage = tr("The Default icon style is a read-only template. To customize icon colors, duplicate it as a custom preset.");
+    s.defaultReadOnlyMessage = tr(
+        "The Default icon style is a read-only template. To customize icon colors, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Icon Style...");
     return s;
 }
 
-bool LC_PresetManagerIconsStyle::loadPreset(const QString& key) {
-    const bool isDefault = (key == DEFAULT_THEME_KEY || key.isEmpty() || key == DEFAULT_THEME_NAME ||
-                            (m_repository != nullptr && !m_repository->exists(key)));
-
-    if (isDefault) {
-        resetToDefaults(m_workingConfig);
-        m_workingConfig.name = defaultPresetDisplayName();
-        m_activeKey = DEFAULT_THEME_KEY;
-    } else if (m_repository != nullptr) {
-        if (!m_repository->loadByKey(key, m_workingConfig)) {
-            resetToDefaults(m_workingConfig);
-            m_workingConfig.name = defaultPresetDisplayName();
-            m_activeKey = DEFAULT_THEME_KEY;
-        } else {
-            m_iconColorsOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
-            m_activeKey = key;
-        }
-    }
-
-    m_isDirty = false;
-    if (m_changedCallback != nullptr) {
-        m_changedCallback(false);
-    }
-
-    emit configLoaded();
-    applyTransientStyle();
-    return true;
-}
-
 bool LC_PresetManagerIconsStyle::saveCurrentPreset() {
     m_iconColorsOptions.exportStyleConfig(m_workingConfig, m_currentVariantDark);
-    return LC_PresetManagerBase::saveCurrentPreset();
+    return LC_PresetManagerStylingBase<IconStyleConfig, LC_RepositoryIconsStyle>::saveCurrentPreset();
 }
 
 bool LC_PresetManagerIconsStyle::savePresetAs(const QString& name, QString& outKey) {
     m_iconColorsOptions.exportStyleConfig(m_workingConfig, m_currentVariantDark);
-    return LC_PresetManagerBase::savePresetAs(name, outKey);
+    return LC_PresetManagerStylingBase<IconStyleConfig, LC_RepositoryIconsStyle>::savePresetAs(name, outKey);
 }
 
 QString LC_PresetManagerIconsStyle::getAppliedPresetKey() const {
-    return (m_styleManager != nullptr) ? m_styleManager->getActiveIconStyle() : m_originalActiveKey;
+    if (m_styleManager != nullptr) {
+        return m_styleManager->getActiveIconStyle();
+    }
+    return m_originalActiveKey;
 }
 
 void LC_PresetManagerIconsStyle::applyActiveConfigToSystem(const QString& activeKey) {
@@ -105,13 +82,18 @@ void LC_PresetManagerIconsStyle::applyActiveConfigToSystem(const QString& active
     }
 }
 
-void LC_PresetManagerIconsStyle::applyCurrentPreset() {
-    applyActiveConfigToSystem(m_activeKey);
+void LC_PresetManagerIconsStyle::onPostApplyPreset() {
     if (m_styleManager != nullptr) {
         m_styleManager->applyActiveIconStyle();
     }
-    m_originalActiveKey = m_activeKey;
-    setDirtyState(false);
+}
+
+void LC_PresetManagerIconsStyle::onPostLoadPreset() {
+    m_iconColorsOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
+}
+
+void LC_PresetManagerIconsStyle::emitConfigLoaded() {
+    emit configLoaded();
 }
 
 void LC_PresetManagerIconsStyle::setPreviewController(LC_StylingPreviewController* controller) {
@@ -147,7 +129,10 @@ void LC_PresetManagerIconsStyle::applyTransientStyle() {
                              ? m_previewController->activeCvdType()
                              : LC_PaletteColorUtils::CVDType::Normal;
 
-    LC_IconsStyleManager::applyStyle(tempOptions, m_currentVariantDark, cvdType);
+    auto* appWindow = QC_ApplicationWindow::getAppWindow();
+    if (appWindow != nullptr) {
+        LC_IconsStyleManager::applyStyle(appWindow, tempOptions, m_currentVariantDark, cvdType);
+    }
 }
 
 void LC_PresetManagerIconsStyle::updatePreview() {
@@ -160,26 +145,4 @@ void LC_PresetManagerIconsStyle::resetToDefaults(IconStyleConfig& config) {
     config.name = defaultPresetDisplayName();
     m_iconColorsOptions.exportStyleConfig(config, true);
     m_iconColorsOptions.exportStyleConfig(config, false);
-}
-
-bool LC_PresetManagerIconsStyle::isGated() const {
-    return isReadOnlyDefault();
-}
-
-QString LC_PresetManagerIconsStyle::gatedMessage() const {
-    if (isReadOnlyDefault()) {
-        return presetStrings().defaultReadOnlyMessage;
-    }
-    return QString();
-}
-
-QString LC_PresetManagerIconsStyle::gatedActionText() const {
-    if (isReadOnlyDefault()) {
-        return presetStrings().duplicateActionText;
-    }
-    return QString();
-}
-
-std::function<void()> LC_PresetManagerIconsStyle::gatedActionCallback() const {
-    return nullptr;
 }

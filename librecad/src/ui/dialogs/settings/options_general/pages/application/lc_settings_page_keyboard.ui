@@ -11,6 +11,18 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
@@ -104,6 +116,192 @@ will be shown in tooltip for action.</string>
         </property>
         <property name="text">
          <string>Show keyboard shortcuts in actions tooltips</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Mouse Wheel</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbWheelScrollInvertH">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Horizontal Scroll
+
+                                  Inverts scrolling direction when using mouse wheel with Shift key.</string>
+        </property>
+        <property name="text">
+         <string>Invert horizontal scrolling direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="cbFirstTimeNoZoom">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Initial Zoom
+
+                                  If selected, pan occurs first and then zoom</string>
+        </property>
+        <property name="text">
+         <string>First time only pan</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbInvertZoomDirection">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Zoom Direction
+
+                                  Inverts zoom direction when using mouse wheel.</string>
+        </property>
+        <property name="text">
+         <string>Invert zoom direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Default zoom factor:</string>
+          </property>
+          <property name="buddy">
+           <cstring>sbDefaultZoomFactor</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="sbDefaultZoomFactor">
+          <property name="toolTip">
+           <string>Zoom Speed Factor
+
+                                          Controls how quickly the scroll wheel will zoom in &amp; out.</string>
+          </property>
+          <property name="decimals">
+           <number>3</number>
+          </property>
+          <property name="minimum">
+           <double>1.001000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.500000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.137000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Mouse Wheel is used mostly for zooming and scrolling the content of the drawing. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="cbPanOnWheelZoom">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Pan on Wheel
+
+                                  On mouse wheel zoom, pan to the middle of the window.</string>
+        </property>
+        <property name="text">
+         <string>Pan on wheel zoom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbWheelScrollInvertV">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Vertical Scroll
+
+                                  Inverts scrolling direction when using mouse wheel with Ctrl key.</string>
+        </property>
+        <property name="text">
+         <string>Invert vertical scrolling direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="cbNonLiniearZoom">
+        <property name="toolTip">
+         <string>Non Linear Zoom
+
+If selected, zoom factor will be adjusted based
+on the speed of the scrool (faster scroll - larger zoom).</string>
+        </property>
+        <property name="text">
+         <string>Non-linear scroll zoom factor</string>
         </property>
        </widget>
       </item>

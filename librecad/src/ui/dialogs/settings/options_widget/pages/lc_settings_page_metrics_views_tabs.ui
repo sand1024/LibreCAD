@@ -147,6 +147,52 @@
         </property>
        </widget>
       </item>
+         <item row="5" column="0">
+             <widget class="QLabel" name="lblTabBarClosePosition">
+                 <property name="toolTip">
+                     <string>Choose whether tab close buttons appear on the right side (Windows/Linux standard) or left side (macOS convention).</string>
+                 </property>
+                 <property name="text">
+                     <string>Tab Close Button Position:</string>
+                 </property>
+             </widget>
+         </item>
+         <item row="5" column="1">
+             <widget class="QComboBox" name="cbTabBarClosePosition">
+                 <property name="toolTip">
+                     <string>Select alignment side for tab close buttons.</string>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                     <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+                 </property>
+             </widget>
+         </item>
+         <item row="6" column="0">
+             <widget class="QLabel" name="lblTabBarScrollButtonWidth">
+                 <property name="toolTip">
+                     <string>Width of navigation arrow buttons when open drawing tabs overflow (-1 for auto-adaptive width).</string>
+                 </property>
+                 <property name="text">
+                     <string>Tab Scroll Button Width:</string>
+                 </property>
+             </widget>
+         </item>
+         <item row="6" column="1">
+             <widget class="QSpinBox" name="sbTabBarScrollButtonWidth">
+                 <property name="toolTip">
+                     <string>Set width of tab scroll overflow arrows (-1 for auto).</string>
+                 </property>
+                 <property name="suffix">
+                     <string> px</string>
+                 </property>
+                 <property name="minimum">
+                     <number>-1</number>
+                 </property>
+                 <property name="maximum">
+                     <number>35</number>
+                 </property>
+             </widget>
+         </item>
      </layout>
     </widget>
    </item>

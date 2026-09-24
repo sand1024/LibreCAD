@@ -28,6 +28,7 @@
 #include <memory>
 #include "lc_action_node.h"
 
+class LC_ActionGroupManager;
 class LC_ActionNamingServiceInterface;
 
 namespace Ui {
@@ -37,8 +38,8 @@ namespace Ui {
 class LC_DlgActionGroupConfig : public QDialog {
     Q_OBJECT
 public:
-    explicit LC_DlgActionGroupConfig(QWidget* parent = nullptr, bool isToolbarMode = true,
-                                     const LC_ActionNamingServiceInterface* namingService = nullptr);
+    explicit LC_DlgActionGroupConfig(QWidget* parent, bool isToolbarMode,
+                                     const LC_ActionGroupManager* groupManager);
     ~LC_DlgActionGroupConfig() override;
 
     void setInitialValues(const QString& rawTitle, const QString& iconPath, ToolButtonPopupMode mode);
@@ -60,8 +61,6 @@ private:
     std::unique_ptr<Ui::LC_DlgActionGroupConfig> ui;
     bool m_isToolbarMode{true};
     QString m_iconPath;
-    const LC_ActionNamingServiceInterface* m_namingService{nullptr};
+    const LC_ActionGroupManager* m_groupManager{nullptr};
 };
-
-
 #endif

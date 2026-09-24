@@ -167,6 +167,11 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
             updateGatingState();
             emit livePreviewRequested(page->id());
         });
+
+        if (basePage->allowsDirectAccept()) {
+            connect(basePage, &LC_SettingsPageBase::directAcceptRequested,
+                    this, &LC_SettingsDialog::onDirectAcceptRequested);
+        }
     }
     else if (const auto* indexPage = dynamic_cast<LC_SettingsPageIndex*>(page)) {
         connect(indexPage, &LC_SettingsPageIndex::navigateToPage, this, &LC_SettingsDialog::selectPage);
@@ -667,14 +672,17 @@ void LC_SettingsDialog::updateGatingState() {
     // Resolve Message & Action
     QString gatedMsg;
     QString actionTxt;
+    QString gatedIcon;
     std::function<void()> actionCb;
 
     if (manager != nullptr && !manager->gatedMessage().isEmpty()) {
         gatedMsg  = manager->gatedMessage();
+        gatedIcon = manager->gatedIcon();
         actionTxt = manager->gatedActionText();
         actionCb  = manager->gatedActionCallback();
     } else if (!m_activePage->gatedMessage().isEmpty()) {
         gatedMsg  = m_activePage->gatedMessage();
+        gatedIcon = m_activePage->gatedIcon();
         actionTxt = m_activePage->gatedActionText();
         actionCb  = m_activePage->gatedActionCallback();
     }
@@ -696,7 +704,7 @@ void LC_SettingsDialog::updateGatingState() {
             updateGatingState();
         };
 
-        ui->bannerWidget->setBanner(gatedMsg, actionTxt, wrappedActionCb);
+        ui->bannerWidget->setBanner(gatedMsg, gatedIcon, actionTxt, wrappedActionCb);
         ui->bannerWidget->setVisible(true);
     }
     else {
@@ -737,8 +745,18 @@ void LC_SettingsDialog::updateBreadcrumbs(const QModelIndex& index) const {
     ui->lblBreadcrumbs->setText(segments.join(" > "));
 }
 
+void LC_SettingsDialog::onDirectAcceptRequested(bool saveModifiedPages, int customResultCode) {
+    acceptInternal(true, saveModifiedPages, customResultCode);
+}
+
 void LC_SettingsDialog::accept() {
-    if (auto* focusWidget = QApplication::focusWidget()) {
+    acceptInternal(false, true, 0);
+}
+
+
+void LC_SettingsDialog::acceptInternal(bool skipValidation, bool saveModifiedPages, int customResultCode) {
+   auto* focusWidget = QApplication::focusWidget();
+    if (focusWidget != nullptr) {
         focusWidget->clearFocus();
     }
 
@@ -756,7 +774,8 @@ void LC_SettingsDialog::accept() {
         }
     }
 
-    // VALIDATION PASS: Validate only the pre-cached modified pages.
+    // VALIDATION PASS: Run validation only if not bypassed
+    if (!skipValidation) {
     for (const auto& [pageId, page] : modifiedPages) {
         QString errMsg;
         if (!page->validate(errMsg)) {
@@ -765,18 +784,21 @@ void LC_SettingsDialog::accept() {
             return; // Abort transaction entirely on validation failure
         }
     }
+    }
 
     // PRESET MANAGERS ACCEPT PASS: Delegate acceptance checks to active preset managers
     QSet<LC_PresetManagerInterface*> visitedManagers;
     for (const auto& [id, page] : m_pageMapByPageId) {
         if (isPageInitialized(id)) {
-            if (auto* manager = getPresetManagerForPage(id)) {
+            auto* manager = getPresetManagerForPage(id);
+            if (manager != nullptr) {
                 if (!visitedManagers.contains(manager)) {
                     visitedManagers.insert(manager);
 
                     // Synchronize multi-page scope state before accept prompt
                     if (isPresetManagerScopeDirty(manager)) {
-                        if (auto* abstractMgr = dynamic_cast<LC_AbstractPresetManager*>(manager)) {
+                        auto* abstractMgr = dynamic_cast<LC_AbstractPresetManager*>(manager);
+                        if (abstractMgr != nullptr) {
                             abstractMgr->notifyWorkingConfigChanged();
                         }
                     }
@@ -789,9 +811,9 @@ void LC_SettingsDialog::accept() {
         }
     }
 
-    // COMMIT PASS: Save only the validated, cached pages.
-    // This is called exactly once when the user commits via "OK".
+    // COMMIT PASS: Save validated, cached pages if requested
     bool restartNeeded = false;
+    if (saveModifiedPages) {
     for (const auto& [pageId, page] : modifiedPages) {
         if (page->saveSettings()) {
             if (page->requiresRestart()) {
@@ -804,6 +826,11 @@ void LC_SettingsDialog::accept() {
         QMessageBox::warning(this, tr("Preferences"), tr("Please restart the application to apply all changes."));
         emit restartRequired();
     }
+    }
+
+    m_wasDirectlyAccepted = skipValidation;
+    m_saveModifiedPages = saveModifiedPages;
+    m_customResultCode = customResultCode;
 
     LC_Dialog::accept();
 }

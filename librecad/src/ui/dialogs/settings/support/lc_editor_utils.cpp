@@ -25,12 +25,13 @@
 
 #include <QComboBox>
 
+#include "lc_settings_app_state.h"
 #include "lc_ui_style_manager.h"
 
 void LC_EditorUtils::updatePresetComboFonts(QComboBox* combobox, const QString& activeKey) {
     QString keyToSearch = activeKey;
     if (keyToSearch.isEmpty()) {
-        keyToSearch = DEFAULT_THEME_KEY;
+        keyToSearch = CFG_AppState::DEFAULT_THEME_KEY;
     }
 
     QFont normalFont = combobox->font();
@@ -52,9 +53,6 @@ void LC_EditorUtils::updatePresetComboFonts(QComboBox* combobox, const QString& 
         }
     }
 }
-
-
-
 
 void LC_EditorUtils::fillNamesFromCombobox(QComboBox* cb, QStringList& list) {
     int themeCount = cb->count();

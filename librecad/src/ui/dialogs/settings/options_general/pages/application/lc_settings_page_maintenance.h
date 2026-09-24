@@ -35,6 +35,9 @@ public:
     explicit LC_SettingsPageMaintenance(QObject* parent = nullptr);
     ~LC_SettingsPageMaintenance() override;
 
+    bool allowsDirectAccept() const override{
+        return true;
+    }
 protected:
     void setupUi() override;
 

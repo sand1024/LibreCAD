@@ -19,21 +19,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_preset_manager_palette.h"
-#include "lc_palette_color_utils.h"
-#include "lc_settings_manager_styling.h"
+#include "lc_preset_manager_fusion_colors_palette.h"
 
-LC_PresetManagerPalette::LC_PresetManagerPalette(QObject* parent)
-    : LC_PresetManagerBase(
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager(),
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getPaletteRepository(),
-          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getActivePalette(),
-          parent)
+LC_PresetManagerFusionColorsPalette::LC_PresetManagerFusionColorsPalette(LC_UIStyleManager* styleManager)
+    : LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryPalette>(
+          styleManager,
+          styleManager != nullptr ? styleManager->getPaletteRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getActivePalette() : QString(),
+          nullptr)
     , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
     loadPreset(m_activeKey);
 }
 
-LC_PresetManagerUIStrings LC_PresetManagerPalette::presetStrings() const {
+LC_PresetManagerUIStrings LC_PresetManagerFusionColorsPalette::presetStrings() const {
     LC_PresetManagerUIStrings s;
     s.defaultPresetName = tr("Default Palette");
     s.labelText = tr("Color palette preset:");
@@ -48,64 +46,22 @@ LC_PresetManagerUIStrings LC_PresetManagerPalette::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Palette");
     s.deleteConfirmTitle = tr("Delete Color Palette");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the color palette '%1'?");
-    s.presetFileFilter = tr("Color Palette Files (*.lcpl)");
+    s.presetFileFilter = tr("LibreCAD Fusion Theme Color Palette Files (*%1);All Files (*.*)")
+                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
     s.defaultReadOnlyMessage = tr("The Default color palette is a read-only template. To customize palette colors, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Palette...");
     return s;
 }
 
-bool LC_PresetManagerPalette::loadPreset(const QString& key) {
-    const bool isDefault = (key == DEFAULT_THEME_KEY || key.isEmpty() || key == DEFAULT_THEME_NAME ||
-                            (m_repository != nullptr && !m_repository->exists(key)));
-
-    if (isDefault) {
-        resetToDefaults(m_workingConfig);
-        m_workingConfig.name = defaultPresetDisplayName();
-        m_activeKey = DEFAULT_THEME_KEY;
-    } else if (m_repository != nullptr) {
-        if (!m_repository->loadByKey(key, m_workingConfig)) {
-            resetToDefaults(m_workingConfig);
-            m_workingConfig.name = defaultPresetDisplayName();
-            m_activeKey = DEFAULT_THEME_KEY;
-        } else {
-            m_activeKey = key;
-        }
-    }
-
-    m_isDirty = false;
-    if (m_changedCallback != nullptr) {
-        m_changedCallback(false);
-    }
-
-    emit configLoaded(m_workingConfig);
-    updatePreview();
-    return true;
-}
-
-QString LC_PresetManagerPalette::getAppliedPresetKey() const {
-    return (m_styleManager != nullptr) ? m_styleManager->getActivePalette() : m_originalActiveKey;
-}
-
-void LC_PresetManagerPalette::applyActiveConfigToSystem(const QString& activeKey) {
+QString LC_PresetManagerFusionColorsPalette::getAppliedPresetKey() const {
     if (m_styleManager != nullptr) {
-        m_styleManager->setActivePalette(activeKey);
+        return m_styleManager->getActivePalette();
     }
+    return m_originalActiveKey;
 }
 
-void LC_PresetManagerPalette::applyCurrentPreset() {
-    // Reuses the core registration
-    applyActiveConfigToSystem(m_activeKey);
-
-    // Forces immediate live theme redraw on main window
-    if (m_styleManager != nullptr) {
-        m_styleManager->applyActiveStyleAndTheme();
-    }
-    m_originalActiveKey = m_activeKey;
-    setDirtyState(false);
-}
-
-void LC_PresetManagerPalette::setPreviewController(LC_StylingPreviewController* controller) {
+void LC_PresetManagerFusionColorsPalette::setPreviewController(LC_StylingPreviewController* controller) {
     m_previewController = controller;
     if (m_previewController != nullptr) {
         connect(m_previewController, &LC_StylingPreviewController::cvdChanged, this, [this](LC_PaletteColorUtils::CVDType) {
@@ -115,7 +71,7 @@ void LC_PresetManagerPalette::setPreviewController(LC_StylingPreviewController* 
     updatePreview();
 }
 
-void LC_PresetManagerPalette::setCurrentVariantDark(bool dark) {
+void LC_PresetManagerFusionColorsPalette::setCurrentVariantDark(bool dark) {
     if (m_currentVariantDark == dark) {
         return;
     }
@@ -124,7 +80,7 @@ void LC_PresetManagerPalette::setCurrentVariantDark(bool dark) {
     updatePreview();
 }
 
-void LC_PresetManagerPalette::updatePreview() {
+void LC_PresetManagerFusionColorsPalette::updatePreview() {
     const ColorSchemeData& scheme = m_currentVariantDark ? m_workingConfig.dark : m_workingConfig.light;
     LC_PaletteColorUtils::resolveSemanticColors(true, scheme, m_currentVariantDark);
     if (m_previewController != nullptr) {
@@ -132,11 +88,25 @@ void LC_PresetManagerPalette::updatePreview() {
     }
 }
 
-void LC_PresetManagerPalette::resetToDefaults(PaletteConfig& config) {
+void LC_PresetManagerFusionColorsPalette::resetToDefaults(PaletteConfig& config) {
     LC_PaletteColorUtils::initializeDefaultPalette(config);
 }
 
-void LC_PresetManagerPalette::calculateProceduralBevels(bool isDarkMode, StyleArchetype archetype) {
+void LC_PresetManagerFusionColorsPalette::applyActiveConfigToSystem(const QString& activeKey) {
+    if (m_styleManager != nullptr) {
+        m_styleManager->setActivePalette(activeKey);
+    }
+}
+
+void LC_PresetManagerFusionColorsPalette::emitConfigLoaded() {
+    emit configLoaded(m_workingConfig);
+}
+
+QString LC_PresetManagerFusionColorsPalette::fusionGatingSubject() const {
+    return tr("color palettes");
+}
+
+void LC_PresetManagerFusionColorsPalette::calculateProceduralBevels(bool isDarkMode, StyleArchetype archetype) {
     ColorSchemeData& scheme = isDarkMode ? m_workingConfig.dark : m_workingConfig.light;
 
     QPalette tempPalette;
@@ -150,9 +120,11 @@ void LC_PresetManagerPalette::calculateProceduralBevels(bool isDarkMode, StyleAr
     auto calculatedBevel = BevelStyle::Soft;
     if (archetype == StyleArchetype::FlatModern || archetype == StyleArchetype::AccentOutline) {
         calculatedBevel = BevelStyle::Flat;
-    } else if (archetype == StyleArchetype::SoftSatin) {
+    }
+    else if (archetype == StyleArchetype::SoftSatin) {
         calculatedBevel = BevelStyle::Soft;
-    } else if (archetype == StyleArchetype::GlassyGloss) {
+    }
+    else if (archetype == StyleArchetype::GlassyGloss) {
         calculatedBevel = BevelStyle::Sharp;
     }
 
@@ -169,7 +141,7 @@ void LC_PresetManagerPalette::calculateProceduralBevels(bool isDarkMode, StyleAr
     notifyWorkingConfigChanged();
 }
 
-void LC_PresetManagerPalette::generateHarmonizedTheme(const QColor& baseColor) {
+void LC_PresetManagerFusionColorsPalette::generateHarmonizedTheme(const QColor& baseColor) {
     PaletteConfig tempSkin;
     tempSkin.light = m_workingConfig.light;
     tempSkin.dark = m_workingConfig.dark;
@@ -181,7 +153,7 @@ void LC_PresetManagerPalette::generateHarmonizedTheme(const QColor& baseColor) {
     notifyWorkingConfigChanged();
 }
 
-void LC_PresetManagerPalette::generateTwoColorTheme(const QColor& surface, const QColor& accent) {
+void LC_PresetManagerFusionColorsPalette::generateTwoColorTheme(const QColor& surface, const QColor& accent) {
     PaletteConfig tempSkin;
     tempSkin.light = m_workingConfig.light;
     tempSkin.dark = m_workingConfig.dark;
@@ -193,7 +165,7 @@ void LC_PresetManagerPalette::generateTwoColorTheme(const QColor& surface, const
     notifyWorkingConfigChanged();
 }
 
-void LC_PresetManagerPalette::generateHighContrastTheme(const QColor& baseColor) {
+void LC_PresetManagerFusionColorsPalette::generateHighContrastTheme(const QColor& baseColor) {
     PaletteConfig tempSkin;
     tempSkin.light = m_workingConfig.light;
     tempSkin.dark = m_workingConfig.dark;
@@ -205,41 +177,8 @@ void LC_PresetManagerPalette::generateHighContrastTheme(const QColor& baseColor)
     notifyWorkingConfigChanged();
 }
 
-void LC_PresetManagerPalette::activatePreviewTab(const QString& tag) {
+void LC_PresetManagerFusionColorsPalette::activatePreviewTab(const QString& tag) {
     if (m_previewController != nullptr) {
         m_previewController->activatePreviewTab(tag);
     }
-}
-
-bool LC_PresetManagerPalette::isGated() const {
-    return LC_SettingsManagerStyling::isFusionGated() || isReadOnlyDefault();
-}
-
-QString LC_PresetManagerPalette::gatedMessage() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return LC_SettingsManagerStyling::fusionGatedMessage(tr("color palettes"));
-    }
-    if (isReadOnlyDefault()) {
-        return presetStrings().defaultReadOnlyMessage;
-    }
-    return QString();
-}
-
-QString LC_PresetManagerPalette::gatedActionText() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return LC_SettingsManagerStyling::fusionGatedActionText();
-    }
-    if (isReadOnlyDefault()) {
-        return presetStrings().duplicateActionText;
-    }
-    return QString();
-}
-
-std::function<void()> LC_PresetManagerPalette::gatedActionCallback() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return [this]() {
-            LC_SettingsManagerStyling::enableFusionStyling(m_styleManager);
-        };
-    }
-    return nullptr;
 }

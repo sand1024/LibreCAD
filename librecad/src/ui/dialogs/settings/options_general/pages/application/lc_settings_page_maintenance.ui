@@ -38,7 +38,7 @@
          <string>Import settings from file</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../../../../../../../res/icons/icons.qrc">
           <normaloff>:/icons/import.lci</normaloff>:/icons/import.lci</iconset>
         </property>
        </widget>
@@ -52,7 +52,7 @@
          <string>Export settings to file</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../../../../../../../res/icons/icons.qrc">
           <normaloff>:/icons/export.lci</normaloff>:/icons/export.lci</iconset>
         </property>
        </widget>
@@ -126,6 +126,10 @@
         <property name="text">
          <string>Reset All Settings to Defaults Values</string>
         </property>
+        <property name="icon">
+         <iconset resource="../../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/pen_fill_by_current.lci</normaloff>:/icons/pen_fill_by_current.lci</iconset>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -141,6 +145,10 @@
         </property>
         <property name="text">
          <string>Restore Default UI Layout</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/workspace_remove.lci</normaloff>:/icons/workspace_remove.lci</iconset>
         </property>
        </widget>
       </item>
@@ -183,7 +191,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../../../res/icons/icons.qrc"/>
+  <include location="../../../../../../../res/icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

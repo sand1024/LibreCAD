@@ -43,7 +43,6 @@ void LC_SettingsPageProgramDefaults::setupUi() {
 void LC_SettingsPageProgramDefaults::setupBehavior() {
     enableWhenChecked(ui->cbPersistentDialogs, ui->cbPersistentDialogSizeOnly);
     enableWhenChecked(ui->cbTabCloseButton, ui->cbTabCloseButtonMode);
-    enableWhenChecked(ui->cbExpandToolsMenu, ui->cbExpandToolsMenuTillEntity);
 }
 
 void LC_SettingsPageProgramDefaults::setupBindings() {
@@ -61,9 +60,14 @@ void LC_SettingsPageProgramDefaults::setupBindings() {
         { ui->cbShowEntityIDs, o_ShowEntityIDs },
         { ui->cbChangingViewOnlyModifiesDrawing, o_ModifyOnViewChange },
         { ui->cbInteractiveInputInActionToolbarEnabled, o_InteractiveInputEnabled },
-        { ui->cbExpandToolsMenu, o_ExpandedToolsMenu },
-        { ui->cbExpandToolsMenuTillEntity, o_ExpandedToolsMenuTillEntity }
+        {ui->cbAllowMenusDetaching, o_AllowMenusTearOff, true },
+        {ui->cbMainMenuShowIcons, o_MainMenuTopLevelIconsOnly },
+        {ui->cbShowToolbarTooltips, o_ShowToolbarsTooltip}
     });
+
+    bindComboIndex({
+       { ui->cbMenuType, o_MainMenuType }
+   });
 
     bindCustom<QComboBox, bool>(ui->cbTabCloseButtonMode, o_ShowCloseButtonActiveOnly, false,
     &QComboBox::currentTextChanged,

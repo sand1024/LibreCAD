@@ -22,20 +22,19 @@
 
 #include "lc_settings_page_metrics_menus_toolbars.h"
 #include "ui_lc_settings_page_metrics_menus_toolbars.h"
-#include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_fusion_metrics.h"
 #include <QSpinBox>
 
 LC_SettingsPageMetricsMenusToolbars::LC_SettingsPageMetricsMenusToolbars(QObject* parent)
-    : LC_SettingsPageBase(tr("Navigation"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageMetricsMenusToolbars>()) {
+    : LC_SettingsPageBase(tr("Navigation"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMetricsMenusToolbars>()) {
 }
 
 LC_SettingsPageMetricsMenusToolbars::~LC_SettingsPageMetricsMenusToolbars() = default;
 
 void LC_SettingsPageMetricsMenusToolbars::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerMetrics*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionMetrics*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -44,6 +43,18 @@ void LC_SettingsPageMetricsMenusToolbars::bindToPresetManager(LC_PresetManagerIn
 
 void LC_SettingsPageMetricsMenusToolbars::setupUi() {
     ui->setupUi(m_widget);
+
+    ui->sbMenuBarHorizontalMargin->setMinimum(-1);
+    ui->sbMenuBarHorizontalMargin->setSpecialValueText(tr("Auto"));
+
+    ui->sbToolbarHandleExtent->setMinimum(-1);
+    ui->sbToolbarHandleExtent->setSpecialValueText(tr("Auto"));
+
+    ui->sbToolbarIconSize->setMinimum(-1);
+    ui->sbToolbarIconSize->setSpecialValueText(tr("Auto (24 px)"));
+
+    ui->sbMenuIconSize->setMinimum(-1);
+    ui->sbMenuIconSize->setSpecialValueText(tr("Auto (16 px)"));
 }
 
 void LC_SettingsPageMetricsMenusToolbars::setupBehavior() {
@@ -67,7 +78,8 @@ bool LC_SettingsPageMetricsMenusToolbars::isModified() const {
 }
 
 void LC_SettingsPageMetricsMenusToolbars::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals)
+        return;
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -75,33 +87,45 @@ void LC_SettingsPageMetricsMenusToolbars::onControlChanged() {
 }
 
 void LC_SettingsPageMetricsMenusToolbars::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
 
     ui->sbMenuBarItemSpacing->setValue(config.menuBarItemSpacing);
     ui->sbMenuBarVerticalMargin->setValue(config.menuBarVerticalMargin);
+    ui->sbMenuBarHorizontalMargin->setValue(config.menuBarHorizontalMargin);
     ui->sbMenuVerticalPadding->setValue(config.menuVerticalPadding);
     ui->sbMenuHorizontalPadding->setValue(config.menuHorizontalPadding);
     ui->sbMenuBorderWidth->setValue(config.menuBorderWidth);
     ui->sbSubMenuOverlap->setValue(config.subMenuOverlap);
+    ui->sbMenuIconSize->setValue(config.menuIconSize);
     ui->sbToolbarItemSpacing->setValue(config.toolbarItemSpacing);
     ui->sbToolbarSeparatorWidth->setValue(config.toolbarSeparatorWidth);
+    ui->sbToolbarHandleExtent->setValue(config.toolbarHandleExtent);
+    ui->sbToolbarIconSize->setValue(config.toolBarIconSize);
 
     m_blockSignals = false;
 }
 
 void LC_SettingsPageMetricsMenusToolbars::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.menuBarItemSpacing = ui->sbMenuBarItemSpacing->value();
     config.menuBarVerticalMargin = ui->sbMenuBarVerticalMargin->value();
+    config.menuBarHorizontalMargin = ui->sbMenuBarHorizontalMargin->value();
     config.menuVerticalPadding = ui->sbMenuVerticalPadding->value();
     config.menuHorizontalPadding = ui->sbMenuHorizontalPadding->value();
     config.menuBorderWidth = ui->sbMenuBorderWidth->value();
     config.subMenuOverlap = ui->sbSubMenuOverlap->value();
+    config.menuIconSize = ui->sbMenuIconSize->value();
     config.toolbarItemSpacing = ui->sbToolbarItemSpacing->value();
     config.toolbarSeparatorWidth = ui->sbToolbarSeparatorWidth->value();
+    config.toolbarHandleExtent = ui->sbToolbarHandleExtent->value();
+    config.toolBarIconSize = ui->sbToolbarIconSize->value();
 }

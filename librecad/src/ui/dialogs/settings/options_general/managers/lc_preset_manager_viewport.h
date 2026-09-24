@@ -21,44 +21,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_VIEWPORTTHEMEEDITOR_H
-#define LC_VIEWPORTTHEMEEDITOR_H
+#ifndef LC_PRESET_MANAGER_VIEWPORT_H
+#define LC_PRESET_MANAGER_VIEWPORT_H
 
-#include "lc_abstract_preset_manager.h"
-#include "lc_preset_manager_interface.h"
+#include "lc_preset_manager_config_base.h"
 #include "lc_repository_viewport_theme.h"
 
-class LC_PresetManagerViewport : public LC_AbstractPresetManager {
+class QWidget;
+
+class LC_PresetManagerViewport : public LC_PresetManagerConfigBase<LC_ViewportThemeConfig, LC_RepositoryViewportTheme> {
     Q_OBJECT
 public:
-    explicit LC_PresetManagerViewport(QObject* parent = nullptr, QWidget* previewWidget = nullptr);
+    explicit LC_PresetManagerViewport(LC_RepositoryViewportTheme* repository,
+                                      QObject* parent = nullptr,
+                                      QWidget* previewWidget = nullptr);
     ~LC_PresetManagerViewport() override = default;
 
-    // --- Domain-Specific Preset Lifecycle ---
-    bool isPresetModified() override;
-    bool loadPreset(const QString& key) override;
-    bool saveCurrentPreset() override;
-    bool savePresetAs(const QString& name, QString& outKey) override;
-    void applyCurrentPreset() override;
-    bool resetToDefaults(const QString& key);
-
-    QList<QPair<QString, QString>> getAvailablePresets() const override;
     LC_PresetManagerUIStrings presetStrings() const override;
 
-    QWidget* getSharedPreviewWidget() override { return m_previewWidget; }
+    bool loadPreset(const QString& key) override;
+    bool isPresetModified() override;
     bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
-    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent) override;
+
 protected:
+    void prepareWorkingConfigForSave() override;
+    void onPostSavePreset(const QString& outKey) override;
+    void onPostApplyPreset() override;
     void applyActiveConfigToSystem(const QString& activeKey) override;
-    bool doDeletePreset(const QString& key) override;
-private:
+
+    bool resetToDefaults(const QString& key);
+    bool calculateDivergence() const;
     QJsonObject serializeCurrentSettings() const;
     void applyThemeJson(const QJsonObject& obj);
-    bool calculateDivergence() const;
 
-    LC_RepositoryViewportTheme m_repository;
-    bool m_registryDiverged = false;
+private:
     QWidget* m_previewWidget = nullptr;
+    bool m_registryDiverged = false;
 };
 
 #endif

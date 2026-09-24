@@ -45,11 +45,6 @@ LC_SettingsPageToolbarsAndDocks::~LC_SettingsPageToolbarsAndDocks() = default;
 
 void LC_SettingsPageToolbarsAndDocks::setupUi() {
     ui->setupUi(m_widget);
-
-    const bool cadSidebarUngrouped = CFG_Startup::o_CADSideBarUngrouped;
-    ui->gbCADWidgets->setEnabled(!cadSidebarUngrouped);
-    ui->gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
-
     const bool useClassicalStatusBar = CFG_Startup::o_UseClassicStatusBar;
     ui->gbStatusBar->setEnabled(useClassicalStatusBar);
 }
@@ -114,7 +109,7 @@ void LC_SettingsPageToolbarsAndDocks::loadSettings() {
 bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
     const bool success = LC_SettingsPageBase::saveSettings();
     if (success) {
-        const auto& appWindow = QC_ApplicationWindow::getAppWindow();
+        const auto appWindow = QC_ApplicationWindow::getAppWindow();
         if (appWindow != nullptr) {
             appWindow->updateToolbarsIconSize(ui->cbAllowToolbarIconSize->isChecked(),
                                               ui->sbToolbarIconSize->value());
@@ -128,10 +123,10 @@ bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
                 appWindow->statusBar()->setMinimumHeight(ui->sbStatusbarHeight->value());
             }
 
-            LC_WidgetFactory::updateDockOptions(appWindow.get(),
+            LC_WidgetFactory::updateDockOptions(appWindow,
                                                 ui->cbDockingAllowNested->isChecked(),
                                                 ui->cbDockingVerticalTabs->isChecked());
-            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow.get(),
+            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow,
                                                            ui->cbDockingVerticalTitleBar->isChecked());
         }
     }

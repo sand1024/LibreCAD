@@ -22,7 +22,7 @@
 
 #include "lc_settings_page_metrics_controls.h"
 #include "ui_lc_settings_page_metrics_controls.h"
-#include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_fusion_metrics.h"
 #include <QSpinBox>
 
 LC_SettingsPageMetricsControls::LC_SettingsPageMetricsControls(QObject* parent)
@@ -33,9 +33,9 @@ LC_SettingsPageMetricsControls::LC_SettingsPageMetricsControls(QObject* parent)
 LC_SettingsPageMetricsControls::~LC_SettingsPageMetricsControls() = default;
 
 void LC_SettingsPageMetricsControls::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerMetrics*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionMetrics*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -47,6 +47,12 @@ void LC_SettingsPageMetricsControls::setupUi() {
 
     ui->sbScrollbarWidth->setMinimum(-1);
     ui->sbScrollbarWidth->setSpecialValueText(tr("System Default"));
+
+    ui->sbTextCursorWidth->setMinimum(-1);
+    ui->sbTextCursorWidth->setSpecialValueText(tr("Auto"));
+
+    ui->sbButtonIconSize->setMinimum(-1);
+    ui->sbButtonIconSize->setSpecialValueText(tr("Auto (16 px)"));
 }
 
 void LC_SettingsPageMetricsControls::setupBehavior() {
@@ -78,7 +84,9 @@ void LC_SettingsPageMetricsControls::onControlChanged() {
 }
 
 void LC_SettingsPageMetricsControls::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
@@ -90,14 +98,18 @@ void LC_SettingsPageMetricsControls::populateUiFromWorkingConfig() {
     ui->sbSliderThickness->setValue(config.sliderControlThickness);
     ui->sbSliderHandleLength->setValue(config.sliderHandleLength);
     ui->sbButtonPadding->setValue(config.buttonPadding);
+    ui->sbButtonIconSize->setValue(config.buttonIconSize);
     ui->sbFocusHMargin->setValue(config.focusFrameHMargin);
     ui->sbFocusVMargin->setValue(config.focusFrameVMargin);
+    ui->sbTextCursorWidth->setValue(config.textCursorWidth);
 
     m_blockSignals = false;
 }
 
 void LC_SettingsPageMetricsControls::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.indicatorBoxSize = ui->sbIndicatorBoxSize->value();
@@ -107,6 +119,8 @@ void LC_SettingsPageMetricsControls::syncUiToWorkingConfig() {
     config.sliderControlThickness = ui->sbSliderThickness->value();
     config.sliderHandleLength = ui->sbSliderHandleLength->value();
     config.buttonPadding = ui->sbButtonPadding->value();
+    config.buttonIconSize = ui->sbButtonIconSize->value();
     config.focusFrameHMargin = ui->sbFocusHMargin->value();
     config.focusFrameVMargin = ui->sbFocusVMargin->value();
+    config.textCursorWidth = ui->sbTextCursorWidth->value();
 }

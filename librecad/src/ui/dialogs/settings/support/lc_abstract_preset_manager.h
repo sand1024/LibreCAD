@@ -27,7 +27,9 @@
 #include <QObject>
 #include <QString>
 #include <functional>
+
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_error.h"
 #include "lc_preset_manager_interface.h"
 
 class LC_AbstractPresetManager : public QObject, public LC_PresetManagerInterface {
@@ -37,52 +39,62 @@ public:
     ~LC_AbstractPresetManager() override = default;
 
     // --- Identification & Key Management ---
+    void setActivePresetKey(const QString& key);
+    void setActivePresetKeyDefault();
     QString getActivePresetKey() const override;
     QString getAppliedPresetKey() const override;
     bool isReadOnlyDefault() const override;
     QString defaultPresetDisplayName() const override;
 
-    // --- State & Rollback ---
-    void rollbackState() override;
+    // --- Capabilities & Storage ---
     bool supportsApply() const override { return true; }
     bool supportsImportExport() const override { return true; }
+    bool isStorageAvailable() const override { return true; }
+    LC_PresetError lastError() const override { return m_lastError; }
+
+    // --- Lifecycle, Rollback & Dirty State ---
+    void applyCurrentPreset() override;
+    void rollbackState() override;
+    bool isPresetModified() override { return m_isDirty; }
     void setScopeDirty(bool dirty) { setDirtyState(dirty); }
+    virtual void notifyWorkingConfigChanged() { setDirtyState(true); }
+
+    // --- Deletion ---
+    bool deletePreset(const QString& key) override;
 
     // --- Callback Registration ---
     void setChangedCallback(std::function<void(bool isDirty)> callback) override;
     void setResetCallback(std::function<void()> callback) override;
     void setSaveCommitCallback(std::function<void()> callback) override;
 
-    // --- Default Read-Only Gating (Can be overridden by subclasses) ---
+    // --- Gating Queries ---
     bool isGated() const override;
     QString gatedMessage() const override;
+    QString gatedIcon() const override;
     QString gatedActionText() const override;
     std::function<void()> gatedActionCallback() const override;
+
+    // --- Dialog Transaction Hooks ---
     bool onDialogAccept(QWidget* parentDialog) override;
     bool onDialogReject(QWidget* parentDialog) override;
 
-    virtual void notifyWorkingConfigChanged() {
-        setDirtyState(true);
-    }
-
-    bool isPresetModified() override { return m_isDirty; }
-
-    bool deletePreset(const QString& key) override;
-
 protected:
-    // Helper to update dirty state and notify listeners in a single call
     void setDirtyState(bool dirty);
+    void setLastError(const LC_PresetError& error) { m_lastError = error; }
+    void clearLastError() { m_lastError.clear(); }
 
+    virtual void onPostApplyPreset() {}
     virtual void applyActiveConfigToSystem(const QString& activeKey) = 0;
     virtual bool doDeletePreset(const QString& key) = 0;
 
     QString m_activeKey;
     QString m_originalActiveKey;
     bool m_isDirty = false;
+    mutable LC_PresetError m_lastError;
 
     std::function<void(bool)> m_changedCallback;
     std::function<void()> m_resetCallback;
     std::function<void()> m_saveCommitCallback;
 };
 
-#endif // LC_ABSTRACT_PRESET_MANAGER_H
+#endif

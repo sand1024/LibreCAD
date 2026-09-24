@@ -24,44 +24,35 @@
 #ifndef LC_PRESET_MANAGER_MENUS_TOOLBARS_H
 #define LC_PRESET_MANAGER_MENUS_TOOLBARS_H
 
-#include "lc_abstract_preset_manager.h"
+#include "lc_action_node.h"
+#include "lc_preset_manager_config_base.h"
 #include "lc_repository_menu_bar_and_toolbars.h"
 
-class LC_NavigationControlsCreator;
 class LC_ActionFactory;
 class LC_ActionGroupManager;
+class LC_NavigationControlsCreator;
 
-class LC_PresetManagerMenusToolbars : public LC_AbstractPresetManager {
+class LC_PresetManagerMenusToolbars : public LC_PresetManagerConfigBase<NavigationLayoutConfig, LC_RepositoryMenuBarAndToolbars> {
     Q_OBJECT
 public:
-    explicit LC_PresetManagerMenusToolbars(LC_NavigationControlsCreator* invoker,
-                                           LC_ActionFactory* actionFactory,
-                                           QObject* parent = nullptr);
+    LC_PresetManagerMenusToolbars(LC_NavigationControlsCreator* controlsCreator,
+                                  LC_ActionFactory* actionFactory,
+                                  QObject* parent = nullptr);
     ~LC_PresetManagerMenusToolbars() override = default;
 
     LC_PresetManagerUIStrings presetStrings() const override;
+
     bool loadPreset(const QString& key) override;
-    bool saveCurrentPreset() override;
-    bool savePresetAs(const QString& name, QString& outKey) override;
-    void applyCurrentPreset() override;
     void rollbackState() override;
-    QList<QPair<QString, QString>> getAvailablePresets() const override;
-    bool importPresetFromFile(const QString& filePath, QWidget* parentWidget) override;
-    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parentWidget) override;
 
-    NavigationLayoutConfig& workingConfig() { return m_workingConfig; }
-    const NavigationLayoutConfig& workingConfig() const { return m_workingConfig; }
-
-    void notifyWorkingConfigChanged() override { setDirtyState(true); }
 protected:
-    bool doDeletePreset(const QString& key) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;
+    void onPostApplyPreset() override;
+
 private:
-    LC_NavigationControlsCreator* m_creatorInvoker{nullptr};
+    LC_NavigationControlsCreator* m_creatorInvoker = nullptr;
     LC_ActionFactory* m_actionFactory = nullptr;
     LC_ActionGroupManager* m_actionGroupManager = nullptr;
-    LC_RepositoryMenuBarAndToolbars* m_repository;
-    NavigationLayoutConfig m_workingConfig;
 };
 
 #endif

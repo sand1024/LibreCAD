@@ -46,48 +46,14 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
       <string>Target Menu or Toolbar</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="3">
-       <widget class="QPushButton" name="pbNewToolbar">
-        <property name="toolTip">
-         <string>Create a new user-defined custom toolbar</string>
-        </property>
-        <property name="text">
-         <string>New Toolbar...</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/add.lci</normaloff>:/icons/add.lci</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="pbMakeActiveMenu">
-        <property name="visible">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>Set this menu layout as the active application main menu</string>
-        </property>
-        <property name="text">
-         <string>Make Active</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="5">
-       <widget class="QPushButton" name="pbDeleteToolbar">
-        <property name="toolTip">
-         <string>Delete selected custom toolbar</string>
-        </property>
+       <widget class="QLabel" name="lblArea">
         <property name="text">
-         <string>Delete</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+         <string>Dock Area:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
+      <item row="0" column="3">
        <widget class="QPushButton" name="pbRenameToolbar">
         <property name="toolTip">
          <string>Rename selected custom toolbar</string>
@@ -101,7 +67,55 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
         </property>
        </widget>
       </item>
-      <item row="0" column="7">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblTarget">
+        <property name="text">
+         <string>Navigation widget:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="pbDeleteToolbar">
+        <property name="toolTip">
+         <string>Delete selected custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cbTarget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Select main menu layout, standard toolbar, or custom toolbar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pbNewToolbar">
+        <property name="toolTip">
+         <string>Create a new user-defined custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>New Toolbar...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/add.lci</normaloff>:/icons/add.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
        <widget class="QComboBox" name="cbDockArea">
         <property name="toolTip">
          <string>Default dock area where this toolbar appears</string>
@@ -126,33 +140,6 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
           <string>Top</string>
          </property>
         </item>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="cbTarget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Select main menu layout, standard toolbar, or custom toolbar</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lblTarget">
-        <property name="text">
-         <string>Navigation widget:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <widget class="QLabel" name="lblArea">
-        <property name="text">
-         <string>Dock Area:</string>
-        </property>
        </widget>
       </item>
      </layout>

@@ -31,7 +31,6 @@
 #include "lc_action_type_mapper.h"
 #include "lc_commandItems.h"
 #include "lc_commands_tree_item.h"
-#include "lc_shortcuts_manager.h"
 
 namespace {
     struct TriggerOccurrence {
@@ -783,7 +782,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
     const auto* lcAct = dynamic_cast<const LC_Action*>(action);
     const QString actDesc = (lcAct != nullptr && !lcAct->description().isEmpty())
                                 ? lcAct->description()
-                                : LC_ShortcutsManager::getPlainActionToolTip(action);
+                                : action->text().remove('&').trimmed();
     childItem->setDescription(actDesc);
 
 

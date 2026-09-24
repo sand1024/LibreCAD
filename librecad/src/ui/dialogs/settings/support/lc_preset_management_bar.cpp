@@ -247,7 +247,7 @@ void LC_PresetManagementBar::updateButtons() const {
     }
 
     const QString key = currentPresetKey();
-    const bool isDefault = (key == DEFAULT_THEME_KEY);
+    const bool isDefault = m_manager->isDefaultPreset(key);
     // 1. Visibilities (Configured dynamically based on manager properties) [2.3]
 
     ui->btnApply->setVisible(m_manager->supportsApply());

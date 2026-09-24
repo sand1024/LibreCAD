@@ -24,43 +24,39 @@
 #ifndef LC_PRESET_MANAGER_SHORTCUTS_H
 #define LC_PRESET_MANAGER_SHORTCUTS_H
 
-#include "lc_abstract_preset_manager.h"
+#include "lc_preset_manager_config_base.h"
 #include "lc_repository_shortcuts.h"
 
 class LC_ActionGroupManager;
 class LC_ShortcutsManager;
 class LC_ShortcutsTreeModel;
 
-class LC_PresetManagerShortcuts : public LC_AbstractPresetManager {
+class LC_PresetManagerShortcuts : public LC_PresetManagerConfigBase<ShortcutsConfig, LC_RepositoryKeymaps> {
     Q_OBJECT
 public:
-    LC_PresetManagerShortcuts(LC_ActionGroupManager* groupMgr,
-                              QObject* parent = nullptr);
+    explicit LC_PresetManagerShortcuts(LC_ActionGroupManager* groupMgr, LC_ShortcutsManager* shortcutsManager, QObject* parent = nullptr);
     ~LC_PresetManagerShortcuts() override = default;
 
-    // --- Preset Manager Interface ---
+    void setTreeModel(LC_ShortcutsTreeModel* model);
+
+    LC_PresetManagerUIStrings presetStrings() const override;
+
     bool loadPreset(const QString& key) override;
     bool saveCurrentPreset() override;
     bool savePresetAs(const QString& name, QString& outKey) override;
-    void applyCurrentPreset() override;
     bool isPresetModified() override;
-
-    QList<QPair<QString, QString>> getAvailablePresets() const override;
-    LC_PresetManagerUIStrings presetStrings() const override;
 
     bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
     bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent) override;
 
-    void setTreeModel(LC_ShortcutsTreeModel* model);
 protected:
-    void applyActiveConfigToSystem(const QString& activeKey) override;
-    bool doDeletePreset(const QString& key) override;
-private:
     ShortcutsConfig collectCurrentConfig(const QString& name) const;
+    void applyActiveConfigToSystem(const QString& activeKey) override;
+    void onPostApplyPreset() override;
 
+private:
     LC_ActionGroupManager* m_groupManager = nullptr;
     LC_ShortcutsManager* m_shortcutsManager = nullptr;
-    LC_RepositoryShortcuts* m_repository = nullptr;
     LC_ShortcutsTreeModel* m_treeModel = nullptr;
 };
 

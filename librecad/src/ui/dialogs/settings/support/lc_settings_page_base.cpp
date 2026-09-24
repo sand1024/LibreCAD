@@ -25,6 +25,7 @@
 #include <QRadioButton>
 #include <QSplitter>
 
+#include "lc_action_group.h"
 #include "lc_action_group_manager.h"
 #include "lc_color_button.h"
 #include "lc_dialog.h"

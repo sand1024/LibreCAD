@@ -29,16 +29,15 @@
 
 #include "lc_action_command_updater.h"
 #include "lc_action_group_manager.h"
-#include "lc_commandItems.h"
-#include "lc_command_manager.h"
 #include "lc_default_commands_builder.h"
+#include "lc_settings_appearance.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_commands_promotion.h"
-#include "qc_applicationwindow.h"
 
 LC_PresetManagerCommands::LC_PresetManagerCommands(LC_CommandManager* commandManager, LC_ActionGroupManager* agm, QObject* parent)
-    : LC_AbstractPresetManager(CFG_AppState::o_ActiveCommandsScheme, parent)
-    , m_repository(commandManager->getRepository())
+    : LC_PresetManagerConfigBase<CommandsConfig, LC_RepositoryCommands>(
+          commandManager != nullptr ? commandManager->getRepository() : nullptr,
+          CFG_AppState::o_ActiveCommandsScheme, parent)
     , m_commandManager(commandManager)
     , m_actionGroupManager(agm)
     , m_actionTypeMapper(std::make_unique<LC_ActionTypeMapper>(agm)) {
@@ -63,7 +62,8 @@ LC_PresetManagerUIStrings LC_PresetManagerCommands::presetStrings() const {
     s.deleteConfirmLabel = tr("Are you sure you want to delete the command aliases scheme '%1'?");
     s.exportDialogTitle = tr("Export Command Aliases");
     s.importDialogTitle = tr("Import Command Aliases");
-    s.presetFileFilter = tr("Command Aliases Files (*.lccmd);;Legacy Alias Files (*.alias);;All Files (*.*)");
+    s.presetFileFilter = tr("Command Aliases Files (*%1);All Files (*.*)")
+                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".lci"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default command aliases scheme is a read-only template. To customize commands or aliases, duplicate it as a custom scheme.");
@@ -76,58 +76,33 @@ LC_PresetManagerUIStrings LC_PresetManagerCommands::presetStrings() const {
 }
 
 bool LC_PresetManagerCommands::loadPreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
+    if (isDefaultPreset(key)) {
         m_workingConfig = LC_DefaultCommandsBuilder::createDefaultConfig(m_actionTypeMapper.get());
-        m_activeKey = DEFAULT_THEME_KEY;
+        setActivePresetKeyDefault();
         setDirtyState(false);
         return true;
     }
 
     if (m_repository != nullptr && m_repository->loadByKey(key, m_workingConfig)) {
-        m_activeKey = key;
+        setActivePresetKey(key);
         setDirtyState(false);
         return true;
     }
-    return false;
-}
 
-bool LC_PresetManagerCommands::saveCurrentPreset() {
-    if (isReadOnlyDefault() || m_repository == nullptr) {
-        return false;
-    }
-
-    QString outKey;
-    m_workingConfig.name = currentPresetDisplayName();
-    if (m_repository->save(m_workingConfig.name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        setDirtyState(false);
-        return true;
-    }
-    return false;
-}
-
-bool LC_PresetManagerCommands::savePresetAs(const QString& name, QString& outKey) {
-    if (m_repository == nullptr) {
-        return false;
-    }
-
-    m_workingConfig.name = name;
-    if (m_repository->save(name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        setDirtyState(false);
-        return true;
-    }
+    // Fallback: reset to default commands configuration and default key
+    m_workingConfig = LC_DefaultCommandsBuilder::createDefaultConfig(m_actionTypeMapper.get());
+    setActivePresetKeyDefault();
+    setDirtyState(false);
     return false;
 }
 
 void LC_PresetManagerCommands::updateActionForCommandsInMenu() {
-    const bool keycodeMode = CFG_AppState::o_KeycodeMode;
-    auto uiStyleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
-    bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
-    if (!currentThemeIsFusion || !CFG_CommandsPromotion::o_ShowCommandInMenu) {
+    const bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+    if (clearTooltips) {
         LC_ActionCommandUpdater::clearActions(m_actionGroupManager);
     }
     else {
+        const bool keycodeMode = CFG_AppState::o_KeycodeMode;
         LC_ActionCommandUpdater::updateActionsForScheme(m_actionGroupManager, m_workingConfig,
                                                         m_actionTypeMapper.get(), keycodeMode);
     }
@@ -135,57 +110,40 @@ void LC_PresetManagerCommands::updateActionForCommandsInMenu() {
 
 void LC_PresetManagerCommands::applyActiveConfigToSystem(const QString& activeKey) {
     CFG_AppState::o_ActiveCommandsScheme = activeKey;
+}
+
+void LC_PresetManagerCommands::onPostApplyPreset() {
     if (m_commandManager != nullptr) {
         m_commandManager->applyCommandsScheme(m_workingConfig, m_actionTypeMapper.get());
         updateActionForCommandsInMenu();
     }
 }
 
-void LC_PresetManagerCommands::applyCurrentPreset() {
-    applyActiveConfigToSystem(m_activeKey);
-    m_originalActiveKey = m_activeKey;
-    setDirtyState(false);
-}
-
 void LC_PresetManagerCommands::rollbackState() {
-    loadPreset(m_originalActiveKey);
-
-}
-
-bool LC_PresetManagerCommands::isPresetModified() {
-    return m_isDirty;
+    LC_PresetManagerConfigBase::rollbackState();
+    if (m_commandManager != nullptr) {
+        m_commandManager->applyCommandsScheme(m_workingConfig, m_actionTypeMapper.get());
+        updateActionForCommandsInMenu();
+    }
 }
 
 void LC_PresetManagerCommands::notifyConfigChanged() {
     setDirtyState(true);
 }
 
-QList<QPair<QString, QString>> LC_PresetManagerCommands::getAvailablePresets() const {
-    QList<QPair<QString, QString>> choices;
-    choices.prepend(qMakePair(defaultPresetDisplayName(), DEFAULT_THEME_KEY));
-    if (m_repository != nullptr) {
-        choices.append(m_repository->getPresetChoices());
-    }
-    return choices;
-}
-
-bool LC_PresetManagerCommands::doDeletePreset(const QString& key) {
-    if (m_repository != nullptr) {
-        return m_repository->removeByKey(key);
-    }
-    return false;
-}
-
 bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
+    clearLastError();
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        setLastError(LC_PresetError::fromCode(
+            LC_PresetErrorCode::FileReadFailed,
+            tr("Cannot open legacy aliases file '%1' for reading.").arg(filePath)
+        ));
         return false;
     }
 
-    // Start with clean system defaults
     m_workingConfig = LC_DefaultCommandsBuilder::createDefaultConfig(m_actionTypeMapper.get());
 
-    // Map: canonical command -> actionName
     QMap<QString, QString> cmdToName;
     for (const auto& item : g_commandList) {
         const QString actionName = m_actionTypeMapper->actionNameFromType(item.actionType);
@@ -200,9 +158,7 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
         }
     }
 
-    // Count of imported aliases per action (to track slot 1 vs slot 2)
     QMap<QString, int> actionAliasCount;
-
     QTextStream ts(&file);
     static const QRegularExpression wsRe(R"(\s+)");
 
@@ -226,11 +182,9 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
         }
 
         const QString actionName = it.value();
-
-        // Locate command definition in working config
         for (auto& def : m_workingConfig.commands) {
             if (def.actionName == actionName) {
-                int count = actionAliasCount.value(actionName, 0);
+                const int count = actionAliasCount.value(actionName, 0);
                 if (count == 0) {
                     def.customKeycode = alias;
                     actionAliasCount[actionName] = 1;
@@ -239,7 +193,6 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
                     def.customAlias = alias;
                     actionAliasCount[actionName] = 2;
                 }
-                // Subsequent aliases (3+) are skipped under first-two-win policy
                 break;
             }
         }
@@ -250,46 +203,9 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
     return true;
 }
 
-bool LC_PresetManagerCommands::importPresetFromFile(const QString& filePath, QWidget*) {
+bool LC_PresetManagerCommands::importPresetFromFile(const QString& filePath, QWidget* parent) {
     if (filePath.endsWith(".alias", Qt::CaseInsensitive)) {
         return importLegacyAliasFile(filePath);
     }
-
-    if (m_repository == nullptr) {
-        return false;
-    }
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return false;
-    }
-
-    const QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-    file.close();
-
-    if (!doc.isObject()) {
-        return false;
-    }
-
-    if (!m_repository->configFromJson(doc.object(), m_workingConfig)) {
-        return false;
-    }
-
-    setDirtyState(true);
-    return true;
-}
-
-bool LC_PresetManagerCommands::exportPresetToFile(const QString&, const QString& filePath, QWidget*) {
-    if (m_repository == nullptr) {
-        return false;
-    }
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly)) {
-        return false;
-    }
-
-    const QJsonObject obj = m_repository->configToJson(m_workingConfig);
-    file.write(QJsonDocument(obj).toJson(QJsonDocument::Indented));
-    return true;
+    return LC_PresetManagerConfigBase::importPresetFromFile(filePath, parent);
 }

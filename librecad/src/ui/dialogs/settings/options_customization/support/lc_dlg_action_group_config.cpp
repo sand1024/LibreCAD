@@ -25,14 +25,14 @@
 
 #include <QMessageBox>
 
-#include "lc_actions_naming_utils.h"
+#include "lc_action_group_manager.h"
 #include "lc_dlg_icon_picker.h"
 
-LC_DlgActionGroupConfig::LC_DlgActionGroupConfig(QWidget* parent, bool isToolbarMode, const LC_ActionNamingServiceInterface* namingService)
+LC_DlgActionGroupConfig::LC_DlgActionGroupConfig(QWidget* parent, bool isToolbarMode, const LC_ActionGroupManager* groupManager)
     : QDialog(parent)
     , ui(std::make_unique<Ui::LC_DlgActionGroupConfig>())
     , m_isToolbarMode(isToolbarMode)
-    , m_namingService(namingService){
+    , m_groupManager(groupManager) {
     ui->setupUi(this);
 
     ui->gbBehavior->setVisible(m_isToolbarMode);
@@ -58,9 +58,13 @@ LC_DlgActionGroupConfig::~LC_DlgActionGroupConfig() = default;
 
 void LC_DlgActionGroupConfig::populateSystemCategories() {
     ui->cbSystemCategory->clear();
-    const auto categories = m_namingService->predefinedCategories();
+    if (m_groupManager == nullptr) {
+        return;
+    }
+
+    const auto categories = m_groupManager->predefinedCategories();
     for (const auto& cat : categories) {
-        const QString iconPath = m_namingService->iconPath(cat.first);
+        const QString iconPath = m_groupManager->iconPath(cat.first);
         ui->cbSystemCategory->addItem(QIcon(iconPath), cat.second, cat.first);
     }
 }
@@ -82,8 +86,8 @@ void LC_DlgActionGroupConfig::setInitialValues(const QString& rawTitle, const QS
         int idx = ui->cbSystemCategory->findData(rawTitle);
         if (idx < 0) {
             // Token not in static list: insert dynamically so it is not lost
-            const QString display = m_namingService->displayName(rawTitle, /*stripAmpersand=*/true);
-            const QString icon = m_namingService->iconPath(rawTitle);
+            const QString display = m_groupManager->displayName(rawTitle, /*stripAmpersand=*/true);
+            const QString icon = m_groupManager->iconPath(rawTitle);
             ui->cbSystemCategory->addItem(QIcon(icon), display, rawTitle);
             idx = ui->cbSystemCategory->findData(rawTitle);
         }
@@ -93,7 +97,7 @@ void LC_DlgActionGroupConfig::setInitialValues(const QString& rawTitle, const QS
         }
 
         if (m_iconPath.isEmpty()) {
-            m_iconPath = m_namingService->iconPath(rawTitle);
+            m_iconPath = m_groupManager->iconPath(rawTitle);
         }
         ui->leTitle->setText(ui->cbSystemCategory->currentText());
     } else {
@@ -138,10 +142,10 @@ void LC_DlgActionGroupConfig::onGroupTypeToggled() {
     ui->leTitle->setEnabled(!isPredefined);
     ui->pbChooseIcon->setEnabled(!isPredefined);
 
-    if (isPredefined) {
+    if (isPredefined && m_groupManager != nullptr) {
         const QString token = ui->cbSystemCategory->currentData().toString();
         ui->leTitle->setText(ui->cbSystemCategory->currentText());
-        m_iconPath = m_namingService->iconPath(token);
+        m_iconPath = m_groupManager->iconPath(token);
         if (!m_iconPath.isEmpty()) {
             ui->tbIconPreview->setIcon(QIcon(m_iconPath));
         } else {
@@ -151,13 +155,14 @@ void LC_DlgActionGroupConfig::onGroupTypeToggled() {
 }
 
 void LC_DlgActionGroupConfig::onSystemCategoryChanged(int) {
-    if (ui->rbPredefinedCategory->isChecked()) {
+    if (ui->rbPredefinedCategory->isChecked() && m_groupManager != nullptr) {
         const QString token = ui->cbSystemCategory->currentData().toString();
         ui->leTitle->setText(ui->cbSystemCategory->currentText());
-        m_iconPath = m_namingService->iconPath(token);
+        m_iconPath = m_groupManager->iconPath(token);
         ui->tbIconPreview->setIcon(QIcon(m_iconPath));
     }
 }
+
 
 void LC_DlgActionGroupConfig::onChooseIconClicked() {
     const QString picked = LC_DlgIconPicker::getIcon(this, m_iconPath);
@@ -190,8 +195,8 @@ QString LC_DlgActionGroupConfig::title() const {
 }
 
 QString LC_DlgActionGroupConfig::iconPath() const {
-    if (ui->rbPredefinedCategory->isChecked()) {
-        return m_namingService->iconPath(title());
+    if (ui->rbPredefinedCategory->isChecked() && m_groupManager != nullptr) {
+        return m_groupManager->iconPath(title());
     }
     return m_iconPath;
 }

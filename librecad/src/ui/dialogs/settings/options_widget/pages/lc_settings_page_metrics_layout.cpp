@@ -22,7 +22,7 @@
 
 #include "lc_settings_page_metrics_layout.h"
 #include "ui_lc_settings_page_metrics_layout.h"
-#include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_fusion_metrics.h"
 #include <QSpinBox>
 
 LC_SettingsPageMetricsLayout::LC_SettingsPageMetricsLayout(QObject* parent)
@@ -33,9 +33,9 @@ LC_SettingsPageMetricsLayout::LC_SettingsPageMetricsLayout(QObject* parent)
 LC_SettingsPageMetricsLayout::~LC_SettingsPageMetricsLayout() = default;
 
 void LC_SettingsPageMetricsLayout::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerMetrics*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionMetrics*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();

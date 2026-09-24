@@ -89,13 +89,12 @@ private:
     void moveTreeItem(QTreeWidgetItem* item, QTreeWidgetItem* newParent, int newIndex);
     void addActionToChosen(QAction* action, bool forceTopLevel);
     void addGroupToChosen(const QString& title, const QString& iconPath, const QList<QAction*>& actions, bool forceTopLevel = false);
-    void populateTreeRecursive(QTreeWidgetItem* parentItem, const QList<ActionNode>& nodes, const LC_ActionNamingServiceInterface* namingService);
+    void populateTreeRecursive(QTreeWidgetItem* parentItem, const QList<ActionNode>& nodes);
     QList<ActionNode> serializeTreeRecursive(QTreeWidgetItem* parentItem) const;
     void editGroupItem(QTreeWidgetItem* item);
 
     std::unique_ptr<Ui::LC_ActionsDualListWidget> ui;
     LC_ActionGroupManager* m_actionGroupManager = nullptr;
-    const LC_ActionNamingServiceInterface* m_namingService = nullptr;
     std::unique_ptr<LC_ActionsTreeModel> m_availableModel;
     bool m_allowNestedGroups = false;
     bool m_blockSignals = false;

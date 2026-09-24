@@ -22,7 +22,7 @@
 
 #include "lc_settings_page_metrics_views_tabs.h"
 #include "ui_lc_settings_page_metrics_views_tabs.h"
-#include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_fusion_metrics.h"
 #include <QSpinBox>
 
 LC_SettingsPageMetricsViewsTabs::LC_SettingsPageMetricsViewsTabs(QObject* parent)
@@ -33,9 +33,9 @@ LC_SettingsPageMetricsViewsTabs::LC_SettingsPageMetricsViewsTabs(QObject* parent
 LC_SettingsPageMetricsViewsTabs::~LC_SettingsPageMetricsViewsTabs() = default;
 
 void LC_SettingsPageMetricsViewsTabs::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerMetrics*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionMetrics*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionMetrics::configLoaded, this, [this](const StyleMetricsConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -47,12 +47,23 @@ void LC_SettingsPageMetricsViewsTabs::setupUi() {
 
     ui->sbTreeBranchIndicatorSize->setMinimum(-1);
     ui->sbTreeBranchIndicatorSize->setSpecialValueText(tr("Auto-Scale"));
+
+    ui->sbTabBarScrollButtonWidth->setMinimum(-1);
+    ui->sbTabBarScrollButtonWidth->setSpecialValueText(tr("Auto"));
+
+    ui->cbTabBarClosePosition->addItem(tr("Right Side (Standard)"), static_cast<int>(TabBarCloseButtonPosition::RightSide));
+    ui->cbTabBarClosePosition->addItem(tr("Left Side (macOS Style)"), static_cast<int>(TabBarCloseButtonPosition::LeftSide));
 }
 
 void LC_SettingsPageMetricsViewsTabs::setupBehavior() {
     const QList<QSpinBox*> spinBoxes = m_widget->findChildren<QSpinBox*>();
     for (QSpinBox* sb : spinBoxes) {
         connect(sb, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_SettingsPageMetricsViewsTabs::onControlChanged);
+    }
+
+    const QList<QComboBox*> comboBoxes = m_widget->findChildren<QComboBox*>();
+    for (QComboBox* cb : comboBoxes) {
+        connect(cb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageMetricsViewsTabs::onControlChanged);
     }
 }
 
@@ -78,7 +89,9 @@ void LC_SettingsPageMetricsViewsTabs::onControlChanged() {
 }
 
 void LC_SettingsPageMetricsViewsTabs::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
@@ -88,6 +101,13 @@ void LC_SettingsPageMetricsViewsTabs::populateUiFromWorkingConfig() {
     ui->sbTabOverlapHorizontal->setValue(config.tabBarTabOverlap);
     ui->sbTabCloseSize->setValue(config.tabCloseIndicatorSize);
     ui->sbTabOverlap->setValue(config.tabBarTabBaseOverlap);
+    ui->sbTabBarScrollButtonWidth->setValue(config.tabBarScrollButtonWidth);
+
+    const int posIdx = ui->cbTabBarClosePosition->findData(static_cast<int>(config.tabBarCloseButtonPosition));
+    if (posIdx >= 0) {
+        ui->cbTabBarClosePosition->setCurrentIndex(posIdx);
+    }
+
     ui->sbHeaderDefaultHeight->setValue(config.headerDefaultHeight);
     ui->sbRowPadding->setValue(config.itemViewRowPadding);
     ui->sbTreeIndentation->setValue(config.treeIndentation);
@@ -97,7 +117,9 @@ void LC_SettingsPageMetricsViewsTabs::populateUiFromWorkingConfig() {
 }
 
 void LC_SettingsPageMetricsViewsTabs::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.tabBarTabHSpace = ui->sbTabHSpace->value();
@@ -105,6 +127,10 @@ void LC_SettingsPageMetricsViewsTabs::syncUiToWorkingConfig() {
     config.tabBarTabOverlap = ui->sbTabOverlapHorizontal->value();
     config.tabCloseIndicatorSize = ui->sbTabCloseSize->value();
     config.tabBarTabBaseOverlap = ui->sbTabOverlap->value();
+    config.tabBarScrollButtonWidth = ui->sbTabBarScrollButtonWidth->value();
+    config.tabBarCloseButtonPosition = static_cast<TabBarCloseButtonPosition>(
+        ui->cbTabBarClosePosition->currentData().toInt());
+
     config.headerDefaultHeight = ui->sbHeaderDefaultHeight->value();
     config.itemViewRowPadding = ui->sbRowPadding->value();
     config.treeIndentation = ui->sbTreeIndentation->value();

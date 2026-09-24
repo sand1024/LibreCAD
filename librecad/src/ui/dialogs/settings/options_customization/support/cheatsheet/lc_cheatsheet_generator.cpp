@@ -42,23 +42,13 @@
 #include "lc_action.h"
 #include "lc_commands_tree_item.h"
 #include "lc_commands_tree_model.h"
-#include "lc_shortcuts_manager.h"
 #include "lc_shortcut_tree_item.h"
 #include "lc_shortcuts_tree_model.h"
+#include "lc_wait_cursor_guard.h"
 #include "main.h"
 
 namespace {
-    struct LC_WaitCursorGuard {
-        LC_WaitCursorGuard() {
-            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        }
-
-        ~LC_WaitCursorGuard() {
-            QApplication::restoreOverrideCursor();
-        }
-    };
-
-    QString getActionDescription(const QAction* action) {
+       QString getActionDescription(const QAction* action) {
         if (action == nullptr) {
             return QString();
         }
@@ -66,7 +56,7 @@ namespace {
         if (lcAction != nullptr && !lcAction->description().isEmpty()) {
             return lcAction->description();
         }
-        return LC_ShortcutsManager::getPlainActionToolTip(action);
+        return action->text().remove('&').trimmed();
     }
 
     class LC_CheatsheetHtmlHelper {

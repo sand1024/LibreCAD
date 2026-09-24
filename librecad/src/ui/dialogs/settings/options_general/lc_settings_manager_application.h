@@ -25,6 +25,8 @@
 #include "lc_settings_manager_base.h"
 #include "lc_settings_registry.h"
 
+class QC_ApplicationWindow;
+
 namespace LC_SettingsPagesApplication {
     inline const QString DLG_GENERAL_PREFERENCES                    = "general_preferences";
 
@@ -78,12 +80,12 @@ namespace LC_SettingsPagesApplication {
 class LC_SettingsManagerApplication: public LC_SettingsManagerBase {
 public:
     static QWidget* createGraphicViewPreview(QWidget* parent);
-    static void initialize();
+    static void initialize(QC_ApplicationWindow* applicationWindow);
 
-    static bool showOptionsApplication(QWidget* parent) {
+    static bool showOptionsApplication(QWidget* parent, int* exitCode) {
         const auto settingsRegistry = LC_SettingsRegistry::instance();
         const bool accepted = settingsRegistry->showDialog(LC_SettingsPagesApplication::DLG_GENERAL_PREFERENCES, "",
-                                                           parent);
+                                                           parent, nullptr, nullptr, exitCode);
 
         if (accepted) {
             parent->update();

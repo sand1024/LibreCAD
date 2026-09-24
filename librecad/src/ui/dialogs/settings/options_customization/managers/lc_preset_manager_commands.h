@@ -24,55 +24,44 @@
 #ifndef LC_PRESET_MANAGER_COMMANDS_H
 #define LC_PRESET_MANAGER_COMMANDS_H
 
-#include "lc_abstract_preset_manager.h"
+#include <memory>
 #include "lc_action_type_mapper.h"
-#include "lc_command_types.h"
+#include "lc_commandItems.h"
+#include "lc_command_manager.h"
+#include "lc_preset_manager_config_base.h"
 #include "lc_repository_commands.h"
 
-class LC_CommandManager;
 class LC_ActionGroupManager;
 
-class LC_PresetManagerCommands : public LC_AbstractPresetManager {
+class LC_PresetManagerCommands : public LC_PresetManagerConfigBase<CommandsConfig, LC_RepositoryCommands> {
     Q_OBJECT
 public:
-    explicit LC_PresetManagerCommands(LC_CommandManager* commandManager,LC_ActionGroupManager* agm, QObject* parent = nullptr);
+    explicit LC_PresetManagerCommands(LC_CommandManager* commandManager, LC_ActionGroupManager* agm, QObject* parent = nullptr);
     ~LC_PresetManagerCommands() override = default;
 
     LC_PresetManagerUIStrings presetStrings() const override;
 
     bool loadPreset(const QString& key) override;
-    bool saveCurrentPreset() override;
-    bool savePresetAs(const QString& name, QString& outKey) override;
+    void rollbackState() override;
+    bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
+
+    void notifyConfigChanged();
     void updateActionForCommandsInMenu();
 
-    void applyActiveConfigToSystem(const QString& activeKey) override;
-    void applyCurrentPreset() override;
-    void rollbackState() override;
-
-    bool isPresetModified() override;
-
-    QList<QPair<QString, QString>> getAvailablePresets() const override;
-
-    bool importPresetFromFile(const QString& filePath, QWidget* parent = nullptr) override;
-    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent = nullptr) override;
-
-    CommandsConfig& workingConfig() { return m_workingConfig; }
-    const CommandsConfig& workingConfig() const { return m_workingConfig; }
-
-    LC_ActionTypeMapper* getActionTypeMapper() const { return m_actionTypeMapper.get(); }
-    void notifyConfigChanged();
+    LC_ActionTypeMapper* getActionTypeMapper() const {
+        return m_actionTypeMapper.get();
+    }
 
 protected:
-    bool doDeletePreset(const QString& key) override;
+    void applyActiveConfigToSystem(const QString& activeKey) override;
+    void onPostApplyPreset() override;
 
-private:
     bool importLegacyAliasFile(const QString& filePath);
 
-    CommandsConfig m_workingConfig;
-    LC_RepositoryCommands* m_repository{nullptr};
-    LC_CommandManager* m_commandManager{nullptr};
+private:
+    LC_CommandManager* m_commandManager = nullptr;
+    LC_ActionGroupManager* m_actionGroupManager = nullptr;
     std::unique_ptr<LC_ActionTypeMapper> m_actionTypeMapper;
-    LC_ActionGroupManager* m_actionGroupManager{nullptr};
 };
 
 #endif

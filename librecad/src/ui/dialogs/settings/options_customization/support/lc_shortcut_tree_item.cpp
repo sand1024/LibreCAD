@@ -25,7 +25,6 @@
 #include <QAction>
 
 #include "lc_action.h"
-#include "lc_shortcuts_manager.h"
 #include "lc_shortcut_info.h"
 
 LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QAction* action, LC_ShortcutInfo* shortcutInfo)
@@ -37,11 +36,16 @@ LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QAct
     , m_shortcutInfo(shortcutInfo) {
     if (action != nullptr) {
         const auto* lcAct = dynamic_cast<const LC_Action*>(action);
-        if (lcAct != nullptr && !lcAct->description().isEmpty()) {
-            m_description = lcAct->description();
+        if (lcAct != nullptr){
+            if (!lcAct->description().isEmpty()) {
+                m_description = lcAct->description();
+            }
         }
         else {
-            m_description = LC_ShortcutsManager::getPlainActionToolTip(action);
+            const auto property = action->property(LC_ActionKeys::PROP_DESCRIPTION);
+            if (property.isValid()) {
+                m_description = property.toString();
+            }
         }
     }
 }

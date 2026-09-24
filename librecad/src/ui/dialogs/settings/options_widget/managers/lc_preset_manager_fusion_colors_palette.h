@@ -22,33 +22,24 @@
 #ifndef LC_PRESET_MANAGER_PALETTE_H
 #define LC_PRESET_MANAGER_PALETTE_H
 
+#include "lc_palette_color_utils.h"
+#include "lc_palette_editor_shared.h"
+#include "lc_preset_manager_styling_base.h"
 #include "lc_repository_palette.h"
-#include "lc_preset_manager_base.h"
 
-class LC_PresetManagerPalette : public LC_PresetManagerBase<PaletteConfig, LC_RepositoryPalette> {
+class LC_PresetManagerFusionColorsPalette : public LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryPalette> {
     Q_OBJECT
-
 public:
-    explicit LC_PresetManagerPalette(QObject* parent = nullptr);
-    ~LC_PresetManagerPalette() override = default;
+    explicit LC_PresetManagerFusionColorsPalette(LC_UIStyleManager* styleManager);
+    ~LC_PresetManagerFusionColorsPalette() override = default;
 
     LC_PresetManagerUIStrings presetStrings() const override;
-    bool loadPreset(const QString& key) override;
+
     QString getAppliedPresetKey() const override;
-    void applyCurrentPreset() override;
     void setPreviewController(LC_StylingPreviewController* controller) override;
 
-    bool isGated() const override;
-    QString gatedMessage() const override;
-    QString gatedActionText() const override;
-    std::function<void()> gatedActionCallback() const override;
-
-    bool isCurrentVariantDark() const { return m_currentVariantDark; }
     void setCurrentVariantDark(bool dark);
-
-    void onSubPageControlChanged() override {
-        notifyWorkingConfigChanged();
-    }
+    bool isCurrentVariantDark() const { return m_currentVariantDark; }
 
     void calculateProceduralBevels(bool isDarkMode, StyleArchetype archetype);
     void generateHarmonizedTheme(const QColor& baseColor);
@@ -61,9 +52,11 @@ public:
     void variantChanged(bool isDark);
 
 protected:
-    void updatePreview() override;
     void resetToDefaults(PaletteConfig& config) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;
+    void updatePreview() override;
+    void emitConfigLoaded() override;
+    QString fusionGatingSubject() const override;
 
 private:
     bool m_currentVariantDark = false;

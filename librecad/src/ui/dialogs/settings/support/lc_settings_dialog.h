@@ -69,6 +69,15 @@ public:
     LC_SettingsPageInterface* activePage() const { return m_activePage; }
     void setExpandAllCategories(bool expandAll) { m_expandAllCategories = expandAll; }
     bool expandAllCategories() const { return m_expandAllCategories; }
+    bool wasDirectlyAccepted() const {
+        return m_wasDirectlyAccepted;
+    }
+    int customExitCode() const {
+        return m_customResultCode;
+    }
+    bool shouldCommitTransaction() const {
+        return (!m_wasDirectlyAccepted || m_saveModifiedPages);
+    }
 signals:
    void restartRequired();
    void categoryChanged(const QString& pageId);
@@ -100,8 +109,9 @@ private slots:
     void onCategorySelected(const QModelIndex& index);
     void onNavigateBack();
     void onNavigateForward();
-
+    void onDirectAcceptRequested(bool saveModifiedPages, int customResultCode);
 private:
+    void acceptInternal(bool skipValidation, bool saveModifiedPages, int customResultCode);
     void buildCategoryTree();
     void updateBreadcrumbs(const QModelIndex& index) const; // Updated to use ModelIndex [4.2]
     void highlightPageContent(LC_SettingsPageInterface* page, const QString& filterText) const;
@@ -132,5 +142,10 @@ private:
     std::unique_ptr<Ui::LC_SettingsDialog> ui;
 
     QString m_dialogId;
+
+    bool m_wasDirectlyAccepted = false;
+    bool m_saveModifiedPages = true;
+    int m_customResultCode = 0;
+
 };
 #endif

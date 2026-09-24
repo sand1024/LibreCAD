@@ -8,7 +8,7 @@
 
 #include "lc_color_button.h"
 #include "lc_palette_color_utils.h"
-#include "lc_preset_manager_palette.h"
+#include "lc_preset_manager_fusion_colors_palette.h"
 #include "lc_repository_icons_style.h"
 #include "lc_semantic_colors_ui_helper.h"
 #include "lc_ui_style_manager.h"
@@ -22,12 +22,12 @@ LC_SettingsPageSkinPalette::LC_SettingsPageSkinPalette(QObject* parent)
 LC_SettingsPageSkinPalette::~LC_SettingsPageSkinPalette() = default;
 
 void LC_SettingsPageSkinPalette::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerPalette*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerFusionColorsPalette*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerPalette::configLoaded, this, [this](const PaletteConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionColorsPalette::configLoaded, this, [this](const PaletteConfig&) {
             populateTablesFromConfig();
         });
-        connect(m_presetManager, &LC_PresetManagerPalette::variantChanged, this, [this](bool isDark) {
+        connect(m_presetManager, &LC_PresetManagerFusionColorsPalette::variantChanged, this, [this](bool isDark) {
             m_blockSignals = true;
             ui->rbDarkMode->setChecked(isDark);
             ui->rbLightMode->setChecked(!isDark);
@@ -71,7 +71,7 @@ void LC_SettingsPageSkinPalette::setupComboboxes() const {
     auto* styleMgr = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
     if (styleMgr && styleMgr->getIconsStyleRepository()) {
         ui->cbLinkedIconStyle->clear();
-        ui->cbLinkedIconStyle->addItem(tr("Default (Classic)"), DEFAULT_THEME_KEY);
+        ui->cbLinkedIconStyle->addItem(tr("Default (Classic)"), CFG_AppState::DEFAULT_THEME_KEY);
         ui->cbLinkedIconStyle->addItems(styleMgr->getIconsStyleRepository()->getAvailableNames());
     }
 }

@@ -29,6 +29,8 @@
 #include <QObject>
 
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_repository.h"
+#include "lc_settings_app_state.h"
 
 class QWidget;
 
@@ -87,8 +89,8 @@ public:
     virtual void setChangedCallback(std::function<void(bool isDirty)> callback) = 0;
 
     // Dynamic Reset Callback: lets the manager trigger a clean visual page-defaults-reset
-    virtual void setResetCallback(std::function<void()> callback) { m_resetCallback = callback; }
-    virtual void setSaveCommitCallback(std::function<void()> callback) { m_saveCommitCallback = callback; }
+    virtual void setResetCallback(std::function<void()> callback) = 0;
+    virtual void setSaveCommitCallback(std::function<void()> callback) = 0;
 
     virtual bool importPresetFromFile([[maybe_unused]]const QString& filePath,[[maybe_unused]] QWidget* parent) { return false; }
     virtual bool exportPresetToFile([[maybe_unused]]const QString& key,[[maybe_unused]] const QString& filePath, [[maybe_unused]]QWidget* parent) { return false; }
@@ -109,10 +111,14 @@ public:
     virtual bool onDialogAccept([[maybe_unused]] QWidget* parentDialog) { return true; }
     virtual bool onDialogReject([[maybe_unused]] QWidget* parentDialog) {return true;}
 
+    virtual bool isDefaultPreset(const QString& key) const {
+        return (key.isEmpty() || key == CFG_AppState::DEFAULT_THEME_KEY);
+    }
+
     // Scope-level Gating Queries
     virtual bool isReadOnlyDefault() const {
         const QString key = getActivePresetKey();
-        return key.isEmpty() || key == DEFAULT_THEME_KEY;
+        return isDefaultPreset(key);
     }
 
     virtual QString defaultPresetDisplayName() const {
@@ -122,6 +128,7 @@ public:
 
     virtual bool isGated() const { return isReadOnlyDefault(); }
     virtual QString gatedMessage() const { return presetStrings().defaultReadOnlyMessage; }
+    virtual QString gatedIcon() const { return ""; }
     virtual QString gatedActionText() const { return presetStrings().duplicateActionText; }
     virtual std::function<void()> gatedActionCallback() const { return nullptr; }
 
@@ -137,9 +144,8 @@ public:
                          const QString& initialSuggestion,
                          QString& outName);
 
-protected:
-    std::function<void()> m_resetCallback;
-    std::function<void()> m_saveCommitCallback;
+    virtual LC_PresetError lastError() const = 0;
+    virtual bool isStorageAvailable() const { return true; }
 };
 
 #endif

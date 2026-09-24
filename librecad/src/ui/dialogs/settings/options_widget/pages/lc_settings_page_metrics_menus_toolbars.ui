@@ -75,6 +75,32 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblMenuBarHMargin">
+        <property name="toolTip">
+         <string>Horizontal clearance margin at the left and right ends of the main menu bar (-1 for auto-adaptive padding).</string>
+        </property>
+        <property name="text">
+         <string>Menu Bar Horiz Margin:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbMenuBarHorizontalMargin">
+        <property name="toolTip">
+         <string>Set horizontal padding at menu bar ends (-1 for auto).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>-1</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -133,6 +159,58 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblToolbarHandleExtent">
+        <property name="toolTip">
+         <string>Thickness of the draggable move handle on toolbars (-1 for auto-adaptive size).</string>
+        </property>
+        <property name="text">
+         <string>Toolbar Handle Width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbToolbarHandleExtent">
+        <property name="toolTip">
+         <string>Adjust toolbar grip width (-1 for auto).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>-1</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblToolbarIconSize">
+        <property name="toolTip">
+         <string>Size of icons rendered inside action toolbars (-1 for auto-scaled 24 px).</string>
+        </property>
+        <property name="text">
+         <string>Toolbar Icon Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbToolbarIconSize">
+        <property name="toolTip">
+         <string>Adjust size of icons inside toolbars (-1 for auto-scaled 24 px).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>-1</number>
+        </property>
+        <property name="maximum">
+         <number>64</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -155,13 +233,13 @@
       <string>Popup and Dropdown Menus</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_menus">
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbMenuBorderWidth">
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblSubMenuOverlap">
         <property name="toolTip">
-         <string>Set border width of dropdown and context menu popup containers.</string>
+         <string>Horizontal overlap between cascading dropdown menus.</string>
         </property>
-        <property name="suffix">
-         <string> px</string>
+        <property name="text">
+         <string>Submenu Overlap:</string>
         </property>
        </widget>
       </item>
@@ -175,16 +253,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="sbMenuVerticalPadding">
-        <property name="toolTip">
-         <string>Set vertical padding between options in dropdown menus.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QSpinBox" name="sbMenuHorizontalPadding">
         <property name="toolTip">
@@ -195,16 +263,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lblMenuVerticalPadding">
-        <property name="toolTip">
-         <string>Vertical padding above and below each item inside popup and context menus.</string>
-        </property>
-        <property name="text">
-         <string>Menu Vertical Padding:</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="lblMenuHorizontalPadding">
         <property name="toolTip">
@@ -212,16 +270,6 @@
         </property>
         <property name="text">
          <string>Menu Horizontal Padding:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="lblSubMenuOverlap">
-        <property name="toolTip">
-         <string>Horizontal overlap between cascading dropdown menus.</string>
-        </property>
-        <property name="text">
-         <string>Submenu Overlap:</string>
         </property>
        </widget>
       </item>
@@ -238,6 +286,62 @@
         </property>
         <property name="maximum">
          <number>20</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="sbMenuVerticalPadding">
+        <property name="toolTip">
+         <string>Set vertical padding between options in dropdown menus.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblMenuVerticalPadding">
+        <property name="toolTip">
+         <string>Vertical padding above and below each item inside popup and context menus.</string>
+        </property>
+        <property name="text">
+         <string>Menu Vertical Padding:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbMenuBorderWidth">
+        <property name="toolTip">
+         <string>Set border width of dropdown and context menu popup containers.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblMenuIconSize">
+        <property name="toolTip">
+         <string>Size of icons displayed beside items inside dropdown and context menus (-1 for auto-scaled 16 px).</string>
+        </property>
+        <property name="text">
+         <string>Menu Icon Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="sbMenuIconSize">
+        <property name="toolTip">
+         <string>Adjust size of icons inside menus (-1 for auto-scaled 16 px).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>-1</number>
+        </property>
+        <property name="maximum">
+         <number>48</number>
         </property>
        </widget>
       </item>

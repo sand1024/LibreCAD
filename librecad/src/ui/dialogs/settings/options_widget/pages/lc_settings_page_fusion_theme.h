@@ -47,6 +47,7 @@ public:
     bool isPageGated() const override;
     bool disablesWidgetOnGating() const override { return false; }
     QString gatedMessage() const override;
+    QString gatedIcon() const override;
     QString gatedActionText() const override;
     std::function<void()> gatedActionCallback() const override;
     bool acceptsSharedPreview() override {return false;}

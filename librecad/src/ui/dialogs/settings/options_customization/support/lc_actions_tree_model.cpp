@@ -25,7 +25,6 @@
 #include <QAction>
 #include <QIcon>
 
-
 #include "lc_action_factory.h"
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
@@ -93,7 +92,6 @@ void LC_ActionsTreeModel::rebuildTree() {
     m_rootItem = new LC_ActionTreeItem(nullptr, "", QIcon());
 
     if (m_groupManager != nullptr) {
-        const LC_ActionNamingServiceInterface* namingService = m_groupManager->getNamingService();
         const QList<LC_ActionGroup*> toolsList = m_groupManager->toolGroups();
         const QSet<LC_ActionGroup*> toolGroupsSet(toolsList.begin(), toolsList.end());
 
@@ -107,8 +105,8 @@ void LC_ActionsTreeModel::rebuildTree() {
                 continue;
             }
 
-            const QString canonicalToken = namingService->canonicalToken(group->getName());
-            QString groupTitle = !group->getTitle().isEmpty() ? group->getTitle() : group->getDescription();
+            const QString canonicalToken = group->token();
+            QString groupTitle = !group->cleanTitle().isEmpty() ? group->cleanTitle() : group->getDescription();
             groupTitle.remove('&');
             auto* groupItem = new LC_ActionTreeItem(m_rootItem, groupTitle, group->getIcon(), nullptr, canonicalToken);
 

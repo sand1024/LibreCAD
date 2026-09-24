@@ -47,12 +47,9 @@ void LC_SettingsPageGeneralStartup::setupBindings() {
         {ui->maximize_checkbox, o_Maximize},
         {ui->cbOpenLastFiles, o_OpenLastOpenedFiles},
         {ui->cbEnableCADDockWidgets, o_EnableLeftSidebar, true},
-        {ui->cbCADWidgetsUngroupped, o_CADSideBarUngrouped, true},
         {ui->cad_toolbars_checkbox, o_EnableCADToolbars, true},
-        {ui->cbAllowMenusDetaching, CFG_Appearance::o_AllowMenusTearOff, true },
         {ui->cbClassicStatusBar, o_UseClassicStatusBar, true},
         {ui->cbDuplicateActionsPromptsInStatusBar, o_ShowCommandPromptInStatusBar},
-        {ui->cbStartupTBTooltips, o_ShowToolbarsTooltip, true},
         {ui->cbShowVersionInWinTitle, o_ShowVersionInTitle}
     });
 }

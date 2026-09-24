@@ -1,15 +1,37 @@
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
+
 #include "lc_preset_manager_fusion_skin.h"
 
 #include "lc_palette_color_utils.h"
-#include "lc_settings_manager_styling.h"
-#include "lc_skin_archetype_header_bar.h"
 
-LC_PresetManagerFusionSkin::LC_PresetManagerFusionSkin(QObject* parent)
-    : LC_PresetManagerBase(QC_ApplicationWindow::getAppWindow()->getUiStyleManager(),
-                      QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getSkinsRepository(),
-                   QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getActiveSkin(), parent) {
+LC_PresetManagerFusionSkin::LC_PresetManagerFusionSkin(LC_UIStyleManager* styleManager)
+    : LC_PresetManagerStylingBase<ControlStyleConfig, LC_RepositoryFusionSkin>(
+          styleManager,
+          styleManager != nullptr ? styleManager->getSkinsRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getActiveSkin() : QString(),
+          nullptr) {
     m_headerBar = std::make_unique<LC_SkinArchetypeHeaderBar>();
-    auto bar = m_headerBar.get();
+    auto* bar = m_headerBar.get();
     connect(bar, &LC_SkinArchetypeHeaderBar::archetypeChanged, this, &LC_PresetManagerFusionSkin::onArchetypeChanged);
     connect(bar, &LC_SkinArchetypeHeaderBar::decorationChanged, this, &LC_PresetManagerFusionSkin::onDecorationChanged);
 
@@ -31,60 +53,45 @@ LC_PresetManagerUIStrings LC_PresetManagerFusionSkin::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Controls Style");
     s.deleteConfirmTitle = tr("Delete Controls Style Preset");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the controls style preset '%1'?");
-    s.presetFileFilter = tr("Controls Style Files (*.lcsk)");
+    s.presetFileFilter = tr("LibreCAD Fusion Theme configuration (*%1);All Files (*.*)")
+                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
-    s.defaultReadOnlyMessage = tr("The Default controls style is a read-only template. To customize widget decorators and styling, duplicate it as a custom preset.");
+    s.defaultReadOnlyMessage = tr(
+        "The Default controls style is a read-only template. To customize widget decorators and styling, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Style...");
     return s;
 }
 
-bool LC_PresetManagerFusionSkin::loadPreset(const QString& key) {
-    const bool isDefault = (key == DEFAULT_THEME_KEY || key.isEmpty() || key == DEFAULT_THEME_NAME ||
-                            (m_repository != nullptr && !m_repository->exists(key)));
-
-    if (isDefault) {
-        resetToDefaults(m_workingConfig);
-        m_workingConfig.name = defaultPresetDisplayName();
-        m_activeKey = DEFAULT_THEME_KEY;
-    } else if (m_repository != nullptr) {
-        if (!m_repository->loadByKey(key, m_workingConfig)) {
-            resetToDefaults(m_workingConfig);
-            m_workingConfig.name = defaultPresetDisplayName();
-            m_activeKey = DEFAULT_THEME_KEY;
-        } else {
-            m_activeKey = key;
-        }
-    }
-
-    if (m_headerBar != nullptr) {
-        m_headerBar->populateFromConfig(m_workingConfig);
-    }
-
-    m_isDirty = false;
-    if (m_changedCallback != nullptr) {
-        m_changedCallback(false);
-    }
-
-    emit configLoaded(m_workingConfig);
-    updatePreview();
-    return true;
-}
-
 QString LC_PresetManagerFusionSkin::getAppliedPresetKey() const {
-    return (m_styleManager != nullptr) ? m_styleManager->getActiveSkin() : m_originalActiveKey;
-}
-
-void LC_PresetManagerFusionSkin::applyCurrentPreset() {
-    applyActiveConfigToSystem(m_activeKey);
     if (m_styleManager != nullptr) {
-        m_styleManager->applyActiveStyleAndTheme();
+        return m_styleManager->getActiveSkin();
     }
-    m_originalActiveKey = m_activeKey;
-    setDirtyState(false);
+    return m_originalActiveKey;
 }
 
 QWidget* LC_PresetManagerFusionSkin::getSharedHeaderWidget() {
     return m_headerBar.get();
+}
+
+QString LC_PresetManagerFusionSkin::fusionGatingSubject() const {
+    return tr("controls styling");
+}
+
+QString LC_PresetManagerFusionSkin::gatedMessage() const {
+    if (isClassicFusion()) {
+        return tr("The Classic Fusion archetype uses native Qt widget drawing. Sub-controls for custom grips, outlines, and item view hover are not applicable.");
+    }
+    return LC_PresetManagerStylingBase::gatedMessage();
+}
+
+void LC_PresetManagerFusionSkin::onPostLoadPreset() {
+    if (m_headerBar != nullptr) {
+        m_headerBar->populateFromConfig(m_workingConfig);
+    }
+}
+
+void LC_PresetManagerFusionSkin::emitConfigLoaded() {
+    emit configLoaded(m_workingConfig);
 }
 
 void LC_PresetManagerFusionSkin::onArchetypeChanged(StyleArchetype archetype) {
@@ -112,40 +119,4 @@ void LC_PresetManagerFusionSkin::applyActiveConfigToSystem(const QString& active
     if (m_styleManager != nullptr) {
         m_styleManager->setActiveSkin(activeKey);
     }
-}
-
-bool LC_PresetManagerFusionSkin::isGated() const {
-    return LC_SettingsManagerStyling::isFusionGated() || isReadOnlyDefault();
-}
-
-QString LC_PresetManagerFusionSkin::gatedMessage() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return LC_SettingsManagerStyling::fusionGatedMessage(tr("controls styling"));
-    }
-    if (isReadOnlyDefault()) {
-        return presetStrings().defaultReadOnlyMessage;
-    }
-    if (isClassicFusion()) {
-        return tr("The Classic Fusion archetype uses native Qt widget drawing. Sub-controls for custom grips, outlines, and item view hover are not applicable.");
-    }
-    return QString();
-}
-
-QString LC_PresetManagerFusionSkin::gatedActionText() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return LC_SettingsManagerStyling::fusionGatedActionText();
-    }
-    if (isReadOnlyDefault()) {
-        return presetStrings().duplicateActionText;
-    }
-    return QString();
-}
-
-std::function<void()> LC_PresetManagerFusionSkin::gatedActionCallback() const {
-    if (LC_SettingsManagerStyling::isFusionGated()) {
-        return [this]() {
-            LC_SettingsManagerStyling::enableFusionStyling(m_styleManager);
-        };
-    }
-    return nullptr;
 }

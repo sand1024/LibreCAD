@@ -30,6 +30,7 @@
 #include "lc_preset_manager_shortcuts.h"
 #include "lc_settings_dialog.h"
 #include "lc_settings_page_commands.h"
+#include "lc_settings_page_customization_profiles.h"
 #include "lc_settings_page_custom_menus.h"
 #include "lc_settings_page_menus_toolbars.h"
 #include "lc_settings_page_shortcuts.h"
@@ -37,29 +38,36 @@
 #include "lc_settings_registry.h"
 #include "qc_applicationwindow.h"
 
-void LC_SettingsManagerCustomization::initialize(LC_ActionGroupManager* groupManager, LC_NavigationControlsCreator* creatorInvoker,
-LC_GraphicViewContextMenuProvider* contextMenuProvider, LC_ActionFactory* actionFactory,
-LC_CommandManager* commandManager) {
+void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow) {
     using namespace LC_SettingsPagesCustomization;
 
     auto* reg = LC_SettingsRegistry::instance();
     reg->configureDialog(DLG_CUSTOMIZATION, {QObject::tr("Application Customization"), true, false, ":/icons/options_customize.lci"});
 
     // 1. Register Shortcuts Preset Manager
-    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_SHORTCUTS, [groupManager]() {
-        return std::make_unique<LC_PresetManagerShortcuts>(groupManager);
+    auto groupManager = appWindow->getActionGroupManager();
+
+    auto shortcutsManager = appWindow->getShortcutsManager();
+    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_SHORTCUTS, [groupManager, shortcutsManager]() {
+        return std::make_unique<LC_PresetManagerShortcuts>(groupManager, shortcutsManager);
     });
 
+
+    auto commandManager = appWindow->getCommandManager();
     reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_COMMANDS, [groupManager,commandManager]() {
         return std::make_unique<LC_PresetManagerCommands>(commandManager, groupManager);
     });
 
-    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_CONTEXT_MENUS, [contextMenuProvider]() {
-        return std::make_unique<LC_PresetManagerMenus>(contextMenuProvider);
+    auto actionFactory = appWindow->getActionFactory();
+
+    auto contextMenuProvider = appWindow->getContextMenuProvider();
+    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_CONTEXT_MENUS, [contextMenuProvider, actionFactory, groupManager]() {
+        return std::make_unique<LC_PresetManagerMenus>(contextMenuProvider, actionFactory, groupManager);
     });
 
-    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_MENU_AND_TOOLBARS, [creatorInvoker, actionFactory]() {
-        return std::make_unique<LC_PresetManagerMenusToolbars>(creatorInvoker, actionFactory);
+    auto navigatorControlsCreator = appWindow->getNavigationControlsCreator();
+    reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_MENU_AND_TOOLBARS, [navigatorControlsCreator, actionFactory]() {
+        return std::make_unique<LC_PresetManagerMenusToolbars>(navigatorControlsCreator, actionFactory);
     });
 
     const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
@@ -94,6 +102,15 @@ LC_CommandManager* commandManager) {
                 return std::make_unique<LC_SettingsPageCustomMenus>(groupManager);
             },
             40
+        },
+        {
+            PAGE_PROFILE_EXCHANGE,
+            "",
+            [groupManager, shortcutsManager, commandManager, navigatorControlsCreator, contextMenuProvider]() {
+                return std::make_unique<LC_SettingsPageCustomizationProfiles>(groupManager, shortcutsManager, commandManager, navigatorControlsCreator,
+                                                                              contextMenuProvider);
+            },
+            50
         }
     };
 

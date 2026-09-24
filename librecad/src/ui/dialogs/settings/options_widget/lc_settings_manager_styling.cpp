@@ -27,8 +27,8 @@
 
 #include "lc_preset_manager_fusion_skin.h"
 #include "lc_preset_manager_icons_style.h"
-#include "lc_preset_manager_metrics.h"
-#include "lc_preset_manager_palette.h"
+#include "lc_preset_manager_fusion_metrics.h"
+#include "lc_preset_manager_fusion_colors_palette.h"
 #include "lc_preset_manager_typography.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_dialog.h"
@@ -44,15 +44,15 @@
 #include "lc_settings_page_skin_controls.h"
 #include "lc_settings_page_skin_palette.h"
 #include "lc_settings_page_skin_toolbars_menus.h"
+#include "lc_settings_page_styling_profiles.h"
 #include "lc_settings_page_toolbars_and_docks.h"
 #include "lc_settings_page_typography.h"
-#include "lc_settings_page_workspace_profiles.h"
 #include "lc_settings_registry.h"
 #include "lc_styling_preview_controller.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
-void LC_SettingsManagerStyling::initialize() {
+void LC_SettingsManagerStyling::initialize(QC_ApplicationWindow* appWindow) {
      using namespace LC_SettingsPagesStyling;
 
     auto* reg = LC_SettingsRegistry::instance();
@@ -60,25 +60,26 @@ void LC_SettingsManagerStyling::initialize() {
 
     reg->configureDialog(targetDialog, {QObject::tr("Application Styling"), true, true, ":/icons/options_styling.lci"});
 
-    // 1. Preset Managers Registration
-    reg->registerPresetManager(targetDialog, PAGE_STYLING_TYPOGRAPHY, []() {
-        return std::make_unique<LC_PresetManagerTypography>(nullptr);
+     auto uiStyleManager = appWindow->getUiStyleManager();
+     // 1. Preset Managers Registration
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_TYPOGRAPHY, [uiStyleManager]() {
+        return std::make_unique<LC_PresetManagerTypography>(uiStyleManager);
     });
 
-    reg->registerPresetManager(targetDialog, PAGE_STYLING_ICONS, []() {
-        return std::make_unique<LC_PresetManagerIconsStyle>(nullptr);
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_ICONS, [uiStyleManager]() {
+        return std::make_unique<LC_PresetManagerIconsStyle>(uiStyleManager);
     });
 
-    reg->registerPresetManager(targetDialog, PAGE_STYLING_SKINS, []() {
-        return std::make_unique<LC_PresetManagerFusionSkin>(nullptr);
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_SKINS, [uiStyleManager]() {
+        return std::make_unique<LC_PresetManagerFusionSkin>(uiStyleManager);
     });
 
-    reg->registerPresetManager(targetDialog, PAGE_STYLING_METRICS, []() {
-        return std::make_unique<LC_PresetManagerMetrics>(nullptr);
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_METRICS, [uiStyleManager]() {
+        return std::make_unique<LC_PresetManagerFusionMetrics>(uiStyleManager);
     });
 
-    reg->registerPresetManager(targetDialog, PAGE_STYLING_PALETTE, []() {
-        return std::make_unique<LC_PresetManagerPalette>();
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_PALETTE, [uiStyleManager]() {
+        return std::make_unique<LC_PresetManagerFusionColorsPalette>(uiStyleManager);
     });
 
     // 2. Settings Pages Registrations
@@ -104,7 +105,7 @@ void LC_SettingsManagerStyling::initialize() {
         { PAGE_STYLING_METRICS_CONTROLS, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsControls>(), 30 },
         { PAGE_STYLING_METRICS_VIEWS_TABS, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsViewsTabs>(), 40 },
         { PAGE_STYLING_METRICS_BEHAVIOR, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsBehavior>(), 50 },
-        { PAGE_STYLING_PROFILES, "", page<LC_SettingsPageWorkspaceProfiles>(), 120 }
+        { PAGE_STYLING_PROFILES, "", page<LC_SettingsPageStylingProfiles>(), 120 }
     };
 
     reg->registerPages(targetDialog, pages);
@@ -165,8 +166,13 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
     return accepted;
 }
 
+
 bool LC_SettingsManagerStyling::isFusionGated() {
     return !(CFG_AppStyling::o_AllowStyle.get() && CFG_AppStyling::o_Style.get() == "Fusion");
+}
+
+QString LC_SettingsManagerStyling::fusionGatedIcon()  {
+   return QString();
 }
 
 QString LC_SettingsManagerStyling::fusionGatedMessage(const QString& domainName) {

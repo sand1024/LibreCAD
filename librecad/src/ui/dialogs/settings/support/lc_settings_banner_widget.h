@@ -42,6 +42,7 @@ public:
     ~LC_SettingsBannerWidget() override = default;
 
     void setBanner(const QString& message,
+                   const QString& buttonIcon,
                    const QString& actionText = QString(),
                    std::function<void()> actionCallback = nullptr);
 

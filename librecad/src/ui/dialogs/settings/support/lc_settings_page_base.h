@@ -161,10 +161,19 @@ class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
 
     void loadDialogData(LC_SettingsGroupDialog& group, bool loadPosition) override;
     void saveDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
+
+    virtual bool allowsDirectAccept() const {
+        return false;
+    }
 signals:
     void navigateToPage(const QString& pageId);
     void livePreviewRequested();
+    void directAcceptRequested(bool saveModifiedPages = true, int customResultCode = 1);
 protected:
+    void requestDialogClose(bool saveModifiedPages = true, int customResultCode = 1) {
+        emit directAcceptRequested(saveModifiedPages, customResultCode);
+    }
+
     LC_SettingsBinder* binder() {
         return &m_binder;
     }

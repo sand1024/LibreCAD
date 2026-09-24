@@ -142,7 +142,7 @@
    <item row="1" column="1">
     <widget class="QGroupBox" name="gbEdits">
      <property name="title">
-      <string>Inputs &amp; Focus Frames</string>
+      <string>Inputs</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_focus">
       <item row="0" column="0">
@@ -188,6 +188,32 @@
         </property>
         <property name="maximum">
          <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblTextCursorWidth">
+        <property name="toolTip">
+         <string>Width of the blinking text insertion cursor in input fields and the CAD command line (-1 for auto-scaling by display DPI).</string>
+        </property>
+        <property name="text">
+         <string>Text Cursor Width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbTextCursorWidth">
+        <property name="toolTip">
+         <string>Adjust width of blinking text cursor (-1 for auto-scaling).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>-1</number>
+        </property>
+        <property name="maximum">
+         <number>5</number>
         </property>
        </widget>
       </item>
@@ -294,6 +320,32 @@
         </property>
        </widget>
       </item>
+         <item row="1" column="0">
+             <widget class="QLabel" name="lblButtonIconSize">
+                 <property name="toolTip">
+                     <string>Size of icons rendered inside standard push buttons (-1 for auto-scaled 16 px).</string>
+                 </property>
+                 <property name="text">
+                     <string>Button Icon Size:</string>
+                 </property>
+             </widget>
+         </item>
+         <item row="1" column="1">
+             <widget class="QSpinBox" name="sbButtonIconSize">
+                 <property name="toolTip">
+                     <string>Adjust size of icons inside push buttons (-1 for auto-scaled 16 px).</string>
+                 </property>
+                 <property name="suffix">
+                     <string> px</string>
+                 </property>
+                 <property name="minimum">
+                     <number>-1</number>
+                 </property>
+                 <property name="maximum">
+                     <number>32</number>
+                 </property>
+             </widget>
+         </item>
      </layout>
     </widget>
    </item>

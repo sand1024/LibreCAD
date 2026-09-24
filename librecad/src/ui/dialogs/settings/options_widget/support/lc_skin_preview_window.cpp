@@ -130,7 +130,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     }
 
     // 3. CAD Tools Matrix (Columns, Icon Size, and Flat/AutoRaise)
-    const bool cadSidebarUngrouped = CFG_Startup::o_CADSideBarUngrouped;
+    const bool cadSidebarUngrouped = true;
     const int matrixIconSize = qBound(12, cadSidebarUngrouped ? o_LeftToolbarAllIconSize.get() : o_LeftToolbarIconSize.get(), 64);
     const int columns = qBound(1, cadSidebarUngrouped ? o_LeftToolbarAllColumnsCount.get() : o_LeftToolbarColumnsCount.get(), 12);
     const bool matrixFlat = cadSidebarUngrouped ? o_LeftToolbarAllFlatIcons.get() : o_LeftToolbarFlatIcons.get();

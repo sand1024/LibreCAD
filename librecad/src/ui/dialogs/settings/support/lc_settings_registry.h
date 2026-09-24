@@ -62,7 +62,8 @@ public:
                 const QString& initialPageId = QString(),
                 QWidget* parent = nullptr,
                 const std::function<void(LC_SettingsDialog*)>& preExecHook = nullptr,
-                const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook = nullptr);
+                const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook = nullptr,
+                int* exitCode = nullptr);
 private:
     LC_SettingsRegistry() = default;
     ~LC_SettingsRegistry() = default;

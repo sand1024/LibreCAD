@@ -7,6 +7,7 @@
 
 #include "lc_settings_manager_base.h"
 
+class QC_ApplicationWindow;
 class QWidget;
 class LC_UIStyleManager;
 class LC_StylingPreviewController;
@@ -41,10 +42,11 @@ namespace LC_SettingsPagesStyling {
 
 class LC_SettingsManagerStyling : public LC_SettingsManagerBase {
 public:
-    static void initialize();
+    static void initialize(QC_ApplicationWindow* appWindow);
     static bool showStylingSettings(QWidget* parent,const QString& initialPageId);
     static bool isFusionGated();
     static QString fusionGatedMessage(const QString& domainName = QString());
+    static QString fusionGatedIcon();
     static QString fusionGatedActionText();
     static void enableFusionStyling(LC_UIStyleManager* styleMgr = nullptr);
 private:

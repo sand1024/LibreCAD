@@ -61,6 +61,7 @@
 #include "lc_preset_manager_viewport.h"
 #include "lc_repository_viewport_theme.h"
 #include "lc_visual_snap_data.h"
+#include "qc_applicationwindow.h"
 
 class LC_OverlayDrawablesContainer;
 
@@ -69,7 +70,7 @@ QWidget* LC_SettingsManagerApplication::createGraphicViewPreview(QWidget* parent
     return result;
 }
 
-void LC_SettingsManagerApplication::initialize() {
+void LC_SettingsManagerApplication::initialize(QC_ApplicationWindow* appWindow) {
     using namespace LC_SettingsPagesApplication;
 
     auto* reg = LC_SettingsRegistry::instance();
@@ -78,9 +79,11 @@ void LC_SettingsManagerApplication::initialize() {
     reg->configureDialog(targetDialog, {QObject::tr("Application Preferences"), true, false,":/icons/settings.lci"});
 
     // Viewport Theme Preset Manager Registration
-    reg->registerPresetManager(targetDialog, PAGE_DRAW, []() {
+    reg->registerPresetManager(targetDialog, PAGE_DRAW, [appWindow]() {
         QWidget* previewLabel = createGraphicViewPreview(nullptr);
-        return std::make_unique<LC_PresetManagerViewport>(nullptr, previewLabel);
+        auto uiStyleManager = appWindow->getUiStyleManager();
+        auto repository = uiStyleManager->getViewportStylingRepository();
+        return std::make_unique<LC_PresetManagerViewport>(repository, nullptr, previewLabel);
     });
 
     // Pages Registration

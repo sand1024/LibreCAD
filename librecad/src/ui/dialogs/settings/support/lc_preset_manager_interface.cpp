@@ -52,7 +52,7 @@ bool LC_PresetManagerInterface::promptSavePresetAs(QWidget* parentWidget, QStrin
     }
 
     QString suggestedName = currentPresetDisplayName();
-    if (suggestedName == QObject::tr("Default") || getActivePresetKey() == DEFAULT_THEME_KEY) {
+    if (suggestedName == QObject::tr("Default") || getActivePresetKey() == CFG_AppState::DEFAULT_THEME_KEY) {
         suggestedName = strings.defaultNewPresetName;
     }
 

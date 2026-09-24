@@ -45,17 +45,6 @@ void LC_SettingsPageGraphicViewBehavior::setupBindings() {
         { ui->scrollbars_check_box, o_ScrollBars },
         { ui->cb_antialiasing, o_Antialiasing },
         { ui->cbClassicRendering, o_ClassicRenderer },
-        { ui->cb_autopanning, o_Autopanning },
-        { ui->cbFirstTimeNoZoom, o_FirstTimeNoZoom },
-        { ui->cbPanOnWheelZoom, o_PanOnZoom },
-        { ui->cbWheelScrollInvertH, CFG_Defaults::o_WheelScrollInvertH },
-        { ui->cbWheelScrollInvertV, CFG_Defaults::o_WheelScrollInvertV },
-        { ui->cbInvertZoomDirection, CFG_Defaults::o_InvertZoomDirection }
+        { ui->cb_autopanning, CFG_ZoomAndPan::o_Autopanning },
     });
-
-    // Symmetrical Overloaded bindCustom: accepts the o_ScrollZoomFactor descriptor directly [4.1]
-    bindCustom<QDoubleSpinBox, int>(ui->sbDefaultZoomFactor, o_ScrollZoomFactor, false,
-        &QDoubleSpinBox::valueChanged,
-        [](QDoubleSpinBox* w) { return static_cast<int>(w->value() * 1000.0); },
-        [](QDoubleSpinBox* w, int v) { w->setValue(v / 1000.0); });
 }

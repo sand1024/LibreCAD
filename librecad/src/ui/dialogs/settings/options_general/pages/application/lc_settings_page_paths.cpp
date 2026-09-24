@@ -29,7 +29,7 @@ LC_SettingsPagePaths::LC_SettingsPagePaths(QObject* parent)
     : LC_SettingsPageBase(tr("Paths"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Paths::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPagePaths>()){
-    // Priority 70 inside the Application parent index block
+
     setSortWeight(70);
 }
 
@@ -43,13 +43,14 @@ void LC_SettingsPagePaths::setupBindings() {
     using namespace CFG_Paths;
 
     bindString({
-        { ui->lePathTranslations, o_Translations },
+        { ui->lePathTranslations, o_Translations},
         { ui->lePathHatch, o_Patterns },
         { ui->lePathFonts, o_Fonts },
         { ui->leTemplate, o_Template },
         { ui->variablefile_field, o_VariableFile },
         { ui->leOtherSettingsDirectory, o_OtherSettingsDir, true },
-        { ui->lePathLibrary, o_Library, true /*requiresRestart*/ }
+        { ui->lePathLibrary, o_Library, true /*requiresRestart*/ },
+        {ui->leIconsOverrideDirectory, CFG_Paths::o_IconOverridesDir}
     });
 
     bindDirectoryChooser(ui->fonts_button, ui->lePathFonts, tr("Select Fonts Folder"));

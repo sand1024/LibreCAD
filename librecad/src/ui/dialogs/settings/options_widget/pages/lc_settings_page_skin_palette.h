@@ -8,7 +8,7 @@ namespace Ui {
     class LC_SettingsPageSkinPalette;
 }
 
-class LC_PresetManagerPalette;
+class LC_PresetManagerFusionColorsPalette;
 
 class LC_SettingsPageSkinPalette : public LC_SettingsPageBase {
     Q_OBJECT
@@ -48,7 +48,7 @@ private:
     QString getRoleTooltip(QPalette::ColorRole role) const;
     QString getRoleDisplayName(QPalette::ColorRole role) const;
 
-    LC_PresetManagerPalette* m_presetManager = nullptr;
+    LC_PresetManagerFusionColorsPalette* m_presetManager = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageSkinPalette> ui;
     bool m_blockSignals = false;
 };

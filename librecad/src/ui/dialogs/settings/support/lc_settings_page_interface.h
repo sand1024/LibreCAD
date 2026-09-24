@@ -90,6 +90,7 @@ public:
     virtual bool isPageGated() const { return false; }
     virtual bool disablesWidgetOnGating() const { return true; }
     virtual QString gatedMessage() const { return QString(); }
+    virtual QString gatedIcon() const { return QString(); }
     virtual QString gatedActionText() const { return QString(); }
     virtual std::function<void()> gatedActionCallback() const { return nullptr; }
 

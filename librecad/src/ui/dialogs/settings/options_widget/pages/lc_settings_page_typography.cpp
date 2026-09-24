@@ -134,6 +134,10 @@ void LC_SettingsPageTypography::populateUiFromConfig() {
     ui->chkSpecialDockBold->setChecked(config.specialDockTitle.bold);
     ui->chkSpecialDockItalic->setChecked(config.specialDockTitle.italic);
 
+    ui->cbPropertiesDock->setValue(config.propertiesWidget.sizeOffset);
+    ui->chkPropertiesDockBold->setChecked(config.propertiesWidget.bold);
+    ui->chkPropertiesDockItalic->setChecked(config.propertiesWidget.italic);
+
     ui->fcTechnicalFont->setCurrentFont(QFont(config.techFamily));
     ui->sbTechnicalOffset->setValue(config.technical.sizeOffset);
     ui->chkTechnicalBold->setChecked(config.technical.bold);
@@ -179,6 +183,10 @@ void LC_SettingsPageTypography::syncUiToWorkingConfig() {
     config.specialDockTitle.sizeOffset = ui->sbSpecialDockOffset->value();
     config.specialDockTitle.bold       = ui->chkSpecialDockBold->isChecked();
     config.specialDockTitle.italic     = ui->chkSpecialDockItalic->isChecked();
+
+    config.propertiesWidget.sizeOffset  = ui->cbPropertiesDock->value();
+    config.propertiesWidget.bold = ui->chkPropertiesDockBold->isChecked();
+    config.propertiesWidget.italic= ui->chkPropertiesDockItalic->isChecked();
 
     config.techFamily            = ui->fcTechnicalFont->currentFont().family();
     config.technical.sizeOffset  = ui->sbTechnicalOffset->value();

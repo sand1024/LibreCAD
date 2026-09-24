@@ -71,6 +71,7 @@ void LC_SettingsBannerWidget::paintEvent(QPaintEvent* event) {
 }
 
 void LC_SettingsBannerWidget::setBanner(const QString& message,
+                                        const QString& buttonIcon,
                                        const QString& actionText,
                                        std::function<void()> actionCallback) {
     m_lblMessage->setText(message);
@@ -80,6 +81,7 @@ void LC_SettingsBannerWidget::setBanner(const QString& message,
         m_btnAction->setText(actionText);
         m_btnAction->setToolTip(actionText);
         m_btnAction->setVisible(true);
+        m_btnAction->setIcon(QIcon(buttonIcon));
     }
     else {
         m_btnAction->setVisible(false);
