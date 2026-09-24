@@ -42,16 +42,16 @@ class LC_NavigationControlsCreator : public QObject, public LC_MenuBuilderBase {
     Q_OBJECT
 public:
     QToolBar* findExistingToolbar(const QString& name, const QString& resolvedTitle) const;
-    LC_NavigationControlsCreator(QC_ApplicationWindow* appWin,
+    LC_NavigationControlsCreator(LC_RepositoryMenuBarAndToolbars* repository, QC_ApplicationWindow* appWin,
                                  LC_ActionGroupManager* actionGroupManager,
                                  LC_SpecialMenuServiceInterface* specialMenuService);
 
-    LC_RepositoryMenuBarAndToolbars* getToolbarsRepository() const {
-        return m_repository.get();
+    LC_RepositoryMenuBarAndToolbars* getRepository() const {
+        return m_repository;
     }
 
     void applyActiveLayoutScheme();
-    void applyMenusToolbarsScheme(const NavigationLayoutConfig& config);
+    void applyMenusToolbarsScheme(const NavigationLayoutConfig& config, bool applyInitialVisibility = false);
 
     LC_ActionGroupManager* getActionGroupManager() const {
         return m_actionGroupManager;
@@ -63,6 +63,9 @@ public:
     QAction* getAction(const QString& key) const override;
 
     QMenu* createMainWindowPopupMenu() const;
+    void updateToolbarsTooltips(bool showTooltips);
+    void updateToolbarsTooltips();
+    void resetToolbarsLayout(const NavigationLayoutConfig& config);
 
 protected slots:
     // void createToolbar(const QString& toolbarName, const QStringList& actionNames, int areaIndex) const;
@@ -70,15 +73,17 @@ protected slots:
     void onCustomToolbarVisibilityChanged(bool visible);
 protected:
     void applyMenuBar(const NavigationLayoutConfig& config);
-    void applyCadDockWidgets(const NavigationLayoutConfig& config);
-    void applyToolbars(const NavigationLayoutConfig& config);
+    void applyCadDockWidgets(const NavigationLayoutConfig& config, bool applyInitialVisibility);
+    void applyToolbars(const NavigationLayoutConfig& config, bool applyInitialVisibility);
     void populateToolbar(QToolBar* tb, const ToolbarDef& tbDef);
     void updatePenToolbar(const ToolbarDef& tbDef);
     void populateToolbarNodes(QToolBar* tb, const QList<ActionNode>& nodes);
+    void clearToolbar(QToolBar* tb);
+    bool hasSavedWidgetsState() const;
 private:
     QC_ApplicationWindow* m_appWindow{nullptr};
-    LC_ActionGroupManager* m_actionGroupManager {nullptr};
-    std::unique_ptr<LC_RepositoryMenuBarAndToolbars> m_repository;
+
+    LC_RepositoryMenuBarAndToolbars* m_repository;
     QMenu* m_pluginsMenu{nullptr};
     bool m_showToolbarTooltips {false};
 };

@@ -21,8 +21,11 @@
 
 
 #include "lc_style_metrics_utils.h"
+
+#include "lc_settings_app_state.h"
+
 void LC_StyleMetricsUtils::initializeDefault(StyleMetricsConfig &config) {
-    config.name = DEFAULT_THEME_NAME;
+    config.name = CFG_AppState::DEFAULT_THEME_KEY;
     applyDensityPreset(config, "standard");
 }
 

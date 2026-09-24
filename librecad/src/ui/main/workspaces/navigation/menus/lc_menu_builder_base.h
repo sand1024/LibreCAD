@@ -27,7 +27,7 @@
 #include <QList>
 #include <QString>
 
-class LC_ActionNamingServiceInterface;
+class LC_ActionGroupManager;
 class QAction;
 class QMenu;
 struct ActionNode;
@@ -35,7 +35,7 @@ class LC_SpecialMenuServiceInterface;
 
 class LC_MenuBuilderBase {
 public:
-    explicit LC_MenuBuilderBase(LC_SpecialMenuServiceInterface* specialMenuService = nullptr);
+    explicit LC_MenuBuilderBase(LC_ActionGroupManager* actionGroupManager, LC_SpecialMenuServiceInterface* specialMenuService = nullptr);
     virtual ~LC_MenuBuilderBase() = default;
 
     void setSpecialMenuService(LC_SpecialMenuServiceInterface* service);
@@ -44,7 +44,7 @@ public:
     virtual QAction* getAction(const QString& key) const = 0;
 
 protected:
-    void populateMenuRecursive(QMenu* parentMenu, const QList<ActionNode>& nodes, const LC_ActionNamingServiceInterface* naming, bool allowTearOff = false);
+    void populateMenuRecursive(QMenu* parentMenu, const QList<ActionNode>& nodes, bool allowTearOff = false);
     bool hasAnyValidActions(const QList<ActionNode>& nodes) const;
 
     virtual bool shouldIncludeNode(const ActionNode& node) const;
@@ -52,6 +52,7 @@ protected:
 
 
     LC_SpecialMenuServiceInterface* m_specialMenuService{nullptr};
+    LC_ActionGroupManager* m_actionGroupManager {nullptr};
 };
 
 #endif

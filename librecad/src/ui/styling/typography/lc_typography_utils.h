@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_TYPOGRAPHY_UTILS_H
+#ifndef LC_STYLE_TYPOGRAPHY_UTILS_H
 #define LC_STYLE_TYPOGRAPHY_UTILS_H
 
 #include "lc_palette_editor_shared.h"
@@ -28,8 +28,6 @@
 class LC_TypographyUtils {
 public:
     static void initializeDefaultConfig(FontConfig& config);
-    static void initializeWithSystem(FontConfig& config);
 };
-
 
 #endif

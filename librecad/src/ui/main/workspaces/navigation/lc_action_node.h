@@ -43,6 +43,7 @@ enum class ToolButtonPopupMode {
 struct ActionNode {
     ActionNodeType type = ActionNodeType::Separator;
     QString actionName;
+    QString customLabel;
     QString groupTitle;
     QString groupIcon;
     ToolButtonPopupMode popupMode = ToolButtonPopupMode::InstantPopup;
@@ -70,6 +71,17 @@ struct ActionNode {
         }
     }
 
+    ActionNode(const char* name, const QString& label) {
+        if (name == nullptr || *name == '\0' || QString::fromUtf8(name) == "-") {
+            type = ActionNodeType::Separator;
+        }
+        else {
+            type = ActionNodeType::Action;
+            actionName = QString::fromUtf8(name);
+        }
+        customLabel = label;
+    }
+
     ActionNode(const QString& title, const QString& icon, const QList<ActionNode>& childNodes,
                ToolButtonPopupMode mode = ToolButtonPopupMode::InstantPopup)
         : type(ActionNodeType::Group)
@@ -84,7 +96,8 @@ enum class ToolbarKind {
     Cad           = 1, // Floating/docked CAD toolbars (Line, Circle, etc.)
     CadDockWidget = 2, // Individual CAD dock widgets (Line, Circle, etc.)
     CadMatrix     = 3, // The Mega CAD Tools Matrix dock widget
-    Custom        = 4 // User-created custom toolbars
+    Host          = 4, // Pre-instantiated container toolbars (Tool Options, Snap, etc.)
+    Custom        = 5  // User-created custom toolbars
 };
 
 struct ToolbarDef {
@@ -92,19 +105,23 @@ struct ToolbarDef {
     QString icon;
     Qt::ToolBarArea area = Qt::TopToolBarArea;
     bool visible = true;
+    bool lineBreak = false;
     ToolbarKind kind = ToolbarKind::Standard;
     QList<ActionNode> nodes;
 
     bool isBuiltIn() const {
         return kind != ToolbarKind::Custom;
     }
+
+    bool isActionDriven() const {
+        return kind == ToolbarKind::Standard || kind == ToolbarKind::Cad || kind == ToolbarKind::Custom;
+    }
 };
 
 struct NavigationLayoutConfig {
     QString name;
-    int activeMenuVariant = 0; // 0: Compact, 1: Compact Tools, 2: Extended
+    QList<ActionNode> menuMinimal;
     QList<ActionNode> menuCompact;
-    QList<ActionNode> menuCompactTools;
     QList<ActionNode> menuExtended;
     QList<ToolbarDef> toolbars;
 };

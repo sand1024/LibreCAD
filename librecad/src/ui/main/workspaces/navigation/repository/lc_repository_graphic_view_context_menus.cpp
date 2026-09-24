@@ -64,12 +64,14 @@ namespace {
         }
         return node;
     }
+
+    inline const QString MENUS_EXTENSION = ".lccm";
+    inline const QString MENUS_FILE_IDENTIFIER = "LibreCAD Config: Context Menus";
 }
 
 LC_RepositoryGraphicViewContextMenus::LC_RepositoryGraphicViewContextMenus(const QString& configDir)
     : LC_PresetRepositoryBase<ContextMenusConfig>(
           configDir, MENUS_EXTENSION, MENUS_FILE_IDENTIFIER, "menus_index.lcix") {
-    QDir().mkpath(configDir);
 }
 
 QJsonObject LC_RepositoryGraphicViewContextMenus::configToJson(const ContextMenusConfig& config) const {

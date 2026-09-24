@@ -44,7 +44,7 @@ public:
     bool requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId = "") const;
     void showDeviceOptions();
     bool showStylingOptionsDialog(const QString& pageId = "") const;
-    bool showGeneralOptionsDialog() const;
+    bool showGeneralOptionsDialog(int* exitCode) const;
     bool showCustomizationOptionsDialog(const QString& pageId = "");
     int showCloseDialog(const QC_MDIWindow *w, bool showSaveAll) const;
     QPair<QString, QString> showExportFileSelectionDialog(const QString& drawingFileName) const;

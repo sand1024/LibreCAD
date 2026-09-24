@@ -23,19 +23,21 @@
 #define LC_PALETTE_REPOSITORY_H
 
 #include "lc_palette_editor_shared.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
+
+inline const QString PALETTE_EXTENSION = ".lcpl";
+inline const QString PALETTE_FILE_IDENTIFIER = "LibreCAD Config: Colors Palette";
 
 class LC_RepositoryPalette : public LC_PresetRepositoryBase<PaletteConfig> {
 public:
-    explicit LC_RepositoryPalette(const QString& configDir);
+    explicit LC_RepositoryPalette(const QString& configDir)
+        : LC_PresetRepositoryBase<PaletteConfig>(configDir, PALETTE_EXTENSION, PALETTE_FILE_IDENTIFIER, "palettes_index.lcix") {
+    }
+
     ~LC_RepositoryPalette() override = default;
 
     QJsonObject configToJson(const PaletteConfig& config) const override;
     bool configFromJson(const QJsonObject& json, PaletteConfig& config) const override;
-
-private:
-    QJsonObject serializeScheme(const ColorSchemeData& scheme) const;
-    void deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const;
 };
 
 #endif

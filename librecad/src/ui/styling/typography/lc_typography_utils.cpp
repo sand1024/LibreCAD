@@ -25,44 +25,23 @@
 #include <QApplication>
 #include <QFont>
 
+#include "lc_settings_app_state.h"
+
 void LC_TypographyUtils::initializeDefaultConfig(FontConfig& config) {
-    config.name = DEFAULT_THEME_NAME;
+    config.name = CFG_AppState::DEFAULT_THEME_KEY;
     config.mainFamily = "Segoe UI";
     config.mainSize   = 10;
 
-    config.headings.setup(2, true, false);
-    config.menuBar.setup(1, true, false);
-    config.menus.setup(0, false, false);
-    config.buttons.setup(-1, false, false);
-    config.inputs.setup(0, false, false);
-
-    config.genericDockTitle.setup(0, false, false);
-    config.specialDockTitle.setup(0, true, false);
-
-    config.techFamily = "Consolas";
-    config.technical.setup(0, false, false);
-}
-
-// fixme - sand - call it on startup before style setup?
-void LC_TypographyUtils::initializeWithSystem(FontConfig &config) {
-    config.name = "System Standard Typography";
-
-    // Query active desktop window manager baseline typography on-the-fly
-    const QFont currentFont = QApplication::font();
-    config.mainFamily = currentFont.family();
-    config.mainSize   = currentFont.pointSize() > 0 ? currentFont.pointSize() : 10;
-
-    // Apply flat, safe zero-offsets for standard native integration
     config.headings.setup(0, false, false);
     config.menuBar.setup(0, false, false);
     config.menus.setup(0, false, false);
     config.buttons.setup(0, false, false);
     config.inputs.setup(0, false, false);
+
     config.genericDockTitle.setup(0, false, false);
     config.specialDockTitle.setup(0, false, false);
+    config.propertiesWidget.setup(0, false, false);
 
-
-    // Fallback monospace technical/log font
     config.techFamily = "Consolas";
     config.technical.setup(0, false, false);
 }

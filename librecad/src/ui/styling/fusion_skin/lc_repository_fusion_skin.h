@@ -23,7 +23,10 @@
 #define LC_FUSION_PALETTES_REPOSITORY_H
 
 #include "lc_palette_editor_shared.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
+
+inline const QString SKIN_EXTENSION = ".lcsk";
+inline const QString SKIN_FILE_IDENTIFIER = "LibreCAD Config: Fusion Skin";
 
 class LC_RepositoryFusionSkin : public LC_PresetRepositoryBase<ControlStyleConfig> {
 public:

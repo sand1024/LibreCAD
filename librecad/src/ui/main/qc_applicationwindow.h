@@ -37,6 +37,8 @@
 #include "lc_special_menu_service_interface.h"
 #include "lc_ui_style_manager.h"
 
+class LC_ShortcutsManager;
+class LC_CustomizationManager;
 class LC_GraphicViewContextMenuProvider;
 class RS_Graphic;
 class RS_GraphicView;
@@ -84,6 +86,7 @@ class RS_Block;
 class RS_Pen;
 class TwoStackedLabels;
 class LC_CommandManager;
+class LC_CustomizationManager;
 
 struct AreasToggleActions {
     QAction* left{nullptr};
@@ -129,6 +132,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void fireIconsRefresh();
     void fireWidgetSettingsChanged();
     void fireWorkspacesChanged();
+    void resetLayoutToDefault();
     void fireCurrentActionIconChanged(QAction* actionIcon);
     void showStatusMessage(const QString& msg, int timeout = 0) const;
     void notificationMessage(const QString& msg, int timeout) const;
@@ -143,6 +147,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void updateToolbarsIconSize();
     void updateToolbarsIconSize(bool allowCustom, int customSize);
     void updateActionsForCommandsInMenus(bool keycodeMode);
+    void onStylingApplied();
 public slots:
     void slotFocus();
     void slotKillAllActions();
@@ -234,6 +239,8 @@ public slots:
     void forceCheckForNewVersion() const;
     void slotShowEntityDescriptionOnHover(bool toggle);
     void tryShowRelativeInput(RS2::RelativePointParam paramType) const;
+    void slotBackupExport();
+    void slotBackupRestore();
 signals:
     void gridChanged(bool on);
     void draftChanged(bool on);
@@ -252,7 +259,8 @@ public:
     /**
      * @return Pointer to application window.
      */
-    static std::unique_ptr<QC_ApplicationWindow>& getAppWindow();
+    static QC_ApplicationWindow* getAppWindow();
+    static void destroySingleton();
 
     QG_PenToolBar* getPenToolBar() const { // fixme - rework later, it's not good that the active pen is actually saved as state of UI components!
         return m_penToolBar;
@@ -306,7 +314,7 @@ public:
     }
     LC_UCSStateWidget* getUcsStateWidget(){return m_ucsStateWidget;}
 
-    QMenu* getPluginsMenu() const;
+    QMenu* getPluginsMenu() const {return m_pluginsMenu.get();}
 
     // Highlight the active block in the block widget
     void showBlockActivated(const RS_Block* block) const;
@@ -358,6 +366,17 @@ public:
         return m_commandManager.get();
     }
 
+    LC_ShortcutsManager* getShortcutsManager() const {
+        return m_shortcutsManager.get();
+    }
+
+    LC_ActionGroupManager* getActionGroupManager() const {
+        return m_actionGroupManager.get();
+    }
+
+    LC_NavigationControlsCreator* getNavigationControlsCreator() {
+        return m_navigationControlsCreator.get();
+    }
 
     void commandMessage(const QString& msg) const;
     // If a freshly opened drawing has empty modelspace but at least one
@@ -414,7 +433,8 @@ protected:
     std::unique_ptr<LC_SpecialMenuServiceInterface> m_specialMenuService;
     std::unique_ptr<LC_GraphicViewContextMenuProvider> m_contextMenuProvider;
     std::unique_ptr<QMenu> m_recentFilesMenu;
-    std::unique_ptr<LC_NavigationControlsCreator> m_creatorInvoker;
+    std::unique_ptr<QMenu> m_pluginsMenu;
+    std::unique_ptr<LC_NavigationControlsCreator> m_navigationControlsCreator;
     std::unique_ptr<LC_PluginInvoker> m_pluginInvoker;
     std::unique_ptr<LC_AppWindowDialogsInvoker> m_dlgHelpr;
     std::unique_ptr<LC_WorkspacesInvoker> m_workspacesInvoker;
@@ -428,6 +448,9 @@ protected:
     std::unique_ptr<LC_InfoCursorSettingsManager> m_infoCursorSettingsManager;
     std::unique_ptr<LC_SnapManager> m_snapManager;
     std::unique_ptr<LC_CommandManager> m_commandManager;
+
+    std::unique_ptr<LC_CustomizationManager> m_customizationManager;
+    std::unique_ptr<LC_ShortcutsManager> m_shortcutsManager;
 
     /** Pointer to the application window (this). */
     static QC_ApplicationWindow* m_appWindow;
@@ -493,7 +516,6 @@ protected:
 
     QStringList m_openedFiles;
     QList<QAction*> m_actionsToDisableInPrintPreviewList;
-
 
     std::unique_ptr<LC_UIStyleManager> m_uiStyleManager;
 

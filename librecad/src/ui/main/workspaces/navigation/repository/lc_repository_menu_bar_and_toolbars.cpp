@@ -28,9 +28,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-LC_RepositoryMenuBarAndToolbars::LC_RepositoryMenuBarAndToolbars(const QString& configDir)
-    : LC_PresetRepositoryBase<NavigationLayoutConfig>(configDir, MENUS_TOOLBARS_EXTENSION, MENUS_TOOLBARS_FILE_IDENTIFIER, "toolbars_menus_index.lcix") {
-}
+
 
 QJsonArray LC_RepositoryMenuBarAndToolbars::serializeNodes(const QList<ActionNode>& nodes) {
     QJsonArray arr;
@@ -38,12 +36,12 @@ QJsonArray LC_RepositoryMenuBarAndToolbars::serializeNodes(const QList<ActionNod
         QJsonObject obj;
         obj["type"] = static_cast<int>(node.type);
         if (node.type == ActionNodeType::Action) {
-            obj["actionName"] = node.actionName;
+            obj["action"] = node.actionName;
         }
         else if (node.type == ActionNodeType::Group) {
-            obj["groupTitle"] = node.groupTitle;
-            obj["groupIcon"] = node.groupIcon;
-            obj["popupMode"] = static_cast<int>(node.popupMode);
+            obj["title"] = node.groupTitle;
+            obj["icon"] = node.groupIcon;
+            obj["popup_mode"] = static_cast<int>(node.popupMode);
             obj["children"] = serializeNodes(node.children);
         }
         arr.append(obj);
@@ -61,12 +59,12 @@ QList<ActionNode> LC_RepositoryMenuBarAndToolbars::deserializeNodes(const QJsonA
         ActionNode node;
         node.type = static_cast<ActionNodeType>(obj.value("type").toInt());
         if (node.type == ActionNodeType::Action) {
-            node.actionName = obj.value("actionName").toString();
+            node.actionName = obj.value("action").toString();
         }
         else if (node.type == ActionNodeType::Group) {
-            node.groupTitle = obj.value("groupTitle").toString();
-            node.groupIcon = obj.value("groupIcon").toString();
-            node.popupMode = static_cast<ToolButtonPopupMode>(obj.value("popupMode").toInt());
+            node.groupTitle = obj.value("title").toString();
+            node.groupIcon = obj.value("icon").toString();
+            node.popupMode = static_cast<ToolButtonPopupMode>(obj.value("popup_mode").toInt());
             node.children = deserializeNodes(obj.value("children").toArray());
         }
         nodes.append(node);
@@ -77,10 +75,9 @@ QList<ActionNode> LC_RepositoryMenuBarAndToolbars::deserializeNodes(const QJsonA
 QJsonObject LC_RepositoryMenuBarAndToolbars::configToJson(const NavigationLayoutConfig& config) const {
     QJsonObject root;
     root["name"] = config.name;
-    root["activeMenuVariant"] = config.activeMenuVariant;
-    root["menuCompact"] = serializeNodes(config.menuCompact);
-    root["menuCompactTools"] = serializeNodes(config.menuCompactTools);
-    root["menuExtended"] = serializeNodes(config.menuExtended);
+    root["menu_minimal"] = serializeNodes(config.menuMinimal);
+    root["menu_compact"] = serializeNodes(config.menuCompact);
+    root["menu_extended"] = serializeNodes(config.menuExtended);
 
     QJsonArray tbArray;
     for (const auto& tb : config.toolbars) {
@@ -103,10 +100,9 @@ bool LC_RepositoryMenuBarAndToolbars::configFromJson(const QJsonObject& json, Na
     }
 
     config.name = json.value("name").toString();
-    config.activeMenuVariant = json.value("activeMenuVariant").toInt(0);
-    config.menuCompact = deserializeNodes(json.value("menuCompact").toArray());
-    config.menuCompactTools = deserializeNodes(json.value("menuCompactTools").toArray());
-    config.menuExtended = deserializeNodes(json.value("menuExtended").toArray());
+    config.menuMinimal = deserializeNodes(json.value("menu_minimal").toArray());
+    config.menuCompact = deserializeNodes(json.value("menu_compact").toArray());
+    config.menuExtended = deserializeNodes(json.value("menu_extended").toArray());
 
     config.toolbars.clear();
     const QJsonArray tbArray = json.value("toolbars").toArray();
@@ -125,48 +121,4 @@ bool LC_RepositoryMenuBarAndToolbars::configFromJson(const QJsonObject& json, Na
         config.toolbars.append(tb);
     }
     return true;
-}
-
-void LC_RepositoryMenuBarAndToolbars::migrateLegacyToolbarsIfNeeded(NavigationLayoutConfig& config) {
-    QDir dir(m_configDir);
-    const QStringList legacyFiles = dir.entryList(QStringList() << "*.lctb", QDir::Files);
-
-    for (const QString& fileName : legacyFiles) {
-        QFile file(dir.filePath(fileName));
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            continue;
-        }
-
-        const QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-        file.close();
-
-        if (!doc.isObject()) {
-            continue;
-        }
-
-        const QJsonArray tbArray = doc.object().value("toolbars").toArray();
-        for (const auto& val : tbArray) {
-            if (!val.isObject()) {
-                continue;
-            }
-            QJsonObject tbObj = val.toObject();
-            ToolbarDef tb;
-            tb.name = tbObj.value("name").toString();
-            tbObj["area"] = static_cast<int>(tb.area);
-            tb.visible = tbObj.value("visible").toBool(true);
-            tb.kind = ToolbarKind::Custom;
-            tb.nodes = deserializeNodes(tbObj.value("nodes").toArray());
-
-            bool exists = false;
-            for (const auto& existing : config.toolbars) {
-                if (existing.name == tb.name) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                config.toolbars.append(tb);
-            }
-        }
-    }
 }

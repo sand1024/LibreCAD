@@ -33,20 +33,21 @@
 #ifdef USE_RESIZE_STRIP
 #include <QScrollBar>
 
-LC_EdgeResizeStrip::LC_EdgeResizeStrip(Edge edge, QWidget *parent)
+LC_EdgeResizeStrip::LC_EdgeResizeStrip(Edge edge, QWidget* parent)
     : QWidget(parent), m_edge(edge) {
     setAttribute(Qt::WA_TransparentForMouseEvents, false);
     setMouseTracking(true);
     setCursor(cursorForEdge(edge));
 }
 
-bool LC_EdgeResizeStrip::isResizeZone(const QPoint &localPos, const QPoint &globalPos) const {
-    if (!parentWidget()) return true;
+bool LC_EdgeResizeStrip::isResizeZone(const QPoint& localPos, const QPoint& globalPos) const {
+    if (!parentWidget())
+        return true;
 
     // 1. Locate any active visible scrollbar directly under the cursor
     QList<QScrollBar*> scrollBars = parentWidget()->findChildren<QScrollBar*>();
-    QScrollBar *underCursorScrollBar = nullptr;
-    for (QScrollBar *sb : scrollBars) {
+    QScrollBar* underCursorScrollBar = nullptr;
+    for (QScrollBar* sb : scrollBars) {
         if (sb->isVisible() && sb->rect().contains(sb->mapFromGlobal(globalPos))) {
             underCursorScrollBar = sb;
             break;
@@ -58,25 +59,28 @@ bool LC_EdgeResizeStrip::isResizeZone(const QPoint &localPos, const QPoint &glob
     }
 
     // 2. Query scrollbar width/height at runtime to handle custom widths and High-DPI scaling
-    const int scrollbarExtent = (m_edge == Left || m_edge == Right)
-                                ? underCursorScrollBar->width()
-                                : underCursorScrollBar->height();
+    const int scrollbarExtent = (m_edge == Left || m_edge == Right) ? underCursorScrollBar->width() : underCursorScrollBar->height();
 
     // Allocate the outer 30% of the custom scrollbar extent as the guaranteed resize margin
     const int guaranteedResizeWidth = qMax(3, qRound(scrollbarExtent * 0.3));
 
     // 3. Perform edge distance validations based on target border layout rules
     switch (m_edge) {
-        case Left:        return localPos.x() < guaranteedResizeWidth;
-        case Right:       return (width() - localPos.x()) < guaranteedResizeWidth;
-        case Bottom:      return (height() - localPos.y()) < guaranteedResizeWidth;
-        case BottomLeft:  return localPos.x() < guaranteedResizeWidth || (height() - localPos.y()) < guaranteedResizeWidth;
-        case BottomRight: return (width() - localPos.x()) < guaranteedResizeWidth || (height() - localPos.y()) < guaranteedResizeWidth;
+        case Left:
+            return localPos.x() < guaranteedResizeWidth;
+        case Right:
+            return (width() - localPos.x()) < guaranteedResizeWidth;
+        case Bottom:
+            return (height() - localPos.y()) < guaranteedResizeWidth;
+        case BottomLeft:
+            return localPos.x() < guaranteedResizeWidth || (height() - localPos.y()) < guaranteedResizeWidth;
+        case BottomRight:
+            return (width() - localPos.x()) < guaranteedResizeWidth || (height() - localPos.y()) < guaranteedResizeWidth;
     }
     return true;
 }
 
-void LC_EdgeResizeStrip::mousePressEvent(QMouseEvent *e) {
+void LC_EdgeResizeStrip::mousePressEvent(QMouseEvent* e) {
     if (e->button() == Qt::LeftButton) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         const QPoint globalPos = e->globalPosition().toPoint();
@@ -86,16 +90,17 @@ void LC_EdgeResizeStrip::mousePressEvent(QMouseEvent *e) {
 
         if (isResizeZone(e->pos(), globalPos)) {
             m_dragging = true;
-            m_startPos  = globalPos;
+            m_startPos = globalPos;
             m_startGeom = window()->geometry();
             e->accept();
-        } else {
+        }
+        else {
             e->ignore(); // Fallback propagation lets user interact with vertical/horizontal scrollbars
         }
     }
 }
 
-void LC_EdgeResizeStrip::mouseMoveEvent(QMouseEvent *e) {
+void LC_EdgeResizeStrip::mouseMoveEvent(QMouseEvent* e) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     const QPoint globalPos = e->globalPosition().toPoint();
 #else
@@ -107,13 +112,23 @@ void LC_EdgeResizeStrip::mouseMoveEvent(QMouseEvent *e) {
         QRect g = m_startGeom;
 
         switch (m_edge) {
-            case Left:        g.setLeft(g.left()   + delta.x()); break;
-            case Right:       g.setRight(g.right() + delta.x()); break;
-            case Bottom:      g.setBottom(g.bottom() + delta.y()); break;
-            case BottomLeft:  g.setLeft(g.left()   + delta.x());
-                              g.setBottom(g.bottom() + delta.y()); break;
-            case BottomRight: g.setRight(g.right() + delta.x());
-                              g.setBottom(g.bottom() + delta.y()); break;
+            case Left:
+                g.setLeft(g.left() + delta.x());
+                break;
+            case Right:
+                g.setRight(g.right() + delta.x());
+                break;
+            case Bottom:
+                g.setBottom(g.bottom() + delta.y());
+                break;
+            case BottomLeft:
+                g.setLeft(g.left() + delta.x());
+                g.setBottom(g.bottom() + delta.y());
+                break;
+            case BottomRight:
+                g.setRight(g.right() + delta.x());
+                g.setBottom(g.bottom() + delta.y());
+                break;
         }
 
         const QSize minS = window()->minimumSizeHint();
@@ -121,18 +136,20 @@ void LC_EdgeResizeStrip::mouseMoveEvent(QMouseEvent *e) {
             window()->setGeometry(g);
         }
         e->accept();
-    } else {
+    }
+    else {
         // Not dragging yet: dynamically swap cursor shape based on pixel-level hit test
         if (isResizeZone(e->pos(), globalPos)) {
             setCursor(cursorForEdge(m_edge));
-        } else {
+        }
+        else {
             setCursor(Qt::ArrowCursor); // Shows standard scroll cursor when over prioritized scroll zone
         }
         e->ignore(); // Propagate hover moves so scrollbar track highlights function natively
     }
 }
 
-void LC_EdgeResizeStrip::mouseReleaseEvent(QMouseEvent *e) {
+void LC_EdgeResizeStrip::mouseReleaseEvent(QMouseEvent* e) {
     m_dragging = false;
     e->accept();
 }
@@ -140,16 +157,20 @@ void LC_EdgeResizeStrip::mouseReleaseEvent(QMouseEvent *e) {
 Qt::CursorShape LC_EdgeResizeStrip::cursorForEdge(Edge e) {
     switch (e) {
         case Left:
-        case Right:       return Qt::SizeHorCursor;
-        case Bottom:      return Qt::SizeVerCursor;
-        case BottomLeft:  return Qt::SizeBDiagCursor;
-        case BottomRight: return Qt::SizeFDiagCursor;
+        case Right:
+            return Qt::SizeHorCursor;
+        case Bottom:
+            return Qt::SizeVerCursor;
+        case BottomLeft:
+            return Qt::SizeBDiagCursor;
+        case BottomRight:
+            return Qt::SizeFDiagCursor;
     }
     return Qt::ArrowCursor;
 }
 #endif
 
-LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, QWidget *parent)
+LC_DockTitleBar::LC_DockTitleBar(QDockWidget* dock, const LC_ProxyStyle* style, QWidget* parent)
     : QWidget(parent), m_dock(dock), m_style(style) {
     setMouseTracking(true);
 
@@ -164,7 +185,8 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
     connect(m_closeBtn, &QToolButton::clicked, this, [this, dock]() {
         if (dock) {
             dock->close();
-        } else if (window()) {
+        }
+        else if (window()) {
             window()->close(); // Direct window close fallback for LC_DetachedMenu
         }
     });
@@ -176,8 +198,7 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
     m_floatBtn->setProperty(PROP_IS_DOCK_TITLE_BUTTON, true);
     if (m_style) {
         m_floatBtn->setIcon(m_style->standardIcon(
-            (dock && dock->isFloating()) ? QStyle::SP_TitleBarNormalButton
-                                 : QStyle::SP_TitleBarMaxButton, nullptr, m_floatBtn));
+            (dock && dock->isFloating()) ? QStyle::SP_TitleBarNormalButton : QStyle::SP_TitleBarMaxButton, nullptr, m_floatBtn));
     }
     connect(m_floatBtn, &QToolButton::clicked, this, [dock]() {
         if (dock) {
@@ -193,16 +214,16 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
         });
         connect(dock, &QDockWidget::topLevelChanged, this, [this, dock](bool floating) {
             if (m_style) {
-                m_floatBtn->setIcon(m_style->standardIcon(
-                    floating ? QStyle::SP_TitleBarNormalButton
-                             : QStyle::SP_TitleBarMaxButton, nullptr, m_floatBtn));
+                m_floatBtn->setIcon(m_style->standardIcon(floating ? QStyle::SP_TitleBarNormalButton : QStyle::SP_TitleBarMaxButton,
+                                                          nullptr, m_floatBtn));
             }
             // Invalidate layout cache on both the title bar and parent dock widget
             updateGeometry();
             dock->updateGeometry();
             update();
         });
-    } else {
+    }
+    else {
         // Detached menu fallback: subscribe to parent window title changes
         if (parent) {
             connect(parent, &QWidget::windowTitleChanged, this, qOverload<>(&QWidget::update));
@@ -211,18 +232,20 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
 
 #ifdef USE_RESIZE_STRIP
     if (dock) {
-        m_gripLeft        = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Left,        dock);
-        m_gripRight       = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Right,       dock);
-        m_gripBottom      = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Bottom,      dock);
-        m_gripBottomLeft  = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::BottomLeft,  dock);
+        m_gripLeft = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Left, dock);
+        m_gripRight = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Right, dock);
+        m_gripBottom = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::Bottom, dock);
+        m_gripBottomLeft = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::BottomLeft, dock);
         m_gripBottomRight = new LC_EdgeResizeStrip(LC_EdgeResizeStrip::BottomRight, dock);
     }
 #endif
 }
 
 bool LC_DockTitleBar::isVertical() const {
-    if (!m_dock) return false;
-    if (m_dock->isFloating()) return false;
+    if (!m_dock)
+        return false;
+    if (m_dock->isFloating())
+        return false;
 
     // Physical geometry check once widget layout has occurred
     if (width() > 0 && height() > 0) {
@@ -233,14 +256,15 @@ bool LC_DockTitleBar::isVertical() const {
     return m_dock->features().testFlag(QDockWidget::DockWidgetVerticalTitleBar);
 }
 
-
 bool LC_DockTitleBar::isClosable() const {
-    if (!m_dock) return true;
+    if (!m_dock)
+        return true;
     return m_dock && m_dock->features().testFlag(QDockWidget::DockWidgetClosable);
 }
 
 QSize LC_DockTitleBar::sizeHint() const {
-    if (!m_style) return QSize(0, 0);
+    if (!m_style)
+        return QSize(0, 0);
     int height = m_style->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this);
     if (isVertical()) {
         return QSize(height, QWIDGETSIZE_MAX);
@@ -249,7 +273,8 @@ QSize LC_DockTitleBar::sizeHint() const {
 }
 
 QSize LC_DockTitleBar::minimumSizeHint() const {
-    if (!m_style) return QSize(0, 0);
+    if (!m_style)
+        return QSize(0, 0);
     int height = m_style->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this);
     if (isVertical()) {
         return QSize(height, 50);
@@ -257,18 +282,20 @@ QSize LC_DockTitleBar::minimumSizeHint() const {
     return QSize(50, height);
 }
 
-void LC_DockTitleBar::resizeEvent(QResizeEvent *event) {
+void LC_DockTitleBar::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
-    if (!m_style) return;
+    if (!m_style)
+        return;
 
     QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
     if (m_dock) {
         features = m_dock->features();
-    } else {
+    }
+    else {
         features = QDockWidget::DockWidgetClosable;
     }
 
-    const SkinScaledGeometries &geoms = m_style->getGeometries(this);
+    const SkinScaledGeometries& geoms = m_style->getGeometries(this);
     const auto buttonLayout = LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(rect(), geoms, features, isVertical());
 
     m_closeBtn->setGeometry(buttonLayout.closeRect);
@@ -299,7 +326,7 @@ void LC_DockTitleBar::resizeEvent(QResizeEvent *event) {
 #endif
 }
 
-void LC_DockTitleBar::paintEvent(QPaintEvent *event) {
+void LC_DockTitleBar::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     if (m_style == nullptr) {
         return;
@@ -318,15 +345,16 @@ void LC_DockTitleBar::paintEvent(QPaintEvent *event) {
     titleOpt.closable = isClosable();
     if (active) {
         titleOpt.state |= QStyle::State_Active;
-    } else {
+    }
+    else {
         titleOpt.state &= ~QStyle::State_Active;
     }
 
     m_style->drawCustomDockTitleBar(&titleOpt, &painter, this);
 }
 
-void LC_DockTitleBar::mousePressEvent(QMouseEvent *event) {
-     if (event->button() == Qt::LeftButton) {
+void LC_DockTitleBar::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
         // Move standalone frameless menus manually
         if (!m_dock) {
             m_dragging = true;
@@ -338,7 +366,7 @@ void LC_DockTitleBar::mousePressEvent(QMouseEvent *event) {
     event->ignore(); // Propagates up to m_dock to let Qt handle native drag snaps
 }
 
-void LC_DockTitleBar::mouseReleaseEvent(QMouseEvent *event) {
+void LC_DockTitleBar::mouseReleaseEvent(QMouseEvent* event) {
     if (!m_dock) {
         m_dragging = false;
         event->accept();
@@ -347,12 +375,12 @@ void LC_DockTitleBar::mouseReleaseEvent(QMouseEvent *event) {
     event->ignore();
 }
 
-void LC_DockTitleBar::mouseDoubleClickEvent(QMouseEvent *event) {
+void LC_DockTitleBar::mouseDoubleClickEvent(QMouseEvent* event) {
     // Propagate double click to native dock to trigger native float-dock transitions
     event->ignore();
 }
 
-void LC_DockTitleBar::mouseMoveEvent(QMouseEvent *event) {
+void LC_DockTitleBar::mouseMoveEvent(QMouseEvent* event) {
     const QPoint globalPos = event->globalPosition().toPoint();
     if (!m_dock && m_dragging) {
         window()->move(globalPos - m_dragOffset);
@@ -366,12 +394,12 @@ void LC_DockTitleBar::mouseMoveEvent(QMouseEvent *event) {
     event->ignore(); // Propagates moves to allow standard dock mouse tracking
 }
 
-void LC_DockTitleBar::leaveEvent(QEvent *event) {
+void LC_DockTitleBar::leaveEvent(QEvent* event) {
     Q_UNUSED(event);
     setCursor(Qt::ArrowCursor);
 }
 
-void LC_DockTitleBar::changeEvent(QEvent *event) {
+void LC_DockTitleBar::changeEvent(QEvent* event) {
     if (event->type() == QEvent::ActivationChange || event->type() == QEvent::WindowTitleChange) {
         update();
     }

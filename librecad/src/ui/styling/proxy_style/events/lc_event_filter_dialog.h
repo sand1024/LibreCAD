@@ -30,7 +30,6 @@ public:
     explicit LC_EventFilterDialog(const LC_ProxyStyle* style, QObject* parent = nullptr)
         : QObject(parent), m_style(style) {}
 
-protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 private:
     const LC_ProxyStyle* m_style;

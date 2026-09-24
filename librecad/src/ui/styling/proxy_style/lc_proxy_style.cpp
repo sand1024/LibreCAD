@@ -763,7 +763,7 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption* opt
                     const int fontHeight = option
                                                ? option->fontMetrics.height()
                                                : (widget ? widget->fontMetrics().height() : QApplication::fontMetrics().height());
-                    activeTitleBarH = fontHeight + geoms.ints.scale8;;
+                    activeTitleBarH = fontHeight + geoms.ints.scale8;
                 }
                 return qMax(0, (activeTitleBarH - geoms.scaledMetrics.titleBarButtonSize) / 2);
             }
@@ -822,6 +822,106 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption* opt
         case PM_MenuBarVMargin:
             return geoms.scaledMetrics.menuBarVerticalMargin;
 
+            case PM_MenuBarHMargin:
+            if (geoms.scaledMetrics.menuBarHorizontalMargin >= 0) {
+                return geoms.scaledMetrics.menuBarHorizontalMargin;
+            }
+            return geoms.ints.scale6;
+
+        case PM_TextCursorWidth:
+            if (geoms.scaledMetrics.textCursorWidth >= 0) {
+                return geoms.scaledMetrics.textCursorWidth;
+            }
+            return m_isClassic ? 1 : geoms.ints.scale2;
+
+        case PM_ToolBarHandleExtent:
+            if (geoms.scaledMetrics.toolbarHandleExtent >= 0) {
+                return geoms.scaledMetrics.toolbarHandleExtent;
+            }
+            return geoms.scaledMetrics.splitterWidth + geoms.ints.scale2;
+
+        case PM_ToolBarItemMargin:
+            return m_isFlat ? 0 : geoms.ints.scale1;
+
+        case PM_ToolBarFrameWidth:
+            return m_isFlat ? 0 : 1;
+
+        case PM_TabBarScrollButtonWidth:
+            if (geoms.scaledMetrics.tabBarScrollButtonWidth >= 0) {
+                return geoms.scaledMetrics.tabBarScrollButtonWidth;
+            }
+            return qMax(geoms.ints.scale16, geoms.scaledMetrics.buttonPadding * 2 + geoms.ints.scale8);
+
+        case PM_TabBarBaseHeight:
+            return qMax(1, geoms.scaledMetrics.tabBarTabBaseOverlap);
+
+        case PM_TabBarTabShiftHorizontal:
+        case PM_TabBarTabShiftVertical:
+            return m_isFlat ? 0 : 1;
+
+
+        case PM_MenuBarPanelWidth:
+            return m_isFlat ? 0 : 1;
+
+        case PM_ToolBarIconSize:
+            if (geoms.scaledMetrics.toolBarIconSize >= 0) {
+                return geoms.scaledMetrics.toolBarIconSize;
+            }
+            return geoms.ints.scale24;
+
+
+        case PM_LargeIconSize:
+            return geoms.ints.scale24 + geoms.ints.scale8;
+
+        case PM_TabBarIconSize:
+            if (geoms.scaledMetrics.menuIconSize >= 0) {
+                return geoms.scaledMetrics.menuIconSize;
+            }
+            return geoms.ints.scale16;
+
+        case PM_MessageBoxIconSize:
+            return geoms.ints.scale48;
+
+        case PM_MaximumDragDistance:
+            return -1;
+
+        case PM_ScrollView_ScrollBarSpacing:
+            return 0;
+
+        case PM_ScrollView_ScrollBarOverlap:
+            return m_transparentScrollbars ? geoms.scaledMetrics.scrollBarWidth : 0;
+
+        case PM_ToolTipLabelFrameWidth:
+            return m_customToolTipCard ? 1 : 0;
+
+        case PM_MenuScrollerHeight:
+            return geoms.ints.scale16;
+
+        case PM_HeaderMarkSize:
+            return geoms.ints.scale8;
+
+        case PM_HeaderMargin:
+            return geoms.ints.scale4;
+
+        case PM_LineEditIconSize:
+            return qMax(geoms.ints.scale12, geoms.scaledMetrics.dockTitleBarHeight - geoms.ints.scale8);
+
+        case PM_LineEditIconMargin:
+            return geoms.ints.scale2;
+
+        case PM_SmallIconSize: {
+            if (geoms.scaledMetrics.menuIconSize >= 0) {
+                return geoms.scaledMetrics.menuIconSize;
+            }
+            return geoms.ints.scale16;
+        }
+        case PM_ButtonIconSize: {
+            if (geoms.scaledMetrics.buttonIconSize >= 0) {
+                return geoms.scaledMetrics.buttonIconSize;
+            }
+            return geoms.ints.scale16;
+        }
+
         case PM_IndicatorWidth:
         case PM_ExclusiveIndicatorWidth:
         case PM_IndicatorHeight:
@@ -875,6 +975,35 @@ int LC_ProxyStyle::styleHint(const StyleHint hint, const QStyleOption* option, c
 
         case SH_Menu_AllowActiveAndDisabled:
             return m_metrics.menuAllowActiveAndDisabled ? 1 : 0;
+
+        case SH_TabBar_CloseButtonPosition:
+            return (m_metrics.tabBarCloseButtonPosition == TabBarCloseButtonPosition::LeftSide)
+                       ? QTabBar::LeftSide
+                       : QTabBar::RightSide;
+
+        case SH_Menu_SloppySubMenus:
+            return 1;
+
+        case SH_TabBar_ElideMode:
+            return static_cast<int>(Qt::ElideMiddle);
+
+        case SH_ItemView_ArrowKeysNavigateIntoChildren:
+            return 1;
+
+        case SH_ItemView_ShowDecorationSelected:
+            return m_showActiveRowSpotlight ? 1 : 0;
+
+        case SH_ItemView_ChangeHighlightOnFocus:
+            return 0;
+
+        case SH_ItemView_PaintAlternatingRowColorsForEmptyArea:
+            return 1;
+
+        case SH_ScrollView_FrameOnlyAroundContents:
+            return m_transparentScrollbars ? 1 : 0;
+
+        case SH_ComboBox_Popup:
+            return m_isClassic ? 0 : 1;
 
         default:
             break;
@@ -939,6 +1068,16 @@ QSize LC_ProxyStyle::sizeFromContents(const ContentsType type, const QStyleOptio
                 if (getMenuCommandAliasInfo(widget, baseFont, maxCmdWidth, maxShortcutWidth)) {
                     if (maxCmdWidth > 0) {
                         calculatedSize.setWidth(calculatedSize.width() + maxCmdWidth + geoms.ints.scale16);
+                    }
+                }
+            }
+            break;
+        }
+        case CT_MenuBarItem: {
+            if (const auto* menuItemOpt = qstyleoption_cast<const QStyleOptionMenuItem*>(option)) {
+                if (!menuItemOpt->icon.isNull()) {
+                    if (calculatedSize.width() < calculatedSize.height()) {
+                        calculatedSize.setWidth(calculatedSize.height());
                     }
                 }
             }
@@ -3087,11 +3226,25 @@ void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPain
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
 
     // Verify if we should custom-draw checkmarks based on active sync configuration
-    const bool customCheck = m_syncCheckedMenuState && option->checked && option->checkType != QStyleOptionMenuItem::NotCheckable;
+    // const bool hasIcon = !option->icon.isNull();
+    // const bool customCheck = m_syncCheckedMenuState && option->checked &&
+    //                          (option->checkType != QStyleOptionMenuItem::NotCheckable) && hasIcon;
+    //
+    // if (customCheck) {
+    //     copy.checked = false; // Suppress standard Qt checkmark drawing to avoid overlaps
+    // }
 
-    if (customCheck) {
-        copy.checked = false; // Suppress standard Qt checkmark drawing to avoid overlaps
+
+    // Verify if we should custom-draw checkmarks based on active sync configuration
+    const bool customCheck = m_syncCheckedMenuState && option->checked && (option->checkType != QStyleOptionMenuItem::NotCheckable);
+
+    // Suppress standard Qt checkmark drawing ONLY when an icon is present to prevent
+    // overlapping the icon graphic. For items without an icon, keep copy.checked true
+    // so the check mark is rendered alongside the tool button indicator effect.
+    if (customCheck && !option->icon.isNull()) {
+        copy.checked = false;
     }
+
 
     if (option->state & State_Selected) {
         copy.palette.setBrush(QPalette::Highlight, desc.common.selectionHighlight);
@@ -3210,41 +3363,104 @@ void LC_ProxyStyle::drawCustomPanelItemViewRow(const QStyleOptionViewItem* optio
 }
 
 void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const {
-    QStyleOptionMenuItem copy = *option;
+    if (option == nullptr || painter == nullptr) {
+        return;
+    }
 
+    LCPainterGuard guard(painter, true);
     const SkinColors desc = getStyleDescriptor(option);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
-    bool isHovered = (option->state & State_Selected);
+    // 1. Resolve parent QMenuBar action using geometric hit-testing
+    const auto* menuBar = qobject_cast<const QMenuBar*>(widget);
+    QAction* itemAction = nullptr;
+    if (menuBar != nullptr) {
+        for (QAction* act : menuBar->actions()) {
+            if (menuBar->actionGeometry(act) == option->rect) {
+                itemAction = act;
+                break;
+            }
+        }
+    }
 
-    // Retrieve the hovered action from our extracted auto-popup event controller
+    bool isHovered = ((option->state & State_Selected) != 0);
     const LC_EventFilterAutoPopupController* controller = autoPopupController();
-    const QPointer<QAction> hoveredAction = controller ? controller->hoveredMenuBarAction() : nullptr;
+    const QPointer<QAction> hoveredAction = (controller != nullptr) ? controller->hoveredMenuBarAction() : nullptr;
 
-    // Symmetrically determine if the menu bar item is currently hovered in our state-machine
-    if (!isHovered && m_useMenuBarHoverCard && hoveredAction) {
-        if (cleanMnemonic(hoveredAction->text()) == cleanMnemonic(option->text)) {
+    if (!isHovered && m_useMenuBarHoverCard && (hoveredAction != nullptr)) {
+        if (itemAction != nullptr && itemAction == hoveredAction) {
+            isHovered = true;
+        }
+        else if (!option->text.isEmpty() && cleanMnemonic(hoveredAction->text()) == cleanMnemonic(option->text)) {
             isHovered = true;
         }
     }
 
-    QColor bgCol = desc.common.bgStart;
-    if (option->state & State_Sunken) {
-        bgCol = desc.button.bgSunken;
+    const bool isSunken = ((option->state & State_Sunken) != 0);
+    const bool isEnabled = ((option->state & State_Enabled) != 0);
+
+    // 2. Draw Theme-Consistent Background (matching sub-menu hover fill and outline)
+    const QRect drawRect = option->rect;
+    if (isSunken) {
+        painter->fillRect(drawRect, desc.button.bgSunken);
     }
     else if (isHovered) {
-        bgCol = desc.common.selectionHighlight; // Hover state represents the soft selection highlight tint
-        copy.state |= State_Selected; // Force selection state so QCommonStyle draws the background highlight
+        const bool isDark = (desc.common.bgStart.value() < 120);
+        const QColor outlineColor = isDark ? desc.common.selectionHighlight.lighter(125)
+                                           : desc.common.selectionHighlight.darker(125);
+
+        if (m_useMenuBarHoverCard) {
+            const int vMargin = geoms.ints.scale2;
+            const int hMargin = geoms.ints.scale2;
+            const QRect cardRect = drawRect.adjusted(hMargin, vMargin, -hMargin, -vMargin);
+            const qreal radius = static_cast<qreal>(geoms.ints.scale3);
+
+            painter->setPen(QPen(outlineColor, 1.0));
+            painter->setBrush(desc.common.selectionHighlight);
+            painter->drawRoundedRect(crispRect(cardRect, geoms.crispOffset), radius, radius);
+        }
+        else {
+            painter->setPen(QPen(outlineColor, 1.0));
+            painter->setBrush(desc.common.selectionHighlight);
+            painter->drawRect(crispRect(drawRect, geoms.crispOffset));
+        }
     }
 
-    copy.palette.setBrush(QPalette::Highlight, bgCol);
-    copy.palette.setBrush(QPalette::Button, bgCol);
+    // 3. Render Foreground Content (Icon vs. Text)
+    if (!option->icon.isNull()) {
+        const int maxIconExtent = qMax(geoms.ints.scale12, qMin(drawRect.height() - geoms.ints.scale6, drawRect.width() - geoms.ints.scale4));
+        const int smallIconMetric = pixelMetric(PM_SmallIconSize, option, widget);
+        const int iconExtent = qMax(smallIconMetric, maxIconExtent);
+        const int actualSize = qMin(iconExtent, qMin(drawRect.width(), drawRect.height()) - geoms.ints.scale2);
 
-    // Force text color on selection to use standard window text color so it remains readable
-    copy.palette.setColor(QPalette::HighlightedText, desc.common.textColor);
-    copy.palette.setColor(QPalette::ButtonText, desc.common.textColor);
-    copy.palette.setColor(QPalette::WindowText, desc.common.textColor);
+        QRect iconRect(0, 0, actualSize, actualSize);
+        iconRect.moveCenter(drawRect.center());
 
-    QProxyStyle::drawControl(CE_MenuBarItem, &copy, painter, widget);
+        QIcon::Mode mode = QIcon::Normal;
+        if (!isEnabled) {
+            mode = QIcon::Disabled;
+        }
+        else if (isHovered || isSunken) {
+            mode = QIcon::Active;
+        }
+
+        const QIcon::State iconState = ((option->state & State_On) != 0) ? QIcon::On : QIcon::Off;
+        option->icon.paint(painter, iconRect, Qt::AlignCenter, mode, iconState);
+    }
+    else {
+        int alignment = Qt::AlignCenter | Qt::TextShowMnemonic | Qt::TextDontClip | Qt::TextSingleLine;
+        if (styleHint(SH_UnderlineShortcut, option, widget) == 0) {
+            alignment |= Qt::TextHideMnemonic;
+        }
+
+        QColor textColor = desc.common.textColor;
+        if (!isEnabled) {
+            textColor = option->palette.color(QPalette::Disabled, QPalette::Text);
+        }
+
+        painter->setPen(textColor);
+        proxy()->drawItemText(painter, drawRect, alignment, option->palette, isEnabled, option->text, QPalette::NoRole);
+    }
 }
 
 QRect LC_ProxyStyle::subControlRect(const ComplexControl control, const QStyleOptionComplex* option, const SubControl subControl,

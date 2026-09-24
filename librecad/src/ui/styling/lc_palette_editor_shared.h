@@ -29,22 +29,11 @@
 #include <QColor>
 #include <QList>
 
-inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT"; // fixme - sand - move to proper location
-inline const QString DEFAULT_THEME_NAME = "Default";
 
-inline const QString SKIN_EXTENSION = ".lcsk";
-inline const QString ICON_STYLE_EXTENSION = ".lcis";
-inline const QString FONT_EXTENSION = ".lcft";
-inline const QString METRICS_EXTENSION = ".lcms";
 inline const QString PROFILE_EXTENSION = ".lcws";
-inline const QString PALETTE_EXTENSION = ".lcpl";
 inline const QString CONFIG_EXTENSION = ".lcfs";
 
-inline const QString SKIN_FILE_IDENTIFIER = "LibreCAD Skin Config v_1";
-inline const QString FONT_FILE_IDENTIFIER = "LibreCAD Font Config v_1";
-inline const QString METRICS_FILE_IDENTIFIER = "LibreCAD Metrics Config v_1";
 inline const QString PROFILE_FILE_IDENTIFIER = "LibreCAD Workspace Profile v_1";
-inline const QString PALETTE_FILE_IDENTIFIER = "LibreCAD Color Palette v_1";
 
 
 // Global visual style engine rendering archetypes
@@ -175,8 +164,9 @@ struct FontConfig {
     FontRoleConfig headings;   // Role 2: Group titles, column headers
     FontRoleConfig menuBar;   // Role 3: Main horizontal menu bar
     FontRoleConfig menus;     // Role 4: Popup dropdown context menus
-    FontRoleConfig buttons;   // Role 5: Clickable buttons and actions
-    FontRoleConfig inputs;     // Role 6: Input fields, dropdowns, spinners
+    FontRoleConfig buttons;       // Role 5: Clickable buttons and actions
+    FontRoleConfig inputs;          // Role 6: Input fields, dropdowns, spinners
+    FontRoleConfig propertiesWidget;     // Role 7: Properties widget font
 
     FontRoleConfig genericDockTitle; // Font for generic dock widget title bar
     FontRoleConfig specialDockTitle; // Font for special (CAD-related) dock widget title bar
@@ -204,6 +194,11 @@ enum class DragCursorStyle {
     StandardArrow = 0, // Default arrow pointer (Qt::ArrowCursor)
     OpenHand,          // Sleek, modern grab hand (Qt::OpenHandCursor) [3]
     SizeAll            // Classic, highly visible 4-way move arrows (Qt::SizeAllCursor) [3]
+};
+
+enum class TabBarCloseButtonPosition {
+    RightSide = 0,
+    LeftSide = 1
 };
 
 struct StyleMetricsConfig {
@@ -265,6 +260,16 @@ struct StyleMetricsConfig {
 
     int toolbarPopupDelay = 400; // default delay in milliseconds
     DragCursorStyle dragCursorStyle = DragCursorStyle::SizeAll; // Unified drag cursor style
+
+    int menuBarHorizontalMargin = -1;
+    int textCursorWidth = -1;
+    TabBarCloseButtonPosition tabBarCloseButtonPosition = TabBarCloseButtonPosition::RightSide;
+    int toolbarHandleExtent = -1;
+    int tabBarScrollButtonWidth = -1;
+
+    int menuIconSize = -1;
+    int buttonIconSize = -1;
+    int toolBarIconSize = -1;
 };
 
 enum class BranchIndicatorStyle {

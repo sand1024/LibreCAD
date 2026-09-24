@@ -24,55 +24,51 @@
 QJsonObject LC_RepositoryTypography::configToJson(const FontConfig& config) const {
     QJsonObject root;
 
-    root["type"] = m_fileIdentifier;
-    root["name"] = config.name;
+    root["main_family"] = config.mainFamily;
+    root["main_size"] = config.mainSize;
+    root["tech_family"] = config.techFamily;
 
-
-    root["mainFamily"] = config.mainFamily;
-    root["mainSize"]   = config.mainSize;
-    root["techFamily"] = config.techFamily;
-
-    auto serializeRole = [](const FontRoleConfig &role) {
+    auto serializeRole = [](const FontRoleConfig& role) {
         QJsonObject obj;
         obj["offset"] = role.sizeOffset;
-        obj["bold"]   = role.bold;
+        obj["bold"] = role.bold;
         obj["italic"] = role.italic;
         return obj;
     };
 
-    root["headings"]  = serializeRole(config.headings);
-    root["menuBar"]   = serializeRole(config.menuBar);
-    root["menus"]     = serializeRole(config.menus);
-    root["buttons"]   = serializeRole(config.buttons);
-    root["inputs"]    = serializeRole(config.inputs);
-    root["genericDock"] = serializeRole(config.genericDockTitle);
-    root["specialDock"] = serializeRole(config.specialDockTitle);
-
+    root["headings"] = serializeRole(config.headings);
+    root["menu_bar"] = serializeRole(config.menuBar);
+    root["menus"] = serializeRole(config.menus);
+    root["buttons"] = serializeRole(config.buttons);
+    root["inputs"] = serializeRole(config.inputs);
+    root["generic_dock"] = serializeRole(config.genericDockTitle);
+    root["special_dock"] = serializeRole(config.specialDockTitle);
+    root["properties_dock"] = serializeRole(config.propertiesWidget);
     root["technical"] = serializeRole(config.technical);
 
     return root;
 }
 
 bool LC_RepositoryTypography::configFromJson(const QJsonObject& json, FontConfig& config) const {
-    config.mainFamily = json["mainFamily"].toString();
-    config.mainSize   = json["mainSize"].toInt(10);
-    config.techFamily = json["techFamily"].toString();
+    config.mainFamily = json["main_family"].toString();
+    config.mainSize = json["main_size"].toInt(10);
+    config.techFamily = json["tech_family"].toString();
 
-    auto loadRole = [&](const QString &key, FontRoleConfig &role) {
+    auto loadRole = [&](const QString& key, FontRoleConfig& role) {
         QJsonObject obj = json[key].toObject();
         role.sizeOffset = obj["offset"].toInt(0);
-        role.bold       = obj["bold"].toBool(false);
-        role.italic     = obj["italic"].toBool(false);
+        role.bold = obj["bold"].toBool(false);
+        role.italic = obj["italic"].toBool(false);
     };
 
     loadRole("headings", config.headings);
-    loadRole("menuBar", config.menuBar);
+    loadRole("menu_bar", config.menuBar);
     loadRole("menus", config.menus);
     loadRole("buttons", config.buttons);
     loadRole("inputs", config.inputs);
-    loadRole("genericDock", config.genericDockTitle);
-    loadRole("specialDock", config.specialDockTitle);
+    loadRole("generic_dock", config.genericDockTitle);
+    loadRole("special_dock", config.specialDockTitle);
+    loadRole("properties_dock", config.propertiesWidget);
     loadRole("technical", config.technical);
-
     return true;
 }

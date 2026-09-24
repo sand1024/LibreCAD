@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -23,15 +22,18 @@
 #ifndef LC_METRICS_REPOSITORY_H
 #define LC_METRICS_REPOSITORY_H
 
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
-class LC_RepostioryMetrics : public LC_PresetRepositoryBase<StyleMetricsConfig> {
+inline const QString METRICS_EXTENSION = ".lcms";
+inline const QString METRICS_FILE_IDENTIFIER = "LibreCAD Config: Metrics";
+
+class LC_RepositoryMetrics : public LC_PresetRepositoryBase<StyleMetricsConfig> {
 public:
-    explicit LC_RepostioryMetrics(const QString& configDir)
-        : LC_PresetRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {}
+    explicit LC_RepositoryMetrics(const QString& configDir)
+        : LC_PresetRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {
+    }
 
     QJsonObject configToJson(const StyleMetricsConfig& config) const override;
     bool configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const override;
 };
-
 #endif

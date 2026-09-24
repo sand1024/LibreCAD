@@ -52,6 +52,8 @@
 #include "lc_anglesbasiswidget.h"
 #include "lc_application_window_initializer.h"
 #include "lc_appwindowdialogsinvoker.h"
+#include "lc_shortcuts_manager.h"
+#include "lc_customization_manager.h"
 #include "lc_navigation_creator.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_exporttoimageservice.h"
@@ -78,6 +80,7 @@
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_command_manager.h"
+#include "lc_default_navigation_layout_builder.h"
 #include "lc_snapmanager.h"
 #include "lc_snapoptionswidgetsholder.h"
 #include "lc_ucslistwidget.h"
@@ -109,6 +112,9 @@
 #include "lc_settings_app_state.h"
 #include "lc_settings_commands_promotion.h"
 #include "lc_settings_widget.h"
+#include "lc_wait_cursor_guard.h"
+#include "lc_widget_factory.h"
+#include "backup/lc_application_backup_service.h"
 
 #ifndef QC_APP_ICON
 # define QC_APP_ICON ":/images/librecad.png"
@@ -149,7 +155,7 @@ QC_ApplicationWindow::QC_ApplicationWindow() {
     // when the key is absent.
     connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
             this, [this](Qt::ColorScheme) {
-                LC_IconsStyleManager::applyCurrentStyle();
+                LC_IconsStyleManager::applyCurrentStyle(this);
                 fireIconsRefresh();
             });
 #endif
@@ -225,15 +231,23 @@ void QC_ApplicationWindow::tryShowRelativeInput(RS2::RelativePointParam paramTyp
     }
 }
 
+namespace {
+    std::unique_ptr<QC_ApplicationWindow> instance{nullptr};
+}
+
 /**
  * @brief QC_ApplicationWindow::getAppWindow() accessor for the application window singleton instance
  * @return QC_ApplicationWindow* the application window instance
  */
-std::unique_ptr<QC_ApplicationWindow>& QC_ApplicationWindow::getAppWindow() {
-    static auto instance = std::unique_ptr < QC_ApplicationWindow > (new QC_ApplicationWindow);
-    // singleton could be reset: cannot be called after reseting
-    Q_ASSERT(instance != nullptr);
-    return instance;
+QC_ApplicationWindow* QC_ApplicationWindow::getAppWindow() {
+    if (instance.get() == nullptr) {
+        instance = std::unique_ptr<QC_ApplicationWindow>(new QC_ApplicationWindow);
+    }
+    return instance.get();
+}
+
+void QC_ApplicationWindow::destroySingleton() {
+    instance.reset(nullptr);
 }
 
 void QC_ApplicationWindow::setupMDIWindowTitleByFile(QC_MDIWindow* w, const QString& drawingFileFullPath, const bool draftMode,
@@ -524,8 +538,18 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
     RS_DEBUG->print("QC_ApplicationWindow::initSettings()");
 
     const bool first_load = CFG_Startup::o_FirstLoad;
+    LC_ERR << "[DEBUG_WIN] initSettings(): first_load =" << first_load << "fromStartup =" << fromStartup;
     if (!first_load) {
+        LC_ERR << "[DEBUG_WIN] Calling m_workspacesInvoker->init()";
         m_workspacesInvoker->init();
+        for (const auto* tb : findChildren<QToolBar*>()) {
+            if (tb != nullptr && !tb->isVisible()) {
+                LC_ERR << "[DEBUG_POST_INIT] Toolbar currently hidden:" << tb->objectName();
+            }
+        }
+    }
+    else {
+        LC_ERR << "[DEBUG_WIN] WARNING: m_workspacesInvoker->init() SKIPPED because first_load is TRUE!";
     }
     fireWorkspacesChanged();
     if (!fromStartup) {
@@ -553,6 +577,7 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
  * Stores the global application settings to file or registry.
  */
 void QC_ApplicationWindow::storeSettings() const {
+    LC_ERR << "[DEBUG_WIN] storeSettings(): RS_Settings::saveIsAllowed =" << RS_Settings::saveIsAllowed;
     if (RS_Settings::saveIsAllowed) {
         m_workspacesInvoker->persist();
         m_penPaletteWidget->persist();
@@ -838,13 +863,17 @@ void QC_ApplicationWindow::updateToolbarsIconSize(bool allowCustom, int customSi
 }
 
 void QC_ApplicationWindow::updateActionsForCommandsInMenus(bool keycodeMode) {
-    bool currentThemeIsFusion = m_uiStyleManager->isCurrentActiveStyleFusion();
-    if (!currentThemeIsFusion || !CFG_CommandsPromotion::o_ShowCommandInMenu) {
+    bool clearTooltips =  !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+    if (clearTooltips) {
         LC_ActionCommandUpdater::clearActions(m_actionGroupManager.get());
     }
     else {
         LC_ActionCommandUpdater::updateActions(m_actionGroupManager.get(), m_commandManager.get(), keycodeMode);
     }
+}
+
+void QC_ApplicationWindow::onStylingApplied() {
+    m_propertySheetWidget->updatePropertiesSheetFont();
 }
 
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
@@ -856,9 +885,8 @@ QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w)
         const bool cursor_hiding = o_CursorHidingWhenSnapping;
         view->setAntialiasing(antialiasing);
         view->setCursorHiding(cursor_hiding);
-        if (showScrollbars) {
-            view->addScrollbars();
-        }
+        view->addScrollbars(showScrollbars);
+
     }
 
     view->setDeviceName(CFG_Hardware::o_Device);
@@ -1658,8 +1686,8 @@ void QC_ApplicationWindow::slotOptionsCustomization() {
 }
 
 void QC_ApplicationWindow::rebuildMenuIfNecessary() const {
-    if (m_creatorInvoker != nullptr) {
-        m_creatorInvoker->applyActiveLayoutScheme();
+    if (m_navigationControlsCreator != nullptr) {
+        m_navigationControlsCreator->applyActiveLayoutScheme();
     }
 }
 
@@ -1667,8 +1695,16 @@ void QC_ApplicationWindow::rebuildMenuIfNecessary() const {
  * Shows the dialog for general application preferences.
  */
 void QC_ApplicationWindow::slotOptionsGeneral() {
-    bool accepted = m_dlgHelpr->showGeneralOptionsDialog();
+    int exitCode;
+    bool accepted = m_dlgHelpr->showGeneralOptionsDialog(&exitCode);
     if (accepted) {
+        const LC_WaitCursorGuard cursorGuard;
+        if (exitCode > 0){
+            // user requested either complete reset or layout reset. in both cases - reset layout.
+            resetLayoutToDefault();
+            RS_Settings::saveIsAllowed = true;
+        }
+
         m_actionOptionsManager->update();
         // fixme - check this signal, probably it's better to rely on settings change
         const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
@@ -1702,6 +1738,7 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
         LC_ActionTooltipBuilder::updateAllTooltips(m_actionGroupManager->getActionsMap());
 
         rebuildMenuIfNecessary();
+        m_navigationControlsCreator->updateToolbarsTooltips();
 
     }
     fireCurrentActionIconChanged(nullptr);
@@ -1906,8 +1943,8 @@ void QC_ApplicationWindow::relayAction(QAction* q_action) {
  * See QMainWindow::createPopupMenu() for more information.
  */
 QMenu* QC_ApplicationWindow::createPopupMenu() {
-    if (m_creatorInvoker != nullptr) {
-        return m_creatorInvoker->createMainWindowPopupMenu();
+    if (m_navigationControlsCreator != nullptr) {
+        return m_navigationControlsCreator->createMainWindowPopupMenu();
     }
     return nullptr;
 }
@@ -2044,7 +2081,7 @@ void QC_ApplicationWindow::invokeMenuCreator() {
 }
 
 LC_NavigationControlsCreator* QC_ApplicationWindow::getCreatorInvoker() {
-    return m_creatorInvoker.get();
+    return m_navigationControlsCreator.get();
 }
 
 void QC_ApplicationWindow::changeEvent([[maybe_unused]] QEvent* event) {
@@ -2154,4 +2191,53 @@ void QC_ApplicationWindow::fireCurrentActionIconChanged(QAction* actionIcon) {
 void QC_ApplicationWindow::fireWorkspacesChanged() {
     const bool hasWorkspaces = m_workspacesInvoker->hasWorkspaces();
     emit workspacesChanged(hasWorkspaces);
+}
+
+
+// fixme - sand - or it's better move implementation outside, say to init?
+void QC_ApplicationWindow::resetLayoutToDefault() {
+    LC_WaitCursorGuard guard;
+    if (m_navigationControlsCreator == nullptr) {
+        return;
+    }
+
+    auto* actionFactory = getActionFactory();
+    const NavigationLayoutConfig defaultConfig =
+        LC_DefaultNavigationLayoutBuilder::createDefaultConfig(actionFactory, m_actionGroupManager.get());
+
+    // 1. Remove all toolbars from QMainWindow layout to clear breaks and row states
+    m_navigationControlsCreator->resetToolbarsLayout(defaultConfig);
+
+    // 2. Re-dock toolbars with original breaks and areas, enforcing default visibility
+    m_navigationControlsCreator->applyMenusToolbarsScheme(defaultConfig, /*applyInitialVisibility=*/true);
+
+    // 3. Re-dock and tabify dock widgets
+    LC_WidgetFactory::redockAllDockWidgets(this);
+
+    // 4. Reset toggle action states
+    m_dockAreasToggleActions.left->setChecked(true);
+    m_dockAreasToggleActions.right->setChecked(true);
+    m_dockAreasToggleActions.top->setChecked(false);
+    m_dockAreasToggleActions.bottom->setChecked(false);
+    m_dockAreasToggleActions.floating->setChecked(false);
+
+    m_toolbarAreasToggleActions.left->setChecked(true);
+    m_toolbarAreasToggleActions.right->setChecked(false);
+    m_toolbarAreasToggleActions.top->setChecked(true);
+    m_toolbarAreasToggleActions.bottom->setChecked(true);
+
+    // 5. Restore persistence and save fresh state
+    RS_Settings::saveIsAllowed = true;
+    m_workspacesInvoker->persist();
+}
+
+
+void QC_ApplicationWindow::slotBackupExport() {
+    LC_ApplicationBackupService backupService(this);
+    backupService.exportBackup(this);
+}
+
+void QC_ApplicationWindow::slotBackupRestore() {
+    LC_ApplicationBackupService backupService(this);
+    backupService.importBackup(this);
 }

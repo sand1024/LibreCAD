@@ -28,11 +28,13 @@
 
 #include "lc_action_node.h"
 // #include "lc_actions_naming_utils.h"
+#include "lc_action_factory.h"
+#include "lc_action_group_manager.h"
 #include "lc_action_naming_service_interface.h"
 #include "lc_special_menu_service_interface.h"
 
-LC_MenuBuilderBase::LC_MenuBuilderBase(LC_SpecialMenuServiceInterface* specialMenuService)
-    : m_specialMenuService(specialMenuService) {
+LC_MenuBuilderBase::LC_MenuBuilderBase(LC_ActionGroupManager* actionGroupManager, LC_SpecialMenuServiceInterface* specialMenuService)
+    : m_actionGroupManager(actionGroupManager), m_specialMenuService(specialMenuService) {
 }
 
 void LC_MenuBuilderBase::setSpecialMenuService(LC_SpecialMenuServiceInterface* service) {
@@ -43,50 +45,50 @@ LC_SpecialMenuServiceInterface* LC_MenuBuilderBase::getSpecialMenuService() cons
     return m_specialMenuService;
 }
 
-void LC_MenuBuilderBase::populateMenuRecursive(QMenu* parentMenu, const QList<ActionNode>& nodes,const LC_ActionNamingServiceInterface* naming, bool allowTearOff) {
+void LC_MenuBuilderBase::populateMenuRecursive(QMenu* parentMenu, const QList<ActionNode>& nodes, bool allowTearOff) {
     if (parentMenu == nullptr) {
         return;
     }
 
+    bool effectiveTearOff = allowTearOff && parentMenu->isTearOffEnabled();
+
     for (const auto& node : nodes) {
         if (node.type == ActionNodeType::Separator) {
             parentMenu->addSeparator();
-        } else if (node.type == ActionNodeType::Action) {
-            if (!shouldIncludeNode(node)) {
-                continue;
-            }
-
-            bool handled = false;
+            continue;
+        }
+        if (!shouldIncludeNode(node)) {
+            continue;
+        }
+        if (node.actionName.startsWith(LC_ActionNames::PrefixSpecialMenu)) {
             if (m_specialMenuService != nullptr) {
-                handled = m_specialMenuService->bindMenu(node.actionName, parentMenu);
+                m_specialMenuService->bindMenu(node.actionName, parentMenu);
             }
-            if (!handled) {
-                appendActionItem(parentMenu, node);
-                }
-            }
-        else if (node.type == ActionNodeType::Group) {
-            const QString subMenuTitle = (naming != nullptr)
-                ? naming->displayName(node.groupTitle, /*stripAmpersand=*/false)
-                : node.groupTitle;
+            continue;
+        }
+        if (node.type == ActionNodeType::Group || !node.children.isEmpty()) {
+            const QString rawTitle = !node.groupTitle.isEmpty() ? node.groupTitle : node.actionName;
+            const QString title = (m_actionGroupManager != nullptr)
+                ? m_actionGroupManager->displayName(rawTitle)
+                : rawTitle;
 
-            auto* subMenu = parentMenu->addMenu(subMenuTitle);
+            auto* subMenu = parentMenu->addMenu(title);
             if (subMenu != nullptr) {
-                subMenu->setTearOffEnabled(allowTearOff);
-
                 QString iconPath = node.groupIcon;
-                if (iconPath.isEmpty() && naming != nullptr) {
-                    iconPath = naming->iconPath(node.groupTitle);
+                if (iconPath.isEmpty() && m_actionGroupManager != nullptr) {
+                    iconPath = m_actionGroupManager->iconPath(rawTitle);
                 }
                 if (!iconPath.isEmpty()) {
                     subMenu->setIcon(QIcon(iconPath));
                 }
 
-                populateMenuRecursive(subMenu, node.children, naming, allowTearOff);
-                if (subMenu->isEmpty()) {
-                    delete subMenu;
-                }
+                subMenu->setTearOffEnabled(effectiveTearOff);
+                populateMenuRecursive(subMenu, node.children);
             }
+            continue;
         }
+
+        appendActionItem(parentMenu, node);
     }
 }
 
@@ -108,14 +110,44 @@ bool LC_MenuBuilderBase::shouldIncludeNode(const ActionNode& node) const {
 }
 
 void LC_MenuBuilderBase::appendActionItem(QMenu* parentMenu, const ActionNode& node) {
-    QAction* act = nullptr;
-    if (m_specialMenuService != nullptr) {
-        act = m_specialMenuService->getSpecialAction(node.actionName);
+    if (parentMenu == nullptr) {
+        return;
     }
-    if (act == nullptr) {
+
+    QAction* act = nullptr;
+    if (node.actionName.startsWith(LC_ActionNames::PrefixSpecialAction)) {
+        if (m_specialMenuService != nullptr) {
+            act = m_specialMenuService->getSpecialAction(node.actionName);
+        }
+    }
+    else {
         act = getAction(node.actionName);
     }
-    if (act != nullptr && parentMenu != nullptr) {
+
+    if (act == nullptr) {
+        return;
+    }
+
+    // 1. Declarative Local Caption Override via Synchronized Proxy
+    if (!node.customLabel.isEmpty()) {
+        auto* proxy = parentMenu->addAction(node.customLabel);
+        proxy->setIcon(act->icon());
+        proxy->setCheckable(act->isCheckable());
+        proxy->setChecked(act->isChecked());
+        proxy->setEnabled(act->isEnabled());
+        proxy->setVisible(act->isVisible());
+
+        // Keep proxy state synchronized with source action
+        QObject::connect(act, &QAction::toggled, proxy, &QAction::setChecked);
+        QObject::connect(act, &QAction::changed, proxy, [act, proxy]() {
+            proxy->setEnabled(act->isEnabled());
+            proxy->setVisible(act->isVisible());
+            proxy->setIcon(act->icon());
+        });
+        QObject::connect(proxy, &QAction::triggered, act, &QAction::trigger);
+    }
+    else {
+        // 2. Standard Action Insertion
         parentMenu->addAction(act);
     }
 }

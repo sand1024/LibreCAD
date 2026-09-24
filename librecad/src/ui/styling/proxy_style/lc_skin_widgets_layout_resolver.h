@@ -181,6 +181,7 @@ namespace LC_SkinWidgetsLayoutResolver {
     TitleBarLayout resolveTitleBarMetrics(const QRect &windowRect, const SkinScaledGeometries &geoms);
 
     // fixme - move to proper location
+    [[deprecated]]
     void drawTitleBar(QPainter* painter, const TitleBarLayout& metrics, const SkinColors& desc, const SkinScaledGeometries& geoms,
                       bool active, bool closeHovered, CloseButtonColorPolicy closePolicy, const QString& titleText);
 

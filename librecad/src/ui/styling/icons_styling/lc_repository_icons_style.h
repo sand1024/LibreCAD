@@ -25,14 +25,17 @@
 #include <QString>
 #include <QStringList>
 #include "lc_icons_style_shared.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
 class QFile;
+
+inline const QString ICON_STYLE_EXTENSION = ".lcis";
+inline const QString ICON_STYLE_FILE_IDENTIFIER = "LibreCAD Config: Icons Style";
 
 class LC_RepositoryIconsStyle : public LC_PresetRepositoryBase<IconStyleConfig> {
 public:
     explicit LC_RepositoryIconsStyle(const QString &configDir)
-        : LC_PresetRepositoryBase<IconStyleConfig>(configDir, ICON_STYLE_EXTENSION, "LibreCAD Icons Style", "icons_index.lcix") {}
+        : LC_PresetRepositoryBase<IconStyleConfig>(configDir, ICON_STYLE_EXTENSION, ICON_STYLE_FILE_IDENTIFIER, "icons_index.lcix") {}
 
     QJsonObject configToJson(const IconStyleConfig& config) const override;
     bool configFromJson(const QJsonObject& json, IconStyleConfig& config) const override;

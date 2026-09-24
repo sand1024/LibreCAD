@@ -510,7 +510,6 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
             desc.input.bgInputEnd = desc.input.bgInput;
         }
     }
-    desc.input.bgInputHovered = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
 
     desc.input.bgInputHovered = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
     if (m_skin.boxDecoration == BoxDecoration::RecessedWell) {
@@ -750,8 +749,6 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     desc.arrow.arrowColor = palette.color(group, QPalette::ButtonText);
     desc.arrow.arrowColorHovered = highlightColor;
 
-    desc.arrow.arrowColor = palette.color(group, QPalette::ButtonText);
-    desc.arrow.arrowColorHovered = highlightColor;
     desc.arrow.menuArrowColorSelected = palette.color(group, QPalette::HighlightedText);
 
     desc.itemView.menuAliasColorNormal = textCol;

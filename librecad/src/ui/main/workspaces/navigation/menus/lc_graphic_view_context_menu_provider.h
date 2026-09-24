@@ -25,6 +25,7 @@
 #define LC_GRAPHICVIEWCONTEXTMENUPROVIDER_H
 #include <QStringList>
 
+#include "lc_action_factory.h"
 #include "lc_menu_builder_base.h"
 #include "lc_repository_graphic_view_context_menus.h"
 
@@ -36,13 +37,15 @@ class QMouseEvent;
 
 class LC_GraphicViewContextMenuProvider :  public QObject, public LC_MenuBuilderBase {
 public:
-    explicit LC_GraphicViewContextMenuProvider(  LC_ActionGroupManager* actionGroupManager,LC_SpecialMenuServiceInterface* specialMenuService = nullptr);
+    explicit LC_GraphicViewContextMenuProvider(LC_RepositoryGraphicViewContextMenus* repository, LC_ActionFactory* actionFactory,
+                                               LC_ActionGroupManager* actionGroupManager,
+                                               LC_SpecialMenuServiceInterface* specialMenuService = nullptr);
     ~LC_GraphicViewContextMenuProvider() override;
 
     QMenu* createContextMenu(QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos, const QMouseEvent* event);
 
     LC_RepositoryGraphicViewContextMenus* getMenusRepository() const {
-        return m_menusRepository.get();
+        return m_menusRepository;
     }
     void applyCustomMenusScheme(const ContextMenusConfig& config);
     void loadActiveScheme();
@@ -68,9 +71,8 @@ private:
 
     QList<LC_MenuActivator*> m_menuActivators;
     ContextMenusConfig m_activeConfig;
-    std::unique_ptr<LC_RepositoryGraphicViewContextMenus> m_menusRepository;
-    LC_ActionGroupManager* m_actionGroupManager;
+    LC_RepositoryGraphicViewContextMenus* m_menusRepository {nullptr};
+    LC_ActionFactory* m_actionFactory {nullptr};
 };
-
 
 #endif

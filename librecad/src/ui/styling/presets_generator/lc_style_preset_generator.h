@@ -28,7 +28,7 @@ class LC_RepositoryPalette;
 class LC_RepositoryFusionSkin;
 class LC_RepositoryIconsStyle;
 class LC_RepositoryTypography;
-class LC_RepostioryMetrics;
+class LC_RepositoryMetrics;
 class LC_UIStyleManager;
 
 class LC_StylePresetGenerator {
@@ -53,7 +53,7 @@ private:
     std::unique_ptr<LC_RepositoryFusionSkin> m_skinsRepo;
     std::unique_ptr<LC_RepositoryIconsStyle>  m_iconsRepo;
     std::unique_ptr<LC_RepositoryTypography>  m_typographyRepo;
-    std::unique_ptr<LC_RepostioryMetrics>     m_metricsRepo;
+    std::unique_ptr<LC_RepositoryMetrics>     m_metricsRepo;
 };
 
 #endif

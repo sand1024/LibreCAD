@@ -25,10 +25,8 @@
 #define LC_MENUS_REPOSITORY_H
 
 #include "lc_action_node.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
-inline const QString MENUS_EXTENSION = ".lccm";
-inline const QString MENUS_FILE_IDENTIFIER = "LibreCAD Context Menus Config v_1";
 
 class LC_RepositoryGraphicViewContextMenus : public LC_PresetRepositoryBase<ContextMenusConfig> {
 public:

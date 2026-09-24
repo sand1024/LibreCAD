@@ -41,9 +41,6 @@ typedef HRESULT (WINAPI *DwmSetWindowAttributePtr)(HWND, DWORD, LPCVOID, DWORD);
 #endif
 
 
-
-// ==================== LC_EventFilterFloatingHUD Implementation ====================
-
 LC_EventFilterFloatingHUD::LC_EventFilterFloatingHUD(QWidget *target, const LC_ProxyStyle *style)
     : LC_ProxyStyleEventFilter(target, style) {
 }

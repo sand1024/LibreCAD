@@ -55,7 +55,7 @@ LC_StylePresetGenerator::LC_StylePresetGenerator(const QString& palettesDir,
     m_skinsRepo      = std::make_unique<LC_RepositoryFusionSkin>(skinsDir);
     m_iconsRepo      = std::make_unique<LC_RepositoryIconsStyle>(iconsDir);
     m_typographyRepo = std::make_unique<LC_RepositoryTypography>(typographyDir);
-    m_metricsRepo    = std::make_unique<LC_RepostioryMetrics>(metricsDir);
+    m_metricsRepo    = std::make_unique<LC_RepositoryMetrics>(metricsDir);
 }
 
 LC_StylePresetGenerator::~LC_StylePresetGenerator() = default;

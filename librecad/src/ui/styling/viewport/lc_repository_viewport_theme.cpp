@@ -27,9 +27,9 @@
 
 // namespace
 
-LC_RepositoryViewportTheme::LC_RepositoryViewportTheme()
-    : LC_PresetRepositoryBase<LC_ViewportThemeConfig>(RS_System::instance()->getAppDataDir() + "/themes", ".theme.json", "viewport_theme",
-                                                     "themes_index.json") { // fixme - fixme filesystem
+LC_RepositoryViewportTheme::LC_RepositoryViewportTheme(const QString& configDir)
+    : LC_PresetRepositoryBase<LC_ViewportThemeConfig>(configDir,".theme.json", "viewport_theme",
+                                                     "themes_index.json") {
 }
 
 QJsonObject LC_RepositoryViewportTheme::configToJson(const LC_ViewportThemeConfig& config) const {

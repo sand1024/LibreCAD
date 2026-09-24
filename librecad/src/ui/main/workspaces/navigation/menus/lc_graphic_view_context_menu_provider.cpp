@@ -28,9 +28,11 @@
 #include "lc_action_group_manager.h"
 #include "lc_default_context_menus_builder.h"
 #include "lc_menu_activator.h"
+#include "lc_preset_manager_menus.h"
 #include "lc_settings_appearance.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_paths.h"
+#include "lc_wait_cursor_guard.h"
 #include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
 #include "rs_document.h"
@@ -39,12 +41,13 @@
 #include "rs_insert.h"
 #include "rs_selection.h"
 
-LC_GraphicViewContextMenuProvider::LC_GraphicViewContextMenuProvider(  LC_ActionGroupManager* actionGroupManager, LC_SpecialMenuServiceInterface* specialMenuService)
-    : LC_MenuBuilderBase(specialMenuService), m_actionGroupManager{actionGroupManager} {
+LC_GraphicViewContextMenuProvider::LC_GraphicViewContextMenuProvider(LC_RepositoryGraphicViewContextMenus* repository,
+                                                                     LC_ActionFactory* actionFactory,
+                                                                     LC_ActionGroupManager* actionGroupManager,
+                                                                     LC_SpecialMenuServiceInterface* specialMenuService)
+    : LC_MenuBuilderBase(actionGroupManager, specialMenuService), m_actionFactory(actionFactory), m_menusRepository(repository) {
     const QString baseFolder = CFG_Paths::o_OtherSettingsDir;
-    m_menusRepository = std::make_unique<LC_RepositoryGraphicViewContextMenus>(baseFolder + "/context_menus");
     m_menusRepository->migrateLegacyMenusIfNeeded();
-
     loadActiveScheme();
 }
 
@@ -54,11 +57,15 @@ LC_GraphicViewContextMenuProvider::~LC_GraphicViewContextMenuProvider() {
 }
 
 void LC_GraphicViewContextMenuProvider::loadActiveScheme() {
+    LC_WaitCursorGuard guard;
     const QString activeKey = CFG_AppState::o_ActiveContextMenusScheme;
     ContextMenusConfig config;
 
-    if (activeKey == DEFAULT_THEME_KEY || activeKey.isEmpty() || !m_menusRepository->loadByKey(activeKey, config)) {
-        config = LC_DefaultContextMenusBuilder::createDefaultConfig();
+    if (activeKey == LC_PresetManagerMenus::THEME_EXTENDED_KEY) {
+        config = LC_DefaultContextMenusBuilder::createExtendedConfig(m_actionFactory, m_actionGroupManager);
+    }
+    else if (activeKey == CFG_AppState::DEFAULT_THEME_KEY || activeKey.isEmpty() || !m_menusRepository->loadByKey(activeKey, config)) {
+        config = LC_DefaultContextMenusBuilder::createDefaultConfig(m_actionFactory, m_actionGroupManager);
     }
     applyCustomMenusScheme(config);
 }
@@ -208,12 +215,8 @@ QMenu* LC_GraphicViewContextMenuProvider::createContextMenu(QG_GraphicView* grap
             doc->collectUndoState(m_undoAvailable, m_redoAvailable);
         }
     }
-
-    const auto& appWin = QC_ApplicationWindow::getAppWindow();
-    const auto* naming = m_actionGroupManager->getNamingService();
-
     // 2. Delegate directly to the base class recursive menu builder
-    populateMenuRecursive(ctxMenu, matchedDef->nodes, naming, /*allowTearOff=*/false);
+    populateMenuRecursive(ctxMenu, matchedDef->nodes, /*allowTearOff=*/false);
 
     // 3. Clear transient state
     m_currentGraphicView = nullptr;
@@ -318,17 +321,17 @@ void LC_GraphicViewContextMenuProvider::appendActionItem(QMenu* parentMenu, cons
         return;
     }
 
-    // 4. Fallback Workspaces Menu
-    if (name == LC_ActionNames::MenuWorkspacesRescue) {
-        if (!CFG_Appearance::o_MainMenuVisible && m_specialMenuService != nullptr) {
-            auto* ws = parentMenu->addMenu(QIcon(":/icons/workspace.lci"), tr("Workspaces"));
-            ws->setTearOffEnabled(false);
-            m_specialMenuService->bindMenu(LC_ActionNames::MenuDockWidgets, ws);
-            m_specialMenuService->bindMenu(LC_ActionNames::MenuToolbars, ws);
-            m_specialMenuService->bindMenu(LC_ActionNames::MenuWorkspacesList, ws);
-        }
-        return;
-    }
+    // // 4. Fallback Workspaces Menu
+    // if (name == LC_ActionNames::MenuWorkspacesRescue) {
+    //     if (!CFG_Appearance::o_MainMenuVisible && m_specialMenuService != nullptr) {
+    //         auto* ws = parentMenu->addMenu(QIcon(":/icons/workspace.lci"), tr("Workspaces"));
+    //         ws->setTearOffEnabled(false);
+    //         m_specialMenuService->bindMenu(LC_ActionNames::MenuDockWidgets, ws);
+    //         m_specialMenuService->bindMenu(LC_ActionNames::MenuToolbars, ws);
+    //         m_specialMenuService->bindMenu(LC_ActionNames::MenuWorkspacesList, ws);
+    //     }
+    //     return;
+    // }
 
     // 5. Standard action with context saving proxy
     QAction* realAction = nullptr;
@@ -362,7 +365,7 @@ bool LC_GraphicViewContextMenuProvider::isDefaultMenuInvokerEvent(const QMouseEv
 }
 
 QAction* LC_GraphicViewContextMenuProvider::getAction(const QString& key) const {
-    auto& appWin = QC_ApplicationWindow::getAppWindow();
+    auto appWin = QC_ApplicationWindow::getAppWindow();
     if (appWin != nullptr) {
         return appWin->getAction(key);
     }

@@ -51,8 +51,8 @@ LC_DlgStylesPresetsGenerator::LC_DlgStylesPresetsGenerator(QWidget* parent, LC_U
        }
    });
 
-    ui->leStylesDir->setText(m_styleManager->getIconsStyleRepository()->configDir());
-    ui->leSkinsDir->setText(m_styleManager->getSkinsRepository()->configDir());
+    ui->leStylesDir->setText(m_styleManager->getIconsStyleRepository()->getConfigDir());
+    ui->leSkinsDir->setText(m_styleManager->getSkinsRepository()->getConfigDir());
 
     connect(ui->pbGenerateSkins, &QPushButton::clicked, this, &LC_DlgStylesPresetsGenerator::generateSkins);
     connect(ui->pbGenerateStyles, &QPushButton::clicked, this, &LC_DlgStylesPresetsGenerator::generateIconStyles);

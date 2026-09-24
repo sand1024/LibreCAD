@@ -27,12 +27,22 @@
 #include <QDockWidget>
 
 class LC_DockWidget : public QDockWidget {
-    public:
-        LC_DockWidget(QWidget* parent, const QString& title, const QString& verticalTitle, const Qt::WindowFlags& flags = Qt::WindowFlags());
-         void updateTitleOld();
-    private:
-        QString m_verticalTitle;
-        QString m_horizontalTitle;
+public:
+    LC_DockWidget(QWidget* parent, const QString& title, const QString& verticalTitle, const Qt::WindowFlags& flags = Qt::WindowFlags());
+    void updateTitleOld();
+
+protected:
+    void showEvent(QShowEvent* event) override {m_ownVisible = true;}
+    void hideEvent(QHideEvent* event) override {m_ownVisible = false;}
+
+    void setVisible(bool visible) override;
+    bool isCurrentActiveTab();
+
+private:
+    QString m_verticalTitle;
+    QString m_horizontalTitle;
+
+    bool m_ownVisible = false;;
 };
 
 #endif

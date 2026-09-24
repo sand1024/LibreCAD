@@ -25,20 +25,21 @@
 #define LC_MENUS_TOOLBARS_REPOSITORY_H
 
 #include "lc_action_node.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
 inline const QString MENUS_TOOLBARS_EXTENSION = ".lcmt";
-inline const QString MENUS_TOOLBARS_FILE_IDENTIFIER = "LibreCAD Menus and Toolbars Config v_1";
+inline const QString MENUS_TOOLBARS_FILE_IDENTIFIER = "LibreCAD Config: MenuBar and Toolbars";
 
 class LC_RepositoryMenuBarAndToolbars : public LC_PresetRepositoryBase<NavigationLayoutConfig> {
 public:
-    explicit LC_RepositoryMenuBarAndToolbars(const QString& configDir);
+    LC_RepositoryMenuBarAndToolbars(const QString& configDir)
+        : LC_PresetRepositoryBase<NavigationLayoutConfig>(configDir, MENUS_TOOLBARS_EXTENSION, MENUS_TOOLBARS_FILE_IDENTIFIER,
+                                                          "toolbars_menus_index.lcix") {
+    }
     ~LC_RepositoryMenuBarAndToolbars() override = default;
 
     QJsonObject configToJson(const NavigationLayoutConfig& config) const override;
     bool configFromJson(const QJsonObject& json, NavigationLayoutConfig& config) const override;
-
-    void migrateLegacyToolbarsIfNeeded(NavigationLayoutConfig& config);
 
 private:
     static QJsonArray serializeNodes(const QList<ActionNode>& nodes);

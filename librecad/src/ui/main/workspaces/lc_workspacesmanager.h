@@ -54,7 +54,7 @@ protected:
 
         bool dockAreaLeftActive = false;
         bool dockAreaRightActive = false;
-        bool dockAreaToptActive = false;
+        bool dockAreaTopActive = false;
         bool dockAreaBottomActive = false;
         bool docAreaFloatingActive = false;
 
@@ -72,9 +72,8 @@ protected:
         int columnCountLeftAllDoc = 5;
         int iconsSizeLeftAllDock = 22;
 
-        bool extendMenu = false;
-        bool extendMenuTillEntities = false;
-
+        int mainMenuType = false;
+        bool mainMenuTopLevelIconsOnly = false;
         bool showStatusBar = false;
         bool showMainMenu = true;
         bool showFullScreen= true;
@@ -86,15 +85,15 @@ protected:
     QList<LC_Workspace*> m_workspacesList;
     QString getWorkspacesFileName();
     void createWorkspacesFileBackupCopy(const QString& workspacesFile);
-    void restoreGeometryAndState(const LC_Workspace &workspace) const;
     void restore(const LC_Workspace& perspective);
-    void applyToSettings(const LC_Workspace &workspace);
+    void applyToSettings(const LC_Workspace &ws);
     void fillBySettings(LC_Workspace &workspace);
     void fillByState(LC_Workspace &workspace);
     void loadWorkspaces();
     void saveWorkspaces(QWidget* parent = nullptr);
-    void restoreGeometryAndState(const LC_Workspace &workspace, QC_ApplicationWindow &appWin) const;
-    static void fillIconsAndMenuState(LC_Workspace &workspace);
+    void restoreGeometryAndState(const LC_Workspace &workspace, bool rebuildMenu = false) const;
+    void restoreGeometryAndState(const LC_Workspace &workspace, QC_ApplicationWindow &appWin, bool rebuildMenu = false) const;
+    static void fillIconsAndMenuState(LC_Workspace &ws);
 };
 
 #endif

@@ -35,6 +35,7 @@
 #include "rs_debug.h"
 #include "rs_settings.h"
 
+
 bool LC_PaletteColorUtils::isPaletteDarkMode() {
     // Fallback: Query standard operating system theme
 
@@ -113,7 +114,7 @@ void LC_PaletteColorUtils::debugBevelCalculation(const QPalette &palette, BevelS
 
 
 void LC_PaletteColorUtils::initializeDefaultControlStyle(ControlStyleConfig &config) {
-    config.name = DEFAULT_THEME_NAME;
+    config.name = CFG_AppState::DEFAULT_THEME_KEY;
     config.styleArchetype = StyleArchetype::ClassicFusion;
     config.boxDecoration  = BoxDecoration::DividingHairline;
     config.customDockTitleBar = false;
@@ -162,8 +163,8 @@ void LC_PaletteColorUtils::initializeDefaultControlStyle(ControlStyleConfig &con
 }
 
 void LC_PaletteColorUtils::initializeDefaultPalette(PaletteConfig &config) {
-    config.name = DEFAULT_THEME_NAME;
-    config.linkedIconStyleName = "Default";
+    config.name = CFG_AppState::DEFAULT_THEME_KEY;
+    config.linkedIconStyleName = CFG_AppState::DEFAULT_THEME_KEY;
     config.useThemeDefaultIcons = false;
 
     // Light palette population

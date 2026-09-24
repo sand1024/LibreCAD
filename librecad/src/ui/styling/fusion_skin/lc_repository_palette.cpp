@@ -21,56 +21,55 @@
 
 #include "lc_repository_palette.h"
 
-LC_RepositoryPalette::LC_RepositoryPalette(const QString& configDir)
-    : LC_PresetRepositoryBase<PaletteConfig>(configDir, PALETTE_EXTENSION, PALETTE_FILE_IDENTIFIER, "palettes_index.lcix") {}
+namespace {
+    QJsonObject serializeScheme(const ColorSchemeData& scheme) {
+        QJsonObject obj;
+        obj["qss"] = scheme.qss;
+        obj["contrast_policy"] = static_cast<int>(scheme.contrastPolicy);
+        obj["contrast_weight"] = static_cast<int>(scheme.contrastWeight);
+        obj["auto_calculate_3d_helpers"] = scheme.autoCalculate3DHelpers;
+        obj["bevel_seed_role"] = static_cast<int>(scheme.bevelSeedRole);
 
-QJsonObject LC_RepositoryPalette::serializeScheme(const ColorSchemeData& scheme) const {
-    QJsonObject obj;
-    obj["qss"] = scheme.qss;
-    obj["contrast_policy"] = static_cast<int>(scheme.contrastPolicy);
-    obj["contrast_weight"] = static_cast<int>(scheme.contrastWeight);
-    obj["auto_calculate_3d_helpers"] = scheme.autoCalculate3DHelpers;
-    obj["bevel_seed_role"] = static_cast<int>(scheme.bevelSeedRole);
-
-    QJsonObject paletteObj;
-    for (auto roleIt = scheme.palette.begin(); roleIt != scheme.palette.end(); ++roleIt) {
-        QJsonObject stateObj;
-        for (auto stateIt = roleIt.value().begin(); stateIt != roleIt.value().end(); ++stateIt) {
-            stateObj[stateIt.key()] = stateIt.value().name(QColor::HexArgb);
+        QJsonObject paletteObj;
+        for (auto roleIt = scheme.palette.begin(); roleIt != scheme.palette.end(); ++roleIt) {
+            QJsonObject stateObj;
+            for (auto stateIt = roleIt.value().begin(); stateIt != roleIt.value().end(); ++stateIt) {
+                stateObj[stateIt.key()] = stateIt.value().name(QColor::HexArgb);
+            }
+            paletteObj[roleIt.key()] = stateObj;
         }
-        paletteObj[roleIt.key()] = stateObj;
-    }
-    obj["palette"] = paletteObj;
+        obj["palette"] = paletteObj;
 
-    QJsonObject semanticObj;
-    for (auto it = scheme.semanticColors.begin(); it != scheme.semanticColors.end(); ++it) {
-        semanticObj[it.key()] = it.value().name(QColor::HexArgb);
-    }
-
-    obj["semantic_colors"] = semanticObj;
-    return obj;
-}
-
-void LC_RepositoryPalette::deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const {
-    scheme.qss = json["qss"].toString();
-    scheme.contrastPolicy = static_cast<ContrastPolicy>(json["contrast_policy"].toInt(static_cast<int>(ContrastPolicy::Standard)));
-    scheme.contrastWeight = static_cast<ContrastWeight>(json["contrast_weight"].toInt(static_cast<int>(ContrastWeight::Balanced)));
-    scheme.autoCalculate3DHelpers = json["auto_calculate_3d_helpers"].toBool(true);
-    scheme.bevelSeedRole = static_cast<QPalette::ColorRole>(json["bevel_seed_role"].toInt(static_cast<int>(QPalette::Button)));
-
-    scheme.palette.clear();
-    const QJsonObject paletteObj = json["palette"].toObject();
-    for (auto roleIt = paletteObj.begin(); roleIt != paletteObj.end(); ++roleIt) {
-        const QJsonObject stateObj = roleIt.value().toObject();
-        for (auto stateIt = stateObj.begin(); stateIt != stateObj.end(); ++stateIt) {
-            scheme.palette[roleIt.key()][stateIt.key()] = QColor(stateIt.value().toString());
+        QJsonObject semanticObj;
+        for (auto it = scheme.semanticColors.begin(); it != scheme.semanticColors.end(); ++it) {
+            semanticObj[it.key()] = it.value().name(QColor::HexArgb);
         }
+
+        obj["semantic_colors"] = semanticObj;
+        return obj;
     }
 
-    scheme.semanticColors.clear();
-    const QJsonObject semanticObj = json["semantic_colors"].toObject();
-    for (auto it = semanticObj.begin(); it != semanticObj.end(); ++it) {
-        scheme.semanticColors[it.key()] = QColor(it.value().toString());
+    void deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) {
+        scheme.qss = json["qss"].toString();
+        scheme.contrastPolicy = static_cast<ContrastPolicy>(json["contrast_policy"].toInt(static_cast<int>(ContrastPolicy::Standard)));
+        scheme.contrastWeight = static_cast<ContrastWeight>(json["contrast_weight"].toInt(static_cast<int>(ContrastWeight::Balanced)));
+        scheme.autoCalculate3DHelpers = json["auto_calculate_3d_helpers"].toBool(true);
+        scheme.bevelSeedRole = static_cast<QPalette::ColorRole>(json["bevel_seed_role"].toInt(static_cast<int>(QPalette::Button)));
+
+        scheme.palette.clear();
+        const QJsonObject paletteObj = json["palette"].toObject();
+        for (auto roleIt = paletteObj.begin(); roleIt != paletteObj.end(); ++roleIt) {
+            const QJsonObject stateObj = roleIt.value().toObject();
+            for (auto stateIt = stateObj.begin(); stateIt != stateObj.end(); ++stateIt) {
+                scheme.palette[roleIt.key()][stateIt.key()] = QColor(stateIt.value().toString());
+            }
+        }
+
+        scheme.semanticColors.clear();
+        const QJsonObject semanticObj = json["semantic_colors"].toObject();
+        for (auto it = semanticObj.begin(); it != semanticObj.end(); ++it) {
+            scheme.semanticColors[it.key()] = QColor(it.value().toString());
+        }
     }
 }
 

@@ -30,16 +30,17 @@
 #include "lc_icons_color_utils.h"
 #include "lc_palette_color_utils.h"
 #include "lc_palette_editor_shared.h"
+#include "lc_settings_paths.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
 
-void LC_IconsStyleManager::applyThemeLinkedIcons(const QString &linkedStyleName, bool useThemeDefaultIcons, bool isDarkMode) {
+void LC_IconsStyleManager::applyThemeLinkedIcons(QC_ApplicationWindow* appWindow, const QString &linkedStyleName, bool useThemeDefaultIcons, bool isDarkMode) {
     if (!useThemeDefaultIcons) {
         return; // Preserve the user's active, standalone custom style [3]
     }
 
     bool applied = false;
-    QString iconsDir = LC_GET_ONE_STR("UiIconsStyling", "IconOverridesDir", "");
+    QString iconsDir = CFG_Paths::o_IconOverridesDir;
 
     // Load the linked style if a custom folder and style are specified [3]
     if (!iconsDir.isEmpty() && !linkedStyleName.isEmpty() && linkedStyleName != "Default") {
@@ -51,7 +52,7 @@ void LC_IconsStyleManager::applyThemeLinkedIcons(const QString &linkedStyleName,
             iconOptions.importStyleConfig(iconStyle, isDarkMode);
 
             // Delegate completely to applyStyle() [3]
-            applyStyle(iconOptions, isDarkMode);
+            applyStyle(appWindow, iconOptions, isDarkMode);
             applied = true;
         }
     }
@@ -85,7 +86,7 @@ void LC_IconsStyleManager::applyThemeLinkedIcons(const QString &linkedStyleName,
 
 #define DEBUG_APPLYING_COLORS_
 
-void LC_IconsStyleManager::applyStyle(const LC_IconColorsOptions &options, bool isDarkMode, LC_PaletteColorUtils::CVDType cvd) {
+void LC_IconsStyleManager::applyStyle(QC_ApplicationWindow* appWindow, const LC_IconColorsOptions &options, bool isDarkMode, LC_PaletteColorUtils::CVDType cvd) {
     // 1. Pre-resolve active seeds and system colors
     QString mainSeedStr         = resolveColorValue(options.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main));
     QString accentNormalStr     = resolveColorValue(options.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent));
@@ -256,7 +257,6 @@ void LC_IconsStyleManager::applyStyle(const LC_IconColorsOptions &options, bool 
 
     // Flush and repaint
     QPixmapCache::clear();
-    const auto& appWindow = QC_ApplicationWindow::getAppWindow();
     if (appWindow != nullptr) {
         appWindow->fireIconsRefresh();
         appWindow->update();
@@ -266,11 +266,11 @@ void LC_IconsStyleManager::applyStyle(const LC_IconColorsOptions &options, bool 
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
-void LC_IconsStyleManager::applyCurrentStyle() {
+void LC_IconsStyleManager::applyCurrentStyle(QC_ApplicationWindow* appWindow) {
     LC_IconColorsOptions options;
     options.loadSettings();
     bool darkMode = LC_PaletteColorUtils::isSystemInDarkMode();
-    applyStyle(options, darkMode);
+    applyStyle(appWindow, options, darkMode);
 }
 
 QString LC_IconsStyleManager::resolveColorValue(const QString &value) {

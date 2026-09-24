@@ -33,7 +33,7 @@
 
 #include "lc_palette_color_utils.h"
 #include "lc_palette_editor_shared.h"
-
+#include "lc_settings_paths.h"
 
 #include "rs_debug.h"
 #include "rs_settings.h"
@@ -217,10 +217,10 @@ void LC_IconColorsOptions::loadSettings() {
         loadColor(LC_SVGIconEngineAPI::Disabled, LC_SVGIconEngineAPI::Off, LC_SVGIconEngineAPI::ColorType::Accent, "");
         loadColor(LC_SVGIconEngineAPI::Disabled, LC_SVGIconEngineAPI::Off, LC_SVGIconEngineAPI::ColorType::Background, "");
 
-        m_iconOverridesDir = LC_GET_STR("IconOverridesDir", "");
         m_autoCalculateStates = LC_GET_BOOL("AutoCalculateStates", true);
     }
     LC_GROUP_END();
+    m_iconOverridesDir = CFG_Paths::o_IconOverridesDir;
 }
 
 void LC_IconColorsOptions::save() {
@@ -259,10 +259,10 @@ void LC_IconColorsOptions::save() {
         saveColor(LC_SVGIconEngineAPI::Disabled, LC_SVGIconEngineAPI::Off, LC_SVGIconEngineAPI::ColorType::Accent);
         saveColor(LC_SVGIconEngineAPI::Disabled, LC_SVGIconEngineAPI::Off, LC_SVGIconEngineAPI::ColorType::Background);
 
-        LC_SET("IconOverridesDir", m_iconOverridesDir);
         LC_SET("AutoCalculateStates", m_autoCalculateStates);
     }
     LC_GROUP_END();
+    CFG_Paths::o_IconOverridesDir = m_iconOverridesDir;
 }
 
 

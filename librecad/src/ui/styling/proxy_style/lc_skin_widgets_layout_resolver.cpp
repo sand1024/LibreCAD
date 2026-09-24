@@ -266,8 +266,8 @@ namespace {
     }
 } // namespace
 
-LC_SkinWidgetsLayoutResolver::SliderLayout LC_SkinWidgetsLayoutResolver::resolveSliderLayout(const QStyle* style, const QStyleOptionSlider* option,
-                                                                       const SkinScaledGeometries& geoms, const QWidget* widget) {
+LC_SkinWidgetsLayoutResolver::SliderLayout LC_SkinWidgetsLayoutResolver::resolveSliderLayout(
+    const QStyle* style, const QStyleOptionSlider* option, const SkinScaledGeometries& geoms, const QWidget* widget) {
     SliderLayout layout;
     const QRect grooveRect = style->subControlRect(QStyle::CC_Slider, option, QStyle::SC_SliderGroove, widget);
     const QRect handleRect = style->subControlRect(QStyle::CC_Slider, option, QStyle::SC_SliderHandle, widget);
@@ -293,8 +293,8 @@ LC_SkinWidgetsLayoutResolver::SliderLayout LC_SkinWidgetsLayoutResolver::resolve
     return layout;
 }
 
-LC_SkinWidgetsLayoutResolver::ProgressBarLayout LC_SkinWidgetsLayoutResolver::resolveProgressBarLayout(const QStyleOptionProgressBar* option,
-                                                                                 const SkinScaledGeometries& geoms) {
+LC_SkinWidgetsLayoutResolver::ProgressBarLayout LC_SkinWidgetsLayoutResolver::resolveProgressBarLayout(
+    const QStyleOptionProgressBar* option, const SkinScaledGeometries& geoms) {
     LC_SkinWidgetsLayoutResolver::ProgressBarLayout layout;
     layout.rect = option->rect;
 
@@ -314,8 +314,7 @@ LC_SkinWidgetsLayoutResolver::ProgressBarLayout LC_SkinWidgetsLayoutResolver::re
 }
 
 LC_SkinWidgetsLayoutResolver::MenuItemColumnsLayout LC_SkinWidgetsLayoutResolver::resolveMenuItemLayout(const QStyleOptionMenuItem* option,
-                                                                                  const SkinScaledGeometries& geoms, int maxCmdWidth,
-                                                                                  int maxShortcutWidth) {
+    const SkinScaledGeometries& geoms, int maxCmdWidth, int maxShortcutWidth) {
     MenuItemColumnsLayout layout;
 
     const int leftMargin = option->rect.left() + option->maxIconWidth + geoms.menuCol.leftMargin;
@@ -337,8 +336,9 @@ LC_SkinWidgetsLayoutResolver::MenuItemColumnsLayout LC_SkinWidgetsLayoutResolver
 }
 
 LC_SkinWidgetsLayoutResolver::TabLayout LC_SkinWidgetsLayoutResolver::resolveTabLayout(const QStyleOptionTab* option, const QWidget* widget,
-                                                                 const SkinScaledGeometries& geoms, const QStyle* style, bool isLeftAccentBar,
-                                                                 bool tabStripeAtBottom) {
+                                                                                       const SkinScaledGeometries& geoms,
+                                                                                       const QStyle* style, bool isLeftAccentBar,
+                                                                                       bool tabStripeAtBottom) {
     TabLayout layout;
     QRect tabRect = option->rect;
 
@@ -564,8 +564,9 @@ LC_SkinWidgetsLayoutResolver::TabLayout LC_SkinWidgetsLayoutResolver::resolveTab
 }
 
 GroupBoxLayout LC_SkinWidgetsLayoutResolver::resolveGroupBoxLayout(const QStyle* style, const QStyleOptionGroupBox* option,
-                                                        const SkinColors& desc, const SkinScaledGeometries& geoms, const QRect& textRect,
-                                                        const QRect& checkBoxRect, const QWidget* widget) {
+                                                                   const SkinColors& desc, const SkinScaledGeometries& geoms,
+                                                                   const QRect& textRect, const QRect& checkBoxRect,
+                                                                   const QWidget* widget) {
     GroupBoxLayout layout;
     const QRect rect = option->rect;
 
@@ -594,18 +595,18 @@ GroupBoxLayout LC_SkinWidgetsLayoutResolver::resolveGroupBoxLayout(const QStyle*
     }
 
     int activeCenterY = centerY;
-        const int headerHeight = qMax(textRect.height(), checkBoxRect.height()) + geoms.ints.scale8;
+    const int headerHeight = qMax(textRect.height(), checkBoxRect.height()) + geoms.ints.scale8;
 
-        // Dynamic sub-geometry coordinate resolutions
-        layout.headerRect = QRect(rect.left(), rect.top(), rect.width(), headerHeight);
-        if (desc.groupBox.groupBoxBoundaryStyle == GroupBoxBoundaryStyle::LeftStripe) {
-            layout.headerRect.setLeft(rect.left() + geoms.ints.scale3);
-        }
-        layout.fillHeaderRect = layout.headerRect.adjusted(1, 1, -1, 0);
-        layout.underlineY = qMax(textRect.bottom(), checkBoxRect.bottom()) + geoms.ints.scale2;
+    // Dynamic sub-geometry coordinate resolutions
+    layout.headerRect = QRect(rect.left(), rect.top(), rect.width(), headerHeight);
+    if (desc.groupBox.groupBoxBoundaryStyle == GroupBoxBoundaryStyle::LeftStripe) {
+        layout.headerRect.setLeft(rect.left() + geoms.ints.scale3);
+    }
+    layout.fillHeaderRect = layout.headerRect.adjusted(1, 1, -1, 0);
+    layout.underlineY = qMax(textRect.bottom(), checkBoxRect.bottom()) + geoms.ints.scale2;
 
-        if (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::HeaderBanner) {
-            activeCenterY = layout.headerRect.center().y();
+    if (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::HeaderBanner) {
+        activeCenterY = layout.headerRect.center().y();
     }
 
     layout.drawCheckBoxRect = checkBoxRect;
@@ -622,11 +623,11 @@ GroupBoxLayout LC_SkinWidgetsLayoutResolver::resolveGroupBoxLayout(const QStyle*
         layout.drawTextRect.moveLeft(rect.left() + leftMargin);
     }
 
-        // Overlay backing cover bounds (breaks borders in overlapping mode)
-        layout.bgCoverRect = layout.drawTextRect.adjusted(-geoms.ints.scale2, 0, geoms.ints.scale2, geoms.ints.scale2);
-        if (option->subControls & QStyle::SC_GroupBoxCheckBox) {
-            layout.bgCoverRect.setLeft(layout.drawCheckBoxRect.left() - geoms.ints.scale2);
-        }
+    // Overlay backing cover bounds (breaks borders in overlapping mode)
+    layout.bgCoverRect = layout.drawTextRect.adjusted(-geoms.ints.scale2, 0, geoms.ints.scale2, geoms.ints.scale2);
+    if (option->subControls & QStyle::SC_GroupBoxCheckBox) {
+        layout.bgCoverRect.setLeft(layout.drawCheckBoxRect.left() - geoms.ints.scale2);
+    }
 
     return layout;
 }
@@ -811,9 +812,9 @@ LC_SkinWidgetsLayoutResolver::ToolButtonAccessoryLayout LC_SkinWidgetsLayoutReso
     return layout;
 }
 
-LC_SkinWidgetsLayoutResolver::GripLayout LC_SkinWidgetsLayoutResolver::resolveGripLayout(const QStyleOption* option, const SkinScaledGeometries& geoms,
-                                                                   bool showGripBackgroundWell, int baseHandleLen,
-                                                                   bool handleIsHorizontal) {
+LC_SkinWidgetsLayoutResolver::GripLayout LC_SkinWidgetsLayoutResolver::resolveGripLayout(
+    const QStyleOption* option, const SkinScaledGeometries& geoms, bool showGripBackgroundWell, int baseHandleLen,
+    bool handleIsHorizontal) {
     GripLayout layout;
     const QRect rect = option->rect;
     const QPoint cx = rect.center();
@@ -840,7 +841,8 @@ LC_SkinWidgetsLayoutResolver::GripLayout LC_SkinWidgetsLayoutResolver::resolveGr
     return layout;
 }
 
-LC_SkinWidgetsLayoutResolver::BranchLayout LC_SkinWidgetsLayoutResolver::resolveBranchLayout(const QStyleOption* option, const SkinScaledGeometries& geoms) {
+LC_SkinWidgetsLayoutResolver::BranchLayout LC_SkinWidgetsLayoutResolver::resolveBranchLayout(
+    const QStyleOption* option, const SkinScaledGeometries& geoms) {
     LC_SkinWidgetsLayoutResolver::BranchLayout layout;
     const QRect rect = option->rect;
     const int midH = rect.x() + rect.width() / 2;
@@ -911,15 +913,8 @@ LC_SkinWidgetsLayoutResolver::TabWidgetFrameClipLayout LC_SkinWidgetsLayoutResol
 }
 
 LC_SkinWidgetsLayoutResolver::SpinBoxProgressBarLayout LC_SkinWidgetsLayoutResolver::resolveSpinBoxProgressBarLayout(
-    const QStyle *style,
-    const QRect &rect,
-    const SkinScaledGeometries &geoms,
-    qreal pct,
-    bool hasFocus,
-    const QWidget *widget,
-    const QAbstractSpinBox *spinBox,
-    bool useFocusedInputGlow) {
-
+    const QStyle* style, const QRect& rect, const SkinScaledGeometries& geoms, qreal pct, bool hasFocus, const QWidget* widget,
+    const QAbstractSpinBox* spinBox, bool useFocusedInputGlow) {
     SpinBoxProgressBarLayout layout;
     QRect editRect = rect;
 
@@ -930,7 +925,8 @@ LC_SkinWidgetsLayoutResolver::SpinBoxProgressBarLayout LC_SkinWidgetsLayoutResol
 
         if (widget == spinBox) {
             editRect = parentEditRect;
-        } else {
+        }
+        else {
             QPoint localTopLeft = widget->mapFromParent(parentEditRect.topLeft());
             QPoint localBottomRight = widget->mapFromParent(parentEditRect.bottomRight());
             editRect = QRect(localTopLeft, localBottomRight);
@@ -947,17 +943,12 @@ LC_SkinWidgetsLayoutResolver::SpinBoxProgressBarLayout LC_SkinWidgetsLayoutResol
     const int leftMargin = horizontalOffset;
     const int rightMargin = horizontalOffset;
 
-    layout.bgRect = QRect(editRect.left() + leftMargin,
-                          editRect.top() + topMargin,
-                          editRect.width() - (leftMargin + rightMargin),
+    layout.bgRect = QRect(editRect.left() + leftMargin, editRect.top() + topMargin, editRect.width() - (leftMargin + rightMargin),
                           editRect.height() - (topMargin + bottomMargin));
 
     const int fillWidth = qRound(layout.bgRect.width() * pct);
 
-    layout.fillRect = QRect(layout.bgRect.left(),
-                            layout.bgRect.top(),
-                            fillWidth,
-                            layout.bgRect.height());
+    layout.fillRect = QRect(layout.bgRect.left(), layout.bgRect.top(), fillWidth, layout.bgRect.height());
 
     const int cursorWidth = geoms.ints.scale2;
     layout.cursorRect = QRect(layout.fillRect.right() - cursorWidth, layout.fillRect.top(), cursorWidth, layout.fillRect.height());
@@ -965,18 +956,13 @@ LC_SkinWidgetsLayoutResolver::SpinBoxProgressBarLayout LC_SkinWidgetsLayoutResol
     return layout;
 }
 
-
 LC_SkinWidgetsLayoutResolver::ScrollBarLayout LC_SkinWidgetsLayoutResolver::resolveScrollBarLayout(
-    const QStyle *style,
-    const QStyleOptionSlider *option,
-    const SkinScaledGeometries &geoms,
-    const QWidget *widget,
+    const QStyle* style, const QStyleOptionSlider* option, const SkinScaledGeometries& geoms, const QWidget* widget,
     bool transparentScrollbars) {
-
     ScrollBarLayout layout;
     layout.subPageRect = style->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarSubPage, widget);
     layout.addPageRect = style->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarAddPage, widget);
-    layout.handleRect  = style->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarSlider, widget);
+    layout.handleRect = style->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarSlider, widget);
 
     if (layout.handleRect.isValid()) {
         layout.handleValid = true;
@@ -984,7 +970,8 @@ LC_SkinWidgetsLayoutResolver::ScrollBarLayout LC_SkinWidgetsLayoutResolver::reso
             const int pad = geoms.scrollbar.paddingTransparent;
             layout.handleRadius = geoms.scrollbar.radiusTransparent;
             layout.adjustedHandleRect = QRectF(layout.handleRect).adjusted(pad, pad, -pad, -pad);
-        } else {
+        }
+        else {
             const int pad = geoms.scrollbar.paddingStandard;
             layout.handleRadius = geoms.scrollbar.radiusStandard;
             layout.adjustedHandleRect = QRectF(layout.handleRect).adjusted(pad, pad, -pad, -pad);
@@ -995,12 +982,8 @@ LC_SkinWidgetsLayoutResolver::ScrollBarLayout LC_SkinWidgetsLayoutResolver::reso
 }
 
 LC_SkinWidgetsLayoutResolver::ArrowLayout LC_SkinWidgetsLayoutResolver::resolveArrowLayout(
-    QStyle::PrimitiveElement element,
-    const QStyleOption *option,
-    const SkinScaledGeometries &geoms,
-    const QWidget *widget,
+    QStyle::PrimitiveElement element, const QStyleOption* option, const SkinScaledGeometries& geoms, const QWidget* widget,
     bool customVectorIcons) {
-
     ArrowLayout layout;
     const QRect rect = option->rect;
     const qreal cx = rect.center().x();
@@ -1011,45 +994,50 @@ LC_SkinWidgetsLayoutResolver::ArrowLayout LC_SkinWidgetsLayoutResolver::resolveA
 
     if (isMenuArrow && customVectorIcons) {
         if (element == QStyle::PE_IndicatorArrowRight) {
-            layout.polygon << QPointF(cx - 1.5, cy - 3.0)
-                           << QPointF(cx + 1.5, cy)
-                           << QPointF(cx - 1.5, cy + 3.0);
-            layout.isPolygon = true;
-        } else if (element == QStyle::PE_IndicatorArrowLeft) {
-            layout.polygon << QPointF(cx + 1.5, cy - 3.0)
-                           << QPointF(cx - 1.5, cy)
-                           << QPointF(cx + 1.5, cy + 3.0);
+            layout.polygon << QPointF(cx - 1.5, cy - 3.0) << QPointF(cx + 1.5, cy) << QPointF(cx - 1.5, cy + 3.0);
             layout.isPolygon = true;
         }
-    } else if (isTabBarArrow) {
+        else if (element == QStyle::PE_IndicatorArrowLeft) {
+            layout.polygon << QPointF(cx + 1.5, cy - 3.0) << QPointF(cx - 1.5, cy) << QPointF(cx + 1.5, cy + 3.0);
+            layout.isPolygon = true;
+        }
+    }
+    else if (isTabBarArrow) {
         layout.isLines = true;
         const int size = qMin(geoms.ints.scale5, rect.width() / 3);
 
         if (element == QStyle::PE_IndicatorArrowLeft) {
             layout.line1 = QLineF(cx + size / 2.0, cy - size, cx - size / 2.0, cy);
             layout.line2 = QLineF(cx - size / 2.0, cy, cx + size / 2.0, cy + size);
-        } else if (element == QStyle::PE_IndicatorArrowRight) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowRight) {
             layout.line1 = QLineF(cx - size / 2.0, cy - size, cx + size / 2.0, cy);
             layout.line2 = QLineF(cx + size / 2.0, cy, cx - size / 2.0, cy + size);
-        } else if (element == QStyle::PE_IndicatorArrowUp) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowUp) {
             layout.line1 = QLineF(cx - size, cy + size / 2.0, cx, cy - size / 2.0);
             layout.line2 = QLineF(cx, cy - size / 2.0, cx + size, cy + size / 2.0);
-        } else if (element == QStyle::PE_IndicatorArrowDown) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowDown) {
             layout.line1 = QLineF(cx - size, cy - size / 2.0, cx, cy + size / 2.0);
             layout.line2 = QLineF(cx, cy + size / 2.0, cx + size, cy - size / 2.0);
         }
-    } else {
+    }
+    else {
         layout.isLines = true;
         if (element == QStyle::PE_IndicatorArrowDown) {
             layout.line1 = QLineF(cx - 3.0, cy - 1.0, cx, cy + 2.0);
             layout.line2 = QLineF(cx, cy + 2.0, cx + 3.0, cy - 1.0);
-        } else if (element == QStyle::PE_IndicatorArrowUp) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowUp) {
             layout.line1 = QLineF(cx - 3.0, cy + 2.0, cx, cy - 1.0);
             layout.line2 = QLineF(cx, cy - 1.0, cx + 3.0, cy + 2.0);
-        } else if (element == QStyle::PE_IndicatorArrowLeft) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowLeft) {
             layout.line1 = QLineF(cx + 2.0, cy - 3.0, cx - 1.0, cy);
             layout.line2 = QLineF(cx - 1.0, cy, cx + 2.0, cy + 3.0);
-        } else if (element == QStyle::PE_IndicatorArrowRight) {
+        }
+        else if (element == QStyle::PE_IndicatorArrowRight) {
             layout.line1 = QLineF(cx - 2.0, cy - 3.0, cx + 1.0, cy);
             layout.line2 = QLineF(cx + 1.0, cy, cx - 2.0, cy + 3.0);
         }
@@ -1058,35 +1046,27 @@ LC_SkinWidgetsLayoutResolver::ArrowLayout LC_SkinWidgetsLayoutResolver::resolveA
     return layout;
 }
 
-LC_SkinWidgetsLayoutResolver::TitleBarLayout LC_SkinWidgetsLayoutResolver::resolveTitleBarMetrics(const QRect &windowRect, const SkinScaledGeometries &geoms) {
+LC_SkinWidgetsLayoutResolver::TitleBarLayout LC_SkinWidgetsLayoutResolver::resolveTitleBarMetrics(
+    const QRect& windowRect, const SkinScaledGeometries& geoms) {
     TitleBarLayout metrics;
     const int titleHeight = geoms.ints.scale24; // 24px title area
     metrics.titleBarRect = QRect(windowRect.left(), windowRect.top(), windowRect.width(), titleHeight);
 
     const int handleW = geoms.ints.scale12;
     const int handleH = geoms.ints.scale3;
-    metrics.dragHandleRect = QRect(windowRect.center().x() - handleW / 2,
-                                   windowRect.top() + (titleHeight - handleH) / 2,
-                                   handleW, handleH);
+    metrics.dragHandleRect = QRect(windowRect.center().x() - handleW / 2, windowRect.top() + (titleHeight - handleH) / 2, handleW, handleH);
 
     const int closeSize = geoms.ints.scale16; // Highly visible close button
     const int closeMargin = geoms.ints.scale6;
-    metrics.closeButtonRect = QRect(windowRect.right() - closeSize - closeMargin,
-                                    windowRect.top() + (titleHeight - closeSize) / 2,
+    metrics.closeButtonRect = QRect(windowRect.right() - closeSize - closeMargin, windowRect.top() + (titleHeight - closeSize) / 2,
                                     closeSize, closeSize);
 
     return metrics;
 }
 
-
-void LC_SkinWidgetsLayoutResolver::drawTitleBar(QPainter *painter,
-                                                const TitleBarLayout &metrics,
-                                                const SkinColors &desc,
-                                                const SkinScaledGeometries &geoms,
-                                                bool active,
-                                                bool closeHovered,
-                                                CloseButtonColorPolicy closePolicy,
-                                                const QString &titleText) {
+void LC_SkinWidgetsLayoutResolver::drawTitleBar(QPainter* painter, const TitleBarLayout& metrics, const SkinColors& desc,
+                                                const SkinScaledGeometries& geoms, bool active, bool closeHovered,
+                                                CloseButtonColorPolicy closePolicy, const QString& titleText) {
     Q_UNUSED(titleText);
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -1137,12 +1117,8 @@ void LC_SkinWidgetsLayoutResolver::drawTitleBar(QPainter *painter,
     painter->restore();
 }
 
-LC_SkinWidgetsLayoutResolver::TitleBarButtonLayout
-LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
-        const QRect &titleRect,
-        const SkinScaledGeometries &geoms,
-        QDockWidget::DockWidgetFeatures features,
-        bool isVertical){
+LC_SkinWidgetsLayoutResolver::TitleBarButtonLayout LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
+    const QRect& titleRect, const SkinScaledGeometries& geoms, QDockWidget::DockWidgetFeatures features, bool isVertical) {
     TitleBarButtonLayout layout;
 
     // Resolve title bar thickness along its narrow layout axis
@@ -1153,12 +1129,12 @@ LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
     const int btnSize = qMin(geoms.scaledMetrics.titleBarButtonSize, maxAllowedBtnSize);
 
     // Dynamic auto-centering margin
-    const int margin  = (geoms.scaledMetrics.dockWidgetTitleBarButtonMargin >= 0 &&
-                         (thickness - btnSize) > (geoms.scaledMetrics.dockWidgetTitleBarButtonMargin * 2))
-                        ? geoms.scaledMetrics.dockWidgetTitleBarButtonMargin
-                      : qMax(geoms.ints.scale1, (thickness - btnSize) / 2);
+    const int margin = (geoms.scaledMetrics.dockWidgetTitleBarButtonMargin >= 0 && (thickness - btnSize) > (geoms.scaledMetrics.
+                           dockWidgetTitleBarButtonMargin * 2))
+                           ? geoms.scaledMetrics.dockWidgetTitleBarButtonMargin
+                           : qMax(geoms.ints.scale1, (thickness - btnSize) / 2);
 
-    const int spacing   = geoms.ints.scale2;
+    const int spacing = geoms.ints.scale2;
 
     if (isVertical) {
         // Vertical layout: stack buttons vertically at the top
@@ -1175,9 +1151,9 @@ LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
         }
 
         const int leftSpacing = geoms.groupBox.titleLeftSpacing;
-        layout.textRect = QRect(titleRect.left(), top + leftSpacing,
-                                titleRect.width(), qMax(0, titleRect.bottom() - top - leftSpacing));
-    } else {
+        layout.textRect = QRect(titleRect.left(), top + leftSpacing, titleRect.width(), qMax(0, titleRect.bottom() - top - leftSpacing));
+    }
+    else {
         // Horizontal layout: stack buttons horizontally on the right
         const int top = titleRect.top() + margin;
         int right = titleRect.right() - margin;
@@ -1192,8 +1168,8 @@ LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
         }
 
         const int leftSpacing = geoms.groupBox.titleLeftSpacing;
-        layout.textRect = QRect(titleRect.left() + leftSpacing, titleRect.top(),
-                                qMax(0, right - titleRect.left() - leftSpacing), titleRect.height());
+        layout.textRect = QRect(titleRect.left() + leftSpacing, titleRect.top(), qMax(0, right - titleRect.left() - leftSpacing),
+                                titleRect.height());
     }
 
     return layout;

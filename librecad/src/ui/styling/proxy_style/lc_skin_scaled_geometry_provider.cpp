@@ -163,6 +163,17 @@ StyleMetricsConfig LC_SkinScaledGeometryProvider::scaleMetricsConfig(const Style
     scaled.treeBranchIndicatorSize        = scaleMetric(base.treeBranchIndicatorSize, dpr);
     scaled.splitterHandleLength           = scaleMetric(base.splitterHandleLength, dpr);
     scaled.toolbarPopupDelay              = base.toolbarPopupDelay;
+
+    scaled.menuBarHorizontalMargin        = scaleMetric(base.menuBarHorizontalMargin, dpr);
+    scaled.textCursorWidth                = scaleMetric(base.textCursorWidth, dpr);
+    scaled.tabBarCloseButtonPosition      = base.tabBarCloseButtonPosition;
+    scaled.toolbarHandleExtent            = scaleMetric(base.toolbarHandleExtent, dpr);
+    scaled.tabBarScrollButtonWidth        = scaleMetric(base.tabBarScrollButtonWidth, dpr);
+
+    scaled.menuIconSize                   = scaleMetric(base.menuIconSize, dpr);
+    scaled.buttonIconSize                 = scaleMetric(base.buttonIconSize, dpr);
+    scaled.toolBarIconSize                = scaleMetric(base.toolBarIconSize, dpr);
+
     return scaled;
 }
 

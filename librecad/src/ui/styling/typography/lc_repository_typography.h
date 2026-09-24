@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -23,12 +22,16 @@
 #ifndef LC_TYPOGRAPHYREPOSITORY_H
 #define LC_TYPOGRAPHYREPOSITORY_H
 
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
+
+inline const QString TYPOGRAPHY_EXTENSION = ".lctc";
+inline const QString TYPOGRAPHY_FILE_IDENTIFIER = "LibreCAD Config: Typography";
 
 class LC_RepositoryTypography : public LC_PresetRepositoryBase<FontConfig> {
 public:
     explicit LC_RepositoryTypography(const QString& configDir)
-        : LC_PresetRepositoryBase<FontConfig>(configDir, FONT_EXTENSION, FONT_FILE_IDENTIFIER, "fonts_index.lcix") {}
+        : LC_PresetRepositoryBase<FontConfig>(configDir, TYPOGRAPHY_EXTENSION, TYPOGRAPHY_FILE_IDENTIFIER, "typography_index.lcix") {
+    }
 
     QJsonObject configToJson(const FontConfig& config) const override;
     bool configFromJson(const QJsonObject& json, FontConfig& config) const override;

@@ -22,6 +22,7 @@
  *
  */
 #include "lc_dockwidget.h"
+#include "QMainWindow"
 
 LC_DockWidget::LC_DockWidget(QWidget* parent, const QString& title, const QString& verticalTitle, const Qt::WindowFlags& flags)
     : QDockWidget{title, parent, flags}, m_verticalTitle{verticalTitle}, m_horizontalTitle{title} {
@@ -36,4 +37,26 @@ void LC_DockWidget::updateTitleOld() {
     else {
         setWindowTitle(m_horizontalTitle);
     }
+}
+
+void LC_DockWidget::setVisible(bool visible) {
+    QDockWidget::setVisible(visible);
+    if (visible) {
+        this->raise();
+    }
+}
+
+
+
+bool isCurrentTabActive(QDockWidget* dockWidget) {
+    if (!dockWidget->isVisible() || dockWidget->isFloating()) {
+        return false;
+    }
+
+    QMainWindow* mw = qobject_cast<QMainWindow*>(dockWidget->parentWidget());
+    if (!mw || mw->tabifiedDockWidgets(dockWidget).isEmpty()) {
+        return true;
+    }
+
+    return !dockWidget->visibleRegion().isEmpty();
 }

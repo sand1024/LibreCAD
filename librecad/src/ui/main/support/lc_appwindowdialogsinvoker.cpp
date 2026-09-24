@@ -110,9 +110,9 @@ bool LC_AppWindowDialogsInvoker::showStylingOptionsDialog(const QString& pageId)
    return accepted;
 }
 
-bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog() const {
-  bool accepted = LC_SettingsManagerApplication::showOptionsApplication(m_appWin);
-  return false;
+bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog(int* exitCode) const {
+  bool accepted = LC_SettingsManagerApplication::showOptionsApplication(m_appWin, exitCode);
+  return accepted;
 }
 
 bool LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const {

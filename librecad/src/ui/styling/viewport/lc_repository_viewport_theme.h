@@ -27,7 +27,7 @@
 #include "lc_preset_manager_interface.h"
 #include "lc_setting.h"
 #include "lc_settings_types.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
 
 struct LC_ViewportThemeConfig {
@@ -68,7 +68,7 @@ struct LC_ViewportThemeMapEntry {
 
 class LC_RepositoryViewportTheme : public LC_PresetRepositoryBase<LC_ViewportThemeConfig> {
 public:
-    LC_RepositoryViewportTheme();
+    LC_RepositoryViewportTheme(const QString& configDir);
     ~LC_RepositoryViewportTheme() override = default;
 
     QJsonObject configToJson(const LC_ViewportThemeConfig& config) const override;

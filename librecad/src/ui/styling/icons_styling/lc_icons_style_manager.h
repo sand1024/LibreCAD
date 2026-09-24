@@ -29,14 +29,14 @@
 #include "lc_icon_engine_shared.h"
 #include "lc_palette_color_utils.h"
 
-class LC_IconsStyleManager {
-public:
-    // Symmetrical on-the-fly theme-linked icons compiler [3]
-    static void applyThemeLinkedIcons(const QString &linkedStyleName, bool useThemeDefaultIcons, bool isDarkMode);
-    static void applyStyle(const LC_IconColorsOptions &options, bool isDarkMode,
+class QC_ApplicationWindow;
+
+namespace  LC_IconsStyleManager {
+    void applyThemeLinkedIcons(QC_ApplicationWindow* appWindow,const QString &linkedStyleName, bool useThemeDefaultIcons, bool isDarkMode);
+    void applyStyle(QC_ApplicationWindow* appWindow, const LC_IconColorsOptions &options, bool isDarkMode,
                         LC_PaletteColorUtils::CVDType cvd = LC_PaletteColorUtils::CVDType::Normal);
-    static void applyCurrentStyle();
-    static QString resolveColorValue(const QString &value);
+    void applyCurrentStyle(QC_ApplicationWindow* appWindow);
+    QString resolveColorValue(const QString &value);
 };
 
 #endif
