@@ -165,7 +165,7 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
             return true;
         }
         const auto eventClone = e->clone();
-        QApplication::postEvent(QC_ApplicationWindow::getAppWindow().get(), eventClone);
+        QApplication::postEvent(QC_ApplicationWindow::getAppWindow(), eventClone);
         if (!eventClone->isAccepted()) {
             QApplication::postEvent(leCommand, e->clone());
         }
@@ -347,7 +347,7 @@ void QG_CommandWidget::handleKeycode(const QString& code) const {
 void QG_CommandWidget::setKeycodeMode(const bool state) const {
     leCommand->setKeyCodeMode(state);
     CFG_AppState::o_KeycodeMode = state;
-    auto* appWin = QC_ApplicationWindow::getAppWindow().get();
+    auto* appWin = QC_ApplicationWindow::getAppWindow();
     appWin->updateActionsForCommandsInMenus(state);
 }
 
