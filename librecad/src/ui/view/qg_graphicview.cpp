@@ -873,6 +873,57 @@ void QG_GraphicView::focusInEvent(QFocusEvent* e) {
     QWidget::focusInEvent(e);
 }
 
+void QG_GraphicView::processTrackpadWheelEvent(QWheelEvent* e, const RS_Vector mouse) {
+    QPoint numPixels = e->pixelDelta();
+
+    // high-resolution scrolling triggers Pan instead of Zoom logic
+    m_isSmoothScrolling |= !numPixels.isNull();
+
+    if (m_isSmoothScrolling) {
+        if (e->phase() == Qt::ScrollEnd) {
+            m_isSmoothScrolling = false;
+        }
+    }
+    else // Trackpads that without high-resolution scrolling
+    // e.g. libinput-XWayland trackpads
+    {
+        numPixels = e->angleDelta() / 4;
+    }
+
+    if (!numPixels.isNull()) {
+        if (e->modifiers() == Qt::ControlModifier) {
+            // Hold ctrl to zoom. 1 % per pixel
+            const double v = (m_invertZoomDirection) ? (numPixels.y() / ZOOM_WHEEL_DIVISOR) : (-numPixels.y() / ZOOM_WHEEL_DIVISOR);
+            RS2::ZoomDirection direction;
+            if (v < 0) {
+                direction = RS2::Out;
+            }
+            else {
+                direction = RS2::In;
+            }
+
+            const double zoomFact = 1. + std::abs(v);
+            doZoom(direction, mouse, zoomFact);
+        }
+        else {
+            const int hDelta = (m_invertHorizontalScroll) ? -numPixels.x() : numPixels.x();
+            const int vDelta = (m_invertVerticalScroll) ? -numPixels.y() : numPixels.y();
+
+            // scroll by scrollbars: issue #479 (it has its own issues)
+            if (m_scrollbars) {
+                m_hScrollBar->setValue(m_hScrollBar->value() - hDelta);
+                m_vScrollBar->setValue(m_vScrollBar->value() - vDelta);
+            }
+            else {
+                getViewPort()->zoomPan(hDelta, vDelta);
+            }
+        }
+        redraw();
+    }
+    e->accept();
+    return;
+}
+
 /**
  * mouse wheel event. zooms in/out or scrolls when
  * shift or ctrl is pressed.
@@ -888,62 +939,12 @@ void QG_GraphicView::wheelEvent(QWheelEvent* e) {
         return;
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     //    RS_Vector mouse = toGraph(e->position());
     const QPointF& uiEventPosition = e->position();
     const RS_Vector mouse = getViewPort()->toUCSFromGui(uiEventPosition.x(), uiEventPosition.y());
-#else
-    RS_Vector mouse = toGraph(e->position());
-#endif
 
     if (m_device == "Trackpad") {
-        QPoint numPixels = e->pixelDelta();
-
-        // high-resolution scrolling triggers Pan instead of Zoom logic
-        m_isSmoothScrolling |= !numPixels.isNull();
-
-        if (m_isSmoothScrolling) {
-            if (e->phase() == Qt::ScrollEnd) {
-                m_isSmoothScrolling = false;
-            }
-        }
-        else // Trackpads that without high-resolution scrolling
-        // e.g. libinput-XWayland trackpads
-        {
-            numPixels = e->angleDelta() / 4;
-        }
-
-        if (!numPixels.isNull()) {
-            if (e->modifiers() == Qt::ControlModifier) {
-                // Hold ctrl to zoom. 1 % per pixel
-                const double v = (m_invertZoomDirection) ? (numPixels.y() / ZOOM_WHEEL_DIVISOR) : (-numPixels.y() / ZOOM_WHEEL_DIVISOR);
-                RS2::ZoomDirection direction;
-                if (v < 0) {
-                    direction = RS2::Out;
-                }
-                else {
-                    direction = RS2::In;
-                }
-
-                const double zoomFact = 1. + std::abs(v);
-                doZoom(direction, mouse, zoomFact);
-            }
-            else {
-                const int hDelta = (m_invertHorizontalScroll) ? -numPixels.x() : numPixels.x();
-                const int vDelta = (m_invertVerticalScroll) ? -numPixels.y() : numPixels.y();
-
-                // scroll by scrollbars: issue #479 (it has its own issues)
-                if (m_scrollbars) {
-                    m_hScrollBar->setValue(m_hScrollBar->value() - hDelta);
-                    m_vScrollBar->setValue(m_vScrollBar->value() - vDelta);
-                }
-                else {
-                    getViewPort()->zoomPan(hDelta, vDelta);
-                }
-            }
-            redraw();
-        }
-        e->accept();
+        processTrackpadWheelEvent(e, mouse);
         return;
     }
 
@@ -998,7 +999,7 @@ void QG_GraphicView::wheelEvent(QWheelEvent* e) {
             }
         }*/
 
-    if (scroll && m_scrollbars) {
+    if (scroll ) {
         //scroll by scrollbars: issue #479
 
         int delta = 0;
@@ -1007,13 +1008,18 @@ void QG_GraphicView::wheelEvent(QWheelEvent* e) {
             case RS2::Left:
             case RS2::Right:
                 delta = (m_invertHorizontalScroll) ? -angleDeltaX : angleDeltaX;
-                m_hScrollBar->setValue(m_hScrollBar->value() + delta);
+                if (m_hScrollBar != nullptr) {
+                    m_hScrollBar->setValue(m_hScrollBar->value() + delta);
+                }
                 break;
             default:
                 delta = (m_invertVerticalScroll) ? -angleDeltaY : angleDeltaY;
-                m_vScrollBar->setValue(m_vScrollBar->value() + delta);
+                if (m_vScrollBar != nullptr) {
+                    m_vScrollBar->setValue(m_vScrollBar->value() + delta);
+                }
                 break;
         }
+
     }
     // zoom in / out:
     else if (e->modifiers() == 0) {
@@ -1032,11 +1038,11 @@ void QG_GraphicView::wheelEvent(QWheelEvent* e) {
             const RS_Vector& zoomCenter = mouse;
             //            LC_ERR << " Mouse "  << mouse << " Direction: " << (zoomDirection == RS2::In ? "In" : "Out");
 
-            /*// todo - well, actually this is one-shot action... and it will lead to full action processing chain in action handler
-            // todo - are we REALLY need it there? alternatively, zoom may be part of this class)
-            auto zoomAction = std::make_unique<RS_ActionZoomIn>(m_actionContext, zoomDirection, RS2::Both, &zoomCenter,m_scrollZoomFactor);
-            zoomAction->trigger();*/
-            doZoom(zoomDirection, zoomCenter, m_scrollZoomFactor);
+            double zoomFactor = m_scrollZoomFactor;
+            if (m_nonLinearScrollZoomFactor) {
+                zoomFactor =  pow(m_scrollZoomFactor, abs(angleDeltaY) / 120.0);
+            }
+            doZoom(zoomDirection, zoomCenter, zoomFactor);
         }
     }
     redraw();
@@ -1315,17 +1321,14 @@ void QG_GraphicView::loadSettings() {
     RS_GraphicView::loadSettings();
 
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_MouseWheel;
         const int zoomFactor1000 = o_ScrollZoomFactor;
         m_scrollZoomFactor = zoomFactor1000 / 1000.0;
-
-        m_ucsHighlightData->maxBlinkNumber = o_UCSHighlightBlinkCount * 2;
-        // one blink includes both for visible and invisible phase
-        m_ucsHighlightData->timerInterval = o_UCSHighlightBlinkDelay;
+        m_nonLinearScrollZoomFactor = o_NonLinearZoomFactor;
     }
 
     {
-        using namespace CFG_Defaults;
+        using namespace CFG_MouseWheel;
         m_invertZoomDirection = o_InvertZoomDirection;
         m_invertHorizontalScroll = o_WheelScrollInvertH;
         m_invertVerticalScroll = o_WheelScrollInvertV;
@@ -1345,6 +1348,14 @@ void QG_GraphicView::loadSettings() {
             m_selectCursorHiding = m_cursorHiding && (showSnapIndicatorLines || showSnapIndicatorShape);
         }
         m_selectCursorHiding = false;
+
+        m_ucsHighlightData->maxBlinkNumber = o_UCSHighlightBlinkCount * 2;
+        // one blink includes both for visible and invisible phase
+        m_ucsHighlightData->timerInterval = o_UCSHighlightBlinkDelay;
+
+        m_scrollbars = o_ScrollBars;
+        m_vScrollBar->setVisible(m_scrollbars);
+        m_vScrollBar->setVisible(m_scrollbars);
     }
     m_ucsMarkOptions->loadSettings();
 
@@ -1361,6 +1372,8 @@ void QG_GraphicView::loadSettings() {
         const QString fontName = o_AssistantFontName;
         m_relativePointWidgetHolder->setFont(fontName, fontSize);
     }
+
+
 }
 
 void QG_GraphicView::setAntialiasing(const bool state) const {
@@ -1399,8 +1412,8 @@ bool QG_GraphicView::isDraftLinesMode() const {
     return false;
 }
 
-void QG_GraphicView::addScrollbars() {
-    m_scrollbars = true;
+void QG_GraphicView::addScrollbars(bool scrollbarsEnabled) {
+    m_scrollbars = scrollbarsEnabled;
 
     m_hScrollBar = new QG_ScrollBar(Qt::Horizontal, this);
     m_vScrollBar = new QG_ScrollBar(Qt::Vertical, this);
@@ -1408,11 +1421,7 @@ void QG_GraphicView::addScrollbars() {
 
     setOffset(50, 50);
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     m_layout->setContentsMargins(QMargins{});
-#else
-    layout->setMargin(0);
-#endif
     m_layout->setSpacing(0);
     m_layout->setColumnStretch(0, 1);
     m_layout->setColumnStretch(1, 0);
@@ -1429,6 +1438,9 @@ void QG_GraphicView::addScrollbars() {
     m_vScrollBar->setCursor(Qt::ArrowCursor);
     m_layout->addWidget(m_vScrollBar, 0, 1);
     connect(m_vScrollBar, &QG_ScrollBar::valueChanged, this, &QG_GraphicView::slotVScrolled);
+
+    m_hScrollBar->setVisible(scrollbarsEnabled);
+    m_vScrollBar->setVisible(scrollbarsEnabled);
 }
 
 bool QG_GraphicView::hasScrollbars() const {
@@ -1541,7 +1553,7 @@ bool QG_GraphicView::isAutoPan(const QMouseEvent* event) const {
         return false;
     }
 
-    const bool autopanEnabled = CFG_Appearance::o_Autopanning;
+    const bool autopanEnabled = CFG_ZoomAndPan::o_Autopanning;
 
     if (!autopanEnabled) {
         return false;

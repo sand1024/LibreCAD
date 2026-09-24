@@ -98,7 +98,7 @@ public:
     bool isDraftLinesMode() const;
 
     void setCursorHiding(bool state);
-    void addScrollbars();
+    void addScrollbars(bool scrollbarsEnabled = true);
     bool hasScrollbars() const;
     void setCurrentQAction(QAction* q_action);
     QString obtainEntityDescription(const RS_Entity* entity, RS2::EntityDescriptionLevel shortDescription) override;
@@ -131,6 +131,7 @@ protected:
     void leaveEvent(QEvent*) override;
     void enterEvent(QEnterEvent*) override;
     void focusInEvent(QFocusEvent*) override;
+    void processTrackpadWheelEvent(QWheelEvent* e, RS_Vector mouse);
     void focusOutEvent(QFocusEvent*) override;
     void wheelEvent(QWheelEvent* e) override;
     void keyReleaseEvent(QKeyEvent* e) override;
@@ -173,6 +174,7 @@ private:
     std::unique_ptr<QCursor> m_cursorHand;
 
     double m_scrollZoomFactor = 1.137;
+    bool m_nonLinearScrollZoomFactor = false;
 
     //! Keep tracks of if we are currently doing a high-resolution scrolling
     bool m_isSmoothScrolling;
