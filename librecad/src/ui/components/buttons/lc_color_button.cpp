@@ -22,8 +22,10 @@
 #include "lc_color_button.h"
 
 #include <QColorDialog>
+#include <QEvent>
 #include <QPainter>
 
+#include "lc_action_draw_text.h"
 #include "lc_settings_defaults.h"
 
 LC_ColorButton::LC_ColorButton(const QColor& color, QWidget* parent)
@@ -42,47 +44,139 @@ QColor LC_ColorButton::color() const {
 }
 
 void LC_ColorButton::setColor(const QColor& color) {
-    m_color = color;
-    updateSwatch();
+    if (m_color != color) {
+        m_color = color;
+        m_toolTipDirty = true;
+        updateSwatch();
+    }
 }
 
-
 void LC_ColorButton::setLocked(bool locked) {
-    m_locked = locked;
-
-    // Symmetrical cursor feedback
-    setCursor(locked ? Qt::ArrowCursor : Qt::PointingHandCursor);
-
-    updateToolTip();
-    updateSwatch();
+    if (m_locked != locked) {
+        m_locked = locked;
+        setCursor(locked ? Qt::ArrowCursor : Qt::PointingHandCursor);
+        m_toolTipDirty = true;
+        updateSwatch();
+    }
 }
 
 void LC_ColorButton::setToolTip(const QString& text) {
-    m_normalToolTip = text;
-    updateToolTip();
+    if (m_normalToolTip != text) {
+        m_normalToolTip = text;
+        m_toolTipDirty = true;
+    }
 }
 
 void LC_ColorButton::setLockedToolTip(const QString& toolTip) {
-    m_lockedToolTip = toolTip;
-    updateToolTip();
+    if (m_lockedToolTip != toolTip) {
+        m_lockedToolTip = toolTip;
+        m_toolTipDirty = true;
+    }
 }
 
 void LC_ColorButton::setDialogTitle(const QString& title) {
     m_dialogTitle = title;
 }
 
-// Context-aware tooltip multiplexer
+QString LC_ColorButton::buildToolTipText() const {
+    QString baseText;
+    if (m_locked) {
+        baseText = !m_lockedToolTip.isEmpty() ? m_lockedToolTip : m_normalToolTip;
+    }
+    else {
+        baseText = m_normalToolTip;
+    }
+
+    QStringList metaParts;
+    if (m_color.isValid()) {
+        const QString hexStr = (m_color.alpha() < 255)
+                                   ? m_color.name(QColor::HexArgb).toUpper()
+                                   : m_color.name(QColor::HexRgb).toUpper();
+
+        const QString rgbStr = (m_color.alpha() < 255)
+                                   ? QString("rgba(%1, %2, %3, %4)")
+                                         .arg(QString::number(m_color.red()),
+                                              QString::number(m_color.green()),
+                                              QString::number(m_color.blue()),
+                                              QString::number(m_color.alpha()))
+                                   : QString("rgb(%1, %2, %3)")
+                                         .arg(QString::number(m_color.red()),
+                                              QString::number(m_color.green()),
+                                              QString::number(m_color.blue()));
+
+        metaParts.append(QString("%1: <b>%2</b>").arg(tr("Hex"), hexStr));
+        metaParts.append(QString("%1: <b>%2</b>").arg(tr("RGB"), rgbStr));
+    }
+
+    if (baseText.isEmpty() && metaParts.isEmpty()) {
+        return QString();
+    }
+
+    if (metaParts.isEmpty()) {
+        return baseText;
+    }
+
+    const QPalette pal = palette();
+    QColor metaColor = pal.color(QPalette::PlaceholderText);
+    if (metaColor.value() == 0 && pal.color(QPalette::ToolTipText).value() == 0) {
+        metaColor = QColor("gray");
+    }
+
+    const QString metaFooter = metaParts.join(" &nbsp;|&nbsp; ");
+
+    QString html;
+    if (!baseText.isEmpty()) {
+        bool mightBeRichText = Qt::mightBeRichText(baseText);
+        if (baseText.contains("\n\n") && !mightBeRichText) {
+            const int splitIdx = baseText.indexOf("\n\n");
+            if (splitIdx != -1) {
+                QString title = baseText.left(splitIdx).toHtmlEscaped();
+                QString body = baseText.mid(splitIdx + 2).toHtmlEscaped();
+                body.replace("\n", "<br>");
+                html = QString("<b>%1</b><hr>%2").arg(title, body);
+            }
+            else {
+                const QString escapedText = mightBeRichText ? baseText : baseText.toHtmlEscaped();
+                html += QString("<div>%1</div>").arg(escapedText);
+            }
+        }
+        else {
+            const QString escapedText = mightBeRichText ? baseText : baseText.toHtmlEscaped();
+            html += QString("<div>%1</div>").arg(escapedText);
+        }
+    }
+
+    html += QString("<div style=\"color: %1; font-size: small;\"><br>%2</div>")
+                .arg(metaColor.name(), metaFooter);
+
+    return html;
+}
+
 void LC_ColorButton::updateToolTip() {
-    if (m_locked && !m_lockedToolTip.isEmpty()) {
-        QPushButton::setToolTip(m_lockedToolTip);
-    } else {
-        QPushButton::setToolTip(m_normalToolTip);
+    if (m_toolTipDirty) {
+        m_cachedToolTip = buildToolTipText();
+        QPushButton::setToolTip(m_cachedToolTip);
+        m_toolTipDirty = false;
     }
 }
 
 
 void LC_ColorButton::updateSwatch() {
     update();
+}
+
+bool LC_ColorButton::event(QEvent* event) {
+    if (event != nullptr) {
+        if (event->type() == QEvent::ToolTip) {
+            if (m_toolTipDirty) {
+                updateToolTip();
+            }
+        }
+        else if (event->type() == QEvent::PaletteChange) {
+            m_toolTipDirty = true;
+        }
+    }
+    return QPushButton::event(event);
 }
 
 void LC_ColorButton::paintEvent(QPaintEvent* event) {

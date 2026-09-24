@@ -25,8 +25,7 @@
 #include <QPushButton>
 #include <QColor>
 
-class
-LC_ColorButton : public QPushButton {
+class LC_ColorButton : public QPushButton {
     Q_OBJECT public:
     explicit LC_ColorButton(const QColor& color = Qt::white, QWidget* parent = nullptr);
     explicit LC_ColorButton(QWidget* parent = nullptr);
@@ -46,16 +45,19 @@ LC_ColorButton : public QPushButton {
     }
 
     void setDialogTitle(const QString& title);
+    QString buildToolTipText() const;
 
     QString dialogTitle() const {
         return m_dialogTitle;
     }
 
+public:
 signals:
     void colorChanged(const QColor& color);
     void colorSelectionChanged(const QColor& color);
 
 protected:
+    bool event(QEvent* e) override;
     void paintEvent(QPaintEvent* event) override;
 
 private slots:
@@ -69,6 +71,8 @@ private:
     QString m_normalToolTip;
     QString m_lockedToolTip;
     QString m_dialogTitle;
+    QString m_cachedToolTip;
+    bool m_toolTipDirty = true;
 };
 
 #endif
