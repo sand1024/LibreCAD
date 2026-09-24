@@ -244,6 +244,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/dialogs/file/export_layers
      librecad/src/ui/dialogs/main
      librecad/src/ui/dialogs/settings
+     librecad/src/ui/dialogs/settings/backup
      librecad/src/ui/dialogs/settings/to_remove
      librecad/src/ui/dialogs/settings/device_options
      librecad/src/ui/dialogs/settings/dimstyles
@@ -270,6 +271,8 @@ set (SHARED_INCLUDES
      librecad/src/ui/dialogs/settings/options_widget/support
      librecad/src/ui/dialogs/settings/options_widget/managers
      librecad/src/ui/dialogs/settings/support/
+     librecad/src/ui/dialogs/settings/support/exchange
+     librecad/src/ui/dialogs/settings/support/ui
      librecad/src/ui/dock_widgets
      librecad/src/ui/dock_widgets/block_widget
      librecad/src/ui/dock_widgets/cad
@@ -330,6 +333,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/main/workspaces/navigation/menus
      librecad/src/ui/main/workspaces/navigation/repository
      librecad/src/ui/main/creators
+     librecad/src/ui/main/customization
      librecad/src/ui/view
 )
 
@@ -2186,9 +2190,9 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/presets_generator/lc_style_preset_generator.h
      librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.h
      librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.cpp
-     librecad/src/lib/presets/lc_style_index_helper.cpp
-     librecad/src/lib/presets/lc_style_index_helper.h
-     librecad/src/lib/presets/lc_style_repository_base.h
+     librecad/src/lib/presets/lc_presets_index_helper.cpp
+     librecad/src/lib/presets/lc_presets_index_helper.h
+     librecad/src/lib/presets/lc_preset_repository_base.h
      librecad/src/ui/styling/metrics/lc_repository_metrics.cpp
      librecad/src/ui/styling/metrics/lc_repository_metrics.h
      librecad/src/ui/styling/typography/lc_repository_typography.cpp
@@ -2197,8 +2201,8 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/typography/lc_typography_utils.h
      librecad/src/ui/styling/metrics/lc_style_metrics_utils.cpp
      librecad/src/ui/styling/metrics/lc_style_metrics_utils.h
-     librecad/src/ui/styling/support/lc_workspace_import_export_helper.cpp
-     librecad/src/ui/styling/support/lc_workspace_import_export_helper.h
+     librecad/src/ui/styling/support/lc_styling_profile_import_export_helper.cpp
+     librecad/src/ui/styling/support/lc_styling_profile_import_export_helper.h
      #     librecad/src/ui/not_used/lc_style_editor_interface.h
      #     librecad/src/ui/not_used/lc_preset_manager_bar.h
      #     librecad/src/ui/not_used/lc_preset_manager_bar.cpp
@@ -2436,8 +2440,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/support/lc_preset_manager_interface.cpp
      librecad/src/ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.cpp
      librecad/src/ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.h
-     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_metrics.cpp
-     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_metrics.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_metrics.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_metrics.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.cpp
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.cpp
@@ -2462,17 +2466,17 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.cpp
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.h
-     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_workspace_profiles.cpp
-     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_workspace_profiles.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.h
      librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.cpp
      librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.h
      librecad/src/ui/styling/fusion_skin/lc_repository_palette.cpp
      librecad/src/ui/styling/fusion_skin/lc_repository_palette.h
-     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_palette.cpp
-     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_palette.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.cpp
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.h
-     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_base.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_styling_base.h
      librecad/src/settings/lc_settings_colors_semantics.h
      librecad/src/ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.cpp
      librecad/src/ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.h
@@ -2557,6 +2561,27 @@ set (SHARED_SOURCES
      librecad/src/cmd/lc_action_command_updater.h
      librecad/src/ui/actions/lc_action_tooltip_builder.cpp
      librecad/src/ui/actions/lc_action_tooltip_builder.h
+     librecad/src/lib/presets/lc_preset_repository.h
+     librecad/src/ui/components/utils/lc_wait_cursor_guard.h
+     librecad/src/ui/dialogs/settings/support/lc_dlg_checklist_selection.cpp
+     librecad/src/ui/dialogs/settings/support/lc_dlg_checklist_selection.h
+     librecad/src/ui/dialogs/settings/support/lc_profile_helper_base.cpp
+     librecad/src/ui/dialogs/settings/support/lc_profile_helper_base.h
+     librecad/src/ui/dialogs/settings/support/lc_settings_page_profile_exchange_base.cpp
+     librecad/src/ui/dialogs/settings/support/lc_settings_page_profile_exchange_base.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_customization_import_export_helper.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_customization_import_export_helper.h
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_customization_profiles.cpp
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_customization_profiles.h
+     librecad/src/ui/dialogs/settings/backup/lc_application_backup_service.cpp
+     librecad/src/ui/dialogs/settings/backup/lc_application_backup_service.h
+     librecad/src/lib/presets/lc_preset_file_io.cpp
+     librecad/src/lib/presets/lc_preset_file_io.h
+     "librecad/src/lib/presets/lc_preset_error.h"
+     librecad/src/ui/dialogs/settings/support/lc_preset_manager_config_base.cpp
+     librecad/src/ui/dialogs/settings/support/lc_preset_manager_config_base.h
+     librecad/src/ui/main/customization/lc_customization_manager.cpp
+     librecad/src/ui/main/customization/lc_customization_manager.h
 )
 set (MUPARSER_SOURCES
      libraries/muparser/include/muParser.h
@@ -2616,9 +2641,6 @@ set (MAIN_SOURCES
      librecad/src/ui/dialogs/main/qg_dlginitial.cpp
      librecad/src/ui/dialogs/main/qg_dlginitial.h
      ${LIBRECAD_RES}
-     librecad/src/ui/main/init/lc_actions_naming_utils.cpp
-     librecad/src/ui/main/init/lc_actions_naming_utils.h
-     librecad/src/lib/presets/lc_preset_repository.h
 )
 
 # Main executable
