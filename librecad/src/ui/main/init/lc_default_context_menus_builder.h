@@ -27,37 +27,22 @@
 #include <QCoreApplication>
 #include "lc_action_node.h"
 
+class LC_ActionFactory;
+class LC_ActionGroupManager;
+
 class LC_DefaultContextMenusBuilder {
     Q_DECLARE_TR_FUNCTIONS(LC_DefaultContextMenusBuilder)
 public:
-    static ContextMenusConfig createDefaultConfig();
+    static ContextMenusConfig createDefaultConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+    static ContextMenusConfig createExtendedConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
     static bool isBuiltInContextMenu(const ContextMenuDef& menuDef);
-private:
-    static ContextMenuDef menuEmptySpace();
-    static ContextMenuDef menuAnyEntity();
-    static ContextMenuDef menuLine();
-    static ContextMenuDef menuCircle();
-    static ContextMenuDef menuArc();
-    static ContextMenuDef menuPolyline();
-    static ContextMenuDef menuSpline();
-    static ContextMenuDef menuSplinePoints();
-    static ContextMenuDef menuEllipse();
-    static ContextMenuDef menuPoint();
-    static ContextMenuDef menuParabola();
-    static ContextMenuDef menuText();
-    static ContextMenuDef menuMText();
-    static ContextMenuDef menuInsert();
-    static ContextMenuDef menuImage();
-    static ContextMenuDef menuHatch();
-    static ContextMenuDef menuDimLinear();
-    static ContextMenuDef menuDimAligned();
-    static ContextMenuDef menuDimRadial();
-    static ContextMenuDef menuDimDiametric();
-    static ContextMenuDef menuDimArc();
-    static ContextMenuDef menuDimOrdinate();
-    static ContextMenuDef menuDimLeader();
-    static ContextMenuDef menuAutoZoom();
 
+private:
+    static ActionNode makeSubMenu(const QString& title, const QString& groupNameForIcon,
+                                  const QList<ActionNode>& children, const LC_ActionGroupManager* agm);
+
+    static QList<ActionNode> commonEditActions();
+    static QList<ActionNode> commonSelectActions();
     static QList<ActionNode> commonModifyActions();
     static QList<ActionNode> commonAlignActions();
     static QList<ActionNode> commonOrderActions();
@@ -66,6 +51,45 @@ private:
     static QList<ActionNode> commonViewActions();
     static QList<ActionNode> commonFileActions();
     static QList<ActionNode> commonOptionActions();
-};
 
+    static QList<ActionNode> commonEntityHeader();
+    static QList<ActionNode> commonGeometryTail(const LC_ActionGroupManager* agm);
+    static QList<ActionNode> commonDimensionTail(const LC_ActionGroupManager* agm);
+    static QList<ActionNode> commonExtendedFooter();
+
+    static ContextMenuDef assembleGeometryMenu(const QString& title, const LC_MenuActivator& activator,
+                                               const QList<ActionNode>& specificNodes, const LC_ActionGroupManager* agm);
+    static ContextMenuDef assembleDimensionMenu(const QString& title, const LC_MenuActivator& activator,
+                                                const QList<ActionNode>& specificNodes, const LC_ActionGroupManager* agm);
+    static ContextMenuDef extendEntityMenu(const ContextMenuDef& compactDef);
+
+    static ContextMenuDef menuEmptySpace(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuEmptySpaceExtended(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+
+    static ContextMenuDef menuAnyEntity(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuLine(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuCircle(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuArc(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuPolyline(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuSpline(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuSplinePoints(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuEllipse(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuPoint(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuParabola(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuText(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuMText(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuInsert(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuImage(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuHatch(const LC_ActionGroupManager* agm);
+
+    static ContextMenuDef menuDimLinear(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimAligned(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimRadial(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimDiametric(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimArc(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimOrdinate(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimLeader(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuDimAngular(const LC_ActionGroupManager* agm);
+    static ContextMenuDef menuAutoZoom();
+};
 #endif

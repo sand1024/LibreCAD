@@ -36,6 +36,7 @@ class QC_ApplicationWindow;
 class LC_SpecialMenuService: public LC_SpecialMenuServiceInterface {
 public:
     explicit LC_SpecialMenuService(QC_ApplicationWindow * appWin);
+
     bool bindMenu(const QString& specialMenuName, QMenu* menu) override;
     bool embedToolbarControl(const QString& widgetToken, QToolBar* targetToolbar) override;
     QAction* getSpecialAction(const QString& actionToken) const override;
@@ -51,10 +52,12 @@ protected:
 
     // Sub-menu entry points
     void bindRecentFilesMenu(QMenu* parentMenu) const;
+    void bindPluginsMenu(QMenu* menu);
     void bindDockWidgetsMenu(QMenu* parentMenu);
     void bindCadDockWidgetsMenu(QMenu* parentMenu);
     void bindToolbarsMenu(QMenu* parentMenu);
     void bindCadToolbarsMenu(QMenu* parentMenu);
+    void bindWorkspacesRescueMenu(QMenu* parentMenu);
     void bindWorkspacesListMenu(QMenu* parentMenu);
     void bindDrawingsMenu(QMenu* parentMenu);
     void bindNamedViewsListMenu(QMenu* parentMenu);

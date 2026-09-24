@@ -24,7 +24,6 @@
 #include <QMdiArea>
 #include <QMdiSubWindow>
 
-#include "lc_actions_naming_utils.h"
 #include "lc_action_command_updater.h"
 #include "lc_action_factory.h"
 #include "lc_action_group_manager.h"
@@ -34,6 +33,7 @@
 #include "lc_appwindowdialogsinvoker.h"
 #include "lc_centralwidget.h"
 #include "lc_command_manager.h"
+#include "lc_customization_manager.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_graphic_view_context_menu_provider.h"
 #include "lc_gridviewinvoker.h"
@@ -56,6 +56,7 @@
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "lc_settings_window_options.h"
+#include "lc_shortcuts_manager.h"
 #include "lc_snapmanager.h"
 #include "lc_special_menu_service.h"
 #include "lc_widget_factory.h"
@@ -76,24 +77,33 @@ LC_ApplicationWindowInitializer::LC_ApplicationWindowInitializer(QC_ApplicationW
     : LC_AppWindowAware{appWindow} {
 }
 
-void LC_ApplicationWindowInitializer::initApplication(){
+void LC_ApplicationWindowInitializer::initGeneralMembers() {
     m_appWin->m_actionHandler = std::make_unique<QG_ActionHandler>(m_appWin);
     m_appWin->m_dlgHelpr = std::make_unique<LC_AppWindowDialogsInvoker>(m_appWin);
     m_appWin->m_workspacesInvoker = std::make_unique<LC_WorkspacesInvoker>(m_appWin);
     m_appWin->m_gridViewInvoker = std::make_unique<LC_GridViewInvoker>(m_appWin);
     m_appWin->m_infoCursorSettingsManager = std::make_unique<LC_InfoCursorSettingsManager>(m_appWin);
     m_appWin->m_lastFilesOpener = std::make_unique<LC_LastOpenFilesOpener>(m_appWin);
+}
+
+void LC_ApplicationWindowInitializer::initSpecialMenus() {
+    m_appWin->m_recentFilesMenu = std::make_unique<QMenu>(tr("Recent Files"), m_appWin);
+    m_appWin->m_pluginsMenu = std::make_unique<QMenu>(tr("Pl&ugins"), m_appWin);
+    m_appWin->m_pluginsMenu->setToolTipsVisible(true);
+}
+
+void LC_ApplicationWindowInitializer::initApplication(){
+    initGeneralMembers();
+
+    auto customizationManager = new LC_CustomizationManager();
+    m_appWin->m_customizationManager.reset(customizationManager);
 
     initActionGroupManager();
 
-    // fixme - sand - change signatures, move setting?
-    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
-    m_appWin->m_commandManager = std::make_unique<LC_CommandManager>(settingsDir + "/commands");
-
+    m_appWin->m_commandManager = std::make_unique<LC_CommandManager>(customizationManager->getCommandsRepository());
     m_appWin->m_specialMenuService = std::make_unique<LC_SpecialMenuService>(m_appWin);
-    m_appWin->m_creatorInvoker = std::make_unique<LC_NavigationControlsCreator>(m_appWin, m_appWin->m_actionGroupManager.get(), m_appWin->getSpecialMenuService());
-    m_appWin->m_contextMenuProvider = std::make_unique<LC_GraphicViewContextMenuProvider>(m_appWin->m_actionGroupManager.get(), m_appWin->getSpecialMenuService());
-    m_appWin->m_recentFilesMenu = std::make_unique<QMenu>(tr("Recent Files"), m_appWin);
+
+    initSpecialMenus();
 
     //accept drop events to open files
     m_appWin->setAcceptDrops(true);
@@ -102,15 +112,35 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initActionContext();
     initActionFactory();
     initWidgets();
+
+    auto agm = m_appWin->m_actionGroupManager.get();
+    auto specialMenuService = m_appWin->getSpecialMenuService();
+
+    m_appWin->m_navigationControlsCreator = std::make_unique<LC_NavigationControlsCreator>(
+        customizationManager->getMenuAndToolbarsRepository(), m_appWin, agm, specialMenuService);
+
+    m_appWin->m_contextMenuProvider = std::make_unique<LC_GraphicViewContextMenuProvider>(
+        customizationManager->getGraphicViewContextMenusRepository(), m_appWin->m_actionFactory.get(), agm, specialMenuService);
+
+    m_appWin->m_shortcutsManager = std::make_unique<LC_ShortcutsManager>(customizationManager->getKeymapsRepository());
+    auto shortcutsManager = m_appWin->m_shortcutsManager.get();
+    connect(RS_SETTINGS, &RS_Settings::optionsChanged, [shortcutsManager, agm]() {
+        shortcutsManager->updateActionTooltips(agm->getActionsMap());
+    });
+
+    m_appWin->m_uiStyleManager = std::make_unique<LC_UIStyleManager>(m_appWin);
+
     initSnapManager();
     initCentralWidget();
-    initNavigationLayout();
     initDockAndToolbarAreasActions();
+    completeActionFactoryInit();
+
     initActionOptionsManager();
     setupActionContextWidgets();
     initPropertySheetWidget();
     initDialogFactory();
     initRecentFilesList();
+    initNavigationLayout();
     m_appWin->initSettings(true);
     loadCmdWidgetVariablesFile();
     initAutoSaveTimer();
@@ -118,6 +148,9 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initPlugins();
     m_appWin->showStatusMessage(qApp->applicationName() + " Ready", 2000);
     initReleaseChecker();
+
+    m_appWin->m_uiStyleManager->initialize(m_appWin);
+
     initSettingsDialogs();
 }
 
@@ -133,8 +166,8 @@ void LC_ApplicationWindowInitializer::initReleaseChecker(){
 }
 
 void LC_ApplicationWindowInitializer::initActionGroupManager(){
-    m_appWin->m_actionGroupManager = std::make_unique<LC_ActionGroupManager>(m_appWin);
-    connect(RS_SETTINGS, &RS_Settings::optionsChanged, m_appWin->m_actionGroupManager.get(), &LC_ActionGroupManager::onOptionsChanged);
+    LC_ActionGroupManager* result = new LC_ActionGroupManager(m_appWin);
+    m_appWin->m_actionGroupManager.reset(result);
 }
 
 void LC_ApplicationWindowInitializer::initActionOptionsManager(){
@@ -153,6 +186,12 @@ void LC_ApplicationWindowInitializer::initActionFactory() const {
     m_appWin->m_actionFactory = std::make_unique<LC_ActionFactory>(m_appWin, m_appWin->m_actionHandler.get());
     const bool using_theme = CFG_AppStyling::o_AllowTheme;
     m_appWin->m_actionFactory->initActions(m_appWin->m_actionGroupManager.get(), using_theme);
+}
+
+void LC_ApplicationWindowInitializer::completeActionFactoryInit() const {
+    m_appWin->m_actionFactory->setupDefaultShortcutsAndCompleteInit(m_appWin->m_actionGroupManager.get());
+    auto actionsMap = m_appWin->m_actionGroupManager->getActionsMap();
+    m_appWin->m_shortcutsManager->loadActiveScheme(actionsMap);
 }
 
 void LC_ApplicationWindowInitializer::initDockCorners() const {
@@ -232,19 +271,16 @@ void LC_ApplicationWindowInitializer::initDockAndToolbarAreasActions() const {
 void LC_ApplicationWindowInitializer::initCommandsScheme() const {
     auto actionGroupManager = m_appWin->m_actionGroupManager.get();
     if (m_appWin->m_commandManager != nullptr && actionGroupManager != nullptr) {
-        auto uiStyleManager = m_appWin->getUiStyleManager();
-        bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
-        if (!currentThemeIsFusion || !CFG_CommandsPromotion::o_ShowCommandInMenu) {
-            LC_ActionCommandUpdater::clearActions(actionGroupManager);
-        }
-        else {
             const LC_ActionTypeMapper mapper(actionGroupManager);
             m_appWin->m_commandManager->loadActiveScheme(&mapper);
-            const bool keycodeMode = CFG_AppState::o_KeycodeMode;
-            LC_ActionCommandUpdater::updateActions(actionGroupManager,
-                                                   m_appWin->m_commandManager.get(),
-                                                   keycodeMode);
-        }
+            bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+            if (clearTooltips) {
+                LC_ActionCommandUpdater::clearActions(actionGroupManager);
+            }
+            else {
+                const bool keycodeMode = CFG_AppState::o_KeycodeMode;
+                LC_ActionCommandUpdater::updateActions(actionGroupManager, m_appWin->m_commandManager.get(), keycodeMode);
+            }
     }
 
     LC_ActionTooltipBuilder::updateAllTooltips(m_appWin->m_actionGroupManager->getActionsMap());
@@ -311,14 +347,9 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
 }
 
 void LC_ApplicationWindowInitializer::initSettingsDialogs() {
-    LC_SettingsManagerApplication::initialize();
+    LC_SettingsManagerApplication::initialize(m_appWin);
     LC_SettingsManagerDrawing::initialize();
-    LC_SettingsManagerStyling::initialize();
+    LC_SettingsManagerStyling::initialize(m_appWin);
     // fixme - review initialization
-    LC_SettingsManagerCustomization::initialize(
-        m_appWin->m_actionGroupManager.get(),
-        m_appWin->getCreatorInvoker(),
-        m_appWin->getContextMenuProvider(),
-        m_appWin->getActionFactory(),
-        m_appWin->getCommandManager());
+    LC_SettingsManagerCustomization::initialize(m_appWin);
 }

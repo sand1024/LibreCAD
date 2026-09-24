@@ -19,340 +19,211 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
 
 #include "lc_default_navigation_layout_builder.h"
 
 #include "lc_action_factory.h"
+#include "lc_action_group_manager.h"
+#include "rs_debug.h"
 
-ToolbarDef LC_DefaultNavigationLayoutBuilder::makeStandardToolbar(const QString& name, const QString& icon,
-                                                                  Qt::ToolBarArea area, const QList<ActionNode>& nodes,
-                                                                  bool visible) {
-    ToolbarDef tb;
-    tb.name = name;
-    tb.icon = icon;
-    tb.area = area;
-    tb.visible = visible;
-    tb.kind = ToolbarKind::Standard;
-    tb.nodes = nodes;
-    return tb;
+namespace {
+
+
+    QList<ActionNode> toNodes(const QList<QString>& names) {
+        QList<ActionNode> nodes;
+        nodes.reserve(names.size());
+        for (const auto& name : names) {
+            nodes.append(ActionNode(name));
+        }
+        return nodes;
+    }
+
+    ActionNode makeCategoryNode(const QString& groupName, const LC_ActionGroupManager* agm, const QList<ActionNode>& actions,
+                                ToolButtonPopupMode popupMode = ToolButtonPopupMode::InstantPopup) {
+        const auto* group = (agm != nullptr) ? agm->getActionGroup(groupName) : nullptr;
+        QString token;
+        QString icon;
+        if (group != nullptr) {
+            token = group->token();
+            icon = group->getIconPath();
+            if (icon.isEmpty()) {
+                LC_ERR << "Icon empty: " << groupName;
+            }
+        }
+        else {
+            token = (QString("Menu:") + groupName);
+            icon = QString();
+            LC_ERR << "Icon empty no group: " << groupName;
+        }
+        ActionNode node(token, icon, actions);
+        node.popupMode = popupMode;
+        return node;
+    }
+
+    ActionNode makeCategoryNode(const QString& groupName, const LC_ActionGroupManager* agm,  const QList<QString>& names,
+                                ToolButtonPopupMode popupMode = ToolButtonPopupMode::InstantPopup) {
+        auto actionNodes = toNodes(names);
+        return makeCategoryNode(groupName, agm, actionNodes, popupMode);
+    }
+
+    ToolbarDef makeStandardToolbar(const QString& name, const QString& icon, Qt::ToolBarArea area, const QList<ActionNode>& nodes,
+                                   bool visible = true, bool lineBreak = false) {
+        ToolbarDef tb;
+        const QString cleanName = name.startsWith("tb_s_") ? name.mid(5) : name;
+        tb.name = "tb_s_" + cleanName;
+        tb.icon = icon;
+        tb.area = area;
+        tb.visible = visible;
+        tb.kind = ToolbarKind::Standard;
+        tb.nodes = nodes;
+        tb.lineBreak = lineBreak;
+        return tb;
+    }
+
+    ToolbarDef makeHostToolbar(const QString& name, const QString& icon, Qt::ToolBarArea area,
+                               bool visible = true, bool lineBreak = false) {
+        ToolbarDef tb;
+        const QString cleanName = name.startsWith("tb_s_") ? name.mid(5) : name;
+        tb.name = "tb_s_" + cleanName;
+        tb.icon = icon;
+        tb.area = area;
+        tb.visible = visible;
+        tb.lineBreak = lineBreak;
+        tb.kind = ToolbarKind::Host;
+        return tb;
+    }
+
+    ToolbarDef makeCadToolbar(const QString& groupName, const LC_ActionGroupManager* agm,
+                              const QList<ActionNode>& actions, bool visible = false) {
+        const QString cleanGroup = groupName.startsWith("tb_cad_") ? groupName.mid(7)
+                                 : groupName.startsWith("cad_")    ? groupName.mid(4)
+                                 : groupName;
+        const auto* group = (agm != nullptr) ? agm->getActionGroup(cleanGroup) : nullptr;
+
+        ToolbarDef tb;
+        tb.name = "tb_cad_" + cleanGroup;
+        tb.icon = (group != nullptr) ? group->getIconPath() : QString();
+        tb.area = Qt::BottomToolBarArea;
+        tb.visible = visible;
+        tb.kind = ToolbarKind::Cad;
+        tb.nodes = actions;
+        return tb;
+    }
+
+    ToolbarDef makeCadToolbar(const QString& groupName, const LC_ActionGroupManager* agm,
+                              const QList<QString>& names, bool visible = false) {
+        auto actionNodes = toNodes(names);
+        return makeCadToolbar(groupName, agm, actionNodes, visible);
+    }
+
+    ToolbarDef makeCadDockWidget(const QString& groupName, const LC_ActionGroupManager* agm,
+                                 const QList<ActionNode>& actions, bool visible = false) {
+        const QString cleanGroup = groupName.startsWith("dock_cad_") ? groupName.mid(9)
+                                 : groupName.startsWith("cad_")      ? groupName.mid(4)
+                                 : groupName;
+        const auto* group = (agm != nullptr) ? agm->getActionGroup(cleanGroup) : nullptr;
+
+        ToolbarDef tb;
+        tb.name = "dock_cad_" + cleanGroup;
+        tb.icon = (group != nullptr) ? group->getIconPath() : QString();
+        tb.area = Qt::LeftToolBarArea;
+        tb.visible = visible;
+        tb.kind = ToolbarKind::CadDockWidget;
+        tb.nodes = actions;
+        return tb;
+    }
+
+    ToolbarDef makeCadDockWidget(const QString& groupName, const LC_ActionGroupManager* agm,
+                                 const QList<QString>& names, bool visible = false) {
+        auto actionNodes = toNodes(names);
+        return makeCadDockWidget(groupName, agm, actionNodes, visible);
+    }
+
+    ToolbarDef makeCadMatrix(const QString& name, const QString& icon, const QList<ActionNode>& groups) {
+        ToolbarDef tb;
+        tb.name = "dock_cad_mega";
+        tb.icon = icon;
+        tb.area = Qt::LeftToolBarArea;
+        tb.visible = false;
+        tb.kind = ToolbarKind::CadMatrix;
+        tb.nodes = groups;
+        return tb;
+    }
 }
 
-ToolbarDef LC_DefaultNavigationLayoutBuilder::makeCadToolbar(const QString& name, const QString& icon,
-                                                            const QList<ActionNode>& actions, bool visible) {
-    ToolbarDef tb;
-    tb.name = name;
-    tb.icon = icon;
-    tb.area = Qt::BottomToolBarArea;
-    tb.visible = visible;
-    tb.kind = ToolbarKind::Cad;
-    tb.nodes = actions;
-    return tb;
-}
 
-ToolbarDef LC_DefaultNavigationLayoutBuilder::makeCadDockWidget(const QString& name, const QString& icon,
-                                                                const QList<ActionNode>& actions) {
-    ToolbarDef tb;
-    tb.name = name;
-    tb.icon = icon;
-    tb.area = Qt::LeftToolBarArea;
-    tb.visible = true;
-    tb.kind = ToolbarKind::CadDockWidget;
-    tb.nodes = actions;
-    return tb;
-}
+QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildCadDockWidgets(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    if (af == nullptr) {
+        return {};
+    }
 
-ToolbarDef LC_DefaultNavigationLayoutBuilder::makeCadMatrix(const QString& name, const QString& icon,
-                                                          const QList<ActionNode>& groups) {
-    ToolbarDef tb;
-    tb.name = name;
-    tb.icon = icon;
-    tb.area = Qt::LeftToolBarArea;
-    tb.visible = true;
-    tb.kind = ToolbarKind::CadMatrix;
-    tb.nodes = groups;
-    return tb;
-}
-
-QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildCadDockWidgets() {
-    QList<ToolbarDef> dockWidgets;
-
-    // 1. CAD Tools Matrix
     QList<ActionNode> matrixCategories = {
-        ActionNode("Menu:Line",      ":/icons/line.lci",                 lineActions()),
-        ActionNode("Menu:Point",     ":/icons/points.lci",               pointActions()),
-        ActionNode("Menu:Polygon",   ":/icons/rectangle_2_points.lci",   shapeActions()),
-        ActionNode("Menu:Circle",    ":/icons/circle.lci",               circleActions()),
-        ActionNode("Menu:Arc",       ":/icons/arc_center_point_angle.lci", curveActions()),
-        ActionNode("Menu:Spline",    ":/icons/spline_points.lci",        splineActions()),
-        ActionNode("Menu:Ellipse",   ":/icons/ellipses.lci",             ellipseActions()),
-        ActionNode("Menu:Polyline",  ":/icons/polylines.lci",            polylineActions()),
-        ActionNode("Menu:Select",    ":/icons/select.lci",               selectActions()),
-        ActionNode("Menu:Modify",    ":/icons/move_rotate.lci",          modifyActions()),
-        ActionNode("Menu:Dimension", ":/icons/dim_horizontal.lci",       dimensionActions()),
-        ActionNode("Menu:Info",      ":/icons/measure.lci",              infoActions()),
-        ActionNode("Menu:Other",     ":/icons/text.lci",                 otherDrawingActions()),
-        ActionNode("Menu:Order",     ":/icons/order.lci",                orderActions())
+        makeCategoryNode("line",      agm, af->lineActions),
+         makeCategoryNode("point",     agm, af->pointActions),
+         makeCategoryNode("shape",     agm, af->shapeActions),
+         makeCategoryNode("circle",    agm, af->circleActions),
+         makeCategoryNode("curve",     agm, af->curveActions),
+         makeCategoryNode("spline",    agm, af->splineActions),
+         makeCategoryNode("ellipse",   agm, af->ellipseActions),
+         makeCategoryNode("polyline",  agm, af->polylineActions),
+         makeCategoryNode("select",    agm, af->selectActions),
+         makeCategoryNode("modify",    agm, af->modifyActions),
+         makeCategoryNode("dimension", agm, af->dimensionActions),
+         makeCategoryNode("info",      agm, af->infoActions),
+         makeCategoryNode("other",     agm, af->otherDrawingActions),
+         makeCategoryNode("order",     agm, af->orderActions)
     };
 
+    QList<ToolbarDef> dockWidgets;
     dockWidgets.append(makeCadMatrix(tr("CAD Tools Matrix"), ":/icons/line_polygon_star.lci", matrixCategories));
 
-    // 2. Individual CAD Dock Widgets with clean display names
     dockWidgets.append({
-        makeCadDockWidget(tr("Line (Dock)"),      ":/icons/line.lci",                 lineActions()),
-        makeCadDockWidget(tr("Point (Dock)"),     ":/icons/points.lci",               pointActions()),
-        makeCadDockWidget(tr("Polygon (Dock)"),   ":/icons/rectangle_2_points.lci",   shapeActions()),
-        makeCadDockWidget(tr("Circle (Dock)"),    ":/icons/circle.lci",               circleActions()),
-        makeCadDockWidget(tr("Arc (Dock)"),       ":/icons/arc_center_point_angle.lci", curveActions()),
-        makeCadDockWidget(tr("Spline (Dock)"),    ":/icons/spline_points.lci",        splineActions()),
-        makeCadDockWidget(tr("Ellipse (Dock)"),   ":/icons/ellipses.lci",             ellipseActions()),
-        makeCadDockWidget(tr("Polyline (Dock)"),  ":/icons/polylines.lci",            polylineActions()),
-        makeCadDockWidget(tr("Dimension (Dock)"), ":/icons/dim_horizontal.lci",       dimensionActions()),
-        makeCadDockWidget(tr("Other (Dock)"),     ":/icons/text.lci",                 otherDrawingActions()),
-        makeCadDockWidget(tr("Modify (Dock)"),    ":/icons/move_rotate.lci",          modifyActions()),
-        makeCadDockWidget(tr("Info (Dock)"),      ":/icons/measure.lci",              infoActions()),
-        makeCadDockWidget(tr("Order (Dock)"),     ":/icons/order.lci",                orderActions())
+       makeCadDockWidget("line",      agm, af->lineActions),
+       makeCadDockWidget("point",     agm, af->pointActions),
+       makeCadDockWidget("shape",     agm, af->shapeActions),
+       makeCadDockWidget("circle",    agm, af->circleActions),
+       makeCadDockWidget("curve",     agm, af->curveActions),
+       makeCadDockWidget("spline",    agm, af->splineActions),
+       makeCadDockWidget("ellipse",   agm, af->ellipseActions),
+       makeCadDockWidget("polyline",  agm, af->polylineActions),
+       makeCadDockWidget("select",    agm, af->selectActions),
+       makeCadDockWidget("dimension", agm, af->dimensionActions),
+       makeCadDockWidget("other",     agm, af->otherDrawingActions),
+       makeCadDockWidget("modify",    agm, af->modifyActions),
+       makeCadDockWidget("info",      agm, af->infoActions),
+       makeCadDockWidget("order",     agm, af->orderActions)
     });
 
     return dockWidgets;
 }
 
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::lineActions() {
-    static const QList<ActionNode> list = {
-        "DrawLine",
-        "DrawLineAngle",
-        "DrawLineHorizontal",
-        "DrawLineVertical",
-        "DrawLineParallelThrough",
-        "DrawLineParallel",
-        "DrawLineBisector",
-        "DrawLineTangent1",
-        "DrawLineTangent2",
-        "DrawLineOrthTan",
-        "DrawLineOrthogonal",
-        "DrawLineRelAngle",
-        "DrawLineRel",
-        "DrawLineRelX",
-        "DrawLineRelY",
-        "DrawLineAngleRel",
-        "DrawLineOrthogonalRel",
-        "DrawLineFromPointToLine",
-        "DrawSliceDivideLine",
-        "DrawSliceDivideCircle",
-        "DrawCross",
-        "DrawLineMiddle",
-        "DrawLineRadiant"
-    };
-    return list;
-}
+QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuMinimal(const LC_ActionFactory* af,
+                                                                             const LC_ActionGroupManager* agm) {
+    if (af == nullptr || agm == nullptr) {
+        return {};
+    }
 
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::shapeActions() {
-    static const QList<ActionNode> list = {
-        "DrawLineRectangle",
-        "DrawLineRectangle1Point",
-        "DrawLineRectangle2Points",
-        "DrawLineRectangle3Points",
-        "DrawLinePolygonCenCor",
-        "DrawLinePolygonCenTan",
-        "DrawLinePolygonCorCor",
-        "DrawLinePolygonSideSide",
-        "DrawStar"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::pointActions() {
-    static const QList<ActionNode> list = {
-        "DrawPoint",
-        "DrawLinePoints",
-        "DrawPointsMiddle",
-        "DrawPointLattice",
-        "SelectPoints",
-        "PasteToPoints"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::circleActions() {
-    static const QList<ActionNode> list = {
-        "DrawCircle",
-        "DrawCircle2P",
-        "DrawCircle2PR",
-        "DrawCircle3P",
-        "DrawCircleCR",
-        "DrawCircleTan2_1P",
-        "DrawCircleTan1_2P",
-        "DrawCircleTan2",
-        "DrawCircleTan3",
-        "DrawCircleInscribe",
-        "DrawCircleParallel",
-        "DrawCircleByArc"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::curveActions() {
-    static const QList<ActionNode> list = {
-        "DrawArc",
-        "DrawArcChord",
-        "DrawArcAngleLen",
-        "DrawArc3P",
-        "DrawArc2PAngle",
-        "DrawArc2PRadius",
-        "DrawArc2PLength",
-        "DrawArc2PHeight",
-        "DrawArcTangential",
-        "DrawEllipseArcAxis",
-        "DrawEllipseArc1Point"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::splineActions() {
-    static const QList<ActionNode> list = {
-        "DrawSpline",
-        "DrawSplinePoints",
-        "DrawSplineFromPolyline",
-        "DrawSplinePointsAppend",
-        "DrawSplinePointsAdd",
-        "DrawSplinePointsRemove",
-        "DrawSplinePointsDelTwo",
-        "DrawSplineExplode",
-        "DrawLineFree",
-        "DrawParabola4Points",
-        "DrawParabolaFD",
-        "DrawHyperbolaFP"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::ellipseActions() {
-    static const QList<ActionNode> list = {
-        "DrawEllipse1Point",
-        "DrawEllipseAxis",
-        "DrawEllipseFociPoint",
-        "DrawEllipse4Points",
-        "DrawEllipseCenter3Points",
-        "DrawEllipseInscribe"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::polylineActions() {
-    static const QList<ActionNode> list = {
-        "DrawPolyline",
-        "PolylineAdd",
-        "PolylineAppend",
-        "PolylineDel",
-        "PolylineDelBetween",
-        "PolylineTrim",
-        "PolylineEquidistant",
-        "PolylineSegment",
-        "PolylineArcToLines",
-        "PolylineSegmentType"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::selectActions() {
-    static const QList<ActionNode> list = {
-        "DeselectAll",
-        "SelectAll",
-        "SelectSingle",
-        "SelectContour",
-        "SelectWindow",
-        "DeselectWindow",
-        "SelectIntersected",
-        "DeselectIntersected",
-        "SelectLayer",
-        "SelectPoints",
-        "SelectInvert",
-        "SelectQuick"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::dimensionActions() {
-    static const QList<ActionNode> list = {
-        "DimAligned",
-        "DimLinear",
-        "DimLinearHor",
-        "DimLinearVer",
-        "DimBaseline",
-        "DimContinue",
-        "DimRadial",
-        "DimDiametric",
-        "DimAngular",
-        "DimArc",
-        "DimLeader",
-        "DimOrdinate",
-        "DimOrdinateForBase",
-        "DimOrdinateReBase",
-        "DimPickApply",
-        "DimRegenerate",
-        "DimStyles"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::otherDrawingActions() {
-    static const QList<ActionNode> list = {"DrawText", "DrawMText", "DrawHatch", "DrawImage", "DrawBoundingBox"};
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::modifyActions() {
-    static const QList<ActionNode> list = {
-        "ModifyMove",
-        "ModifyDuplicate",
-        "ModifyAlign",
-        "ModifyAlignOne",
-        "ModifyAlignRef",
-        "ModifyRotate",
-        "ModifyScale",
-        "ModifyMirror",
-        "ModifyMoveRotate",
-        "ModifyRotate2",
-        "ModifyRevertDirection",
-        "ModifyTrim",
-        "ModifyTrim2",
-        "ModifyTrimAmount",
-        "ModifyLineJoin",
-        "ModifyCut",
-        "ModifyBreakDivide",
-        "ModifyLineGap",
-        "ModifyOffset",
-        "ModifyBevel",
-        "ModifyRound",
-        "ModifyStretch",
-        "ModifyEntity",
-        "ModifyAttributes",
-        "ModifyExplodeText",
-        "BlocksExplode",
-        "ModifyDelete"
-    };
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::orderActions() {
-    static const QList<ActionNode> list = {"OrderTop", "OrderBottom", "OrderRaise", "OrderLower"};
-    return list;
-}
-
-const QList<ActionNode>& LC_DefaultNavigationLayoutBuilder::infoActions() {
-    static const QList<ActionNode> list = {
-        "InfoPoint",
-        "InfoDist",
-        "InfoDist2",
-        "InfoDist3",
-        "InfoAngle",
-        "InfoAngle3Points",
-        "InfoTotalLength",
-        "InfoArea",
-        "EntityInfo"
-    };
-    return list;
-}
-
-QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(const LC_ActionFactory*, const LC_ActionGroupManager*) {
     QList<ActionNode> menus = {
         // File
         {
@@ -368,8 +239,19 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(con
                 "FileSaveAs",
                 "FileSaveAll",
                 "-",
-                ActionNode{"Menu:Import", ":/icons/import.lci", {"DrawImage", "BlocksImport"}},
-                ActionNode{"Menu:Export", ":/icons/export.lci", {"FileExportMakerCam", "FilePrintPDF", "FileExport"}},
+                ActionNode{"Menu:Import", ":/icons/import.lci", {
+                    "DrawImage",
+                    "BlocksImport",
+                    "-",
+                    "BackupRestore"
+                }},
+                ActionNode{"Menu:Export", ":/icons/export.lci", {
+                    "FileExportMakerCam",
+                    "FilePrintPDF",
+                    "FileExport",
+                    "-",
+                    "BackupExport"
+                }},
                 "-",
                 "FilePrint",
                 "FilePrintPreview",
@@ -384,7 +266,7 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(con
         {
             "Menu:Options",
             ":/icons/settings.lci",
-            {"OptionsGeneral", "OptionsCustomization", "OptionsStyling", "DeviceOptions", "ReloadStyleSheet", "-", "OptionsDrawing"}
+            {"OptionsGeneral", "OptionsCustomization", "OptionsStyling", "ShortcutsOptions", "DeviceOptions", "ReloadStyleSheet", "-", "OptionsDrawing"}
         },
 
         // Edit
@@ -433,59 +315,79 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(con
                 "ZoomPan",
                 "-",
                 "ZoomViewSave",
-                ActionNode{
-                    "Menu:ViewsRestore",
-                    ":/icons/nview_visible.lci",
-                    {"ZoomViewRestore1", "ZoomViewRestore2", "ZoomViewRestore3", "ZoomViewRestore4", "ZoomViewRestore5"}
-                }
+                {"Menu:ViewsRestore", ":/icons/nview_visible.lci", {
+                    "ZoomViewRestore1",
+                    "ZoomViewRestore2",
+                    "ZoomViewRestore3",
+                    "ZoomViewRestore4",
+                    "ZoomViewRestore5"
+                }},
+                "-",
+                "UCSCreate",
+                "UCSSetWCS",
+                "UCSSetByDimOrdinate",
+                LC_ActionNames::MenuUCSList
             }
         },
 
-        // Tools (Combined)
+        // Plugins
+        LC_ActionNames::MenuPlugins,
+
+        // Tools (Combined minimal form)
         {
             "Menu:Tools",
-            ":/icons/settings.lci",
+            ":/icons/line_polygon_star.lci",
             {
-                {"Menu:Line", ":/icons/line.lci", lineActions()},
-                {"Menu:Point", ":/icons/points.lci", pointActions()},
-                {"Menu:Circle", ":/icons/circle.lci", circleActions()},
-                {"Menu:Arc", ":/icons/arc_center_point_angle.lci", curveActions()},
-                {"Menu:Polygon", ":/icons/rectangle_1_point.lci", shapeActions()},
-                {"Menu:Spline", ":/icons/spline_points.lci", splineActions()},
-                {"Menu:Ellipse", ":/icons/ellipses.lci", ellipseActions()},
-                {"Menu:Polyline", ":/icons/polylines_polyline.lci", polylineActions()},
-                {"Menu:Select", ":/icons/select.lci", selectActions()},
-                {"Menu:Dimension", ":/icons/dim_horizontal.lci", dimensionActions()},
-                {"Menu:Other", ":/icons/text.lci", otherDrawingActions()},
-                {"Menu:Modify", ":/icons/move_rotate.lci", modifyActions()},
-                {"Menu:Info", ":/icons/measure.lci", infoActions()},
-                {"Menu:Order", ":/icons/order.lci", orderActions()}
+                makeCategoryNode("line",      agm, af->lineActions),
+                makeCategoryNode("point",     agm, af->pointActions),
+                makeCategoryNode("circle",    agm, af->circleActions),
+                makeCategoryNode("curve",     agm, af->curveActions),
+                makeCategoryNode("shape",     agm, af->shapeActions),
+                makeCategoryNode("spline",    agm, af->splineActions),
+                makeCategoryNode("ellipse",   agm, af->ellipseActions),
+                makeCategoryNode("polyline",  agm, af->polylineActions),
+                makeCategoryNode("text",      agm, af->textActions),
+                makeCategoryNode("select",    agm, af->selectActions),
+                makeCategoryNode("dimension", agm, af->dimensionActions),
+                makeCategoryNode("other",     agm, af->otherDrawingActions),
+                makeCategoryNode("modify",    agm, af->modifyActions),
+                makeCategoryNode("info",      agm, af->infoActions),
+                makeCategoryNode("order",     agm, af->orderActions)
             }
         },
 
         // Workspace
         {
-            "Menu:Workspace",
-            ":/icons/workspace.lci",
+            "Menu:Workspace", ":/icons/workspace.lci",
             {
                 "Fullscreen",
                 "MainMenu",
                 "ViewStatusBar",
                 "-",
-                ActionNode{
-                    "Menu:DockAreas",
-                    "",
-                    {"LeftDockAreaToggle", "RightDockAreaToggle", "TopDockAreaToggle", "BottomDockAreaToggle", "FloatingDockwidgetsToggle"}
-                },
-                ActionNode{"Menu:ToolbarAreas", "", {"LeftTBAreaToggle", "RightTBAreaToggle", "TopTBAreaToggle", "BottomTBAreaToggle"}},
+                {"Menu:DockAreas", "", {
+                    "LeftDockAreaToggle",
+                    "RightDockAreaToggle",
+                    "TopDockAreaToggle",
+                    "BottomDockAreaToggle",
+                    "FloatingDockwidgetsToggle"
+                }},
+                {"Menu:ToolbarAreas", "", {
+                    "LeftTBAreaToggle",
+                    "RightTBAreaToggle",
+                    "TopTBAreaToggle",
+                    "BottomTBAreaToggle"
+                }},
+                "-",
                 LC_ActionNames::MenuDockWidgets,
                 LC_ActionNames::MenuCadDockWidgets,
+                "-",
                 LC_ActionNames::MenuToolbars,
                 LC_ActionNames::MenuCadToolbars,
                 "-",
                 "RedockWidgets",
                 "-",
                 "WorkspaceCreate",
+                "WorkspaceRestore",
                 LC_ActionNames::MenuWorkspacesList,
                 "-",
                 "InvokeMenuCreator",
@@ -503,18 +405,22 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(con
                 ActionNode{
                     "Menu:OnlineDocs",
                     ":/icons/help.lci",
-                    {"HelpWiki", "HelpManual", "HelpCommands", "HelpStyleSheets", "HelpWidgets"}
+                    {
+                        "HelpWiki",
+                        "HelpManual",
+                        "HelpCommands",
+                        "HelpStyleSheets",
+                        "HelpWidgets"
+                    }
                 },
                 "-",
                 "HelpForum",
                 "HelpZulip",
                 "-",
-                "HelpGitHub",
                 "HelpSubmitError",
                 "HelpRequestFeature",
                 "HelpReleases",
                 "-",
-                "HelpHome",
                 "HelpAbout",
                 "HelpLicense",
                 "-",
@@ -526,57 +432,106 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(con
     return menus;
 }
 
-QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompactTools(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
-    QList<ActionNode> menus = buildDefaultMenuCompact(af, agm);
 
-    menus.removeAt(4); // Remove combined Tools
+QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuCompact(const LC_ActionFactory* af,
+                                                                             const LC_ActionGroupManager* agm) {
+    QList<ActionNode> menus = buildDefaultMenuMinimal(af, agm);
+
+    int toolsIdx = -1;
+    for (int i = 0; i < menus.size(); ++i) {
+        if (menus[i].actionName == "Menu:Tools" || menus[i].groupTitle == "Menu:Tools") {
+            toolsIdx = i;
+            break;
+        }
+    }
+
+    if (toolsIdx >= 0) {
+        menus.removeAt(toolsIdx);
+    }
+    else {
+        toolsIdx = menus.size();
+    }
+
+    QList<ActionNode> modifyWithOrder = toNodes(af->modifyActions);
+    modifyWithOrder.append(ActionNode("-"));
+    modifyWithOrder.append(makeCategoryNode("order", agm, toNodes(af->orderActions)));
 
     QList<ActionNode> drawSubmenus = {
-        {"Menu:Line", ":/icons/line.lci", lineActions()},
-        {"Menu:Point", ":/icons/points.lci", pointActions()},
-        {"Menu:Circle", ":/icons/circle.lci", circleActions()},
-        {"Menu:Arc", ":/icons/arc_center_point_angle.lci", curveActions()},
-        {"Menu:Polygon", ":/icons/rectangle_1_point.lci", shapeActions()},
-        {"Menu:Spline", ":/icons/spline_points.lci", splineActions()},
-        {"Menu:Ellipse", ":/icons/ellipses.lci", ellipseActions()},
-        {"Menu:Polyline", ":/icons/polylines_polyline.lci", polylineActions()},
-        {"Menu:Other", ":/icons/text.lci", otherDrawingActions()}
+        makeCategoryNode("line",     agm, af->lineActions),
+        makeCategoryNode("point",    agm, af->pointActions),
+        makeCategoryNode("circle",   agm, af->circleActions),
+        makeCategoryNode("curve",    agm, af->curveActions),
+        makeCategoryNode("shape",    agm, af->shapeActions),
+        makeCategoryNode("spline",   agm, af->splineActions),
+        makeCategoryNode("ellipse",  agm, af->ellipseActions),
+        makeCategoryNode("polyline", agm, af->polylineActions),
+        makeCategoryNode("text",     agm, af->textActions),
+        makeCategoryNode("other",    agm, af->otherDrawingActions)
     };
 
-    menus.insert(4, {"Menu:Draw", ":/icons/line.lci", drawSubmenus});
-    menus.insert(5, {"Menu:Modify", ":/icons/move_rotate.lci", modifyActions()});
-    menus.insert(6, {"Menu:Dimensions", ":/icons/dim_horizontal.lci", dimensionActions()});
-    menus.insert(7, {"Menu:Info", ":/icons/measure.lci", infoActions()});
+    int insertIdx = toolsIdx;
+    menus.insert(insertIdx++, makeCategoryNode("select", agm, af->selectActions));
+    menus.insert(insertIdx++, ActionNode{"Menu:Draw", ":/icons/line.lci", drawSubmenus});
+    menus.insert(insertIdx++, ActionNode{"Menu:Modify", ":/icons/move_rotate.lci", modifyWithOrder});
+    menus.insert(insertIdx++, makeCategoryNode("dimension", agm, af->dimensionActions));
+    menus.insert(insertIdx++, makeCategoryNode("info", agm, af->infoActions));
 
     return menus;
 }
 
-QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuExtended(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
-    QList<ActionNode> menus = buildDefaultMenuCompact(af, agm);
 
-    menus.removeAt(4); // Remove combined Tools
+QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuExtended(const LC_ActionFactory* af,
+                                                                              const LC_ActionGroupManager* agm) {
+    QList<ActionNode> menus = buildDefaultMenuMinimal(af, agm);
 
-    int idx = 4;
-    menus.insert(idx++, {"Menu:Line", ":/icons/line.lci", lineActions()});
-    menus.insert(idx++, {"Menu:Point", ":/icons/points.lci", pointActions()});
-    menus.insert(idx++, {"Menu:Circle", ":/icons/circle.lci", circleActions()});
-    menus.insert(idx++, {"Menu:Arc", ":/icons/arc_center_point_angle.lci", curveActions()});
-    menus.insert(idx++, {"Menu:Polygon", ":/icons/rectangle_1_point.lci", shapeActions()});
-    menus.insert(idx++, {"Menu:Spline", ":/icons/spline_points.lci", splineActions()});
-    menus.insert(idx++, {"Menu:Ellipse", ":/icons/ellipses.lci", ellipseActions()});
-    menus.insert(idx++, {"Menu:Polyline", ":/icons/polylines_polyline.lci", polylineActions()});
-    menus.insert(idx++, {"Menu:Other", ":/icons/text.lci", otherDrawingActions()});
-    menus.insert(idx++, {"Menu:Modify", ":/icons/move_rotate.lci", modifyActions()});
-    menus.insert(idx++, {"Menu:Dimensions", ":/icons/dim_horizontal.lci", dimensionActions()});
-    menus.insert(idx++, {"Menu:Info", ":/icons/measure.lci", infoActions()});
+    int toolsIdx = -1;
+    for (int i = 0; i < menus.size(); ++i) {
+        if (menus[i].actionName == "Menu:Tools" || menus[i].groupTitle == "Menu:Tools") {
+            toolsIdx = i;
+            break;
+        }
+    }
+
+    if (toolsIdx >= 0) {
+        menus.removeAt(toolsIdx);
+    }
+    else {
+        toolsIdx = menus.size();
+    }
+
+    QList<ActionNode> modifyWithOrder = toNodes(af->modifyActions);
+    modifyWithOrder.append(ActionNode("-"));
+    modifyWithOrder.append(makeCategoryNode("order", agm, af->orderActions));
+
+    int insertIdx = toolsIdx;
+    menus.insert(insertIdx++, makeCategoryNode("select",    agm, af->selectActions));
+    menus.insert(insertIdx++, makeCategoryNode("line",      agm, af->lineActions));
+    menus.insert(insertIdx++, makeCategoryNode("point",     agm, af->pointActions));
+    menus.insert(insertIdx++, makeCategoryNode("circle",    agm, af->circleActions));
+    menus.insert(insertIdx++, makeCategoryNode("curve",     agm, af->curveActions));
+    menus.insert(insertIdx++, makeCategoryNode("shape",     agm, af->shapeActions));
+    menus.insert(insertIdx++, makeCategoryNode("spline",    agm, af->splineActions));
+    menus.insert(insertIdx++, makeCategoryNode("ellipse",   agm, af->ellipseActions));
+    menus.insert(insertIdx++, makeCategoryNode("polyline",  agm, af->polylineActions));
+    menus.insert(insertIdx++, makeCategoryNode("text",      agm, af->textActions));
+    menus.insert(insertIdx++, makeCategoryNode("other",     agm, af->otherDrawingActions));
+    menus.insert(insertIdx++, {"Menu:Modify", ":/icons/move_rotate.lci", modifyWithOrder});
+    menus.insert(insertIdx++, makeCategoryNode("dimension", agm, af->dimensionActions));
+    menus.insert(insertIdx++, makeCategoryNode("info",      agm, af->infoActions));
 
     return menus;
 }
 
-QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars() {
+QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars(const LC_ActionFactory* af,
+                                                                          const LC_ActionGroupManager* agm) {
+    if (af == nullptr || agm == nullptr) {
+        return {};
+    }
+
     return {
-        makeStandardToolbar(tr("Info Cursor"), ":/icons/info_cursor_enable.lci", Qt::TopToolBarArea, {
-            ActionNode{"Menu:InfoCursor", ":/icons/info_cursor_enable.lci", {
+        // --- Top Area: Row 1 ---
+        makeStandardToolbar("info_cursor", ":/icons/info_cursor_enable.lci", Qt::TopToolBarArea, {
+            {"Menu:InfoCursor", ":/icons/info_cursor_enable.lci", {
                 "InfoCursorEnable",
                 "InfoCursorAbs",
                 "InfoCursorSnap",
@@ -587,20 +542,10 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars() {
             }, ToolButtonPopupMode::SplitFirstAction}
         }),
 
-        // --- Top Area Toolbars ---
-        makeStandardToolbar(tr("File"), ":/icons/fileopen.lci", Qt::TopToolBarArea, {
-            "FileNew",
-            "FileNewTemplate",
-            "FileOpen",
-            "FileSave",
-            "FileSaveAs",
-            "FileSaveAll",
-            "FilePrint",
-            "FilePrintPreview"
-        }),
+        makeStandardToolbar("file", ":/icons/fileopen.lci", Qt::TopToolBarArea, toNodes(af->file_Actions)),
 
-        makeStandardToolbar(tr("Edit"), ":/icons/copy.lci", Qt::TopToolBarArea, {
-            "EditKillAllActions",
+        makeStandardToolbar("edit", ":/icons/copy.lci", Qt::TopToolBarArea, {
+            {"select", ":/icons/cursor.lci", toNodes(af->selectActions), ToolButtonPopupMode::SplitFirstAction},
             "SelectionModeToggle",
             "EntityDescriptionInfo",
             "-",
@@ -613,7 +558,7 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars() {
             "EditPasteTransform"
         }),
 
-        makeStandardToolbar(tr("View"), ":/icons/draft.lci", Qt::TopToolBarArea, {
+        makeStandardToolbar("view", ":/icons/draft.lci", Qt::TopToolBarArea, {
             "ViewGrid",
             "ViewDraft",
             "ViewLinesDraft",
@@ -628,71 +573,66 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars() {
             "ZoomPan"
         }),
 
-        makeStandardToolbar(tr("Named Views"), ":/icons/nview_visible.lci", Qt::TopToolBarArea, {
+        makeStandardToolbar("workspaces", ":/icons/workspace.lci", Qt::TopToolBarArea, {
+            {"Menu:WorkspaceActions", ":/icons/workspace.lci", {
+                "WorkspaceCreate",
+                "WorkspaceRemove"
+            }, ToolButtonPopupMode::SplitFirstAction},
+            LC_ActionNames::WidgetWorkspaceSelector
+        }),
+
+        makeStandardToolbar("named_views", ":/icons/nview_visible.lci", Qt::TopToolBarArea, {
             "ZoomViewSave",
             LC_ActionNames::WidgetNamedViewsSelector
         }),
 
-        makeStandardToolbar(tr("UCS"), ":/icons/ucs_set_wcs.lci", Qt::TopToolBarArea, {
+        makeStandardToolbar("ucs", ":/icons/ucs_set_wcs.lci", Qt::TopToolBarArea, {
             "UCSCreate",
             LC_ActionNames::WidgetUCSSelector
         }),
 
-        makeStandardToolbar(tr("Workspaces"), ":/icons/workspace.lci", Qt::TopToolBarArea, {
-            ActionNode{"Menu:WorkspaceActions", ":/icons/workspace.lci", {"WorkspaceCreate", "WorkspaceRemove"}, ToolButtonPopupMode::SplitFirstAction},
-            LC_ActionNames::WidgetWorkspaceSelector
-        }),
-
-        makeStandardToolbar(tr("Preferences"), ":/icons/settings.lci", Qt::TopToolBarArea, {
+        makeStandardToolbar("options", ":/icons/settings.lci", Qt::TopToolBarArea, {
             "OptionsGeneral",
             "OptionsStyling",
             "OptionsCustomization",
             "OptionsDrawing"
         }),
 
-        // Pen toolbar (line break before; variable actions only)
-        makeStandardToolbar(tr("Pen"), ":/icons/pen_apply.lci", Qt::TopToolBarArea, {
-            "PenSyncFromLayer",
-            "PenPick",
-            "PenPickResolved",
-            "PenApply",
-            "PenCopy"
-        }, /*visible=*/true),
+        // --- Top Area: Row 2 (lineBreak = true on pen starts the second row) ---
+        makeStandardToolbar("pen", ":/icons/pen_apply.lci", Qt::TopToolBarArea, toNodes(af->penActions),true, true),
 
-        makeStandardToolbar(tr("Entity's Layer"), ":/icons/select_entity.lci", Qt::TopToolBarArea, {
-            ActionNode{"Menu:EntityLayers", ":/icons/not_visible.lci", {
-                "EntityLayerView",
-                "EntityLayerHideOthers",
-                "EntityLayerLock",
-                "EntityLayerConstruction",
-                "EntityLayerPrint",
-                "LayersDefreezeAll"
-            }, ToolButtonPopupMode::SplitFirstAction},
-            "EntityLayerActivate"
+        makeStandardToolbar("entity_layer", ":/icons/select_entity.lci", Qt::TopToolBarArea, {
+            "EntityLayerActivate",
+            {"Menu:EntityLayers", ":/icons/not_visible.lci", toNodes(af->entityLayerActions), ToolButtonPopupMode::SplitFirstAction}
         }),
 
-        // --- Left Area Toolbars ---
-        makeStandardToolbar(tr("Categories"), ":/icons/line_polygon_star.lci", Qt::LeftToolBarArea, {
-            ActionNode{"Menu:Lines", ":/icons/line.lci", lineActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Points", ":/icons/points.lci", pointActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Circles", ":/icons/circle.lci", circleActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Arcs", ":/icons/arc_center_point_angle.lci", curveActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Splines", ":/icons/spline_points.lci", splineActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Polygons", ":/icons/rectangle_2_points.lci", shapeActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Ellipses", ":/icons/ellipses.lci", ellipseActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:PolyLines", ":/icons/polylines.lci", polylineActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Select", ":/icons/select.lci", selectActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Dimension", ":/icons/dim_horizontal.lci", dimensionActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Other", ":/icons/text.lci", otherDrawingActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Modify", ":/icons/move_rotate.lci", modifyActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Measure", ":/icons/measure.lci", infoActions(), ToolButtonPopupMode::InstantPopup},
-            ActionNode{"Menu:Order", ":/icons/order.lci", orderActions(), ToolButtonPopupMode::InstantPopup}
+        makeHostToolbar("tool_options", ":/icons/drawing_settings.lci", Qt::TopToolBarArea, true),
+
+        // --- Left Area ---
+        makeStandardToolbar("categories", ":/icons/line_polygon_star.lci", Qt::LeftToolBarArea, {
+            makeCategoryNode("line",      agm, af->lineActions),
+            makeCategoryNode("point",     agm, af->pointActions),
+            makeCategoryNode("circle",    agm, af->circleActions),
+            makeCategoryNode("curve",     agm, af->curveActions),
+            makeCategoryNode("spline",    agm, af->splineActions),
+            makeCategoryNode("shape",     agm, af->shapeActions),
+            makeCategoryNode("ellipse",   agm, af->ellipseActions),
+            makeCategoryNode("polyline",  agm, af->polylineActions),
+            makeCategoryNode("text",      agm, af->textActions),
+            makeCategoryNode("select",    agm, af->selectActions),
+            makeCategoryNode("dimension", agm, af->dimensionActions),
+            makeCategoryNode("other",     agm, af->otherDrawingActions),
+            makeCategoryNode("modify",    agm, af->modifyActions),
+            makeCategoryNode("info",      agm, af->infoActions),
+            makeCategoryNode("order",     agm, af->orderActions)
         }),
 
-        makeStandardToolbar(tr("Order"), ":/icons/order.lci", Qt::LeftToolBarArea, orderActions(), /*visible=*/false),
+        makeStandardToolbar("order", ":/icons/order.lci", Qt::LeftToolBarArea, toNodes(af->orderActions), false),
 
-        // --- Bottom Area Toolbars ---
-        makeStandardToolbar(tr("Dock Areas"), ":/icons/dockwidgets_left.lci", Qt::BottomToolBarArea, {
+        // --- Bottom Area ---
+        makeHostToolbar("snap", ":/icons/snap_visual.lci", Qt::BottomToolBarArea, true),
+
+        makeStandardToolbar("dock_areas", ":/icons/dockwidgets_left.lci", Qt::BottomToolBarArea, {
             "LeftDockAreaToggle",
             "RightDockAreaToggle",
             "TopDockAreaToggle",
@@ -700,44 +640,48 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars() {
             "FloatingDockwidgetsToggle"
         }),
 
-        makeStandardToolbar(tr("Creators"), ":/icons/create_toolbar.lci", Qt::BottomToolBarArea, {
+
+        makeStandardToolbar("creators", ":/icons/create_toolbar.lci", Qt::BottomToolBarArea, {
             "InvokeMenuCreator",
             "InvokeToolbarCreator"
         })
     };
 }
 
-QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildCadToolbars() {
+
+QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildCadToolbars(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    if (af == nullptr) {
+        return {};
+    }
     return {
-        makeCadToolbar(tr("Line"),      ":/icons/line.lci", lineActions()),
-        makeCadToolbar(tr("Point"),     ":/icons/points.lci", pointActions()),
-        makeCadToolbar(tr("Polygon"),   ":/icons/rectangle_2_points.lci", shapeActions()),
-        makeCadToolbar(tr("Circle"),    ":/icons/circle.lci", circleActions()),
-        makeCadToolbar(tr("Arc"),       ":/icons/arc_center_point_angle.lci", curveActions()),
-        makeCadToolbar(tr("Spline"),    ":/icons/spline_points.lci", splineActions()),
-        makeCadToolbar(tr("Ellipse"),   ":/icons/ellipses.lci", ellipseActions()),
-        makeCadToolbar(tr("Polyline"),  ":/icons/polylines.lci", polylineActions()),
-        makeCadToolbar(tr("Dimension"), ":/icons/dim_horizontal.lci", dimensionActions()),
-        makeCadToolbar(tr("Other"),     ":/icons/text.lci", otherDrawingActions()),
-        makeCadToolbar(tr("Modify"),    ":/icons/move_rotate.lci", modifyActions()),
-        makeCadToolbar(tr("Info"),      ":/icons/measure.lci", infoActions()),
-        makeCadToolbar(tr("Select"),    ":/icons/select.lci", selectActions())
+       makeCadToolbar("line",      agm, af->lineActions),
+       makeCadToolbar("point",     agm, af->pointActions),
+       makeCadToolbar("shape",     agm, af->shapeActions),
+       makeCadToolbar("circle",    agm, af->circleActions),
+       makeCadToolbar("curve",     agm, af->curveActions),
+       makeCadToolbar("spline",    agm, af->splineActions),
+       makeCadToolbar("ellipse",   agm, af->ellipseActions),
+       makeCadToolbar("polyline",  agm, af->polylineActions),
+       makeCadToolbar("dimension", agm, af->dimensionActions),
+       makeCadToolbar("other",     agm, af->otherDrawingActions),
+       makeCadToolbar("modify",    agm, af->modifyActions),
+       makeCadToolbar("info",      agm, af->infoActions),
+       makeCadToolbar("select",    agm, af->selectActions),
+       makeCadToolbar("order",     agm, af->orderActions)
     };
 }
-
 
 NavigationLayoutConfig LC_DefaultNavigationLayoutBuilder::createDefaultConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
     NavigationLayoutConfig config;
     config.name = tr("Default Workspace");
-    config.activeMenuVariant = 0;
+    config.menuMinimal = buildDefaultMenuMinimal(af, agm);
     config.menuCompact = buildDefaultMenuCompact(af, agm);
-    config.menuCompactTools = buildDefaultMenuCompactTools(af, agm);
     config.menuExtended = buildDefaultMenuExtended(af, agm);
 
     config.toolbars.clear();
-    config.toolbars.append(buildStandardToolbars());
-    config.toolbars.append(buildCadToolbars());
-    config.toolbars.append(buildCadDockWidgets());
+    config.toolbars.append(buildStandardToolbars(af, agm));
+    config.toolbars.append(buildCadToolbars(af, agm));
+    config.toolbars.append(buildCadDockWidgets(af, agm));
 
     return config;
 }

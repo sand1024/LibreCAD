@@ -35,37 +35,12 @@ class LC_DefaultNavigationLayoutBuilder {
 public:
     static NavigationLayoutConfig createDefaultConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
 private:
+    static QList<ToolbarDef> buildStandardToolbars(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+    static QList<ToolbarDef> buildCadToolbars(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+    static QList<ToolbarDef> buildCadDockWidgets(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
+    static QList<ActionNode> buildDefaultMenuMinimal(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
     static QList<ActionNode> buildDefaultMenuCompact(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
-    static QList<ActionNode> buildDefaultMenuCompactTools(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
     static QList<ActionNode> buildDefaultMenuExtended(const LC_ActionFactory* af, const LC_ActionGroupManager* agm);
-
-    static QList<ToolbarDef> buildStandardToolbars();
-    static QList<ToolbarDef> buildCadToolbars();
-
-    static ToolbarDef makeStandardToolbar(const QString& name, const QString& icon, Qt::ToolBarArea area,
-                                          const QList<ActionNode>& nodes, bool visible = true);
-    static ToolbarDef makeCadToolbar(const QString& name, const QString& icon, const QList<ActionNode>& actions,
-                                     bool visible = false);
-
-    static ToolbarDef makeCadDockWidget(const QString& name, const QString& icon, const QList<ActionNode>& actions);
-    static ToolbarDef makeCadMatrix(const QString& name, const QString& icon, const QList<ActionNode>& groups);
-    static QList<ToolbarDef> buildCadDockWidgets();
-
-    static const QList<ActionNode>& lineActions();
-    static const QList<ActionNode>& shapeActions();
-    static const QList<ActionNode>& pointActions();
-    static const QList<ActionNode>& circleActions();
-    static const QList<ActionNode>& curveActions();
-    static const QList<ActionNode>& splineActions();
-    static const QList<ActionNode>& ellipseActions();
-    static const QList<ActionNode>& polylineActions();
-    static const QList<ActionNode>& selectActions();
-    static const QList<ActionNode>& dimensionActions();
-    static const QList<ActionNode>& otherDrawingActions();
-    static const QList<ActionNode>& modifyActions();
-    static const QList<ActionNode>& orderActions();
-    static const QList<ActionNode>& infoActions();
-
 };
 
 #endif

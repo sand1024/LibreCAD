@@ -80,29 +80,10 @@ QMenu* LC_SpecialMenuService::createDynamicSubMenu(QMenu* parentMenu, const QStr
 }
 
 QAction* LC_SpecialMenuService::getDockWidgetToggleAction(const QString& actionToken) const {
-    if (m_appWindow == nullptr) {
-        return nullptr;
-    }
-
-    static const QMap<QString, const char*> s_dockMap = {
-        {LC_ActionNames::ToggleDockCommandLine, "command_dockwidget"},
-        {LC_ActionNames::ToggleDockLayers, "layer_dockwidget"},
-        {LC_ActionNames::ToggleDockLayerTree, "layer_tree_dockwidget"},
-        {LC_ActionNames::ToggleDockBlocks, "block_dockwidget"},
-        {LC_ActionNames::ToggleDockProperties, "property_sheet"},
-        {LC_ActionNames::ToggleDockLibrary, "library_dockwidget"},
-        {LC_ActionNames::ToggleDockQuickInfo, "quick_entity_info"},
-        {LC_ActionNames::ToggleDockPenPalette, "pen_palette_dockwidget"},
-        {LC_ActionNames::ToggleDockPenWizard, "pen_wiz_dockwidget"},
-        {LC_ActionNames::ToggleDockNamedViews, "view_dockwidget"},
-        {LC_ActionNames::ToggleDockUCS, "ucs_dockwidget"}
-    };
-
-    const auto it = s_dockMap.find(actionToken);
-    if (it != s_dockMap.end()) {
-        auto* dw = m_appWindow->findChild<QDockWidget*>(it.value());
-        if (dw != nullptr) {
-            return dw->toggleViewAction();
+    if (m_appWindow != nullptr) {
+        auto* act = m_appWindow->getAction(actionToken);
+        if (act != nullptr) {
+            return act;
         }
     }
     return nullptr;
@@ -115,6 +96,14 @@ QAction* LC_SpecialMenuService::getSpecialAction(const QString& actionToken) con
 bool LC_SpecialMenuService::bindMenu(const QString& specialMenuName, QMenu* parentMenu) {
     if (specialMenuName == LC_ActionNames::MenuRecentFiles) {
         bindRecentFilesMenu(parentMenu);
+        return true;
+    }
+    if (specialMenuName == LC_ActionNames::MenuPlugins) {
+        bindPluginsMenu(parentMenu);
+        return true;
+    }
+    if (specialMenuName == LC_ActionNames::MenuWorkspacesRescue) {
+        bindWorkspacesRescueMenu(parentMenu);
         return true;
     }
     if (specialMenuName == LC_ActionNames::MenuDockWidgets) {
@@ -176,26 +165,35 @@ void LC_SpecialMenuService::bindRecentFilesMenu(QMenu* parentMenu) const {
     }
 }
 
+void LC_SpecialMenuService::bindPluginsMenu(QMenu* parentMenu) {
+    if (m_appWindow != nullptr && parentMenu != nullptr) {
+        QMenu* plugins = m_appWindow->getPluginsMenu();
+        if (plugins != nullptr) {
+            const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
+            plugins->setTearOffEnabled(allowTearOff);
+            parentMenu->addMenu(plugins);
+        }
+    }
+}
+
 void LC_SpecialMenuService::populateDockWidgets(QMenu* menu, bool cadWidgetsOnly) const {
     if (m_appWindow == nullptr || menu == nullptr) {
         return;
     }
 
-    QList<QDockWidget*> dockwidgetsList = m_appWindow->findChildren<QDockWidget*>();
-    m_appWindow->sortWidgetsByTitle(dockwidgetsList);
-
-    for (auto* dw : dockwidgetsList) {
-        if (dw != nullptr) {
-            const bool isCadWidget = (m_appWindow->dockWidgetArea(dw) == Qt::LeftDockWidgetArea);
-            if (cadWidgetsOnly == isCadWidget) {
-                menu->addAction(dw->toggleViewAction());
+    auto* group = m_appWindow->getActionGroup(cadWidgetsOnly ? "cad_dock_widgets" : "dock_widgets");
+    if (group != nullptr) {
+        for (auto* act : group->actions()) {
+            if (act != nullptr) {
+                menu->addAction(act);
             }
         }
     }
 }
 
 void LC_SpecialMenuService::bindDockWidgetsMenu(QMenu* parentMenu) {
-    createDynamicSubMenu(parentMenu, QObject::tr("Wid&gets"), QString(), [this](QMenu* menu) {
+    auto group =  m_appWindow->getActionGroup("dock_widgets");
+    createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, false);
     });
 }
@@ -204,7 +202,8 @@ void LC_SpecialMenuService::bindCadDockWidgetsMenu(QMenu* parentMenu) {
     if (!CFG_Startup::o_EnableLeftSidebar) {
         return;
     }
-    createDynamicSubMenu(parentMenu, QObject::tr("CAD Wid&gets"), QString(), [this](QMenu* menu) {
+    auto group =  m_appWindow->getActionGroup("cad_dock_widgets");
+    createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, true);
     });
 }
@@ -246,6 +245,62 @@ void LC_SpecialMenuService::bindCadToolbarsMenu(QMenu* parentMenu) {
     }
     createDynamicSubMenu(parentMenu, QObject::tr("&CAD Toolbars"), QString(), [this](QMenu* menu) {
         populateToolbars(menu, true);
+    });
+}
+
+void LC_SpecialMenuService::bindWorkspacesRescueMenu(QMenu* parentMenu) {
+    if (CFG_Appearance::o_MainMenuVisible || parentMenu == nullptr) {
+        return;
+    }
+
+    createDynamicSubMenu(parentMenu, QObject::tr("Workspaces"), ":/icons/workspace.lci", [this](QMenu* menu) {
+        auto* actFullscreen = getAction("Fullscreen");
+        if (actFullscreen != nullptr) {
+            menu->addAction(actFullscreen);
+        }
+        auto* actMainMenu = getAction("MainMenu");
+        if (actMainMenu != nullptr) {
+            menu->addAction(actMainMenu);
+        }
+        menu->addSeparator();
+
+        // 1. Area Toggles
+        auto* tbAreas = menu->addMenu(QObject::tr("Toolbar Areas"));
+        tbAreas->addAction(getAction("LeftTBAreaToggle"));
+        tbAreas->addAction(getAction("RightTBAreaToggle"));
+        tbAreas->addAction(getAction("TopTBAreaToggle"));
+        tbAreas->addAction(getAction("BottomTBAreaToggle"));
+
+        auto* dockAreas = menu->addMenu(QObject::tr("Dock Areas"));
+        dockAreas->addAction(getAction("LeftDockAreaToggle"));
+        dockAreas->addAction(getAction("RightDockAreaToggle"));
+        dockAreas->addAction(getAction("TopDockAreaToggle"));
+        dockAreas->addAction(getAction("BottomDockAreaToggle"));
+        dockAreas->addAction(getAction("FloatingDockwidgetsToggle"));
+
+        // 2. Widget & Toolbar Menus
+        bindDockWidgetsMenu(menu);
+        bindToolbarsMenu(menu);
+        bindCadDockWidgetsMenu(menu);
+        bindCadToolbarsMenu(menu);
+        menu->addSeparator();
+
+        // 3. Workspace Operations
+        auto* actRedock = getAction("RedockWidgets");
+        if (actRedock != nullptr) {
+            menu->addAction(actRedock);
+        }
+        auto* actRestoreDefault = getAction("WorkspaceRestore");
+        if (actRestoreDefault != nullptr) {
+            menu->addAction(actRestoreDefault);
+        }
+        auto* actCreateWs = getAction("WorkspaceCreate");
+        if (actCreateWs != nullptr) {
+            menu->addAction(actCreateWs);
+        }
+        menu->addSeparator();
+
+        bindWorkspacesListMenu(menu);
     });
 }
 

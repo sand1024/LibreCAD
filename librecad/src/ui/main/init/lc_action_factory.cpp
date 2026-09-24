@@ -41,6 +41,7 @@
 #include "lc_settings_selection.h"
 #include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
+#include "lc_shortcuts_manager.h"
 #include "lc_shortcut_info.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
@@ -59,65 +60,90 @@ void LC_ActionFactory::initActions(LC_ActionGroupManager* agm, const bool useThe
 
 void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
     // NOTE: the order is imprortant now!
-    createActionGroups(
+  createActionGroups(
     {
         // ==========================================
         // 1. DRAFTING GEOMETRY (Core CAD Tools)
         // ==========================================
-        {"line",    tr("Line"),    tr("Line drawing commands"),    ":/icons/line.lci"},
-        {"point",   tr("Point"),   tr("Point drawing commands"),   ":/icons/points.lci"},
-        {"shape",   tr("Polygon"), tr("Polygon drawing commands"), ":/icons/rectangle_2_points.lci"},
-        {"circle",  tr("Circle"),  tr("Circle drawing commands"),  ":/icons/circle.lci"},
-        {"curve",   tr("Arc"),     tr("Arc drawing commands"),     ":/icons/arc_center_point_angle.lci"},
-        {"spline",  tr("Spline"),  tr("Spline drawing commands"),  ":/icons/spline_points.lci"},
-        {"ellipse", tr("Ellipse"), tr("Ellipse drawing commands"), ":/icons/ellipses.lci"},
-        {"polyline",tr("Polyline"),tr("Polyline drawing commands"),":/icons/polylines_polyline.lci"},
-        {"other",   tr("Other"),   tr("Other operations"),         ":/icons/text.lci"},
+        {"line",          tr("Line"),                    tr("Line drawing commands"),          ":/icons/line.lci",                   true, true, true, "Menu:Line"},
+        {"point",         tr("Point"),                   tr("Point drawing commands"),         ":/icons/points.lci",                 true, true, true, "Menu:Point"},
+        {"shape",         tr("Polygon"),                 tr("Polygon drawing commands"),       ":/icons/rectangle_2_points.lci",     true, true, true, "Menu:Polygon"},
+        {"circle",        tr("Circle"),                  tr("Circle drawing commands"),        ":/icons/circle.lci",                 true, true, true, "Menu:Circle"},
+        {"curve",         tr("Arc"),                     tr("Arc drawing commands"),           ":/icons/arc_center_point_angle.lci", true, true, true, "Menu:Arc"},
+        {"spline",        tr("Spline"),                  tr("Spline drawing commands"),        ":/icons/spline_points.lci",          true, true, true, "Menu:Spline"},
+        {"ellipse",       tr("Ellipse"),                 tr("Ellipse drawing commands"),       ":/icons/ellipses.lci",               true, true, true, "Menu:Ellipse"},
+        {"polyline",      tr("Polyline"),                tr("Polyline drawing commands"),      ":/icons/polylines_polyline.lci",     true, true, true, "Menu:Polyline"},
+        {"text",          tr("Text"),                    tr("Text and annotation commands"),   ":/icons/text.lci",                   true, true, true, "Menu:Text"},
+        {"other",         tr("Other"),                   tr("Other operations"),               ":/icons/camera.lci",                 true, true, true, "Menu:Other"},
 
         // ==========================================
         // 2. SELECTION, TRANSFORMS & EDITING
         // ==========================================
-        {"select", tr("Select"), tr("Entity selection operations"), ":/icons/select.lci"},
-        {"modify", tr("Modify"), tr("Modification operations"),     ":/icons/move_rotate.lci"},
-        {"edit",   tr("Edit"),   tr("Editing operations"),          ":/icons/rename_active_block.lci"},
+        {"select",        tr("Select"),                  tr("Entity selection operations"),    ":/icons/select.lci",                 true,  true, true, "Menu:Select"},
+        {"modify",        tr("Modify"),                  tr("Modification operations"),        ":/icons/move_rotate.lci",            true,  true, true, "Menu:Modify"},
+        {"align",         tr("Align"),                   tr("Alignment operations"),           ":/icons/align_one.lci",              false, true, true, "Menu:Align"},
+        {"order",         tr("Order"),                   tr("Draw order operations"),          ":/icons/order.lci",                  true,  true, true, "Menu:Order"},
+        {"edit",          tr("Edit"),                    tr("Editing operations"),             ":/icons/rename_active_block.lci",    false, true, false, "Menu:Edit"},
+
 
         // ==========================================
         // 3. ANNOTATIONS & MEASUREMENT
         // ==========================================
-        {"dimension",tr("Dimension"),tr("Dimensions creation commands"), ":/icons/dim_horizontal.lci"},
-        {"info",     tr("Info"),     tr("Informational commands"),       ":/icons/measure.lci"},
+        {"dimension",     tr("Dimension"),               tr("Dimensions creation commands"),   ":/icons/dim_horizontal.lci",         true, true, true, "Menu:Dimension"},
+        {"info",          tr("Info"),                    tr("Informational commands"),         ":/icons/measure.lci",                true, true, true, "Menu:Info"},
 
         // ==========================================
         // 4. PRECISION & SNAPPING
         // ==========================================
-        {"snap",          tr("Snap"),                    tr("Snapping operations"),     ":/icons/snap_intersection.lci", false},
-        {"snap_extras",   tr("Snap Extras"),             tr("Additional Snaps"),        ":/icons/snap_free.lci",         false},
-        {"restriction",   tr("Restriction"),             tr("Snap restrictions"),       ":/icons/restr_ortho.lci",       false},
-        {"relative_input",tr("Relative Point Assistant"),tr("Relative Point Assistant"),":/icons/snap_visual.lci",       false},
-        {"relZero",       tr("Relative Zero"),           tr("Relative Zero"),           ":/icons/set_rel_zero.lci",      false},
-        {"infoCursor",    tr("InfoCursor"),              tr("Informational Cursor"),    ":/icons/info_cursor_enable.lci",false},
+        {"snap",          tr("Snap"),                    tr("Snapping operations"),            ":/icons/snap_intersection.lci",      false, true, false, "Menu:Snap"},
+        {"snap_extras",   tr("Snap Extras"),             tr("Additional Snaps"),               ":/icons/snap_free.lci",              false, true, false},
+        {"restriction",   tr("Restriction"),             tr("Snap restrictions"),              ":/icons/restr_ortho.lci",            false, true, false},
+        {"relative_input",tr("Relative Point Assistant"),tr("Relative Point Assistant"),       ":/icons/snap_visual.lci",            false, true, false},
+        {"relZero",       tr("Relative Zero"),           tr("Relative Zero"),                  ":/icons/set_rel_zero.lci",           false, true, false},
+        {"infoCursor",    tr("InfoCursor"),              tr("Informational Cursor"),           ":/icons/info_cursor_enable.lci",     false, true, false},
 
         // ==========================================
         // 5. CAD DOCUMENT STRUCTURE & CONTEXT
         // ==========================================
-        {"layer",        tr("Layer"),       tr("Layers operations"),       ":/icons/deselect_layer.lci",false},
-        {"entity_layer", tr("Entity Layer"),tr("Entity's Layer"),          ":/icons/layer_list.lci",    false},
-        {"block",        tr("Block"),       tr("Block related operations"),":/icons/create_block.lci"},
-        {"ucs",          tr("UCS"),         tr("UCS operations"),          ":/icons/set_ucs.lci"},
-        {"pen",          tr("PenTB"),       tr("Pen related operations"),  ":/icons/pen_apply.lci"},
+        {"layer",         tr("Layer"),                   tr("Layers operations"),              ":/icons/deselect_layer.lci",         false, true, false, "Menu:Layer"},
+        {"entity_layer",  tr("Entity Layer"),            tr("Entity's Layer"),                 ":/icons/layer_list.lci",             false, true, false},
+        {"block",         tr("Block"),                   tr("Block related operations"),       ":/icons/create_block.lci",           false, true, true,  "Menu:Block"},
+        {"ucs",           tr("UCS"),                     tr("UCS operations"),                 ":/icons/set_ucs.lci",                true,  true, false, "Menu:UCS"},
+        {"pen",           tr("Pen"),                   tr("Pen related operations"),         ":/icons/pen_apply.lci",              false, true, false},
 
         // ==========================================
         // 6. APPLICATION & WORKSPACE MANAGEMENT
         // ==========================================
-        {"file",             tr("File"),       tr("File Operations"),              ":/icons/save.lci"},
-        {"view",             tr("View"),       tr("View related operations"),      ":/icons/zoom_in.lci",           false},
-        {"namedViews",       tr("Named Views"),tr("Persistent Views operations"),  ":/icons/visible.lci",           false},
-        {"workspaces",       tr("Workspaces"), tr("Workspaces operations"),        ":/icons/workspace.lci",         false},
-        {"widgets",          tr("Widgets"),    tr("Widgets management"),           ":/icons/dockwidgets_bottom.lci",false},
-        {"options",          tr("Options"),    tr("Options management"),           ":/icons/settings.lci"},
-        {"interactive_pick", tr("Interactive"),tr("Interactive Pick"),             ":/icons/interactive_pick_point.lci", true},
-        {"help",             tr("Help"),       tr("Help and Online Documentation"),":/icons/help.lci",              false}
-    },agm);
+        {"file",          tr("File"),                    tr("File Operations"),                ":/icons/save.lci",                   false, false, false, "Menu:File"},
+        {"view",          tr("View"),                    tr("View related operations"),        ":/icons/zoom_in.lci",                false, true,  false, "Menu:View"},
+        {"plugins",       tr("&Plugins"),                tr("External plugins"),               ":/icons/plugin.lci",                 false, false, false, "Menu:Plugins"},
+        {"draw",          tr("&Draw"),                   tr("CAD drafting commands"),          ":/icons/line.lci",                   false, false, true,  "Menu:Draw"},
+        {"tools",         tr("&Tools"),                  tr("CAD tools"),                      ":/icons/line_polygon_star.lci",      false, false, true,  "Menu:Tools"},
+        {"namedViews",    tr("Named Views"),             tr("Persistent Views operations"),    ":/icons/visible.lci",                false, true,  false},
+        {"workspaces",    tr("Workspaces"),              tr("Workspaces operations"),          ":/icons/workspace.lci",              false, true, true, "Menu:Workspace"},
+        {"categories",    tr("Categories"),              tr("CAD tool categories"),            ":/icons/line_polygon_star.lci",      false, false, false},
+        {"creators",      tr("Creators"),                tr("Custom toolbars and menus creators"), ":/icons/create_toolbar.lci",     false, false, false},
+        {"options",       tr("Options"),                 tr("Options management"),             ":/icons/settings.lci",               false, true,  false, "Menu:Options"},
+        {"interactive_pick", tr("Interactive"),          tr("Interactive Pick"),               ":/icons/interactive_pick_point.lci", true,  false, false},
+        {"help",          tr("Help"),                    tr("Help and Online Documentation"),  ":/icons/help.lci",                   false, false, false, "Menu:Help"},
+
+        // ==========================================
+        // 7. STRUCTURAL NAVIGATION SUBMENUS
+       // ==========================================
+        {"import",        tr("Import"),                  tr("Import operations"),              ":/icons/import.lci",                 false, false, false, "Menu:Import"},
+        {"export",        tr("Export"),                  tr("Export operations"),              ":/icons/export.lci",                 false, false, false, "Menu:Export"},
+        {"views_restore", tr("&Views Restore"),          tr("Restore saved views"),            ":/icons/nview_visible.lci",          false, false, false, "Menu:ViewsRestore"},
+        {"dock_areas",    tr("Dock Areas"),              tr("Toggle dock areas"),              "",                                   false, true, true, "Menu:DockAreas"},
+        {"tb_areas",      tr("Toolbar Areas"),           tr("Toggle toolbar areas"),           "",                                   false, true, true, "Menu:ToolbarAreas"},
+        {"online_docs",   tr("On&line Docs"),            tr("Online documentation links"),     ":/icons/help.lci",                   false, false, false, "Menu:OnlineDocs"},
+        // ==========================================
+        // 8. Widgets toggle actions
+        // ==========================================
+        {"dock_widgets",     tr("Tool Windows"),    tr("Tool Windows visibility toggles"),     ":/icons/tool_windows_palette.lci",  false, true,  true,  "Menu:DockWidgets"},
+        {"cad_dock_widgets", tr("CAD Tool Windows"),tr("CAD Tool Windows visibility toggles"), ":/icons/dockwidgets_left.lci",      false, true,  true,  "Menu:CadDockWidgets"},
+        {"tool_options",  tr("Tool Options"),            tr("Active Tool Options bar"),           ":/icons/drawing_settings.lci",       false, true,  false},
+    }, agm);
+
 
     const auto fileGroup = agm->getGroupByName("file");
     const auto optionsGroup = agm->getGroupByName("options");
@@ -150,6 +176,22 @@ void LC_ActionFactory::createEntityLayerActions(QMap<QString, QAction*>& map, LC
 
 // todo - add explanations for commands for actions (probably mix with commandItems) as it was mentioned in issue #570
 
+void LC_ActionFactory::setupDefaultShortcutsAndCompleteInit(LC_ActionGroupManager* agm) {
+    QMap<QString, QAction *> &actionMap = agm->getActionsMap();
+    setupCreatedActions(actionMap);
+    setDefaultShortcuts(actionMap, agm);
+
+    // todo - may we report errors somehow there?
+    markNotEditableActionsShortcuts(actionMap);
+
+    agm->completeInit();
+
+    fillActionLists(actionMap);
+    addActionsToMainWindow(actionMap);
+
+    prepareActionsToDisableInPrintPreview(m_appWin->m_actionsToDisableInPrintPreviewList, actionMap);
+}
+
 void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const bool useTheme){
     m_usingTheme = useTheme;
     QMap<QString, QAction *> &actionMap = agm->getActionsMap();
@@ -168,7 +210,8 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
     createPenActions(actionMap, agm->getGroupByName("pen"));
     createInfoActions(actionMap, agm->getGroupByName("info"));
     createViewActions(actionMap, agm->getGroupByName("view"));
-    createWidgetActions(actionMap, agm->getGroupByName("widgets"));
+    createDockAreasActions(actionMap, agm->getGroupByName("dock_areas"));
+    createToolbarAreasActions(actionMap, agm->getGroupByName("tb_areas"));
     createFileActions(actionMap, agm->getGroupByName("file"));
 
     createSnapActions(actionMap, agm->getGroupByName("snap"));
@@ -191,7 +234,7 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
 
     // not checkable actions
     createPenActionsUncheckable(actionMap, agm->getGroupByName("pen"));
-    createOrderActionsUncheckable(actionMap, agm->getGroupByName("modify"));
+    createOrderActionsUncheckable(actionMap, agm->getGroupByName("order"));
     createLayerActionsUncheckable(actionMap, agm->getGroupByName("layer"));
     createBlockActionsUncheckable(actionMap, agm->getGroupByName("block"));
     createOptionsActionsUncheckable(actionMap, agm->getGroupByName("options"));
@@ -200,25 +243,9 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
     createViewActionsUncheckable(actionMap, agm->getGroupByName("view"));
     createNamedViewActionsUncheckable(actionMap, agm->getGroupByName("namedViews"));
     createWorkspacesActionsUncheckable(actionMap, agm->getGroupByName("workspaces"));
-    createWidgetActionsUncheckable(actionMap, agm->getGroupByName("widgets"));
     createEditActionsUncheckable(actionMap, agm->getGroupByName("edit"));
     createDrawDimensionsUncheckable(actionMap, agm->getGroupByName("dimension"));
     createHelpActionsUncheckable(actionMap, agm->getGroupByName("help"));
-
-    setupCreatedActions(actionMap);
-    setDefaultShortcuts(actionMap, agm);
-
-    agm->loadShortcuts(actionMap);
-
-    // todo - may we report errors somehow there?
-    markNotEditableActionsShortcuts(actionMap);
-
-    agm->completeInit();
-
-    fillActionLists(actionMap);
-    addActionsToMainWindow(actionMap);
-
-    prepareActionsToDisableInPrintPreview(m_appWin->m_actionsToDisableInPrintPreviewList, actionMap);
 }
 
 void LC_ActionFactory::createDrawShapeActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
@@ -572,18 +599,23 @@ void LC_ActionFactory::createUCSActions(QMap<QString, QAction *> &map, QActionGr
 }
 
 void LC_ActionFactory::createWorkspacesActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group){
-    createSpecialActions(map, group, {
-        {LC_ActionNames::WidgetWorkspaceSelector,tr("Workspace Selector (Widget)"),   ":/icons/workspace.lci",tr("Workspace selector dropdown widget.")},
-        {LC_ActionNames::MenuWorkspacesList,     tr("Saved Workspaces (Sub-Menu)"),   ":/icons/workspace.lci",tr("List of saved workspace navigation layouts.")},
-        {LC_ActionNames::MenuWorkspacesRescue,   tr("Workspaces Recovery (Sub-Menu)"),":/icons/workspace.lci",tr("Restores default UI dock and toolbar layout.")},
-        {LC_ActionNames::MenuDrawings,           tr("Drawings & Windows (Sub-Menu)"), ":/icons/workspace.lci",tr("List of currently opened drawing windows.")}
-});
-
+   createSpecialActions(map, group, {
+        {LC_ActionNames::WidgetWorkspaceSelector, tr("Workspace Selector (Widget)"),   ":/icons/workspace.lci",         tr("Workspace selector dropdown widget.")},
+        {LC_ActionNames::MenuWorkspacesList,      tr("Saved Workspaces (Sub-Menu)"),   ":/icons/workspace.lci",         tr("List of saved workspace navigation layouts.")},
+        {LC_ActionNames::MenuDrawings,            tr("Drawings & Windows (Sub-Menu)"), ":/icons/workspace.lci",         tr("List of currently opened drawing windows.")},
+        {LC_ActionNames::MenuDockWidgets,         tr("Tool Windows (Sub-Menu)"),       ":/icons/dockwidgets_left.lci",  tr("Sub-menu to toggle individual dock widgets.")},
+        {LC_ActionNames::MenuCadDockWidgets,      tr("CAD Tool Windows (Sub-Menu)"),   ":/icons/dockwidgets_left.lci",  tr("Sub-menu to toggle CAD tool dock widgets.")},
+        {LC_ActionNames::MenuToolbars,            tr("Toolbars (Sub-Menu)"),           ":/icons/create_toolbar.lci",    tr("Sub-menu to toggle application toolbars.")},
+        {LC_ActionNames::MenuCadToolbars,         tr("CAD Toolbars (Sub-Menu)"),       ":/icons/create_toolbar.lci",    tr("Sub-menu to toggle CAD toolbars.")}
+    });
 
     createMainWindowActions(map, group, {
-        {"WorkspaceCreate", &QC_ApplicationWindow::saveWorkspace,   tr("Save Workspace"),   ":/icons/workspace_save.lci",  tr("Saves current window and dock configuration as a workspace layout.")},
-        {"WorkspaceRemove", &QC_ApplicationWindow::removeWorkspace, tr("Remove Workspace"), ":/icons/workspace_remove.lci",tr("Deletes a saved workspace layout from disk.")},
-        {"WorkspaceRestore",&QC_ApplicationWindow::restoreWorkspace,tr("Restore Workspace"),":/icons/workspace.lci",       tr("Restores a saved workspace window and dock configuration.")}
+        {"WorkspaceCreate",     &QC_ApplicationWindow::saveWorkspace,       tr("Save Workspace"),        ":/icons/workspace_save.lci",    tr("Saves current window and dock configuration as a workspace layout.")},
+        {"WorkspaceRemove",     &QC_ApplicationWindow::removeWorkspace,     tr("Remove Workspace"),      ":/icons/workspace_remove.lci",  tr("Deletes a saved workspace layout from disk.")},
+        {"WorkspaceRestore",    &QC_ApplicationWindow::restoreWorkspace,    tr("Restore Workspace"),     ":/icons/workspace.lci",         tr("Restores a saved workspace window and dock configuration.")},
+        {"RedockWidgets",       &QC_ApplicationWindow::slotRedockWidgets,   tr("Re-dock Tool Windows"),  nullptr,                         tr("Re-docks all floating tools back to default dock areas.")},
+        {"InvokeMenuCreator",   &QC_ApplicationWindow::invokeMenuCreator,   tr("Custom Menu Creator"),   ":/icons/create_menu.lci",       tr("Opens custom context menu editor dialog.")},
+        {"InvokeToolbarCreator",&QC_ApplicationWindow::invokeToolbarCreator,tr("Custom Toolbar Creator"),":/icons/create_toolbar.lci",    tr("Opens main menu and toolbars customization dialog.")}
     });
 }
 
@@ -758,51 +790,31 @@ void LC_ActionFactory::createFileActionsUncheckable(QMap<QString, QAction *> &ma
         {"FileSaveAs",     &QC_ApplicationWindow::slotFileSaveAs,                tr("Save &as..."),       ":/icons/save_as.lci",            tr("Saves active drawing document under a new file path.")},
         {"FileSaveAll",    &QC_ApplicationWindow::slotFileSaveAll,               tr("Save A&ll..."),      ":/icons/save_all.lci",           tr("Saves all currently opened drawing documents to disk.")},
         {"FilePrint",      &QC_ApplicationWindow::slotFilePrint,                 tr("&Print..."),         ":/icons/print.lci",              tr("Sends active drawing or print preview layout to printer.")},
-        {"FileQuit",       &QC_ApplicationWindow::slotFileQuit,                  tr("&Quit"),             ":/icons/quit.lci",               tr("Exits the LibreCAD application.")}
+        {"FileQuit",       &QC_ApplicationWindow::slotFileQuit,                  tr("&Quit"),             ":/icons/quit.lci",               tr("Exits the LibreCAD application.")},
+        {"BackupExport",   &QC_ApplicationWindow::slotBackupExport,              tr("Export Configuration..."), ":/icons/save.lci",  tr("Creates an archive of application settings and custom presets.")},
+        {"BackupRestore",  &QC_ApplicationWindow::slotBackupRestore,             tr("Import Configuration..."),":/icons/open.lci",  tr("Restores application settings and custom presets from an archive.")},
     });
 
     createAction_AH("FileExportMakerCam", RS2::ActionFileExportMakerCam, tr("Export as CA&M/plain SVG..."), nullptr, group, map, tr("Exports drawing paths to CAM/SVG format for CNC and laser machining."));
 }
 
-void LC_ActionFactory::createWidgetActions(QMap<QString, QAction *> &map, QActionGroup *group) {
+void LC_ActionFactory::createDockAreasActions(QMap<QString, QAction*>& map, QActionGroup* group) {
     createMainWindowActions(map, group, {
-        {"LeftDockAreaToggle",       &QC_ApplicationWindow::toggleLeftDockArea,       tr("Left Dock Area"),     ":/icons/dockwidgets_left.lci",    tr("Toggles visibility of widgets in the left dock area.")},
-        {"RightDockAreaToggle",      &QC_ApplicationWindow::toggleRightDockArea,      tr("Right Dock Area"),    ":/icons/dockwidgets_right.lci",   tr("Toggles visibility of widgets in the right dock area.")},
-        {"TopDockAreaToggle",        &QC_ApplicationWindow::toggleTopDockArea,        tr("Top Dock Area"),      ":/icons/dockwidgets_top.lci",     tr("Toggles visibility of widgets in the top dock area.")},
-        {"BottomDockAreaToggle",     &QC_ApplicationWindow::toggleBottomDockArea,     tr("Bottom Dock Area"),   ":/icons/dockwidgets_bottom.lci",  tr("Toggles visibility of widgets in the bottom dock area.")},
-        {"FloatingDockwidgetsToggle",&QC_ApplicationWindow::toggleFloatingDockwidgets,tr("Floating Widgets"),   ":/icons/dockwidgets_floating.lci",tr("Toggles visibility of all floating dock widgets.")},
-        {"LeftTBAreaToggle",         &QC_ApplicationWindow::toggleLeftToolbarArea,    tr("Left Toolbar Area"),  ":/icons/dockwidgets_left.lci",    tr("Toggles visibility of toolbars in the left dock area.")},
-        {"RightTBAreaToggle",        &QC_ApplicationWindow::toggleRightToolbarArea,   tr("Right Toolbar Area"), ":/icons/dockwidgets_right.lci",   tr("Toggles visibility of toolbars in the right dock area.")},
-        {"TopTBAreaToggle",          &QC_ApplicationWindow::toggleTopToolbarArea,     tr("Top Toolbar Area"),   ":/icons/dockwidgets_top.lci",     tr("Toggles visibility of toolbars in the top dock area.")},
-        {"BottomTBAreaToggle",       &QC_ApplicationWindow::toggleBottomToolbarArea,  tr("Bottom Toolbar Area"),":/icons/dockwidgets_bottom.lci",  tr("Toggles visibility of toolbars in the bottom dock area.")}
+        {"LeftDockAreaToggle",       &QC_ApplicationWindow::toggleLeftDockArea,       tr("Left Dock Area"),     ":/icons/dockwidgets_left.lci",    tr("Toggles visibility of tool windows in the left dock area.")},
+        {"RightDockAreaToggle",      &QC_ApplicationWindow::toggleRightDockArea,      tr("Right Dock Area"),    ":/icons/dockwidgets_right.lci",   tr("Toggles visibility of tool windows in the right dock area.")},
+        {"TopDockAreaToggle",        &QC_ApplicationWindow::toggleTopDockArea,        tr("Top Dock Area"),      ":/icons/dockwidgets_top.lci",     tr("Toggles visibility of tool windows in the top dock area.")},
+        {"BottomDockAreaToggle",     &QC_ApplicationWindow::toggleBottomDockArea,     tr("Bottom Dock Area"),   ":/icons/dockwidgets_bottom.lci",  tr("Toggles visibility of tool windows in the bottom dock area.")},
+        {"FloatingDockwidgetsToggle",&QC_ApplicationWindow::toggleFloatingDockwidgets,tr("Floating Tools"),     ":/icons/dockwidgets_floating.lci",tr("Toggles visibility of all floating tool windows.")}
     }, true);
 }
 
-void LC_ActionFactory::createWidgetActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) {
-    createSpecialActions(map, group, {
-        {LC_ActionNames::MenuDockWidgets,      tr("Dock Widgets (Sub-Menu)"),   ":/icons/dockwidgets_left.lci",   tr("Sub-menu to toggle individual dock widgets.")},
-        {LC_ActionNames::MenuCadDockWidgets,   tr("CAD Widgets (Sub-Menu)"),    ":/icons/dockwidgets_left.lci",   tr("Sub-menu to toggle CAD tool dock widgets.")},
-        {LC_ActionNames::MenuToolbars,         tr("Toolbars (Sub-Menu)"),       ":/icons/create_toolbar.lci",     tr("Sub-menu to toggle application toolbars.")},
-        {LC_ActionNames::MenuCadToolbars,      tr("CAD Toolbars (Sub-Menu)"),   ":/icons/create_toolbar.lci",     tr("Sub-menu to toggle CAD toolbars.")},
-        {LC_ActionNames::ToggleDockCommandLine,tr("Toggle Command Line (Dock)"),":/icons/widget_cmd.lci",         tr("Toggles visibility of Command Line dock widget.")},
-        {LC_ActionNames::ToggleDockLayers,     tr("Toggle Layers (Dock)"),      ":/icons/widget_layer_list.lci",  tr("Toggles visibility of Layers list dock widget.")},
-        {LC_ActionNames::ToggleDockLayerTree,  tr("Toggle Layer Tree (Dock)"),  ":/icons/widget_layer_tree.lci",  tr("Toggles visibility of Layer Tree dock widget.")},
-        {LC_ActionNames::ToggleDockBlocks,     tr("Toggle Blocks (Dock)"),      ":/icons/widget_blocks.lci",      tr("Toggles visibility of Block list dock widget.")},
-        {LC_ActionNames::ToggleDockProperties, tr("Toggle Properties (Dock)"),  ":/icons/widget_properties.lci",  tr("Toggles visibility of Property Sheet dock widget.")},
-        {LC_ActionNames::ToggleDockLibrary,    tr("Toggle Library (Dock)"),     ":/icons/widget_library.lci",     tr("Toggles visibility of Library Browser dock widget.")},
-        {LC_ActionNames::ToggleDockQuickInfo,  tr("Toggle Quick Info (Dock)"),  ":/icons/widget_info.lci",        tr("Toggles visibility of Entity Quick Info dock widget.")},
-        {LC_ActionNames::ToggleDockPenPalette, tr("Toggle Pen Palette (Dock)"), ":/icons/widget_pens_palette.lci",tr("Toggles visibility of Pens Palette dock widget.")},
-        {LC_ActionNames::ToggleDockPenWizard,  tr("Toggle Pen Wizard (Dock)"),  ":/icons/widget_pen_wiz.lci",     tr("Toggles visibility of Pen Wizard dock widget.")},
-        {LC_ActionNames::ToggleDockNamedViews, tr("Toggle Named Views (Dock)"), ":/icons/widget_views.lci",       tr("Toggles visibility of Named Views dock widget.")},
-        {LC_ActionNames::ToggleDockUCS,        tr("Toggle UCS (Dock)"),         ":/icons/widget_ucs.lci",         tr("Toggles visibility of User Coordinate Systems dock widget.")}
-    });
-
-
+void LC_ActionFactory::createToolbarAreasActions(QMap<QString, QAction*>& map, QActionGroup* group) {
     createMainWindowActions(map, group, {
-        {"RedockWidgets",       &QC_ApplicationWindow::slotRedockWidgets,   tr("Re-dock Widgets"),       nullptr,                     tr("Re-docks all floating widgets back to default dock areas.")},
-        {"InvokeMenuCreator",   &QC_ApplicationWindow::invokeMenuCreator,   tr("Custom Menu Creator"),   ":/icons/create_menu.lci",   tr("Opens custom context menu editor dialog.")},
-        {"InvokeToolbarCreator",&QC_ApplicationWindow::invokeToolbarCreator,tr("Custom Toolbar Creator"),":/icons/create_toolbar.lci",tr("Opens main menu and toolbars customization dialog.")}
-    });
+        {"LeftTBAreaToggle",   &QC_ApplicationWindow::toggleLeftToolbarArea,   tr("Left Toolbar Area"),   ":/icons/dockwidgets_left.lci",   tr("Toggles visibility of toolbars in the left dock area.")},
+        {"RightTBAreaToggle",  &QC_ApplicationWindow::toggleRightToolbarArea,  tr("Right Toolbar Area"),  ":/icons/dockwidgets_right.lci",  tr("Toggles visibility of toolbars in the right dock area.")},
+        {"TopTBAreaToggle",    &QC_ApplicationWindow::toggleTopToolbarArea,    tr("Top Toolbar Area"),    ":/icons/dockwidgets_top.lci",    tr("Toggles visibility of toolbars in the top dock area.")},
+        {"BottomTBAreaToggle", &QC_ApplicationWindow::toggleBottomToolbarArea, tr("Bottom Toolbar Area"), ":/icons/dockwidgets_bottom.lci", tr("Toggles visibility of toolbars in the bottom dock area.")}
+    }, true);
 }
 
 void LC_ActionFactory::createViewActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) {
@@ -1135,7 +1147,9 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const L
         {"RelativeAddLine", QKeySequence(Qt::SHIFT | Qt::Key_L)},
         {"RelativeAddCircle", QKeySequence(Qt::SHIFT | Qt::Key_C)},
         {"RelativeAddPoint", QKeySequence(Qt::SHIFT | Qt::Key_P)},
-        {"RestrictOrthogonal", QKeySequence(Qt::Key_F8)} // Issue #2526: default shortcut for snapping: restriction orthogonal
+        {"RestrictOrthogonal", QKeySequence(Qt::Key_F8)}, // Issue #2526: default shortcut for snapping: restriction orthogonal
+        {LC_ActionNames::ToggleDockProperties, QKeySequence(Qt::CTRL | Qt::Key_1)}, // AutoCAD standard Ctrl+1
+        {LC_ActionNames::ToggleDockCommandLine, QKeySequence(Qt::CTRL | Qt::Key_9)}  // AutoCAD standard Ctrl+9
     };
 
     map["FileClose"]->setShortcutContext(Qt::WidgetShortcut);
@@ -1146,7 +1160,7 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const L
         shortcutsList.emplace_back("FileSaveAll", shortcut);
     }
 
-    agm->assignShortcutsToActions(map, shortcutsList);
+    LC_ShortcutsManager::assignShortcutsToActions(map, shortcutsList);
 }
 
 void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QAction *> &map) {
@@ -1162,276 +1176,262 @@ void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QActi
 }
 
 void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
-    fillActionsList(file_Actions,
-                    {
-                        "FileNew",
-                        "FileNewTemplate",
-                        "FileOpen",
-                        "FileSave",
-                        "FileSaveAs",
-                        "FileSaveAll"
-                    }, map);
+    file_Actions = {"FileNew", "FileNewTemplate", "FileOpen", "FileSave", "FileSaveAs", "FileSaveAll"};
 
-    fillActionsList(shapeActions,
-                    {
-                        "DrawLineRectangle",
-                        "DrawLineRectangle1Point",
-                        "DrawLineRectangle2Points",
-                        "DrawLineRectangle3Points",
-                        "DrawLinePolygonCenCor",
-                        "DrawLinePolygonCenTan",
-                        "DrawLinePolygonCorCor",
-                        "DrawLinePolygonSideSide",
-                        "DrawStar"
-                    }, map);
+    shapeActions = {
+        "DrawLineRectangle",
+        "DrawLineRectangle1Point",
+        "DrawLineRectangle2Points",
+        "DrawLineRectangle3Points",
+        "DrawLinePolygonCenCor",
+        "DrawLinePolygonCenTan",
+        "DrawLinePolygonCorCor",
+        "DrawLinePolygonSideSide",
+        "DrawStar"
+    };
 
-    fillActionsList(lineActions,
-                    {
-                        "DrawLine",
-                        "DrawLineAngle",
-                        "DrawLineHorizontal",
-                        "DrawLineVertical",
-                        "DrawLineParallelThrough",
-                        "DrawLineParallel",
-                        "DrawLineBisector",
-                        "DrawLineTangent1",
-                        "DrawLineTangent2",
-                        "DrawLineOrthTan",
-                        "DrawLineOrthogonal",
-                        "DrawLineRelAngle",
-                        "DrawLineRel",
-                        "DrawLineRelX",
-                        "DrawLineRelY",
-                        "DrawLineAngleRel",
-                        "DrawLineOrthogonalRel",
-                        "DrawLineFromPointToLine",
-                        "DrawSliceDivideLine",
-                        "DrawSliceDivideCircle",
-                        "DrawCross",
-                        "DrawLineMiddle",
-                        "DrawLineRadiant"
-                    }, map);
+    lineActions = {
+        "DrawLine",
+        "DrawLineAngle",
+        "DrawLineHorizontal",
+        "DrawLineVertical",
+        "DrawLineParallelThrough",
+        "DrawLineParallel",
+        "DrawLineBisector",
+        "DrawLineTangent1",
+        "DrawLineTangent2",
+        "DrawLineOrthTan",
+        "DrawLineOrthogonal",
+        "DrawLineRelAngle",
+        "DrawLineRel",
+        "DrawLineRelX",
+        "DrawLineRelY",
+        "DrawLineAngleRel",
+        "DrawLineOrthogonalRel",
+        "DrawLineFromPointToLine",
+        "DrawSliceDivideLine",
+        "DrawSliceDivideCircle",
+        "DrawCross",
+        "DrawLineMiddle",
+        "DrawLineRadiant"
+    };
 
-    fillActionsList(pointActions, {
-                        "DrawPoint",
-                        "DrawLinePoints",
-                        "DrawPointsMiddle",
-                        "DrawPointLattice",
-                        "SelectPoints",
-                        "PasteToPoints"
-                    }, map);
+    pointActions = {
+        "DrawPoint",
+        "DrawLinePoints",
+        "DrawPointsMiddle",
+        "DrawPointLattice",
+        "SelectPoints",
+        "PasteToPoints"};
 
-    fillActionsList(circleActions, {
-                        "DrawCircle",
-                        "DrawCircle2P",
-                        "DrawCircle2PR",
-                        "DrawCircle3P",
-                        "DrawCircleCR",
-                        "DrawCircleTan2_1P",
-                        "DrawCircleTan1_2P",
-                        "DrawCircleTan2",
-                        "DrawCircleTan3",
-                        "DrawCircleInscribe",
-                        "DrawCircleParallel",
-                        "DrawCircleByArc"
-                    }, map);
+    circleActions = {
+        "DrawCircle",
+        "DrawCircle2P",
+        "DrawCircle2PR",
+        "DrawCircle3P",
+        "DrawCircleCR",
+        "DrawCircleTan2_1P",
+        "DrawCircleTan1_2P",
+        "DrawCircleTan2",
+        "DrawCircleTan3",
+        "DrawCircleInscribe",
+        "DrawCircleParallel",
+        "DrawCircleByArc"
+    };
 
-    fillActionsList(curveActions, {
-                        "DrawArc",
-                        "DrawArcChord",
-                        "DrawArcAngleLen",
-                        "DrawArc3P",
-                        "DrawArc2PAngle",
-                        "DrawArc2PRadius",
-                        "DrawArc2PLength",
-                        "DrawArc2PHeight",
-                        "DrawArcTangential",
-                        "DrawEllipseArcAxis",
-                        "DrawEllipseArc1Point"
-                    }, map);
+    curveActions = {
+        "DrawArc",
+        "DrawArcChord",
+        "DrawArcAngleLen",
+        "DrawArc3P",
+        "DrawArc2PAngle",
+        "DrawArc2PRadius",
+        "DrawArc2PLength",
+        "DrawArc2PHeight",
+        "DrawArcTangential",
+        "DrawEllipseArcAxis",
+        "DrawEllipseArc1Point"
+    };
 
-    fillActionsList(splineActions, {
-                        "DrawSpline",
-                        "DrawSplinePoints",
-                        "DrawSplineFromPolyline",
-                        "DrawSplinePointsAppend",
-                        "DrawSplinePointsAdd",
-                        "DrawSplinePointsRemove",
-                        "DrawSplinePointsDelTwo",
-                        "DrawSplineExplode",
-                        "DrawLineFree",
-                        "DrawParabola4Points",
-                        "DrawParabolaFD",
-                        "DrawHyperbolaFP",
-                    }, map);
+    splineActions = {
+        "DrawSpline",
+        "DrawSplinePoints",
+        "DrawSplineFromPolyline",
+        "DrawSplinePointsAppend",
+        "DrawSplinePointsAdd",
+        "DrawSplinePointsRemove",
+        "DrawSplinePointsDelTwo",
+        "DrawSplineExplode",
+        "DrawLineFree",
+        "DrawParabola4Points",
+        "DrawParabolaFD",
+        "DrawHyperbolaFP"
+    };
 
-    fillActionsList(ellipseActions, {
-                        "DrawEllipse1Point",
-                        "DrawEllipseAxis",
-                        "DrawEllipseFociPoint",
-                        "DrawEllipse4Points",
-                        "DrawEllipseCenter3Points",
-                        "DrawEllipseInscribe"
-                    }, map);
+    ellipseActions = {
+        "DrawEllipse1Point",
+        "DrawEllipseAxis",
+        "DrawEllipseFociPoint",
+        "DrawEllipse4Points",
+        "DrawEllipseCenter3Points",
+        "DrawEllipseInscribe"
+    };
 
-    fillActionsList(polylineActions, {
-                        "DrawPolyline",
-                        "PolylineAdd",
-                        "PolylineAppend",
-                        "PolylineDel",
-                        "PolylineDelBetween",
-                        "PolylineTrim",
-                        "PolylineEquidistant",
-                        "PolylineSegment",
-                        "PolylineArcToLines",
-                        "PolylineSegmentType"
-                    }, map);
+    polylineActions = {
+        "DrawPolyline",
+        "PolylineAdd",
+        "PolylineAppend",
+        "PolylineDel",
+        "PolylineDelBetween",
+        "PolylineTrim",
+        "PolylineEquidistant",
+        "PolylineSegment",
+        "PolylineArcToLines",
+        "PolylineSegmentType"
+    };
 
-    fillActionsList(selectActions, {
-                        "DeselectAll",
-                        "SelectAll",
-                        "SelectSingle",
-                        "SelectContour",
-                        "SelectWindow",
-                        "DeselectWindow",
-                        "SelectIntersected",
-                        "DeselectIntersected",
-                        "SelectLayer",
-                        "SelectPoints",
-                        "SelectInvert",
-                        "SelectQuick"
-                    }, map);
+    textActions = {
+        "DrawText", "DrawMText", "ModifyExplodeText"
+    };
 
-    fillActionsList(dimension_Actions, {
-                        "DimAligned",
-                        "DimLinear",
-                        "DimLinearHor",
-                        "DimLinearVer",
-                        "DimBaseline",
-                        "DimContinue",
-                        "DimRadial",
-                        "DimDiametric",
-                        "DimAngular",
-                        "DimArc",
-                        "DimLeader",
-                        "DimOrdinate",
-                        "DimOrdinateForBase",
-                        "DimOrdinateReBase",
-        // fixme - sand - restore as GDT will be supported
-                        // "GTDFeatureFrame",
-                        // "DimModify",
-                        "DimPickApply",
-                        "DimRegenerate",
-                        "DimStyles"
-                    }, map);
+    selectActions = {
+        "DeselectAll",
+        "SelectAll",
+        "SelectSingle",
+        "SelectContour",
+        "SelectWindow",
+        "DeselectWindow",
+        "SelectIntersected",
+        "DeselectIntersected",
+        "SelectLayer",
+        "SelectPoints",
+        "SelectInvert",
+        "SelectQuick"
+    };
 
-    fillActionsList(otherDrawingActions, {
-                        "DrawText",
-                        "DrawMText",
-                        "DrawHatch",
-                        "DrawImage",
-                        "DrawBoundingBox"
-                    }, map);
+    dimensionActions = {
+        "DimAligned",
+        "DimLinear",
+        "DimLinearHor",
+        "DimLinearVer",
+        "DimBaseline",
+        "DimContinue",
+        "DimRadial",
+        "DimDiametric",
+        "DimAngular",
+        "DimArc",
+        "DimLeader",
+        "DimOrdinate",
+        "DimOrdinateForBase",
+        "DimOrdinateReBase",
+        "DimPickApply",
+        "DimRegenerate",
+        "DimStyles"
+    };
 
-    fillActionsList(modifyActions, {
-                        "ModifyMove",
-                        "ModifyDuplicate",
-                        "ModifyAlign",
-                        "ModifyAlignOne",
-                        "ModifyAlignRef",
-                        "ModifyRotate",
-                        "ModifyScale",
-                        "ModifyMirror",
-                        "ModifyMoveRotate",
-                        "ModifyRotate2",
-                        "ModifyRevertDirection",
-                        "ModifyTrim",
-                        "ModifyTrim2",
-                        "ModifyTrimAmount",
-                        "ModifyLineJoin",
-                        "ModifyCut",
-                        "ModifyBreakDivide",
-                        "ModifyLineGap",
-                        "ModifyOffset",
-                        "ModifyBevel",
-                        "ModifyRound",
-                        "ModifyStretch",
-                        "ModifyEntity",
-                        "ModifyAttributes",
-                        "ModifyExplodeText",
-                        "BlocksExplode",
-                        "ModifyDelete"
-                    }, map);
+    otherDrawingActions = {
+        "DrawHatch",
+        "DrawImage",
+        "DrawBoundingBox"
+    };
 
-    fillActionsList(orderActions, {
-                        "OrderTop",
-                        "OrderBottom",
-                        "OrderRaise",
-                        "OrderLower"
-                    }, map);
+    modifyActions = {
+        "ModifyMove",
+        "ModifyDuplicate",
+        "ModifyAlign",
+        "ModifyAlignOne",
+        "ModifyAlignRef",
+        "ModifyRotate",
+        "ModifyScale",
+        "ModifyMirror",
+        "ModifyMoveRotate",
+        "ModifyRotate2",
+        "ModifyRevertDirection",
+        "ModifyTrim",
+        "ModifyTrim2",
+        "ModifyTrimAmount",
+        "ModifyLineJoin",
+        "ModifyCut",
+        "ModifyBreakDivide",
+        "ModifyLineGap",
+        "ModifyOffset",
+        "ModifyBevel",
+        "ModifyRound",
+        "ModifyStretch",
+        "ModifyEntity",
+        "ModifyAttributes",
+        "ModifyExplodeText",
+        "BlocksExplode",
+        "ModifyDelete"
+    };
 
-    fillActionsList(infoActions, {
-                        "InfoPoint",
-                        "InfoDist",
-                        "InfoDist2",
-                        "InfoDist3",
-                        "InfoAngle",
-                        "InfoAngle3Points",
-                        "InfoTotalLength",
-                        "InfoArea",
-                        "EntityInfo"
-                    }, map);
+    orderActions = {
+        "OrderTop",
+        "OrderBottom",
+        "OrderRaise",
+        "OrderLower"};
 
-    fillActionsList(layerActions, {
-                        "LayersDefreezeAll",
-                        "LayersFreezeAll",
-                        "LayersUnlockAll",
-                        "LayersLockAll",
-                        "LayersAdd",
-                        "LayersRemove",
-                        "LayersEdit",
-                        "LayersToggleLock",
-                        "LayersToggleView",
-                        "LayersTogglePrint",
-                        "LayersToggleConstruction",
-                        "LayersExportSelected",
-                        "LayersExportVisible"
-                    }, map);
+    infoActions = {
+        "InfoPoint",
+        "InfoDist",
+        "InfoDist2",
+        "InfoDist3",
+        "InfoAngle",
+        "InfoAngle3Points",
+        "InfoTotalLength",
+        "InfoArea",
+        "EntityInfo"
+    };
 
-    fillActionsList(blockActions, {
-                        "BlocksDefreezeAll",
-                        "BlocksFreezeAll",
-                        "BlocksToggleView",
-                        "BlocksAdd",
-                        "BlocksRemove",
-                        "BlocksAttributes",
-                        "BlocksInsert",
-                        "BlocksEdit",
-                        "BlocksSave",
-                        "BlocksCreate",
-                        "BlocksExplode"
-                    }, map);
+    layerActions = {
+        "LayersDefreezeAll",
+        "LayersFreezeAll",
+        "LayersUnlockAll",
+        "LayersLockAll",
+        "LayersAdd",
+        "LayersRemove",
+        "LayersEdit",
+        "LayersToggleLock",
+        "LayersToggleView",
+        "LayersTogglePrint",
+        "LayersToggleConstruction",
+        "LayersExportSelected",
+        "LayersExportVisible"
+    };
 
-    fillActionsList(penActions, {
-                        "PenSyncFromLayer",
-                        "PenPick",
-                        "PenPickResolved",
-                        "PenApply",
-                        "PenCopy"
-                    }, map);
+    blockActions = {
+        "BlocksDefreezeAll",
+        "BlocksFreezeAll",
+        "BlocksToggleView",
+        "BlocksAdd",
+        "BlocksRemove",
+        "BlocksAttributes",
+        "BlocksInsert",
+        "BlocksEdit",
+        "BlocksSave",
+        "BlocksCreate",
+        "BlocksExplode"
+    };
 
-    fillActionsList(entityLayerActions,{
-                        "EntityLayerActivate",
-                        "EntityLayerView",
-                        "EntityLayerHideOthers",
-                        "EntityLayerLock",
-                        "EntityLayerConstruction",
-                        "EntityLayerPrint"
-                    }, map);
+    penActions = {
+        "PenSyncFromLayer",
+        "PenPick",
+        "PenPickResolved",
+        "PenApply",
+        "PenCopy"};
+
+    entityLayerActions = {
+        "EntityLayerView",
+        "EntityLayerHideOthers",
+        "EntityLayerLock",
+        "EntityLayerConstruction",
+        "EntityLayerPrint",
+        "LayersDefreezeAll"
+    };
 }
 
 void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& actionsList, const QMap<QString, QAction *> &map) const {
-    fillActionsList(actionsList, {
+    fillActionsList(actionsList, QList<QString>{
         "EditCut",
         "EditCutQuick",
         "EditCopy",
@@ -1460,22 +1460,22 @@ void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& ac
         "UCSSetByDimOrdinate",
     }, map);
 
-    actionsList.append(lineActions);
-    actionsList.append(pointActions);
-    actionsList.append(shapeActions);
-    actionsList.append(circleActions);
-    actionsList.append(curveActions);
-    actionsList.append(splineActions);
-    actionsList.append(ellipseActions);
-    actionsList.append(polylineActions);
-    actionsList.append(selectActions);
-    actionsList.append(dimension_Actions);
-    actionsList.append(otherDrawingActions);
-    actionsList.append(modifyActions);
-    actionsList.append(orderActions);
-    actionsList.append(infoActions);
-    actionsList.append(blockActions);
-    actionsList.append(penActions);
-    actionsList.append(layerActions);
-    actionsList.append(entityLayerActions);
+    fillActionsList(actionsList,lineActions, map);
+    fillActionsList(actionsList,pointActions, map);
+    fillActionsList(actionsList,shapeActions, map);
+    fillActionsList(actionsList,circleActions, map);
+    fillActionsList(actionsList,curveActions, map);
+    fillActionsList(actionsList,splineActions, map);
+    fillActionsList(actionsList,ellipseActions, map);
+    fillActionsList(actionsList,polylineActions, map);
+    fillActionsList(actionsList,selectActions, map);
+    fillActionsList(actionsList,dimensionActions, map);
+    fillActionsList(actionsList,otherDrawingActions, map);
+    fillActionsList(actionsList,modifyActions, map);
+    fillActionsList(actionsList,orderActions, map);
+    fillActionsList(actionsList,infoActions, map);
+    fillActionsList(actionsList,blockActions, map);
+    fillActionsList(actionsList,penActions, map);
+    fillActionsList(actionsList,layerActions, map);
+    fillActionsList(actionsList,entityLayerActions, map);
 }

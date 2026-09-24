@@ -22,6 +22,743 @@
 
 #include "lc_default_context_menus_builder.h"
 
+#include "lc_action_factory.h"
+#include "lc_action_group_manager.h"
+#include "lc_default_navigation_layout_builder.h"
+namespace {
+    QList<ActionNode> toNodes(const QList<QString>& names) {
+        QList<ActionNode> nodes;
+        nodes.reserve(names.size());
+        for (const auto& name : names) {
+            nodes.append(ActionNode(name));
+        }
+        return nodes;
+    }
+}
+
+ActionNode LC_DefaultContextMenusBuilder::makeSubMenu(const QString& title, const QString& groupNameForIcon,
+                                                      const QList<ActionNode>& children, const LC_ActionGroupManager* agm) {
+    const QString icon = (agm != nullptr) ? agm->iconPath(groupNameForIcon) : QString();
+    return ActionNode(title, icon, children);
+}
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonEntityHeader() {
+    return {
+        ActionNode("SpecialMenu:RecentActions"),
+        ActionNode("EditKillAllActions"),
+        ActionNode("Menu:Edit", ":/icons/rename_active_block.lci", commonEditActions())
+    };
+}
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonGeometryTail(const LC_ActionGroupManager* agm) {
+    return {
+        makeSubMenu(tr("Modify Generic"), "modify", commonModifyActions(), agm),
+        makeSubMenu(tr("Align"), "align", commonAlignActions(), agm),
+        makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
+        makeSubMenu(tr("Layers"), "layer", commonLayerActions(), agm),
+        makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
+        ActionNode("EntityInfo")
+    };
+}
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonDimensionTail(const LC_ActionGroupManager* agm) {
+    return {
+        makeSubMenu(tr("Align"), "align", commonAlignActions(), agm),
+        makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
+        makeSubMenu(tr("Layers"), "layer", commonLayerActions(), agm),
+        makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
+        ActionNode("EntityInfo")
+    };
+}
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonExtendedFooter() {
+    return {
+        ActionNode("-"),
+        ActionNode("Menu:View", ":/icons/zoom_in.lci", commonViewActions()),
+        ActionNode("Menu:File", ":/icons/save.lci", commonFileActions()),
+        ActionNode("SpecialMenu:WorkspacesRescue"),
+        ActionNode("Menu:Options", ":/icons/settings.lci", commonOptionActions())
+    };
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::assembleGeometryMenu(const QString& title, const LC_MenuActivator& activator,
+                                                                   const QList<ActionNode>& specificNodes,
+                                                                   const LC_ActionGroupManager* agm) {
+    QList<ActionNode> nodes = commonEntityHeader();
+    nodes.append(specificNodes);
+    nodes.append(commonGeometryTail(agm));
+    return ContextMenuDef(title, activator, nodes, true);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::assembleDimensionMenu(const QString& title, const LC_MenuActivator& activator,
+                                                                    const QList<ActionNode>& specificNodes,
+                                                                    const LC_ActionGroupManager* agm) {
+    QList<ActionNode> nodes = commonEntityHeader();
+    nodes.append(specificNodes);
+    nodes.append(commonDimensionTail(agm));
+    return ContextMenuDef(title, activator, nodes, true);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::extendEntityMenu(const ContextMenuDef& compactDef) {
+    ContextMenuDef ext = compactDef;
+    ext.nodes.clear();
+
+    ext.nodes.append(ActionNode("SpecialMenu:RecentActions"));
+    ext.nodes.append(ActionNode("EditKillAllActions"));
+    ext.nodes.append(ActionNode("Menu:Select", ":/icons/select.lci", commonSelectActions()));
+    ext.nodes.append(ActionNode("Menu:Edit", ":/icons/rename_active_block.lci", commonEditActions()));
+
+    for (const auto& node : compactDef.nodes) {
+        if (node.actionName == "SpecialMenu:RecentActions" || node.actionName == "EditKillAllActions" || node.actionName == "Menu:Edit" ||
+            node.groupTitle == "Menu:Edit") {
+            continue;
+        }
+        ext.nodes.append(node);
+    }
+
+    ext.nodes.append(commonExtendedFooter());
+    return ext;
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpace(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    Q_UNUSED(af);
+    return {
+        tr("Empty Space (Right-Click)"),
+        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, false, RS2::EntityUnknown},
+        {
+            ActionNode("SpecialMenu:RecentActions"),
+            ActionNode("EditKillAllActions"),
+            makeSubMenu(tr("Select"), "select", commonSelectActions(), agm),
+            makeSubMenu(tr("Edit"), "edit", commonEditActions(), agm),
+            {
+                "Menu:Draw",
+                ":/icons/line_2p.lci",
+                {
+                    makeSubMenu(tr("Line"), "line", {
+                                    {"DrawLine"},
+                                    {"DrawLineAngle"},
+                                    {"DrawLineHorizontal"},
+                                    {"DrawLineVertical"},
+                                    {"DrawLineParallel"}
+                                }, agm),
+                    makeSubMenu(tr("Circle"), "circle", {
+                        {"DrawCircle"},
+                        {"DrawCircle2P"},
+{"DrawCircleCR"},
+{"DrawCircle3P"}
+                    }, agm),
+                    makeSubMenu(tr("Arc"), "curve", {{"DrawArc"}, {"DrawArc3P"}, {"DrawArcTangential"}}, agm),
+                    makeSubMenu(tr("Polyline"), "polyline", {{"DrawPolyline"}, {"PolylineAdd"}, {"PolylineAppend"}, {"PolylineTrim"}}, agm),
+                    makeSubMenu(tr("Spline"), "spline", {{"DrawSpline"}, {"DrawSplinePoints"}}, agm),
+                    makeSubMenu(tr("Polygon"), "shape", {{"DrawLineRectangle"}, {"DrawLinePolygonCenCor"}}, agm),
+                    makeSubMenu(tr("Other"), "other", {{"DrawText"}, {"DrawMText"}, {"DrawHatch"}, {"DrawImage"}}, agm)
+                }
+            },
+            makeSubMenu(tr("Modify"), "modify", commonModifyActions(), agm),
+            makeSubMenu(tr("Align"), "align", commonAlignActions(), agm),
+            makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
+            makeSubMenu(tr("Layers"), "layer", {{"LayersDefreezeAll"}}, agm),
+            makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
+            ActionNode("-"),
+            makeSubMenu(tr("View"), "view", commonViewActions(), agm),
+            makeSubMenu(tr("File"), "file", commonFileActions(), agm),
+            ActionNode("SpecialMenu:WorkspacesRescue"),
+            makeSubMenu(tr("Options"), "options", commonOptionActions(), agm)
+        }
+    };
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpaceExtended(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    QList<ActionNode> lineNodes =  toNodes(af->lineActions);
+    QList<ActionNode> polyNodes = toNodes(af->polylineActions);
+    QList<ActionNode> pointNodes = toNodes(af->pointActions);
+    QList<ActionNode> circleNodes =  toNodes(af->circleActions);
+    QList<ActionNode> curveNodes =  toNodes(af->curveActions);
+    QList<ActionNode> shapeNodes = toNodes(af->shapeActions);
+    QList<ActionNode> splineNodes = toNodes(af->splineActions);
+    QList<ActionNode> ellipseNodes = toNodes(af->ellipseActions);
+    QList<ActionNode> otherNodes = toNodes(af->otherDrawingActions);
+    QList<ActionNode> modifyNodes = toNodes(af->modifyActions);
+    QList<ActionNode> dimNodes = toNodes(af->dimensionActions);
+
+    return {
+        tr("Empty Space (Right-Click)"),
+        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, false, RS2::EntityUnknown},
+        {
+            ActionNode("SpecialMenu:RecentActions"),
+            ActionNode("EditKillAllActions"),
+            makeSubMenu(tr("Select"), "select", commonSelectActions(), agm),
+            makeSubMenu(tr("Edit"), "edit", commonEditActions(), agm),
+            {
+                "Menu:Draw",
+                ":/icons/line_2p.lci",
+                {
+                    makeSubMenu(tr("Line"), "line", lineNodes, agm),
+                    makeSubMenu(tr("Polyline"), "polyline", polyNodes, agm),
+                    makeSubMenu(tr("Point"), "point", pointNodes, agm),
+                    makeSubMenu(tr("Circle"), "circle", circleNodes, agm),
+                    makeSubMenu(tr("Arc"), "curve", curveNodes, agm),
+                    makeSubMenu(tr("Polygon"), "shape", shapeNodes, agm),
+                    makeSubMenu(tr("Spline"), "spline", splineNodes, agm),
+                    makeSubMenu(tr("Ellipse"), "ellipse", ellipseNodes, agm),
+                    makeSubMenu(tr("Other"), "other", otherNodes, agm)
+                }
+            },
+            makeSubMenu(tr("Modify"), "modify", modifyNodes, agm),
+            makeSubMenu(tr("Dimensions"), "dimension", dimNodes, agm),
+            makeSubMenu(tr("Align"), "align", commonAlignActions(), agm),
+            makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
+            makeSubMenu(tr("Layers"), "layer", {{"LayersDefreezeAll"}}, agm),
+            makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
+            ActionNode("-"),
+            makeSubMenu(tr("View"), "view", commonViewActions(), agm),
+            makeSubMenu(tr("File"), "file", commonFileActions(), agm),
+            ActionNode("SpecialMenu:WorkspacesRescue"),
+            makeSubMenu(tr("Options"), "options", commonOptionActions(), agm)
+        }
+    };
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuAnyEntity(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Any Entity Fallback (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityUnknown}, {}, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuArc(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Arc (Right-Click)"), {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityArc}, {
+                                    makeSubMenu(tr("Modify Arc"), "modify", {
+                                                    {"DrawSliceDivideCircle"},
+                                                    {"ModifyBreakDivide"},
+                                                    {"ModifyCut"},
+                                                    {"ModifyTrimAmount"},
+                                                    {"ModifyTrim"},
+                                                    {"ModifyTrim2"},
+                                                    {"ModifyOffset"},
+                                                    {"ModifyRevertDirection"},
+                                                    {"-"},
+                                                    {"ModifyRound"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Circle"), "circle", {
+                                                    {"DrawCircleByArc"},
+                                                    {"DrawCircleTan1_2P"},
+                                                    {"DrawCircleTan2"},
+                                                    {"DrawCircleTan2_1P"},
+                                                    {"DrawCircleTan3"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Line"), "line", {
+                                                    {"DrawLineOrthTan"},
+                                                    {"DrawLineTangent1"},
+                                                    {"DrawLineTangent2"},
+                                                    {"DrawLineOrthogonal"},
+                                                    {"DrawLineRelAngle"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {
+                                                    {"DrawArcTangential"},
+                                                    {"DrawCross"},
+                                                    {"DrawCircleParallel"},
+                                                    {"DrawLineParallelThrough"},
+                                                    {"DrawBoundingBox"},
+                                                    {"PolylineSegment"}
+                                                }, agm),
+                                    makeSubMenu(tr("Dimensions"), "dimension", {
+                                                    {"DimRadial"},
+                                                    {"DimDiametric"},
+                                                    {"DimArc"},
+                                                    {"DimLeader"},
+                                                    {"DimOrdinate"},
+                                                    {"-"},
+                                                    {"DimStyles"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuPolyline(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Polyline (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPolyline}, {
+                                    makeSubMenu(tr("Modify Polyline"), "modify", {
+                                                    {"PolylineAdd"},
+                                                    {"PolylineAppend"},
+                                                    {"PolylineDel"},
+                                                    {"PolylineDelBetween"},
+                                                    {"PolylineTrim"},
+                                                    {"PolylineSegmentType"},
+                                                    {"PolylineArcToLines"},
+                                                    {"PolylineSegment"},
+                                                    {"PolylineEquidistant"},
+                                                    {"BlocksExplode"},
+                                                    {"ModifyRevertDirection"},
+                                                    {"ModifyOffset"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Line"), "line", {
+                                                    {"DrawLineBisector"},
+                                                    {"DrawLineOrthTan"},
+                                                    {"DrawLineTangent1"},
+                                                    {"DrawLineTangent2"},
+                                                    {"DrawLineOrthogonal"},
+                                                    {"DrawLineRelAngle"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {
+                                                    {"PolylineEquidistant"},
+                                                    {"DrawLineParallelThrough"},
+                                                    {"DrawSplineFromPolyline"},
+                                                    {"DrawBoundingBox"}
+                                                }, agm),
+                                    makeSubMenu(tr("Dimensions"), "dimension", {
+                                                    {"DimAligned"},
+                                                    {"DimLinear"},
+                                                    {"DimLinearHor"},
+                                                    {"DimLinearVer"},
+                                                    {"DimAngular"},
+                                                    {"DimLeader"},
+                                                    {"DimOrdinate"},
+                                                    {"-"},
+                                                    {"DimStyles"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuSpline(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Spline (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySpline}, {
+                                    makeSubMenu(tr("Modify Spline"), "modify", {
+                                                    {"DrawSplinePointsAdd"},
+                                                    {"DrawSplinePointsAppend"},
+                                                    {"DrawSplinePointsRemove"},
+                                                    {"DrawSplineExplode"},
+                                                    {"DrawSplinePointsDelTwo"},
+                                                    {"BlocksExplode"},
+                                                    {"ModifyRevertDirection"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuSplinePoints(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Spline by Points (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySplinePoints}, {
+                                    makeSubMenu(tr("Modify Spline Points"), "modify", {
+                                                    {"DrawSplinePointsAdd"},
+                                                    {"DrawSplinePointsAppend"},
+                                                    {"DrawSplinePointsRemove"},
+                                                    {"DrawSplineExplode"},
+                                                    {"DrawSplinePointsDelTwo"},
+                                                    {"ModifyCut"},
+                                                    {"ModifyRevertDirection"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {{"DrawLineTangent1"}, {"DrawBoundingBox"}}, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuEllipse(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Ellipse (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityEllipse}, {
+                                    ActionNode("ModifyCut"),
+                                    ActionNode("ModifyRound"),
+                                    makeSubMenu(tr("Draw Line"), "line", {
+                                                    {"DrawLineOrthTan"},
+                                                    {"DrawLineOrthogonal"},
+                                                    {"DrawLineTangent1"},
+                                                    {"DrawLineTangent2"},
+                                                    {"DrawLineRelAngle"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {
+                                                    {"DrawCross"},
+                                                    {"DrawBoundingBox"},
+                                                    {"DrawArcTangential"},
+                                                    {"ModifyRevertDirection"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuPoint(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Point (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPoint}, {
+                                    ActionNode("SelectPoints"),
+                                    ActionNode("PasteToPoints"),
+                                    ActionNode("DrawPointsMiddle"),
+                                    ActionNode("DrawLinePoints"),
+                                    ActionNode("DrawPointLattice")
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuParabola(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Parabola (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityParabola}, {
+                                    ActionNode("DrawLineOrthTan"),
+                                    ActionNode("DrawLineTangent1"),
+                                    ActionNode("DrawLineTangent2"),
+                                    ActionNode("ModifyCut"),
+                                    ActionNode("DrawBoundingBox")
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuText(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Text (Right-Click)"), {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityText},
+                                {ActionNode("ModifyExplodeText"), ActionNode("BlocksExplode"), ActionNode("DrawBoundingBox")}, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuMText(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("MText (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityMText}, {
+                                    ActionNode("ModifyExplodeText"),
+                                    ActionNode("BlocksExplode"),
+                                    ActionNode("DrawBoundingBox")
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuInsert(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Block Insert (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityInsert}, {
+                                    ActionNode(LC_ActionNames::ActionEditBlock),
+                                    ActionNode("EntityInfo"),
+                                    ActionNode("BlocksExplode")
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuImage(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Image (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityImage}, {}, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuHatch(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Hatch (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityHatch}, {}, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAligned(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Aligned (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimAligned}, {
+                                     {"DimPickApply"},
+                                     {"DimBaseline"},
+                                     {"DimContinue"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimRadial(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Radial (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimRadial}, {
+                                     {"DimPickApply"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimDiametric(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Diametric (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimDiametric}, {
+                                     {"DimPickApply"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimArc(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Arc (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimArc}, {
+                                     {"DimPickApply"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimOrdinate(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Ordinate (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimOrdinate}, {
+                                     {"DimPickApply"},
+                                     {"DimOrdinateForBase"},
+                                     {"DimOrdinateReBase"},
+                                     {"UCSSetByDimOrdinate"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLeader(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Leader (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLeader}, {
+                                     {"DimPickApply"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuAutoZoom() {
+    return {
+        tr("AutoZoom (Middle Double-Click)"),
+        {LC_MenuActivator::MIDDLE, LC_MenuActivator::DBL_CLICK, false, RS2::EntityUnknown},
+        {ActionNode("ZoomAuto")}
+    };
+}
+
+bool LC_DefaultContextMenusBuilder::isBuiltInContextMenu(const ContextMenuDef& menuDef) {
+    return menuDef.isBuiltIn;
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuLine(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Line (Right-Click)"), {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityLine},
+                                {
+                                    makeSubMenu(tr("Modify Line"), "modify", {
+                                                    {"DrawSliceDivideLine"},
+                                                    {"ModifyCut"},
+                                                    {"ModifyBreakDivide"},
+                                                    {"ModifyTrimAmount"},
+                                                    {"ModifyLineJoin"},
+                                                    {"ModifyTrim"},
+                                                    {"ModifyTrim2"},
+                                                    {"ModifyLineGap"},
+                                                    {"ModifyOffset"},
+                                                    {"ModifyRevertDirection"},
+                                                    {"-"},
+                                                    {"ModifyRound"},
+                                                    {"ModifyBevel"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Line"), "line", {
+                                                    {"DrawLineParallelThrough"},
+                                                    {"DrawLineOrthogonalRel"},
+                                                    {"DrawLineOrthogonal"},
+                                                    {"DrawLineParallel"},
+                                                    {"DrawLineRel"},
+                                                    {"DrawLineRelAngle"},
+                                                    {"DrawLineAngleRel"},
+                                                    {"DrawLineOrthTan"},
+                                                    {"DrawLineBisector"},
+                                                    {"DrawLineFree"},
+                                                    {"DrawLineMiddle"},
+                                                    {"DrawLineFromPointToLine"},
+                                                    {"DrawLineRadiant"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Circle"), "circle", {
+                                                    {"DrawCircleTan1_2P"},
+                                                    {"DrawCircleTan2"},
+                                                    {"DrawCircleTan2_1P"},
+                                                    {"DrawCircleTan3"},
+                                                    {"DrawCircleInscribe"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {
+                                                    {"DrawArcTangential"},
+                                                    {"DrawEllipseInscribe"},
+                                                    {"DrawBoundingBox"},
+                                                    {"PolylineSegment"}
+                                                }, agm),
+                                    makeSubMenu(tr("Dimensions"), "dimension", {
+                                                    {"DimAligned"},
+                                                    {"DimLinear"},
+                                                    {"DimLinearHor"},
+                                                    {"DimLinearVer"},
+                                                    {"DimAngular"},
+                                                    {"DimLeader"},
+                                                    {"DimOrdinate"},
+                                                    {"-"},
+                                                    {"DimStyles"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuCircle(const LC_ActionGroupManager* agm) {
+    return assembleGeometryMenu(tr("Circle (Right-Click)"),
+                                {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityCircle}, {
+                                    makeSubMenu(tr("Modify Circle"), "modify", {
+                                                    {"DrawSliceDivideCircle"},
+                                                    {"ModifyBreakDivide"},
+                                                    {"ModifyCut"},
+                                                    {"ModifyTrim"},
+                                                    {"ModifyTrim2"},
+                                                    {"ModifyOffset"},
+                                                    {"-"},
+                                                    {"ModifyRound"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Circle"), "circle", {
+                                                    {"DrawCircleTan1_2P"},
+                                                    {"DrawCircleTan2"},
+                                                    {"DrawCircleTan2_1P"},
+                                                    {"DrawCircleTan3"},
+                                                    {"DrawCircleParallel"},
+                                                    {"DrawLineParallelThrough"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Line"), "line", {
+                                                    {"DrawLineOrthTan"},
+                                                    {"DrawLineTangent1"},
+                                                    {"DrawLineTangent2"},
+                                                    {"DrawLineRelAngle"},
+                                                    {"DrawLineOrthogonal"}
+                                                }, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {{"DrawCross"}, {"DrawBoundingBox"}}, agm),
+                                    makeSubMenu(tr("Dimensions"), "dimension", {
+                                                    {"DimRadial"},
+                                                    {"DimDiametric"},
+                                                    {"DimLeader"},
+                                                    {"DimOrdinate"},
+                                                    {"-"},
+                                                    {"DimStyles"}
+                                                }, agm)
+                                }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLinear(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Linear (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLinear}, {
+                                     {"DimPickApply"},
+                                     {"DimBaseline"},
+                                     {"DimContinue"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAngular(const LC_ActionGroupManager* agm) {
+    return assembleDimensionMenu(tr("Dimension Angular (Right-Click)"),
+                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimAngular}, {
+                                     {"DimPickApply"},
+                                     {"DimBaseline"},
+                                     {"DimContinue"},
+                                     {"DimRegenerate"},
+                                     {"-"},
+                                     {"DimStyles"},
+                                     {"-"},
+                                     {"EntityInfo"}
+                                 }, agm);
+}
+
+ContextMenusConfig LC_DefaultContextMenusBuilder::createDefaultConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    ContextMenusConfig config;
+    config.name = tr("Default - Compact");
+    config.menus = {
+        menuEmptySpace(af, agm),
+        menuAnyEntity(agm),
+        menuLine(agm),
+        menuCircle(agm),
+        menuArc(agm),
+        menuPolyline(agm),
+        menuSpline(agm),
+        menuSplinePoints(agm),
+        menuEllipse(agm),
+        menuPoint(agm),
+        menuParabola(agm),
+        menuText(agm),
+        menuMText(agm),
+        menuInsert(agm),
+        menuImage(agm),
+        menuHatch(agm),
+        menuDimLinear(agm),
+        menuDimAligned(agm),
+        menuDimRadial(agm),
+        menuDimDiametric(agm),
+        menuDimArc(agm),
+        menuDimOrdinate(agm),
+        menuDimLeader(agm),
+        menuDimAngular(agm),
+        menuAutoZoom()
+    };
+    for (auto& m : config.menus) {
+        if (m.name != tr("AutoZoom (Middle Double-Click)")) {
+            m.isBuiltIn = true;
+        }
+    }
+    return config;
+}
+
+ContextMenusConfig LC_DefaultContextMenusBuilder::createExtendedConfig(const LC_ActionFactory* af, const LC_ActionGroupManager* agm) {
+    ContextMenusConfig config;
+    config.name = tr("Default - Extended");
+    config.menus = {
+        menuEmptySpaceExtended(af, agm),
+        extendEntityMenu(menuAnyEntity(agm)),
+        extendEntityMenu(menuLine(agm)),
+        extendEntityMenu(menuCircle(agm)),
+        extendEntityMenu(menuArc(agm)),
+        extendEntityMenu(menuPolyline(agm)),
+        extendEntityMenu(menuSpline(agm)),
+        extendEntityMenu(menuSplinePoints(agm)),
+        extendEntityMenu(menuEllipse(agm)),
+        extendEntityMenu(menuPoint(agm)),
+        extendEntityMenu(menuParabola(agm)),
+        extendEntityMenu(menuText(agm)),
+        extendEntityMenu(menuMText(agm)),
+        extendEntityMenu(menuInsert(agm)),
+        extendEntityMenu(menuImage(agm)),
+        extendEntityMenu(menuHatch(agm)),
+        extendEntityMenu(menuDimLinear(agm)),
+        extendEntityMenu(menuDimAligned(agm)),
+        extendEntityMenu(menuDimRadial(agm)),
+        extendEntityMenu(menuDimDiametric(agm)),
+        extendEntityMenu(menuDimArc(agm)),
+        extendEntityMenu(menuDimOrdinate(agm)),
+        extendEntityMenu(menuDimLeader(agm)),
+        extendEntityMenu(menuDimAngular(agm)),
+        menuAutoZoom()
+    };
+    for (auto& m : config.menus) {
+        if (m.name != tr("AutoZoom (Middle Double-Click)")) {
+            m.isBuiltIn = true;
+        }
+    }
+    return config;
+}
+
+// ------
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonEditActions() {
+    return {
+        {"EditUndo"},
+        {"EditRedo"},
+        {"-"},
+        {"EditCopy"},
+        {"EditCopyQuick"},
+        {"-"},
+        {"EditPaste"},
+        {"EditPasteTransform"},
+        {"PasteToPoints"},
+        {"-"},
+        {"EditCut"},
+        {"EditCutQuick"},
+        {"-"},
+        {"PenPick"},
+        {"PenPickResolved"},
+        {"PenApply"},
+        {"PenCopy"}
+    };
+}
+
+QList<ActionNode> LC_DefaultContextMenusBuilder::commonSelectActions() {
+    return {
+        {"SelectSingle"},
+        {"SelectContour"},
+        {"SelectIntersected"},
+        {"DeselectIntersected"},
+        {"SelectLayer"},
+        {"SelectPoints"},
+        {"SelectWindow"},
+        {"DeselectWindow"},
+        {"SelectAll"},
+        {"DeselectAll"},
+        {"SelectInvert"},
+        {"SelectQuick"},
+        {"SelectionModeToggle"}
+    };
+}
+
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonModifyActions() {
     return {
         {"ModifyMove"},
@@ -39,21 +776,11 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonModifyActions() {
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonAlignActions() {
-    return {
-        {"ModifyAlign"},
-        {"ModifyAlignOne"},
-        {"ModifyAlignRef"}
-    };
+    return {{"ModifyAlign"}, {"ModifyAlignOne"}, {"ModifyAlignRef"}};
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonOrderActions() {
-    return {
-        {"OrderBottom"},
-        {"OrderLower"},
-        {"-"},
-        {"OrderTop"},
-        {"OrderRaise"}
-    };
+    return {{"OrderBottom"}, {"OrderLower"}, {"-"}, {"OrderTop"}, {"OrderRaise"}};
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonLayerActions() {
@@ -87,6 +814,7 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonInfoActions() {
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonViewActions() {
     return {
+        {"Fullscreen"},
         {"ViewGrid"},
         {"ViewDraft"},
         {"ViewLinesDraft"},
@@ -105,7 +833,17 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonViewActions() {
         {"ZoomWindow"},
         {"ZoomPan"},
         {"-"},
-        {"ZoomViewSave"}
+        {"ZoomViewSave"},
+        {
+            "Menu:ViewsRestore",
+            ":/icons/nview_visible.lci",
+            {{"ZoomViewRestore1"}, {"ZoomViewRestore2"}, {"ZoomViewRestore3"}, {"ZoomViewRestore4"}, {"ZoomViewRestore5"}}
+        },
+        {"-"},
+        {"UCSCreate"},
+        {"UCSSetWCS"},
+        {"UCSSetByDimOrdinate"},
+        {LC_ActionNames::MenuUCSList}
     };
 }
 
@@ -120,6 +858,9 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonFileActions() {
         {"FileSaveAs"},
         {"FileSaveAll"},
         {"-"},
+        {"Menu:Import", ":/icons/import.lci", {{"DrawImage"}, {"BlocksImport"}}},
+        {"Menu:Export", ":/icons/export.lci", {{"FileExportMakerCam"}, {"FilePrintPDF"}, {"FileExport"}}},
+        {"-"},
         {"FilePrint"},
         {"FilePrintPreview"},
         {"-"},
@@ -130,758 +871,5 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonFileActions() {
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonOptionActions() {
-    return {
-        {"OptionsDrawing"},
-        {"OptionsGeneral"},
-        {"OptionsStyling"},
-        {"OptionsCustomization"}
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpace() {
-    return {
-        tr("Empty Space (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, false, RS2::EntityUnknown},
-        {
-            {"SpecialMenu:RecentActions"},
-            {"EditKillAllActions"},
-            {
-                "Menu:Select", ":/icons/select.lci",
-                {
-                    {"SelectSingle"},
-                    {"SelectContour"},
-                    {"SelectIntersected"},
-                    {"DeselectIntersected"},
-                    {"SelectLayer"},
-                    {"SelectPoints"},
-                    {"SelectWindow"},
-                    {"DeselectWindow"},
-                    {"SelectAll"},
-                    {"DeselectAll"},
-                    {"SelectInvert"},
-                    {"SelectQuick"},
-                    {"SelectionModeToggle"}
-                }
-            },
-            {
-                "Menu:Edit", ":/icons/rename_active_block.lci",
-                {
-                    {"EditUndo"},
-                    {"EditRedo"},
-                    {"-"},
-                    {"EditCopy"},
-                    {"EditCopyQuick"},
-                    {"-"},
-                    {"EditPaste"},
-                    {"EditPasteTransform"},
-                    {"PasteToPoints"},
-                    {"-"},
-                    {"EditCut"},
-                    {"EditCutQuick"},
-                    {"-"},
-                    {"PenPick"},
-                    {"PenPickResolved"},
-                    {"PenApply"},
-                    {"PenCopy"}
-                }
-            },
-            {
-                "Menu:Draw", ":/icons/line_2p.lci",
-                {
-                    {"Menu:Line", ":/icons/line.lci", {{"DrawLine"}, {"DrawLineAngle"}, {"DrawLineHorizontal"}, {"DrawLineVertical"}, {"DrawLineParallel"}}},
-                    {"Menu:Circle", ":/icons/circle.lci", {{"DrawCircle"}, {"DrawCircle2P"}, {"DrawCircleCR"}, {"DrawCircle3P"}}},
-                    {"Menu:Arc", ":/icons/arc_center_point_angle.lci", {{"DrawArc"}, {"DrawArc3P"}, {"DrawArcTangential"}}},
-                    {"Menu:Polyline", ":/icons/polylines_polyline.lci", {{"DrawPolyline"}, {"PolylineAdd"}, {"PolylineAppend"}, {"PolylineTrim"}}},
-                    {"Menu:Spline", ":/icons/spline_points.lci", {{"DrawSpline"}, {"DrawSplinePoints"}}},
-                    {"Menu:Polygon", ":/icons/rectangle_1_point.lci", {{"DrawLineRectangle"}, {"DrawLinePolygonCenCor"}}},
-                    {"Menu:Other", ":/icons/text.lci", {{"DrawText"}, {"DrawMText"}, {"DrawHatch"}, {"DrawImage"}}}
-                }
-            },
-            {"Menu:Modify", ":/icons/move_rotate.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", {{"LayersDefreezeAll"}}},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"-"},
-            {"Menu:View", ":/icons/zoom_in.lci", commonViewActions()},
-            {"Menu:File", ":/icons/save.lci", commonFileActions()},
-            {"SpecialMenu:WorkspacesRescue"},
-            {"Menu:Options", ":/icons/settings.lci", commonOptionActions()}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuLine() {
-    return {
-        tr("Line (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityLine},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"DrawSliceDivideLine"},
-                    {"ModifyCut"},
-                    {"ModifyBreakDivide"},
-                    {"ModifyTrimAmount"},
-                    {"ModifyLineJoin"},
-                    {"ModifyTrim"},
-                    {"ModifyTrim2"},
-                    {"ModifyLineGap"},
-                    {"ModifyOffset"},
-                    {"ModifyRevertDirection"},
-                    {"-"},
-                    {"ModifyRound"},
-                    {"ModifyBevel"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {
-                "Menu:Draw Line", ":/icons/line_parallel.lci",
-                {
-                    {"DrawLineParallelThrough"},
-                    {"DrawLineOrthogonalRel"},
-                    {"DrawLineOrthogonal"},
-                    {"DrawLineParallel"},
-                    {"DrawLineRel"},
-                    {"DrawLineRelAngle"},
-                    {"DrawLineAngleRel"},
-                    {"DrawLineOrthTan"},
-                    {"DrawLineBisector"},
-                    {"DrawLineFree"},
-                    {"DrawLineMiddle"},
-                    {"DrawLineFromPointToLine"},
-                    {"DrawLineRadiant"}
-                }
-            },
-            {
-                "Menu:Draw Circle", ":/icons/circle_center_point.lci",
-                {
-                    {"DrawCircleTan1_2P"},
-                    {"DrawCircleTan2"},
-                    {"DrawCircleTan2_1P"},
-                    {"DrawCircleTan3"},
-                    {"DrawCircleInscribe"}
-                }
-            },
-            {
-                "Menu:Draw Other", ":/icons/arc_continuation.lci",
-                {
-                    {"DrawArcTangential"},
-                    {"DrawEllipseInscribe"},
-                    {"DrawBoundingBox"},
-                    {"PolylineSegment"}
-                }
-            },
-            {
-                "Menu:Dimensions", ":/icons/dim_aligned.lci",
-                {
-                    {"DimAligned"},
-                    {"DimLinear"},
-                    {"DimLinearHor"},
-                    {"DimLinearVer"},
-                    {"DimAngular"},
-                    {"DimLeader"},
-                    {"DimOrdinate"},
-                    {"-"},
-                    {"DimStyles"}
-                }
-            },
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuCircle() {
-    return {
-        tr("Circle (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityCircle},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"DrawSliceDivideCircle"},
-                    {"ModifyBreakDivide"},
-                    {"ModifyCut"},
-                    {"ModifyTrim"},
-                    {"ModifyTrim2"},
-                    {"ModifyOffset"},
-                    {"-"},
-                    {"ModifyRound"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {
-                "Menu:Draw Circle", ":/icons/circle_center_point.lci",
-                {
-                    {"DrawCircleTan1_2P"},
-                    {"DrawCircleTan2"},
-                    {"DrawCircleTan2_1P"},
-                    {"DrawCircleTan3"},
-                    {"DrawCircleParallel"},
-                    {"DrawLineParallelThrough"}
-                }
-            },
-            {
-                "Menu:Draw Line", ":/icons/line_parallel.lci",
-                {
-                    {"DrawLineOrthTan"},
-                    {"DrawLineTangent1"},
-                    {"DrawLineTangent2"},
-                    {"DrawLineRelAngle"},
-                    {"DrawLineOrthogonal"}
-                }
-            },
-            {"Menu:Draw Other", ":/icons/arc_continuation.lci", {{"DrawCross"}, {"DrawBoundingBox"}}},
-            {
-                "Menu:Dimensions", ":/icons/dim_aligned.lci",
-                {
-                    {"DimRadial"},
-                    {"DimDiametric"},
-                    {"DimLeader"},
-                    {"DimOrdinate"},
-                    {"-"},
-                    {"DimStyles"}
-                }
-            },
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuArc() {
-    return {
-        tr("Arc (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityArc},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"DrawSliceDivideCircle"},
-                    {"ModifyBreakDivide"},
-                    {"ModifyCut"},
-                    {"ModifyTrimAmount"},
-                    {"ModifyTrim"},
-                    {"ModifyTrim2"},
-                    {"ModifyOffset"},
-                    {"ModifyRevertDirection"},
-                    {"-"},
-                    {"ModifyRound"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {
-                "Menu:Draw Circle", ":/icons/circle_center_point.lci",
-                {
-                    {"DrawCircleByArc"},
-                    {"DrawCircleTan1_2P"},
-                    {"DrawCircleTan2"},
-                    {"DrawCircleTan2_1P"},
-                    {"DrawCircleTan3"}
-                }
-            },
-            {
-                "Menu:Draw Line", ":/icons/line_parallel.lci",
-                {
-                    {"DrawLineOrthTan"},
-                    {"DrawLineTangent1"},
-                    {"DrawLineTangent2"},
-                    {"DrawLineOrthogonal"},
-                    {"DrawLineRelAngle"}
-                }
-            },
-            {
-                "Menu:Draw Other", ":/icons/arc_continuation.lci",
-                {
-                    {"DrawArcTangential"},
-                    {"DrawCross"},
-                    {"DrawCircleParallel"},
-                    {"DrawLineParallelThrough"},
-                    {"DrawBoundingBox"},
-                    {"PolylineSegment"}
-                }
-            },
-            {
-                "Menu:Dimensions", ":/icons/dim_aligned.lci",
-                {
-                    {"DimRadial"},
-                    {"DimDiametric"},
-                    {"DimArc"},
-                    {"DimLeader"},
-                    {"DimOrdinate"},
-                    {"-"},
-                    {"DimStyles"}
-                }
-            },
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuPolyline() {
-    return {
-        tr("Polyline (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPolyline},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"PolylineAdd"},
-                    {"PolylineAppend"},
-                    {"PolylineDel"},
-                    {"PolylineDelBetween"},
-                    {"PolylineTrim"},
-                    {"PolylineSegmentType"},
-                    {"PolylineArcToLines"},
-                    {"PolylineSegment"},
-                    {"PolylineEquidistant"},
-                    {"BlocksExplode"},
-                    {"ModifyRevertDirection"},
-                    {"ModifyOffset"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {
-                "Menu:Draw Line", ":/icons/line_parallel.lci",
-                {
-                    {"DrawLineBisector"},
-                    {"DrawLineOrthTan"},
-                    {"DrawLineTangent1"},
-                    {"DrawLineTangent2"},
-                    {"DrawLineOrthogonal"},
-                    {"DrawLineRelAngle"}
-                }
-            },
-            {
-                "Menu:Draw Other", ":/icons/arc_continuation.lci",
-                {
-                    {"PolylineEquidistant"},
-                    {"DrawLineParallelThrough"},
-                    {"DrawSplineFromPolyline"},
-                    {"DrawBoundingBox"}
-                }
-            },
-            {
-                "Menu:Dimensions", ":/icons/dim_aligned.lci",
-                {
-                    {"DimAligned"},
-                    {"DimLinear"},
-                    {"DimLinearHor"},
-                    {"DimLinearVer"},
-                    {"DimAngular"},
-                    {"DimLeader"},
-                    {"DimOrdinate"},
-                    {"-"},
-                    {"DimStyles"}
-                }
-            },
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuSpline() {
-    return {
-        tr("Spline (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySpline},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"DrawSplinePointsAdd"},
-                    {"DrawSplinePointsAppend"},
-                    {"DrawSplinePointsRemove"},
-                    {"DrawSplineExplode"},
-                    {"DrawSplinePointsDelTwo"},
-                    {"BlocksExplode"},
-                    {"ModifyRevertDirection"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuSplinePoints() {
-    return {
-        tr("Spline by Points (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySplinePoints},
-        {
-            {
-                "Menu:Modify", ":/icons/attributes.lci",
-                {
-                    {"DrawSplinePointsAdd"},
-                    {"DrawSplinePointsAppend"},
-                    {"DrawSplinePointsRemove"},
-                    {"DrawSplineExplode"},
-                    {"DrawSplinePointsDelTwo"},
-                    {"ModifyCut"},
-                    {"ModifyRevertDirection"}
-                }
-            },
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Draw Other", ":/icons/arc_continuation.lci", {{"DrawLineTangent1"}, {"DrawBoundingBox"}}},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuEllipse() {
-    return {
-        tr("Ellipse (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityEllipse},
-        {
-            {"ModifyCut"},
-            {"ModifyRound"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {
-                "Menu:Draw Line", ":/icons/line_parallel.lci",
-                {
-                    {"DrawLineOrthTan"},
-                    {"DrawLineOrthogonal"},
-                    {"DrawLineTangent1"},
-                    {"DrawLineTangent2"},
-                    {"DrawLineRelAngle"}
-                }
-            },
-            {
-                "Menu:Draw Other", ":/icons/arc_continuation.lci",
-                {
-                    {"DrawCross"},
-                    {"DrawBoundingBox"},
-                    {"DrawArcTangential"},
-                    {"ModifyRevertDirection"}
-                }
-            },
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuPoint() {
-    return {
-        tr("Point (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPoint},
-        {
-            {"SelectPoints"},
-            {"PasteToPoints"},
-            {"DrawPointsMiddle"},
-            {"DrawLinePoints"},
-            {"DrawPointLattice"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuParabola() {
-    return {
-        tr("Parabola (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityParabola},
-        {
-            {"DrawLineOrthTan"},
-            {"DrawLineTangent1"},
-            {"DrawLineTangent2"},
-            {"ModifyCut"},
-            {"DrawBoundingBox"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuText() {
-    return {
-        tr("Text (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityText},
-        {
-            {"ModifyExplodeText"},
-            {"BlocksExplode"},
-            {"DrawBoundingBox"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuMText() {
-    return {
-        tr("MText (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityMText},
-        {
-            {"ModifyExplodeText"},
-            {"BlocksExplode"},
-            {"DrawBoundingBox"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuInsert() {
-    return {
-        tr("Block Insert (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityInsert},
-        {
-            {"SpecialAction:EditBlock"},
-            {"EntityInfo"},
-            {"BlocksExplode"},
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuImage() {
-    return {
-        tr("Image (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityImage},
-        {
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuHatch() {
-    return {
-        tr("Hatch (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityHatch},
-        {
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLinear() {
-    return {
-        tr("Dimension Linear (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLinear},
-        {
-            {"DimPickApply"},
-            {"DimBaseline"},
-            {"DimContinue"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAligned() {
-    return {
-        tr("Dimension Aligned (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimAligned},
-        {
-            {"DimPickApply"},
-            {"DimBaseline"},
-            {"DimContinue"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimRadial() {
-    return {
-        tr("Dimension Radial (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimRadial},
-        {
-            {"DimPickApply"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimDiametric() {
-    return {
-        tr("Dimension Diametric (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimDiametric},
-        {
-            {"DimPickApply"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimArc() {
-    return {
-        tr("Dimension Arc (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimArc},
-        {
-            {"DimPickApply"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimOrdinate() {
-    return {
-        tr("Dimension Ordinate (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimOrdinate},
-        {
-            {"DimPickApply"},
-            {"DimOrdinateForBase"},
-            {"DimOrdinateReBase"},
-            {"UCSSetByDimOrdinate"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLeader() {
-    return {
-        tr("Dimension Leader (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLeader},
-        {
-            {"DimPickApply"},
-            {"DimRegenerate"},
-            {"-"},
-            {"DimStyles"},
-            {"-"},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuAnyEntity() {
-    return {
-        tr("Any Entity Fallback (Right-Click)"),
-        {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityUnknown},
-        {
-            {"Menu:Modify Generic", ":/icons/move_copy.lci", commonModifyActions()},
-            {"Menu:Align", ":/icons/align_one.lci", commonAlignActions()},
-            {"Menu:Order", ":/icons/order.lci", commonOrderActions()},
-            {"Menu:Layers", ":/icons/layer_list.lci", commonLayerActions()},
-            {"Menu:Info", ":/icons/measure.lci", commonInfoActions()},
-            {"EntityInfo"}
-        }
-    };
-}
-
-ContextMenuDef LC_DefaultContextMenusBuilder::menuAutoZoom() {
-    return {
-        tr("AutoZoom (Middle Double-Click)"),
-        {LC_MenuActivator::MIDDLE, LC_MenuActivator::DBL_CLICK, false, RS2::EntityUnknown},
-        {{"ZoomAuto"}}
-    };
-}
-
-ContextMenusConfig LC_DefaultContextMenusBuilder::createDefaultConfig() {
-    ContextMenusConfig config;
-    config.name = tr("Default Menus Suite");
-    config.menus = {
-        menuEmptySpace(),
-        menuAnyEntity(),
-        menuLine(),
-        menuCircle(),
-        menuArc(),
-        menuPolyline(),
-        menuSpline(),
-        menuSplinePoints(),
-        menuEllipse(),
-        menuPoint(),
-        menuParabola(),
-        menuText(),
-        menuMText(),
-        menuInsert(),
-        menuImage(),
-        menuHatch(),
-        menuDimLinear(),
-        menuDimAligned(),
-        menuDimRadial(),
-        menuDimDiametric(),
-        menuDimArc(),
-        menuDimOrdinate(),
-        menuDimLeader(),
-        menuAutoZoom()
-    };
-    for (auto& m : config.menus) {
-        // AutoZoom is a gesture popup and can be customized/deleted by user
-        if (m.name != tr("AutoZoom (Middle Double-Click)")) {
-            m.isBuiltIn = true;
-        }
-    }
-    return config;
-}
-
-bool LC_DefaultContextMenusBuilder::isBuiltInContextMenu(const ContextMenuDef& menuDef) {
-    return menuDef.isBuiltIn;
+    return {{"OptionsDrawing"}, {"OptionsGeneral"}, {"OptionsStyling"}, {"OptionsCustomization"}};
 }

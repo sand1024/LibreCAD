@@ -52,10 +52,12 @@ public:
     static void setWidgetToggleActionIcon(T* result, const QString& iconName);
     template <class T>
     static void setWidgetToggleActionIcon(T* result, const QIcon& iconName);
+    static void redockAllDockWidgets(QC_ApplicationWindow* mainWin);
 private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
-    QDockWidget *createDockWidget(const QString &horizontalTitle, const char *name, const QString& iconName = "",  const QString& verticalTitle = "") const;
+    QDockWidget* createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName, const QString& verticalTitle,
+                                  const char* toggleActionName, const QString& toggleActionDescrition) const;
     QDockWidget *createPenPalletteWidget();
     QDockWidget* createLayerWidget(const QG_ActionHandler* actionHandler);
     QDockWidget *createNamedViewsWidget();
@@ -76,12 +78,24 @@ private:
     void createRightSidebar(QG_ActionHandler *actionHandler);
     void initStatusBar();
     void createCADSidebar(int columns, int iconSize, bool flatButtons);
-    LC_CADDockWidget *cadDockWidget(const QString &title, const QString& iconName, const char *name, const QList<QAction *> &actions, int columns, int iconSize, bool flatButtons);
+    LC_CADDockWidget *cadDockWidget(const QString &groupName);
     void addToBottom(QToolBar *toolbar) const;
-    QToolBar *createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget* widget, const QString& title, const QString& iconName, const char* name, bool showToolTip, bool usePillChips = false) const;
+    QToolBar* createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title, const QString& iconName,
+                                     const char* name, bool showToolTip, bool usePillChips = false) const;
     void addAction(QToolBar *toolbar, const char *actionName) const;
     void makeActionsInvisible(const std::vector<QString> &actionNames) const;
     static void setDockWidgetTitleType(QDockWidget *widget, bool verticalTitleBar);
+    void registerDockWidgetAction(const char* groupName,
+                                  QDockWidget* dockWidget,
+                                  const QString& actionName,
+                                  const QString& title,
+                                  const QString& iconPath,
+                                  const QString& description) const;
+
+    static void dockAndTabifyGroup(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
+                                   const QList<QDockWidget*>& docks, QDockWidget* toRaise = nullptr);
+    static void dockAndTabifyByName(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
+                                    const std::vector<const char*>& names, const char* raiseName = nullptr);
 };
 
 template <class T>

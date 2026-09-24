@@ -58,25 +58,29 @@ namespace LC_ActionNames {
     inline constexpr const char* MenuWorkspacesList   = "SpecialMenu:WorkspacesList";
     inline constexpr const char* MenuDrawings         = "SpecialMenu:Drawings";
     inline constexpr const char* MenuRecentActions    = "SpecialMenu:RecentActions";
-    inline constexpr const char* MenuWorkspacesRescue = "SpecialMenu:WorkspacesRescue";
     inline constexpr const char* MenuNamedViewsList   = "SpecialMenu:NamedViewsList";
     inline constexpr const char* MenuUCSList          = "SpecialMenu:UCSList";
+    inline constexpr const char* MenuPlugins          = "SpecialMenu:Plugins";
+    inline constexpr const char* MenuWorkspacesRescue = "SpecialMenu:WorkspacesRescue";
+
 
     // Special Context Action Tokens
     inline constexpr const char* ActionEditBlock           = "SpecialAction:EditBlock";
     inline constexpr const char* ActionEntityLayerActivate = "SpecialAction:EntityLayerActivate";
 
-    inline constexpr const char* ToggleDockLayers        = "SpecialAction:ToggleDockLayers";
-    inline constexpr const char* ToggleDockLayerTree     = "SpecialAction:ToggleDockLayerTree";
-    inline constexpr const char* ToggleDockBlocks        = "SpecialAction:ToggleDockBlocks";
-    inline constexpr const char* ToggleDockCommandLine   = "SpecialAction:ToggleDockCommandLine";
-    inline constexpr const char* ToggleDockProperties    = "SpecialAction:ToggleDockProperties";
-    inline constexpr const char* ToggleDockLibrary       = "SpecialAction:ToggleDockLibrary";
-    inline constexpr const char* ToggleDockQuickInfo     = "SpecialAction:ToggleDockQuickInfo";
-    inline constexpr const char* ToggleDockPenPalette    = "SpecialAction:ToggleDockPenPalette";
-    inline constexpr const char* ToggleDockPenWizard     = "SpecialAction:ToggleDockPenWizard";
-    inline constexpr const char* ToggleDockNamedViews    = "SpecialAction:ToggleDockNamedViews";
-    inline constexpr const char* ToggleDockUCS           = "SpecialAction:ToggleDockUCS";
+
+    // Action Identifiers for Dock Toggles
+    inline constexpr const char* ToggleDockCommandLine   = "ToggleDock_CommandLine";
+    inline constexpr const char* ToggleDockLayers        = "ToggleDock_Layers";
+    inline constexpr const char* ToggleDockLayerTree     = "ToggleDock_LayerTree";
+    inline constexpr const char* ToggleDockBlocks        = "ToggleDock_Blocks";
+    inline constexpr const char* ToggleDockProperties    = "ToggleDock_Properties";
+    inline constexpr const char* ToggleDockLibrary       = "ToggleDock_Library";
+    inline constexpr const char* ToggleDockQuickInfo     = "ToggleDock_QuickInfo";
+    inline constexpr const char* ToggleDockPenPalette    = "ToggleDock_PenPalette";
+    inline constexpr const char* ToggleDockPenWizard     = "ToggleDock_PenWizard";
+    inline constexpr const char* ToggleDockNamedViews    = "ToggleDock_NamedViews";
+    inline constexpr const char* ToggleDockUCS           = "ToggleDock_UCS";
 
     // Embedded Toolbar Widget Tokens
     inline constexpr const char* WidgetPenControls         = "Widget:PenControls";
@@ -94,26 +98,27 @@ class LC_ActionFactory : public LC_ActionFactoryBase{
 public:
     LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* actionHandler);
     void initActions(LC_ActionGroupManager* agm, bool useTheme);
-
-    QList<QAction*> file_Actions;
-    QList<QAction*> lineActions;
-    QList<QAction*> pointActions;
-    QList<QAction*> shapeActions;
-    QList<QAction*> circleActions;
-    QList<QAction*> curveActions;
-    QList<QAction*> splineActions;
-    QList<QAction*> ellipseActions;
-    QList<QAction*> polylineActions;
-    QList<QAction*> selectActions;
-    QList<QAction*> dimension_Actions;
-    QList<QAction*> otherDrawingActions;
-    QList<QAction*> modifyActions;
-    QList<QAction*> orderActions;
-    QList<QAction*> infoActions;
-    QList<QAction*> layerActions;
-    QList<QAction*> blockActions;
-    QList<QAction*> penActions;
-    QList<QAction*> entityLayerActions;
+    void setupDefaultShortcutsAndCompleteInit(LC_ActionGroupManager* agm);
+    QList<QString> file_Actions;
+    QList<QString> lineActions;
+    QList<QString> pointActions;
+    QList<QString> shapeActions;
+    QList<QString> circleActions;
+    QList<QString> curveActions;
+    QList<QString> splineActions;
+    QList<QString> ellipseActions;
+    QList<QString> polylineActions;
+    QList<QString> textActions;
+    QList<QString> selectActions;
+    QList<QString> dimensionActions;
+    QList<QString> otherDrawingActions;
+    QList<QString> modifyActions;
+    QList<QString> orderActions;
+    QList<QString> infoActions;
+    QList<QString> layerActions;
+    QList<QString> blockActions;
+    QList<QString> penActions;
+    QList<QString> entityLayerActions;
 
 private:
     void initActionGroupManager(LC_ActionGroupManager* agm);
@@ -143,8 +148,9 @@ private:
     void createHelpActionsUncheckable(QMap<QString, QAction*>& map, QActionGroup* group);
     void createOptionsActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group);
     void createFileActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group);
-    void createWidgetActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group);
-    void createWidgetActions(QMap<QString, QAction *> &map, QActionGroup *group);
+    void createDockAreasActions(QMap<QString, QAction*>& map, QActionGroup* group);
+
+    void createToolbarAreasActions(QMap<QString, QAction*>& map, QActionGroup* group);
     void createViewActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group);
     void createSelectActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createEditActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const;
@@ -158,8 +164,6 @@ private:
     void setupActionInfoSettingAction(QMap<QString, QAction*>& map,
                                       std::unique_ptr<LC_InfoCursorSettingsManager>::pointer infoCursorSettingsManager,
                                       const char* actionName, int tag);
-    void setupInfoCursorSettingAction(QAction* actionInfoCursorAbs, int tag,
-                                      std::unique_ptr<LC_InfoCursorSettingsManager>::pointer infoCursorSettingsManager);
     void createSnapActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createInfoCursorActions(QMap<QString, QAction *> &map, QActionGroup *group);
     void createSnapExtraActions(QMap<QString, QAction *> &map, QActionGroup *group) const;

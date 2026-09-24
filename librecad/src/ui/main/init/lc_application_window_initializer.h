@@ -31,6 +31,8 @@ class LC_ApplicationWindowInitializer : public QObject, public LC_AppWindowAware
     Q_OBJECT
 public:
     explicit LC_ApplicationWindowInitializer(QC_ApplicationWindow* appWindow);
+    void initGeneralMembers();
+    void initSpecialMenus();
     ~LC_ApplicationWindowInitializer() override = default;
     void initApplication();
 private:
@@ -40,6 +42,7 @@ private:
     void initActionOptionsManager();
     void initPropertySheetWidget();
     void initActionFactory() const;
+    void completeActionFactoryInit() const;
     void initDockCorners() const;
     void initCentralWidget();
     void initIconSize() const;
