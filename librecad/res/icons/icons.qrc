@@ -433,5 +433,6 @@
         <file alias="issues.lci">issues.svg</file>
         <file alias="feature_request.lci">feature_request.svg</file>
         <file alias="github.lci">github.svg</file>
+        <file alias="tool_windows_palette.lci">tool_windows_palette.svg</file>
     </qresource>
 </RCC>
