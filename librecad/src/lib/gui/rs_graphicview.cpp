@@ -28,12 +28,14 @@
 
 #include "rs_graphicview.h"
 
+#include "lc_action.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_eventhandler.h"
 #include "lc_graphicviewport.h"
 #include "lc_graphicviewrenderer.h"
 #include "lc_relative_point_input_widget.h"
-#include "lc_shortcuts_manager.h"
+#include "lc_settings_defaults.h"
+
 #include "lc_visual_snap_data.h"
 #include "lc_widgetviewportrenderer.h"
 #include "rs_actioninterface.h"
@@ -71,7 +73,7 @@ RS_GraphicView::~RS_GraphicView() {
 }
 
 void RS_GraphicView::loadSettings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_ZoomAndPan;
     m_panOnZoom = o_PanOnZoom;
     m_skipFirstZoom = o_FirstTimeNoZoom;
 
@@ -135,8 +137,11 @@ QString RS_GraphicView::getCurrentActionName() const {
     if (m_eventHandler !=nullptr) {
         const QAction* qaction = m_eventHandler->getQAction();
         if (qaction != nullptr){
-          // todo - sand - actually, this is bad dependency, should be refactored
-          return LC_ShortcutsManager::getPlainActionToolTip(qaction);
+            const LC_Action* action = dynamic_cast<const LC_Action*>(qaction);
+            if (action != nullptr) {
+                return action->getClearedText();
+            }
+          return qaction->text();
         }
     }
     return "";
