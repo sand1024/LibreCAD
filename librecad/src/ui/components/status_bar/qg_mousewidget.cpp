@@ -25,10 +25,10 @@
 **********************************************************************/
 #include "qg_mousewidget.h"
 
+#include "lc_action.h"
 #include "lc_modifiersinfo.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
-#include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 
 /*
@@ -144,7 +144,14 @@ void QG_MouseWidget::setCurrentQAction(const QAction *a) {
     QIcon icon;
     if (a != nullptr){
         icon = a->icon();
-        const QString toolTip = LC_ShortcutsManager::getPlainActionToolTip(a);
+        QString toolTip;
+        const LC_Action* action = dynamic_cast<const LC_Action*>(a);
+        if (action != nullptr) {
+            toolTip  = action->getClearedText();
+        }
+        else {
+            toolTip = a->text().remove('&').trimmed();
+        }
         lCurrentAction->setToolTip(tr("Current Action:")+ " " + toolTip);
     }
 

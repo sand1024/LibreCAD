@@ -22,8 +22,8 @@
 
 #include "lc_optionswidgetsholder.h"
 
+#include "lc_action.h"
 #include "lc_settings_appearance.h"
-#include "lc_shortcuts_manager.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 #include "ui_lc_optionswidgetsholder.h"
@@ -100,7 +100,13 @@ void LC_OptionsWidgetsHolder::setCurrentQAction(const QAction *a) {
     }
     if (showIcon){
         icon = a->icon();
-        text = LC_ShortcutsManager::getPlainActionToolTip(a);
+        const LC_Action* action = dynamic_cast<const LC_Action*>(a);
+        if (action != nullptr) {
+            text = action->getClearedText();
+        }
+        else {
+            text = action->text();
+        }
         m_hasActionIcon = true;
         ui->vCurrentActionLine->setVisible(!icon.isNull());
     }

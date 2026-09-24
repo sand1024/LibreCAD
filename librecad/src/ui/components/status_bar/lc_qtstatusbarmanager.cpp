@@ -24,9 +24,9 @@
 
 #include <QStatusBar>
 
+#include "lc_action.h"
 #include "lc_modifiersinfo.h"
 #include "lc_settings_startup.h"
-#include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 
 LC_QTStatusbarManager::LC_QTStatusbarManager(QStatusBar *statusBar):QObject(statusBar) {
@@ -67,7 +67,13 @@ void LC_QTStatusbarManager::setActionHelp(const QString &left, [[maybe_unused]]c
 
 void LC_QTStatusbarManager::setCurrentQAction(const QAction *a) {
     if (m_actionPromptEnabled && m_statusBar->isVisible()) {
-        m_actionToolTip = LC_ShortcutsManager::getPlainActionToolTip(a);
+        const LC_Action* action = dynamic_cast<const LC_Action*>(a);
+        if (action != nullptr) {
+            m_actionToolTip  = action->getClearedText();
+        }
+        else {
+            m_actionToolTip = a->text().remove('&').trimmed();
+        }
     }
 }
 
