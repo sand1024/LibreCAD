@@ -36,7 +36,7 @@ class LC_RepositoryCommands;
 
 class LC_CommandManager {
 public:
-    explicit LC_CommandManager(const QString& configDir);
+    explicit LC_CommandManager(LC_RepositoryCommands* repo);
     ~LC_CommandManager();
 
     LC_CommandManager(const LC_CommandManager&) = delete;
@@ -63,7 +63,7 @@ private:
     RS2::ActionType commandToAction(const QString& cmd) const;
     void populateFactoryDefaults();
 
-    std::unique_ptr<LC_RepositoryCommands> m_repository;
+    LC_RepositoryCommands* m_repository;
     std::map<QString, RS2::ActionType> m_mainCommands;
     std::map<QString, RS2::ActionType> m_shortCommands;
     std::map<RS2::ActionType, QString> m_actionToCommand;

@@ -26,11 +26,8 @@
 
 #include <QJsonObject>
 #include "lc_command_types.h"
-#include "lc_style_repository_base.h"
+#include "lc_preset_repository_base.h"
 
-inline constexpr const char* COMMANDS_EXTENSION = ".lccmd";
-inline constexpr const char* COMMANDS_FILE_IDENTIFIER = "LibreCAD_Command_Aliases";
-inline constexpr const char* COMMANDS_INDEX_FILE = "commands_index.lcix";
 
 class LC_RepositoryCommands : public LC_PresetRepositoryBase<CommandsConfig> {
 public:

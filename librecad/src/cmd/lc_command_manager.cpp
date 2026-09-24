@@ -29,6 +29,7 @@
 #include "lc_default_commands_builder.h"
 #include "lc_repository_commands.h"
 #include "lc_settings_app_state.h"
+#include "lc_wait_cursor_guard.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -85,10 +86,7 @@ namespace {
     }
 }
 
-LC_CommandManager::LC_CommandManager(const QString& configDir) {
-    if (!configDir.isEmpty()) {
-        m_repository = std::make_unique<LC_RepositoryCommands>(configDir);
-    }
+LC_CommandManager::LC_CommandManager(LC_RepositoryCommands* repo): m_repository(repo) {
     populateFactoryDefaults();
 }
 
@@ -337,7 +335,7 @@ QString LC_CommandManager::msgAvailableCommands() const {
 }
 
 LC_RepositoryCommands* LC_CommandManager::getRepository() const {
-    return m_repository.get();
+    return m_repository;
 }
 
 void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const LC_ActionTypeMapper* mapper) {
@@ -432,6 +430,7 @@ void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const 
 }
 
 void LC_CommandManager::loadActiveScheme(const LC_ActionTypeMapper* mapper) {
+    LC_WaitCursorGuard guard;
     if (m_repository == nullptr) {
         populateFactoryDefaults();
         return;
@@ -440,7 +439,7 @@ void LC_CommandManager::loadActiveScheme(const LC_ActionTypeMapper* mapper) {
     const QString activeKey = CFG_AppState::o_ActiveCommandsScheme;
     CommandsConfig config;
 
-    if (activeKey == DEFAULT_THEME_KEY || activeKey.isEmpty() || !m_repository->loadByKey(activeKey, config)) {
+    if (activeKey == CFG_AppState::DEFAULT_THEME_KEY || activeKey.isEmpty() || !m_repository->loadByKey(activeKey, config)) {
         config = LC_DefaultCommandsBuilder::createDefaultConfig(mapper);
     }
 

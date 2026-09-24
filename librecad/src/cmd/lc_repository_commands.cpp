@@ -26,17 +26,19 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+namespace {
+    inline constexpr const char* COMMANDS_EXTENSION = ".lcca";
+    inline constexpr const char* COMMANDS_FILE_IDENTIFIER = "LibreCAD Config: Command Aliases";
+    inline constexpr const char* COMMANDS_INDEX_FILE = "commands_index.lcix";
+}
+
 LC_RepositoryCommands::LC_RepositoryCommands(const QString& configDir)
     : LC_PresetRepositoryBase<CommandsConfig>(
           configDir, COMMANDS_EXTENSION, COMMANDS_FILE_IDENTIFIER, COMMANDS_INDEX_FILE) {
-    QDir().mkpath(configDir);
-    initializeIndex();
 }
-
 
 QJsonObject LC_RepositoryCommands::configToJson(const CommandsConfig& config) const {
     QJsonObject root;
-    root["name"] = config.name;
 
     // Commands array
     QJsonArray cmdArray;
@@ -76,13 +78,6 @@ QJsonObject LC_RepositoryCommands::configToJson(const CommandsConfig& config) co
 }
 
 bool LC_RepositoryCommands::configFromJson(const QJsonObject& json, CommandsConfig& config) const {
-    if (!json.contains("name")) {
-        return false;
-    }
-
-    config.name = json.value("name").toString();
-
-    // Parse commands (supporting new keys with backward compatibility for legacy keys)
     config.commands.clear();
     const QJsonArray cmdArray = json.value("commands").toArray();
     for (const auto& val : cmdArray) {
@@ -92,19 +87,9 @@ bool LC_RepositoryCommands::configFromJson(const QJsonObject& json, CommandsConf
         QJsonObject obj = val.toObject();
         CommandDefinition cmd;
         cmd.actionName = obj.value("action").toString();
-
-        cmd.customCommand = obj.contains("command")
-            ? obj.value("command").toString()
-            : obj.value("main_cmd").toString();
-
-        cmd.customKeycode = obj.contains("keycode")
-            ? obj.value("keycode").toString()
-            : obj.value("alias1").toString();
-
-        cmd.customAlias = obj.contains("alias")
-            ? obj.value("alias").toString()
-            : obj.value("alias2").toString();
-
+        cmd.customCommand = obj.contains("command") ? obj.value("command").toString() : "";
+        cmd.customKeycode = obj.contains("keycode") ? obj.value("keycode").toString() : "";
+        cmd.customAlias = obj.contains("alias") ? obj.value("alias").toString() : "";
         config.commands.append(cmd);
     }
 
@@ -118,15 +103,8 @@ bool LC_RepositoryCommands::configFromJson(const QJsonObject& json, CommandsConf
         QJsonObject obj = val.toObject();
         KeywordDefinition kw;
         kw.key = obj.value("key").toString();
-
-        kw.customKeyword = obj.contains("keyword")
-            ? obj.value("keyword").toString()
-            : obj.value("custom_kw").toString();
-
-        kw.customAlias = obj.contains("alias")
-            ? obj.value("alias").toString()
-            : obj.value("alias2").toString();
-
+        kw.customKeyword = obj.contains("keyword") ? obj.value("keyword").toString() :"";
+        kw.customAlias = obj.contains("alias") ? obj.value("alias").toString() : "";
         config.keywords.append(kw);
     }
 
