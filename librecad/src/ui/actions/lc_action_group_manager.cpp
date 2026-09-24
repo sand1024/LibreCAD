@@ -22,9 +22,8 @@
 
 #include "lc_action_group_manager.h"
 
-#include "lc_actions_naming_utils.h"
 #include "lc_action_group.h"
-#include "shortcuts/lc_shortcuts_manager.h"
+#include "lc_shortcuts_manager.h"
 #include "qc_applicationwindow.h"
 
 namespace Sorting
@@ -35,13 +34,7 @@ namespace Sorting
 }
 
 LC_ActionGroupManager::LC_ActionGroupManager(QC_ApplicationWindow* parent)
-    : QObject(parent),
-      m_shortcutsManager{std::make_unique<LC_ShortcutsManager>()},
-      m_namingService(std::make_unique<LC_ActionNamingService>(this)){
-}
-
-const LC_ActionNamingServiceInterface* LC_ActionGroupManager::getNamingService() const {
-    return m_namingService.get();
+    : QObject(parent){
 }
 
 
@@ -52,28 +45,10 @@ void LC_ActionGroupManager::sortGroupsByName(QList<LC_ActionGroup *> &list) {
 }
 
 QList<LC_ActionGroup *> LC_ActionGroupManager::toolGroups() const {
-    /*QList<LC_ActionGroup *> ag_list;
-    ag_list << block
-            << circle
-            << curve
-            << spline
-            << ellipse
-            << dimension
-            << info
-            << line
-            << point
-            << shape
-            << modify
-            << other
-            << polyline
-            << select
-            << pen
-            << ucs;
-    return ag_list;*/
     return m_toolsGroups;
 }
 
-QList<LC_ActionGroup *> LC_ActionGroupManager::allGroupsList() {
+QList<LC_ActionGroup *> LC_ActionGroupManager::allGroupsList() const{
     QList<LC_ActionGroup *> agList = findChildren<LC_ActionGroup *>();
     // sortGroupsByName(agList);
     return agList;
@@ -127,38 +102,11 @@ void LC_ActionGroupManager::toggleTools(const bool state) const {
     }
 }
 
-void LC_ActionGroupManager::onOptionsChanged() const {
-    m_shortcutsManager->updateActionTooltips(m_actionsMap);
-}
-
-void LC_ActionGroupManager::assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) const {
-    m_shortcutsManager->assignShortcutsToActions(map, shortcutsList);
-}
-
 int LC_ActionGroupManager::loadShortcuts([[maybe_unused]] const QMap<QString, QAction *> &map) {
-    m_shortcutsManager->init();
     const int loadResult = m_shortcutsManager->loadActiveScheme(m_actionsMap);
     return loadResult;
 }
 
-int LC_ActionGroupManager::loadShortcuts(const QString &fileName, QMap<QString, QKeySequence> *result) const {
-    const int loadResult = m_shortcutsManager->loadShortcuts(fileName, result);
-    return loadResult;
-}
-
-int LC_ActionGroupManager::saveShortcuts(const QList<LC_ShortcutInfo*> &shortcutsList, const QString &fileName) const {
-    const int saveResult = m_shortcutsManager->saveShortcuts(fileName, shortcutsList);
-    return saveResult;
-}
-
-int LC_ActionGroupManager::saveShortcuts(QMap<QString, LC_ShortcutInfo *> shortcutsMap) {
-    const int saveResult = m_shortcutsManager->saveShortcuts(shortcutsMap, m_actionsMap);
-    return saveResult;
-}
-
-QString LC_ActionGroupManager::getShortcutsMappingsFolder() const {
-    return m_shortcutsManager->getShortcutsMappingsFolder();
-}
 
 QMap<QString, QAction *> &LC_ActionGroupManager::getActionsMap() {
     return m_actionsMap;
@@ -221,4 +169,94 @@ void LC_ActionGroupManager::completeInit(){
 
 QAction* LC_ActionGroupManager::getActionByType(const RS2::ActionType actionType) const {
     return m_actionsByTypes.value(actionType);
+}
+
+const LC_ActionGroup* LC_ActionGroupManager::findGroup(const QString& nameOrToken) const {
+    if (nameOrToken.isEmpty()) {
+        return nullptr;
+    }
+
+    // 1. Query by exact raw name using existing getGroupByName()
+    const auto* group = getActionGroup(nameOrToken);
+    if (group != nullptr) {
+        return group;
+    }
+
+    const QString strippedQuery = QString(nameOrToken).remove('_');
+
+    // 2. Query by token or case-insensitive name via allGroupsList()
+    for (const auto* g : allGroupsList()) {
+        if (g != nullptr) {
+            if (g->token().compare(nameOrToken, Qt::CaseInsensitive) == 0 ||
+                g->getName().compare(nameOrToken, Qt::CaseInsensitive) == 0 ||
+                QString(g->getName()).remove('_').compare(strippedQuery, Qt::CaseInsensitive) == 0) {
+                return g;
+            }
+        }
+    }
+
+    // 3. Fallback: Strip "Menu:" prefix if present and retry
+    if (nameOrToken.startsWith("Menu:", Qt::CaseInsensitive)) {
+        const QString stripped = nameOrToken.mid(5).toLower();
+        return getActionGroup(stripped);
+    }
+
+    return nullptr;
+}
+
+
+QString LC_ActionGroupManager::displayName(const QString& tokenOrTitle, const bool stripAmpersand) const {
+    const auto* group = findGroup(tokenOrTitle);
+    if (group != nullptr) {
+        return stripAmpersand ? group->cleanTitle() : group->getTitle();
+    }
+
+    QString clean = tokenOrTitle;
+    if (clean.startsWith("Menu:", Qt::CaseInsensitive)) {
+        clean = clean.mid(5);
+    }
+
+    // User-entered custom group title: return verbatim (stripping '&' if requested)
+    if (stripAmpersand && clean.contains('&')) {
+        clean.remove('&');
+    }
+    return clean.trimmed();
+}
+
+QString LC_ActionGroupManager::iconPath(const QString& tokenOrTitle) const {
+    const auto* group = findGroup(tokenOrTitle);
+    if (group != nullptr) {
+        return group->getIconPath();
+    }
+    return QString();
+}
+
+QString LC_ActionGroupManager::canonicalToken(const QString& groupName) const {
+    const auto* group = findGroup(groupName);
+    if (group != nullptr) {
+        return group->token();
+    }
+    if (groupName.startsWith("Menu:", Qt::CaseInsensitive)) {
+        return groupName;
+    }
+    return QString("Menu:") + groupName;
+}
+
+
+bool LC_ActionGroupManager::isSystemToken(const QString& token) const {
+    return findGroup(token) != nullptr;
+}
+
+QList<QPair<QString, QString>> LC_ActionGroupManager::predefinedCategories() const {
+    QList<QPair<QString, QString>> result;
+    auto actionGroups = allGroupsList();
+    for (const auto* group : actionGroups) {
+        if (group != nullptr && group->isToolbarMenuConfigurable()) {
+            result.append({group->token(), group->cleanTitle()});
+        }
+    }
+    std::sort(result.begin(), result.end(), [](const QPair<QString, QString>& a, const QPair<QString, QString>& b) {
+        return a.second.localeAwareCompare(b.second) < 0;
+    });
+    return result;
 }

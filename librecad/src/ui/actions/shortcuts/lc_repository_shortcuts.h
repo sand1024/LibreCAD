@@ -17,26 +17,20 @@
 #include <QMap>
 #include <QString>
 
-#include "lc_style_repository_base.h"
-
-inline const QString SHORTCUTS_EXTENSION = ".lcsc";
-inline const QString SHORTCUTS_FILE_IDENTIFIER = "LibreCAD Shortcuts Config v_1";
+#include "lc_preset_repository_base.h"
 
 struct ShortcutsConfig {
     QString name;
-    QMap<QString, QKeySequence> shortcuts; // ActionName -> QKeySequence
+    QMap<QString, QKeySequence> shortcuts;
 };
 
-class LC_RepositoryShortcuts : public LC_PresetRepositoryBase<ShortcutsConfig> {
+class LC_RepositoryKeymaps : public LC_PresetRepositoryBase<ShortcutsConfig> {
 public:
-    explicit LC_RepositoryShortcuts(const QString& configDir);
-    ~LC_RepositoryShortcuts() override = default;
+    explicit LC_RepositoryKeymaps(const QString& configDir);
+    ~LC_RepositoryKeymaps() override = default;
 
     QJsonObject configToJson(const ShortcutsConfig& config) const override;
     bool configFromJson(const QJsonObject& json, ShortcutsConfig& config) const override;
-
-    // Automatic one-time migration of legacy shortcuts.lcsc / shortcuts.lcs XML files
-    void migrateLegacyShortcutsIfNeeded(const QString& legacyFolder);
 };
 
 #endif

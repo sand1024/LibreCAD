@@ -31,7 +31,6 @@
 #include "lc_proxy_style.h"
 #include "lc_settings_appearance.h"
 #include "lc_settings_commands_promotion.h"
-#include "shortcuts/lc_shortcuts_manager.h"
 
 QString LC_ActionTooltipBuilder::buildTooltip(const QAction* action,
                                               const bool showTitle,
@@ -50,7 +49,7 @@ QString LC_ActionTooltipBuilder::buildTooltip(const QAction* action,
         desc = lcAct->description().trimmed();
     }
     else {
-        desc = LC_ShortcutsManager::getPlainActionToolTip(action).trimmed();
+        desc = "";  // probably more intelligent handling of description may be used? especially if title is not shown
     }
 
     // Omit description if it merely duplicates the action title
@@ -104,7 +103,7 @@ QString LC_ActionTooltipBuilder::buildTooltip(const QAction* action,
 
     if (!metaParts.isEmpty()) {
         const QString marginTop = hasDesc ? "margin-top: 4px;" : "";
-        html += QString("<div style=\"%1 color: %2; font-size: small;\">%3</div>")
+        html += QString("<div style=\"%1 color: %2; font-size: small;\"><br>%3</div>")
                     .arg(marginTop, metaColor.name(), metaFooter);
     }
 

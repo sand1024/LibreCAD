@@ -31,38 +31,17 @@
 #include "lc_settings_app_state.h"
 #include "lc_settings_paths.h"
 #include "lc_shortcuts_storage.h"
+#include "lc_wait_cursor_guard.h"
 #include "rs_debug.h"
 
-LC_ShortcutsManager::LC_ShortcutsManager() = default;
+LC_ShortcutsManager::LC_ShortcutsManager(LC_RepositoryKeymaps* repository) : m_repository(repository) {
+};
 
-int LC_ShortcutsManager::saveShortcuts(
-    QMap<QString, LC_ShortcutInfo *> &shortcuts, QMap<QString, QAction *> &actionsMap) const {
-
-    applyShortcutsMapToActionsMap(shortcuts, actionsMap);
-    updateActionTooltips(actionsMap);
-
-    const QString defaultShortcutsFileName = getDefaultShortcutsFileName();
-
-    const int saveResult = LC_ShortcutsStorage::saveShortcuts(defaultShortcutsFileName, shortcuts.values(), false);
-    return saveResult;
-}
-
-int LC_ShortcutsManager::loadShortcuts(QMap<QString, QAction *> &actionsMap) const {
-    const QString defaultFileName = getDefaultShortcutsFileName();
-    auto shortcuts = QMap<QString, QKeySequence>();
-    const int loadResult = loadShortcuts(defaultFileName, &shortcuts);
-    if (loadResult == LC_ShortcutsStorage::OK){
-        applyKeySequencesMapToActionsMap(shortcuts, actionsMap);
-    }
-    updateActionTooltips(actionsMap);
-    return loadResult;
-}
 
 int LC_ShortcutsManager::loadActiveScheme(QMap<QString, QAction*>& actionsMap) {
-    init();
-
+    LC_WaitCursorGuard guard;
     const QString activeScheme = CFG_AppState::o_ActiveShortcutsScheme;
-    if (activeScheme.isEmpty() || activeScheme == DEFAULT_THEME_KEY) {
+    if (activeScheme.isEmpty() || activeScheme == CFG_AppState::DEFAULT_THEME_KEY) {
         // Fallback to native hardcoded QAction defaults
         updateActionTooltips(actionsMap);
         return LC_ShortcutsStorage::OK;
@@ -81,28 +60,9 @@ int LC_ShortcutsManager::loadActiveScheme(QMap<QString, QAction*>& actionsMap) {
     return LC_ShortcutsStorage::OK;
 }
 
-int LC_ShortcutsManager::saveShortcuts(const QString &fileName, const QList<LC_ShortcutInfo *> &shortcutsList) const {
-    const int result = LC_ShortcutsStorage::saveShortcuts(fileName, shortcutsList);
-    return result;
-}
-
-int LC_ShortcutsManager::loadShortcuts(const QString &filename, QMap<QString, QKeySequence> *result) const{
-   return LC_ShortcutsStorage::loadShortcuts(filename, result);
-}
-
 void LC_ShortcutsManager::updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const {
     LC_ActionTooltipBuilder::updateAllTooltips(actionsMap);
 }
-
-void LC_ShortcutsManager::init() const {
-    const QString baseFolder = getShortcutsMappingsFolder();
-    auto* self = const_cast<LC_ShortcutsManager*>(this);
-    if (self->m_repository == nullptr) {
-        self->m_repository = std::make_unique<LC_RepositoryShortcuts>(baseFolder + "/shortcuts");
-    }
-    self->m_repository->migrateLegacyShortcutsIfNeeded(baseFolder);
-}
-
 
 void LC_ShortcutsManager::applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo*> &shortcuts, QMap<QString, QAction *> &actionsMap) const{
     for (auto [key, shortcut] : shortcuts.asKeyValueRange()){
@@ -117,8 +77,8 @@ void LC_ShortcutsManager::applyShortcutsMapToActionsMap(QMap<QString, LC_Shortcu
     }
 }
 
-LC_RepositoryShortcuts* LC_ShortcutsManager::getRepository() const {
-    return m_repository.get();
+LC_RepositoryKeymaps* LC_ShortcutsManager::getRepository() const {
+    return m_repository;
 }
 
 void LC_ShortcutsManager::applyKeySequencesMapToActionsMap(QMap<QString, QKeySequence> &shortcuts, QMap<QString, QAction *> &actionsMap) const{
@@ -131,7 +91,7 @@ void LC_ShortcutsManager::applyKeySequencesMapToActionsMap(QMap<QString, QKeySeq
     }
 }
 
-void LC_ShortcutsManager::assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) const {
+void LC_ShortcutsManager::assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) {
     for (const LC_ShortcutInfo &a: shortcutsList){
         QAction* createdAction = map[a.getName()];
         if (createdAction != nullptr){
@@ -148,20 +108,6 @@ void LC_ShortcutsManager::assignShortcutsToActions(const QMap<QString, QAction *
     }
 }
 
-QString LC_ShortcutsManager::getPlainActionToolTip(const QAction* action){
-    if (action != nullptr) {
-        if (!action->shortcut().isEmpty()) {
-            QString tooltip = action->property(PROPERTY_SHORTCUT_BACKUP).toString();
-            if (tooltip.isEmpty()) {
-                tooltip = action->toolTip();
-            }
-            return tooltip;
-        }
-        return action->toolTip();
-    }
-    return "";
-}
-
 
 /* guesses a descriptive text from a text suited for a menu entry
    This is equivalent to QActions internal qt_strippedText()
@@ -174,14 +120,4 @@ QString LC_ShortcutsManager::strippedActionText(QString s) const{
         }
     }
     return s.trimmed();
-}
-
-QString LC_ShortcutsManager::getShortcutsMappingsFolder() const {
-    QString settingsDir = CFG_Paths::o_OtherSettingsDir;
-    return settingsDir;
-}
-
-QString LC_ShortcutsManager::getDefaultShortcutsFileName() const {
-    const QString path =  getShortcutsMappingsFolder() + "/shortcuts.lcsc";
-    return QDir::toNativeSeparators(path);
 }

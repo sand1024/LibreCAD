@@ -30,13 +30,17 @@
 #include "lc_shortcuts_storage.h"
 #include "rs_debug.h"
 
-LC_RepositoryShortcuts::LC_RepositoryShortcuts(const QString& configDir)
-    : LC_PresetRepositoryBase<ShortcutsConfig>(
-          configDir, SHORTCUTS_EXTENSION, SHORTCUTS_FILE_IDENTIFIER, "shortcuts_index.lcix") {
-    QDir().mkpath(configDir);
+namespace {
+    inline const QString SHORTCUTS_EXTENSION = ".lckm";
+    inline const QString SHORTCUTS_FILE_IDENTIFIER = "LibreCAD Config: Keymaps";
 }
 
-QJsonObject LC_RepositoryShortcuts::configToJson(const ShortcutsConfig& config) const {
+LC_RepositoryKeymaps::LC_RepositoryKeymaps(const QString& configDir)
+    : LC_PresetRepositoryBase<ShortcutsConfig>(
+          configDir, SHORTCUTS_EXTENSION, SHORTCUTS_FILE_IDENTIFIER, "keymap_index.lcix") {
+}
+
+QJsonObject LC_RepositoryKeymaps::configToJson(const ShortcutsConfig& config) const {
     QJsonObject root;
     QJsonObject shortcutsObj;
 
@@ -49,7 +53,7 @@ QJsonObject LC_RepositoryShortcuts::configToJson(const ShortcutsConfig& config) 
     return root;
 }
 
-bool LC_RepositoryShortcuts::configFromJson(const QJsonObject& json, ShortcutsConfig& config) const {
+bool LC_RepositoryKeymaps::configFromJson(const QJsonObject& json, ShortcutsConfig& config) const {
     config.shortcuts.clear();
 
     const QJsonObject shortcutsObj = json["shortcuts"].toObject();
@@ -60,36 +64,4 @@ bool LC_RepositoryShortcuts::configFromJson(const QJsonObject& json, ShortcutsCo
         }
     }
     return true;
-}
-
-void LC_RepositoryShortcuts::migrateLegacyShortcutsIfNeeded(const QString& legacyFolder) {
-    if (!getAvailableNames().isEmpty()) {
-        return; // Presets already exist; migration previously completed
-    }
-
-    QString legacyFilePath = QDir::toNativeSeparators(legacyFolder + "/shortcuts.lcsc");
-    if (!QFile::exists(legacyFilePath)) {
-        legacyFilePath = QDir::toNativeSeparators(legacyFolder + "/shortcuts.lcs");
-        if (!QFile::exists(legacyFilePath)) {
-            return;
-        }
-    }
-
-    QMap<QString, QKeySequence> legacyShortcuts;
-    const int loadResult = LC_ShortcutsStorage::loadShortcuts(legacyFilePath, &legacyShortcuts);
-
-    if (loadResult != LC_ShortcutsStorage::OK || legacyShortcuts.isEmpty()) {
-        return;
-    }
-
-    ShortcutsConfig migratedConfig;
-    migratedConfig.name = QObject::tr("Imported User Shortcuts");
-    migratedConfig.shortcuts = legacyShortcuts;
-
-    QString outKey;
-    if (save(migratedConfig.name, migratedConfig, outKey)) {
-        LC_ERR << "LC_ShortcutsRepository: Successfully migrated legacy XML shortcuts to JSON preset:" << outKey;
-        QFile::rename(legacyFilePath, legacyFilePath + ".migrated.bak");
-        initializeIndex();
-    }
 }

@@ -23,11 +23,27 @@
 
 #include "lc_action_group.h"
 
-LC_ActionGroup::LC_ActionGroup(QObject *parent, const QString &name, const QString& title, const QString &description, const char* iconName)
-    :QActionGroup(parent), m_name{name}, m_title{title}, m_description{description}{
-    setObjectName(name);
-    if (iconName != nullptr){
-        m_iconPath = QString::fromUtf8(iconName);
+#include "lc_action_group_manager.h"
+
+LC_ActionGroup::LC_ActionGroup(LC_ActionGroupManager* parent, const QString& name, const QString& title,
+                               const QString& description, const char* iconName, const QString& token)
+    : QActionGroup(parent)
+    , m_name(name)
+    , m_title(title)
+    , m_description(description)
+    , m_iconPath(iconName) {
+    if (!token.isEmpty()) {
+        m_token = token;
+    }
+    else {
+        QString cap = name;
+        if (!cap.isEmpty()) {
+            cap[0] = cap[0].toUpper();
+        }
+        m_token = QString("Menu:") + cap;
+    }
+
+    if (iconName != nullptr && iconName[0] != '\0') {
         m_icon = QIcon(iconName);
     }
 }
@@ -45,6 +61,12 @@ void LC_ActionGroup::setName(const QString &name) {
 
 QString LC_ActionGroup::getTitle() const {
     return m_title;
+}
+
+QString LC_ActionGroup::cleanTitle() const {
+    QString clean = m_title;
+    clean.remove('&');
+    return clean.trimmed();
 }
 
 const QString &LC_ActionGroup::getDescription() const {

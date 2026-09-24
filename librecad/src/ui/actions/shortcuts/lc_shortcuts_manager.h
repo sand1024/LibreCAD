@@ -28,30 +28,17 @@
 
 class LC_ShortcutsManager {
 public:
-    LC_ShortcutsManager();
+    LC_ShortcutsManager(LC_RepositoryKeymaps* repository);
     ~LC_ShortcutsManager() = default;
-    int saveShortcuts(QMap<QString, LC_ShortcutInfo*> &shortcuts, QMap<QString, QAction *> &actionsMap) const;
-    int saveShortcuts(const QString &fileName, const QList<LC_ShortcutInfo *> &shortcutsList) const;
-    void assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) const;
-    int loadShortcuts(const QString &filename, QMap<QString, QKeySequence> *result) const;
-    int loadShortcuts(QMap<QString, QAction *> &actionsMap) const;
-    QString getShortcutsMappingsFolder() const;
+    static void assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList);
     void updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const;
-    void init() const;
-    [[deprecated]]
-    static QString getPlainActionToolTip(const QAction* action);
     void applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo *> &shortcuts, QMap<QString, QAction *> &actionsMap) const;  // fixme - temporary, review
-
     int loadActiveScheme(QMap<QString, QAction*>& actionsMap);
-    LC_RepositoryShortcuts* getRepository() const;
+    LC_RepositoryKeymaps* getRepository() const;
 protected:
-
-    static constexpr auto PROPERTY_SHORTCUT_BACKUP = "tooltip.original";
-
-    std::unique_ptr<LC_RepositoryShortcuts> m_repository;
+    LC_RepositoryKeymaps* m_repository {nullptr};
     [[deprecated]]
     QString strippedActionText(QString s) const;
-    QString getDefaultShortcutsFileName() const;
     void applyKeySequencesMapToActionsMap(QMap<QString, QKeySequence> &shortcuts, QMap<QString, QAction *> &actionsMap) const;
 };
 #endif

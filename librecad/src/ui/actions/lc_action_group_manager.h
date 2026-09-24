@@ -27,10 +27,8 @@
 #include <QMap>
 #include <QObject>
 
-#include "lc_actions_naming_utils.h"
 #include "rs.h"
 
-class LC_ActionNamingServiceInterface;
 class LC_ShortcutsManager;
 class LC_ShortcutInfo;
 class LC_ActionGroup;
@@ -42,19 +40,20 @@ class LC_ActionGroupManager : public QObject {
     Q_OBJECT
 public:
     explicit LC_ActionGroupManager(QC_ApplicationWindow *parent);
-    const LC_ActionNamingServiceInterface* getNamingService() const;
     ~LC_ActionGroupManager() override;
+
+    const LC_ActionGroup* findGroup(const QString& nameOrToken) const;
+    QString displayName(const QString& tokenOrTitle, bool stripAmpersand = true) const;
+    QString iconPath(const QString& tokenOrTitle) const;
+    QString canonicalToken(const QString& groupName) const;
+    bool isSystemToken(const QString& token) const;
+    QList<QPair<QString, QString>> predefinedCategories() const;
 
     QList<LC_ActionGroup*> toolGroups() const;
     QMap<QString, LC_ActionGroup*> allGroups();
-    QList<LC_ActionGroup *> allGroupsList();
+    QList<LC_ActionGroup *> allGroupsList() const;
     void sortGroupsByName(QList<LC_ActionGroup*>& list);
-    void assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) const;
     int loadShortcuts(const QMap<QString, QAction *> &map);
-    int loadShortcuts(const QString &fileName, QMap<QString, QKeySequence> *result) const;
-    int saveShortcuts(QMap<QString, LC_ShortcutInfo *> shortcutsMap);
-    int saveShortcuts(const QList<LC_ShortcutInfo *> &shortcutsList, const QString &fileName) const;
-    QString getShortcutsMappingsFolder() const;
     QMap<QString, QAction *> &getActionsMap();
     QAction *getActionByName(const QString &name) const;
     bool hasActionGroup(const QString& categoryName) const;
@@ -66,18 +65,15 @@ public:
     void persist();
     LC_ActionGroup* getGroupByName(const QString &name) const;
     void addActionGroup(const QString &name, LC_ActionGroup *actionGroup, bool isToolsGroup);
-    LC_ShortcutsManager* getShortcutsManager() const {return m_shortcutsManager.get();}
 public slots:
     void toggleExclusiveSnapMode(bool state); // fixme - sand - refactor later!!! Should be out of generic AGM?
     void toggleTools(bool state) const;
-    void onOptionsChanged() const;
 private:
     QList<LC_ActionGroup *> m_toolsGroups;
     QMap<QString, LC_ActionGroup*> m_actionGroups;
     QMap<QString, QAction*> m_actionsMap; // should be initialized by action factory by call of loadShortcuts()
     QMap<int, QAction*> m_actionsByTypes;
     std::unique_ptr<LC_ShortcutsManager> m_shortcutsManager;
-    std::unique_ptr<LC_ActionNamingServiceInterface> m_namingService;
     QList<bool> m_snapState;
 };
 

@@ -66,18 +66,20 @@ protected:
 
     struct ActionGroupInfo {
         ActionGroupInfo(const QString& name, const QString& title, const QString& description,
-         const char* iconName, const bool toolGroup = true, const bool shortcutConfigurable = true,
-         const bool toolbarMenuConfigurable = true)
-         : name{name},
-           isToolGroup{toolGroup},
-           title{title},
-           description{description},
-           iconName{iconName},
-           isShortcutConfigurable{shortcutConfigurable},
-           isToolbarMenuConfigurable{toolbarMenuConfigurable} {
+                        const char* iconName, const bool toolGroup = true, const bool shortcutConfigurable = true,
+                        const bool toolbarMenuConfigurable = true, const QString& token = QString())
+            : name(name),
+              token(!token.isEmpty() ? token : QString("Menu:") + (!name.isEmpty() ? (QString(name[0].toUpper()) + name.mid(1)) : QString())),
+              isToolGroup(toolGroup),
+              title(title),
+              description(description),
+              iconName(iconName),
+              isShortcutConfigurable(shortcutConfigurable),
+              isToolbarMenuConfigurable(toolbarMenuConfigurable) {
         }
 
         QString name;
+        QString token;
         bool isToolGroup{false};
         QString title;
         QString description;
@@ -125,6 +127,7 @@ protected:
     void addActionsToMainWindow(const QMap<QString, QAction *> &map) const;
     void createActionGroups(const std::vector<ActionGroupInfo>& actionGroups, LC_ActionGroupManager* actionGroupManager) const;
     void fillActionsList(QList<QAction*>& list, const std::vector<const char*>& actionNames, const QMap<QString, QAction*>& map) const;
+    void fillActionsList(QList<QAction*>& list, QList<QString> actionNames, const QMap<QString, QAction*>& map) const;
 
     QG_ActionHandler* m_actionHandler = nullptr;
     bool m_usingTheme = false;

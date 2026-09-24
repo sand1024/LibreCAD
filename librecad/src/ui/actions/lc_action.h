@@ -27,6 +27,10 @@
 #include <QAction>
 #include <QElapsedTimer>
 
+namespace LC_ActionKeys {
+    inline const char* PROP_DESCRIPTION = "lc_description";
+}
+
 class LC_Action: public QAction {
     Q_OBJECT
 public:
@@ -48,6 +52,10 @@ public:
 
     QString description() const { return m_description; }
     void setDescription(const QString& desc) { m_description = desc; }
+
+    QString getClearedText() const {
+        return text().remove('&').trimmed();
+    }
 
 protected:
     bool event(QEvent*) override;

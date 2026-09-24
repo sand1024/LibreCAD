@@ -135,7 +135,7 @@ void LC_ActionFactoryBase::createActionGroups(const std::vector<ActionGroupInfo>
                                               LC_ActionGroupManager* actionGroupManager) const {
     for (const ActionGroupInfo& groupInfo : actionGroups) {
         const auto group = new LC_ActionGroup(actionGroupManager, groupInfo.name, groupInfo.title, groupInfo.description,
-                                              groupInfo.iconName);
+                                              groupInfo.iconName, groupInfo.token);
         group->setActionMappingsMayBeConfigured(groupInfo.isShortcutConfigurable);
         group->setToolbarMenuConfigurable(groupInfo.isToolbarMenuConfigurable);
         actionGroupManager->addActionGroup(groupInfo.name, group, groupInfo.isToolGroup);
@@ -145,6 +145,16 @@ void LC_ActionFactoryBase::createActionGroups(const std::vector<ActionGroupInfo>
 void LC_ActionFactoryBase::fillActionsList(QList<QAction*>& list, const std::vector<const char*>& actionNames,
                                            const QMap<QString, QAction*>& map) const {
     for (const char* actionName : actionNames) {
+        if (map.contains(actionName)) {
+            const auto action = map.value(actionName);
+            list << action;
+        }
+    }
+}
+
+void LC_ActionFactoryBase::fillActionsList(QList<QAction*>& list, QList<QString> actionNames,
+                                           const QMap<QString, QAction*>& map) const {
+    for (auto actionName : actionNames) {
         if (map.contains(actionName)) {
             const auto action = map.value(actionName);
             list << action;
