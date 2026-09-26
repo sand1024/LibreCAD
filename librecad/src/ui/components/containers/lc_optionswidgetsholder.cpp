@@ -22,9 +22,7 @@
 
 #include "lc_optionswidgetsholder.h"
 
-#include "lc_action.h"
-#include "lc_settings_appearance.h"
-#include "rs_debug.h"
+#include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 #include "ui_lc_optionswidgetsholder.h"
 

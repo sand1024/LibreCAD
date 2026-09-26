@@ -165,7 +165,14 @@ RS_Vector LC_EntityPropertiesEditorSupport::toWCS(const QLineEdit* leX, const QL
 }
 
 RS_Vector LC_EntityPropertiesEditorSupport::toWCSRaw(const QLineEdit* leX, const QLineEdit* leY, const RS_Vector& defs) const{
-    return RS_Vector(toDouble(leX->text(), 0, defs.x), toDouble(leY->text(), 0, defs.y));
+    // The two line edits cover x and y only; keep the z of the value being
+    // edited instead of resetting it to 0. An insert with an explicit z scale
+    // used to lose it whenever the scale was touched in the properties panel.
+
+    // fixme - sand - merge - if the issue is related to inserts z only, it's may be practical
+    // to support proper editor for inserts, instead of using general approach that will affect
+    // all coordinates???
+    return RS_Vector(toDouble(leX->text(), 0, defs.x), toDouble(leY->text(), 0, defs.y), defs.z);
 }
 
 double LC_EntityPropertiesEditorSupport::toWCSValue(const QLineEdit* ed, const double wcsDefault) const {

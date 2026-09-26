@@ -37,7 +37,6 @@
 QG_FontBox::QG_FontBox(QWidget* parent)
     : LC_ContentAdjustableComboBox(parent) {
 }
-
 /**
  * Initialisation (called from constructor or manually but only
  * once).

@@ -79,15 +79,17 @@ LC_ExtDataTag::~LC_ExtDataTag() {
     clear();
 }
 
-void LC_ExtDataTag::clear() const {
-    if (m_type == VAR) {
-        delete m_var;
-    }
-    else {
-        for (auto* tag : m_list) {
-            delete tag;
-        }
+void LC_ExtDataTag::clear() {
+    // VAR / REF / LAYERREF / BIN all hold an owned RS_Variable* in m_var
+    // (BIN constructs one for the group code). LIST owns nested tags only.
+    // Do not both loop-delete and qDeleteAll — that double-frees children
+    // and crashes DWG import on dimension EED (e.g. chicun).
+    if (m_type == LIST) {
         qDeleteAll(m_list);
+        m_list.clear();
+    } else {
+        delete m_var;
+        m_var = nullptr;
     }
 }
 
@@ -98,6 +100,14 @@ void LC_ExtDataTag::add(RS_Variable* v) {
 
 void LC_ExtDataTag::add(LC_ExtDataTag* tag) {
     m_list.push_back(tag);
+    m_type = LIST;
+}
+
+void LC_ExtDataTag::makeList() {
+    if (m_type == LIST)
+        return;
+    delete m_var;
+    m_var = nullptr;
     m_type = LIST;
 }
 
@@ -258,6 +268,45 @@ std::vector<LC_ExtDataAppData*>* LC_ExtEntityData::getAppData() {
 
 std::unique_ptr<LC_ExtEntityData> LC_ExtEntityData::clone() const {
     auto out = std::make_unique<LC_ExtEntityData>();
+    const auto cloneTag = [](auto&& self, LC_ExtDataTag* tag)
+        -> LC_ExtDataTag* {
+        if (tag == nullptr)
+            return nullptr;
+        if (tag->isAtomic()) {
+            auto* var = tag->var();
+            if (var == nullptr)
+                return nullptr;
+            const int code = var->getCode();
+            if (tag->isBinary())
+                return new LC_ExtDataTag(code, tag->bytes());
+            if (tag->isLayerRef())
+                return new LC_ExtDataTag(code, var->getString(), false, true);
+            if (tag->isRef())
+                return new LC_ExtDataTag(code, var->getString(), true);
+            switch (var->getType()) {
+            case RS2::VariableInt:
+                return new LC_ExtDataTag(code, var->getInt());
+            case RS2::VariableDouble:
+                return new LC_ExtDataTag(code, var->getDouble());
+            case RS2::VariableString:
+                return new LC_ExtDataTag(code, var->getString());
+            case RS2::VariableVector:
+                return new LC_ExtDataTag(code, var->getVector());
+            case RS2::VariableVoid:
+                return nullptr;
+            }
+            return nullptr;
+        }
+
+        auto* copy = new LC_ExtDataTag();
+        copy->makeList();
+        for (auto* child : *tag->list()) {
+            if (auto* childCopy = self(self, child))
+                copy->add(childCopy);
+        }
+        return copy;
+    };
+
     for (auto* app : m_appData) {
         if (app == nullptr)
             continue;
@@ -267,40 +316,8 @@ std::unique_ptr<LC_ExtEntityData> LC_ExtEntityData::clone() const {
                 continue;
             auto* dstGroup = dstApp->addGroup(group->getName());
             for (auto* tag : *group->getTagsList()) {
-                if (tag == nullptr || !tag->isAtomic())
-                    continue;
-                auto* var = tag->var();
-                if (var == nullptr)
-                    continue;
-                int code = var->getCode();
-                if (tag->isBinary()) {
-                    dstGroup->add(code, tag->bytes());
-                    continue;
-                }
-                if (tag->isLayerRef()) {
-                    dstGroup->addLayerRef(code, var->getString());
-                    continue;
-                }
-                if (tag->isRef()) {
-                    dstGroup->addRef(code, var->getString());
-                    continue;
-                }
-                switch (var->getType()) {
-                    case RS2::VariableInt:
-                        dstGroup->add(code, var->getInt());
-                        break;
-                    case RS2::VariableDouble:
-                        dstGroup->add(code, var->getDouble());
-                        break;
-                    case RS2::VariableString:
-                        dstGroup->add(code, var->getString());
-                        break;
-                    case RS2::VariableVector:
-                        dstGroup->add(code, var->getVector());
-                        break;
-                    case RS2::VariableVoid:
-                        break;
-                }
+                if (auto* copy = cloneTag(cloneTag, tag))
+                    dstGroup->add(0, copy);
             }
         }
     }

@@ -372,6 +372,9 @@ void LC_LayerTreeWidget::activateLayer(RS_Layer *layer) const {
     }
 
     m_graphic->activateLayer(layer, false);
+    if (m_graphic->getActiveLayer() != layer) {
+        return;
+    }
     update();
     m_layerTreeView->viewport()->update();
 
@@ -827,10 +830,10 @@ void LC_LayerTreeWidget::hideOtherThanSelectedLayers()  {
             RS_Layer* layer = layersToShow.at(i);
             layersToHide.removeAll(layer);
         }
-        if (count > 0){
-            m_graphic->activateLayer(layersToShow.at(0), false);
-        }
         manageLayersVisibilityFlag(layersToShow, layersToHide, false);
+        if (count > 0){
+            activateLayer(layersToShow.at(0));
+        }
     }
 }
 /**
@@ -1018,7 +1021,6 @@ void LC_LayerTreeWidget::layerEdited(RS_Layer *){
 void LC_LayerTreeWidget::layerRemoved(RS_Layer *){
     RS_DEBUG->print("LC_LayerTreeWidget::layerRemoved()");
     update();
-    activateLayer(m_layerList->at(0));
 }
 
 void LC_LayerTreeWidget::layerToggled(RS_Layer *){
@@ -1345,7 +1347,14 @@ void LC_LayerTreeWidget::removeActiveLayers(){
         if (activeLayer != nullptr){
             LC_LayerTreeItem *currentItem = m_layerTreeModel->getItemForLayer(activeLayer);
             if (currentItem != nullptr){
-                doRemoveLayersFromSource(currentItem, false);
+                if (removeWithChildren) {
+                    doRemoveLayersFromSource(currentItem, false);
+                }
+                else {
+                    QList<LC_LayerTreeItem*> layersToRemove;
+                    layersToRemove.push_back(currentItem);
+                    doRemoveLayerItems(layersToRemove);
+                }
             }
         }
     }
@@ -1486,8 +1495,6 @@ void LC_LayerTreeWidget::manageLayersVisibilityFlag(const QList<RS_Layer *> &lay
         } else {
             m_graphic->setFreezeLayers(layersToEnable, layersToDisable);
         }
-        m_document->updateInserts();
-        m_document->calculateBorders();
     }
 }
 /**
@@ -1811,10 +1818,12 @@ void LC_LayerTreeWidget::invokeLayerEditOrRenameDialog(LC_LayerTreeItem *pItem, 
     auto dlg = LC_LayerDialogEx(this, QMessageBox::tr("Layer DialogEx"), m_layerTreeModel, pItem, m_layerList);
 
     RS_Layer* layer = nullptr;
+    int originalLayerType = RS_Layer::NOT_DEFINED_LAYER_TYPE;
     if (edit){
         dlg.setMode(LC_LayerDialogEx::MODE_EDIT_LAYER);
         layer = pItem->getLayer();
-        dlg.setLayerType(pItem->getLayerType());
+        originalLayerType = pItem->getLayerType();
+        dlg.setLayerType(originalLayerType);
         dlg.setConstruction(layer->isConstruction());
     }
     else{
@@ -1840,8 +1849,11 @@ void LC_LayerTreeWidget::invokeLayerEditOrRenameDialog(LC_LayerTreeItem *pItem, 
           // handle rename
           const QString layerName = dlg.getLayerName();
           const int editedLayerType = dlg.getEditedLayerType();
-          if (originalName != layerName || editedLayerType != pItem->getLayerType()){ // layer is also renamed
-              m_layerTreeModel->renamePrimaryLayer(pItem, layerName, editedLayerType);
+          if (originalName != layerName || editedLayerType != originalLayerType){ // layer is also renamed
+              LC_LayerTreeItem *currentLayerItem = m_layerTreeModel->getItemForLayer(layer);
+              if (currentLayerItem != nullptr){
+                  m_layerTreeModel->renamePrimaryLayer(currentLayerItem, layerName, editedLayerType);
+              }
           }
           m_layerList->fireLayerEdited(nullptr);
       }

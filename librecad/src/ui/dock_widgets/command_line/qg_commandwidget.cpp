@@ -37,6 +37,7 @@
 #include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
+#include "rs_commands.h"
 #include "rs_settings.h"
 
 
@@ -261,6 +262,11 @@ void QG_CommandWidget::tabPressed() const {
         else if (!reducedChoices.isEmpty()) {
             const QString proposal = getRootCommand(reducedChoices, typed);
             appendHistory(reducedChoices.join(", "));
+            // fixme - sand - merge - rework this!!! And completion
+            const QString aliasFile = RS_Commands::getAliasFile();
+            if (!aliasFile.isEmpty()) {
+                appendHistory(tr("Command Alias File: %1").arg(aliasFile));
+            }
             leCommand->setText(proposal);
         }
     }
@@ -270,6 +276,11 @@ void QG_CommandWidget::escape() const {
     //leCommand->clearFocus();
     if (m_actionHandler != nullptr) {
         m_actionHandler->command(QString(tr("escape", "escape, go back from action steps")));
+
+         // fixme - sand - merge - review escape check (as in action handler)
+        //  m_actionHandler->command(RS_Commands::localizedCommand("escape", "escape, go back from action steps",
+        // "QG_ActionHandler"));
+    }
     }
 }
 

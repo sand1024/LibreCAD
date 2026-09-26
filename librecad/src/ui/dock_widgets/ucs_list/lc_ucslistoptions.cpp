@@ -57,7 +57,7 @@ void LC_UCSListOptions::save() const{
         o_UCSHighlightBlinkCount = highlightBlinksCount;
         o_UCSHighlightBlinkDelay = highlightBlinksDelay;
     }
-    LC_GROUP_END();    
+    LC_GROUP_END();
     {
         using namespace CFG_WidgetUCSList;
         o_ShowTooltip= showViewInfoToolTip;

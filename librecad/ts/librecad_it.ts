@@ -39,6 +39,118 @@
     </message>
 </context>
 <context>
+    <name>CustomToolbarCreator</name>
+    <message>
+        <source>Frame</source>
+        <translation type="vanished">Riquadro</translation>
+    </message>
+    <message>
+        <source>&gt;</source>
+        <translation type="vanished">&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;</source>
+        <translation type="vanished">&lt;</translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation type="vanished">+</translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="vanished">-</translation>
+    </message>
+    <message>
+        <source>input a name and then press +</source>
+        <translation type="vanished">Inserire un nome e premere +</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">Salva</translation>
+    </message>
+</context>
+<context>
+    <name>CustomWidgetCreator</name>
+    <message>
+        <source>Frame</source>
+        <translation type="vanished">Riquadro</translation>
+    </message>
+    <message>
+        <source>-&gt;</source>
+        <translation type="vanished">-&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;-</source>
+        <translation type="vanished">&lt;-</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">Salva</translation>
+    </message>
+</context>
+<context>
+    <name>DlgParabola</name>
+    <message>
+        <source>Parabola</source>
+        <translation type="vanished">Parabola</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Points on Spline</source>
+        <translation type="vanished">Punti su Spline</translation>
+    </message>
+    <message>
+        <source>Control Points</source>
+        <translation type="vanished">Punti di controllo</translation>
+    </message>
+</context>
+<context>
+    <name>DlgSplinePoints</name>
+    <message>
+        <source>SplinePoints</source>
+        <translation type="vanished">Punti spline</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">Chiuso</translation>
+    </message>
+    <message>
+        <source>If selected, spline points are used</source>
+        <translation type="vanished">Se selezionato, vengono utilizzati punti spline</translation>
+    </message>
+    <message>
+        <source>Spline Points</source>
+        <translation type="vanished">Punti di Spline</translation>
+    </message>
+    <message>
+        <source>If selected, control points are used</source>
+        <translation type="vanished">Se selezionato, vengono utilizzati punti di controllo</translation>
+    </message>
+    <message>
+        <source>Control Points</source>
+        <translation type="vanished">Punti di controllo</translation>
+    </message>
+    <message>
+        <source>Points on Spline</source>
+        <translation type="vanished">Punti su Spline</translation>
+    </message>
+</context>
+<context>
     <name>LC_AbstractActionDrawLine</name>
     <message>
         <location filename="../src/actions/drawing/draw/line/lc_abstractactiondrawline.cpp" line="64"/>
@@ -1180,7 +1292,7 @@ la distanza fra i punti=%2 è maggiore del diametro=%3</translation>
         <translation type="unfinished">Cannot undo: Inizio della storia raggiunto</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line.cpp" line="424"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line.cpp" line="430"/>
         <source>Cannot redo: End of history reached</source>
         <translation type="unfinished">Cannot redo: Fine della storia raggiunto</translation>
     </message>
@@ -1723,70 +1835,70 @@ o [%2]</translation>
 <context>
     <name>LC_ActionDrawLineSnake</name>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="500"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="504"/>
         <source>Specify first point</source>
         <translation>Specificare il primo punto</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="509"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="513"/>
         <source>Specify direction (x or y) or [%1]</source>
         <translation>Specificare la direzione (x o y) o [%1]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="523"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="528"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="527"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="532"/>
         <source>Specify distance (%1) or [%2]</source>
         <translation>Specificare la distanza (%1) o [%2]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="147"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="523"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="148"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="527"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="130"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="131"/>
         <source>Point</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="134"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="135"/>
         <source>Angle</source>
         <translation>Angolo</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="141"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="528"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="142"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="532"/>
         <source>Y</source>
         <translation>SÌ</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="170"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="171"/>
         <source>Direction:</source>
         <translation>Direzione:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="534"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="538"/>
         <source>Specify distance (%1 deg) or [%2]</source>
         <translation>Specificare la distanza (%1 deg) o [%2]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="549"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="553"/>
         <source>Specify angle or [%1]</source>
         <translation>Specificare l&apos;angolo o [%1]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="561"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="565"/>
         <source>Specify point or [%1]</source>
         <translation>Specificare il punto o [%1]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="611"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="621"/>
         <source>Cannot undo: Begin of history reached</source>
         <translation>Cannot undo: Inizio della storia raggiunto</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="651"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="666"/>
         <source>Cannot redo: End of history reached</source>
         <translation>Cannot redo: Fine della storia raggiunto</translation>
     </message>
@@ -5569,7 +5681,7 @@ Punto: (%8 %, %9)</translation>
 <context>
     <name>LC_ActionModifyEntity</name>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_entity.cpp" line="229"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_entity.cpp" line="223"/>
         <source>Click on entity to modify</source>
         <translation type="unfinished">Fare clic su entità per modificare</translation>
     </message>
@@ -5870,7 +5982,7 @@ Punto: (%8 %, %9)</translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/modify/lc_action_modify_offset.cpp" line="253"/>
-        <source>Select line, polyline, circle or arc to create offset</source>
+        <source>Select line, polyline, ellipse, circle or arc to create offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6277,22 +6389,22 @@ Punto: (%8 %, %9)</translation>
 <context>
     <name>LC_ActionModifyTrimAmount</name>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="198"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="200"/>
         <source>No entity found.</source>
         <translation type="unfinished">Nessuna entità trovata.</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="205"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="207"/>
         <source>The chosen Entity is not an atomic entity or cannot be trimmed.</source>
         <translation type="unfinished">L&apos;oggetto scelto non è un oggetto elementare o non può essere raccordato.</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="230"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="232"/>
         <source>Not a valid expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="265"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="267"/>
         <source>Select line/arc to trim OR enter length value:</source>
         <translation type="unfinished">Selezionare la linea/arc per tagliare O inserire il valore della lunghezza:</translation>
     </message>
@@ -6924,17 +7036,17 @@ Punto: (%8 %, %9)</translation>
 <context>
     <name>LC_ActionSplineAppendPoint</name>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="226"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="258"/>
         <source>Select spline or spline points entity</source>
         <translation>Selezionare l&apos;entità punti spline o spline</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="230"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="262"/>
         <source>Specify first control point</source>
         <translation>Specificare il primo punto di controllo</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="234"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="266"/>
         <source>Specify control point</source>
         <translation>Specificare il punto di controllo</translation>
     </message>
@@ -6942,7 +7054,7 @@ Punto: (%8 %, %9)</translation>
 <context>
     <name>LC_ActionSplineExplode</name>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp" line="232"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp" line="234"/>
         <source>Select spline or spline points entity</source>
         <translation>Selezionare l&apos;entità punti spline o spline</translation>
     </message>
@@ -7181,21 +7293,27 @@ Alcuni errori si sono verificati durante la generazione XML.</translation>
         <source>Shortcuts mappings were not imported.
 
  Provided file does exists, however it does not contain LibreCAD shortcuts mapping.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mappature delle scorciatoie non sono state importate.
+
+Il file fornito esiste ma non contiene mappature delle scorciatoie di LibreCAD.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="195"/>
         <source>Shortcuts mappings were not imported. 
 
 XML parsing error occurred during file processing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mappature delle scorciatoie non sono state importate. 
+
+Si è verificato un errore di analisi XML durante l&apos;elaborazione del file.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="214"/>
         <source>Shortcuts mappings were not imported. 
 
 Some error occurred during XML generation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mappature delle scorciatoie non sono state importate. 
+
+Si è verificato un errore durante la generazione XML.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="268"/>
@@ -8997,6 +9115,13 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
     </message>
 </context>
 <context>
+    <name>LC_CustomToolbar</name>
+    <message>
+        <source>Add or Remove Action</source>
+        <translation type="vanished">Aggiungi o rimuovi azione</translation>
+    </message>
+</context>
+<context>
     <name>LC_DeviceOptions</name>
     <message>
         <location filename="../src/ui/dialogs/settings/options_device/lc_deviceoptions.ui" line="14"/>
@@ -9022,102 +9147,102 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
 <context>
     <name>LC_DimArrowRegistry</name>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="196"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="198"/>
         <source>Closed Filled</source>
         <translation>Riempito chiuso</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="199"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="201"/>
         <source>Dot</source>
         <translation>Do</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="200"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="202"/>
         <source>Dot Small</source>
         <translation>Punto piccolo</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="201"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="203"/>
         <source>Dot Blank</source>
         <translation>Punto vuoto</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="202"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="204"/>
         <source>Origin Indicator</source>
         <translation>Indicatore di origine</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="203"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="205"/>
         <source>Origin Indicator 2</source>
         <translation>Indicatore di origine 2</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="204"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="206"/>
         <source>Open</source>
         <translation>Aperto</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="205"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="207"/>
         <source>Right Angle</source>
         <translation>Angolo destro</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="206"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="208"/>
         <source>Open 30</source>
         <translation>Aperto 30</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="207"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="209"/>
         <source>Closed</source>
         <translation>Chiuso</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="208"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="210"/>
         <source>Dot Small Blank</source>
         <translation>Piccola coperta</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="209"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="211"/>
         <source>None</source>
         <translation>Nessuno</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="210"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="212"/>
         <source>Oblique</source>
         <translation>Oblique</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="211"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="213"/>
         <source>Box Filled</source>
         <translation>Scatola riempita</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="212"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="214"/>
         <source>Box Blank</source>
         <translation>Scatola coperta</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="213"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="215"/>
         <source>Closed Blank</source>
         <translation>Coperto chiuso</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="214"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="216"/>
         <source>Datum Filled</source>
         <translation>Dato riempito</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="215"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="217"/>
         <source>Datum Blank</source>
         <translation>Dato vuoto</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="216"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="218"/>
         <source>Integral</source>
         <translation>Integrazione</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="217"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="219"/>
         <source>Architecture Tick</source>
         <translation>Architettura Tick</translation>
     </message>
@@ -9354,6 +9479,45 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <location filename="../src/ui/dialogs/main/lc_dlgabout.cpp" line="105"/>
         <source>System</source>
         <translation>Sistema</translation>
+    </message>
+</context>
+<context>
+    <name>LC_DlgDimOrdinate</name>
+    <message>
+        <source>Ordinate Dimension</source>
+        <translation type="vanished">Ordinare la dimensione</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">Livello di dimensione</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Attributi della penna</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Ordinate</source>
+        <translation type="vanished">Ordinazione</translation>
+    </message>
+    <message>
+        <source>X</source>
+        <translation type="vanished">X</translation>
+    </message>
+    <message>
+        <source>Y</source>
+        <translation type="vanished">Y</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
     </message>
 </context>
 <context>
@@ -9849,7 +10013,9 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <source>Sets the spacing between the dimension lines of a baseline dimension. Enter a distance. For information about baseline dimensions, see DIMBASELINE. (DIMDLI system variable)
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta la spaziatura tra le linee di quota di una quota di base. Inserire una distanza. Per informazioni sulle quote di base, vedere DIMBASELINE. (variabile di sistema DIMDLI)
+
+</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.ui" line="577"/>
@@ -10651,14 +10817,14 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Supprime la porzione di pollici di una dimensione di piedi e pollici quando la distanza è un numero integrale di piedi (variabile di sistema DIMALTTZ).</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="351"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="354"/>
         <source>Select Block for arrow</source>
         <translation>Selezionare Blocco per freccia</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1135"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1136"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1137"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1138"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1139"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1140"/>
         <source>User Block...</source>
         <translation>Blocco utente...</translation>
     </message>
@@ -10990,74 +11156,88 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Livello di entità</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="148"/>
         <source>Pen</source>
         <translation>Penna</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="172"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="175"/>
         <source>Point Properties</source>
         <translation>Proprietà del punto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="178"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="181"/>
         <source>Line Properties</source>
         <translation>Proprietà della linea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="184"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="187"/>
         <source>Arc Properties</source>
         <translation>Proprietà dell&apos;arco</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="190"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="193"/>
         <source>Circle Properties</source>
         <translation>Proprietà del cerchio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="199"/>
         <source>Ellipse Properties</source>
         <translation>Proprietà di Ellipse</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="202"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="205"/>
         <source>Hyperbola Properties</source>
         <translation>Proprietà Hyperbola</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="208"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="211"/>
         <source>Polyline Properties</source>
         <translation>Proprietà in polimero</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="214"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="217"/>
         <source>Parabola Properties</source>
         <translation>Proprietà di Parabola</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="220"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="223"/>
         <source>Spline Properties</source>
         <translation>Proprietà di Spline</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="226"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="229"/>
         <source>Spline Points Properties</source>
         <translation>Proprietà dei punti Spline</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="232"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="235"/>
         <source>Image Properties</source>
         <translation>Proprietà dell&apos;immagine</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="238"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="241"/>
         <source>Insert Properties</source>
         <translation>Inserisci le proprietà</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="246"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="247"/>
+        <source>Text Properties</source>
+        <translation>Proprietà del testo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="253"/>
+        <source>MText Properties</source>
+        <translation>Proprietà del testo multiplo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="259"/>
+        <source>Hatch Properties</source>
+        <translation>Proprietà del tratteggio</translation>
+    </message>
+    <message>
         <source>Properties?</source>
-        <translation>Proprietà?</translation>
+        <translation type="vanished">Proprietà?</translation>
     </message>
 </context>
 <context>
@@ -11377,162 +11557,162 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Attività</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="102"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="103"/>
         <source>Menu Assignment - &quot;%1&quot; Menu</source>
         <translation>Menu Assegnazione - &quot;%1&quot; Menu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="106"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="107"/>
         <source>Either Absent or Any Entity</source>
         <translation>O Absent o qualsiasi entrata</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="107"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="108"/>
         <source>Absent Entity</source>
         <translation>Imprenditoria</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="108"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="109"/>
         <source>Any Entity</source>
         <translation>Qualsiasi appartenenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="109"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="110"/>
         <source>Line</source>
         <translation>Linea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="110"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="111"/>
         <source>Circle</source>
         <translation>Circolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="111"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="112"/>
         <source>Arc</source>
         <translation>Arc</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="112"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="113"/>
         <source>Polyline</source>
         <translation>Polimero</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="113"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="114"/>
         <source>Spline</source>
         <translation>Spline</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="114"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="115"/>
         <source>Spline By Points</source>
         <translation>Spline per punti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="115"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="116"/>
         <source>Ellipse</source>
         <translation>Ellipse</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="116"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="117"/>
         <source>Point</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="117"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="118"/>
         <source>Parabola</source>
         <translation>Parabola</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="118"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="119"/>
         <source>Image</source>
         <translation>Immagine</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="119"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="120"/>
         <source>Hatch</source>
         <translation>Hatch</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="120"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="121"/>
         <source>Insert</source>
         <translation>Inserto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="121"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="122"/>
         <source>Dimension Linear</source>
         <translation>Dimensione lineare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="122"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="123"/>
         <source>Dimension Aligned</source>
         <translation>Dimensione allineata</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="123"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="124"/>
         <source>Dimension Diametric</source>
         <translation>Diametrica della dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="124"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="125"/>
         <source>Dimension Radial</source>
         <translation>Quotatura radiale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="125"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="126"/>
         <source>Dimension Ordinate</source>
         <translation>Ordinazione di Dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="126"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="127"/>
         <source>Dimension Arc</source>
         <translation>Arco di dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="127"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="128"/>
         <source>Leader</source>
         <translation>Leader</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="230"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="231"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Entity Properties&apos;.</source>
         <translation>NOTA: l&apos;assegnazione del menu verrà ignorata. E &apos;riservato per &apos;Proprietà Proprietà&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="233"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="234"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Entity Select&apos;.</source>
         <translation>NOTA: l&apos;assegnazione del menu verrà ignorata. È riservato a &apos;Entity Select&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="236"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="237"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Pan&apos;.</source>
         <translation>NOTA: l&apos;assegnazione del menu verrà ignorata. È riservato a &apos;Pan&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="239"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="240"/>
         <source>NNOTE: Menu assignment will be ignored. It is reserved for &apos;Select Contour&apos;.</source>
         <translation>NNOTE: L&apos;assegnazione del menu sarà ignorata. È riservato a &apos;Select Contour&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="242"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="243"/>
         <source>NOTE: This combination is reserved for default context menu and may prevent invocation of it!</source>
         <translation>NOTA: Questa combinazione è riservata al menu contestuale predefinito e può impedire l&apos;invocazione di esso!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="245"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="246"/>
         <source>NOTE: This combination is reserved for Pan! Menu assignment will be ignored</source>
         <translation>NOTA: Questa combinazione è riservata per Pan! L&apos;assegnazione del menu sarà ignorata</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="250"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="251"/>
         <source>NOTE: This shortcut is already assigned to &quot;%1&quot; menu and that menu will be unassigned on save!</source>
         <translation>NOTA: Questa scorciatoia è già assegnata al menu &quot;%1&quot; e quel menu non sarà assegnato a salvare!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="254"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="255"/>
         <source>Shortcut is valid to use.</source>
         <translation>La scorciatoia è valida da usare.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="259"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="260"/>
         <source>Note: make sure that selected button is supported by your mouse device.</source>
         <translation>Nota: assicurarsi che il pulsante selezionato sia supportato dal dispositivo del mouse.</translation>
     </message>
@@ -11602,9 +11782,13 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="vanished">Suggerimento con i dettagli della vista per gli elementi della tabella</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="75"/>
         <source>If checked, the column with details of view&apos;s coordinate system will be show.</source>
-        <translation>Se selezionata, verrà visualizzata la colonna con i dettagli del sistema di coordinate della vista.</translation>
+        <translation type="vanished">Se selezionata, verrà visualizzata la colonna con i dettagli del sistema di coordinate della vista.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="75"/>
+        <source>If checked, the column with details of view&apos;s coordinate system will be shown.</source>
+        <translation>Se selezionato, verrà visualizzata la colonna con i dettagli del sistema di coordinate della vista.</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="85"/>
@@ -11652,8 +11836,17 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="147"/>
+        <source>On double-click:</source>
+        <translation>Al doppio clic:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="197"/>
+        <source>Restore view on single click of table item</source>
+        <translation>Ripristina vista con clic singolo sull&apos;elemento della tabella</translation>
+    </message>
+    <message>
         <source>On double-click on table item</source>
-        <translation>Su doppio click sul tavolo</translation>
+        <translation type="vanished">Su doppio click sul tavolo</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="154"/>
@@ -11690,9 +11883,8 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Se abilitato, fare clic sulla voce tabella di visualizzazione ripristinare la vista. Altrimenti, la vista dovrebbe essere ripristinata esplicitamente.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="197"/>
         <source>Restore view on single click by table item</source>
-        <translation>Ripristinare la vista su un solo clic per voce della tabella</translation>
+        <translation type="vanished">Ripristinare la vista su un solo clic per voce della tabella</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="95"/>
@@ -11742,8 +11934,8 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
     <name>LC_DlgNewDimStyle</name>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.ui" line="14"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="141"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="142"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="146"/>
         <source>New Dimension Style</source>
         <translation>Nuovo stile di dimensione</translation>
     </message>
@@ -11813,12 +12005,12 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Nome di nuovo stile di dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="141"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="142"/>
         <source>Empty name of style is not allowed.</source>
         <translation>Il nome vuoto di stile non è consentito.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="146"/>
         <source>Provided name of dimension style (%1) is not unique! Please enter another one.</source>
         <translation>Il nome fornito di stile di dimensione (%1) non è unico! Inseriscine un&apos;altra.</translation>
     </message>
@@ -12002,6 +12194,17 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <location filename="../src/ui/dialogs/creators/lc_dlg_new_widget.cpp" line="70"/>
         <source>Name is not unique. Please enter unique name.</source>
         <translation>Il nome non è unico. Si prega di inserire il nome unico.</translation>
+    </message>
+</context>
+<context>
+    <name>LC_DlgParabola</name>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+    <message>
+        <source>Parabola control points cannot be collinear</source>
+        <translation type="vanished">I punti di controllo Parabola non possono essere collinari</translation>
     </message>
 </context>
 <context>
@@ -12417,6 +12620,13 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
     </message>
 </context>
 <context>
+    <name>LC_DlgSplinePoints</name>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
     <name>LC_DlgTolerance</name>
     <message>
         <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="14"/>
@@ -12599,12 +12809,22 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Se abilitato, fare clic sull&apos;elemento tabella applica il sistema di coordinate. In caso contrario, il sistema di coordinate dovrebbe essere applicato esplicitamente.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="206"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="156"/>
+        <source>Restore UCS on single click of table item</source>
+        <translation>Ripristina UCS con clic singolo sull&apos;elemento della tabella</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="163"/>
+        <source>On double-click:</source>
+        <translation>Al doppio clic:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="213"/>
         <source>Defines delay between UCS marker blinks.</source>
         <translation>Definisce il ritardo tra un lampeggio e l&apos;altro del marcatore UCS.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="242"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="249"/>
         <source>Defines amount of blinks of UCS marker for UCS highlighting.</source>
         <translation>Definisce il numero di lampeggi del marcatore UCS per l&apos;evidenziazione UCS.</translation>
     </message>
@@ -12613,9 +12833,8 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="vanished">Definisce quale azione deve essere eseguita su doppio clic sulla voce della tabella.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="156"/>
         <source>Restore UCS on single click by table item</source>
-        <translation>Ripristinare UCS su singolo clic per voce della tabella</translation>
+        <translation type="vanished">Ripristinare UCS su singolo clic per voce della tabella</translation>
     </message>
     <message>
         <source>If checked, the column with icon for type of UCS will be shown in the table. </source>
@@ -12630,12 +12849,12 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="vanished">Definisce come la finestra di visualizzazione del disegno dovrebbe essere regolata dopo l&apos;applicazione UCS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="190"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="197"/>
         <source>On double-click on table item</source>
         <translation>Su doppio click sul tavolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="163"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="170"/>
         <source>Defines which action should be performed on double click on the item of the table.</source>
         <translation>Definisce l&apos;azione da eseguire quando si fa doppio clic su un elemento della tabella.</translation>
     </message>
@@ -12655,22 +12874,22 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="167"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="174"/>
         <source>Do Nothing</source>
         <translation>Niente</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="172"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="179"/>
         <source>Edit UCS</source>
         <translation>Modificare UCS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="177"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="184"/>
         <source>Apply UCS</source>
         <translation>Applicare UCS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="182"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="189"/>
         <source>Highlight UCS</source>
         <translation>UCS di alta qualità</translation>
     </message>
@@ -12680,7 +12899,7 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Come UCS è applicato, eseguire</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="200"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="207"/>
         <source>UCS Highlight</source>
         <translation>Evidenziazione UCS</translation>
     </message>
@@ -12689,17 +12908,17 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="vanished">Definisce il ritardo tra i lampi del marcatore UCS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="209"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="216"/>
         <source> ms</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="228"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="235"/>
         <source>Blink:</source>
         <translation>Blink:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="235"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="242"/>
         <source>Blink Delay:</source>
         <translation>Ritardo lampeggio:</translation>
     </message>
@@ -12708,7 +12927,7 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation type="vanished">Definisce la quantità di blink di marcatore UCS per l&apos;evidenziazione UCS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="245"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="252"/>
         <source> times</source>
         <translation>volte</translation>
     </message>
@@ -12975,120 +13194,120 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <translation>Top</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="60"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="61"/>
         <source>Destroy Menu</source>
         <translation>Elimina menu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="61"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="62"/>
         <source>New Menu</source>
         <translation>Nuovo menu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="63"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="64"/>
         <source>Define a custom menu by specifying the set of used actions. Menu will be shown as a popup in the drawing area as soon as menu invocation shortcut is invoked. </source>
         <translation>Definire un menu personalizzato specificando l&apos;insieme delle azioni utilizzate. Menu sarà mostrato come un popup nell&apos;area di disegno non appena il menu invocazione scorciatoia è invocato.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="58"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="59"/>
         <source>Custom Menu Creator</source>
         <translation>Creatore di menu personalizzato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="59"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="60"/>
         <source>Menu Name:</source>
         <translation>Nome del menu:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="62"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="63"/>
         <source>Name of Custom Nenu</source>
         <translation>Nome del prodotto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="68"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="69"/>
         <source>Export custom menus setup to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="69"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="70"/>
         <source>Import custom  menus setup from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="72"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="73"/>
         <source>Custom Toolbar Creator</source>
         <translation>Creatore della barra degli strumenti personalizzato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="73"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="74"/>
         <source>Toolbar Name:</source>
         <translation>Nome della barra degli strumenti:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="74"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="75"/>
         <source>Destroy toolbar</source>
         <translation>Barra degli strumenti di distruzione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="75"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="76"/>
         <source>New Toolbar</source>
         <translation>Nuova barra degli strumenti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="76"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="77"/>
         <source>Name of Custom Toolbar</source>
         <translation>Nome della barra degli strumenti personalizzata</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="77"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="78"/>
         <source>Define a custom toolbar by specifying the set of used actions. Once created, the custom toolbar will behave exactly as built-in ones.</source>
         <translation>Definire una barra degli strumenti personalizzata specificando l&apos;insieme delle azioni utilizzate. Una volta creato, la barra degli strumenti personalizzata si comporta esattamente come quelli incorporati.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="86"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="87"/>
         <source>Export custom toolbars setup to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="87"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="88"/>
         <source>Import custom  toolbars setup from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="223"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="224"/>
         <source>Unassign menu</source>
         <translation>Menu non firmato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="224"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="225"/>
         <source>Are you sure you&apos;d like to unassign &quot;%1&quot; menu? Note: Just an invocation shortcut will be removed and menu will not be deleted.</source>
         <translation>Sei sicuro di voler smascherare il menu &quot;%1&quot;? Nota: Solo una scorciatoia di invocazione verrà rimossa e il menu non verrà eliminato.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="237"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="383"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="414"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="488"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="238"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="384"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="415"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="489"/>
         <source>NOT ASSIGNED</source>
         <translation>NON ASSISTENTE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="450"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="451"/>
         <source>menu</source>
         <translation>menu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="453"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="454"/>
         <source>toolbar</source>
         <translation>barra degli strumenti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="456"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="457"/>
         <source>Remove %1</source>
         <translation>Rimozione %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="457"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="458"/>
         <source>Are you sure you&apos;d like to remove  %2&quot;%1&quot;?</source>
         <translation>Sei sicuro di voler rimuovere %2&quot;%1&quot;?</translation>
     </message>
@@ -13096,7 +13315,7 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
 <context>
     <name>LC_DocumentsStorage</name>
     <message>
-        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="143"/>
+        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="148"/>
         <source>Unnamed</source>
         <translation>Senza nome</translation>
     </message>
@@ -14260,12 +14479,12 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
     <name>LC_ExportLayersService</name>
     <message>
         <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="135"/>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="176"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="179"/>
         <source>Export Layers</source>
         <translation>Livelli di esportazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="149"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="152"/>
         <source>Exported Layers</source>
         <translation>Strati esportati</translation>
     </message>
@@ -14286,6 +14505,218 @@ Sei sicuro di voler scartare i cambiamenti?</translation>
         <location filename="../src/ui/dialogs/file/export/image/lc_exporttoimageservice.cpp" line="62"/>
         <source>Export failed!</source>
         <translation>Esportazione fallita!</translation>
+    </message>
+</context>
+<context>
+    <name>LC_HatchPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Modulo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="35"/>
+        <source>Pattern</source>
+        <translation>Modello</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="41"/>
+        <source>Solid Fill:</source>
+        <translation>Riempimento solido:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="48"/>
+        <source>Toggle solid fill (no pattern)</source>
+        <translation>Attiva/disattiva riempimento solido (senza tratteggio)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="58"/>
+        <source>Pattern:</source>
+        <translation>Tratteggio:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="65"/>
+        <source>Hatch pattern name</source>
+        <translation>Nome del motivo di tratteggio</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="75"/>
+        <source>Scale:</source>
+        <translation>Scala:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="88"/>
+        <source>Hatch pattern scale factor</source>
+        <translation>Fattore di scala del motivo di tratteggio</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="297"/>
+        <source>in degrees</source>
+        <translation>in gradi</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="98"/>
+        <source>Angle (°):</source>
+        <translation>Angolo (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="111"/>
+        <source>Hatch pattern rotation angle, degrees</source>
+        <translation>Angolo di rotazione del motivo di tratteggio, gradi</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="121"/>
+        <source>Area &amp; Centroid</source>
+        <translation>Area e Centroide</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="127"/>
+        <source>Area:</source>
+        <translation>Area:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="134"/>
+        <source>Total enclosed area of the hatch region</source>
+        <translation>Area totale delimitata della regione di tratteggio</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="144"/>
+        <source>Centroid (x):</source>
+        <translation>Centroide (x):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="151"/>
+        <source>X coordinate of centroid</source>
+        <translation>Coordinata X del centroide</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="161"/>
+        <source>Centroid (y):</source>
+        <translation>Centroide (y):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="168"/>
+        <source>Y coordinate of centroid</source>
+        <translation>Coordinata Y del centroide</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="181"/>
+        <source>Moment of Inertia</source>
+        <translation>Momento di inerzia</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="187"/>
+        <source>Second moment about x-axis (central): ∬(x−cx)² dA</source>
+        <translation>Secondo momento rispetto all&apos;asse x (centrale): ∬(x−cx)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="190"/>
+        <source>Ixx:</source>
+        <translation>Ixx:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="197"/>
+        <source>Second central moment about x-axis: ∬(x−cx)² dA</source>
+        <translation>Secondo momento centrale rispetto all&apos;asse x: ∬(x−cx)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="207"/>
+        <source>Second moment about y-axis (central): ∬(y−cy)² dA</source>
+        <translation>Secondo momento rispetto all&apos;asse y (centrale): ∬(y−cy)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="210"/>
+        <source>Iyy:</source>
+        <translation>Iyy:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="217"/>
+        <source>Second central moment about y-axis: ∬(y−cy)² dA</source>
+        <translation>Secondo momento centrale rispetto all&apos;asse y: ∬(y−cy)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="227"/>
+        <source>Product moment of area (central): ∬(x−cx)(y−cy) dA</source>
+        <translation>Momento misto d&apos;area (centrale): ∬(x−cx)(y−cy) dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="230"/>
+        <source>Ixy:</source>
+        <translation>Ixy:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="237"/>
+        <source>Product of area central moment: ∬(x−cx)(y−cy) dA</source>
+        <translation>Momento misto centrale d&apos;area: ∬(x−cx)(y−cy) dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="247"/>
+        <source>Principal Axes</source>
+        <translation>Assi principali</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="257"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="267"/>
+        <source>Maximum principal second moment of area</source>
+        <translation>Massimo secondo momento d&apos;area principale</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="260"/>
+        <source>I₁ (max):</source>
+        <translation>I₁ (max):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="277"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="287"/>
+        <source>Minimum principal second moment of area</source>
+        <translation>Minimo secondo momento d&apos;area principale</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="280"/>
+        <source>I₂ (min):</source>
+        <translation>I₂ (min):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="300"/>
+        <source>Axis Angle (°):</source>
+        <translation>Angolo asse (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="307"/>
+        <source>Angle of the minimum principal axis from the x-axis, degrees</source>
+        <translation>Angolo dell&apos;asse principale minimo dall&apos;asse x, gradi</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="317"/>
+        <source>Indicates if the moment of inertia matrix is degenerate (I₁ ≈ I₂)</source>
+        <translation>Indica se la matrice del momento di inerzia è degenere (I₁ ≈ I₂)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="320"/>
+        <source>Degenerate:</source>
+        <translation>Degenere:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="327"/>
+        <source>Shows whether the shape has rotational symmetry (any axis is principal)</source>
+        <translation>Indica se la forma ha simmetria rotazionale (qualsiasi asse è principale)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="75"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="76"/>
+        <source>N/A</source>
+        <translation>N/D</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="116"/>
+        <source>Yes</source>
+        <translation>Sì</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="116"/>
+        <source>No</source>
+        <translation>No</translation>
     </message>
 </context>
 <context>
@@ -14966,34 +15397,34 @@ Il contenuto di un piano di costruzione non dovrebbe apparire in stampa.</transl
         <translation>Nome del livello:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="61"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="68"/>
         <source>Rename Virtual Layer</source>
         <translation>Rinominare Virtual Layer</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="72"/>
         <source>Add Secondary Layer</source>
         <translation>Aggiungi livello secondario</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="71"/>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="78"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="85"/>
         <source>Add Layer</source>
         <translation>Aggiungi il livello</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="91"/>
         <source>Edit Layer</source>
         <translation>Modifica del livello</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="176"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="214"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="183"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="221"/>
         <source>Default Pen</source>
         <translation>Penna di default</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="193"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="200"/>
         <source>Rename Layer</source>
         <translation>Rinomina Layer</translation>
     </message>
@@ -17961,6 +18392,104 @@ Si prega di specificare un valore diverso.</translation>
     </message>
 </context>
 <context>
+    <name>LC_MTextPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Modulo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="25"/>
+        <source>Content</source>
+        <translation>Contenuto</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="31"/>
+        <source>MText content. Format codes (\F, \P, \S) are accepted as-is.</source>
+        <translation>Contenuto del testo multiplo. I codici di formattazione (\F, \P, \S) sono accettati così come sono.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="44"/>
+        <source>Direction</source>
+        <translation>Direzione</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="50"/>
+        <source>Left-to-right paragraph base direction (UAX#9)</source>
+        <translation>Direzione base del paragrafo da sinistra a destra (UAX#9)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="53"/>
+        <source>LTR</source>
+        <translation>SxDx</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="63"/>
+        <source>Right-to-left paragraph base direction (UAX#9)</source>
+        <translation>Direzione base del paragrafo da destra a sinistra (UAX#9)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="66"/>
+        <source>RTL</source>
+        <translation>DxSx</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="76"/>
+        <source>Geometry</source>
+        <translation>Geometria</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="79"/>
+        <source>Height:</source>
+        <translation>Altezza:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="80"/>
+        <source>Nominal text height</source>
+        <translation>Altezza nominale del testo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="81"/>
+        <source>Width:</source>
+        <translation>Larghezza:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="82"/>
+        <source>Reference rectangle width</source>
+        <translation>Larghezza del rettangolo di riferimento</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="83"/>
+        <source>Angle (°):</source>
+        <translation>Angolo (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="84"/>
+        <source>Rotation angle in degrees (UCS)</source>
+        <translation>Angolo di rotazione in gradi (UCS)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="85"/>
+        <source>Line spacing:</source>
+        <translation>Interlinea:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="86"/>
+        <source>Line spacing factor</source>
+        <translation>Fattore di interlinea</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="87"/>
+        <source>Style:</source>
+        <translation>Stile:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="88"/>
+        <source>Text style / font name</source>
+        <translation>Stile testo / nome font</translation>
+    </message>
+</context>
+<context>
     <name>LC_MatchDescriptorArc</name>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="29"/>
@@ -20119,7 +20648,7 @@ Si prega di specificare un valore diverso.</translation>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp" line="38"/>
         <source>Hatch pattern name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nome del motivo di tratteggio</translation>
     </message>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp" line="42"/>
@@ -22456,27 +22985,27 @@ Si prega di specificare un valore diverso.</translation>
         <translation type="unfinished">Piastrelle &amp; orizzontalmente</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="677"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="690"/>
         <source>Context</source>
         <translation type="unfinished">Contesto</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="694"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="708"/>
         <source>Toolbars</source>
         <translation type="unfinished">Barra degli strumenti</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="698"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="713"/>
         <source>Widgets</source>
         <translation type="unfinished">Widgets</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="706"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="722"/>
         <source>CAD Widgets</source>
         <translation type="unfinished">Widget CAD</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="712"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="729"/>
         <source>CAD Toolbars</source>
         <translation type="unfinished">Barra degli strumenti CAD</translation>
     </message>
@@ -24721,6 +25250,16 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Colore della penna che è abbinato dal filtro</translation>
     </message>
     <message>
+        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="155"/>
+        <source>On double-click:</source>
+        <translation>Al doppio clic:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="277"/>
+        <source>If selected, additional messages will be shown as part of pen related operations</source>
+        <translation>Se selezionato, verranno mostrati messaggi aggiuntivi nelle operazioni relative alle penne</translation>
+    </message>
+    <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="297"/>
         <source>If set, filter will igore the case of pen&apos;s name</source>
         <translation>Se impostato, il filtro igorerà il caso del nome della penna</translation>
@@ -24791,9 +25330,8 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Nome naturale ove possibile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="277"/>
         <source>If selected, additional messages will be show as part of pen related operations</source>
-        <translation>Se selezionato, verranno visualizzati messaggi aggiuntivi come parte delle operazioni relative alla penna</translation>
+        <translation type="vanished">Se selezionato, verranno visualizzati messaggi aggiuntivi come parte delle operazioni relative alla penna</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="280"/>
@@ -24801,9 +25339,8 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Mostra informazioni messaggio se nessuna entità può essere selezionata da penna</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="155"/>
         <source>On double click on table item</source>
-        <translation>Su doppio click sulla voce della tabella</translation>
+        <translation type="vanished">Su doppio click sulla voce della tabella</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="162"/>
@@ -25024,7 +25561,9 @@ Attenzione: questa azione non può essere annullata!</translation>
         <source>Location of pens file is changed, please restart the application so new pens file will be used.
 
 Please note that if you&apos;ll save pen via editor without restart, current pens from palette will be saved in the new file and therefore existing content of it will be overridden.</source>
-        <translation type="unfinished"></translation>
+        <translation>La posizione del file delle penne è cambiata. Riavviare l&apos;applicazione per utilizzare il nuovo file.
+
+Si noti che se si salva la penna tramite l&apos;editor senza riavvio, le penne attuali della tavolozza verranno salvate nel nuovo file sovrascrivendone il contenuto.</translation>
     </message>
     <message>
         <source>Location of pens file is changed, please restart the application so new pens file will be used.
@@ -29676,7 +30215,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="39"/>
         <source>Hatch pattern name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nome del motivo di tratteggio</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="53"/>
@@ -31849,12 +32388,12 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PropertiesSheet</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="241"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="245"/>
         <source>Click to expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="242"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="246"/>
         <source>Click to collapse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32091,284 +32630,284 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_QuickInfoEntityData</name>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="246"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="395"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="261"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="410"/>
         <source>SOLID</source>
         <translation>SOLIDA</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="249"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="398"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="264"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="413"/>
         <source>CONSTRUCTION</source>
         <translation>CONSTRUZIONE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="252"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="401"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="267"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="416"/>
         <source>UNKNOWN</source>
         <translation>UNKNON</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="545"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="563"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="560"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="578"/>
         <source>LINE</source>
         <translation>LINE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="589"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="604"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="619"/>
         <source>CIRCLE</source>
         <translation>CIRCOLAZIONE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="628"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="655"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="643"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="670"/>
         <source>ARC</source>
         <translation>ARC</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="709"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="724"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
         <source>ELLIPSE ARC</source>
         <translation>ARCO ELLITTICO</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="726"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="741"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
         <source>ELLIPSE</source>
         <translation>ELLIPSE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="829"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="850"/>
         <source>POINT</source>
         <translation>PUNTO</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="841"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="854"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="856"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
         <source>POLYLINE</source>
         <translation>POLYLINE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>Yes</source>
         <translation>Sì</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>No</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="920"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="941"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="935"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="956"/>
         <source>INSERT</source>
         <translation>INSERT</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="956"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="985"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="971"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1000"/>
         <source>TEXT</source>
         <translation>TESTO</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1014"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1032"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1029"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1047"/>
         <source>Left</source>
         <translation>Sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1016"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1034"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1031"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1049"/>
         <source>Centered</source>
         <translation>Centro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1018"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1036"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1033"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1051"/>
         <source>Right</source>
         <translation>Giusto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1038"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1053"/>
         <source>Aligned</source>
         <translation>Allineato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="555"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="577"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="798"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="904"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1040"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1060"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1078"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="570"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="592"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="832"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="919"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1055"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1075"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1093"/>
         <source>Middle</source>
         <translation>Medio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="425"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="440"/>
         <source>Set Relative Zero</source>
         <translation>Set relativo Zero</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="435"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="438"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="450"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="453"/>
         <source>To Cmd</source>
         <translation>A Cmd</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="103"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="516"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="118"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="531"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="518"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="533"/>
         <source>Layer</source>
         <translation>Livello</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="523"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="538"/>
         <source>Color</source>
         <translation>Colore</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="528"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="543"/>
         <source>Line Type</source>
         <translation>Tipo di linea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="533"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="548"/>
         <source>Line Width</source>
         <translation>Larghezza della linea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="535"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="550"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="536"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="551"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="553"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="568"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="589"/>
         <source>From</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="554"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="575"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="569"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="590"/>
         <source>To</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="556"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="579"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="571"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="594"/>
         <source>Delta</source>
         <translation>Delta</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="557"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="572"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="705"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="744"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="793"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="924"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1108"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1208"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1230"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1348"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1371"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1494"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1510"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="587"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="720"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="759"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="828"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="920"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="939"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="975"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1004"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1123"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1157"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1223"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1386"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1544"/>
         <source>Angle</source>
         <translation>Angolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="559"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="571"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="906"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1247"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1283"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1319"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="586"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="921"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1262"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1311"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1334"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1349"/>
         <source>Length</source>
         <translation>Lunghezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="596"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="609"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="640"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="662"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="701"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="741"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="796"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="887"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1400"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1418"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="611"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="624"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="655"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="677"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="716"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="756"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="831"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="902"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1435"/>
         <source>Center</source>
         <translation>Centro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="597"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="610"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="641"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="663"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="888"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1398"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="612"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="625"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="656"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="678"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="903"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1414"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1433"/>
         <source>Radius</source>
         <translation>Raggio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="598"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="616"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="642"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="677"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="613"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="631"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="657"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="692"/>
         <source>Diameter</source>
         <translation>Diametro</translation>
     </message>
@@ -32377,740 +32916,756 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="vanished">Circonferenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="600"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="618"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="725"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="768"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="821"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1350"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="615"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="633"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="740"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="783"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="836"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1365"/>
         <source>Area</source>
         <translation>Settore</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="644"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="679"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="659"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="694"/>
         <source>Chord Length</source>
         <translation>Lunghezza del coro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="645"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="717"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="891"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="660"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="681"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="762"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="906"/>
         <source>Angle Length</source>
         <translation>Lunghezza angolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="646"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="664"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="718"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="761"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="787"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="842"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="661"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="679"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="733"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="776"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="802"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="822"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="857"/>
         <source>Start</source>
         <translation>Inizio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="647"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="680"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="719"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="762"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="799"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="818"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="892"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1401"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1420"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="662"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="695"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="734"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="777"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="833"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="907"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1437"/>
         <source>Start Angle</source>
         <translation>Iniziare l&apos;angolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="648"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="665"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="720"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="763"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="788"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="843"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="663"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="680"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="735"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="778"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="803"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="823"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="858"/>
         <source>End</source>
         <translation>Fine</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="649"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="681"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="721"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="764"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="800"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="819"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="893"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1402"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1421"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="664"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="696"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="736"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="779"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="834"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="908"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1418"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1438"/>
         <source>End Angle</source>
         <translation>Angolo di fine</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="650"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="683"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="881"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="665"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="698"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="896"/>
         <source>Bulge</source>
         <translation>Bulge</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="702"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="742"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="792"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="717"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="757"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="827"/>
         <source>Minor Radius</source>
         <translation>Radiazioni minori</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="703"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="743"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="791"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="718"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="758"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="826"/>
         <source>Major Radius</source>
         <translation>Radius maggiore</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="704"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="754"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="795"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="719"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="769"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="829"/>
         <source>Ratio</source>
         <translation>Rapporto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="831"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="836"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="846"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="851"/>
         <source>Position</source>
         <translation>Posizione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
         <source>Closed</source>
         <translation>Chiuso</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="884"/>
         <source>Segments</source>
         <translation>Segmenti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="870"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="885"/>
         <source>Vertex - 0:</source>
         <translation>- 0:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="895"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="909"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="910"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="924"/>
         <source>Vertex - </source>
         <translation>Vertice -</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="916"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="931"/>
         <source>Total Length</source>
         <translation>Lunghezza totale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="922"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="937"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="923"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="958"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="987"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1107"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1205"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="938"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1122"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1156"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1220"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
         <source>Insertion Point</source>
         <translation>Punto di inserimento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="926"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="947"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="941"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
         <source>Scale X</source>
         <translation>Scala X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="927"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="948"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="942"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="963"/>
         <source>Scale Y</source>
         <translation>Scala Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="928"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="949"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="943"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="964"/>
         <source>Cols</source>
         <translation>Cols</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="929"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="950"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="965"/>
         <source>Spacing X</source>
         <translation>Spaziatura X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="930"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="951"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="966"/>
         <source>Rows</source>
         <translation>Righe</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="931"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="952"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="967"/>
         <source>Spacing Y</source>
         <translation>Spaziatura Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1003"/>
         <source>Second Point</source>
         <translation>Secondo punto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="963"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1110"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1214"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1236"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="978"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1005"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1251"/>
         <source>Height</source>
         <translation>Altezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="991"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="976"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1006"/>
         <source>Width/Height</source>
         <translation>Larghezza/altezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="86"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="59"/>
+        <source>[Automatic]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="62"/>
+        <source>[Suppressed]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="101"/>
         <source>To be created: </source>
         <translation>Da creare:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="105"/>
         <source>Captured: </source>
         <translation>Catturato:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="112"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="127"/>
         <source>
 Layer: </source>
         <translation>Layer:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="558"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="573"/>
         <source>Angle 2</source>
         <translation>Angolo 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="573"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="588"/>
         <source>Angle2</source>
         <translation>Angle2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="599"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="617"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="614"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="632"/>
         <source>Circumference</source>
         <comment>circle</comment>
         <translation type="unfinished">Circonferenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="643"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="678"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="890"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="658"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="693"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
         <source>Circumference</source>
         <comment>arc</comment>
         <translation type="unfinished">Circonferenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
         <source>Reversed</source>
         <translation>Invertito</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="697"/>
         <source>Sagitta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="706"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="755"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="721"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="770"/>
         <source>Circumference</source>
         <comment>ellipse</comment>
         <translation type="unfinished">Circonferenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="775"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="790"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="821"/>
         <source>HYPERBOLA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="789"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="804"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="824"/>
         <source>Focus 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="790"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="805"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="825"/>
         <source>Focus 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="797"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
         <source>Eccentricity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="801"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="820"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
         <source>Circumference</source>
         <comment>hyperbola</comment>
         <translation type="unfinished">Circonferenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="992"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1146"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1397"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1414"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="977"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1007"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1124"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1412"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1430"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1442"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1449"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1456"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1463"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1474"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1489"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1505"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1516"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1539"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1554"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1447"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1460"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1468"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1476"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1484"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1496"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1550"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1563"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1575"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1591"/>
         <source>Style</source>
         <translation>Stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1001"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1016"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1140"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1173"/>
         <source>HAlign</source>
         <translation>HAIign</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1126"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1017"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1174"/>
         <source>VAlign</source>
         <translation>VAllineare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="975"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1003"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1018"/>
         <source>Generation</source>
         <translation>Generazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1042"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1057"/>
         <source>Fit</source>
         <translation>Adattamento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1056"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1071"/>
         <source>Baseline</source>
         <translation>Linea di base</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1058"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1076"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1073"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1091"/>
         <source>Bottom</source>
         <translation>Fondo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1062"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1080"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1077"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1095"/>
         <source>Top</source>
         <translation>Top</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1094"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
         <source>Normal text</source>
         <translation>Testo normale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1096"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1111"/>
         <source>Mirrored in X</source>
         <translation>Specchio in X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1098"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
         <source>Mirrored in Y</source>
         <translation>Specchio in Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1105"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1139"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1120"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1154"/>
         <source>MTEXT</source>
         <translation>MTEXT</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1213"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1235"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1250"/>
         <source>Width</source>
         <translation>Larghezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1114"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1145"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1129"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
         <source>Lines</source>
         <translation>Linee</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1127"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1175"/>
         <source>Direction</source>
         <translation>Direzione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1176"/>
         <source>Line Spacing Factor</source>
         <translation>Fattore di spaziatura della linea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1129"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1162"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1177"/>
         <source>Line Spacing</source>
         <translation>Interlinea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1173"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1188"/>
         <source>By Style</source>
         <translation>Per stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1175"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1190"/>
         <source>Left To Right</source>
         <translation>Da sinistra a destra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1177"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1192"/>
         <source>Right To Left</source>
         <translation>Da destra a sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1179"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1194"/>
         <source>Top To Bottom</source>
         <translation>In cima al fondo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1193"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1208"/>
         <source>At Least</source>
         <translation>Al massimo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1195"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1210"/>
         <source>Exact</source>
         <translation>Esatto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1202"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1225"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1217"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1240"/>
         <source>IMAGE</source>
         <translation>IMAGINE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1204"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1219"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1211"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1233"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1226"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1248"/>
         <source>Size (X) px</source>
         <translation>Dimensioni (X) px</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1212"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1234"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1227"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1249"/>
         <source>Size (Y) px</source>
         <translation>Dimensione (Y) px</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1215"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1237"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1230"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1252"/>
         <source>DPI</source>
         <translation>DPI</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1241"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1257"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1256"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1272"/>
         <source>SPLINE</source>
         <translation>SPLINE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1258"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1275"/>
         <source>Degree</source>
         <translation>Laurea</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1291"/>
         <source>Control Points</source>
         <translation>Punti di controllo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1272"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1294"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1287"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1309"/>
         <source>SPLINEPOINTS</source>
         <translation>SPLINEPOINTS</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
         <source>Use Control Points</source>
         <translation>Utilizzare i punti di controllo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1482"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1505"/>
         <source>[Override]</source>
         <translation>[Override]</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1532"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1511"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1555"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1568"/>
         <source>Feature Point</source>
         <translation>Punto di riferimento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1266"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1301"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
         <source>Control Point </source>
         <translation>Punto di controllo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1306"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1321"/>
         <source>Spline Point </source>
         <translation>Punto della curva di Bézier</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1329"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1328"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
         <source>PARABOLA</source>
         <translation>PARABOLA</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1315"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1330"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
         <source>Focus</source>
         <translation>Focus</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
         <source>Vertex</source>
         <translation>Vertex</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1317"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1333"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1348"/>
         <source>Axis Angle</source>
         <translation>Angolo di asse</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1336"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1351"/>
         <source>Control Point</source>
         <translation>Punto di controllo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1359"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1375"/>
         <source>HATCH</source>
         <translation>HATCH</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
         <source>Solid</source>
         <translation>Solido</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1369"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1361"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1384"/>
         <source>Pattern</source>
         <translation>Modello</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1207"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1232"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1370"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1222"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1247"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1362"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1385"/>
         <source>Scale</source>
         <translation>Scala</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1279"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1294"/>
         <source>Spline Points</source>
         <translation>Punti di Spline</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="802"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1372"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1387"/>
         <source>Total Area</source>
         <translation>Superficie totale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1377"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1388"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1392"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1403"/>
         <source>DIMLEADER</source>
         <translation>DIMLEADER</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>Arrow Head</source>
         <translation>Testa di freccia</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1412"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1409"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1428"/>
         <source>DIMARC</source>
         <translation>DIMARCA</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1399"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1415"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1434"/>
         <source>Arc Length</source>
         <translation>Lunghezza arco</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1429"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1441"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1446"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1459"/>
         <source>DIMANGULAR</source>
         <translation>DIMANGULARE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1448"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1455"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1467"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1475"/>
         <source>DIMDIAMETRIC</source>
         <translation>DIMDIAMETRIC</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1450"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1457"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1464"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1475"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1490"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1506"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1470"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1478"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1486"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1498"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1523"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1540"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1555"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1577"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1593"/>
         <source>Definition Point</source>
         <translation>Definizione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1462"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1473"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1483"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1495"/>
         <source>DIMRADIAL</source>
         <translation>DIMRADIALE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1488"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1504"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1537"/>
         <source>DIMLINEAR</source>
         <translation>DIMLINEAR</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1491"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1507"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1524"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1541"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1556"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1578"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1594"/>
         <source>Extension Point 1</source>
         <translation>Punto di estensione 1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1492"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1508"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1525"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1542"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1557"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1579"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1595"/>
         <source>Extension Point 2</source>
         <translation>Punto di estensione 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1522"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1557"/>
         <source>Text Middle Point </source>
         <translation>Testo Punto medio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1495"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1511"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1545"/>
         <source>Oblique</source>
         <translation>Oblique</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1549"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1562"/>
         <source>DIMORDINATE</source>
         <translation>DIMORDINAZIONE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1517"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1531"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1552"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1567"/>
         <source>Ordinate</source>
         <translation>Ordinazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1518"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1529"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1553"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1565"/>
         <source>Origin Point</source>
         <translation>Punto di partenza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1519"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1530"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1554"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1566"/>
         <source>Horizontal Direction</source>
         <translation>Direzione orizzontale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1533"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1556"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1569"/>
         <source>Leader End Point</source>
         <translation>Punto finale Leader</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1493"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1509"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1534"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1526"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1543"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1558"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1570"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1580"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1596"/>
         <source>Text Middle Point</source>
         <translation>Testo Punto medio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1552"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1589"/>
         <source>DIMALIGNED</source>
         <translation>DIMALIGNATO</translation>
     </message>
@@ -33245,7 +33800,11 @@ Layer: </source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidget.cpp" line="345"/>
@@ -33344,9 +33903,13 @@ p, li { white-space: pre-wrap; }
         <translation>Informazioni sull&apos;ingresso</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="81"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, more detailed information about lines and arcs that are part of polyline will be show in Entity Info widget.&lt;br/&gt;Otherwise, only information about vertexes/bulges will be displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Traduzione: Se selezionato, informazioni più dettagliate su linee e archi che fanno parte di poliline saranno mostrate nel widget Entity Info. In caso contrario, verranno visualizzate solo informazioni sui vertici/bulgari</translation>
+        <translation type="vanished">Traduzione: Se selezionato, informazioni più dettagliate su linee e archi che fanno parte di poliline saranno mostrate nel widget Entity Info. In caso contrario, verranno visualizzate solo informazioni sui vertici/bulgari</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="81"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, more detailed information about lines and arcs that are part of polyline will be shown in Entity Info widget.&lt;br/&gt;Otherwise, only information about vertexes/bulges will be displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se selezionato, nel widget Informazioni entità verranno mostrate informazioni più dettagliate sulle linee e gli archi che fanno parte della polilinea.&lt;br/&gt;In caso contrario, verranno visualizzate solo le informazioni su vertici/rigonfiamenti.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="84"/>
@@ -35156,14 +35719,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LC_ReleaseChecker</name>
     <message>
-        <location filename="../src/ui/main/release_check/lc_releasechecker.cpp" line="109"/>
         <source>Sorry, some network error occurred during checking for new version.</source>
-        <translation>Spiacenti, alcuni errori di rete si sono verificati durante il controllo della nuova versione.</translation>
+        <translation type="vanished">Spiacenti, alcuni errori di rete si sono verificati durante il controllo della nuova versione.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/release_check/lc_releasechecker.cpp" line="172"/>
         <source>Unable to parse response from the server</source>
-        <translation>Incapace di analizzare la risposta dal server</translation>
+        <translation type="vanished">Incapace di analizzare la risposta dal server</translation>
     </message>
 </context>
 <context>
@@ -36902,6 +37463,10 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Laurea:</translation>
     </message>
     <message>
+        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and ordinary spline will be created.</source>
+        <translation type="vanished">Se selezionato, i vertici della polilinea sono considerati punti di spline e verrà creata una spline per punti. In caso contrario, sono considerati punti di controllo e verrà creata una spline ordinaria.</translation>
+    </message>
+    <message>
         <source>Keep Originals</source>
         <translation type="vanished">Mantenere gli originali</translation>
     </message>
@@ -37048,8 +37613,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ui/action_options/spline/lc_spline_from_polyline_options_widget.ui" line="102"/>
-        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and orinary spline will be created.</source>
-        <translation type="unfinished">Se controllato, vertici poliline sono considerati come punti spline e spline da punti saranno creati. In caso contrario, sono considerati come punti di controllo e spline orinary sarà creato.</translation>
+        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and ordinary spline will be created.</source>
+        <translation type="unfinished">Se selezionato, i vertici della polilinea sono considerati punti di spline e verrà creata una spline per punti. In caso contrario, sono considerati punti di controllo e verrà creata una spline ordinaria.</translation>
     </message>
     <message>
         <location filename="../src/ui/action_options/spline/lc_spline_from_polyline_options_widget.ui" line="105"/>
@@ -37627,6 +38192,189 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/ui/action_options/text/lc_text_options_widget.ui" line="83"/>
         <source>Pick angle from drawing</source>
         <translation type="unfinished">Scegli l&apos;angolo dal disegno</translation>
+    </message>
+</context>
+<context>
+    <name>LC_TextPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Modulo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="25"/>
+        <source>Content</source>
+        <translation>Contenuto</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="31"/>
+        <source>Single-line text content</source>
+        <translation>Contenuto del testo a riga singola</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="41"/>
+        <source>Direction</source>
+        <translation>Direzione</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="47"/>
+        <source>Detect base direction from first strong character (UAX#9 P-rules)</source>
+        <translation>Rileva la direzione base dal primo carattere forte (UAX#9 P-regole)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="50"/>
+        <source>Auto</source>
+        <translation>Auto</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="60"/>
+        <source>Force left-to-right base direction</source>
+        <translation>Forza la direzione base da sinistra a destra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="63"/>
+        <source>LTR</source>
+        <translation>SxDx</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="70"/>
+        <source>Force right-to-left base direction</source>
+        <translation>Forza la direzione base da destra a sinistra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="73"/>
+        <source>RTL</source>
+        <translation>DxSx</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="83"/>
+        <source>Geometry</source>
+        <translation>Geometria</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="86"/>
+        <source>Height:</source>
+        <translation>Altezza:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="87"/>
+        <source>Nominal text height</source>
+        <translation>Altezza nominale del testo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="88"/>
+        <source>Width factor:</source>
+        <translation>Fattore di larghezza:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="89"/>
+        <source>Relative width factor (1.0 = nominal)</source>
+        <translation>Fattore di larghezza relativa (1,0 = nominale)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="90"/>
+        <source>Angle (°):</source>
+        <translation>Angolo (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="91"/>
+        <source>Rotation angle in degrees (UCS)</source>
+        <translation>Angolo di rotazione in gradi (UCS)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="92"/>
+        <source>Alignment:</source>
+        <translation>Allineamento:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="93"/>
+        <source>Justification / anchor point for the text</source>
+        <translation>Giustificazione / punto di ancoraggio del testo</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="94"/>
+        <source>Style:</source>
+        <translation>Stile:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="95"/>
+        <source>Text style / font name</source>
+        <translation>Stile testo / nome font</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="46"/>
+        <source>Top Left</source>
+        <translation>Alto a sinistra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="47"/>
+        <source>Top Center</source>
+        <translation>Alto al centro</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="48"/>
+        <source>Top Right</source>
+        <translation>Alto a destra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="49"/>
+        <source>Middle Left</source>
+        <translation>Medio a sinistra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="50"/>
+        <source>Middle Center</source>
+        <translation>Medio al centro</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="51"/>
+        <source>Middle Right</source>
+        <translation>Medio a destra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="52"/>
+        <source>Baseline Left</source>
+        <translation>Baseline sinistra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="53"/>
+        <source>Baseline Center</source>
+        <translation>Centro base</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="54"/>
+        <source>Baseline Right</source>
+        <translation>Baseline destra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="55"/>
+        <source>Bottom Left</source>
+        <translation>Basso a sinistra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="56"/>
+        <source>Bottom Center</source>
+        <translation>Basso al centro</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="57"/>
+        <source>Bottom Right</source>
+        <translation>Basso a destra</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="58"/>
+        <source>Fit</source>
+        <translation>Adattamento</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="59"/>
+        <source>Aligned</source>
+        <translation>Allineato</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="60"/>
+        <source>Middle</source>
+        <translation>Medio</translation>
     </message>
 </context>
 <context>
@@ -38513,28 +39261,28 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Opzioni Widget</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="427"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="440"/>
         <source>Toolbar</source>
         <translation>Barra degli Strumenti</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="65"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="477"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="493"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="592"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="490"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="506"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="605"/>
         <source>Icon Size</source>
         <translation>Dimensione icona</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="58"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="550"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="585"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="563"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="598"/>
         <source>Flat Buttons</source>
         <translation>Pulsanti piatti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="563"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="627"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="576"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="640"/>
         <source>Columns Count:</source>
         <translation>Colonne Conte:</translation>
     </message>
@@ -38544,44 +39292,44 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Finestre di dialogo ancorate</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="684"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="697"/>
         <source>For &quot;classic&quot; statusbar only. </source>
         <translation>Solo per la barra di stato &quot;classica&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="174"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="158"/>
         <source>Style</source>
         <translation>Stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="206"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="219"/>
         <source>Icons Styling</source>
         <translation>Icone Styling</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="218"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="273"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="340"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="231"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="286"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="353"/>
         <source>Click to select color</source>
         <translation>Clicca per selezionare il colore</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="250"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="263"/>
         <source>Back Color</source>
         <translation>Colore della schiena</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="260"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="273"/>
         <source>External Icons Directory:</source>
         <translation>Elenco delle icone esterne:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="408"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="421"/>
         <source>Accent Color:</source>
         <translation>Colore accento:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="354"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="367"/>
         <source>Main Color:</source>
         <translation>Colore principale:</translation>
     </message>
@@ -38591,42 +39339,47 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Styling generale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="232"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="190"/>
+        <source>Edit Palette...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="245"/>
         <source>Color for accent elements (originally green)</source>
         <translation>Colore per elementi accenti (originariamente verde)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="287"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="300"/>
         <source>Color for main elements (originally black)</source>
         <translation>Colore per elementi principali (originariamente nero)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="316"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="329"/>
         <source>Color for filled background (originally white)</source>
         <translation>Colore per sfondo pieno (originariamente bianco)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="364"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="377"/>
         <source>Defines location of custom user-provided icons.</source>
         <translation>Definisce la posizione delle icone personalizzate fornite dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="371"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="384"/>
         <source>Saved Icons Style:</source>
         <translation>Stile di icone salvate:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="381"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="394"/>
         <source>Save Style</source>
         <translation>Salva stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="388"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="401"/>
         <source>Remove Style</source>
         <translation>Rimuovi lo stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="401"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="414"/>
         <source>Advanced Setup ...</source>
         <translation>Setup avanzato...</translation>
     </message>
@@ -38636,101 +39389,101 @@ Attenzione: questa azione non può essere annullata!</translation>
         <translation>Foglio Stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="665"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="678"/>
         <source>Statusbar</source>
         <translation>Barra di stato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="720"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="733"/>
         <source>Height</source>
         <translation>Altezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="697"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="710"/>
         <source>Font Size</source>
         <translation>Dimensione caratteri</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="681"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="694"/>
         <source>lClassicStatusBarOnly</source>
         <translation>lClassicStatusBarOnly</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="171"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="155"/>
         <source>If enabled, specific style of UI may be applied</source>
         <translation>Se abilitato, lo stile specifico dell&apos;interfaccia utente può essere applicato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="196"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="209"/>
         <source>Input the path of a Qt style sheet.</source>
         <translation>Inserisci la posizione di un foglio stile Qt.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="439"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="452"/>
         <source>If checked, buttons for picking values from drawing will be flat</source>
         <translation>Se controllato, i pulsanti per la scelta dei valori dal disegno saranno piatti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="442"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="455"/>
         <source>Flat pick values buttons</source>
         <translation>Pulsanti per valori piatti</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="78"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="455"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="506"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="605"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="468"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="519"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="618"/>
         <source>Side length in pixels</source>
         <translation>Lunghezza laterale in pixel</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="573"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="586"/>
         <source>CAD Widgets (Ungrouped)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="743"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="756"/>
         <source>General Docking</source>
         <translation>Docking generale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="749"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="762"/>
         <source>If selected, title bar for docked dock widgets will be vertical. Otherwise, it will be horizontal.</source>
         <translation>Se selezionato, la barra dei titoli per i widget dock attraccati sarà verticale. Altrimenti sarà orizzontale.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="752"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="765"/>
         <source>Tile bar is vertical (except CAD widgets)</source>
         <translation>Tile bar è verticale (eccetto widget CAD)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="772"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="785"/>
         <source>If not checked, dock areas can only contain a single row (horizontal or vertical) of dock widgets. If checked, the area occupied by a dock widget can be split in either direction to contain more dock widgets.</source>
         <translation>Se non controllato, le aree portuali possono contenere solo una riga singola (orizzontale o verticale) di widget dock. Se controllato, l&apos;area occupata da un widget dock può essere divisa in entrambe le direzioni per contenere più widget dock.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="775"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="788"/>
         <source>Allow nested docking</source>
         <translation>Consentire l&apos;attracco nidificato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="759"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="772"/>
         <source>If checked, the two vertical dock areas on the sides of the main window show their tabs vertically. </source>
         <translation>Se controllato, le due aree portuali verticali sui lati della finestra principale mostrano le loro schede verticalmente.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="765"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="778"/>
         <source>Vertical tabs</source>
         <translation>Tavole verticali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="487"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="500"/>
         <source>CAD Widgets</source>
         <translation>Widget CAD</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="528"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="640"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="541"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="653"/>
         <source>Number of columns for actions in left toolbar.</source>
         <translation>Numero di colonne per azioni nella barra degli strumenti sinistra.</translation>
     </message>
@@ -38801,18 +39554,18 @@ Attenzione: questa azione non può essere annullata!</translation>
 <context>
     <name>LC_WorkspacesManager</name>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="472"/>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="480"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="529"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="537"/>
         <source>Saving Workspaces</source>
         <translation>Risparmio di spazi di lavoro</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="473"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="530"/>
         <source>Can&apos;t open workspaces file for writing. Workspaces were not exported. File: </source>
         <translation>Non può aprire il file workspaces per la scrittura. Gli spazi di lavoro non sono stati esportati. File:</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="481"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="538"/>
         <source>Workspaces file does not exists.</source>
         <translation>Il file Workspaces non esiste.</translation>
     </message>
@@ -38910,72 +39663,72 @@ Attenzione: questa azione non può essere annullata!</translation>
 <context>
     <name>QC_ApplicationWindow</name>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="809"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="839"/>
         <source>Creating new file...</source>
         <translation>Creazione nuovo file...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="745"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="775"/>
         <source>unnamed document %1</source>
         <translation>Documento senza nome %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1783"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1867"/>
         <source>Opening recent file...</source>
         <translation>Apertura file recente...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1067"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1140"/>
         <source>Loaded document: </source>
         <translation>Documento caricato: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1004"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1068"/>
         <source>Opening aborted</source>
         <translation>Apertura interrotta</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1314"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1398"/>
         <source>Printing...</source>
         <translation>Stampa...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1417"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1501"/>
         <source>Exiting application...</source>
         <translation>Chiusura applicazione...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="202"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="232"/>
         <source>Print preview for %1</source>
         <translation>Anteprima di stampa per %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="832"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="862"/>
         <source>New Drawing created.</source>
         <translation>Nuovo disegno creato.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="235"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="265"/>
         <source>Saving drawing...</source>
         <translation>Salvataggio disegno...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="246"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="276"/>
         <source>Saved drawing: %1</source>
         <translation>Disegno salvato: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1318"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1402"/>
         <source>Printing complete</source>
         <translation>Stampa completata</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="741"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="771"/>
         <source>Block &apos;%1&apos;</source>
         <translation>Blocco &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="876"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="906"/>
         <source>Cannot open the file
 %1
 Please check the permissions.</source>
@@ -38984,17 +39737,17 @@ Please check the permissions.</source>
 Verificare i permessi.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1154"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1230"/>
         <source>Auto-saving drawing...</source>
         <translation>Salvataggio automatico disegno...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1160"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1240"/>
         <source>Auto-saved drawing</source>
         <translation>Disegno salvato automaticamente</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1166"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1248"/>
         <source>Cannot auto-save the file
 %1
 Please check the permissions.
@@ -39005,42 +39758,42 @@ Verificare i permessi.
 Salvataggio automatico disabilitato.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1011"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1075"/>
         <source>Warning: File already opened : </source>
         <translation>Attenzione: file già aperto: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="259"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="289"/>
         <source>Cannot save the file </source>
         <translation>Impossibile salvare il file </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="259"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="289"/>
         <source> , please check the filename and permissions.</source>
         <translation> , verificare il nome ed i permessi del file.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="828"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="858"/>
         <source>New document from template: </source>
         <translation>Nuovo documendo da modello: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="860"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="890"/>
         <source>Select Template aborted</source>
         <translation>Selezione modello annullata</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1168"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1250"/>
         <source>Auto-saving failed</source>
         <translation>Salvataggio automatico fallito</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="212"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="242"/>
         <source>Draft Mode</source>
         <translation>Modalità bozza</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1025"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1089"/>
         <source>Cannot open the file
 %1
 Please check its existence and permissions.</source>
@@ -39049,51 +39802,67 @@ Please check its existence and permissions.</source>
 Verificare l&apos;esistenza e i permessi.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1003"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1067"/>
         <source>File &apos;%1&apos; does not exist. Opening aborted</source>
         <translation>File &apos;%1&apos; non esiste. Apertura annullata</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="235"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="265"/>
         <source>Saving drawing: %1</source>
         <translation>Salvataggio disegno: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="241"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="271"/>
         <source>Save cancelled</source>
         <translation>Salvataggio annullato</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="376"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="406"/>
         <source>&amp;Save</source>
         <translation>&amp;Salva</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="377"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="407"/>
         <source>Save &amp;as...</source>
         <translation>Salva con nome...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="381"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="411"/>
         <source>&amp;Save %1</source>
         <translation>&amp;Salva %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="382"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="412"/>
         <source>Save %1 &amp;as...</source>
         <translation>Salva %1 come...</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1134"/>
+        <source>Loaded %1 — modelspace is empty; %n block(s) in the Blocks dock contain geometry.</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1131"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1206"/>
         <source>Save All cancelled</source>
         <translation>Salva tutto annullato</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1251"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1257"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1271"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1335"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1341"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1355"/>
         <source>Close All cancelled</source>
         <translation>Chiudi tutto annullato</translation>
+    </message>
+</context>
+<context>
+    <name>QC_MDIWindow</name>
+    <message>
+        <location filename="../src/ui/main/qc_mdiwindow.cpp" line="70"/>
+        <source>Unnamed</source>
+        <translation type="unfinished">Senza nome</translation>
     </message>
 </context>
 <context>
@@ -39164,12 +39933,12 @@ Verificare l&apos;esistenza e i permessi.</translation>
 <context>
     <name>QG_BlockWidget</name>
     <message>
-        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="210"/>
+        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="209"/>
         <source>Filter</source>
         <translation>Filtro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="212"/>
+        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="211"/>
         <source>Looking for matching block names</source>
         <translation>Cerca nomi di blocco</translation>
     </message>
@@ -39534,6 +40303,81 @@ Verificare l&apos;esistenza e i permessi.</translation>
     </message>
 </context>
 <context>
+    <name>QG_DlgArc</name>
+    <message>
+        <source>Arc</source>
+        <translation type="vanished">Arc</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of arc</source>
+        <translation type="vanished">Layer dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Attributi della penna</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>X Coordinate of arc&apos;s center</source>
+        <translation type="vanished">X Coordinamento del centro dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of arc&apos;s center</source>
+        <translation type="vanished">Y Coordinamento del centro dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>Defines whether arc is reversed (clockwise)</source>
+        <translation type="vanished">Definisce se l&apos;arco è invertito (in senso orario)</translation>
+    </message>
+    <message>
+        <source>Reversed</source>
+        <translation type="vanished">Invertito</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">Centro (y):</translation>
+    </message>
+    <message>
+        <source>Radius of arc</source>
+        <translation type="vanished">Radio d&apos;arco</translation>
+    </message>
+    <message>
+        <source>Start Angle:</source>
+        <translation type="vanished">Angolo di inizio:</translation>
+    </message>
+    <message>
+        <source>Radius:</source>
+        <translation type="vanished">Raggio:</translation>
+    </message>
+    <message>
+        <source>Starting angle of arc</source>
+        <translation type="vanished">Angolo di partenza dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>End angle of arc</source>
+        <translation type="vanished">Angolo di fine dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>End Angle:</source>
+        <translation type="vanished">Angolo di fine:</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">Centro (x):</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgAttributes</name>
     <message>
         <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="26"/>
@@ -39571,6 +40415,198 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.cpp" line="61"/>
         <source>Pen</source>
         <translation>Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgCircle</name>
+    <message>
+        <source>Circle</source>
+        <translation type="vanished">Circolo</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Radius:</source>
+        <translation type="vanished">Raggio:</translation>
+    </message>
+    <message>
+        <source>Radius of circle</source>
+        <translation type="vanished">Radio di cerchio</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">Centro (y):</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of circle&apos;s center</source>
+        <translation type="vanished">Y Coordinamento del centro del cerchio</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">Centro (x):</translation>
+    </message>
+    <message>
+        <source>X Coordinate of circle&apos;s center</source>
+        <translation type="vanished">X Coordinamento del centro del cerchio</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgDimLinear</name>
+    <message>
+        <source>Linear Dimension</source>
+        <translation type="vanished">Dimensione lineare</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">Livello di dimensione</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Attributi della penna</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">Angolo:</translation>
+    </message>
+    <message>
+        <source>Rotation angle of dimension</source>
+        <translation type="vanished">Angolo di rotazione della dimensione</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgDimension</name>
+    <message>
+        <source>Dimension</source>
+        <translation type="vanished">Dimensione</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">Livello di dimensione</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Attributi della penna</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgEllipse</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="vanished">Ellipse</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of ellipse</source>
+        <translation type="vanished">Layer dell&apos;ellisse</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Rotation angle for the major axis of ellipse, degrees</source>
+        <translation type="vanished">Angolo di rotazione per l&apos;asse principale di ellisse, gradi</translation>
+    </message>
+    <message>
+        <source>Defines whether arc is reversed</source>
+        <translation type="vanished">Definisce se l&apos;arco è invertito</translation>
+    </message>
+    <message>
+        <source>Reversed</source>
+        <translation type="vanished">Invertito</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">Centro (y):</translation>
+    </message>
+    <message>
+        <source>End angle of elliptic arc, degrees</source>
+        <translation type="vanished">Angolo di fine dell&apos;arco ellittico, gradi</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of arc&apos;s center</source>
+        <translation type="vanished">Y Coordinamento del centro dell&apos;arco</translation>
+    </message>
+    <message>
+        <source>Radius of major axis of ellipse</source>
+        <translation type="vanished">Radio dell&apos;asse maggiore dell&apos;ellisse</translation>
+    </message>
+    <message>
+        <source>in degrees</source>
+        <translation type="vanished">in gradi</translation>
+    </message>
+    <message>
+        <source>Start Angle(°):</source>
+        <translation type="vanished">Avviare angolo(°):</translation>
+    </message>
+    <message>
+        <source>Rotation(°):</source>
+        <translation type="vanished">Rotazione(°):</translation>
+    </message>
+    <message>
+        <source>Radius of minor axis of the ellipse</source>
+        <translation type="vanished">Radio di asse minore dell&apos;ellisse</translation>
+    </message>
+    <message>
+        <source>End Angle(°):</source>
+        <translation type="vanished">Angolo di fine(°):</translation>
+    </message>
+    <message>
+        <source>Start angle of elliptic arc, degrees</source>
+        <translation type="vanished">Angolo di inizio dell&apos;arco ellittico, gradi</translation>
+    </message>
+    <message>
+        <source>Major:</source>
+        <translation type="vanished">Maggiore:</translation>
+    </message>
+    <message>
+        <source>Minor:</source>
+        <translation type="vanished">Minore:</translation>
+    </message>
+    <message>
+        <source>X Coordinate of ellipse&apos;s center</source>
+        <translation type="vanished">X Coordinamento del centro di ellisse</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">Centro (x):</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
     </message>
 </context>
 <context>
@@ -39647,11 +40683,115 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
     </message>
 </context>
 <context>
+    <name>QG_DlgImage</name>
+    <message>
+        <source>Image</source>
+        <translation type="vanished">Immagine</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of image</source>
+        <translation type="vanished">Layer dell&apos;immagine</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">Angolo:</translation>
+    </message>
+    <message>
+        <source>Height:</source>
+        <translation type="vanished">Altezza:</translation>
+    </message>
+    <message>
+        <source>Width of image</source>
+        <translation type="vanished">Larghezza dell&apos;immagine</translation>
+    </message>
+    <message>
+        <source>insert (y):</source>
+        <translation type="vanished">Inserimento (y):</translation>
+    </message>
+    <message>
+        <source>X coordinate of insertion point</source>
+        <translation type="vanished">Coordinata X del punto di inserimento</translation>
+    </message>
+    <message>
+        <source>Resolution (dots per inch)</source>
+        <translation type="vanished">Risoluzione (punti per pollice)</translation>
+    </message>
+    <message>
+        <source>Path to image file</source>
+        <translation type="vanished">Percorso al file immagine</translation>
+    </message>
+    <message>
+        <source>Scaling factor</source>
+        <translation type="vanished">Fattore di scala</translation>
+    </message>
+    <message>
+        <source>Size (px):</source>
+        <translation type="vanished">Dimensioni (px):</translation>
+    </message>
+    <message>
+        <source>Rotation angle</source>
+        <translation type="vanished">Angolo di rotazione</translation>
+    </message>
+    <message>
+        <source>Y coordinate of insertion point</source>
+        <translation type="vanished">Y coordinate del punto di inserimento</translation>
+    </message>
+    <message>
+        <source>path:</source>
+        <translation type="vanished">Percorso:</translation>
+    </message>
+    <message>
+        <source>insert (x):</source>
+        <translation type="vanished">Inserimento (x):</translation>
+    </message>
+    <message>
+        <source>Scale:</source>
+        <translation type="vanished">Scala:</translation>
+    </message>
+    <message>
+        <source>Size of image in pixels</source>
+        <translation type="vanished">Dimensione dell&apos;immagine in pixel</translation>
+    </message>
+    <message>
+        <source>DPI</source>
+        <translation type="vanished">DPI</translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation type="vanished">Larghezza:</translation>
+    </message>
+    <message>
+        <source>Height of image</source>
+        <translation type="vanished">Altezza dell&apos;immagine</translation>
+    </message>
+    <message>
+        <source>Select an image file</source>
+        <translation type="vanished">Selezionare un file immagine</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgInitial</name>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="32"/>
         <source>Welcome</source>
         <translation>Benvenuto</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="85"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Welcome to LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Please choose the unit you want to use for new drawings and your preferred language for Ui and Command.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can change these settings later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Benvenuto in LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Scegli l&apos;unità che vuoi usare per i nuovi disegni e la tua lingua preferita per l&apos;interfaccia e i comandi.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Puoi modificare queste impostazioni in seguito.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="231"/>
@@ -39664,14 +40804,167 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>Lingua dell&apos;interfaccia:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="85"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Welcome to LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Please choose the unit you want to use for new drawings and your preferred language for Ui and Command.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can changes these settings later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Benvenuto in LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Si prega di scegliere l&apos;unità di misura da utilizzare per i nuovi disegni e la lingua preferita per l&apos;interfaccia utente e i comandi.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;È possibile modificare queste impostazioni in seguito.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Benvenuto in LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Si prega di scegliere l&apos;unità di misura da utilizzare per i nuovi disegni e la lingua preferita per l&apos;interfaccia utente e i comandi.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;È possibile modificare queste impostazioni in seguito.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="187"/>
         <source>Command Language:</source>
         <translation>Lingua dei comandi:</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgInsert</name>
+    <message>
+        <source>Insert</source>
+        <translation type="vanished">Inserisci</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of insert</source>
+        <translation type="vanished">Layer dell&apos;inserimento</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Insertion point (y):</source>
+        <translation type="vanished">Punto di inserimento (y):</translation>
+    </message>
+    <message>
+        <source>Insertion point (x):</source>
+        <translation type="vanished">Punto di inserimento (x):</translation>
+    </message>
+    <message>
+        <source>Amount of rows for copies</source>
+        <translation type="vanished">Quantità di righe per copie</translation>
+    </message>
+    <message>
+        <source>Rotation angle</source>
+        <translation type="vanished">Angolo di rotazione</translation>
+    </message>
+    <message>
+        <source>Spacing between columns</source>
+        <translation type="vanished">Spacing tra colonne</translation>
+    </message>
+    <message>
+        <source>Scaling factor by X axis</source>
+        <translation type="vanished">Fattore di scala per asse X</translation>
+    </message>
+    <message>
+        <source>X coordinate of insertion point</source>
+        <translation type="vanished">Coordinata X del punto di inserimento</translation>
+    </message>
+    <message>
+        <source>Spacing between rows</source>
+        <translation type="vanished">Spacing tra le righe</translation>
+    </message>
+    <message>
+        <source>Amount of columns for copies</source>
+        <translation type="vanished">Quantità di colonne per copie</translation>
+    </message>
+    <message>
+        <source>Scaling factor by Y axis</source>
+        <translation type="vanished">Fattore di scala per asse Y</translation>
+    </message>
+    <message>
+        <source>Scale Y:</source>
+        <translation type="vanished">Scala Y:</translation>
+    </message>
+    <message>
+        <source>Rows:</source>
+        <translation type="vanished">Remi:</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">Angolo:</translation>
+    </message>
+    <message>
+        <source>Y coordinate of insertion point</source>
+        <translation type="vanished">Y coordinate del punto di inserimento</translation>
+    </message>
+    <message>
+        <source>Row Spacing:</source>
+        <translation type="vanished">Spacing di riga:</translation>
+    </message>
+    <message>
+        <source>Columns:</source>
+        <translation type="vanished">Colonne:</translation>
+    </message>
+    <message>
+        <source>Scale X:</source>
+        <translation type="vanished">Scala X:</translation>
+    </message>
+    <message>
+        <source>Column Spacing:</source>
+        <translation type="vanished">Colonna di ricambio:</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgLine</name>
+    <message>
+        <source>Line</source>
+        <translation type="vanished">Linea</translation>
+    </message>
+    <message>
+        <source>ID: </source>
+        <translation type="vanished">ID: </translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of line</source>
+        <translation type="vanished">Layer della linea</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>End point (x):</source>
+        <translation type="vanished">Punto finale (x):</translation>
+    </message>
+    <message>
+        <source>Ending point X coordinate</source>
+        <translation type="vanished">Coordinata punto di chiusura X</translation>
+    </message>
+    <message>
+        <source>Ending point Y coordinate</source>
+        <translation type="vanished">Coordinata punto di chiusura Y</translation>
+    </message>
+    <message>
+        <source>End point (y):</source>
+        <translation type="vanished">Punto finale (y):</translation>
+    </message>
+    <message>
+        <source>Start point (y):</source>
+        <translation type="vanished">Punto di partenza (y):</translation>
+    </message>
+    <message>
+        <source>Starting point Y coordinate</source>
+        <translation type="vanished">Coordinata punto di partenza Y</translation>
+    </message>
+    <message>
+        <source>Start point (x):</source>
+        <translation type="vanished">Punto di partenza (x):</translation>
+    </message>
+    <message>
+        <source>Starting point X coordinate</source>
+        <translation type="vanished">Punto di partenza X coordinate</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
     </message>
 </context>
 <context>
@@ -40530,7 +41823,7 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>Da destra a sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.cpp" line="242"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.cpp" line="250"/>
         <source>Pen</source>
         <translation>Penna</translation>
     </message>
@@ -40657,27 +41950,27 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>Lunghezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Decimal</source>
         <translation>Decimale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Scientific</source>
         <translation>Scientifica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Engineering</source>
         <translation>Ingegneristica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Architectural</source>
         <translation>Architettonica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Fractional</source>
         <translation>Frazionale</translation>
     </message>
@@ -40689,12 +41982,12 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>Angolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Decimal Degrees</source>
         <translation>Gradi decimali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Radians</source>
         <translation>Radianti</translation>
     </message>
@@ -40733,174 +42026,174 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>unità</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Deg/min/sec</source>
         <translation>Grad/min/sec</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Gradians</source>
         <translation>Centesimali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Surveyor&apos;s units</source>
         <translation>Unità topografiche</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="918"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="921"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="924"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="927"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="936"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="939"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="942"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="945"/>
         <source>ON</source>
         <translation>ON</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="394"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="412"/>
         <source>Delete Custom Property</source>
         <translation>Eliminare la proprietà personalizzata</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="395"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="413"/>
         <source>Are you sure you&apos;d like to delete property [%1]?</source>
         <translation>Sei sicuro di voler eliminare la proprietà [%1]?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="414"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="432"/>
         <source>Drawing Options</source>
         <translation>Opzioni di disegno</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="415"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="433"/>
         <source>Settings were changed. Are you sure you&apos;d like to skip saving changes (so they will not be saved)?</source>
         <translation>Le impostazioni sono state cambiate. Sei sicuro di voler saltare le modifiche di salvataggio (così non saranno salvati)?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="449"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="467"/>
         <source>&amp;Set as Active</source>
         <translation>&amp;Set come attivo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="452"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="468"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="470"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="486"/>
         <source>&amp;Create Style</source>
         <translation>&amp;Crea stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="454"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="472"/>
         <source>&amp;Edit Style</source>
         <translation>&amp; Edit Style</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="458"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="476"/>
         <source>&amp;Rename Style</source>
         <translation>&amp; Cognome Stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="460"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="478"/>
         <source>&amp;Delete Style</source>
         <translation>&amp;Elimina stile</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="464"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="482"/>
         <source>E&amp;xport Styles</source>
         <translation>&amp;Esporta stili</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="465"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="469"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="483"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="487"/>
         <source>&amp;Import Styles</source>
         <translation>&amp;Importa stili</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="557"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="575"/>
         <source>Style to Create - </source>
         <translation>Stile per creare -</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="609"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="627"/>
         <source>Dimension style editing - </source>
         <translation>Modifica dello stile delle dimensioni</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="633"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="651"/>
         <source>Rename Dimension Style</source>
         <translation>Rinominare lo stile di dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="634"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="652"/>
         <source>Enter new unique name of dimension style (was &quot;%1&quot;):</source>
         <translation>Inserisci nuovo nome unico di stile di dimensione (era &quot;%1&quot;):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="653"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="666"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="674"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="681"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="671"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="684"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="692"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="699"/>
         <source>Removing Dimension Style</source>
         <translation>Rimozione dello stile di dimensione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="654"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="672"/>
         <source>Can&apos;t delete last dimension style. At least one should be present! </source>
         <translation>Non è possibile eliminare lo stile di ultima dimensione. Almeno uno dovrebbe essere presente!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="667"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="685"/>
         <source>Can&apos;t delete dimension style as it&apos;s children is used in drawing. Only unused style may be deleted.</source>
         <translation>Non è possibile eliminare lo stile di dimensione in quanto i bambini vengono utilizzati nel disegno. Solo lo stile inutilizzato può essere cancellato.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="675"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="693"/>
         <source>Are you sure you want to remove the dimension style &quot;%1&quot; together with child styles?</source>
         <translation>Sei sicuro di voler rimuovere lo stile di dimensione &quot;%1&quot; insieme agli stili di bambino?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="682"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="700"/>
         <source>Are you sure you want to remove the dimension style &quot;%1&quot;?</source>
         <translation>Sei sicuro di voler rimuovere lo stile di dimensione &quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="918"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="921"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="924"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="927"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="936"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="939"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="942"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="945"/>
         <source>OFF</source>
         <translation>UFFICIO</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1188"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1215"/>
         <source>VOID</source>
         <translation>VOI</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1191"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1218"/>
         <source>INT</source>
         <translation>INTRODUZIONE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1195"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1222"/>
         <source>DOUBLE</source>
         <translation>DOUBLE</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1199"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1226"/>
         <source>STRING</source>
         <translation>STRUTTURA</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1203"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1230"/>
         <source>VECTOR</source>
         <translation>VECTION</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1547"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1554"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1587"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1594"/>
         <source>Options</source>
         <translation>Opzioni</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1548"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1588"/>
         <source>For the length formats &apos;Engineering&apos; and &apos;Architectural&apos;, the unit must be set to Inch.</source>
         <translation>Per i formati di lunghezza &quot;Ingegneristica&quot; e &quot;Architettonica&quot;, le lunghezze devono essere impostate su pollici.</translation>
     </message>
@@ -40992,10 +42285,10 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="962"/>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="997"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="910"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="913"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1432"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1438"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="928"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="931"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1459"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1465"/>
         <source>auto</source>
         <translation>auto</translation>
     </message>
@@ -41653,7 +42946,7 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3571"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="339"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="357"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
@@ -41669,7 +42962,7 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3586"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="339"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="357"/>
         <source>Value</source>
         <translation>Valore</translation>
     </message>
@@ -41770,8 +43063,8 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3130"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1891"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1526"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1931"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1530"/>
         <source>Dwg Units</source>
         <translation>Unità disegno</translation>
     </message>
@@ -41801,18 +43094,18 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>(0 =&gt; 5% relativo alla zoomata)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Architectural (metric)</source>
         <translation>Architetturale (metrico)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1555"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1595"/>
         <source>For the length format &apos;Architectural (metric)&apos;, the unit must be set to Meter.</source>
         <translation>Per il formato lunghezza &apos;Architetturale (metrico)&apos; l&apos;unità deve essere impostata a metro.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1888"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1523"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1928"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1527"/>
         <source>Screen %</source>
         <translation>Schermo %</translation>
     </message>
@@ -41820,7 +43113,7 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
 <context>
     <name>QG_DlgOptionsGeneral</name>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1118"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1122"/>
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
@@ -41896,7 +43189,7 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>Scala a&amp;utomaticamente la griglia</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1119"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1123"/>
         <source>Please restart the application to apply all changes.</source>
         <translation>Riavviare l&apos;applicazione per rendere effetive le modifiche.</translation>
     </message>
@@ -42254,43 +43547,43 @@ Ciò modifica ricorsivamente tutte le istanze del blocco stesso.</translation>
         <translation>#1E90FF</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1140"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1144"/>
         <source>Select Color</source>
         <translation>Seleziona il colore</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1284"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1288"/>
         <source>Clear settings</source>
         <translation>Ripulisci impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1285"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1289"/>
         <source>This will also include custom menus and toolbars. Continue?</source>
         <translation>Includerà anche menu e barre personalizzate. Continuo?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1289"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1295"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1293"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1299"/>
         <source>You must restart LibreCAD to see the changes.</source>
         <translation>È necessario riavviare LibreCAD per vedere i cambiamenti.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1311"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1315"/>
         <source>Select Fonts Folder</source>
         <translation>Seleziona caratteri cartella</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1318"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1322"/>
         <source>Select Translations Folder</source>
         <translation>Seleziona cartelle di traduzioni</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1325"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1329"/>
         <source>Select Hatch Patterns Folder</source>
         <translation>Seleziona cartella Hatch Patterns</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1332"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1336"/>
         <source>Select Other Settings Folder</source>
         <translation>Seleziona altre cartelle delle impostazioni</translation>
     </message>
@@ -44717,6 +46010,111 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
     </message>
 </context>
 <context>
+    <name>QG_DlgOptionsVariables</name>
+    <message>
+        <source>Drawing Variables</source>
+        <translation type="vanished">Variabili del disegno</translation>
+    </message>
+    <message>
+        <source>Variable</source>
+        <translation type="vanished">Variabile</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="vanished">Codice</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="vanished">Valore</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="vanished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>Alt+O</source>
+        <translation type="vanished">Alt+O</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Annulla</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation type="vanished">Esc</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgPoint</name>
+    <message>
+        <source>Point</source>
+        <translation type="vanished">N</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of point</source>
+        <translation type="vanished">Layer del punto</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Position (y):</source>
+        <translation type="vanished">Posizione (y):</translation>
+    </message>
+    <message>
+        <source>Position of point by Y coordinate</source>
+        <translation type="vanished">Posizione del punto da Y coordinate</translation>
+    </message>
+    <message>
+        <source>Position (x):</source>
+        <translation type="vanished">Posizione (x):</translation>
+    </message>
+    <message>
+        <source>Position of point by X coordinate</source>
+        <translation type="vanished">Posizione del punto per coordinate X</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgPolyline</name>
+    <message>
+        <source>Polyline</source>
+        <translation type="vanished">Polimero</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of polyline</source>
+        <translation type="vanished">Layer della polilinea</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Defines whether polyline is closed contour</source>
+        <translation type="vanished">Definisce se la polilina è un profilo chiuso</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">Chiuso</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgRotate</name>
     <message>
         <source>Rotation Options</source>
@@ -44854,6 +46252,45 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
     </message>
 </context>
 <context>
+    <name>QG_DlgSpline</name>
+    <message>
+        <source>Spline</source>
+        <translation type="vanished">Spline</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">Layer:</translation>
+    </message>
+    <message>
+        <source>Layer of spline</source>
+        <translation type="vanished">Layer della spline</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">Geometria</translation>
+    </message>
+    <message>
+        <source>Degree:</source>
+        <translation type="vanished">Grado:</translation>
+    </message>
+    <message>
+        <source>Defines whether spline defines closed contour</source>
+        <translation type="vanished">Definisce se spline definisce il contorno chiuso</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">Chiuso</translation>
+    </message>
+    <message>
+        <source>Degree used to approximate spline</source>
+        <translation type="vanished">Grado usato per approssimare spline</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">Penna</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgText</name>
     <message>
         <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="20"/>
@@ -44896,107 +46333,107 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
         <translation>Incolla</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="422"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="408"/>
         <source>Alignment</source>
         <translation>Allineamento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="879"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="865"/>
         <source>Top Right</source>
         <translation>Alto a destra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="621"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="607"/>
         <source>Top Left</source>
         <translation>Alto a sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="669"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="655"/>
         <source>Middle Left</source>
         <translation>Medio a sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="774"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="760"/>
         <source>Middle Center</source>
         <translation>Medio al centro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="538"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="524"/>
         <source>Middle Right</source>
         <translation>Medio a destra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="455"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="441"/>
         <source>Bottom Left</source>
         <translation>Basso a sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="809"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="795"/>
         <source>Bottom Right</source>
         <translation>Basso a destra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="490"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="476"/>
         <source>Bottom Center</source>
         <translation>Basso al centro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="739"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="725"/>
         <source>Top Center</source>
         <translation>Alto al centro</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="936"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="922"/>
         <source>Insert Symbol</source>
         <translation>Inserisci simbolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="957"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="943"/>
         <source>Degree (°)</source>
         <translation>Gradi (°)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="962"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="948"/>
         <source>Plus / Minus (±)</source>
         <translation>Più/meno (±)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="968"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="954"/>
         <source>At (@)</source>
         <translation>Chiocciola (@)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="974"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="960"/>
         <source>Hash (#)</source>
         <translation>Cancelletto (#)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="980"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="966"/>
         <source>Dollar ($)</source>
         <translation>Dollaro ($)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="985"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="971"/>
         <source>Copyright (©)</source>
         <translation>பதிப்புரிமை (©)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="990"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="976"/>
         <source>Registered (®)</source>
         <translation>Registrato (®)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="995"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="981"/>
         <source>Paragraph (§)</source>
         <translation>Paragrafo (§)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1000"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="986"/>
         <source>Pi (π)</source>
         <translation>Pi greco (π)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1005"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="991"/>
         <source>Pound (£)</source>
         <translation>Sterlina (£)</translation>
     </message>
@@ -45005,37 +46442,37 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
         <translation type="vanished">யென் (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1021"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1007"/>
         <source>Times (×)</source>
         <translation>Moltiplicazione (×)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1026"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1012"/>
         <source>Division (÷)</source>
         <translation>Divisione (÷)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1037"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1023"/>
         <source>Insert Unicode</source>
         <translation>Inserisci carattere &quot;Unicode&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1602"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1588"/>
         <source>Page:</source>
         <translation>Dizionario:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1630"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1616"/>
         <source>Selected character preview. Click to insert to text.</source>
         <translation>Anteprima del carattere selezionato. Fare clic per inserire nel testo.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1640"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1626"/>
         <source>Char:</source>
         <translation>Carattere:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1059"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1045"/>
         <source>[0000-007F] Basic Latin</source>
         <translation>[0000-007F] Latino base</translation>
     </message>
@@ -45050,597 +46487,596 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
         <translation>Livello di testo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="255"/>
         <source>Obligue of text</source>
-        <translation>Obligazione del testo</translation>
+        <translation type="vanished">Obligazione del testo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="268"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="261"/>
         <source>Rotation angle</source>
         <translation>Angolo di rotazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="301"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="294"/>
         <source>Width factor</source>
         <translation>Fattore di larghezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="337"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="330"/>
         <source>Height of text</source>
         <translation>Altezza del testo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="513"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="499"/>
         <source>Aligned</source>
         <translation>Allineato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="644"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="630"/>
         <source>Middle</source>
         <translation>Medio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="948"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="934"/>
         <source>Symbol to insert</source>
         <translation>Simbolo da inserire</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1011"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="997"/>
         <source>Yen / Yuan (¥)</source>
         <translation>யென் / யுவான் (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1016"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1002"/>
         <source>Euro (€)</source>
         <translation>யூரோ (€)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1055"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1041"/>
         <source>Codepage selection for selecting character</source>
         <translation>Selezione Codepage per la selezione del carattere</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1064"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1050"/>
         <source>[0080-00FF] Latin-1 Supplementary</source>
         <translation>[0080-00FF] Latino 1 supplementare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1069"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1055"/>
         <source>[0100-017F] Latin Extended-A</source>
         <translation>[0100-017F] Latino esteso A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1074"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1060"/>
         <source>[0180-024F] Latin Extended-B</source>
         <translation>[0180-024F] Latino esteso B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1079"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1065"/>
         <source>[0250-02AF] IPA Extensions</source>
         <translation>[0250-02AF] Estensioni fonetiche</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1084"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1070"/>
         <source>[02B0-02FF] Spacing Modifier Letters</source>
         <translation>[02B0-02FF] Caratteri modificatori di spazio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1089"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1075"/>
         <source>[0300-036F] Combining Diacritical Marks</source>
         <translation>[0300-036F] Caratteri diacritici di combinazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1094"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1080"/>
         <source>[0370-03FF] Greek and Coptic</source>
         <translation>[0370-03FF] Greco e copto</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1099"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1085"/>
         <source>[0400-04FF] Cyrillic</source>
         <translation>[0400-04FF] Cirillico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1104"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1090"/>
         <source>[0500-052F] Cyrillic Supplementary</source>
         <translation>[0500-052F] Cirillico supplementare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1109"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1095"/>
         <source>[0530-058F] Armenian</source>
         <translation>[0530-058F] Armeno</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1114"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1100"/>
         <source>[0590-05FF] Hebrew</source>
         <translation>[0590-05FF] Ebraico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1119"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1105"/>
         <source>[0600-06FF] Arabic</source>
         <translation>[0600-06FF] Arabo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1124"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1110"/>
         <source>[0700-074F] Syriac</source>
         <translation>[0700-074F] Siriano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1129"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1115"/>
         <source>[0780-07BF] Thaana</source>
         <translation>[0780-07BF] Thaana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1134"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1120"/>
         <source>[0900-097F] Devanagari</source>
         <translation>[0900-097F] Devanagari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1139"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1125"/>
         <source>[0980-09FF] Bengali</source>
         <translation>[0980-09FF] Bengalese</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1144"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1130"/>
         <source>[0A00-0A7F] Gurmukhi</source>
         <translation>[0A00-0A7F] Gurmukhi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1149"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1135"/>
         <source>[0A80-0AFF] Gujarati</source>
         <translation>[0A80-0AFF] ગુજરાતી</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1154"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1140"/>
         <source>[0B00-0B7F] Oriya</source>
         <translation>[0B00-0B7F] ଓଡ଼ିଆ</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1159"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1145"/>
         <source>[0B80-0BFF] Tamil</source>
         <translation>[0B80-0BFF] தமிழ்</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1164"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1150"/>
         <source>[0C00-0C7F] Telugu</source>
         <translation>[0C00-0C7F] తెలుగు</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1169"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1155"/>
         <source>[0C80-0CFF] Kannada</source>
         <translation>[0C80-0CFF] ಕನ್ನಡ</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1174"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1160"/>
         <source>[0D00-0D7F] Malayalam</source>
         <translation>[0D00-0D7F] മലയാളം</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1179"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1165"/>
         <source>[0D80-0DFF] Sinhala</source>
         <translation>[0D80-0DFF] Singalese</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1184"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1170"/>
         <source>[0E00-0E7F] Thai</source>
         <translation>[0E00-0E7F] Thailandese</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1189"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1175"/>
         <source>[0E80-0EFF] Lao</source>
         <translation>[0E80-0EFF] Laotiano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1194"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1180"/>
         <source>[0F00-0FFF] Tibetan</source>
         <translation>[0F00-0FFF] Tibetano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1199"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1185"/>
         <source>[1000-109F] Myanmar</source>
         <translation>[1000-109F] Birmano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1204"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1190"/>
         <source>[10A0-10FF] Georgian</source>
         <translation>[10A0-10FF] Georgiano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1209"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1195"/>
         <source>[1100-11FF] Hangul Jamo</source>
         <translation>[1100-11FF] 한글 자모</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1214"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1200"/>
         <source>[1200-137F] Ethiopic</source>
         <translation>[1200-137F] Etiope</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1219"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1205"/>
         <source>[13A0-13FF] Cherokee</source>
         <translation>[13A0-13FF] Cherokee</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1224"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1210"/>
         <source>[1400-167F] Unified Canadian Aboriginal Syllabic</source>
         <translation>[1400-167F] Sillabe delle lingue autoctone canadesi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1229"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1215"/>
         <source>[1680-169F] Ogham</source>
         <translation>[1680-169F] Ogamico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1234"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1220"/>
         <source>[16A0-16FF] Runic</source>
         <translation>[16A0-16FF] Runico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1239"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1225"/>
         <source>[1700-171F] Tagalog</source>
         <translation>[1700-171F] Tagalog</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1244"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1230"/>
         <source>[1720-173F] Hanunoo</source>
         <translation>[1720-173F] Hanunoo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1249"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1235"/>
         <source>[1740-175F] Buhid</source>
         <translation>[1740-175F] Buhid</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1254"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1240"/>
         <source>[1760-177F] Tagbanwa</source>
         <translation>[1760-177F] Tagbanwa</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1259"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1245"/>
         <source>[1780-17FF] Khmer</source>
         <translation>[1780-17FF] Cambogiano</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1264"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1250"/>
         <source>[1800-18AF] Mongolian</source>
         <translation>[1800-18AF] Mongolo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1269"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1255"/>
         <source>[1E00-1EFF] Latin Extended Additional</source>
         <translation>[1E00-1EFF] Latino esteso addizionale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1274"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1260"/>
         <source>[1F00-1FFF] Greek Extended</source>
         <translation>[1F00-1FFF] Greco esteso</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1279"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1265"/>
         <source>[2000-206F] General Punctuation</source>
         <translation>[2000-206F] Punteggiatura generale</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1284"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1270"/>
         <source>[2070-209F] Superscripts and Subscripts</source>
         <translation>[2070-209F] Apici e pedici</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1289"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1275"/>
         <source>[20A0-20CF] Currency Symbols</source>
         <translation>[20A0-20CF] Simboli monetari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1294"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1280"/>
         <source>[20D0-20FF] Combining Marks for Symbols</source>
         <translation>[20D0-20FF] Caratteri diacritici di combinazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1299"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1285"/>
         <source>[2100-214F] Letterlike Symbols</source>
         <translation>[2100-214F] Simboli delle lettere</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1304"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1290"/>
         <source>[2150-218F] Number Forms</source>
         <translation>[2150-218F] Simboli numerici</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1309"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1295"/>
         <source>[2190-21FF] Arrows</source>
         <translation>[2190-21FF] Frecce</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1314"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1300"/>
         <source>[2200-22FF] Mathematical Operators</source>
         <translation>[2200-22FF] Operatori matematici</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1319"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1305"/>
         <source>[2300-23FF] Miscellaneous Technical</source>
         <translation>[2300-23FF] Tecnici misti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1310"/>
         <source>[2400-243F] Control Pictures</source>
         <translation>[2400-243F] Simboli tastiera</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1329"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1315"/>
         <source>[2440-245F] Optical Character Recognition</source>
         <translation>[2440-245F] Riconoscimento ottico dei caratteri</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1334"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1320"/>
         <source>[2460-24FF] Enclosed Alphanumerics</source>
         <translation>[2460-24FF] Alfanumerici inclusi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1339"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1325"/>
         <source>[2500-257F] Box Drawing</source>
         <translation>[2500-257F] Disegno caselle</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1344"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1330"/>
         <source>[2580-259F] Block Elements</source>
         <translation>[2580-259F] Blocchi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1349"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1335"/>
         <source>[25A0-25FF] Geometric Shapes</source>
         <translation>[25A0-25FF] Forme geometriche</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1354"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1340"/>
         <source>[2600-26FF] Miscellaneous Symbols</source>
         <translation>[2600-26FF] Simboli vari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1359"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1345"/>
         <source>[2700-27BF] Dingbats</source>
         <translation>[2700-27BF] Dingbats</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1364"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1350"/>
         <source>[27C0-27EF] Miscellaneous Mathematical Symbols-A</source>
         <translation>[27C0-27EF] Diversi simboli matematici A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1369"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1355"/>
         <source>[27F0-27FF] Supplemental Arrows-A</source>
         <translation>[27F0-27FF] Frecce supplementri A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1374"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1360"/>
         <source>[2800-28FF] Braille Patterns</source>
         <translation>[2800-28FF] Simboli Braille</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1379"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1365"/>
         <source>[2900-297F] Supplemental Arrows-B</source>
         <translation>[2900-297F] Frecce supplementati B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1384"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1370"/>
         <source>[2980-29FF] Miscellaneous Mathematical Symbols-B</source>
         <translation>[2980-29FF] Diversi simboli matematici B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1389"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1375"/>
         <source>[2A00-2AFF] Supplemental Mathematical Operators</source>
         <translation>[2A00-2AFF] Operatori matematici supplementari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1394"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1380"/>
         <source>[2E80-2EFF] CJK Radicals Supplement</source>
         <translation>[2E80-2EFF] Radicali supplementari CJK</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1399"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1385"/>
         <source>[2F00-2FDF] Kangxi Radicals</source>
         <translation>[2F00-2FDF] Radicali kangxi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1404"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1390"/>
         <source>[2FF0-2FFF] Ideographic Description Characters</source>
         <translation>[2FF0-2FFF] Caratteri di descrizione ideografica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1409"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1395"/>
         <source>[3000-303F] CJK Symbols and Punctuation</source>
         <translation>[3000-303F] Simboli e punteggiatura CJK</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1414"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1400"/>
         <source>[3040-309F] Hiragana</source>
         <translation>[3040-309F] Hiragana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1419"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1405"/>
         <source>[30A0-30FF] Katakana</source>
         <translation>[30A0-30FF] Katakana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1424"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1410"/>
         <source>[3100-312F] Bopomofo</source>
         <translation>[3100-312F] Bopomofo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1429"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1415"/>
         <source>[3130-318F] Hangul Compatibility Jamo</source>
         <translation>[3130-318F] Hangul compatibile con jamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1434"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1420"/>
         <source>[3190-319F] Kanbun</source>
         <translation>[3190-319F] Kanbun</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1439"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1425"/>
         <source>[31A0-31BF] Bopomofo Extended</source>
         <translation>[31A0-31BF] Bopomofo esteso</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1444"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1430"/>
         <source>[3200-32FF] Enclosed CJK Letters and Months</source>
         <translation>[3200-32FF] Caratteri e mesi CJK inclusi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1449"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1435"/>
         <source>[3300-33FF] CJK Compatibility</source>
         <translation>[3300-33FF] Compatibilità CJK</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1454"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1440"/>
         <source>[3400-4DBF] CJK Unified Ideographs Extension A</source>
         <translation>[3400-4DBF] Ideogrammi CJK unificati estensione A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1459"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1445"/>
         <source>[4E00-9FAF] CJK Unified Ideographs</source>
         <translation>[4E00-9FAF] Ideogrammi CJK unificati</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1464"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1450"/>
         <source>[A000-A48F] Yi Syllables</source>
         <translation>[A000-A48F] Sillabe yi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1469"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1455"/>
         <source>[A490-A4CF] Yi Radicals</source>
         <translation>[A490-A4CF] Radicali yi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1474"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1460"/>
         <source>[AC00-D7AF] Hangul Syllables</source>
         <translation>[AC00-D7AF] Sillabe hangul</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1479"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1465"/>
         <source>[D800-DBFF] High Surrogates</source>
         <translation>[D800-DBFF] Surrogati alti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1484"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1470"/>
         <source>[DC00-DFFF] Low Surrogate Area</source>
         <translation>[DC00-DFFF] Surrogati bassi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1489"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1475"/>
         <source>[E000-F8FF] Private Use Area</source>
         <translation>[E000-F8FF] Area ad uso privato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1494"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1480"/>
         <source>[F900-FAFF] CJK Compatibility Ideographs</source>
         <translation>[F900-FAFF] Indeogrammi compatibili CJK</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1499"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1485"/>
         <source>[FB00-FB4F] Alphabetic Presentation Forms</source>
         <translation>[FB00-FB4F] Forme di presentazione alfabetica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1504"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1490"/>
         <source>[FB50-FDFF] Arabic Presentation Forms-A</source>
         <translation>[FB50-FDFF] Forme A di presentazione arabe</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1509"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1495"/>
         <source>[FE00-FE0F] Variation Selectors</source>
         <translation>[FE00-FE0F] Selettori di variazione</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1514"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1500"/>
         <source>[FE20-FE2F] Combining Half Marks</source>
         <translation>[FE20-FE2F] Mezzi segni combinanti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1519"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1505"/>
         <source>[FE30-FE4F] CJK Compatibility Forms</source>
         <translation>[FE30-FE4F] Forme di compatibilità CJK</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1524"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1510"/>
         <source>[FE50-FE6F] Small Form Variants</source>
         <translation>[FE50-FE6F] Piccole varianti di forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1529"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1515"/>
         <source>[FE70-FEFF] Arabic Presentation Forms-B</source>
         <translation>[FE70-FEFF] Forme B di presentazione arabe</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1534"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1520"/>
         <source>[FF00-FFEF] Halfwidth and Fullwidth Forms</source>
         <translation>[FF00-FFEF] Forme a mezza e piena larghezza</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1539"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1525"/>
         <source>[FFF0-FFFF] Specials</source>
         <translation>[FFF0-FFFF] Speciali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1544"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1530"/>
         <source>[10300-1032F] Old Italic</source>
         <translation>[10300-1032F] Corsivo antico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1549"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1535"/>
         <source>[10330-1034F] Gothic</source>
         <translation>[10330-1034F] Gotico</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1554"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1540"/>
         <source>[10400-1044F] Deseret</source>
         <translation>[10400-1044F] Deseret</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1559"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1545"/>
         <source>[1D000-1D0FF] Byzantine Musical Symbols</source>
         <translation>[1D000-1D0FF] Simboli musicali bizantini</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1550"/>
         <source>[1D100-1D1FF] Musical Symbols</source>
         <translation>[1D100-1D1FF] Simboli musicali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1569"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1555"/>
         <source>[1D400-1D7FF] Mathematical Alphanumeric Symbols</source>
         <translation>[1D400-1D7FF] Simboli alfanumerici matematici</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1574"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1560"/>
         <source>[20000-2A6DF] CJK Unified Ideographs Extension B</source>
         <translation>[20000-2A6DF] Ideogrammi CJK unificati estensione B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1579"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1565"/>
         <source>[2F800-2FA1F] CJK Compatibility Ideographs Supplement</source>
         <translation>[2F800-2FA1F] Ideogrammi compatibili CJK supplemento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1584"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1570"/>
         <source>[E0000-E007F] Tags</source>
         <translation>[E0000-E007F] Etichette</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1589"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1575"/>
         <source>[F0000-FFFFD] Supplementary Private Use Area-A</source>
         <translation>[F0000-FFFFD] FFD] Area A ad uso privato supplementare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1594"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1580"/>
         <source>[100000-10FFFD] Supplementary Private Use Area-B</source>
         <translation>[100000-10FFFD] Area B ad uso privato supplementare</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1662"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1648"/>
         <source>Selection of character to insert</source>
         <translation>Selezione del carattere da inserire</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="360"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="353"/>
         <source>&amp;Height:</source>
         <translation>&amp;Altezza:</translation>
     </message>
@@ -45655,70 +47091,69 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
         <translation>Impostazioni carattere</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="275"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="268"/>
         <source>Angle:</source>
         <translation>Angolo:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="380"/>
         <source>Oblique:</source>
-        <translation>Obliquo:</translation>
+        <translation type="vanished">Obliquo:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="317"/>
         <source>Width factor:</source>
         <translation>Fattore di larghezza:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="373"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="366"/>
         <source>Font:</source>
         <translation>Carattere:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="844"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="830"/>
         <source>Baseline Left</source>
         <translation>Baseline sinistra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="589"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="707"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="847"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="575"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="693"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="833"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="704"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="690"/>
         <source>Baseline Right</source>
         <translation>Baseline destra</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="586"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="572"/>
         <source>Baseline Center</source>
         <translation>Centro base</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="561"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="547"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="550"/>
         <source>Fit</source>
         <translation>Adattamento</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="952"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="938"/>
         <source>Diameter (⌀)</source>
         <translation>Diametro (ø)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="516"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="502"/>
         <source>A&amp;ligned</source>
         <translation>Allineato</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="647"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="633"/>
         <source>&amp;Middle</source>
         <translation>&amp;Medio</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.cpp" line="212"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.cpp" line="213"/>
         <source>Pen</source>
         <translation>Penna</translation>
     </message>
@@ -45739,84 +47174,84 @@ così il valore di passaggio predefinito richiesto per la cottura</translation>
 <context>
     <name>QG_FileDialog</name>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="126"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="135"/>
         <source>Drawing Exchange DXF 2000 %1</source>
         <translation>Scambio di disegno DXF 2000 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="128"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="137"/>
         <source>Drawing Exchange DXF R12 %1</source>
         <translation>Scambio di disegno DXF R12 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="131"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="140"/>
         <source>LFF Font %1</source>
         <translation>Font LFF %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="135"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="144"/>
         <source>QCad Font %1</source>
         <translation>Font QCad %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="136"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="145"/>
         <source>Jww Drawing %1</source>
         <translation>Disegno Jww %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="129"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="138"/>
         <source>Drawing Exchange %1</source>
         <translation>DXF (Drawing Exchange %1)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="137"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="146"/>
         <source>QCad 1.x file %1</source>
         <translation>File QCad 1.x %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="124"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="133"/>
         <source>Drawing Exchange DXF 2007 %1</source>
         <translation>Scambio di disegno DXF 2007 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="125"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="134"/>
         <source>Drawing Exchange DXF 2004 %1</source>
         <translation>Scambio di disegno DXF 2004 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="127"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="136"/>
         <source>Drawing Exchange DXF R14 %1</source>
         <translation>Scambio di disegno DXF R14 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="140"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="149"/>
         <source>Block</source>
         <comment>block file</comment>
         <translation>Blocco</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="143"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="152"/>
         <source>Drawing</source>
         <comment>drawing file</comment>
         <translation>Disegno</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="165"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="174"/>
         <source>Open %1</source>
         <translation>Apri %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="254"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="266"/>
         <source>Save %1 As</source>
         <translation>Salva %1 come</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="133"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="142"/>
         <source>dwg Drawing %1</source>
         <translation>Disegno dwg %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="236"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="248"/>
         <source>Untitled</source>
         <translation>Senza titolo</translation>
     </message>
@@ -45945,12 +47380,12 @@ Il contenuto di un livello di costruzione non dovrebbe apparire in stampa.</tran
 <context>
     <name>QG_LayerWidget</name>
     <message>
-        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="299"/>
+        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="298"/>
         <source>Looking for matching layer names</source>
         <translation>Cerca nomi di livello uguali</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="297"/>
+        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="296"/>
         <source>Filter</source>
         <translation>Filtra</translation>
     </message>
@@ -46264,6 +47699,58 @@ p, li { white-space: pre-wrap; }
         <source>World</source>
         <translation>Mondo</translation>
     </message>
+    <message>
+        <source>Snap</source>
+        <translation type="vanished">Snap</translation>
+    </message>
+    <message>
+        <source>Snap to Endpoints</source>
+        <translation type="vanished">Aggancia agli estremi</translation>
+    </message>
+    <message>
+        <source>Snap to equidistant points of entity</source>
+        <translation type="vanished">Aggancia ai punti equidistanti dell&apos;entità</translation>
+    </message>
+    <message>
+        <source>Snap to center points</source>
+        <translation type="vanished">Aggancia ai centri</translation>
+    </message>
+    <message>
+        <source>Snap to intersections automatically</source>
+        <translation type="vanished">Aggancia automaticamente alle intersezioni</translation>
+    </message>
+    <message>
+        <source>Snap to closest point on entity</source>
+        <translation type="vanished">Aggancia al punto più vicino sull&apos;entità</translation>
+    </message>
+    <message>
+        <source>Snap to point with given distance to endpoint</source>
+        <translation type="vanished">Aggancia al punto a distanza data dall&apos;estremo</translation>
+    </message>
+    <message>
+        <source>Snap to intersections manually</source>
+        <translation type="vanished">Aggancia manualmente alle intersezioni</translation>
+    </message>
+    <message>
+        <source>Snap to grid</source>
+        <translation type="vanished">Aggancia alla griglia</translation>
+    </message>
+    <message>
+        <source>Restrict Horizontally</source>
+        <translation type="vanished">Limita orizzontalmente</translation>
+    </message>
+    <message>
+        <source>Restrict Vertically</source>
+        <translation type="vanished">Limita verticalmente</translation>
+    </message>
+    <message>
+        <source>Move relative Zero</source>
+        <translation type="vanished">Muovi lo zero relativo</translation>
+    </message>
+    <message>
+        <source>Lock relative Zero</source>
+        <translation type="vanished">Blocca lo zero relativo</translation>
+    </message>
 </context>
 <context>
     <name>QG_WidgetPen</name>
@@ -46316,9 +47803,9 @@ p, li { white-space: pre-wrap; }
     <name>QMessageBox</name>
     <message>
         <location filename="../src/ui/dialogs/qg_dialogfactory.cpp" line="88"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="878"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1027"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1165"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="908"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1091"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1247"/>
         <source>Warning</source>
         <translation>Attenzione</translation>
     </message>
@@ -46352,8 +47839,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ui/dialogs/actions/qg_layerdialog.cpp" line="83"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="222"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="289"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="229"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="264"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="308"/>
         <source>Layer Properties</source>
         <translation>Proprietà livello</translation>
     </message>
@@ -46426,12 +47914,17 @@ Questo NON può essere annullato.</translation>
         <translation>Blocchi da rimuovere:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="223"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="230"/>
         <source>Layer empty name is not allowed.</source>
         <translation>Il nome vuoto di livello non è consentito.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="290"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="265"/>
+        <source>The edited layer is no longer available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="309"/>
         <source>Attempt to create layer with duplicating name. Duplicated layer name is 
 [%1].
 Please specify a different name.</source>
@@ -46469,7 +47962,9 @@ Cancellare maschera filtrante e ripetere.</translation>
         <source>Layer(s) without entities found, yet they are filtered and not visible.
 
 Clear filtering mask and repeat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trovati layer senza entità, ma sono filtrati e non visibili.
+
+Cancellare il filtro e ripetere.</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="973"/>
@@ -46523,7 +48018,11 @@ Si prega di specificare un nome diverso.</translation>
 If Yes - entities with &quot;By Layer&quot; pens will look on new layer exactly as on previous layers and &quot;By Layer&quot; value will be replaced by resolved pens.
 
 If No - &quot;By Layer&quot; values remains and so pen of target layer will define pen for such entities.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sostituire il valore &quot;Per layer&quot; con i valori dei layer di origine?
+
+Se Sì — le entità con penne &quot;Per layer&quot; avranno lo stesso aspetto nel nuovo layer come nei layer precedenti e il valore &quot;Per layer&quot; sarà sostituito dalle penne risolte.
+
+Se No — i valori &quot;Per layer&quot; rimangono e la penna del layer di destinazione definirà la penna di tali entità.</translation>
     </message>
     <message>
         <source>Replace &quot;By Layer&quot; value to source layers values?
@@ -46535,7 +48034,7 @@ Se no, i valori &quot;Per livello&quot; rimarranno invariati e quindi la penna d
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1805"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1858"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1863"/>
         <source>Layer DialogEx</source>
         <translation>Dialogo livelli</translation>
     </message>
@@ -46633,20 +48132,20 @@ Si prega di specificare un valore diverso.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="337"/>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="398"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="349"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="410"/>
         <source>Save Drawing As</source>
         <translation>Salva il disegno come</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="399"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="411"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 esiste già.
 Vuoi sovrascrivere?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="488"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="500"/>
         <source>Open Drawing</source>
         <translation>Apri disegno</translation>
     </message>
@@ -46711,17 +48210,17 @@ Vuoi sovrascrivere?</translation>
         <translation>GIF (Graphics Interchange Format)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="456"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="468"/>
         <source>Drawing Exchange %1</source>
         <translation>DXF (Drawing Exchange %1)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="461"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="473"/>
         <source>QCad 1.x file %1</source>
         <translation>File LibreCad 1.x %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="463"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="475"/>
         <source>Font %1</source>
         <translation>Carattere %1</translation>
     </message>
@@ -46851,7 +48350,7 @@ Vuoi sovrascrivere?</translation>
         <translation>Parsec</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="535"/>
+        <location filename="../src/main/main.cpp" line="612"/>
         <source>Loading..</source>
         <translation>Caricamento..</translation>
     </message>
@@ -46861,23 +48360,23 @@ Vuoi sovrascrivere?</translation>
         <translation>Caricamento file %1..</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="426"/>
+        <location filename="../src/main/main.cpp" line="503"/>
         <source>Loading...</source>
         <translation>Caricamento...</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="502"/>
+        <location filename="../src/main/main.cpp" line="579"/>
         <source>Release Candidate</source>
         <translation>Candidato di rilascio</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="503"/>
+        <location filename="../src/main/main.cpp" line="580"/>
         <source>BETA</source>
         <translation>BETA</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="504"/>
-        <location filename="../src/main/main.cpp" line="513"/>
+        <location filename="../src/main/main.cpp" line="581"/>
+        <location filename="../src/main/main.cpp" line="590"/>
         <source>ALPHA</source>
         <translation>ALPHA</translation>
     </message>
@@ -46904,12 +48403,12 @@ Vuoi sovrascrivere?</translation>
         <translation>Inserire testo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="462"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="474"/>
         <source>LFF Font %1</source>
         <translation>Font LFF %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="464"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="476"/>
         <source>Jww %1</source>
         <translation>Jww %1</translation>
     </message>
@@ -46978,116 +48477,119 @@ Vuoi sovrascrivere?</translation>
         <translation type="vanished">Scambio di disegno vecchio %1</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="193"/>
         <source>Opened dwg file version %1.</source>
-        <translation>Versione del file dwg aperto %1.</translation>
+        <translation type="vanished">Versione del file dwg aperto %1.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5612"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12410"/>
         <source>unknown error opening dwg file</source>
         <translation>errore sconosciuto aprendo file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5615"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12413"/>
         <source>can&apos;t open this dwg file</source>
         <translation>apertura di questo file dwg non riuscita</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5618"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12431"/>
         <source>unsupported dwg version</source>
         <translation>versione dwg non supportata</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5621"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12435"/>
         <source>error reading file metadata in dwg file</source>
         <translation>errore di lettura dei file metadati nel file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5624"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12438"/>
         <source>error reading file header in dwg file</source>
         <translation>errore aprendo file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5627"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12441"/>
         <source>error reading header vars in dwg file</source>
         <translation>errore nellevariabili del file dwg</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="459"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="471"/>
         <source>dwg Drawing %1</source>
         <translation>disegno dwg %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="193"/>
+        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="198"/>
         <source>File on disk modified. Please save to another file to avoid data loss! File modified: %1</source>
         <translation>File su disco modificato. Salva in un altro file per evitare la perdita di dati! File modificato %1</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/container/rs_entitycontainer.cpp" line="1494"/>
+        <location filename="../src/lib/engine/document/container/rs_entitycontainer.cpp" line="1499"/>
         <source>Hatch failed due to a gap=%1 between (%2, %3) and (%4, %5)</source>
         <translation>Esecuzione tratteggio fallita a causa di un varco=%1 tra (%2, %3) e (%4, %5)</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="75"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="85"/>
         <source>DWG support is not complete!</source>
         <translation>Il supporto DWG non è completo!</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="77"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="87"/>
         <source>If this file fails to open try an older DWG format</source>
         <translation>Se questo file non riesce ad aprire provare un vecchio formato DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="78"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="88"/>
         <source>or try to find a converter to make it a DXF file.</source>
         <translation>o cercare di trovare un convertitore per renderlo un file DXF.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="81"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="91"/>
         <source>Information</source>
         <translation>Informazioni</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="90"/>
+        <source>DWG support is not complete; if this file fails to open try an older DWG format or convert it to DXF.</source>
+        <translation type="vanished">Il supporto DWG non è completo; se questo file non si apre, provare un formato DWG più vecchio o convertirlo in DXF.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="104"/>
         <source>Error</source>
         <comment>fileImport</comment>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="91"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="105"/>
         <source>Import error:</source>
         <comment>fileImport</comment>
         <translation>Errore di importazione:</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="105"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="119"/>
         <source>Anyhow, there are some entities identified.</source>
         <comment>dwgImport</comment>
         <translation>In ogni caso, ci sono alcune entità identificate.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="106"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="120"/>
         <source>If you open the file now, the drawing may be not complete or unusable.</source>
         <comment>dwgImport</comment>
         <translation>Se si apre il file ora, il disegno potrebbe non essere completo o inutilizzabile.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="111"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="125"/>
         <source>Warning</source>
         <translation>Attenzione</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5639"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12453"/>
         <source>error reading blocks in dwg file</source>
         <translation>errore di lettura di blocchi nel file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5642"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12456"/>
         <source>error reading entities in dwg file</source>
         <translation>entità di lettura di errore nel file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5645"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12459"/>
         <source>error reading objects in dwg file</source>
         <translation>errore nella lettura di oggetti in file dwg</translation>
     </message>
@@ -47844,6 +49346,24 @@ Vuoi sovrascrivere?</translation>
         <translation>prop</translation>
     </message>
     <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="200"/>
+        <source>radiant</source>
+        <comment>draw perspective line</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="201"/>
+        <source>rl</source>
+        <comment>draw perspective line</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="217"/>
+        <source>circlebyarc</source>
+        <comment>draw circle by arc</comment>
+        <translation>cerchiodaarco</translation>
+    </message>
+    <message>
         <location filename="../src/cmd/lc_commandItems.h" line="855"/>
         <source>dist</source>
         <comment>distance point to point</comment>
@@ -48263,12 +49783,12 @@ Vuoi sovrascrivere?</translation>
         <translation>mp</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="96"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="97"/>
         <source>All</source>
         <translation>Tutto</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="983"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1013"/>
         <source>Invalid objects removed:</source>
         <translation>Oggetti non validi rimossi:</translation>
     </message>
@@ -48551,18 +50071,6 @@ Vuoi sovrascrivere?</translation>
         <translation>ml</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="200"/>
-        <source>radiant</source>
-        <comment>draw perspective line</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="201"/>
-        <source>rl</source>
-        <comment>draw perspective line</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/cmd/lc_commandItems.h" line="206"/>
         <source>linepoints</source>
         <comment>draw line of points</comment>
@@ -48587,10 +50095,9 @@ Vuoi sovrascrivere?</translation>
         <translation>numero</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="217"/>
         <source>criclebyarc</source>
         <comment>draw circle by arc</comment>
-        <translation>criclebyarc</translation>
+        <translation type="vanished">criclebyarc</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="218"/>
@@ -50309,107 +51816,184 @@ Vuoi sovrascrivere?</translation>
         <translation>arco</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="108"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="122"/>
         <source>Ignore error and open the file?</source>
         <comment>dwgImport</comment>
         <translation>Ignorare l&apos;errore ed aprire il file?</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="122"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1003"/>
         <source>no DXF/DWG error</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>nessun errore DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="124"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1005"/>
         <source>error opening DXF/DWG file</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore nell&apos;apertura del file DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="126"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1009"/>
+        <source>Cannot open DWG: file is %1; LibreCAD supports %2 and newer. Convert with GNU LibreDWG (dwgread / dwg2dxf) or re-save from a recent CAD tool.</source>
+        <comment>RS_FilterDXFRW</comment>
+        <translation>Impossibile aprire il DWG: il file è %1; LibreCAD supporta %2 e versioni successive. Convertire con GNU LibreDWG (dwgread / dwg2dxf) o salvare nuovamente da un recente strumento CAD.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1016"/>
         <source>unsupported DXF/DWG file version</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>versione non supportata del file DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="128"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1018"/>
         <source>error reading DXF/DWG meta data</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura dei meta data DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="130"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1020"/>
         <source>error reading DXF/DWG file header</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura dell&apos;intestazione del file DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="132"/>
         <source>error reading DXF/DWG header dara</source>
         <comment>RS_FilterDXFRW</comment>
-        <translation>lettura errore DXF/DWG header dara</translation>
+        <translation type="vanished">lettura errore DXF/DWG header dara</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="134"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1022"/>
+        <source>error reading DXF/DWG header data</source>
+        <comment>RS_FilterDXFRW</comment>
+        <translation>errore nella lettura dei dati intestazione DXF/DWG</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1024"/>
         <source>error reading DXF/DWG object map</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura Mappa degli oggetti DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="136"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1026"/>
         <source>error reading DXF/DWG classes</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>lettura errore DXF/DWG classi</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="138"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1028"/>
         <source>error reading DXF/DWG tables</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>lettura errore DXF/DWG tabelle</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="140"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1030"/>
         <source>error reading DXF/DWG blocks</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura blocchi DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="142"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1032"/>
         <source>error reading DXF/DWG entities</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura delle entità DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="144"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1034"/>
         <source>error reading DXF/DWG objects</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura degli oggetti DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="146"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1036"/>
         <source>error reading DXF/DWG sections</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura delle sezioni DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="148"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1038"/>
         <source>error reading DXF/DWG code</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>errore di lettura del codice DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5630"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1119"/>
+        <source>Opened DWG file version %1.</source>
+        <translation>File DWG versione %1 aperto.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1123"/>
+        <source>DWG load: %1 %2 had parse errors and were skipped. Drawing loaded with the rest.</source>
+        <translation>Caricamento DWG: %1 %2 avevano errori di analisi e sono stati saltati. Il disegno è stato caricato con il resto.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1126"/>
+        <source>entity</source>
+        <translation>entità</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1127"/>
+        <source>entities</source>
+        <translation>entità</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1151"/>
+        <source>, and %n more class(es)</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1154"/>
+        <source>DWG load: %1 vendor-extension entities not rendered (%2). These are typically AutoCAD Mechanical or other vertical-product custom classes that libdxfrw cannot decode.</source>
+        <translation>Caricamento DWG: %1 entità a estensione del fornitore non renderizzate (%2). Sono tipicamente classi personalizzate di AutoCAD Mechanical o altri prodotti specializzati che libdxfrw non può decodificare.</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1180"/>
+        <source>, and %n more object type(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1183"/>
+        <source>DWG load: %1 unsupported metadata object(s) skipped (%2). Drawing geometry may still be complete.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1269"/>
+        <source>DWG/DXF load: %1 XREF block(s) (%2) loaded but not INSERTed into modelspace. Their externally-referenced geometry won&apos;t be visible — AutoCAD typically renders these through a paper-space layout viewport, which LibreCAD doesn&apos;t render.</source>
+        <translation>Caricamento DWG/DXF: %1 blocco/i XREF (%2) caricati ma non INSERITI nello spazio modello. La loro geometria esternamente referenziata non sarà visibile — AutoCAD li renderizza normalmente tramite un viewport layout in spazio carta, che LibreCAD non renderizza.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1625"/>
+        <source>XREF not resolved for block &quot;%1&quot;: %2 (file not found in host directory). The block will render as empty.</source>
+        <translation>XREF non risolto per il blocco &quot;%1&quot;: %2 (file non trovato nella directory host). Il blocco verrà renderizzato vuoto.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1654"/>
+        <source>XREF load failed for block &quot;%1&quot;: %2</source>
+        <translation>Caricamento XREF fallito per il blocco &quot;%1&quot;: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12420"/>
+        <source>Cannot open DWG: file is %1; LibreCAD supports %2 and newer. Convert with GNU LibreDWG (dwgread / dwg2dxf) or re-save from a recent CAD tool.</source>
+        <translation>Impossibile aprire il DWG: il file è %1; LibreCAD supporta %2 e versioni successive. Convertire con GNU LibreDWG (dwgread / dwg2dxf) o salvare nuovamente da un recente strumento CAD.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12444"/>
         <source>error reading classes in dwg file</source>
         <translation>classi di lettura di errore nel file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5633"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12447"/>
         <source>error reading offsets in dwg file</source>
         <translation>offset di lettura di errore nel file dwg</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5636"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12450"/>
         <source>error reading tables in dwg file</source>
         <translation>tabelle di lettura di errore nel file dwg</translation>
     </message>
@@ -50420,102 +52004,169 @@ Vuoi sovrascrivere?</translation>
         <translation>errore non definito</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="63"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="85"/>
         <source>usage: </source>
         <translation>utilizzo:</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="63"/>
         <source> [options] &lt;dxf_files&gt;</source>
-        <translation>[options] [opzioni] &lt;dxf files&gt;</translation>
+        <translation type="vanished">[options] [opzioni] &lt;dxf files&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="70"/>
         <source> *.dxf</source>
-        <translation>*</translation>
+        <translation type="vanished">*</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="71"/>
         <source>-- print all dxf files to pdf files with the same names.</source>
-        <translation>-- stampa tutti i file dxf ai file pdf con gli stessi nomi.</translation>
+        <translation type="vanished">-- stampa tutti i file dxf ai file pdf con gli stessi nomi.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="73"/>
         <source> -o some.pdf *.dxf</source>
-        <translation>- o alcuni.pdf *.dxf</translation>
+        <translation type="vanished">- o alcuni.pdf *.dxf</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="74"/>
         <source>-- print all dxf files to &apos;some.pdf&apos; file.</source>
-        <translation>-- stampa tutti i file dxf al file &apos;some.pdf&apos;.</translation>
+        <translation type="vanished">-- stampa tutti i file dxf al file &apos;some.pdf&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="81"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="86"/>
+        <source> [options] &lt;%1_files&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="88"/>
+        <source>Print %1 file(s) to PDF file(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="90"/>
+        <source>DWG input is accepted for compatibility; prefer dwg2pdf for DWG files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="94"/>
+        <source> *.%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="95"/>
+        <source>-- print all %1 files to PDF files with the same names.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="97"/>
+        <source> -o some.pdf *.%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="98"/>
+        <source>-- print all %1 files to &apos;some.pdf&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="105"/>
         <source>Auto fit and center drawing to page.</source>
         <translation>Auto vestibilità e disegno centrale a pagina.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="85"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="109"/>
         <source>Auto center drawing on page.</source>
         <translation>Auto centro disegno a pagina.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="89"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="113"/>
         <source>Print grayscale.</source>
         <translation>Stampa su scala grigia.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="93"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="117"/>
         <source>Print monochrome (black/white).</source>
         <translation>Stampa monocroma (nero/bianco).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="97"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="121"/>
+        <source>Paper size (Width x Height) in mm.</source>
+        <translation type="unfinished">Dimensioni carta (larghezza x altezza) in mm.</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="125"/>
+        <source>Output resolution (DPI).</source>
+        <translation type="unfinished">Risoluzione di uscita (DPI).</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="148"/>
+        <source>&lt;%1_files&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="149"/>
+        <source>Input %1 file(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Paper size (Width x Height) in mm.</source>
         <comment>WxH</comment>
-        <translation>Dimensioni carta (larghezza x altezza) in mm.</translation>
+        <translation type="vanished">Dimensioni carta (larghezza x altezza) in mm.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="101"/>
         <source>Output resolution (DPI).</source>
         <comment>integer</comment>
-        <translation>Risoluzione di uscita (DPI).</translation>
+        <translation type="vanished">Risoluzione di uscita (DPI).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="105"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="129"/>
         <source>Output scale. E.g.: 0.01 (for 1:100 scale).</source>
         <translation>Scala di uscita. Per esempio: 0,01 (per scala 1:100).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="109"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="133"/>
         <source>Paper margins in mm (integer or float).</source>
         <translation>Margini di carta in mm (integer o galleggiante).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="113"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="137"/>
         <source>Print on multiple pages (Horiz. x Vert.).</source>
         <translation>Stampa su più pagine (Horiz. x Vert.).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="117"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="141"/>
         <source>Output PDF file.</source>
         <comment>file</comment>
         <translation>Uscita file PDF.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="121"/>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="169"/>
+        <source>Output file (single input only).</source>
+        <translation>File di output (solo input singolo).</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="173"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="145"/>
         <source>Target output directory.</source>
         <translation>Directory di destinazione.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="124"/>
-        <source>&lt;dxf_files&gt;</source>
-        <translation>&lt;dxf files&gt;</translation>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="177"/>
+        <source>DXF output version: r12, r14, r2000, r2004, r2007 (default), r2018.</source>
+        <translation>Versione di output DXF: r12, r14, r2000, r2004, r2007 (predefinito), r2018.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="124"/>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="183"/>
+        <source>DWG output version: r2000 (default), r2004, r2010, r2013, r2018.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="189"/>
+        <source>Input %1 file(s).</source>
+        <translation>File di input: %1.</translation>
+    </message>
+    <message>
+        <source>&lt;dxf_files&gt;</source>
+        <translation type="vanished">&lt;dxf files&gt;</translation>
+    </message>
+    <message>
         <source>Input DXF file(s)</source>
-        <translation>File di input DXF(i)</translation>
+        <translation type="vanished">File di input DXF(i)</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/command_line/qg_commandwidget.cpp" line="56"/>
@@ -50533,13 +52184,13 @@ Vuoi sovrascrivere?</translation>
         <translation>Incollare più comandi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="175"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="195"/>
         <source>Combine all layers</source>
         <translation>Combina tutti gli strati</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="177"/>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="204"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="180"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="233"/>
         <source>File &quot;%1&quot; already exists. Do you want to replace it?</source>
         <translation>Il file &quot;%1&quot; esiste già. Vuoi sostituirlo?</translation>
     </message>
@@ -50753,17 +52404,17 @@ Vuoi sovrascrivere?</translation>
         <translation>WCS</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/rs_graphic.cpp" line="663"/>
+        <location filename="../src/lib/engine/document/rs_graphic.cpp" line="668"/>
         <source>Invalid printing scale %1. Cannot fit print preview to page</source>
         <translation>Scala di stampa non valida %1. Anteprima stampa non adatta a pagina</translation>
     </message>
     <message>
-        <location filename="../src/lib/printing/lc_printing.cpp" line="155"/>
+        <location filename="../src/lib/printing/lc_printing.cpp" line="164"/>
         <source>Export to PDF</source>
         <translation>Esportazione in PDF</translation>
     </message>
     <message>
-        <location filename="../src/lib/printing/lc_printing.cpp" line="156"/>
+        <location filename="../src/lib/printing/lc_printing.cpp" line="165"/>
         <source>PDF files (*.pdf);;All files (*.*)</source>
         <translation>File PDF (*.pdf);; Tutti i file (*.*)</translation>
     </message>
@@ -50922,6 +52573,10 @@ Vuoi sovrascrivere?</translation>
         <location filename="../src/ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.cpp" line="47"/>
         <source>[Override]</source>
         <translation>[Override]</translation>
+    </message>
+    <message>
+        <source>Draft</source>
+        <translation type="vanished">Bozza</translation>
     </message>
     <message>
         <location filename="../src/ui/qg_actionhandler.cpp" line="86"/>
@@ -52221,6 +53876,13 @@ This block cannot be inserted.</source>
     </message>
 </context>
 <context>
+    <name>RS_ActionEditPaste</name>
+    <message>
+        <source>Set paste reference point</source>
+        <translation type="vanished">Set punto di riferimento della pasta</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionEditUndo</name>
     <message>
         <source>Nothing to undo!</source>
@@ -52769,6 +54431,13 @@ Punto: (%8 %, %9)</translation>
     </message>
 </context>
 <context>
+    <name>RS_ActionModifyDeleteQuick</name>
+    <message>
+        <source>Pick entity to delete</source>
+        <translation type="vanished">Seleziona entità da eliminare</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionModifyEntity</name>
     <message>
         <source>Click on entity to modify</source>
@@ -52940,6 +54609,10 @@ Punto: (%8 %, %9)</translation>
     <message>
         <source>Specify reference point for direction of offset</source>
         <translation type="vanished">Specificare il punto di riferimento per la direzione di offset</translation>
+    </message>
+    <message>
+        <source>Select line, polyline, circle, arc or ellipse to create offset (Enter to complete)</source>
+        <translation type="vanished">Selezionare linea, polilinea, cerchio, arco o ellisse per creare offset (Invio per completare)</translation>
     </message>
     <message>
         <source>Select line, polyline, circle or arc to create offset (Enter to complete)</source>
@@ -53556,6 +55229,13 @@ Punto: (%8 %, %9)</translation>
     </message>
 </context>
 <context>
+    <name>RS_ActionSelect</name>
+    <message>
+        <source>No entity selected!</source>
+        <translation type="vanished">Nessuna entità selezionata!</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionSelectBase</name>
     <message>
         <location filename="../src/lib/actions/rs_actionselectbase.h" line="51"/>
@@ -53721,235 +55401,235 @@ Punto: (%8 %, %9)</translation>
 <context>
     <name>RS_Snapper</name>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1282"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1283"/>
         <source>Vertical</source>
         <translation>Verticale</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1284"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1285"/>
         <source>Horizontal</source>
         <translation>Orizzonte</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1286"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1287"/>
         <source>Orthogonal</source>
         <translation>Ortogonale</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1340"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1341"/>
         <source>Grid</source>
         <translation>Griglia</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1342"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1343"/>
         <source>Entity</source>
         <translation>Entità</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1344"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1345"/>
         <source>Endpoint</source>
         <translation>Fine</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1346"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1347"/>
         <source>Intersection</source>
         <translation>Intersezione</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1348"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1349"/>
         <source>Middle</source>
         <translation>Medio</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1350"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1351"/>
         <source>Distance</source>
         <translation>Distanza</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1352"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1353"/>
         <source>Center</source>
         <translation>Centro</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1354"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1355"/>
         <source>Angle</source>
         <translation>Angolo</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1356"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1357"/>
         <source>Angle Relative</source>
         <translation>Angolo relativo</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1358"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1359"/>
         <source>Angle (on Entity)</source>
         <translation>Angolo (su Entità)</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1360"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1361"/>
         <source>Visual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1364"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1365"/>
         <source>Free</source>
         <translation type="unfinished">Gratis</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1373"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1374"/>
         <source>None</source>
         <comment>visual snap</comment>
         <translation type="unfinished">Nessuno</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1376"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1377"/>
         <source>Horizontal</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1379"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1380"/>
         <source>Angle Ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1390"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1391"/>
         <source>Relative Angle Ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1401"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1402"/>
         <source>Vertical</source>
         <comment>visual snap</comment>
         <translation type="unfinished">Verticale</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1404"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1405"/>
         <source>Line ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1407"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1408"/>
         <source>Point-Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1410"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1411"/>
         <source>Point-Point Orthogonal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1413"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1414"/>
         <source>Endpoint Tangential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1416"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1417"/>
         <source>Endpoint Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1419"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1420"/>
         <source>Tangential One</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1422"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1423"/>
         <source>Tangential Two</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1425"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1426"/>
         <source>Middle</source>
         <comment>visual snap</comment>
         <translation type="unfinished">Medio</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1428"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1429"/>
         <source>Orthogonal</source>
         <comment>visual snap</comment>
         <translation type="unfinished">Ortogonale</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1431"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1432"/>
         <source>Distance (Explicit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1434"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1435"/>
         <source>Tangential Distance (Explicit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1437"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1438"/>
         <source>Distance (Point)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1440"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1441"/>
         <source>Entity</source>
         <comment>visual snap</comment>
         <translation type="unfinished">Entità</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1443"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1444"/>
         <source>Relative Normal</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1446"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1447"/>
         <source>Relative Distance</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1449"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1450"/>
         <source>Relative X</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1452"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1453"/>
         <source>Relative Y</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1455"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1456"/>
         <source>Relative Angle</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1458"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1459"/>
         <source>Restriction Horizontal</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1461"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1462"/>
         <source>Restriction Vertical</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1646"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1647"/>
         <source>Dist: </source>
         <translation>Dist:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1651"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1652"/>
         <source>Angle: </source>
         <translation>Angolo:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1656"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1657"/>
         <source>dX: </source>
         <translation>dX:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1657"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1658"/>
         <source>dY: </source>
         <translation>dY:</translation>
     </message>
@@ -54097,6 +55777,21 @@ Punto: (%8 %, %9)</translation>
     <message>
         <source>Pick radius from drawing</source>
         <translation type="vanished">Scegli il raggio dal disegno</translation>
+    </message>
+</context>
+<context>
+    <name>Ui_DimLinearOptions</name>
+    <message>
+        <source>Linear Dimension Options</source>
+        <translation type="vanished">Opzioni quota lineare</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">Angolo:</translation>
+    </message>
+    <message>
+        <source>Angle of dimension</source>
+        <translation type="vanished">Angolo della quota</translation>
     </message>
 </context>
 <context>
@@ -54613,6 +56308,21 @@ Punto: (%8 %, %9)</translation>
     <message>
         <source>Number of parallels to create</source>
         <translation type="vanished">Numero di linee parallele da tracciare</translation>
+    </message>
+</context>
+<context>
+    <name>Ui_LinePolygon2Options</name>
+    <message>
+        <source>Polygon Options</source>
+        <translation type="vanished">Opzioni poligono</translation>
+    </message>
+    <message>
+        <source>Number:</source>
+        <translation type="vanished">Numero:</translation>
+    </message>
+    <message>
+        <source>Number of edges</source>
+        <translation type="vanished">Numero lati</translation>
     </message>
 </context>
 <context>

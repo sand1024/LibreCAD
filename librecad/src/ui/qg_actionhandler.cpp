@@ -200,7 +200,12 @@ bool QG_ActionHandler::command(const QString& cmd) const {
 
     RS_DEBUG->print("QG_ActionHandler::command: %s", cmd.toLatin1().data());
     const QString c = cmd.toLower().trimmed();
-    if (c == tr("escape", "escape, go back from action steps")) {
+
+    // fixme - sand - some messy way to check the command.... review it. We could resolve any form - why localized only?
+    // and what about shortcodes? Standard way of resolving in LC_CommandsManager will be more reliable.
+    if (RS_Commands::matchesLocalizedCommand(c, "escape", "escape, go back from action steps",
+                                              "QG_ActionHandler")) {
+    // if (c == tr("escape", "escape, go back from action steps")) {
         m_view->back(Qt::KeyboardModifier::NoModifier);
         RS_DEBUG->print("QG_ActionHandler::command: back");
         return true;
@@ -229,7 +234,8 @@ bool QG_ActionHandler::command(const QString& cmd) const {
             //special handling, currently needed for snap actions
             if (!m_snapManager->tryToProcessSnapActions(type)) {
                 //not handled yet
-                setCurrentAction(type);
+                bool startInLineMode = type == RS2::ActionDrawPolyline;
+                setCurrentAction(type, startInLineMode ? &startInLineMode : nullptr);
             }
             RS_DEBUG->print("QG_ActionHandler::command: current action set");
             return true;

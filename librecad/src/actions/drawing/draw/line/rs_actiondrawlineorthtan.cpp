@@ -63,6 +63,9 @@ void RS_ActionDrawLineOrthTan::finish() {
 }
 
 void RS_ActionDrawLineOrthTan::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
+    if (contextEntity == nullptr) {
+        return;
+    }
     auto entity = contextEntity;
     if (isPolyline(entity)) {
         const auto polyline = static_cast<RS_Polyline*>(contextEntity);

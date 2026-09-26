@@ -23,6 +23,7 @@
 #include "lc_dlgnewversionavailable.h"
 
 #include "lc_settings_startup.h"
+
 #include "main.h"
 #include "ui_lc_dlgnewversionavailable.h"
 

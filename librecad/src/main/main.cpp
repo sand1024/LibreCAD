@@ -51,6 +51,8 @@
 #include <QToolBar>
 #include <clocale>
 
+#include "console_command_utils.h"
+#include "console_dxf2dwg.h"
 #include "console_dxf2pdf.h"
 #include "console_dxf2png.h"
 #include "lc_application.h"
@@ -103,13 +105,18 @@ void showFirstLoadSetupDialog(const bool firstLoad) {
 }
 
 int showHelpMessage() {
-    qDebug()<<"Usage: librecad [command] <options> <dxf file>";
+    qDebug()<<"Usage: librecad [command] <options> <input file>";
     qDebug()<<"";
     qDebug()<<"Commands:";
     qDebug()<<"";
-    qDebug()<<"  dxf2pdf\tRun librecad as console dxf2pdf tool. Use -h for help.";
-    qDebug()<<"  dxf2png\tRun librecad as console dxf2png tool. Use -h for help.";
-    qDebug()<<"  dxf2svg\tRun librecad as console dxf2svg tool. Use -h for help.";
+    qDebug()<<"  dxf2pdf\tConvert DXF file(s) to PDF. Use -h for help.";
+    qDebug()<<"  dwg2pdf\tConvert DWG file(s) to PDF. Use -h for help.";
+    qDebug()<<"  dxf2png\tConvert DXF file(s) to PNG. Use -h for help.";
+    qDebug()<<"  dwg2png\tConvert DWG file(s) to PNG. Use -h for help.";
+    qDebug()<<"  dxf2svg\tConvert DXF file(s) to SVG. Use -h for help.";
+    qDebug()<<"  dwg2svg\tConvert DWG file(s) to SVG. Use -h for help.";
+    qDebug()<<"  dxf2dwg\tConvert DXF file(s) to DWG. Use -h for help.";
+    qDebug()<<"  dwg2dxf\tConvert DWG file(s) to DXF. Use -h for help.";
     qDebug()<<"";
     qDebug()<<"Options:";
     qDebug()<<"";
@@ -277,17 +284,30 @@ int main(int argc, char** argv) {
     //
     //     dxf2pdf [options] ...
     //
-    for (int i = 0; i < qMin(argc, 2); i++) {
-        QString arg(argv[i]);
-        if (i == 0) {
-            arg = QFileInfo(QFile::decodeName(argv[i])).baseName();
-        }
-        if (arg.compare("dxf2pdf") == 0) {
+    QStringList consoleCommands = LC_Console::converterCommandNames();
+    consoleCommands.append(QStringLiteral("dwg-admission-report"));
+    const LC_Console::CommandContext consoleCommand =
+        LC_Console::detectCommand(argc, argv, consoleCommands);
+    if (!consoleCommand.commandName.isEmpty()) {
+        const QString& command = consoleCommand.commandName;
+        if (command == "dxf2pdf")
             return console_dxf2pdf(argc, argv);
-        }
-        if (arg.compare("dxf2png") == 0 || arg == "dxf2svg") {
+        if (command == "dwg2pdf")
+            return console_dwg2pdf(argc, argv);
+        if (command == "dxf2png")
             return console_dxf2png(argc, argv);
-        }
+        if (command == "dwg2png")
+            return console_dwg2png(argc, argv);
+        if (command == "dxf2svg")
+            return console_dxf2svg(argc, argv);
+        if (command == "dwg2svg")
+            return console_dwg2svg(argc, argv);
+        if (command == "dxf2dwg")
+            return consoleDxf2dwg(argc, argv);
+        if (command == "dwg2dxf")
+            return consoleDwg2dxf(argc, argv);
+        if (command == "dwg-admission-report")
+            return consoleDwgAdmissionReport(argc, argv);
     }
 
     RS_DEBUG->setLevel(RS_Debug::D_WARNING);
@@ -302,17 +322,33 @@ int main(int argc, char** argv) {
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
 #endif
 
+#ifdef Q_OS_LINUX
+    const QByteArray xcursorPathEnv = qgetenv("XCURSOR_PATH");
+    if (xcursorPathEnv.isEmpty()) {
+        const QByteArray defaultPaths = "/usr/share/icons:/usr/local/share/icons:/usr/share/pixmaps";
+        qputenv("XCURSOR_PATH", defaultPaths);
+    }
+#endif
+
+
+    const auto versionStr = XSTR(LC_VERSION);
 
     LC_Application app(argc, argv);
     QCoreApplication::setOrganizationName("LibreCAD");
-    const auto versionStr = XSTR(LC_VERSION);
+
+    // Application name is "LibreCAD-<schemaMajor>" so each major release
+    // line gets its own QSettings backing store. RS_Settings::init() picks
+    // up the prior-major store on first launch and copies it in.
+
     QCoreApplication::setApplicationVersion(versionStr);
     QString version(versionStr);
     if (version.contains("alpha") || version.contains("beta")) {
-         QCoreApplication::setApplicationName("LibreCAD_DEV");
+        QCoreApplication::setApplicationName(
+        QStringLiteral("LibreCAD-DEV-%1").arg(RS_Settings::LC_SETTINGS_SCHEMA_MAJOR));
     }
     else {
-      QCoreApplication::setApplicationName("LibreCAD");
+        QCoreApplication::setApplicationName(
+        QStringLiteral("LibreCAD-%1").arg(RS_Settings::LC_SETTINGS_SCHEMA_MAJOR));
     }
 
     // fixme - sand - NEED TO CHECK WHERE lc_svgicons.so is located under linux and mac!!! That's tested for Windows
@@ -399,9 +435,11 @@ int main(int argc, char** argv) {
     loadTranslations();
 
     RS_DEBUG->print("main: creating main window..");
-    QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
-    appWin.fireIconsRefresh();
-
+    QC_ApplicationWindow* appWin = QC_ApplicationWindow::getAppWindow();
+    if (appWin != nullptr) {
+        // fixme - sand - merge - is it still needd??
+        appWin->fireIconsRefresh();
+    }
 #ifdef __APPLE__
     app.installEventFilter(&appWin);
 #endif
@@ -420,15 +458,22 @@ int main(int argc, char** argv) {
     QSettings settings; // fixme - direct invocation of settings
     settings.beginGroup("Defaults");
     if( !settings.contains("UseQtFileOpenDialog")) {
-#ifdef __linux__
-        // on Linux don't use native file dialog
-        // because of case insensitive filters (issue #791)
+#if defined(__linux__)
+        // Default to the Qt-drawn file dialog rather than the native one:
+        // on Linux the native dialog has case-insensitive-filter issues (#791).
         settings.setValue("UseQtFileOpenDialog", QVariant(1));
 #else
         settings.setValue("UseQtFileOpenDialog", QVariant(0));
 #endif
     }
+    const bool useQtFileDialog = settings.value("UseQtFileOpenDialog").toBool();
     settings.endGroup();
+
+    // fixm - sand - merge - why the option is not used???
+    // Honor that choice for EVERY file dialog -- including the static
+    // QFileDialog::getOpenFileName/getSaveFileName convenience calls, which
+    // cannot take a per-dialog option. Affects dialogs created after this point.
+    QApplication::setAttribute(Qt::AA_DontUseNativeDialogs, useQtFileDialog);
 
     const bool maximize = CFG_Startup::o_Maximize;
 

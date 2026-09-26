@@ -25,6 +25,7 @@
 #include "lc_deviceoptions.h"
 
 #include "lc_settings_hardware.h"
+
 #include "rs_settings.h"
 #include "ui_lc_deviceoptions.h"
 

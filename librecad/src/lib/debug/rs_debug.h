@@ -31,6 +31,13 @@
 #include <sys/_size_t.h>
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+#define RS_DEBUG_PRINTF_FORMAT(formatIndex, firstArg) \
+    __attribute__((format(printf, formatIndex, firstArg)))
+#else
+#define RS_DEBUG_PRINTF_FORMAT(formatIndex, firstArg)
+#endif
+
 class RS_Vector;
 class QByteArray;
 class QChar;
@@ -40,7 +47,7 @@ class QStringView;
 
 /** print out a debug header*/
 #define DEBUG_HEADER debugHeader(__FILE__, __func__, __LINE__);
-void debugHeader(const char* file, const char* func, int line);
+void debugHeader(char const* file, char const* func, int line);
 #define RS_DEBUG RS_Debug::instance()
 #define RS_DEBUG_VERBOSE \
     DEBUG_HEADER\
@@ -136,9 +143,11 @@ public:
     static LogStream Log(RS_DebugLevel level = D_DEBUGGING);
 
     void setLevel(RS_DebugLevel level);
-    RS_DebugLevel getLevel() const;
-    void print(RS_DebugLevel level, const char* format ...) const;
-    void print(const char* format ...);
+    RS_DebugLevel getLevel();
+    void print(RS_DebugLevel level, const char* format ...)
+        RS_DEBUG_PRINTF_FORMAT(3, 4);
+    void print(const char* format ...)
+        RS_DEBUG_PRINTF_FORMAT(2, 3);
     void print(const QString& text);
     void printUnicode(const QString& text);
     void timestamp();
@@ -148,5 +157,7 @@ private:
 
     RS_DebugLevel m_debugLevel = D_INFORMATIONAL;
 };
+
+#undef RS_DEBUG_PRINTF_FORMAT
 
 #endif

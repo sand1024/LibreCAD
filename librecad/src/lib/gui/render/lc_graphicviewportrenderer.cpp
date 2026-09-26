@@ -184,6 +184,18 @@ void LC_GraphicViewportRenderer::setBackground(const RS_Color &bg) {
     updateEffectiveColors();
 }
 
+void LC_GraphicViewportRenderer::setBackground(const RS_Color &bg, const RS_Color &backgroundForContrast) {
+    m_colorBackground = bg;
+    m_colorBackgroundForContrast = backgroundForContrast;
+
+    const RS_Color black(0, 0, 0);
+    if (black.colorDistance(m_colorBackgroundForContrast) >= RS_Color::MinColorDistance) {
+        m_colorForeground = black;
+    } else {
+        m_colorForeground = RS_Color(255, 255, 255);
+    }
+}
+
 void LC_GraphicViewportRenderer::updateEffectiveColors() {
     if (m_userForeground.colorDistance(m_userBackground) >= RS_Color::MinColorDistance) {
         m_colorForeground = m_userForeground;

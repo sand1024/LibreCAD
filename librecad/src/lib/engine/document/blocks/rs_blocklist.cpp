@@ -27,6 +27,7 @@
 #include "rs_blocklist.h"
 
 #include <QRegularExpression>
+#include <QSet>
 #include <iostream>
 
 #include "rs_block.h"
@@ -52,6 +53,7 @@ RS_BlockList::RS_BlockList(const bool owner) {
 void RS_BlockList::clear() {
     m_blocks.clear();
     m_activeBlock = nullptr;
+    ++m_generation;
     setModified(true);
 }
 
@@ -95,6 +97,7 @@ bool RS_BlockList::add(RS_Block* block, const bool notify) {
     const RS_Block* b = find(block->getName());
     if (b == nullptr) {
         m_blocks.append(block);
+        ++m_generation;
 
         if (notify) {
             addNotification();
@@ -129,7 +132,9 @@ void RS_BlockList::remove(RS_Block* block) {
     RS_DEBUG->print("RS_BlockList::removeBlock()");
 
     // here the block is removed from the list but not deleted
-    m_blocks.removeOne(block);
+    if (m_blocks.removeOne(block)) {
+        ++m_generation;
+    }
 
     for (const auto l : std::as_const(m_blockListListeners)) {
         l->blockRemoved(block);
@@ -163,6 +168,7 @@ bool RS_BlockList::rename(RS_Block* block, const QString& name) {
         if (find(name) == nullptr) {
             const QString oldName = block->getName();
             block->setName(name);
+            ++m_generation;
             setModified(true);
 
             // when the renamed block is nested within other block, we need to rename its inserts as well
@@ -197,6 +203,10 @@ void RS_BlockList::editBlock(RS_Block* block, const RS_Block& source) {
  * \p nullptr if no such block was found.
  */
 RS_Block* RS_BlockList::find(const QString& name) {
+    return const_cast<RS_Block*>(std::as_const(*this).find(name));
+}
+
+const RS_Block* RS_BlockList::find(const QString& name) const {
     try {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_BlockList::find(): %s", name.toLatin1().constData());
     }
@@ -204,10 +214,18 @@ RS_Block* RS_BlockList::find(const QString& name) {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_BlockList::find(): wrong name to find");
         return nullptr;
     }
+    // fixme - sand - merge - copypaste or lambda?
+
     // Todo : reduce this from O(N) to O(log(N)) complexity based on sorted list or hash
     //DFS
-    for (RS_Block* b : std::as_const(m_blocks)) {
-        if (b->getName() == name) {
+    // NFC-normalize both sides so a block round-tripped through tools that
+    // emit decomposed (NFD) Unicode still matches a composed (NFC) lookup.
+    const QString k = name.normalized(QString::NormalizationForm_C);
+    for (const RS_Block* b : std::as_const(m_blocks)) {
+        if (b->isDeleted()) {
+            continue;
+        }
+        if (b->getName().normalized(QString::NormalizationForm_C) == k) {
             return b;
         }
     }
@@ -223,10 +241,16 @@ RS_Block* RS_BlockList::findCaseInsensitive(const QString& name) const {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_BlockList::find(): wrong name to find");
         return nullptr;
     }
+    // fixme - sand - merge - copypaste or lambda?
     // Todo : reduce this from O(N) to O(log(N)) complexity based on sorted list or hash
     //DFS
+    const QString k = name.normalized(QString::NormalizationForm_C);
     for (RS_Block* b : m_blocks) {
-        if (b->getName().compare(name, Qt::CaseInsensitive) == 0) {
+        if (b->isDeleted()) {
+            continue;
+        }
+        if (b->getName().normalized(QString::NormalizationForm_C)
+                .compare(k, Qt::CaseInsensitive) == 0) {
             return b;
         }
     }
@@ -293,6 +317,25 @@ void RS_BlockList::toggle(RS_Block* block) {
     for (const auto l : std::as_const(m_blockListListeners)) {
         l->blockToggled(block);
     }
+}
+
+bool RS_BlockList::toggleMulti(const QList<RS_Block*>& blocks) {
+    QSet<RS_Block*> toggled;
+    for (RS_Block* block : blocks) {
+        if (block != nullptr && !toggled.contains(block)) {
+            block->toggle();
+            toggled.insert(block);
+        }
+    }
+    if (toggled.isEmpty())
+        return false;
+
+    // Every row may have changed. Match freezeAll's full-list notification so
+    // consumers never observe an intermediate derived-INSERT display state.
+    for (const auto listener : std::as_const(m_blockListListeners)) {
+        listener->blockToggled(nullptr);
+    }
+    return true;
 }
 
 /**

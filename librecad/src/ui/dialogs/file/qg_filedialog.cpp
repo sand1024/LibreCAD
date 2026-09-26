@@ -50,8 +50,15 @@ namespace {
                 return QString(".jww");
             case RS2::FormatCXF:
                 return QString(".cxf");
+            case RS2::FormatSHP:
+                return QString(".shp");
 #ifdef DWGSUPPORT
             case RS2::FormatDWG:
+            case RS2::FormatDWG2004:
+            case RS2::FormatDWG2007:
+            case RS2::FormatDWG2010:
+            case RS2::FormatDWG2013:
+            case RS2::FormatDWG2018:
                 return QString(".dwg");
 #endif
             default:
@@ -69,9 +76,9 @@ bool hasExtension(const QString& fileName, RS2::FormatType ftype)
 {
     QString extension = getExtension(ftype);
 #ifdef DWGSUPPORT
-    QStringList supported = {".cxf", ".dxf", ".lff", ".dwg"};
+    QStringList supported = {".cxf", ".dxf", ".lff", ".dwg", ".shp"};
 #else
-    QStringList supported = {".cxf", ".dxf", ".lff"};
+    QStringList supported = {".cxf", ".dxf", ".lff", ".shp"};
 #endif
     auto testExt = [&fileName, ftype](const QString& ext) {
         return getExtension(ftype) == ext && fileName.endsWith(ext, Qt::CaseInsensitive);};
@@ -85,6 +92,15 @@ RS2::FormatType QG_FileDialog::getType(const QString& filter) const {
     }
     if (filter == fCxf) {
         return RS2::FormatCXF;
+    }
+    if (filter == fDxfrw2018) {
+        return RS2::FormatDXFRW2018;
+    }
+    if (filter == fDxfrw2013) {
+        return RS2::FormatDXFRW2013;
+    }
+    if (filter == fDxfrw2010) {
+        return RS2::FormatDXFRW2010;
     }
     if (filter == fDxfrw2007 || filter == fDxfrw) {
         return RS2::FormatDXFRW;
@@ -109,6 +125,9 @@ RS2::FormatType QG_FileDialog::getType(const QString& filter) const {
     if (filter == fJww) {
         return RS2::FormatJWW;
     }
+    if (filter == fShp) {
+        return RS2::FormatSHP;
+    }
     if (filter == fDxf1) {
         return RS2::FormatDXF1;
     }
@@ -129,6 +148,9 @@ QG_FileDialog::QG_FileDialog(QWidget* parent, Qt::WindowFlags f, FileType type)
     setOption(QFileDialog::HideNameFilterDetails, false);
     m_type = RS2::FormatDXFRW;
 
+    fDxfrw2018 = tr("Drawing Exchange DXF 2018 %1").arg("(*.dxf)");
+    fDxfrw2013 = tr("Drawing Exchange DXF 2013 %1").arg("(*.dxf)");
+    fDxfrw2010 = tr("Drawing Exchange DXF 2010 %1").arg("(*.dxf)");
     fDxfrw2007 = tr("Drawing Exchange DXF 2007 %1").arg("(*.dxf)");
     fDxfrw2004 = tr("Drawing Exchange DXF 2004 %1").arg("(*.dxf)");
     fDxfrw2000 = tr("Drawing Exchange DXF 2000 %1").arg("(*.dxf)");
@@ -142,6 +164,7 @@ QG_FileDialog::QG_FileDialog(QWidget* parent, Qt::WindowFlags f, FileType type)
 #endif
     fCxf = tr("QCad Font %1").arg("(*.cxf)");
     fJww = tr("Jww Drawing %1").arg("(*.jww)");
+    fShp = tr("ESRI Shapefile %1").arg("(*.shp)");
     fDxf1 = tr("QCad 1.x file %1").arg("(*.dxf)");
     switch (type) {
         case BlockFile:
@@ -165,9 +188,9 @@ QString QG_FileDialog::getOpenFile(RS2::FormatType* type) {
     QString fn = "";
     QStringList filters;
 #ifdef DWGSUPPORT
-    filters << fDxfrw << fDxf1 << fDwg << fLff << fCxf << fJww;
+    filters << fDxfrw << fDxf1 << fDwg << fLff << fCxf << fJww << fShp;
 #else
-    filters << fDxfrw << fDxf1 << fLff << fCxf << fJww;
+    filters << fDxfrw << fDxf1 << fLff << fCxf << fJww << fShp;
 #endif
 
     setWindowTitle(tr("Open %1").arg(m_name));
@@ -230,9 +253,9 @@ QString QG_FileDialog::getSaveFile(RS2::FormatType* type, const QString& current
     QStringList filters;
 
 #ifdef JWW_WRITE_SUPPORT
-    filters << fDxfrw2007 << fDxfrw2004 << fDxfrw2000 << fDxfrw14 << fDxfrw12 << fJww << fLff << fCxf;
+    filters << fDxfrw2018 << fDxfrw2013 << fDxfrw2010 << fDxfrw2007 << fDxfrw2004 << fDxfrw2000 << fDxfrw14 << fDxfrw12 << fJww << fLff << fCxf;
 #else
-    filters << fDxfrw2007 << fDxfrw2004 << fDxfrw2000 << fDxfrw14 << fDxfrw12 << fLff << fCxf;
+    filters << fDxfrw2018 << fDxfrw2013 << fDxfrw2010 << fDxfrw2007 << fDxfrw2004 << fDxfrw2000 << fDxfrw14 << fDxfrw12 << fLff << fCxf;
 #endif
 #ifdef DWGSUPPORT
     filters << fDwg;
@@ -473,6 +496,7 @@ QString QG_FileDialog::getOpenFileName(QWidget* parent, RS2::FormatType* type) {
     const QString fLff(QObject::tr("LFF Font %1").arg("(*.lff)"));
     const QString fCxf(QObject::tr("Font %1").arg("(*.cxf)"));
     const QString fJww(QObject::tr("Jww %1").arg("(*.jww)"));
+    const QString fShp(QObject::tr("ESRI Shapefile %1").arg("(*.shp)"));
 
     RS_DEBUG->print("fDxfrw: %s", fDxfrw.toLatin1().data());
     RS_DEBUG->print("fDxf1: %s", fDxf1.toLatin1().data());
@@ -493,6 +517,7 @@ QString QG_FileDialog::getOpenFileName(QWidget* parent, RS2::FormatType* type) {
     filters.append(fLff);
     filters.append(fCxf);
     filters.append(fJww);
+    filters.append(fShp);
 
     fileDlg.setNameFilters(filters);
     fileDlg.setFileMode(QFileDialog::ExistingFile);
@@ -532,6 +557,9 @@ QString QG_FileDialog::getOpenFileName(QWidget* parent, RS2::FormatType* type) {
             }
             else if (fileDlg.selectedNameFilter() == fJww) {
                 *type = RS2::FormatJWW;
+            }
+            else if (fileDlg.selectedNameFilter() == fShp) {
+                *type = RS2::FormatSHP;
             }
         }
         cancel = false;

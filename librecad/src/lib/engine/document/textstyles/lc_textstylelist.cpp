@@ -65,9 +65,12 @@ void LC_TextStyleList::remove(const QString& name) {
 }
 
 LC_TextStyle* LC_TextStyleList::find(const QString& name) {
-    // amount of styles should be small, so linear search should be fine
+    // fixme - sand - merge -> caching normalized?
+    // amount of styles should be small, so linear search should be fine.
+    // NFC-normalize both sides for robust matching of CJK / accented names.
+    const QString k = name.normalized(QString::NormalizationForm_C);
     for (const auto v : std::as_const(m_styles)) {
-        if (v->getName() == name) {
+        if (v->getName().normalized(QString::NormalizationForm_C) == k) {
             // fixme - case sensitivity?
             return v;
         }

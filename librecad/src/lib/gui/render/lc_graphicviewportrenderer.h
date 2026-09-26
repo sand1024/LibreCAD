@@ -54,6 +54,7 @@ class LC_GraphicViewportRenderer{
     void updateEffectiveColors();
     void updateVisibleForeground(const RS_Color& bg, const RS_Color& userForeground);
     const LC_Rect &getBoundingClipRect() const {return m_renderBoundingClipRect;}
+    void setBackground(const RS_Color &bg, const RS_Color &backgroundForContrast);
 
     virtual bool isTextLineNotRenderable(double uiLineHeight) const = 0;
 
@@ -80,11 +81,17 @@ class LC_GraphicViewportRenderer{
     /** background color (any color) */
     RS_Color m_colorBackground;
     RS_Color m_userBackground;
+    /** configured background used for entity contrast decisions */
+    RS_Color m_colorBackgroundForContrast;
     /** foreground color (black or white) */
     RS_Color m_colorForeground;
     RS_Color m_userForeground;
 
+    // The resolved pen last installed for an entity; its dash offset is the
+    // painter's running offset at that time.
     RS_Pen m_lastPaintEntityPen;
+    // Whether that installed pen had a dash pattern, so the offset matters.
+    bool m_lastPaintedPattern = false;
 
     LC_Rect prepareBoundingClipRect() const;
     virtual void doRender() = 0;

@@ -92,6 +92,14 @@ namespace RS2 {
     };
 
     /**
+     * Flags about an entity's state in its document, which a copy of the
+     * entity does not have. A copy keeps every other flag. Classify any new
+     * flag here.
+     */
+    constexpr unsigned FlagsTransient = FlagDeleted | FlagSelected | FlagSelected1 | FlagSelected2 |
+                                        FlagHighlighted | FlagProcessed | FlagInVisualSnap;
+
+    /**
      * Variable types used by RS_VariableDict and RS_Variable.
      */
     enum VariableType {
@@ -116,12 +124,25 @@ namespace RS2 {
         FormatDXFRW14, /**< DXF format. v14. */
         FormatDXFRW12, /**< DXF format. v12. */
 #ifdef DWGSUPPORT
-        FormatDWG, /**< DWG format. */
+        FormatDWG,           /**< DWG format (R2000, AC1015). */
+        FormatDWG2004,       /**< DWG format (R2004, AC1018). */
+        FormatDWG2010,       /**< DWG format (R2010, AC1024). */
+        FormatDWG2013,       /**< DWG format (R2013, AC1027). */
+        FormatDWG2018,       /**< DWG format (R2018, AC1032). */
 #endif
         FormatLFF, /**< LibreCAD Font File format. */
         FormatCXF, /**< CAM Expert Font format. */
         FormatJWW, /**< JWW Format type */
-        FormatJWC /**< JWC Format type */
+        FormatJWC, /**< JWC Format type */
+        FormatSHP /**< ESRI Shapefile (import only). */
+#ifdef DWGSUPPORT
+        /* Keep this new value at the end so existing format enum values stay
+           stable for settings and plugins. */
+        , FormatDWG2007 /**< DWG format (R2007, AC1021). */
+#endif
+        /* Also at the end, for the same reason. */
+        , FormatDXFRW2010 /**< DXF format. v2010. */
+        , FormatDXFRW2013 /**< DXF format. v2013. */
     };
 
     /*
@@ -129,10 +150,7 @@ namespace RS2 {
 
         NOTE: Dated 2 January, 2022, by Melwyn Francis Carlo:
               If adding newer 'EntityDim's to the EntityType enumeration,
-              then make sure that it is added between 'EntityDimAligned' and
-              'EntityDimLeader'. If you do not wish to do so, then update the
-              'RS_ActionDefault::highlightHoveredEntities' function at the
-              line starting 'if ((entity->rtti() >= EntityDimAligned) ...'.
+              update isDimensionalEntity() below.
     */
     enum EntityType : unsigned {
         EntityUnknown, /**< Unknown */
@@ -187,8 +205,20 @@ namespace RS2 {
         EntityDimArrowBlock
     };
 
-    inline bool isDimensionalEntity(const EntityType type) {
-        return (type >= EntityDimAligned) && (type <= EntityDimLeader);
+    inline bool isDimensionalEntity(EntityType type)  {
+        switch (type) {
+            case EntityDimAligned:
+            case EntityDimLinear:
+            case EntityDimRadial:
+            case EntityDimDiametric:
+            case EntityDimAngular:
+            case EntityDimArc:
+            case EntityDimOrdinate:
+            case EntityDimLeader:
+                return true;
+            default:
+                return false;
+        }
     }
 
     inline bool isTextEntity(const EntityType type) {
@@ -355,6 +385,7 @@ namespace RS2 {
         ActionDrawLineAngleRel,
         ActionDrawLineOrthogonalRel,
         ActionDrawLineFromPointToLine,
+        ActionDrawLineDirect,
         ActionDrawSliceDivideLine,
         ActionDrawSliceDivideCircle,
         ActionDrawPointsLine,
@@ -648,11 +679,13 @@ namespace RS2 {
         */
         ResolveAllButInserts,
         /**
-         * Resolve all but not Text or MText.
+         * Resolve all but not Text or MText. Traversing yields text entities whole, while distance
+         * and nearest-entity queries (RS_EntityContainer::getDistanceToPoint()) skip them.
          */
         ResolveAllButTexts,
         /**
-         * Resolve no text or images, added as a quick fix for bug#422
+         * Resolve no text or images, added as a quick fix for bug#422. Traversing yields them whole,
+         * while distance and nearest-entity queries skip them, as neither has intersections (bug#426).
          */
         ResolveAllButTextImage,
         /**
@@ -845,7 +878,20 @@ namespace RS2 {
         BorderLineX2   = 25, /**< dash, dash, dot large. */
 
         LineTypeUnchanged = 26, /**< Line type defined by block not entity */
-        LineSelected      = 27 /**< Line type for selected */
+        LineSelected      = 27, /**< Line type for selected */
+
+        // Append new line types after this point. The numeric values are
+        // persisted (QSettings, .lcp pen palettes, $DIMLTYPE) and handed to
+        // plugins, so existing values must never be renumbered.
+        HiddenLine     = 28, /**< hidden line (acad.lin HIDDEN). */
+        HiddenLineTiny = 29, /**< hidden line tiny */
+        HiddenLine2    = 30, /**< hidden line small. */
+        HiddenLineX2   = 31, /**< hidden line large. */
+
+        PhantomLine     = 32, /**< long dash, dash, dash (acad.lin PHANTOM). */
+        PhantomLineTiny = 33, /**< long dash, dash, dash tiny */
+        PhantomLine2    = 34, /**< long dash, dash, dash small. */
+        PhantomLineX2   = 35  /**< long dash, dash, dash large. */
     };
 
     /**

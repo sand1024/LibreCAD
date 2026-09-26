@@ -30,6 +30,7 @@
 #include <QComboBox>
 
 #include "lc_content_adjustable_combo_box.h"
+
 #include "rs.h"
 
 /**

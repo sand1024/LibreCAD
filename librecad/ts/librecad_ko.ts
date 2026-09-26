@@ -39,6 +39,118 @@
     </message>
 </context>
 <context>
+    <name>CustomToolbarCreator</name>
+    <message>
+        <source>Frame</source>
+        <translation type="vanished">제품 정보</translation>
+    </message>
+    <message>
+        <source>&gt;</source>
+        <translation type="vanished">·</translation>
+    </message>
+    <message>
+        <source>&lt;</source>
+        <translation type="vanished">&lt;&gt;</translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation type="vanished">+</translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="vanished">-</translation>
+    </message>
+    <message>
+        <source>input a name and then press +</source>
+        <translation type="vanished">이름을 입력하고 + 를 누르세요</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">제품 정보</translation>
+    </message>
+</context>
+<context>
+    <name>CustomWidgetCreator</name>
+    <message>
+        <source>Frame</source>
+        <translation type="vanished">제품 정보</translation>
+    </message>
+    <message>
+        <source>-&gt;</source>
+        <translation type="vanished">-&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;-</source>
+        <translation type="vanished">&lt;-</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">제품 정보</translation>
+    </message>
+</context>
+<context>
+    <name>DlgParabola</name>
+    <message>
+        <source>Parabola</source>
+        <translation type="vanished">파라볼라</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Points on Spline</source>
+        <translation type="vanished">Spline의 포인트</translation>
+    </message>
+    <message>
+        <source>Control Points</source>
+        <translation type="vanished">제어 포인트</translation>
+    </message>
+</context>
+<context>
+    <name>DlgSplinePoints</name>
+    <message>
+        <source>SplinePoints</source>
+        <translation type="vanished">스플라인 점</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">(주)</translation>
+    </message>
+    <message>
+        <source>If selected, spline points are used</source>
+        <translation type="vanished">선택하면 스플라인 포인트가 사용됩니다</translation>
+    </message>
+    <message>
+        <source>Spline Points</source>
+        <translation type="vanished">스플라인 포인트</translation>
+    </message>
+    <message>
+        <source>If selected, control points are used</source>
+        <translation type="vanished">선택된 경우, 컨트롤 포인트가 사용됩니다</translation>
+    </message>
+    <message>
+        <source>Control Points</source>
+        <translation type="vanished">제어 포인트</translation>
+    </message>
+    <message>
+        <source>Points on Spline</source>
+        <translation type="vanished">Spline의 포인트</translation>
+    </message>
+</context>
+<context>
     <name>LC_AbstractActionDrawLine</name>
     <message>
         <location filename="../src/actions/drawing/draw/line/lc_abstractactiondrawline.cpp" line="64"/>
@@ -1178,7 +1290,7 @@ distance between points=%2 is larger than diameter=%3</source>
         <translation type="unfinished">할 수 없습니다: 역사의 시작</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line.cpp" line="424"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line.cpp" line="430"/>
         <source>Cannot redo: End of history reached</source>
         <translation type="unfinished">Cannot redo : 역사의 끝</translation>
     </message>
@@ -1474,7 +1586,7 @@ or [%2]</source>
     <message>
         <source>Specify  distance (angle %1 deg)
 or [%2]</source>
-        <translation type="vanished">거리를 지정하십시오 (angle % 1 deg)
+        <translation type="vanished">거리를 지정하십시오 (angle %1 deg)
 또는 [%2]</translation>
     </message>
     <message>
@@ -1721,70 +1833,70 @@ or [%2]</source>
 <context>
     <name>LC_ActionDrawLineSnake</name>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="500"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="504"/>
         <source>Specify first point</source>
         <translation>첫 번째 지점</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="509"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="513"/>
         <source>Specify direction (x or y) or [%1]</source>
         <translation>방향 (x 또는 y) 또는 [%1] 지정</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="523"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="528"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="527"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="532"/>
         <source>Specify distance (%1) or [%2]</source>
         <translation>거리 지정 (%1) 또는 [%2]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="147"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="523"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="148"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="527"/>
         <source>X</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="130"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="131"/>
         <source>Point</source>
         <translation>팟캐스트</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="134"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="135"/>
         <source>Angle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="141"/>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="528"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="142"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="532"/>
         <source>Y</source>
         <translation>₢ 킹</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="170"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="171"/>
         <source>Direction:</source>
         <translation>방향:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="534"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="538"/>
         <source>Specify distance (%1 deg) or [%2]</source>
         <translation>거리 지정 (%1 deg) 또는 [%2]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="549"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="553"/>
         <source>Specify angle or [%1]</source>
         <translation>각 또는 [%1]를 지정하십시오</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="561"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="565"/>
         <source>Specify point or [%1]</source>
         <translation>포인트 또는 [%1]</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="611"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="621"/>
         <source>Cannot undo: Begin of history reached</source>
         <translation>할 수 없습니다: 역사의 시작</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="651"/>
+        <location filename="../src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp" line="666"/>
         <source>Cannot redo: End of history reached</source>
         <translation>Cannot redo : 역사의 끝</translation>
     </message>
@@ -2013,7 +2125,7 @@ or [%2]</source>
         <location filename="../src/actions/drawing/draw/point/lc_action_draw_points_line.cpp" line="620"/>
         <source>Specify  distance (angle %1 deg)
 or [%2]</source>
-        <translation type="unfinished">거리를 지정하십시오 (angle % 1 deg)
+        <translation type="unfinished">거리를 지정하십시오 (angle %1 deg)
 또는 [%2]</translation>
     </message>
     <message>
@@ -5565,7 +5677,7 @@ Point: (%8 , %9)</source>
 <context>
     <name>LC_ActionModifyEntity</name>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_entity.cpp" line="229"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_entity.cpp" line="223"/>
         <source>Click on entity to modify</source>
         <translation type="unfinished">본문 바로가기</translation>
     </message>
@@ -5866,7 +5978,7 @@ Point: (%8 , %9)</source>
     </message>
     <message>
         <location filename="../src/actions/drawing/modify/lc_action_modify_offset.cpp" line="253"/>
-        <source>Select line, polyline, circle or arc to create offset</source>
+        <source>Select line, polyline, ellipse, circle or arc to create offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6273,22 +6385,22 @@ Point: (%8 , %9)</source>
 <context>
     <name>LC_ActionModifyTrimAmount</name>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="198"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="200"/>
         <source>No entity found.</source>
         <translation type="unfinished">찾을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="205"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="207"/>
         <source>The chosen Entity is not an atomic entity or cannot be trimmed.</source>
         <translation type="unfinished">선택된 엔티티티는 원자체가 아니며 트리밍할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="230"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="232"/>
         <source>Not a valid expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="265"/>
+        <location filename="../src/actions/drawing/modify/lc_action_modify_trim_amount.cpp" line="267"/>
         <source>Select line/arc to trim OR enter length value:</source>
         <translation type="unfinished">줄/arc를 선택하여 손질하거나 길이값을 입력합니다:</translation>
     </message>
@@ -6920,17 +7032,17 @@ Point: (%8 , %9)</source>
 <context>
     <name>LC_ActionSplineAppendPoint</name>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="226"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="258"/>
         <source>Select spline or spline points entity</source>
         <translation>스플라인 또는 스플라인 포인트를 선택</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="230"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="262"/>
         <source>Specify first control point</source>
         <translation>첫 번째 제어 지점 지정</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="234"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp" line="266"/>
         <source>Specify control point</source>
         <translation>제어 지점</translation>
     </message>
@@ -6938,7 +7050,7 @@ Point: (%8 , %9)</source>
 <context>
     <name>LC_ActionSplineExplode</name>
     <message>
-        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp" line="232"/>
+        <location filename="../src/actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp" line="234"/>
         <source>Select spline or spline points entity</source>
         <translation>스플라인 또는 스플라인 포인트를 선택</translation>
     </message>
@@ -7177,21 +7289,27 @@ XML 발생시 오류가 발생했습니다.</translation>
         <source>Shortcuts mappings were not imported.
 
  Provided file does exists, however it does not contain LibreCAD shortcuts mapping.</source>
-        <translation type="unfinished"></translation>
+        <translation>단축키 매핑을 가져오지 못했습니다.
+
+제공된 파일은 존재하지만 LibreCAD 단축키 매핑이 포함되어 있지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="195"/>
         <source>Shortcuts mappings were not imported. 
 
 XML parsing error occurred during file processing.</source>
-        <translation type="unfinished"></translation>
+        <translation>단축키 매핑을 가져오지 못했습니다. 
+
+파일 처리 중 XML 파싱 오류가 발생했습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="214"/>
         <source>Shortcuts mappings were not imported. 
 
 Some error occurred during XML generation.</source>
-        <translation type="unfinished"></translation>
+        <translation>단축키 매핑을 가져오지 못했습니다. 
+
+XML 생성 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="268"/>
@@ -8993,6 +9111,13 @@ Are you sure you are going to discard changes?</source>
     </message>
 </context>
 <context>
+    <name>LC_CustomToolbar</name>
+    <message>
+        <source>Add or Remove Action</source>
+        <translation type="vanished">동작 추가 또는 제거</translation>
+    </message>
+</context>
+<context>
     <name>LC_DeviceOptions</name>
     <message>
         <location filename="../src/ui/dialogs/settings/options_device/lc_deviceoptions.ui" line="14"/>
@@ -9018,102 +9143,102 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_DimArrowRegistry</name>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="196"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="198"/>
         <source>Closed Filled</source>
         <translation>자주 묻는 질문</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="199"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="201"/>
         <source>Dot</source>
         <translation>팟캐스트</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="200"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="202"/>
         <source>Dot Small</source>
         <translation>점 작은</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="201"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="203"/>
         <source>Dot Blank</source>
         <translation>점 공백</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="202"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="204"/>
         <source>Origin Indicator</source>
         <translation>근원 지시자</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="203"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="205"/>
         <source>Origin Indicator 2</source>
         <translation>근원 지시자 2</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="204"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="206"/>
         <source>Open</source>
         <translation>기타</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="205"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="207"/>
         <source>Right Angle</source>
         <translation>공급 능력</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="206"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="208"/>
         <source>Open 30</source>
         <translation>오픈 30</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="207"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="209"/>
         <source>Closed</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="208"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="210"/>
         <source>Dot Small Blank</source>
         <translation>점 작은 공백</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="209"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="211"/>
         <source>None</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="210"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="212"/>
         <source>Oblique</source>
         <translation>오블릭</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="211"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="213"/>
         <source>Box Filled</source>
         <translation>회사소개</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="212"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="214"/>
         <source>Box Blank</source>
         <translation>상자 공백</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="213"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="215"/>
         <source>Closed Blank</source>
         <translation>닫히는 공백</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="214"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="216"/>
         <source>Datum Filled</source>
         <translation>Datum 충전</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="215"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="217"/>
         <source>Datum Blank</source>
         <translation>Datum 빈</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="216"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="218"/>
         <source>Integral</source>
         <translation>계정 관리</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="217"/>
+        <location filename="../src/lib/engine/document/dimstyles/lc_dimarrowregistry.cpp" line="219"/>
         <source>Architecture Tick</source>
         <translation>건축 Tick</translation>
     </message>
@@ -9350,6 +9475,45 @@ Are you sure you are going to discard changes?</source>
         <location filename="../src/ui/dialogs/main/lc_dlgabout.cpp" line="105"/>
         <source>System</source>
         <translation>시스템</translation>
+    </message>
+</context>
+<context>
+    <name>LC_DlgDimOrdinate</name>
+    <message>
+        <source>Ordinate Dimension</source>
+        <translation type="vanished">좌표 치수</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">차원의 층</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Pen 속성</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Ordinate</source>
+        <translation type="vanished">이름 *</translation>
+    </message>
+    <message>
+        <source>X</source>
+        <translation type="vanished">X</translation>
+    </message>
+    <message>
+        <source>Y</source>
+        <translation type="vanished">Y</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
     </message>
 </context>
 <context>
@@ -9845,7 +10009,9 @@ Are you sure you are going to discard changes?</source>
         <source>Sets the spacing between the dimension lines of a baseline dimension. Enter a distance. For information about baseline dimensions, see DIMBASELINE. (DIMDLI system variable)
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>기준선 치수의 치수선 사이 간격을 설정합니다. 거리를 입력하세요. 기준선 치수에 대한 자세한 내용은 DIMBASELINE을 참조하세요. (DIMDLI 시스템 변수)
+
+</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.ui" line="577"/>
@@ -10647,14 +10813,14 @@ Are you sure you are going to discard changes?</source>
         <translation>거리가 발 (DIMALTTZ 시스템 변수)의 필수적인 수 인 피트 앤 인치 치수의 인치 부분을 압축합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="351"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="354"/>
         <source>Select Block for arrow</source>
         <translation>화살표 블록 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1135"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1136"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1137"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1138"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1139"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1140"/>
         <source>User Block...</source>
         <translation>사용자 블록 ...</translation>
     </message>
@@ -10986,74 +11152,88 @@ Are you sure you are going to discard changes?</source>
         <translation>회사 소개</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="148"/>
         <source>Pen</source>
         <translation>뚱 베어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="172"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="175"/>
         <source>Point Properties</source>
         <translation>Point 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="178"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="181"/>
         <source>Line Properties</source>
         <translation>라인 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="184"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="187"/>
         <source>Arc Properties</source>
         <translation>Arc 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="190"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="193"/>
         <source>Circle Properties</source>
         <translation>원형 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="199"/>
         <source>Ellipse Properties</source>
         <translation>Ellipse 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="202"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="205"/>
         <source>Hyperbola Properties</source>
         <translation>Hyperbola 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="208"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="211"/>
         <source>Polyline Properties</source>
         <translation>Polyline 특성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="214"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="217"/>
         <source>Parabola Properties</source>
         <translation>Parabola 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="220"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="223"/>
         <source>Spline Properties</source>
         <translation>Spline 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="226"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="229"/>
         <source>Spline Points Properties</source>
         <translation>Spline Points 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="232"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="235"/>
         <source>Image Properties</source>
         <translation>이미지 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="238"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="241"/>
         <source>Insert Properties</source>
         <translation>삽입 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="246"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="247"/>
+        <source>Text Properties</source>
+        <translation>텍스트 속성</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="253"/>
+        <source>MText Properties</source>
+        <translation>여러 줄 텍스트 속성</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="259"/>
+        <source>Hatch Properties</source>
+        <translation>해치 속성</translation>
+    </message>
+    <message>
         <source>Properties?</source>
-        <translation>재산?</translation>
+        <translation type="vanished">재산?</translation>
     </message>
 </context>
 <context>
@@ -11373,162 +11553,162 @@ Are you sure you are going to discard changes?</source>
         <translation>기타</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="102"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="103"/>
         <source>Menu Assignment - &quot;%1&quot; Menu</source>
         <translation>메뉴 할당 - &quot;%1&quot;메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="106"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="107"/>
         <source>Either Absent or Any Entity</source>
         <translation>어떤 학대 또는 어떤 적도</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="107"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="108"/>
         <source>Absent Entity</source>
         <translation>Absent 성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="108"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="109"/>
         <source>Any Entity</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="109"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="110"/>
         <source>Line</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="110"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="111"/>
         <source>Circle</source>
         <translation>한국어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="111"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="112"/>
         <source>Arc</source>
         <translation>·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="112"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="113"/>
         <source>Polyline</source>
         <translation>연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="113"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="114"/>
         <source>Spline</source>
         <translation>관련 상품</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="114"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="115"/>
         <source>Spline By Points</source>
         <translation>비밀번호</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="115"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="116"/>
         <source>Ellipse</source>
         <translation>엘립스</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="116"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="117"/>
         <source>Point</source>
         <translation>팟캐스트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="117"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="118"/>
         <source>Parabola</source>
         <translation>파라볼라</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="118"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="119"/>
         <source>Image</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="119"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="120"/>
         <source>Hatch</source>
         <translation>팟캐스트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="120"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="121"/>
         <source>Insert</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="121"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="122"/>
         <source>Dimension Linear</source>
         <translation>차원 선형</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="122"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="123"/>
         <source>Dimension Aligned</source>
         <translation>치수 정렬</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="123"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="124"/>
         <source>Dimension Diametric</source>
         <translation>차원 Diametric</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="124"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="125"/>
         <source>Dimension Radial</source>
         <translation>차원 레이디얼</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="125"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="126"/>
         <source>Dimension Ordinate</source>
         <translation>차원 Ordinate</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="126"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="127"/>
         <source>Dimension Arc</source>
         <translation>차원 아크</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="127"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="128"/>
         <source>Leader</source>
         <translation>주요연혁</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="230"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="231"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Entity Properties&apos;.</source>
         <translation>참고 : 메뉴 할당은 무시됩니다. &apos;Entity Properties&apos;에 대해 알려드립니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="233"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="234"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Entity Select&apos;.</source>
         <translation>참고 : 메뉴 할당은 무시됩니다. &apos;Entity Select&apos;에 대해 알려드립니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="236"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="237"/>
         <source>NOTE: Menu assignment will be ignored. It is reserved for &apos;Pan&apos;.</source>
         <translation>참고 : 메뉴 할당은 무시됩니다. &apos;패널&apos;을 예약하고 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="239"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="240"/>
         <source>NNOTE: Menu assignment will be ignored. It is reserved for &apos;Select Contour&apos;.</source>
         <translation>NNOTE: 메뉴 할당은 무시됩니다. &apos;Select Contour&apos;에 대해 알려드립니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="242"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="243"/>
         <source>NOTE: This combination is reserved for default context menu and may prevent invocation of it!</source>
         <translation>참고 : 이 조합은 기본 컨텍스트 메뉴에 대한 예약이며, 그것을 주장 할 수 있습니다!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="245"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="246"/>
         <source>NOTE: This combination is reserved for Pan! Menu assignment will be ignored</source>
         <translation>주의: 이 조합은 팬을 위해 예약됩니다! 메뉴 할당은 무시됩니다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="250"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="251"/>
         <source>NOTE: This shortcut is already assigned to &quot;%1&quot; menu and that menu will be unassigned on save!</source>
         <translation>참고: 이 단축키는 이미 &quot;%1&quot; 메뉴에 할당되며 메뉴가 저장되지 않습니다!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="254"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="255"/>
         <source>Shortcut is valid to use.</source>
         <translation>Shortcut는 사용할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="259"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp" line="260"/>
         <source>Note: make sure that selected button is supported by your mouse device.</source>
         <translation>참고 : 선택한 버튼을 마우스 장치에 의해 지원됩니다.</translation>
     </message>
@@ -11598,9 +11778,13 @@ Are you sure you are going to discard changes?</source>
         <translation type="vanished">테이블 항목에 대한 뷰 세부 정보가 있는 도구 설명</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="75"/>
         <source>If checked, the column with details of view&apos;s coordinate system will be show.</source>
-        <translation>선택한 경우, 뷰의 좌표계 세부 정보가 있는 열이 표시됩니다.</translation>
+        <translation type="vanished">선택한 경우, 뷰의 좌표계 세부 정보가 있는 열이 표시됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="75"/>
+        <source>If checked, the column with details of view&apos;s coordinate system will be shown.</source>
+        <translation>선택하면 뷰의 좌표계 세부 정보 열이 표시됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="85"/>
@@ -11648,8 +11832,17 @@ Are you sure you are going to discard changes?</source>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="147"/>
+        <source>On double-click:</source>
+        <translation>더블클릭 시:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="197"/>
+        <source>Restore view on single click of table item</source>
+        <translation>테이블 항목을 한 번 클릭하여 뷰 복원</translation>
+    </message>
+    <message>
         <source>On double-click on table item</source>
-        <translation>테이블 아이템을 더블 클릭</translation>
+        <translation type="vanished">테이블 아이템을 더블 클릭</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="154"/>
@@ -11686,9 +11879,8 @@ Are you sure you are going to discard changes?</source>
         <translation>활성화된 경우, 보기 테이블 아이템을 클릭해 볼 수 있습니다. 그렇지 않으면, 전망은 명시적으로 복원되어야한다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="197"/>
         <source>Restore view on single click by table item</source>
-        <translation>테이블 아이템으로 한 번의 클릭으로 다시보기</translation>
+        <translation type="vanished">테이블 아이템으로 한 번의 클릭으로 다시보기</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui" line="95"/>
@@ -11738,8 +11930,8 @@ Are you sure you are going to discard changes?</source>
     <name>LC_DlgNewDimStyle</name>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.ui" line="14"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="141"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="142"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="146"/>
         <source>New Dimension Style</source>
         <translation>새로운 차원 작풍</translation>
     </message>
@@ -11809,12 +12001,12 @@ Are you sure you are going to discard changes?</source>
         <translation>새로운 차원 작풍의 이름</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="141"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="142"/>
         <source>Empty name of style is not allowed.</source>
         <translation>스타일의 빈 이름은 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp" line="146"/>
         <source>Provided name of dimension style (%1) is not unique! Please enter another one.</source>
         <translation>차원 작풍의 제공된 이름 (%1)는 독특하지 않습니다! 다른 것을 입력하세요.</translation>
     </message>
@@ -11998,6 +12190,17 @@ Are you sure you are going to discard changes?</source>
         <location filename="../src/ui/dialogs/creators/lc_dlg_new_widget.cpp" line="70"/>
         <source>Name is not unique. Please enter unique name.</source>
         <translation>이름은 독특하지 않습니다. 자주 묻는 질문.</translation>
+    </message>
+</context>
+<context>
+    <name>LC_DlgParabola</name>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+    <message>
+        <source>Parabola control points cannot be collinear</source>
+        <translation type="vanished">Parabola 통제 점은 충돌할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -12413,6 +12616,13 @@ Are you sure you are going to discard changes?</source>
     </message>
 </context>
 <context>
+    <name>LC_DlgSplinePoints</name>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
     <name>LC_DlgTolerance</name>
     <message>
         <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="14"/>
@@ -12595,12 +12805,22 @@ Are you sure you are going to discard changes?</source>
         <translation>활성화되면 테이블 아이템을 클릭하면 좌표계를 적용합니다. 그렇지 않으면 좌표계가 명시적으로 적용되어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="206"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="156"/>
+        <source>Restore UCS on single click of table item</source>
+        <translation>테이블 항목을 한 번 클릭하여 UCS 복원</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="163"/>
+        <source>On double-click:</source>
+        <translation>더블클릭 시:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="213"/>
         <source>Defines delay between UCS marker blinks.</source>
         <translation>UCS 마커 깜박임 간의 지연 시간을 정의합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="242"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="249"/>
         <source>Defines amount of blinks of UCS marker for UCS highlighting.</source>
         <translation>UCS 강조 표시를 위한 UCS 마커의 깜박임 횟수를 정의합니다.</translation>
     </message>
@@ -12609,9 +12829,8 @@ Are you sure you are going to discard changes?</source>
         <translation type="vanished">작업이 테이블의 항목에 더블 클릭에 수행되어야합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="156"/>
         <source>Restore UCS on single click by table item</source>
-        <translation>한 번의 클릭으로 UCS 복원</translation>
+        <translation type="vanished">한 번의 클릭으로 UCS 복원</translation>
     </message>
     <message>
         <source>If checked, the column with icon for type of UCS will be shown in the table. </source>
@@ -12626,12 +12845,12 @@ Are you sure you are going to discard changes?</source>
         <translation type="vanished">UCS가 적용된 후 도면의 보기 창을 어떻게 조정해야 하는지</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="190"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="197"/>
         <source>On double-click on table item</source>
         <translation>테이블 아이템을 더블 클릭</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="163"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="170"/>
         <source>Defines which action should be performed on double click on the item of the table.</source>
         <translation>테이블 항목을 두 번 클릭할 때 수행할 작업을 정의합니다.</translation>
     </message>
@@ -12651,22 +12870,22 @@ Are you sure you are going to discard changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="167"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="174"/>
         <source>Do Nothing</source>
         <translation>아무것도</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="172"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="179"/>
         <source>Edit UCS</source>
         <translation>UCS 편집</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="177"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="184"/>
         <source>Apply UCS</source>
         <translation>UCS 신청</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="182"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="189"/>
         <source>Highlight UCS</source>
         <translation>하이라이트 UCS</translation>
     </message>
@@ -12676,7 +12895,7 @@ Are you sure you are going to discard changes?</source>
         <translation>UCS가 적용됩니다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="200"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="207"/>
         <source>UCS Highlight</source>
         <translation>UCS 하이라이트</translation>
     </message>
@@ -12685,17 +12904,17 @@ Are you sure you are going to discard changes?</source>
         <translation type="vanished">UCS 마커 blinks 사이의 지연</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="209"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="216"/>
         <source> ms</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="228"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="235"/>
         <source>Blink:</source>
         <translation>링크:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="235"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="242"/>
         <source>Blink Delay:</source>
         <translation>Blink 지연:</translation>
     </message>
@@ -12704,7 +12923,7 @@ Are you sure you are going to discard changes?</source>
         <translation type="vanished">UCS의 UCS 마커의 양을 강조</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="245"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui" line="252"/>
         <source> times</source>
         <translation>시간 :</translation>
     </message>
@@ -12971,120 +13190,120 @@ Are you sure you are going to discard changes?</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="60"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="61"/>
         <source>Destroy Menu</source>
         <translation>Destroy 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="61"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="62"/>
         <source>New Menu</source>
         <translation>새로운 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="63"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="64"/>
         <source>Define a custom menu by specifying the set of used actions. Menu will be shown as a popup in the drawing area as soon as menu invocation shortcut is invoked. </source>
         <translation>사용 된 행동의 집합을 지정하여 사용자 정의 메뉴를 정의합니다. 메뉴는 그림 영역에서 팝업으로 표시됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="58"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="59"/>
         <source>Custom Menu Creator</source>
         <translation>사용자 정의 메뉴 Creator</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="59"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="60"/>
         <source>Menu Name:</source>
         <translation>메뉴 이름:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="62"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="63"/>
         <source>Name of Custom Nenu</source>
         <translation>주문 Nenu의 이름</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="68"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="69"/>
         <source>Export custom menus setup to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="69"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="70"/>
         <source>Import custom  menus setup from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="72"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="73"/>
         <source>Custom Toolbar Creator</source>
         <translation>사용자 정의 툴바 Creator</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="73"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="74"/>
         <source>Toolbar Name:</source>
         <translation>Toolbar 이름:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="74"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="75"/>
         <source>Destroy toolbar</source>
         <translation>Destroy 도구 모음</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="75"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="76"/>
         <source>New Toolbar</source>
         <translation>새로운 툴바</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="76"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="77"/>
         <source>Name of Custom Toolbar</source>
         <translation>Custom Toolbar의 이름</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="77"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="78"/>
         <source>Define a custom toolbar by specifying the set of used actions. Once created, the custom toolbar will behave exactly as built-in ones.</source>
         <translation>사용된 작업의 집합을 지정하여 사용자 정의 툴바를 정의합니다. 일단 생성되면, 사용자 정의 도구 모음은 내장 된 것과 정확히 작용합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="86"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="87"/>
         <source>Export custom toolbars setup to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="87"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="88"/>
         <source>Import custom  toolbars setup from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="223"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="224"/>
         <source>Unassign menu</source>
         <translation>알림 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="224"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="225"/>
         <source>Are you sure you&apos;d like to unassign &quot;%1&quot; menu? Note: Just an invocation shortcut will be removed and menu will not be deleted.</source>
         <translation>&quot;%1&quot; 메뉴를 할당하지 않겠습니까? 참고: 그냥 invocation shortcut 제거 하 고 메뉴 삭제 되지 않습니다..</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="237"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="383"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="414"/>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="488"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="238"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="384"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="415"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="489"/>
         <source>NOT ASSIGNED</source>
         <translation>견적 요청</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="450"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="451"/>
         <source>menu</source>
         <translation>메뉴보기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="453"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="454"/>
         <source>toolbar</source>
         <translation>도구 모음</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="456"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="457"/>
         <source>Remove %1</source>
         <translation>%1 제거</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="457"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="458"/>
         <source>Are you sure you&apos;d like to remove  %2&quot;%1&quot;?</source>
         <translation>%2 &quot;%1&quot;을 제거하고 싶습니까?</translation>
     </message>
@@ -13092,7 +13311,7 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_DocumentsStorage</name>
     <message>
-        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="143"/>
+        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="148"/>
         <source>Unnamed</source>
         <translation>이름 *</translation>
     </message>
@@ -14256,12 +14475,12 @@ Are you sure you are going to discard changes?</source>
     <name>LC_ExportLayersService</name>
     <message>
         <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="135"/>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="176"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="179"/>
         <source>Export Layers</source>
         <translation>수출 층</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="149"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="152"/>
         <source>Exported Layers</source>
         <translation>수출된 층</translation>
     </message>
@@ -14282,6 +14501,218 @@ Are you sure you are going to discard changes?</source>
         <location filename="../src/ui/dialogs/file/export/image/lc_exporttoimageservice.cpp" line="62"/>
         <source>Export failed!</source>
         <translation>수출 실패!</translation>
+    </message>
+</context>
+<context>
+    <name>LC_HatchPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="35"/>
+        <source>Pattern</source>
+        <translation>제품 정보</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="41"/>
+        <source>Solid Fill:</source>
+        <translation>단색 채우기:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="48"/>
+        <source>Toggle solid fill (no pattern)</source>
+        <translation>단색 채우기 토글 (패턴 없음)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="58"/>
+        <source>Pattern:</source>
+        <translation>패턴:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="65"/>
+        <source>Hatch pattern name</source>
+        <translation>해치 패턴 이름</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="75"/>
+        <source>Scale:</source>
+        <translation>크기:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="88"/>
+        <source>Hatch pattern scale factor</source>
+        <translation>해치 패턴 배율</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="297"/>
+        <source>in degrees</source>
+        <translation>도에서</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="98"/>
+        <source>Angle (°):</source>
+        <translation>각도 (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="111"/>
+        <source>Hatch pattern rotation angle, degrees</source>
+        <translation>해치 패턴 회전 각도, 도</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="121"/>
+        <source>Area &amp; Centroid</source>
+        <translation>면적 및 도심</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="127"/>
+        <source>Area:</source>
+        <translation>면적:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="134"/>
+        <source>Total enclosed area of the hatch region</source>
+        <translation>해치 영역의 총 폐쇄 면적</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="144"/>
+        <source>Centroid (x):</source>
+        <translation>도심 (x):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="151"/>
+        <source>X coordinate of centroid</source>
+        <translation>도심의 X 좌표</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="161"/>
+        <source>Centroid (y):</source>
+        <translation>도심 (y):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="168"/>
+        <source>Y coordinate of centroid</source>
+        <translation>도심의 Y 좌표</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="181"/>
+        <source>Moment of Inertia</source>
+        <translation>관성 모멘트</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="187"/>
+        <source>Second moment about x-axis (central): ∬(x−cx)² dA</source>
+        <translation>x축에 대한 2차 모멘트 (중심): ∬(x−cx)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="190"/>
+        <source>Ixx:</source>
+        <translation>Ixx:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="197"/>
+        <source>Second central moment about x-axis: ∬(x−cx)² dA</source>
+        <translation>x축에 대한 중심 2차 모멘트: ∬(x−cx)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="207"/>
+        <source>Second moment about y-axis (central): ∬(y−cy)² dA</source>
+        <translation>y축에 대한 2차 모멘트 (중심): ∬(y−cy)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="210"/>
+        <source>Iyy:</source>
+        <translation>Iyy:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="217"/>
+        <source>Second central moment about y-axis: ∬(y−cy)² dA</source>
+        <translation>y축에 대한 중심 2차 모멘트: ∬(y−cy)² dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="227"/>
+        <source>Product moment of area (central): ∬(x−cx)(y−cy) dA</source>
+        <translation>면적의 곱 모멘트 (중심): ∬(x−cx)(y−cy) dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="230"/>
+        <source>Ixy:</source>
+        <translation>Ixy:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="237"/>
+        <source>Product of area central moment: ∬(x−cx)(y−cy) dA</source>
+        <translation>면적 중심 곱 모멘트: ∬(x−cx)(y−cy) dA</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="247"/>
+        <source>Principal Axes</source>
+        <translation>주축</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="257"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="267"/>
+        <source>Maximum principal second moment of area</source>
+        <translation>최대 주 면적 2차 모멘트</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="260"/>
+        <source>I₁ (max):</source>
+        <translation>I₁ (최대):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="277"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="287"/>
+        <source>Minimum principal second moment of area</source>
+        <translation>최소 주 면적 2차 모멘트</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="280"/>
+        <source>I₂ (min):</source>
+        <translation>I₂ (최소):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="300"/>
+        <source>Axis Angle (°):</source>
+        <translation>축 각도 (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="307"/>
+        <source>Angle of the minimum principal axis from the x-axis, degrees</source>
+        <translation>최소 주축의 x축으로부터의 각도, 도</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="317"/>
+        <source>Indicates if the moment of inertia matrix is degenerate (I₁ ≈ I₂)</source>
+        <translation>관성 모멘트 행렬이 퇴화되었는지 표시 (I₁ ≈ I₂)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="320"/>
+        <source>Degenerate:</source>
+        <translation>퇴화:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui" line="327"/>
+        <source>Shows whether the shape has rotational symmetry (any axis is principal)</source>
+        <translation>형상이 회전 대칭인지 표시 (임의 축이 주축)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="75"/>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="76"/>
+        <source>N/A</source>
+        <translation>해당없음</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="116"/>
+        <source>Yes</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp" line="116"/>
+        <source>No</source>
+        <translation>없음</translation>
     </message>
 </context>
 <context>
@@ -14962,34 +15393,34 @@ Are you sure you are going to discard changes?</source>
         <translation>층 이름:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="61"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="68"/>
         <source>Rename Virtual Layer</source>
         <translation>이름 가상 층</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="72"/>
         <source>Add Secondary Layer</source>
         <translation>Secondary 레이어 추가</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="71"/>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="78"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="85"/>
         <source>Add Layer</source>
         <translation>층 추가</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="91"/>
         <source>Edit Layer</source>
         <translation>연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="176"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="214"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="183"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="221"/>
         <source>Default Pen</source>
         <translation>기본 펜</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="193"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="200"/>
         <source>Rename Layer</source>
         <translation>이름 층</translation>
     </message>
@@ -17957,6 +18388,104 @@ Please specify a different value.</source>
     </message>
 </context>
 <context>
+    <name>LC_MTextPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="25"/>
+        <source>Content</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="31"/>
+        <source>MText content. Format codes (\F, \P, \S) are accepted as-is.</source>
+        <translation>여러 줄 텍스트 내용. 서식 코드 (\F, \P, \S)는 그대로 허용됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="44"/>
+        <source>Direction</source>
+        <translation>제품정보</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="50"/>
+        <source>Left-to-right paragraph base direction (UAX#9)</source>
+        <translation>단락 기본 방향: 왼쪽에서 오른쪽 (UAX#9)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="53"/>
+        <source>LTR</source>
+        <translation>좌→우</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="63"/>
+        <source>Right-to-left paragraph base direction (UAX#9)</source>
+        <translation>단락 기본 방향: 오른쪽에서 왼쪽 (UAX#9)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="66"/>
+        <source>RTL</source>
+        <translation>우→좌</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="76"/>
+        <source>Geometry</source>
+        <translation>기하학</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="79"/>
+        <source>Height:</source>
+        <translation>높이:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="80"/>
+        <source>Nominal text height</source>
+        <translation>명목 텍스트 높이</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="81"/>
+        <source>Width:</source>
+        <translation>너비:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="82"/>
+        <source>Reference rectangle width</source>
+        <translation>참조 사각형 너비</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="83"/>
+        <source>Angle (°):</source>
+        <translation>각도 (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="84"/>
+        <source>Rotation angle in degrees (UCS)</source>
+        <translation>회전 각도, 도 (UCS)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="85"/>
+        <source>Line spacing:</source>
+        <translation>행 간격:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="86"/>
+        <source>Line spacing factor</source>
+        <translation>행 간격 인수</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="87"/>
+        <source>Style:</source>
+        <translation>작풍:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui" line="88"/>
+        <source>Text style / font name</source>
+        <translation>텍스트 스타일 / 글꼴 이름</translation>
+    </message>
+</context>
+<context>
     <name>LC_MatchDescriptorArc</name>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="29"/>
@@ -20115,7 +20644,7 @@ Please specify a different value.</source>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp" line="38"/>
         <source>Hatch pattern name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">해치 패턴 이름</translation>
     </message>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp" line="42"/>
@@ -22452,27 +22981,27 @@ Please specify a different value.</source>
         <translation type="unfinished">도와 &amp;Horizontally</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="677"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="690"/>
         <source>Context</source>
         <translation type="unfinished">설정하기</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="694"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="708"/>
         <source>Toolbars</source>
         <translation type="unfinished">도구 모음</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="698"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="713"/>
         <source>Widgets</source>
         <translation type="unfinished">다운로드</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="706"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="722"/>
         <source>CAD Widgets</source>
         <translation type="unfinished">CAD 위젯</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="712"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="729"/>
         <source>CAD Toolbars</source>
         <translation type="unfinished">CAD 툴바</translation>
     </message>
@@ -24717,6 +25246,16 @@ Warning: this action can NOT be undone!</source>
         <translation>필터에 의해 일치 하는 펜 항목의 색상</translation>
     </message>
     <message>
+        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="155"/>
+        <source>On double-click:</source>
+        <translation>더블클릭 시:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="277"/>
+        <source>If selected, additional messages will be shown as part of pen related operations</source>
+        <translation>선택하면 펜 관련 작업 중 추가 메시지가 표시됩니다</translation>
+    </message>
+    <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="297"/>
         <source>If set, filter will igore the case of pen&apos;s name</source>
         <translation>설정하면 필터가 펜의 이름을 igore합니다</translation>
@@ -24787,9 +25326,8 @@ Warning: this action can NOT be undone!</source>
         <translation>가능한 자연 이름</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="277"/>
         <source>If selected, additional messages will be show as part of pen related operations</source>
-        <translation>선택한 경우, 추가 메시지는 펜 관련 작업의 일부로 표시됩니다</translation>
+        <translation type="vanished">선택한 경우, 추가 메시지는 펜 관련 작업의 일부로 표시됩니다</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="280"/>
@@ -24797,9 +25335,8 @@ Warning: this action can NOT be undone!</source>
         <translation>펜에 의해 선택 될 수없는 경우 정보 메시지 표시</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="155"/>
         <source>On double click on table item</source>
-        <translation>테이블 아이템을 더블 클릭</translation>
+        <translation type="vanished">테이블 아이템을 더블 클릭</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui" line="162"/>
@@ -25020,7 +25557,9 @@ Warning: this action can NOT be undone!</source>
         <source>Location of pens file is changed, please restart the application so new pens file will be used.
 
 Please note that if you&apos;ll save pen via editor without restart, current pens from palette will be saved in the new file and therefore existing content of it will be overridden.</source>
-        <translation type="unfinished"></translation>
+        <translation>펜 파일 위치가 변경되었습니다. 새 파일을 사용하려면 응용 프로그램을 다시 시작하세요.
+
+다시 시작하지 않고 편집기를 통해 펜을 저장하면 팔레트의 현재 펜이 새 파일에 저장되어 기존 내용을 덮어씁니다.</translation>
     </message>
     <message>
         <source>Location of pens file is changed, please restart the application so new pens file will be used.
@@ -29673,7 +30212,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="39"/>
         <source>Hatch pattern name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">해치 패턴 이름</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="53"/>
@@ -31846,12 +32385,12 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PropertiesSheet</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="241"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="245"/>
         <source>Click to expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="242"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="246"/>
         <source>Click to collapse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32088,284 +32627,284 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_QuickInfoEntityData</name>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="246"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="395"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="261"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="410"/>
         <source>SOLID</source>
         <translation>SOLID로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="249"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="398"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="264"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="413"/>
         <source>CONSTRUCTION</source>
         <translation>공지사항</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="252"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="401"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="267"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="416"/>
         <source>UNKNOWN</source>
         <translation>주 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="545"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="563"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="560"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="578"/>
         <source>LINE</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="589"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="604"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="619"/>
         <source>CIRCLE</source>
         <translation>CIRCLE 소개</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="628"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="655"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="643"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="670"/>
         <source>ARC</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="709"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="724"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
         <source>ELLIPSE ARC</source>
         <translation>ELLIPSE 아크</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="726"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="741"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
         <source>ELLIPSE</source>
         <translation>채용 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="829"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="850"/>
         <source>POINT</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="841"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="854"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="856"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
         <source>POLYLINE</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>Yes</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>No</source>
         <translation>없음</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="920"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="941"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="935"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="956"/>
         <source>INSERT</source>
         <translation>지원하다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="956"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="985"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="971"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1000"/>
         <source>TEXT</source>
         <translation>공지사항</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1014"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1032"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1029"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1047"/>
         <source>Left</source>
         <translation>왼쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1016"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1034"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1031"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1049"/>
         <source>Centered</source>
         <translation>관련 기사</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1018"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1036"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1033"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1051"/>
         <source>Right</source>
         <translation>지원하다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1038"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1053"/>
         <source>Aligned</source>
         <translation>지원하다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="555"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="577"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="798"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="904"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1040"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1060"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1078"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="570"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="592"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="832"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="919"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1055"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1075"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1093"/>
         <source>Middle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="425"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="440"/>
         <source>Set Relative Zero</source>
         <translation>상대 0</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="435"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="438"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="450"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="453"/>
         <source>To Cmd</source>
         <translation>Cmd에</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="103"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="516"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="118"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="531"/>
         <source>ID</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="518"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="533"/>
         <source>Layer</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="523"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="538"/>
         <source>Color</source>
         <translation>색깔: 회색</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="528"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="543"/>
         <source>Line Type</source>
         <translation>선 유형</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="533"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="548"/>
         <source>Line Width</source>
         <translation>선 폭</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="535"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="550"/>
         <source>Min</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="536"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="551"/>
         <source>Max</source>
         <translation>최대</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="553"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="568"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="589"/>
         <source>From</source>
         <translation>내 계정</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="554"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="575"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="569"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="590"/>
         <source>To</source>
         <translation>으로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="556"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="579"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="571"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="594"/>
         <source>Delta</source>
         <translation>델타</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="557"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="572"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="705"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="744"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="793"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="924"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1108"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1208"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1230"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1348"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1371"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1494"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1510"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="587"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="720"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="759"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="828"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="920"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="939"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="975"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1004"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1123"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1157"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1223"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1386"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1544"/>
         <source>Angle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="559"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="571"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="906"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1247"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1283"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1319"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="586"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="921"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1262"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1311"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1334"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1349"/>
         <source>Length</source>
         <translation>제품 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="596"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="609"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="640"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="662"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="701"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="741"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="796"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="887"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1400"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1418"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="611"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="624"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="655"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="677"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="716"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="756"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="831"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="902"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1435"/>
         <source>Center</source>
         <translation>- 연혁</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="597"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="610"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="641"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="663"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="888"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1398"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="612"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="625"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="656"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="678"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="903"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1414"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1433"/>
         <source>Radius</source>
         <translation>채용정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="598"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="616"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="642"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="677"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="613"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="631"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="657"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="692"/>
         <source>Diameter</source>
         <translation>제품 정보</translation>
     </message>
@@ -32374,740 +32913,756 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="vanished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="600"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="618"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="725"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="768"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="821"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1350"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="615"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="633"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="740"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="783"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="836"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1365"/>
         <source>Area</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="644"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="679"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="659"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="694"/>
         <source>Chord Length</source>
         <translation>Chord 길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="645"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="717"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="891"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="660"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="681"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="732"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="762"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="906"/>
         <source>Angle Length</source>
         <translation>각 길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="646"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="664"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="718"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="761"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="787"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="842"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="661"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="679"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="733"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="776"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="802"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="822"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="857"/>
         <source>Start</source>
         <translation>지원하다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="647"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="680"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="719"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="762"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="799"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="818"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="892"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1401"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1420"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="662"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="695"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="734"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="777"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="833"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="907"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1437"/>
         <source>Start Angle</source>
         <translation>시작 각</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="648"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="665"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="720"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="763"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="788"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="843"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="663"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="680"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="735"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="778"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="803"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="823"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="858"/>
         <source>End</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="649"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="681"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="721"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="764"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="800"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="819"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="893"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1402"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1421"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="664"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="696"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="736"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="779"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="834"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="908"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1418"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1438"/>
         <source>End Angle</source>
         <translation>끝 각</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="650"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="683"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="881"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="665"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="698"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="896"/>
         <source>Bulge</source>
         <translation>뚱 베어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="702"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="742"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="792"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="717"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="757"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="827"/>
         <source>Minor Radius</source>
         <translation>Minor 반경</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="703"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="743"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="791"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="718"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="758"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="826"/>
         <source>Major Radius</source>
         <translation>주요 반경</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="704"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="754"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="795"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="719"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="769"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="829"/>
         <source>Ratio</source>
         <translation>비율</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="831"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="836"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="846"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="851"/>
         <source>Position</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="860"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
         <source>Closed</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="884"/>
         <source>Segments</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="870"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="885"/>
         <source>Vertex - 0:</source>
         <translation>버텍스 - 0:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="895"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="909"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="910"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="924"/>
         <source>Vertex - </source>
         <translation>버텍스 -</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="916"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="931"/>
         <source>Total Length</source>
         <translation>총 길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="922"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="937"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
         <source>Name</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="923"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="958"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="987"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1107"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1205"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="938"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1122"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1156"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1220"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
         <source>Insertion Point</source>
         <translation>삽입 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="926"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="947"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="941"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
         <source>Scale X</source>
         <translation>스케일 X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="927"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="948"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="942"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="963"/>
         <source>Scale Y</source>
         <translation>규모 Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="928"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="949"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="943"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="964"/>
         <source>Cols</source>
         <translation>팟캐스트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="929"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="950"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="965"/>
         <source>Spacing X</source>
         <translation>스파싱 X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="930"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="951"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="966"/>
         <source>Rows</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="931"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="952"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="967"/>
         <source>Spacing Y</source>
         <translation>간격 Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1003"/>
         <source>Second Point</source>
         <translation>두 번째 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="963"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1110"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1214"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1236"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="978"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1005"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1251"/>
         <source>Height</source>
         <translation>고도:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="991"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="976"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1006"/>
         <source>Width/Height</source>
         <translation>폭/높이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="86"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="59"/>
+        <source>[Automatic]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="62"/>
+        <source>[Suppressed]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="101"/>
         <source>To be created: </source>
         <translation>생성하기:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="105"/>
         <source>Captured: </source>
         <translation>캡처:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="112"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="127"/>
         <source>
 Layer: </source>
         <translation>층:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="558"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="573"/>
         <source>Angle 2</source>
         <translation>각 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="573"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="588"/>
         <source>Angle2</source>
         <translation>각도2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="599"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="617"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="614"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="632"/>
         <source>Circumference</source>
         <comment>circle</comment>
         <translation type="unfinished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="643"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="678"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="890"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="658"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="693"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
         <source>Circumference</source>
         <comment>arc</comment>
         <translation type="unfinished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
         <source>Reversed</source>
         <translation>분류: 분류</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="682"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="697"/>
         <source>Sagitta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="706"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="755"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="721"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="770"/>
         <source>Circumference</source>
         <comment>ellipse</comment>
         <translation type="unfinished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="775"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="790"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="821"/>
         <source>HYPERBOLA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="789"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="804"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="824"/>
         <source>Focus 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="790"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="805"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="825"/>
         <source>Focus 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="797"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
         <source>Eccentricity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="801"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="820"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
         <source>Circumference</source>
         <comment>hyperbola</comment>
         <translation type="unfinished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="992"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1146"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1397"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1414"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="977"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1007"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1124"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1412"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1430"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1442"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1449"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1456"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1463"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1474"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1489"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1505"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1516"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1539"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1554"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1447"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1460"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1468"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1476"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1484"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1496"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1550"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1563"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1575"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1591"/>
         <source>Style</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1001"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1016"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1140"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1173"/>
         <source>HAlign</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1126"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1017"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1174"/>
         <source>VAlign</source>
         <translation>VAlign의</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="975"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1003"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1018"/>
         <source>Generation</source>
         <translation>주요연혁</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1042"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1057"/>
         <source>Fit</source>
         <translation>제품 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1056"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1071"/>
         <source>Baseline</source>
         <translation>기본 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1058"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1076"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1073"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1091"/>
         <source>Bottom</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1062"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1080"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1077"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1095"/>
         <source>Top</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1094"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
         <source>Normal text</source>
         <translation>일반 텍스트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1096"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1111"/>
         <source>Mirrored in X</source>
         <translation>X에 미러링</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1098"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
         <source>Mirrored in Y</source>
         <translation>Y에 미러링</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1105"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1139"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1120"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1154"/>
         <source>MTEXT</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1213"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1235"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1250"/>
         <source>Width</source>
         <translation>폭 (mm)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1114"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1145"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1129"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
         <source>Lines</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1127"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1175"/>
         <source>Direction</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1176"/>
         <source>Line Spacing Factor</source>
         <translation>선 간격 인자</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1129"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1162"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1177"/>
         <source>Line Spacing</source>
         <translation>라인 간격</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1173"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1188"/>
         <source>By Style</source>
         <translation>으로 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1175"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1190"/>
         <source>Left To Right</source>
         <translation>오른쪽으로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1177"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1192"/>
         <source>Right To Left</source>
         <translation>왼쪽으로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1179"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1194"/>
         <source>Top To Bottom</source>
         <translation>맨 위로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1193"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1208"/>
         <source>At Least</source>
         <translation>인기있는</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1195"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1210"/>
         <source>Exact</source>
         <translation>기타 제품</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1202"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1225"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1217"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1240"/>
         <source>IMAGE</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1204"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1219"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
         <source>File</source>
         <translation>파일 형식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1211"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1233"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1226"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1248"/>
         <source>Size (X) px</source>
         <translation>크기 (X) px</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1212"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1234"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1227"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1249"/>
         <source>Size (Y) px</source>
         <translation>크기 (Y) px</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1215"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1237"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1230"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1252"/>
         <source>DPI</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1241"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1257"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1256"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1272"/>
         <source>SPLINE</source>
         <translation>공지사항</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1258"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1275"/>
         <source>Degree</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1291"/>
         <source>Control Points</source>
         <translation>제어 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1272"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1294"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1287"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1309"/>
         <source>SPLINEPOINTS</source>
         <translation>공지사항</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1289"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
         <source>Use Control Points</source>
         <translation>제어 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1482"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1505"/>
         <source>[Override]</source>
         <translation>[Override] [자산]</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1532"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1511"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1555"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1568"/>
         <source>Feature Point</source>
         <translation>특징 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1266"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1301"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
         <source>Control Point </source>
         <translation>통제 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1306"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1321"/>
         <source>Spline Point </source>
         <translation>스플라인 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1329"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1328"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
         <source>PARABOLA</source>
         <translation>파리</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1315"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1330"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
         <source>Focus</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
         <source>Vertex</source>
         <translation>버텍스</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1317"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1333"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1348"/>
         <source>Axis Angle</source>
         <translation>축 각도</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1336"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1351"/>
         <source>Control Point</source>
         <translation>통제 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1359"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1375"/>
         <source>HATCH</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
         <source>Solid</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1369"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1361"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1384"/>
         <source>Pattern</source>
         <translation>제품 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1207"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1232"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1370"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1222"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1247"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1362"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1385"/>
         <source>Scale</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1279"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1294"/>
         <source>Spline Points</source>
         <translation>스플라인 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="802"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1372"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1387"/>
         <source>Total Area</source>
         <translation>전체 영역</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1377"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1388"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1392"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1403"/>
         <source>DIMLEADER</source>
         <translation>구매하기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1405"/>
         <source>Arrow Head</source>
         <translation>연락처</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1412"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1409"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1428"/>
         <source>DIMARC</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1399"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1415"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1434"/>
         <source>Arc Length</source>
         <translation>아크 길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1429"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1441"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1446"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1459"/>
         <source>DIMANGULAR</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1448"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1455"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1467"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1475"/>
         <source>DIMDIAMETRIC</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1450"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1457"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1464"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1475"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1490"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1506"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1470"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1478"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1486"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1498"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1523"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1540"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1555"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1577"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1593"/>
         <source>Definition Point</source>
         <translation>정의 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1462"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1473"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1483"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1495"/>
         <source>DIMRADIAL</source>
         <translation>관련 기사</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1488"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1504"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1537"/>
         <source>DIMLINEAR</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1491"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1507"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1524"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1541"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1556"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1578"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1594"/>
         <source>Extension Point 1</source>
         <translation>연장 점 1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1492"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1508"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1525"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1542"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1557"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1579"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1595"/>
         <source>Extension Point 2</source>
         <translation>연장 점 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1522"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1557"/>
         <source>Text Middle Point </source>
         <translation>텍스트 중간 지점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1495"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1511"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1545"/>
         <source>Oblique</source>
         <translation>오블릭</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1549"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1562"/>
         <source>DIMORDINATE</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1517"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1531"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1552"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1567"/>
         <source>Ordinate</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1518"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1529"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1553"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1565"/>
         <source>Origin Point</source>
         <translation>근원 점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1519"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1530"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1554"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1566"/>
         <source>Horizontal Direction</source>
         <translation>수평 방향</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1533"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1556"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1569"/>
         <source>Leader End Point</source>
         <translation>리더 엔드 포인트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1493"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1509"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1534"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1526"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1543"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1558"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1570"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1580"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1596"/>
         <source>Text Middle Point</source>
         <translation>텍스트 중간 지점</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1552"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1574"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1589"/>
         <source>DIMALIGNED</source>
         <translation>사이트맵</translation>
     </message>
@@ -33345,9 +33900,13 @@ p, li { 흰색 공간 : 사전 랩; }
         <translation>기업 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="81"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, more detailed information about lines and arcs that are part of polyline will be show in Entity Info widget.&lt;br/&gt;Otherwise, only information about vertexes/bulges will be displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; 선택된 경우, 선과 아크에 대한 자세한 정보는 Entity Info 위젯에 표시됩니다.&lt;br/&gt; 그렇지 않으면, vertexes/bulges에 대한 정보는 표시됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; 선택된 경우, 선과 아크에 대한 자세한 정보는 Entity Info 위젯에 표시됩니다.&lt;br/&gt; 그렇지 않으면, vertexes/bulges에 대한 정보는 표시됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="81"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, more detailed information about lines and arcs that are part of polyline will be shown in Entity Info widget.&lt;br/&gt;Otherwise, only information about vertexes/bulges will be displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;선택하면 폴리선을 구성하는 선과 호에 대한 더 자세한 정보가 개체 정보 위젯에 표시됩니다.&lt;br/&gt;그렇지 않으면 꼭짓점/돌출부 정보만 표시됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui" line="84"/>
@@ -35157,14 +35716,12 @@ p, li { 흰색 공간 : 사전 랩; }
 <context>
     <name>LC_ReleaseChecker</name>
     <message>
-        <location filename="../src/ui/main/release_check/lc_releasechecker.cpp" line="109"/>
         <source>Sorry, some network error occurred during checking for new version.</source>
-        <translation>죄송합니다, 일부 네트워크 오류는 새 버전 검사 중에 발생했습니다.</translation>
+        <translation type="vanished">죄송합니다, 일부 네트워크 오류는 새 버전 검사 중에 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/release_check/lc_releasechecker.cpp" line="172"/>
         <source>Unable to parse response from the server</source>
-        <translation>서버에서 응답을 파기 할 수 없습니다</translation>
+        <translation type="vanished">서버에서 응답을 파기 할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -36903,6 +37460,10 @@ p, li { 흰색 공간 : 사전 랩; }
         <translation type="vanished">정도:</translation>
     </message>
     <message>
+        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and ordinary spline will be created.</source>
+        <translation type="vanished">선택하면 폴리선의 꼭짓점이 스플라인 점으로 간주되어 점 통과 스플라인이 생성됩니다. 그렇지 않으면 제어점으로 간주되어 일반 스플라인이 생성됩니다.</translation>
+    </message>
+    <message>
         <source>Keep Originals</source>
         <translation type="vanished">자주 묻는 질문</translation>
     </message>
@@ -37049,8 +37610,8 @@ p, li { 흰색 공간 : 사전 랩; }
     </message>
     <message>
         <location filename="../src/ui/action_options/spline/lc_spline_from_polyline_options_widget.ui" line="102"/>
-        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and orinary spline will be created.</source>
-        <translation type="unfinished">체크된 경우, 폴린 vertexes는 포인트에 의해 스플라인 포인트와 스플라인으로 간주됩니다. 그렇지 않으면, 그들은 제어 포인트와 orinary 스플라인으로 간주됩니다.</translation>
+        <source>If checked, polyline vertexes are considered as spline points and spline by points will be created. Otherwise, they are considered as control points and ordinary spline will be created.</source>
+        <translation type="unfinished">선택하면 폴리선의 꼭짓점이 스플라인 점으로 간주되어 점 통과 스플라인이 생성됩니다. 그렇지 않으면 제어점으로 간주되어 일반 스플라인이 생성됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/action_options/spline/lc_spline_from_polyline_options_widget.ui" line="105"/>
@@ -37624,6 +38185,189 @@ p, li { 흰색 공간 : 사전 랩; }
         <location filename="../src/ui/action_options/text/lc_text_options_widget.ui" line="83"/>
         <source>Pick angle from drawing</source>
         <translation type="unfinished">그림에서 선택 각</translation>
+    </message>
+</context>
+<context>
+    <name>LC_TextPropertiesEditingWidget</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="25"/>
+        <source>Content</source>
+        <translation>이름 *</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="31"/>
+        <source>Single-line text content</source>
+        <translation>한 줄 텍스트 내용</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="41"/>
+        <source>Direction</source>
+        <translation>제품정보</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="47"/>
+        <source>Detect base direction from first strong character (UAX#9 P-rules)</source>
+        <translation>첫 번째 강한 문자로 기본 방향 감지 (UAX#9 P-규칙)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="50"/>
+        <source>Auto</source>
+        <translation>자동</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="60"/>
+        <source>Force left-to-right base direction</source>
+        <translation>왼쪽에서 오른쪽 기본 방향 강제</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="63"/>
+        <source>LTR</source>
+        <translation>좌→우</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="70"/>
+        <source>Force right-to-left base direction</source>
+        <translation>오른쪽에서 왼쪽 기본 방향 강제</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="73"/>
+        <source>RTL</source>
+        <translation>우→좌</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="83"/>
+        <source>Geometry</source>
+        <translation>기하학</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="86"/>
+        <source>Height:</source>
+        <translation>높이:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="87"/>
+        <source>Nominal text height</source>
+        <translation>명목 텍스트 높이</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="88"/>
+        <source>Width factor:</source>
+        <translation>폭 요인:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="89"/>
+        <source>Relative width factor (1.0 = nominal)</source>
+        <translation>상대 너비 인수 (1.0 = 명목)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="90"/>
+        <source>Angle (°):</source>
+        <translation>각도 (°):</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="91"/>
+        <source>Rotation angle in degrees (UCS)</source>
+        <translation>회전 각도, 도 (UCS)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="92"/>
+        <source>Alignment:</source>
+        <translation>정렬:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="93"/>
+        <source>Justification / anchor point for the text</source>
+        <translation>텍스트 정렬 / 기준점</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="94"/>
+        <source>Style:</source>
+        <translation>작풍:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.ui" line="95"/>
+        <source>Text style / font name</source>
+        <translation>텍스트 스타일 / 글꼴 이름</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="46"/>
+        <source>Top Left</source>
+        <translation>맨 위 왼쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="47"/>
+        <source>Top Center</source>
+        <translation>맨 위 중심</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="48"/>
+        <source>Top Right</source>
+        <translation>맨 위 오른쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="49"/>
+        <source>Middle Left</source>
+        <translation>중간 왼쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="50"/>
+        <source>Middle Center</source>
+        <translation>중간 중심</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="51"/>
+        <source>Middle Right</source>
+        <translation>중간 오른쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="52"/>
+        <source>Baseline Left</source>
+        <translation>기준 선 좌측</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="53"/>
+        <source>Baseline Center</source>
+        <translation>기준선 중앙</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="54"/>
+        <source>Baseline Right</source>
+        <translation>기준선 우측</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="55"/>
+        <source>Bottom Left</source>
+        <translation>맨 아래 왼쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="56"/>
+        <source>Bottom Center</source>
+        <translation>맨 아래 중심</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="57"/>
+        <source>Bottom Right</source>
+        <translation>맨 아래 오른쪽</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="58"/>
+        <source>Fit</source>
+        <translation>맞춤</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="59"/>
+        <source>Aligned</source>
+        <translation>지원하다</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp" line="60"/>
+        <source>Middle</source>
+        <translation>주요 특징</translation>
     </message>
 </context>
 <context>
@@ -38510,28 +39254,28 @@ Warning: this action can NOT be undone!</source>
         <translation>Widget 옵션</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="427"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="440"/>
         <source>Toolbar</source>
         <translation>도구바</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="65"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="477"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="493"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="592"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="490"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="506"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="605"/>
         <source>Icon Size</source>
         <translation>Icon 크기</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="58"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="550"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="585"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="563"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="598"/>
         <source>Flat Buttons</source>
         <translation>플랫 버튼</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="563"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="627"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="576"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="640"/>
         <source>Columns Count:</source>
         <translation>란 조사:</translation>
     </message>
@@ -38541,44 +39285,44 @@ Warning: this action can NOT be undone!</source>
         <translation>독 위젯</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="684"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="697"/>
         <source>For &quot;classic&quot; statusbar only. </source>
         <translation>&quot;classic&quot;상태바 전용.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="174"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="158"/>
         <source>Style</source>
         <translation>(주)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="206"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="219"/>
         <source>Icons Styling</source>
         <translation>Icons 스타일링</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="218"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="273"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="340"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="231"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="286"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="353"/>
         <source>Click to select color</source>
         <translation>색상 선택하기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="250"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="263"/>
         <source>Back Color</source>
         <translation>뒤 색깔</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="260"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="273"/>
         <source>External Icons Directory:</source>
         <translation>외부 아이콘 디렉토리:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="408"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="421"/>
         <source>Accent Color:</source>
         <translation>악센트 색깔:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="354"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="367"/>
         <source>Main Color:</source>
         <translation>주요 색깔:</translation>
     </message>
@@ -38588,42 +39332,47 @@ Warning: this action can NOT be undone!</source>
         <translation>일반 스타일링</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="232"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="190"/>
+        <source>Edit Palette...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="245"/>
         <source>Color for accent elements (originally green)</source>
         <translation>악센트 요소 색상 (원래 녹색)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="287"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="300"/>
         <source>Color for main elements (originally black)</source>
         <translation>주요 요소 색상 (원래 블랙)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="316"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="329"/>
         <source>Color for filled background (originally white)</source>
         <translation>채워진 배경 색상 (원래 흰색)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="364"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="377"/>
         <source>Defines location of custom user-provided icons.</source>
         <translation>사용자 정의 아이콘의 위치.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="371"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="384"/>
         <source>Saved Icons Style:</source>
         <translation>저장된 아이콘 작풍:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="381"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="394"/>
         <source>Save Style</source>
         <translation>회사 소개</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="388"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="401"/>
         <source>Remove Style</source>
         <translation>제거 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="401"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="414"/>
         <source>Advanced Setup ...</source>
         <translation>고급 설정 ...</translation>
     </message>
@@ -38633,101 +39382,101 @@ Warning: this action can NOT be undone!</source>
         <translation>스타일 시트</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="665"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="678"/>
         <source>Statusbar</source>
         <translation>상태바</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="720"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="733"/>
         <source>Height</source>
         <translation>고도:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="697"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="710"/>
         <source>Font Size</source>
         <translation>본문 바로가기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="681"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="694"/>
         <source>lClassicStatusBarOnly</source>
         <translation>lClassicStatus바만</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="171"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="155"/>
         <source>If enabled, specific style of UI may be applied</source>
         <translation>활성화되면 UI의 특정 스타일이 적용될 수 있습니다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="196"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="209"/>
         <source>Input the path of a Qt style sheet.</source>
         <translation>Qt 스타일 시트의 경로를 입력합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="439"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="452"/>
         <source>If checked, buttons for picking values from drawing will be flat</source>
         <translation>체크된 경우, 그림에서 픽업 값을 위한 버튼은 평평하게 됩니다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="442"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="455"/>
         <source>Flat pick values buttons</source>
         <translation>플랫 피크 값 버튼</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="78"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="455"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="506"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="605"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="468"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="519"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="618"/>
         <source>Side length in pixels</source>
         <translation>픽셀의 측면 길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="573"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="586"/>
         <source>CAD Widgets (Ungrouped)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="743"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="756"/>
         <source>General Docking</source>
         <translation>일반 도킹</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="749"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="762"/>
         <source>If selected, title bar for docked dock widgets will be vertical. Otherwise, it will be horizontal.</source>
         <translation>선택한 경우, docked dock 위젯의 제목 표시 줄은 수직일 것입니다. 그렇지 않으면 수평이 될 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="752"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="765"/>
         <source>Tile bar is vertical (except CAD widgets)</source>
         <translation>타일 바는 수직 (CAD 위젯 제외)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="772"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="785"/>
         <source>If not checked, dock areas can only contain a single row (horizontal or vertical) of dock widgets. If checked, the area occupied by a dock widget can be split in either direction to contain more dock widgets.</source>
         <translation>확인되지 않은 경우, 도크 지역은 도크 위젯의 단일 행 (horizontal 또는 수직)을 포함 할 수 있습니다. 체크하면, 도크 위젯에 의해 점유 된 지역은 더 많은 도크 위젯을 포함하는 방향으로 나눌 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="775"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="788"/>
         <source>Allow nested docking</source>
         <translation>배열된 도킹</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="759"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="772"/>
         <source>If checked, the two vertical dock areas on the sides of the main window show their tabs vertically. </source>
         <translation>체크하면, 메인 창의 측면에 두 개의 수직 도크 영역은 수직으로 탭을 표시합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="765"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="778"/>
         <source>Vertical tabs</source>
         <translation>수직 탭</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="487"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="500"/>
         <source>CAD Widgets</source>
         <translation>CAD 위젯</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="528"/>
-        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="640"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="541"/>
+        <location filename="../src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui" line="653"/>
         <source>Number of columns for actions in left toolbar.</source>
         <translation>왼쪽 도구 모음에서 작업을위한 열의 수.</translation>
     </message>
@@ -38798,18 +39547,18 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>LC_WorkspacesManager</name>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="472"/>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="480"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="529"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="537"/>
         <source>Saving Workspaces</source>
         <translation>작업 공간 절약</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="473"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="530"/>
         <source>Can&apos;t open workspaces file for writing. Workspaces were not exported. File: </source>
         <translation>쓰기를 위한 workspaces 파일을 열 수 없습니다. 작업 공간은 수출되지 않았습니다. 파일 :</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="481"/>
+        <location filename="../src/ui/main/workspaces/lc_workspacesmanager.cpp" line="538"/>
         <source>Workspaces file does not exists.</source>
         <translation>Workspaces 파일은 존재하지 않습니다.</translation>
     </message>
@@ -38907,72 +39656,72 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>QC_ApplicationWindow</name>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="809"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="839"/>
         <source>Creating new file...</source>
         <translation>새 파일 만들기...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="745"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="775"/>
         <source>unnamed document %1</source>
         <translation>이름없는 문서%1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1783"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1867"/>
         <source>Opening recent file...</source>
         <translation>최근 파일 열기...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1067"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1140"/>
         <source>Loaded document: </source>
         <translation>읽은 문서:</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1004"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1068"/>
         <source>Opening aborted</source>
         <translation>열기 취소</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1314"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1398"/>
         <source>Printing...</source>
         <translation>인쇄하기...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1417"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1501"/>
         <source>Exiting application...</source>
         <translation>응용프로그램 종료...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="202"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="232"/>
         <source>Print preview for %1</source>
         <translation>%1 인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="832"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="862"/>
         <source>New Drawing created.</source>
         <translation>새 도면 작성.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="235"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="265"/>
         <source>Saving drawing...</source>
         <translation>도면 저장하기...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="246"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="276"/>
         <source>Saved drawing: %1</source>
         <translation>저장 도면 : %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1318"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1402"/>
         <source>Printing complete</source>
         <translation>인쇄 완료</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="741"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="771"/>
         <source>Block &apos;%1&apos;</source>
         <translation>블록 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="876"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="906"/>
         <source>Cannot open the file
 %1
 Please check the permissions.</source>
@@ -38981,17 +39730,17 @@ Please check the permissions.</source>
 권한을 점검해 보십시오.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1154"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1230"/>
         <source>Auto-saving drawing...</source>
         <translation>도면 자동 저장...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1160"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1240"/>
         <source>Auto-saved drawing</source>
         <translation>자동 새겨진 그림</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1166"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1248"/>
         <source>Cannot auto-save the file
 %1
 Please check the permissions.
@@ -39002,42 +39751,42 @@ Auto-save disabled.</source>
 자동 저장 비활성</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1011"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1075"/>
         <source>Warning: File already opened : </source>
         <translation>경고:파일이 이미 열려있음:</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="259"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="289"/>
         <source>Cannot save the file </source>
         <translation>파일을 저장할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="259"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="289"/>
         <source> , please check the filename and permissions.</source>
         <translation>, 파일명 및 권한 확인하시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="828"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="858"/>
         <source>New document from template: </source>
         <translation>템플리트에서 새 문서:</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="860"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="890"/>
         <source>Select Template aborted</source>
         <translation>선택한 템플리트 취소</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1168"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1250"/>
         <source>Auto-saving failed</source>
         <translation>자동 저장 실패</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="212"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="242"/>
         <source>Draft Mode</source>
         <translation>Draft 형태</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1025"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1089"/>
         <source>Cannot open the file
 %1
 Please check its existence and permissions.</source>
@@ -39046,51 +39795,66 @@ Please check its existence and permissions.</source>
 그 존재와 권한을 확인하시기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1003"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1067"/>
         <source>File &apos;%1&apos; does not exist. Opening aborted</source>
         <translation>파일 &apos;%1&apos;이 존재하지 않습니다. 파일열기가 취소되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="235"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="265"/>
         <source>Saving drawing: %1</source>
         <translation>저축 그림: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="241"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="271"/>
         <source>Save cancelled</source>
         <translation>자주 묻는 질문</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="376"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="406"/>
         <source>&amp;Save</source>
         <translation>&amp;스포츠</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="377"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="407"/>
         <source>Save &amp;as...</source>
         <translation>저장 &amp;as...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="381"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="411"/>
         <source>&amp;Save %1</source>
         <translation>%1 저장</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="382"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="412"/>
         <source>Save %1 &amp;as...</source>
         <translation>%1 &amp;as 저장 ...</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1134"/>
+        <source>Loaded %1 — modelspace is empty; %n block(s) in the Blocks dock contain geometry.</source>
+        <translation>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1131"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1206"/>
         <source>Save All cancelled</source>
         <translation>자주 묻는 질문</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1251"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1257"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1271"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1335"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1341"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1355"/>
         <source>Close All cancelled</source>
         <translation>자주 묻는 질문</translation>
+    </message>
+</context>
+<context>
+    <name>QC_MDIWindow</name>
+    <message>
+        <location filename="../src/ui/main/qc_mdiwindow.cpp" line="70"/>
+        <source>Unnamed</source>
+        <translation type="unfinished">이름 *</translation>
     </message>
 </context>
 <context>
@@ -39161,12 +39925,12 @@ Please check its existence and permissions.</source>
 <context>
     <name>QG_BlockWidget</name>
     <message>
-        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="210"/>
+        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="209"/>
         <source>Filter</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="212"/>
+        <location filename="../src/ui/dock_widgets/block_widget/qg_blockwidget.cpp" line="211"/>
         <source>Looking for matching block names</source>
         <translation>일치 블록 이름 찾기</translation>
     </message>
@@ -39531,6 +40295,81 @@ Please check its existence and permissions.</source>
     </message>
 </context>
 <context>
+    <name>QG_DlgArc</name>
+    <message>
+        <source>Arc</source>
+        <translation type="vanished">·</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of arc</source>
+        <translation type="vanished">호 레이어</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Pen 속성</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>X Coordinate of arc&apos;s center</source>
+        <translation type="vanished">X 아크의 중심</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of arc&apos;s center</source>
+        <translation type="vanished">Y 아크 센터 좌표</translation>
+    </message>
+    <message>
+        <source>Defines whether arc is reversed (clockwise)</source>
+        <translation type="vanished">아크가 반전되는지 여부를 결정 (시 방향)</translation>
+    </message>
+    <message>
+        <source>Reversed</source>
+        <translation type="vanished">분류: 분류</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">센터 (y):</translation>
+    </message>
+    <message>
+        <source>Radius of arc</source>
+        <translation type="vanished">아크의 반경</translation>
+    </message>
+    <message>
+        <source>Start Angle:</source>
+        <translation type="vanished">시작 각:</translation>
+    </message>
+    <message>
+        <source>Radius:</source>
+        <translation type="vanished">반경:</translation>
+    </message>
+    <message>
+        <source>Starting angle of arc</source>
+        <translation type="vanished">아크의 시작 각</translation>
+    </message>
+    <message>
+        <source>End angle of arc</source>
+        <translation type="vanished">아크의 끝 각</translation>
+    </message>
+    <message>
+        <source>End Angle:</source>
+        <translation type="vanished">끝 각:</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">중심 (x):</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgAttributes</name>
     <message>
         <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="26"/>
@@ -39568,6 +40407,198 @@ This recursively modifies all entities of the Block itself.</source>
         <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.cpp" line="61"/>
         <source>Pen</source>
         <translation>뚱 베어</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgCircle</name>
+    <message>
+        <source>Circle</source>
+        <translation type="vanished">한국어</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Radius:</source>
+        <translation type="vanished">반경:</translation>
+    </message>
+    <message>
+        <source>Radius of circle</source>
+        <translation type="vanished">원형의 반경</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">센터 (y):</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of circle&apos;s center</source>
+        <translation type="vanished">Y 원 센터의 좌표</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">중심 (x):</translation>
+    </message>
+    <message>
+        <source>X Coordinate of circle&apos;s center</source>
+        <translation type="vanished">X 원형의 중심</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgDimLinear</name>
+    <message>
+        <source>Linear Dimension</source>
+        <translation type="vanished">선형 차원</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">차원의 층</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Pen 속성</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">각도:</translation>
+    </message>
+    <message>
+        <source>Rotation angle of dimension</source>
+        <translation type="vanished">차원의 교체 각</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgDimension</name>
+    <message>
+        <source>Dimension</source>
+        <translation type="vanished">크기 (mm)</translation>
+    </message>
+    <message>
+        <source>Layer of dimension</source>
+        <translation type="vanished">차원의 층</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Pen attributes</source>
+        <translation type="vanished">Pen 속성</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgEllipse</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="vanished">엘립스</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of ellipse</source>
+        <translation type="vanished">타원 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Rotation angle for the major axis of ellipse, degrees</source>
+        <translation type="vanished">Ellipse의 주요 축선을 위한 교체 각, 도</translation>
+    </message>
+    <message>
+        <source>Defines whether arc is reversed</source>
+        <translation type="vanished">Arc가 반전되는지 여부</translation>
+    </message>
+    <message>
+        <source>Reversed</source>
+        <translation type="vanished">분류: 분류</translation>
+    </message>
+    <message>
+        <source>Center (y):</source>
+        <translation type="vanished">센터 (y):</translation>
+    </message>
+    <message>
+        <source>End angle of elliptic arc, degrees</source>
+        <translation type="vanished">Elliptic 아크의 끝 각, 도</translation>
+    </message>
+    <message>
+        <source>Y Coordinate of arc&apos;s center</source>
+        <translation type="vanished">Y 아크 센터 좌표</translation>
+    </message>
+    <message>
+        <source>Radius of major axis of ellipse</source>
+        <translation type="vanished">Ellipse의 주요 축선의 반경</translation>
+    </message>
+    <message>
+        <source>in degrees</source>
+        <translation type="vanished">도에서</translation>
+    </message>
+    <message>
+        <source>Start Angle(°):</source>
+        <translation type="vanished">시작 각 (°):</translation>
+    </message>
+    <message>
+        <source>Rotation(°):</source>
+        <translation type="vanished">회전 (°):</translation>
+    </message>
+    <message>
+        <source>Radius of minor axis of the ellipse</source>
+        <translation type="vanished">Ellipse의 미성년자 축선의 반경</translation>
+    </message>
+    <message>
+        <source>End Angle(°):</source>
+        <translation type="vanished">끝 각 (°):</translation>
+    </message>
+    <message>
+        <source>Start angle of elliptic arc, degrees</source>
+        <translation type="vanished">Elliptic 아크의 시작 각, 도</translation>
+    </message>
+    <message>
+        <source>Major:</source>
+        <translation type="vanished">주요 :</translation>
+    </message>
+    <message>
+        <source>Minor:</source>
+        <translation type="vanished">유형:</translation>
+    </message>
+    <message>
+        <source>X Coordinate of ellipse&apos;s center</source>
+        <translation type="vanished">X ellipse의 중심</translation>
+    </message>
+    <message>
+        <source>Center (x):</source>
+        <translation type="vanished">중심 (x):</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
     </message>
 </context>
 <context>
@@ -39644,11 +40675,115 @@ This recursively modifies all entities of the Block itself.</source>
     </message>
 </context>
 <context>
+    <name>QG_DlgImage</name>
+    <message>
+        <source>Image</source>
+        <translation type="vanished">(주)</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of image</source>
+        <translation type="vanished">이미지 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">각도:</translation>
+    </message>
+    <message>
+        <source>Height:</source>
+        <translation type="vanished">높이:</translation>
+    </message>
+    <message>
+        <source>Width of image</source>
+        <translation type="vanished">이미지의 폭</translation>
+    </message>
+    <message>
+        <source>insert (y):</source>
+        <translation type="vanished">삽입 (y):</translation>
+    </message>
+    <message>
+        <source>X coordinate of insertion point</source>
+        <translation type="vanished">삽입 점의 X 좌표</translation>
+    </message>
+    <message>
+        <source>Resolution (dots per inch)</source>
+        <translation type="vanished">해결책 (인치 당 점)</translation>
+    </message>
+    <message>
+        <source>Path to image file</source>
+        <translation type="vanished">이미지 파일 경로</translation>
+    </message>
+    <message>
+        <source>Scaling factor</source>
+        <translation type="vanished">확장 계수</translation>
+    </message>
+    <message>
+        <source>Size (px):</source>
+        <translation type="vanished">크기 (px):</translation>
+    </message>
+    <message>
+        <source>Rotation angle</source>
+        <translation type="vanished">회전 각도</translation>
+    </message>
+    <message>
+        <source>Y coordinate of insertion point</source>
+        <translation type="vanished">삽입 점의 Y 협조</translation>
+    </message>
+    <message>
+        <source>path:</source>
+        <translation type="vanished">경로:</translation>
+    </message>
+    <message>
+        <source>insert (x):</source>
+        <translation type="vanished">삽입 (x):</translation>
+    </message>
+    <message>
+        <source>Scale:</source>
+        <translation type="vanished">크기:</translation>
+    </message>
+    <message>
+        <source>Size of image in pixels</source>
+        <translation type="vanished">픽셀의 이미지 크기</translation>
+    </message>
+    <message>
+        <source>DPI</source>
+        <translation type="vanished">사이트맵</translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation type="vanished">너비:</translation>
+    </message>
+    <message>
+        <source>Height of image</source>
+        <translation type="vanished">이미지의 높이</translation>
+    </message>
+    <message>
+        <source>Select an image file</source>
+        <translation type="vanished">이미지 파일 선택</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgInitial</name>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="32"/>
         <source>Welcome</source>
         <translation>환영합니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="85"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Welcome to LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Please choose the unit you want to use for new drawings and your preferred language for Ui and Command.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can change these settings later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;LibreCAD에 오신 것을 환영합니다&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;새 도면에 사용할 단위와 UI 및 명령에 대한 기본 언어를 선택하세요.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;이 설정은 나중에 변경할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="231"/>
@@ -39661,14 +40796,167 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>GUI 언어:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="85"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:700;&quot;&gt;Welcome to LibreCAD&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Please choose the unit you want to use for new drawings and your preferred language for Ui and Command.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can changes these settings later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Dollmania   Upload   이용 약관   개인 정보 보호 정책   쿠키 정책   모든 사이트 RSS   연락처 새로운 드로잉 및 Ui 및 Command에 대한 선호하는 언어를 사용하려는 장치를 선택하십시오.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;이 설정을 나중에 변경할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">Dollmania   Upload   이용 약관   개인 정보 보호 정책   쿠키 정책   모든 사이트 RSS   연락처 새로운 드로잉 및 Ui 및 Command에 대한 선호하는 언어를 사용하려는 장치를 선택하십시오.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;이 설정을 나중에 변경할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/main/qg_dlginitial.ui" line="187"/>
         <source>Command Language:</source>
         <translation>명령 언어:</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgInsert</name>
+    <message>
+        <source>Insert</source>
+        <translation type="vanished">삽입</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of insert</source>
+        <translation type="vanished">삽입 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Insertion point (y):</source>
+        <translation type="vanished">삽입 점 (y):</translation>
+    </message>
+    <message>
+        <source>Insertion point (x):</source>
+        <translation type="vanished">삽입 점 (x):</translation>
+    </message>
+    <message>
+        <source>Amount of rows for copies</source>
+        <translation type="vanished">복사를 위한 행의 금액</translation>
+    </message>
+    <message>
+        <source>Rotation angle</source>
+        <translation type="vanished">회전 각도</translation>
+    </message>
+    <message>
+        <source>Spacing between columns</source>
+        <translation type="vanished">열 사이 간격</translation>
+    </message>
+    <message>
+        <source>Scaling factor by X axis</source>
+        <translation type="vanished">X 축선에 의하여 확장 인자</translation>
+    </message>
+    <message>
+        <source>X coordinate of insertion point</source>
+        <translation type="vanished">삽입 점의 X 좌표</translation>
+    </message>
+    <message>
+        <source>Spacing between rows</source>
+        <translation type="vanished">행 사이 간격</translation>
+    </message>
+    <message>
+        <source>Amount of columns for copies</source>
+        <translation type="vanished">복사열의 수량</translation>
+    </message>
+    <message>
+        <source>Scaling factor by Y axis</source>
+        <translation type="vanished">Y 축선에 의하여 확장 인자</translation>
+    </message>
+    <message>
+        <source>Scale Y:</source>
+        <translation type="vanished">가늠자 Y:</translation>
+    </message>
+    <message>
+        <source>Rows:</source>
+        <translation type="vanished">줄:</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">각도:</translation>
+    </message>
+    <message>
+        <source>Y coordinate of insertion point</source>
+        <translation type="vanished">삽입 점의 Y 협조</translation>
+    </message>
+    <message>
+        <source>Row Spacing:</source>
+        <translation type="vanished">줄 간격:</translation>
+    </message>
+    <message>
+        <source>Columns:</source>
+        <translation type="vanished">란:</translation>
+    </message>
+    <message>
+        <source>Scale X:</source>
+        <translation type="vanished">가늠자 X:</translation>
+    </message>
+    <message>
+        <source>Column Spacing:</source>
+        <translation type="vanished">란 간격:</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgLine</name>
+    <message>
+        <source>Line</source>
+        <translation type="vanished">제품정보</translation>
+    </message>
+    <message>
+        <source>ID: </source>
+        <translation type="vanished">ID: </translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of line</source>
+        <translation type="vanished">선 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>End point (x):</source>
+        <translation type="vanished">끝 점 (x):</translation>
+    </message>
+    <message>
+        <source>Ending point X coordinate</source>
+        <translation type="vanished">종료 점 X 협조</translation>
+    </message>
+    <message>
+        <source>Ending point Y coordinate</source>
+        <translation type="vanished">종료 점 Y 협조</translation>
+    </message>
+    <message>
+        <source>End point (y):</source>
+        <translation type="vanished">끝 점 (y):</translation>
+    </message>
+    <message>
+        <source>Start point (y):</source>
+        <translation type="vanished">시작점 (y):</translation>
+    </message>
+    <message>
+        <source>Starting point Y coordinate</source>
+        <translation type="vanished">시작점 Y 좌표</translation>
+    </message>
+    <message>
+        <source>Start point (x):</source>
+        <translation type="vanished">시작점 (x):</translation>
+    </message>
+    <message>
+        <source>Starting point X coordinate</source>
+        <translation type="vanished">시작점 X 좌표</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
     </message>
 </context>
 <context>
@@ -40527,7 +41815,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>왼쪽으로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.cpp" line="242"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.cpp" line="250"/>
         <source>Pen</source>
         <translation>뚱 베어</translation>
     </message>
@@ -40654,27 +41942,27 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Decimal</source>
         <translation>십진</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Scientific</source>
         <translation>과학</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Engineering</source>
         <translation>엔지니어링</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Architectural</source>
         <translation>건축</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Fractional</source>
         <translation>분수</translation>
     </message>
@@ -40686,12 +41974,12 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Decimal Degrees</source>
         <translation>십진 도수</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Radians</source>
         <translation>라디안</translation>
     </message>
@@ -40730,174 +42018,174 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>단위</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Deg/min/sec</source>
         <translation>도/분/초</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Gradians</source>
         <translation>그라디안</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1912"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1952"/>
         <source>Surveyor&apos;s units</source>
         <translation>Surveyor의 단위</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="918"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="921"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="924"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="927"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="936"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="939"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="942"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="945"/>
         <source>ON</source>
         <translation>으로</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="394"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="412"/>
         <source>Delete Custom Property</source>
         <translation>사용자 정의 속성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="395"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="413"/>
         <source>Are you sure you&apos;d like to delete property [%1]?</source>
         <translation>속성을 삭제하고 싶습니다 [%1]?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="414"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="432"/>
         <source>Drawing Options</source>
         <translation>그림 선택권</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="415"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="433"/>
         <source>Settings were changed. Are you sure you&apos;d like to skip saving changes (so they will not be saved)?</source>
         <translation>설정이 변경되었습니다. 저장 변경을 건너 뛰고 싶으신가요? (그들은 저장되지 않습니다)?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="449"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="467"/>
         <source>&amp;Set as Active</source>
         <translation>&amp;Active 설정</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="452"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="468"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="470"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="486"/>
         <source>&amp;Create Style</source>
         <translation>&amp;Create 작풍</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="454"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="472"/>
         <source>&amp;Edit Style</source>
         <translation>&amp;Edit 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="458"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="476"/>
         <source>&amp;Rename Style</source>
         <translation>&amp;Rename 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="460"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="478"/>
         <source>&amp;Delete Style</source>
         <translation>&amp;Delete 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="464"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="482"/>
         <source>E&amp;xport Styles</source>
         <translation>E&amp;xport 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="465"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="469"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="483"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="487"/>
         <source>&amp;Import Styles</source>
         <translation>&amp;Import 스타일</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="557"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="575"/>
         <source>Style to Create - </source>
         <translation>만들기 스타일 -</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="609"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="627"/>
         <source>Dimension style editing - </source>
         <translation>차원 작풍 편집 -</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="633"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="651"/>
         <source>Rename Dimension Style</source>
         <translation>이름 차원 작풍</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="634"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="652"/>
         <source>Enter new unique name of dimension style (was &quot;%1&quot;):</source>
         <translation>차원 작풍의 새로운 유일한 이름을 입력하십시오 (was &quot;%1&quot;):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="653"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="666"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="674"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="681"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="671"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="684"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="692"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="699"/>
         <source>Removing Dimension Style</source>
         <translation>Removing 차원 작풍</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="654"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="672"/>
         <source>Can&apos;t delete last dimension style. At least one should be present! </source>
         <translation>마지막 차원 작풍을 삭제할 수 없습니다. 적어도 하나가 존재한다!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="667"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="685"/>
         <source>Can&apos;t delete dimension style as it&apos;s children is used in drawing. Only unused style may be deleted.</source>
         <translation>아이들이 그림에서 사용되기 때문에 차원 작풍을 삭제할 수 없습니다. 사용되지 않은 스타일은 삭제 될 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="675"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="693"/>
         <source>Are you sure you want to remove the dimension style &quot;%1&quot; together with child styles?</source>
         <translation>당신은 어린이 스타일과 함께 차원 스타일 &quot;%1&quot;을 제거하고 싶습니까?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="682"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="700"/>
         <source>Are you sure you want to remove the dimension style &quot;%1&quot;?</source>
         <translation>당신은 차원 작풍 &quot;%1&quot;를 제거하고 싶습니까?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="918"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="921"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="924"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="927"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="936"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="939"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="942"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="945"/>
         <source>OFF</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1188"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1215"/>
         <source>VOID</source>
         <translation>Ღ♥Ღ</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1191"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1218"/>
         <source>INT</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1195"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1222"/>
         <source>DOUBLE</source>
         <translation>두 배</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1199"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1226"/>
         <source>STRING</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1203"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1230"/>
         <source>VECTOR</source>
         <translation>VECTOR 소개</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1547"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1554"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1587"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1594"/>
         <source>Options</source>
         <translation>옵션</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1548"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1588"/>
         <source>For the length formats &apos;Engineering&apos; and &apos;Architectural&apos;, the unit must be set to Inch.</source>
         <translation>단위 형식이 &apos;엔지이어링&apos;과 &apos;건축&apos; 일 경우, 단위는 인치여야한다.</translation>
     </message>
@@ -40989,10 +42277,10 @@ This recursively modifies all entities of the Block itself.</source>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="962"/>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="997"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="910"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="913"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1432"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1438"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="928"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="931"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1459"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1465"/>
         <source>auto</source>
         <translation>자동</translation>
     </message>
@@ -41650,7 +42938,7 @@ This recursively modifies all entities of the Block itself.</source>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3571"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="339"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="357"/>
         <source>Name</source>
         <translation>이름 *</translation>
     </message>
@@ -41666,7 +42954,7 @@ This recursively modifies all entities of the Block itself.</source>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3586"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="339"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="357"/>
         <source>Value</source>
         <translation>주요 특징</translation>
     </message>
@@ -41767,8 +43055,8 @@ This recursively modifies all entities of the Block itself.</source>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3130"/>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1891"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1526"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1931"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1530"/>
         <source>Dwg Units</source>
         <translation>Dwg 단위</translation>
     </message>
@@ -41798,18 +43086,18 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>(0 =&gt; 5% 스크린 크기에 관계되는)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1903"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1943"/>
         <source>Architectural (metric)</source>
         <translation>건축 (미터)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1555"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1595"/>
         <source>For the length format &apos;Architectural (metric)&apos;, the unit must be set to Meter.</source>
         <translation>길이 형식 &apos;Architectural (metric)&apos;의 경우, 단위는 미터로 설정해야합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1888"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1523"/>
+        <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1928"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1527"/>
         <source>Screen %</source>
         <translation>스크린 %</translation>
     </message>
@@ -41817,7 +43105,7 @@ This recursively modifies all entities of the Block itself.</source>
 <context>
     <name>QG_DlgOptionsGeneral</name>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1118"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1122"/>
         <source>Preferences</source>
         <translation>옵션 정보</translation>
     </message>
@@ -41893,7 +43181,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>자동(&amp;A) 축척 모눈</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1119"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1123"/>
         <source>Please restart the application to apply all changes.</source>
         <translation>모든 변경점을 적용하기 위해 프로그램을 재시작해 주십시오.</translation>
     </message>
@@ -42251,43 +43539,43 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>1E90FF를</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1140"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1144"/>
         <source>Select Color</source>
         <translation>색깔 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1284"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1288"/>
         <source>Clear settings</source>
         <translation>Clear 설정</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1285"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1289"/>
         <source>This will also include custom menus and toolbars. Continue?</source>
         <translation>또한 사용자 정의 메뉴 및 도구 모음이 포함되어 있습니다. 계속?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1289"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1295"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1293"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1299"/>
         <source>You must restart LibreCAD to see the changes.</source>
         <translation>변경 사항을 보려면 LibreCAD를 다시 시작합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1311"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1315"/>
         <source>Select Fonts Folder</source>
         <translation>글꼴 폴더 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1318"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1322"/>
         <source>Select Translations Folder</source>
         <translation>번역 폴더 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1325"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1329"/>
         <source>Select Hatch Patterns Folder</source>
         <translation>Hatch 패턴 폴더 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1332"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1336"/>
         <source>Select Other Settings Folder</source>
         <translation>다른 설정 폴더 선택</translation>
     </message>
@@ -44714,6 +46002,111 @@ so default step value required for baking</source>
     </message>
 </context>
 <context>
+    <name>QG_DlgOptionsVariables</name>
+    <message>
+        <source>Drawing Variables</source>
+        <translation type="vanished">도면 변수</translation>
+    </message>
+    <message>
+        <source>Variable</source>
+        <translation type="vanished">변수</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="vanished">* 이름</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="vanished">주요 특징</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="vanished">확인(&amp;O)</translation>
+    </message>
+    <message>
+        <source>Alt+O</source>
+        <translation type="vanished">Alt+O</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">이름 *</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation type="vanished">Esc</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgPoint</name>
+    <message>
+        <source>Point</source>
+        <translation type="vanished">팟캐스트</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of point</source>
+        <translation type="vanished">점 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Position (y):</source>
+        <translation type="vanished">위치 (y):</translation>
+    </message>
+    <message>
+        <source>Position of point by Y coordinate</source>
+        <translation type="vanished">Y 좌표로 포인트의 위치</translation>
+    </message>
+    <message>
+        <source>Position (x):</source>
+        <translation type="vanished">위치 (x):</translation>
+    </message>
+    <message>
+        <source>Position of point by X coordinate</source>
+        <translation type="vanished">X 좌표로 포인트의 위치</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
+    <name>QG_DlgPolyline</name>
+    <message>
+        <source>Polyline</source>
+        <translation type="vanished">연락처</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of polyline</source>
+        <translation type="vanished">폴리선 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Defines whether polyline is closed contour</source>
+        <translation type="vanished">Polyline이 오염되는지 여부를 결정합니다</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">(주)</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgRotate</name>
     <message>
         <source>Rotation Options</source>
@@ -44851,6 +46244,45 @@ so default step value required for baking</source>
     </message>
 </context>
 <context>
+    <name>QG_DlgSpline</name>
+    <message>
+        <source>Spline</source>
+        <translation type="vanished">관련 상품</translation>
+    </message>
+    <message>
+        <source>Layer:</source>
+        <translation type="vanished">레이어:</translation>
+    </message>
+    <message>
+        <source>Layer of spline</source>
+        <translation type="vanished">스플라인 레이어</translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="vanished">기하학</translation>
+    </message>
+    <message>
+        <source>Degree:</source>
+        <translation type="vanished">정도:</translation>
+    </message>
+    <message>
+        <source>Defines whether spline defines closed contour</source>
+        <translation type="vanished">Spline이 닫히는 contour를 정의하는지 결정합니다</translation>
+    </message>
+    <message>
+        <source>Closed</source>
+        <translation type="vanished">(주)</translation>
+    </message>
+    <message>
+        <source>Degree used to approximate spline</source>
+        <translation type="vanished">대략적인 spline에 사용된 정도</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="vanished">펜</translation>
+    </message>
+</context>
+<context>
     <name>QG_DlgText</name>
     <message>
         <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="20"/>
@@ -44893,107 +46325,107 @@ so default step value required for baking</source>
         <translation>붙이기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="422"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="408"/>
         <source>Alignment</source>
         <translation>정렬</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="879"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="865"/>
         <source>Top Right</source>
         <translation>맨 위 오른쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="621"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="607"/>
         <source>Top Left</source>
         <translation>맨 위 왼쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="669"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="655"/>
         <source>Middle Left</source>
         <translation>중간 왼쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="774"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="760"/>
         <source>Middle Center</source>
         <translation>중간 중심</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="538"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="524"/>
         <source>Middle Right</source>
         <translation>중간 오른쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="455"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="441"/>
         <source>Bottom Left</source>
         <translation>맨 아래 왼쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="809"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="795"/>
         <source>Bottom Right</source>
         <translation>맨 아래 오른쪽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="490"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="476"/>
         <source>Bottom Center</source>
         <translation>맨 아래 중심</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="739"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="725"/>
         <source>Top Center</source>
         <translation>맨 위 중심</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="936"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="922"/>
         <source>Insert Symbol</source>
         <translation>기호 삽입</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="957"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="943"/>
         <source>Degree (°)</source>
         <translation>각도 (°)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="962"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="948"/>
         <source>Plus / Minus (±)</source>
         <translation>양 / 음 (±)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="968"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="954"/>
         <source>At (@)</source>
         <translation>위치 (@)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="974"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="960"/>
         <source>Hash (#)</source>
         <translation>샵 (#)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="980"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="966"/>
         <source>Dollar ($)</source>
         <translation>달러 ($)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="985"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="971"/>
         <source>Copyright (©)</source>
         <translation>저작권 (©)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="990"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="976"/>
         <source>Registered (®)</source>
         <translation>등록상표 (®)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="995"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="981"/>
         <source>Paragraph (§)</source>
         <translation>단락 (§)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1000"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="986"/>
         <source>Pi (π)</source>
         <translation>원주율 (π)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1005"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="991"/>
         <source>Pound (£)</source>
         <translation>파운드 (£)</translation>
     </message>
@@ -45002,37 +46434,37 @@ so default step value required for baking</source>
         <translation type="vanished">엔 (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1021"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1007"/>
         <source>Times (×)</source>
         <translation>배수 (×)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1026"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1012"/>
         <source>Division (÷)</source>
         <translation>나눗셈 (÷)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1037"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1023"/>
         <source>Insert Unicode</source>
         <translation>유니코드 입력</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1602"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1588"/>
         <source>Page:</source>
         <translation>페이지:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1630"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1616"/>
         <source>Selected character preview. Click to insert to text.</source>
         <translation>선택한 문자 미리보기. 본문에 삽입을 클릭합니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1640"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1626"/>
         <source>Char:</source>
         <translation>문자:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1059"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1045"/>
         <source>[0000-007F] Basic Latin</source>
         <translation>[0000-007F] (주) 기본 라틴어</translation>
     </message>
@@ -45047,597 +46479,596 @@ so default step value required for baking</source>
         <translation>텍스트의 층</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="255"/>
         <source>Obligue of text</source>
-        <translation>텍스트의 Obligue</translation>
+        <translation type="vanished">텍스트의 Obligue</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="268"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="261"/>
         <source>Rotation angle</source>
         <translation>회전 각도</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="301"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="294"/>
         <source>Width factor</source>
         <translation>폭 요인</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="337"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="330"/>
         <source>Height of text</source>
         <translation>본문내용</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="513"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="499"/>
         <source>Aligned</source>
         <translation>지원하다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="644"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="630"/>
         <source>Middle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="948"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="934"/>
         <source>Symbol to insert</source>
         <translation>삽입을 위한 Symbol</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1011"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="997"/>
         <source>Yen / Yuan (¥)</source>
         <translation>엔 / 위안 (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1016"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1002"/>
         <source>Euro (€)</source>
         <translation>유로 (€)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1055"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1041"/>
         <source>Codepage selection for selecting character</source>
         <translation>Codepage 선택 캐릭터</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1064"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1050"/>
         <source>[0080-00FF] Latin-1 Supplementary</source>
         <translation>[0080-00FF] 라틴 1 보충</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1069"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1055"/>
         <source>[0100-017F] Latin Extended-A</source>
         <translation>[0100-017F] 라틴어 확장 ·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1074"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1060"/>
         <source>[0180-024F] Latin Extended-B</source>
         <translation>[0180-024F] 라틴 확장 B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1079"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1065"/>
         <source>[0250-02AF] IPA Extensions</source>
         <translation>[0250-02AF] IPA 확장</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1084"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1070"/>
         <source>[02B0-02FF] Spacing Modifier Letters</source>
         <translation>[02B0-02FF] Spacing Modifier 편지</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1089"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1075"/>
         <source>[0300-036F] Combining Diacritical Marks</source>
         <translation>[0300-036F] 다이어리 마크 결합</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1094"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1080"/>
         <source>[0370-03FF] Greek and Coptic</source>
         <translation>[0370-03FF] 그리스 및 Coptic</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1099"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1085"/>
         <source>[0400-04FF] Cyrillic</source>
         <translation>[0400-04FF] 시릴리</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1104"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1090"/>
         <source>[0500-052F] Cyrillic Supplementary</source>
         <translation>[0500-052F] Cyrillic 보충</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1109"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1095"/>
         <source>[0530-058F] Armenian</source>
         <translation>[0530-058F] 아르메니아</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1114"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1100"/>
         <source>[0590-05FF] Hebrew</source>
         <translation>[0590-05FF] 히브리어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1119"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1105"/>
         <source>[0600-06FF] Arabic</source>
         <translation>[0600-06FF] 아랍어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1124"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1110"/>
         <source>[0700-074F] Syriac</source>
         <translation>[0700-074F] 시리아크</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1129"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1115"/>
         <source>[0780-07BF] Thaana</source>
         <translation>[0780-07BF] 타나나</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1134"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1120"/>
         <source>[0900-097F] Devanagari</source>
         <translation>[0900-097F] 콜롬비아</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1139"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1125"/>
         <source>[0980-09FF] Bengali</source>
         <translation>[0980-09FF] 벵골어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1144"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1130"/>
         <source>[0A00-0A7F] Gurmukhi</source>
         <translation>[0A00-0A7F] 채용정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1149"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1135"/>
         <source>[0A80-0AFF] Gujarati</source>
         <translation>[0A80-0AFF] 과jarati</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1154"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1140"/>
         <source>[0B00-0B7F] Oriya</source>
         <translation>[0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0B00-0B7F] [0] [0B00-0B00-0B7F] [0B7F] [0B00-0B7F] [0B7F] [0B00-0B00-0B7F] [0B7F] [0B7F] [0B7F] 오미야</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1159"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1145"/>
         <source>[0B80-0BFF] Tamil</source>
         <translation>[0B80-0BFF] 타밀</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1164"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1150"/>
         <source>[0C00-0C7F] Telugu</source>
         <translation>[0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C7F] [0C00-0C00-0C7F] [0C00-0C7F] [0C00-0C00-0C7F] [0C00-0C00-0C7F] [0C00-0C00-0C7F] [0C00-0C7F] [0C00-0C00-0C7F] [0C00-0C00-0C00-0C7F] [0C00-0C00-0C00-0C7F] [0C00-0C7F] [0C7F] [0C00-0C00 주 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1169"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1155"/>
         <source>[0C80-0CFF] Kannada</source>
         <translation>[0C80-0CFF] 칸나다</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1174"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1160"/>
         <source>[0D00-0D7F] Malayalam</source>
         <translation>[0D00-0D7F] 말레이어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1179"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1165"/>
         <source>[0D80-0DFF] Sinhala</source>
         <translation>[0D80-0DFF] 사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1184"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1170"/>
         <source>[0E00-0E7F] Thai</source>
         <translation>[0E00-0E7F] 의 뚱 베어</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1189"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1175"/>
         <source>[0E80-0EFF] Lao</source>
         <translation>[0E80-0EFF] 라오</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1194"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1180"/>
         <source>[0F00-0FFF] Tibetan</source>
         <translation>[0F00-0FFF] 의 티베탄</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1199"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1185"/>
         <source>[1000-109F] Myanmar</source>
         <translation>[1000-109F] 미얀마</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1204"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1190"/>
         <source>[10A0-10FF] Georgian</source>
         <translation>[10A0-10FF] 조지아</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1209"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1195"/>
         <source>[1100-11FF] Hangul Jamo</source>
         <translation>[1100-11FF] 걸레 잼</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1214"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1200"/>
         <source>[1200-137F] Ethiopic</source>
         <translation>[1200-137F] 에티오픽</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1219"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1205"/>
         <source>[13A0-13FF] Cherokee</source>
         <translation>[13A0-13FF] 체로키</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1224"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1210"/>
         <source>[1400-167F] Unified Canadian Aboriginal Syllabic</source>
         <translation>[1400-167F] 캐나다 원주민 첨필</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1229"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1215"/>
         <source>[1680-169F] Ogham</source>
         <translation>[1680-169F] 오그함</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1234"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1220"/>
         <source>[16A0-16FF] Runic</source>
         <translation>[16A0-16FF] 런치</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1239"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1225"/>
         <source>[1700-171F] Tagalog</source>
         <translation>[1700-171F] 태그로그</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1244"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1230"/>
         <source>[1720-173F] Hanunoo</source>
         <translation>[1720-173F] 한누우</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1249"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1235"/>
         <source>[1740-175F] Buhid</source>
         <translation>[1740-175F] 부숨</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1254"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1240"/>
         <source>[1760-177F] Tagbanwa</source>
         <translation>[1760-177F] 타바바</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1259"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1245"/>
         <source>[1780-17FF] Khmer</source>
         <translation>[1780-17FF] 크메르</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1264"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1250"/>
         <source>[1800-18AF] Mongolian</source>
         <translation>[1800-18AF] 몽골</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1269"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1255"/>
         <source>[1E00-1EFF] Latin Extended Additional</source>
         <translation>[1E00-1EFF] 라틴 확장 추가</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1274"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1260"/>
         <source>[1F00-1FFF] Greek Extended</source>
         <translation>[1F00-1FFF] 그리스 확장</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1279"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1265"/>
         <source>[2000-206F] General Punctuation</source>
         <translation>[2000-206F] 일반 정보</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1284"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1270"/>
         <source>[2070-209F] Superscripts and Subscripts</source>
         <translation>[2070-209F] 수료증 및 논문</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1289"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1275"/>
         <source>[20A0-20CF] Currency Symbols</source>
         <translation>[20A0-20CF] 통화 기호</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1294"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1280"/>
         <source>[20D0-20FF] Combining Marks for Symbols</source>
         <translation>[20D0-20FF] 심볼마크 결합</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1299"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1285"/>
         <source>[2100-214F] Letterlike Symbols</source>
         <translation>[2100-214F] 글자 기호</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1304"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1290"/>
         <source>[2150-218F] Number Forms</source>
         <translation>[2150-218F] 번호 양식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1309"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1295"/>
         <source>[2190-21FF] Arrows</source>
         <translation>[2190-21FF] 화살</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1314"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1300"/>
         <source>[2200-22FF] Mathematical Operators</source>
         <translation>[2200-22FF] 수학 연산자</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1319"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1305"/>
         <source>[2300-23FF] Miscellaneous Technical</source>
         <translation>[2300-23FF] 기타 기술</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1310"/>
         <source>[2400-243F] Control Pictures</source>
         <translation>[2400-243F] 제어 그림</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1329"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1315"/>
         <source>[2440-245F] Optical Character Recognition</source>
         <translation>[2440-245F] 광학 문자 인식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1334"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1320"/>
         <source>[2460-24FF] Enclosed Alphanumerics</source>
         <translation>[2460-24FF] 동봉 된 알파벳</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1339"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1325"/>
         <source>[2500-257F] Box Drawing</source>
         <translation>[2500-257F] 상자 그림</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1344"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1330"/>
         <source>[2580-259F] Block Elements</source>
         <translation>[2580-259F] 블록 요소</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1349"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1335"/>
         <source>[25A0-25FF] Geometric Shapes</source>
         <translation>[25A0-25FF] 기하학 모양</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1354"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1340"/>
         <source>[2600-26FF] Miscellaneous Symbols</source>
         <translation>[2600-26FF] 기타 상징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1359"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1345"/>
         <source>[2700-27BF] Dingbats</source>
         <translation>[2700-27BF] 빙배</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1364"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1350"/>
         <source>[27C0-27EF] Miscellaneous Mathematical Symbols-A</source>
         <translation>[27C0-27EF] 기타 수학 기호 - ·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1369"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1355"/>
         <source>[27F0-27FF] Supplemental Arrows-A</source>
         <translation>[27F0-27FF] 보충 화살표 - ·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1374"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1360"/>
         <source>[2800-28FF] Braille Patterns</source>
         <translation>[2800-28FF] 버릴 패턴</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1379"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1365"/>
         <source>[2900-297F] Supplemental Arrows-B</source>
         <translation>[2900-297F] 보충 화살표 - B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1384"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1370"/>
         <source>[2980-29FF] Miscellaneous Mathematical Symbols-B</source>
         <translation>[2980-29FF] 기타 수학 기호 - B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1389"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1375"/>
         <source>[2A00-2AFF] Supplemental Mathematical Operators</source>
         <translation>[2A00-2AFF] 보충 수학 운영자</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1394"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1380"/>
         <source>[2E80-2EFF] CJK Radicals Supplement</source>
         <translation>[2E80-2EFF] CJK 라디칼 보충</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1399"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1385"/>
         <source>[2F00-2FDF] Kangxi Radicals</source>
         <translation>[2F00-2FDF] 강시 Radicals</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1404"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1390"/>
         <source>[2FF0-2FFF] Ideographic Description Characters</source>
         <translation>[2FF0-2FFF] Ideographic 묘사 특성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1409"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1395"/>
         <source>[3000-303F] CJK Symbols and Punctuation</source>
         <translation>[3000-303F] CJK 심볼과 퓨전</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1414"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1400"/>
         <source>[3040-309F] Hiragana</source>
         <translation>[3040-309F] 히라가나</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1419"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1405"/>
         <source>[30A0-30FF] Katakana</source>
         <translation>[30A0-30FF] 카타카나</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1424"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1410"/>
         <source>[3100-312F] Bopomofo</source>
         <translation>[3100-312F] 부포모포</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1429"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1415"/>
         <source>[3130-318F] Hangul Compatibility Jamo</source>
         <translation>[3130-318F] Hangul 호환성 Jamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1434"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1420"/>
         <source>[3190-319F] Kanbun</source>
         <translation>[3190-319F] 칸분</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1439"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1425"/>
         <source>[31A0-31BF] Bopomofo Extended</source>
         <translation>[31A0-31BF] Bopomofo 확장</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1444"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1430"/>
         <source>[3200-32FF] Enclosed CJK Letters and Months</source>
         <translation>[3200-32FF] CJK 편지와 달에 동봉</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1449"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1435"/>
         <source>[3300-33FF] CJK Compatibility</source>
         <translation>[3300-33FF] CJK 호환성</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1454"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1440"/>
         <source>[3400-4DBF] CJK Unified Ideographs Extension A</source>
         <translation>[3400-4DBF] CJK 통합 이노그래프 확장 A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1459"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1445"/>
         <source>[4E00-9FAF] CJK Unified Ideographs</source>
         <translation>[4E00-9FAF] CJK 통합 아이디그래프</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1464"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1450"/>
         <source>[A000-A48F] Yi Syllables</source>
         <translation>[A000-A48F] 이 주사 가능한</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1469"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1455"/>
         <source>[A490-A4CF] Yi Radicals</source>
         <translation>[A490-A4CF] 이 라디칼</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1474"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1460"/>
         <source>[AC00-D7AF] Hangul Syllables</source>
         <translation>[AC00-D7AF] (주) Hangul 주사 가능한</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1479"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1465"/>
         <source>[D800-DBFF] High Surrogates</source>
         <translation>[D800-DBFF] 고분자</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1484"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1470"/>
         <source>[DC00-DFFF] Low Surrogate Area</source>
         <translation>[DC00-DFFF] 낮은 Surrogate 지역</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1489"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1475"/>
         <source>[E000-F8FF] Private Use Area</source>
         <translation>[E000-F8FF] 개인 사용 지역</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1494"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1480"/>
         <source>[F900-FAFF] CJK Compatibility Ideographs</source>
         <translation>[F900-FAFF] CJK 호환성 Ideographs</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1499"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1485"/>
         <source>[FB00-FB4F] Alphabetic Presentation Forms</source>
         <translation>[FB00-FB4F] 알파벳 발표 양식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1504"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1490"/>
         <source>[FB50-FDFF] Arabic Presentation Forms-A</source>
         <translation>[FB50-FDFF] 아랍어 발표 양식- ·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1509"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1495"/>
         <source>[FE00-FE0F] Variation Selectors</source>
         <translation>[FE00-FE0F] 변형 선별기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1514"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1500"/>
         <source>[FE20-FE2F] Combining Half Marks</source>
         <translation>[FE20-FE2F] 반표 결합</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1519"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1505"/>
         <source>[FE30-FE4F] CJK Compatibility Forms</source>
         <translation>[FE30-FE4F] CJK 호환성 양식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1524"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1510"/>
         <source>[FE50-FE6F] Small Form Variants</source>
         <translation>[FE50-FE6F] 작은 형태 배리제</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1529"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1515"/>
         <source>[FE70-FEFF] Arabic Presentation Forms-B</source>
         <translation>[FE70-FEFF] 아랍어 발표 양식-B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1534"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1520"/>
         <source>[FF00-FFEF] Halfwidth and Fullwidth Forms</source>
         <translation>[FF00-FFEF] 반폭 및 Fullwidth 형태</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1539"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1525"/>
         <source>[FFF0-FFFF] Specials</source>
         <translation>[FFF0-FFFF] [FFF0-FFFFFF] 특별 할인</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1544"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1530"/>
         <source>[10300-1032F] Old Italic</source>
         <translation>[10300-1032F] 늙은 Italic</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1549"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1535"/>
         <source>[10330-1034F] Gothic</source>
         <translation>[10330-1034F] 【10330-1034F】 언어 선택</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1554"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1540"/>
         <source>[10400-1044F] Deseret</source>
         <translation>[10400-1044F] 스낵 바</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1559"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1545"/>
         <source>[1D000-1D0FF] Byzantine Musical Symbols</source>
         <translation>[1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D000-1D0FF] [1D0FF] [1D000-1D0FF] Byzantine 음악 상징</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1550"/>
         <source>[1D100-1D1FF] Musical Symbols</source>
         <translation>[1D100-1D1FF] 뮤지컬 기호</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1569"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1555"/>
         <source>[1D400-1D7FF] Mathematical Alphanumeric Symbols</source>
         <translation>[1D400-1D7FF] 수학 알파벳 기호</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1574"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1560"/>
         <source>[20000-2A6DF] CJK Unified Ideographs Extension B</source>
         <translation>[20000-2A6DF] CJK 통합 이노그래프 확장 B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1579"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1565"/>
         <source>[2F800-2FA1F] CJK Compatibility Ideographs Supplement</source>
         <translation>[2F800-2FA1F] CJK 호환성 아이디그래프 보충</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1584"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1570"/>
         <source>[E0000-E007F] Tags</source>
         <translation>[E0000-E007F]에 대하여 이름 *</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1589"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1575"/>
         <source>[F0000-FFFFD] Supplementary Private Use Area-A</source>
         <translation>[F0000-FFFFD] 보충 개인 사용 지역 - ·</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1594"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1580"/>
         <source>[100000-10FFFD] Supplementary Private Use Area-B</source>
         <translation>[100000-10FFFD] (주) 보충 개인 사용 지역-B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1662"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1648"/>
         <source>Selection of character to insert</source>
         <translation>문자의 선택 삽입</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="360"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="353"/>
         <source>&amp;Height:</source>
         <translation>높이(&amp;H):</translation>
     </message>
@@ -45652,70 +47083,69 @@ so default step value required for baking</source>
         <translation>글꼴 설정</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="275"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="268"/>
         <source>Angle:</source>
         <translation>각도:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="380"/>
         <source>Oblique:</source>
-        <translation>Oblique:</translation>
+        <translation type="vanished">Oblique:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="317"/>
         <source>Width factor:</source>
         <translation>폭 요인:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="373"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="366"/>
         <source>Font:</source>
         <translation>글꼴:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="844"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="830"/>
         <source>Baseline Left</source>
         <translation>기준 선 좌측</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="589"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="707"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="847"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="575"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="693"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="833"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="704"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="690"/>
         <source>Baseline Right</source>
         <translation>기준선 우측</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="586"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="572"/>
         <source>Baseline Center</source>
         <translation>기준선 중앙</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="561"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="547"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="550"/>
         <source>Fit</source>
         <translation>맞춤</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="952"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="938"/>
         <source>Diameter (⌀)</source>
         <translation>직경 (⌀)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="516"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="502"/>
         <source>A&amp;ligned</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="647"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="633"/>
         <source>&amp;Middle</source>
         <translation>&amp;기타</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlg_text.cpp" line="212"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.cpp" line="213"/>
         <source>Pen</source>
         <translation>뚱 베어</translation>
     </message>
@@ -45736,84 +47166,84 @@ so default step value required for baking</source>
 <context>
     <name>QG_FileDialog</name>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="126"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="135"/>
         <source>Drawing Exchange DXF 2000 %1</source>
         <translation>DXF 2000 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="128"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="137"/>
         <source>Drawing Exchange DXF R12 %1</source>
         <translation>DXF R12 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="131"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="140"/>
         <source>LFF Font %1</source>
         <translation>LFF 폰트 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="135"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="144"/>
         <source>QCad Font %1</source>
         <translation>QCad 폰트 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="136"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="145"/>
         <source>Jww Drawing %1</source>
         <translation>Jww 도면 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="129"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="138"/>
         <source>Drawing Exchange %1</source>
         <translation>드로잉 교환 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="137"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="146"/>
         <source>QCad 1.x file %1</source>
         <translation>QCad 1.x 파일 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="124"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="133"/>
         <source>Drawing Exchange DXF 2007 %1</source>
         <translation>DXF 2007 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="125"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="134"/>
         <source>Drawing Exchange DXF 2004 %1</source>
         <translation>DXF 2004 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="127"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="136"/>
         <source>Drawing Exchange DXF R14 %1</source>
         <translation>DXF R14 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="140"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="149"/>
         <source>Block</source>
         <comment>block file</comment>
         <translation>블록</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="143"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="152"/>
         <source>Drawing</source>
         <comment>drawing file</comment>
         <translation>도면</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="165"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="174"/>
         <source>Open %1</source>
         <translation>열기 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="254"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="266"/>
         <source>Save %1 As</source>
         <translation>다른 이름으로 저장 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="133"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="142"/>
         <source>dwg Drawing %1</source>
         <translation>dwg 도면 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="236"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="248"/>
         <source>Untitled</source>
         <translation>Untitled</translation>
     </message>
@@ -45942,12 +47372,12 @@ The contents of a Construction Layer should not appear in printout.</source>
 <context>
     <name>QG_LayerWidget</name>
     <message>
-        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="299"/>
+        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="298"/>
         <source>Looking for matching layer names</source>
         <translation>알맞은 레이어 이름 찾기</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="297"/>
+        <location filename="../src/ui/dock_widgets/layer_widget/qg_layerwidget.cpp" line="296"/>
         <source>Filter</source>
         <translation>제품정보</translation>
     </message>
@@ -46261,6 +47691,58 @@ p, li { white-space: pre-wrap; }
         <source>World</source>
         <translation>- 한국어</translation>
     </message>
+    <message>
+        <source>Snap</source>
+        <translation type="vanished">기본 정보</translation>
+    </message>
+    <message>
+        <source>Snap to Endpoints</source>
+        <translation type="vanished">끝점에 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to equidistant points of entity</source>
+        <translation type="vanished">개체의 등간격 점에 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to center points</source>
+        <translation type="vanished">중심점에 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to intersections automatically</source>
+        <translation type="vanished">교차점에 자동 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to closest point on entity</source>
+        <translation type="vanished">개체의 가장 가까운 점에 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to point with given distance to endpoint</source>
+        <translation type="vanished">끝점에서 지정 거리의 점에 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to intersections manually</source>
+        <translation type="vanished">교차점에 수동 스냅</translation>
+    </message>
+    <message>
+        <source>Snap to grid</source>
+        <translation type="vanished">격자에 스냅</translation>
+    </message>
+    <message>
+        <source>Restrict Horizontally</source>
+        <translation type="vanished">수평 제한</translation>
+    </message>
+    <message>
+        <source>Restrict Vertically</source>
+        <translation type="vanished">수직 제한</translation>
+    </message>
+    <message>
+        <source>Move relative Zero</source>
+        <translation type="vanished">상대 원점 이동</translation>
+    </message>
+    <message>
+        <source>Lock relative Zero</source>
+        <translation type="vanished">상대 원점 잠금</translation>
+    </message>
 </context>
 <context>
     <name>QG_WidgetPen</name>
@@ -46313,9 +47795,9 @@ p, li { white-space: pre-wrap; }
     <name>QMessageBox</name>
     <message>
         <location filename="../src/ui/dialogs/qg_dialogfactory.cpp" line="88"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="878"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1027"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1165"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="908"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1091"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1247"/>
         <source>Warning</source>
         <translation>제품정보</translation>
     </message>
@@ -46349,8 +47831,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ui/dialogs/actions/qg_layerdialog.cpp" line="83"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="222"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="289"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="229"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="264"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="308"/>
         <source>Layer Properties</source>
         <translation>레이어 속성</translation>
     </message>
@@ -46421,12 +47904,17 @@ This action can NOT be undone.</source>
         <translation>제거를 위한 구획:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="223"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="230"/>
         <source>Layer empty name is not allowed.</source>
         <translation>층 빈 이름은 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="290"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="265"/>
+        <source>The edited layer is no longer available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layerdialog_ex.cpp" line="309"/>
         <source>Attempt to create layer with duplicating name. Duplicated layer name is 
 [%1].
 Please specify a different name.</source>
@@ -46464,7 +47952,9 @@ Clear filtering mask and repeat.</source>
         <source>Layer(s) without entities found, yet they are filtered and not visible.
 
 Clear filtering mask and repeat.</source>
-        <translation type="unfinished"></translation>
+        <translation>개체가 없는 레이어가 발견되었지만 필터링되어 표시되지 않습니다.
+
+필터 마스크를 지우고 다시 시도하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="973"/>
@@ -46518,7 +48008,11 @@ Please specify a different name.</source>
 If Yes - entities with &quot;By Layer&quot; pens will look on new layer exactly as on previous layers and &quot;By Layer&quot; value will be replaced by resolved pens.
 
 If No - &quot;By Layer&quot; values remains and so pen of target layer will define pen for such entities.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;레이어별&quot; 값을 소스 레이어 값으로 바꾸시겠습니까?
+
+예 — &quot;레이어별&quot; 펜을 가진 개체는 새 레이어에서 이전 레이어와 동일하게 보이며 &quot;레이어별&quot; 값은 해결된 펜으로 바뀝니다.
+
+아니요 — &quot;레이어별&quot; 값이 그대로 유지되어 대상 레이어의 펜이 해당 개체의 펜을 정의합니다.</translation>
     </message>
     <message>
         <source>Replace &quot;By Layer&quot; value to source layers values?
@@ -46530,7 +48024,7 @@ If No - &quot;By Layer&quot; values remains and so pen of target layer will defi
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1805"/>
-        <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1858"/>
+        <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="1863"/>
         <source>Layer DialogEx</source>
         <translation>층 DialogEx</translation>
     </message>
@@ -46628,20 +48122,20 @@ Please specify a different value.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="337"/>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="398"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="349"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="410"/>
         <source>Save Drawing As</source>
         <translation>도면을 다른이름으로 저장한다.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="399"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="411"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1은 이미 존재합니다.
 교체할까요?</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="488"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="500"/>
         <source>Open Drawing</source>
         <translation>도면 열기</translation>
     </message>
@@ -46701,17 +48195,17 @@ Do you want to replace it?</source>
         <translation>그래픽 교환 형식</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="456"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="468"/>
         <source>Drawing Exchange %1</source>
         <translation>드로잉 교환 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="461"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="473"/>
         <source>QCad 1.x file %1</source>
         <translation>QCad 1.x 파일 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="463"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="475"/>
         <source>Font %1</source>
         <translation>글꼴 %1</translation>
     </message>
@@ -47045,7 +48539,7 @@ Do you want to replace it?</source>
         <translation>아카이브 e</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="535"/>
+        <location filename="../src/main/main.cpp" line="612"/>
         <source>Loading..</source>
         <translation>불러오기..</translation>
     </message>
@@ -47055,23 +48549,23 @@ Do you want to replace it?</source>
         <translation>파일 %1 불러오기..</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="426"/>
+        <location filename="../src/main/main.cpp" line="503"/>
         <source>Loading...</source>
         <translation>불러오기...</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="502"/>
+        <location filename="../src/main/main.cpp" line="579"/>
         <source>Release Candidate</source>
         <translation>릴리스 Candidate</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="503"/>
+        <location filename="../src/main/main.cpp" line="580"/>
         <source>BETA</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="504"/>
-        <location filename="../src/main/main.cpp" line="513"/>
+        <location filename="../src/main/main.cpp" line="581"/>
+        <location filename="../src/main/main.cpp" line="590"/>
         <source>ALPHA</source>
         <translation>사이트맵</translation>
     </message>
@@ -47098,12 +48592,12 @@ Do you want to replace it?</source>
         <translation>문자 입력</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="462"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="474"/>
         <source>LFF Font %1</source>
         <translation>LFF 글꼴 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="464"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="476"/>
         <source>Jww %1</source>
         <translation>Jww %1</translation>
     </message>
@@ -47172,221 +48666,299 @@ Do you want to replace it?</source>
         <translation type="vanished">이전 버전의 그리기 교환 %1</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="122"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1003"/>
         <source>no DXF/DWG error</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>dXF/DWG 오류 없음</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="124"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1005"/>
         <source>error opening DXF/DWG file</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 오프닝 DXF/DWG 파일</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="126"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1009"/>
+        <source>Cannot open DWG: file is %1; LibreCAD supports %2 and newer. Convert with GNU LibreDWG (dwgread / dwg2dxf) or re-save from a recent CAD tool.</source>
+        <comment>RS_FilterDXFRW</comment>
+        <translation>DWG를 열 수 없음: 파일은 %1입니다. LibreCAD는 %2 이상을 지원합니다. GNU LibreDWG(dwgread / dwg2dxf)로 변환하거나 최신 CAD 도구에서 다시 저장하세요.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1016"/>
         <source>unsupported DXF/DWG file version</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>지원 DXF/DWG 파일 버전</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="128"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1018"/>
         <source>error reading DXF/DWG meta data</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 판독 DXF/DWG 메타 데이터</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="130"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1020"/>
         <source>error reading DXF/DWG file header</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 판독 DXF/DWG 파일 헤더</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="132"/>
         <source>error reading DXF/DWG header dara</source>
         <comment>RS_FilterDXFRW</comment>
-        <translation>오류 판독 DXF/DWG 헤더 dara</translation>
+        <translation type="vanished">오류 판독 DXF/DWG 헤더 dara</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="134"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1024"/>
         <source>error reading DXF/DWG object map</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 판독 DXF/DWG 객체 맵</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="136"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1026"/>
         <source>error reading DXF/DWG classes</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 읽기 DXF / DWG 클래스</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="138"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1028"/>
         <source>error reading DXF/DWG tables</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 판독 DXF/DWG 테이블</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="140"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1030"/>
         <source>error reading DXF/DWG blocks</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 읽기 DXF / DWG 블록</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="142"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1032"/>
         <source>error reading DXF/DWG entities</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>과실 독서 DXF/DWG entities</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="144"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1034"/>
         <source>error reading DXF/DWG objects</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>과실 독서 DXF/DWG 목표</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="146"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1036"/>
         <source>error reading DXF/DWG sections</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>과실 독서 DXF/DWG 단면도</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="148"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1038"/>
         <source>error reading DXF/DWG code</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>오류 읽기 DXF / DWG 코드</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="193"/>
         <source>Opened dwg file version %1.</source>
-        <translation>dwg 파일 버젼 %1 을 열었습니다.</translation>
+        <translation type="vanished">dwg 파일 버젼 %1 을 열었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5612"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1022"/>
+        <source>error reading DXF/DWG header data</source>
+        <comment>RS_FilterDXFRW</comment>
+        <translation>DXF/DWG 헤더 데이터 읽기 오류</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1119"/>
+        <source>Opened DWG file version %1.</source>
+        <translation>DWG 파일 버전 %1을 열었습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1123"/>
+        <source>DWG load: %1 %2 had parse errors and were skipped. Drawing loaded with the rest.</source>
+        <translation>DWG 로드: %1개의 %2에 파싱 오류가 있어 건너뛰었습니다. 나머지로 도면을 로드했습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1126"/>
+        <source>entity</source>
+        <translation>개체</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1127"/>
+        <source>entities</source>
+        <translation>개체</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1151"/>
+        <source>, and %n more class(es)</source>
+        <translation>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1154"/>
+        <source>DWG load: %1 vendor-extension entities not rendered (%2). These are typically AutoCAD Mechanical or other vertical-product custom classes that libdxfrw cannot decode.</source>
+        <translation>DWG 로드: %1개의 공급업체 확장 개체를 렌더링하지 못했습니다 (%2). 일반적으로 libdxfrw가 디코딩할 수 없는 AutoCAD Mechanical 등 전문 제품의 사용자 정의 클래스입니다.</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1180"/>
+        <source>, and %n more object type(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1183"/>
+        <source>DWG load: %1 unsupported metadata object(s) skipped (%2). Drawing geometry may still be complete.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1269"/>
+        <source>DWG/DXF load: %1 XREF block(s) (%2) loaded but not INSERTed into modelspace. Their externally-referenced geometry won&apos;t be visible — AutoCAD typically renders these through a paper-space layout viewport, which LibreCAD doesn&apos;t render.</source>
+        <translation>DWG/DXF 로드: %1개의 XREF 블록 (%2)이 로드되었지만 모델 공간에 삽입되지 않았습니다. 외부 참조 형상은 표시되지 않습니다 — AutoCAD는 일반적으로 LibreCAD가 지원하지 않는 용지 공간 뷰포트를 통해 렌더링합니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1625"/>
+        <source>XREF not resolved for block &quot;%1&quot;: %2 (file not found in host directory). The block will render as empty.</source>
+        <translation>블록 &quot;%1&quot;의 XREF가 해결되지 않았습니다: %2 (호스트 디렉터리에서 파일을 찾을 수 없음). 블록이 빈 상태로 렌더링됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="1654"/>
+        <source>XREF load failed for block &quot;%1&quot;: %2</source>
+        <translation>블록 &quot;%1&quot;의 XREF 로드에 실패했습니다: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12410"/>
         <source>unknown error opening dwg file</source>
         <translation>dwg 파일 여는 중 알 수 없는 에러.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5615"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12413"/>
         <source>can&apos;t open this dwg file</source>
         <translation>이 dwg 파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5618"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12420"/>
+        <source>Cannot open DWG: file is %1; LibreCAD supports %2 and newer. Convert with GNU LibreDWG (dwgread / dwg2dxf) or re-save from a recent CAD tool.</source>
+        <translation>DWG를 열 수 없음: 파일은 %1입니다. LibreCAD는 %2 이상을 지원합니다. GNU LibreDWG(dwgread / dwg2dxf)로 변환하거나 최신 CAD 도구에서 다시 저장하세요.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12431"/>
         <source>unsupported dwg version</source>
         <translation>비호환 dwg 버젼</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5621"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12435"/>
         <source>error reading file metadata in dwg file</source>
         <translation>dwg 파일에 오류 파일 메타데이터</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5624"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12438"/>
         <source>error reading file header in dwg file</source>
         <translation>dwg 파일에서 파일 헤더를 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5627"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12441"/>
         <source>error reading header vars in dwg file</source>
         <translation>dwg 파일에서 헤더 변수 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5630"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12444"/>
         <source>error reading classes in dwg file</source>
         <translation>dwg 파일에서 클래스 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5633"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12447"/>
         <source>error reading offsets in dwg file</source>
         <translation>dwg 파일에서 오프셋 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5636"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12450"/>
         <source>error reading tables in dwg file</source>
         <translation>dwg 파일에서 테이블 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5642"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12456"/>
         <source>error reading entities in dwg file</source>
         <translation>dwg 파일에서 요소 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="459"/>
+        <location filename="../src/ui/dialogs/file/qg_filedialog.cpp" line="471"/>
         <source>dwg Drawing %1</source>
         <translation>dwg 도면 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="193"/>
+        <location filename="../src/ui/main/persistence/lc_documentsstorage.cpp" line="198"/>
         <source>File on disk modified. Please save to another file to avoid data loss! File modified: %1</source>
         <translation>디스크의 파일을 수정했습니다. 데이터 손실을 피하기 위해 다른 파일에 저장해 주십시오! 파일 수정 : %1</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/container/rs_entitycontainer.cpp" line="1494"/>
+        <location filename="../src/lib/engine/document/container/rs_entitycontainer.cpp" line="1499"/>
         <source>Hatch failed due to a gap=%1 between (%2, %3) and (%4, %5)</source>
         <translation>(%2, %3) 과 (%4, %5) 사이에서 gap=%1 에 의해 해칭을 실패했다.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="75"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="85"/>
         <source>DWG support is not complete!</source>
         <translation>DWG 지원은 완료되지 않습니다!</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="77"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="87"/>
         <source>If this file fails to open try an older DWG format</source>
         <translation>이 파일이 오래된 DWG 형식을 시도하지 못하면</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="78"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="88"/>
         <source>or try to find a converter to make it a DXF file.</source>
         <translation>또는 DXF 파일을 만들기 위해 변환기를 찾으십시오.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="81"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="91"/>
         <source>Information</source>
         <translation>- 연혁</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="90"/>
+        <source>DWG support is not complete; if this file fails to open try an older DWG format or convert it to DXF.</source>
+        <translation type="vanished">DWG 지원이 완전하지 않습니다. 이 파일이 열리지 않으면 이전 DWG 형식을 사용하거나 DXF로 변환하세요.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="104"/>
         <source>Error</source>
         <comment>fileImport</comment>
         <translation>계정 정보</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="91"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="105"/>
         <source>Import error:</source>
         <comment>fileImport</comment>
         <translation>수입 오류:</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="105"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="119"/>
         <source>Anyhow, there are some entities identified.</source>
         <comment>dwgImport</comment>
         <translation>어떤 방법, 확인 된 일부 필수품이 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="106"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="120"/>
         <source>If you open the file now, the drawing may be not complete or unusable.</source>
         <comment>dwgImport</comment>
         <translation>지금 파일을 열면 도면이 완료되거나 사용하지 않을 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="108"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="122"/>
         <source>Ignore error and open the file?</source>
         <comment>dwgImport</comment>
         <translation>오류를 무시하고 파일을 열 수 있습니까?</translation>
     </message>
     <message>
-        <location filename="../src/lib/fileio/rs_fileio.cpp" line="111"/>
+        <location filename="../src/lib/fileio/rs_fileio.cpp" line="125"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5639"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12453"/>
         <source>error reading blocks in dwg file</source>
         <translation>dwg 파일에서 블록 읽는 중 에러</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5645"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="12459"/>
         <source>error reading objects in dwg file</source>
         <translation>dwg 파일에서 오브젝트 읽는 중 에러</translation>
     </message>
@@ -48148,6 +49720,24 @@ Do you want to replace it?</source>
         <translation>사이트맵</translation>
     </message>
     <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="200"/>
+        <source>radiant</source>
+        <comment>draw perspective line</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="201"/>
+        <source>rl</source>
+        <comment>draw perspective line</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="217"/>
+        <source>circlebyarc</source>
+        <comment>draw circle by arc</comment>
+        <translation>호로원그리기</translation>
+    </message>
+    <message>
         <location filename="../src/cmd/lc_commandItems.h" line="855"/>
         <source>dist</source>
         <comment>distance point to point</comment>
@@ -48567,12 +50157,12 @@ Do you want to replace it?</source>
         <translation>₢ 킹</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="96"/>
+        <location filename="../src/ui/dialogs/creators/lc_dlg_widget_creator.cpp" line="97"/>
         <source>All</source>
         <translation>모든 것</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="983"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1013"/>
         <source>Invalid objects removed:</source>
         <translation>잘못된 객체 제거:</translation>
     </message>
@@ -48855,18 +50445,6 @@ Do you want to replace it?</source>
         <translation>단백질</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="200"/>
-        <source>radiant</source>
-        <comment>draw perspective line</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="201"/>
-        <source>rl</source>
-        <comment>draw perspective line</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/cmd/lc_commandItems.h" line="206"/>
         <source>linepoints</source>
         <comment>draw line of points</comment>
@@ -48891,10 +50469,9 @@ Do you want to replace it?</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="217"/>
         <source>criclebyarc</source>
         <comment>draw circle by arc</comment>
-        <translation>채용정보</translation>
+        <translation type="vanished">채용정보</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="218"/>
@@ -50415,102 +51992,169 @@ Do you want to replace it?</source>
         <translation>잘못된 오류</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="63"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="85"/>
         <source>usage: </source>
         <translation>사용법:</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="63"/>
         <source> [options] &lt;dxf_files&gt;</source>
-        <translation>[options] [옵션] &lt;dxf files&gt;</translation>
+        <translation type="vanished">[options] [옵션] &lt;dxf files&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="70"/>
         <source> *.dxf</source>
-        <translation>사이트맵</translation>
+        <translation type="vanished">사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="71"/>
         <source>-- print all dxf files to pdf files with the same names.</source>
-        <translation>-- 같은 이름과 pdf 파일에 모든 dxf 파일을 인쇄합니다.</translation>
+        <translation type="vanished">-- 같은 이름과 pdf 파일에 모든 dxf 파일을 인쇄합니다.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="73"/>
         <source> -o some.pdf *.dxf</source>
-        <translation>-o 일부.pdf *.dxf</translation>
+        <translation type="vanished">-o 일부.pdf *.dxf</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="74"/>
         <source>-- print all dxf files to &apos;some.pdf&apos; file.</source>
-        <translation>-- &apos;some.pdf&apos; 파일에 모든 dxf 파일을 인쇄합니다.</translation>
+        <translation type="vanished">-- &apos;some.pdf&apos; 파일에 모든 dxf 파일을 인쇄합니다.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="81"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="86"/>
+        <source> [options] &lt;%1_files&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="88"/>
+        <source>Print %1 file(s) to PDF file(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="90"/>
+        <source>DWG input is accepted for compatibility; prefer dwg2pdf for DWG files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="94"/>
+        <source> *.%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="95"/>
+        <source>-- print all %1 files to PDF files with the same names.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="97"/>
+        <source> -o some.pdf *.%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="98"/>
+        <source>-- print all %1 files to &apos;some.pdf&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="105"/>
         <source>Auto fit and center drawing to page.</source>
         <translation>페이지에 자동 적합과 중심 그림.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="85"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="109"/>
         <source>Auto center drawing on page.</source>
         <translation>페이지에 자동 센터 그림.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="89"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="113"/>
         <source>Print grayscale.</source>
         <translation>인쇄 그레이 스케일.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="93"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="117"/>
         <source>Print monochrome (black/white).</source>
         <translation>인쇄 단색 (검정/백색).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="97"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="121"/>
+        <source>Paper size (Width x Height) in mm.</source>
+        <translation type="unfinished">용지 크기 (폭 x 높이) mm.</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="125"/>
+        <source>Output resolution (DPI).</source>
+        <translation type="unfinished">산출 해결책 (DPI).</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="148"/>
+        <source>&lt;%1_files&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="149"/>
+        <source>Input %1 file(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Paper size (Width x Height) in mm.</source>
         <comment>WxH</comment>
-        <translation>용지 크기 (폭 x 높이) mm.</translation>
+        <translation type="vanished">용지 크기 (폭 x 높이) mm.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="101"/>
         <source>Output resolution (DPI).</source>
         <comment>integer</comment>
-        <translation>산출 해결책 (DPI).</translation>
+        <translation type="vanished">산출 해결책 (DPI).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="105"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="129"/>
         <source>Output scale. E.g.: 0.01 (for 1:100 scale).</source>
         <translation>산출 가늠자. E.g.: 0.01 (1:100 가늠자를 위해).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="109"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="133"/>
         <source>Paper margins in mm (integer or float).</source>
         <translation>Mm (integer 또는 float)의 용지 마진.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="113"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="137"/>
         <source>Print on multiple pages (Horiz. x Vert.).</source>
         <translation>여러 페이지에 인쇄 (Horiz. x Vert.).</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="117"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="141"/>
         <source>Output PDF file.</source>
         <comment>file</comment>
         <translation>산출 PDF 파일.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="121"/>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="169"/>
+        <source>Output file (single input only).</source>
+        <translation>출력 파일 (단일 입력만).</translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="173"/>
+        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="145"/>
         <source>Target output directory.</source>
         <translation>Target 출력 디렉토리.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="124"/>
-        <source>&lt;dxf_files&gt;</source>
-        <translation>&lt;dxf 파일&gt;</translation>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="177"/>
+        <source>DXF output version: r12, r14, r2000, r2004, r2007 (default), r2018.</source>
+        <translation>DXF 출력 버전: r12, r14, r2000, r2004, r2007 (기본값), r2018.</translation>
     </message>
     <message>
-        <location filename="../src/main/console_dxf2pdf/console_dxf2pdf.cpp" line="124"/>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="183"/>
+        <source>DWG output version: r2000 (default), r2004, r2010, r2013, r2018.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/console_dxf2dwg.cpp" line="189"/>
+        <source>Input %1 file(s).</source>
+        <translation>입력 파일 %1개.</translation>
+    </message>
+    <message>
+        <source>&lt;dxf_files&gt;</source>
+        <translation type="vanished">&lt;dxf 파일&gt;</translation>
+    </message>
+    <message>
         <source>Input DXF file(s)</source>
-        <translation>입력 DXF 파일 (s)</translation>
+        <translation type="vanished">입력 DXF 파일 (s)</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/command_line/qg_commandwidget.cpp" line="56"/>
@@ -50528,13 +52172,13 @@ Do you want to replace it?</source>
         <translation>여러 명령을 붙여</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="175"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="195"/>
         <source>Combine all layers</source>
         <translation>모든 층을 결합</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="177"/>
-        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="204"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="180"/>
+        <location filename="../src/ui/dialogs/file/export/layers/lc_filedialogservice.cpp" line="233"/>
         <source>File &quot;%1&quot; already exists. Do you want to replace it?</source>
         <translation>파일 &quot;%1&quot; 이미 존재한다. 그것을 대체하고 싶습니까?</translation>
     </message>
@@ -50748,17 +52392,17 @@ Do you want to replace it?</source>
         <translation>사이트맵</translation>
     </message>
     <message>
-        <location filename="../src/lib/engine/document/rs_graphic.cpp" line="663"/>
+        <location filename="../src/lib/engine/document/rs_graphic.cpp" line="668"/>
         <source>Invalid printing scale %1. Cannot fit print preview to page</source>
         <translation>잘못된 인쇄 가늠자 %1. 페이지에 인쇄 미리보기에 적합 할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/lib/printing/lc_printing.cpp" line="155"/>
+        <location filename="../src/lib/printing/lc_printing.cpp" line="164"/>
         <source>Export to PDF</source>
         <translation>PDF로 내보내기</translation>
     </message>
     <message>
-        <location filename="../src/lib/printing/lc_printing.cpp" line="156"/>
+        <location filename="../src/lib/printing/lc_printing.cpp" line="165"/>
         <source>PDF files (*.pdf);;All files (*.*)</source>
         <translation>PDF 파일 (*.pdf);; 모든 파일 (*.*)</translation>
     </message>
@@ -50917,6 +52561,10 @@ Do you want to replace it?</source>
         <location filename="../src/ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.cpp" line="47"/>
         <source>[Override]</source>
         <translation>[Override] [자산]</translation>
+    </message>
+    <message>
+        <source>Draft</source>
+        <translation type="vanished">초안</translation>
     </message>
     <message>
         <location filename="../src/ui/qg_actionhandler.cpp" line="86"/>
@@ -52216,6 +53864,13 @@ This block cannot be inserted.</source>
     </message>
 </context>
 <context>
+    <name>RS_ActionEditPaste</name>
+    <message>
+        <source>Set paste reference point</source>
+        <translation type="vanished">Set 풀 참조 지점</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionEditUndo</name>
     <message>
         <source>Nothing to undo!</source>
@@ -52764,6 +54419,13 @@ Point: (%8 , %9)</source>
     </message>
 </context>
 <context>
+    <name>RS_ActionModifyDeleteQuick</name>
+    <message>
+        <source>Pick entity to delete</source>
+        <translation type="vanished">삭제할 개체 선택</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionModifyEntity</name>
     <message>
         <source>Click on entity to modify</source>
@@ -52935,6 +54597,10 @@ Point: (%8 , %9)</source>
     <message>
         <source>Specify reference point for direction of offset</source>
         <translation type="vanished">오프셋의 방향에 대한 참조 지점</translation>
+    </message>
+    <message>
+        <source>Select line, polyline, circle, arc or ellipse to create offset (Enter to complete)</source>
+        <translation type="vanished">간격 띄우기를 만들 선, 폴리선, 원, 호 또는 타원을 선택하세요 (Enter로 완료)</translation>
     </message>
     <message>
         <source>Select line, polyline, circle or arc to create offset (Enter to complete)</source>
@@ -53551,6 +55217,13 @@ Point: (%8 , %9)</source>
     </message>
 </context>
 <context>
+    <name>RS_ActionSelect</name>
+    <message>
+        <source>No entity selected!</source>
+        <translation type="vanished">선택 없음!</translation>
+    </message>
+</context>
+<context>
     <name>RS_ActionSelectBase</name>
     <message>
         <location filename="../src/lib/actions/rs_actionselectbase.h" line="51"/>
@@ -53716,235 +55389,235 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_Snapper</name>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1282"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1283"/>
         <source>Vertical</source>
         <translation>수직</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1284"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1285"/>
         <source>Horizontal</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1286"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1287"/>
         <source>Orthogonal</source>
         <translation>연락처</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1340"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1341"/>
         <source>Grid</source>
         <translation>제품정보</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1342"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1343"/>
         <source>Entity</source>
         <translation>이름 *</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1344"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1345"/>
         <source>Endpoint</source>
         <translation>끝점</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1346"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1347"/>
         <source>Intersection</source>
         <translation>회사연혁</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1348"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1349"/>
         <source>Middle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1350"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1351"/>
         <source>Distance</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1352"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1353"/>
         <source>Center</source>
         <translation>- 연혁</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1354"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1355"/>
         <source>Angle</source>
         <translation>주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1356"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1357"/>
         <source>Angle Relative</source>
         <translation>각도 관계</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1358"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1359"/>
         <source>Angle (on Entity)</source>
         <translation>각 (Entity에)</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1360"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1361"/>
         <source>Visual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1364"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1365"/>
         <source>Free</source>
         <translation type="unfinished">무료 다운로드</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1373"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1374"/>
         <source>None</source>
         <comment>visual snap</comment>
         <translation type="unfinished">이름 *</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1376"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1377"/>
         <source>Horizontal</source>
         <comment>visual snap</comment>
         <translation type="unfinished">제품정보</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1379"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1380"/>
         <source>Angle Ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1390"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1391"/>
         <source>Relative Angle Ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1401"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1402"/>
         <source>Vertical</source>
         <comment>visual snap</comment>
         <translation type="unfinished">수직</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1404"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1405"/>
         <source>Line ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1407"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1408"/>
         <source>Point-Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1410"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1411"/>
         <source>Point-Point Orthogonal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1413"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1414"/>
         <source>Endpoint Tangential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1416"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1417"/>
         <source>Endpoint Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1419"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1420"/>
         <source>Tangential One</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1422"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1423"/>
         <source>Tangential Two</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1425"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1426"/>
         <source>Middle</source>
         <comment>visual snap</comment>
         <translation type="unfinished">주요 특징</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1428"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1429"/>
         <source>Orthogonal</source>
         <comment>visual snap</comment>
         <translation type="unfinished">연락처</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1431"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1432"/>
         <source>Distance (Explicit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1434"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1435"/>
         <source>Tangential Distance (Explicit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1437"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1438"/>
         <source>Distance (Point)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1440"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1441"/>
         <source>Entity</source>
         <comment>visual snap</comment>
         <translation type="unfinished">이름 *</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1443"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1444"/>
         <source>Relative Normal</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1446"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1447"/>
         <source>Relative Distance</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1449"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1450"/>
         <source>Relative X</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1452"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1453"/>
         <source>Relative Y</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1455"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1456"/>
         <source>Relative Angle</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1458"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1459"/>
         <source>Restriction Horizontal</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1461"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1462"/>
         <source>Restriction Vertical</source>
         <comment>visual snap</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1646"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1647"/>
         <source>Dist: </source>
         <translation>유형:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1651"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1652"/>
         <source>Angle: </source>
         <translation>유형:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1656"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1657"/>
         <source>dX: </source>
         <translation>모델 번호:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1657"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1658"/>
         <source>dY: </source>
         <translation>모델 번호:</translation>
     </message>
@@ -54092,6 +55765,21 @@ Point: (%8 , %9)</source>
     <message>
         <source>Pick radius from drawing</source>
         <translation type="vanished">그림에서 득점 반경</translation>
+    </message>
+</context>
+<context>
+    <name>Ui_DimLinearOptions</name>
+    <message>
+        <source>Linear Dimension Options</source>
+        <translation type="vanished">선형 치수 옵션</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation type="vanished">각도:</translation>
+    </message>
+    <message>
+        <source>Angle of dimension</source>
+        <translation type="vanished">치수 각도</translation>
     </message>
 </context>
 <context>
@@ -54608,6 +56296,21 @@ Point: (%8 , %9)</source>
     <message>
         <source>Number of parallels to create</source>
         <translation type="vanished">병렬의 수</translation>
+    </message>
+</context>
+<context>
+    <name>Ui_LinePolygon2Options</name>
+    <message>
+        <source>Polygon Options</source>
+        <translation type="vanished">Polygon 옵션</translation>
+    </message>
+    <message>
+        <source>Number:</source>
+        <translation type="vanished">번호:</translation>
+    </message>
+    <message>
+        <source>Number of edges</source>
+        <translation type="vanished">가장자리의 수</translation>
     </message>
 </context>
 <context>

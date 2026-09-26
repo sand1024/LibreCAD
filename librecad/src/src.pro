@@ -31,8 +31,9 @@ CONFIG += qt \
 QT += widgets printsupport network
 CONFIG += c++17
 
-# using qt5 connections for UI forms
-QMAKE_UIC_FLAGS += --connections string
+# Qt 6 uic can generate string-based connections. Qt 5 uic does not
+# understand this option, so keep qmake builds compatible with both.
+greaterThan(QT_MAJOR_VERSION, 5): QMAKE_UIC_FLAGS += --connections string
 
 *-g++ {
     # QMAKE_CXXFLAGS += -fext-numeric-literals
@@ -41,10 +42,12 @@ QMAKE_UIC_FLAGS += --connections string
 GEN_LIB_DIR = ../../generated/lib
 msvc {
     PRE_TARGETDEPS += $$GEN_LIB_DIR/dxfrw.lib \
-            $$GEN_LIB_DIR/jwwlib.lib
+            $$GEN_LIB_DIR/jwwlib.lib \
+            $$GEN_LIB_DIR/shapelib.lib
 } else {
     PRE_TARGETDEPS += $$GEN_LIB_DIR/libdxfrw.a \
-            $$GEN_LIB_DIR/libjwwlib.a
+            $$GEN_LIB_DIR/libjwwlib.a \
+            $$GEN_LIB_DIR/libshapelib.a
 }
 
 DESTDIR = $${INSTALLDIR}
@@ -54,18 +57,27 @@ unix {
     LC_VERSION=$$system([ "$(which git)x" != "x" -a -d ../../.git ] && echo "$(git describe --always)" || echo "$${LC_VERSION}")
 
     macx {
-        equals(QT_ARCH, arm64):greaterThan(QT_MAJOR_VERSION, 5) {
-            # Qt6 on Apple Silicon: qyieldcpu.h uses __yield() which requires arm_acle.h
-            QMAKE_CXXFLAGS += -include arm_acle.h
+        greaterThan(QT_MAJOR_VERSION, 5) {
+            # Qt6's qyieldcpu.h uses __yield() without including <arm_acle.h>,
+            # which breaks the Apple Silicon build. Force-include a small guarded
+            # prefix header; it is a no-op on the x86_64 slice, so this also works
+            # for universal (arm64 + x86_64) builds. See mac_arm_acle_prefix.h.
+            QMAKE_CXXFLAGS += -include $$PWD/mac_arm_acle_prefix.h
         }
         TARGET = LibreCAD
-        VERSION=$$system(echo "$${LC_VERSION}" | sed -e 's/\-.*//g')
+        # CFBundleShortVersionString/CFBundleVersion must be numeric x.y.z, so
+        # reduce LC_VERSION to that ("2.2.2_alpha1-618-g27add5380" -> "2.2.2"),
+        # matching what the CMake build derives from PROJECT_VERSION. Uses cut
+        # rather than a sed regex because qmake eats the backslashes.
+        VERSION=$$system(echo "$${LC_VERSION}" | sed -e 's/^v//' | cut -d- -f1 | cut -d_ -f1 | cut -d. -f1-3)
         QMAKE_INFO_PLIST = Info.plist.app
         DEFINES += QC_APPDIR=\\\"LibreCAD\\\"
         ICON = ../res/images/librecad.icns
         contains(DISABLE_POSTSCRIPT, false) {
             QMAKE_POST_LINK = /bin/sh $$_PRO_FILE_PWD_/../../scripts/postprocess-osx.sh $$OUT_PWD/$${DESTDIR}/$${TARGET}.app/ $$[QT_INSTALL_BINS];
-            QMAKE_POST_LINK += /usr/libexec/PlistBuddy -c \"Set :CFBundleGetInfoString string $${TARGET} $${LC_VERSION}\" $$OUT_PWD/$${DESTDIR}/$${TARGET}.app/Contents/Info.plist;
+            # PlistBuddy's Set takes no type argument (only Add does), so a
+            # literal "string" here ended up in the value.
+            QMAKE_POST_LINK += /usr/libexec/PlistBuddy -c \"Set :CFBundleGetInfoString $${TARGET} $${LC_VERSION}\" $$OUT_PWD/$${DESTDIR}/$${TARGET}.app/Contents/Info.plist;
         }
     }
     else {
@@ -95,7 +107,11 @@ win32 {
         QMAKE_POST_LINK = "$$_PRO_FILE_PWD_/../../scripts/postprocess-win.bat" $$LC_VERSION
     }
 
-    QMAKE_CXXFLAGS += -Wa,-mbig-obj
+    msvc {
+        QMAKE_CXXFLAGS += /bigobj
+    } else {
+        QMAKE_CXXFLAGS += -Wa,-mbig-obj
+    }
 
     LIBS += -ldbghelp
 }
@@ -106,12 +122,15 @@ DEFINES += LC_PRERELEASE=\"$$LC_PRERELEASE\"
 # Additional libraries to load
 LIBS += -L../../generated/lib  \
     -ldxfrw \
-    -ljwwlib
+    -ljwwlib \
+    -lshapelib
 
 INCLUDEPATH += \
     ../../libraries/lciconengine \
     ../../libraries/libdxfrw/src \
+    ../../libraries/libdxfrw/src/intern \
     ../../libraries/jwwlib/src \
+    ../../libraries/shapelib/src \
     cmd \
     lib/actions \
     lib/actions/visual_snap \
@@ -390,6 +409,10 @@ HEADERS += \
     lib/engine/document/entities/lc_textbidi.h \
     lib/engine/document/container/lc_containertraverser.h \
     lib/engine/document/entities/lc_mleader.h \
+    lib/engine/document/entities/lc_curvejet.h \
+    lib/engine/document/entities/lc_curveoffset.h \
+    lib/engine/document/entities/lc_parametriccurveintersection.h \
+    lib/engine/document/entities/lc_offsetoutputbudget.h \
     lib/engine/document/entities/lc_splinehelper.h \
     lib/engine/document/entities/lc_tolerance.h \
     lib/engine/document/entities/support/lc_arrow_box.h \
@@ -495,6 +518,7 @@ HEADERS += \
     lib/engine/document/rs_graphic.h \
     lib/engine/document/entities/rs_hatch.h \
     lib/engine/document/entities/lc_hyperbola.h \
+    lib/engine/document/entities/lc_insert_transform.h \
     lib/engine/document/entities/rs_insert.h \
     lib/engine/document/entities/rs_image.h \
     lib/engine/document/entities/lc_wipeout.h \
@@ -508,6 +532,8 @@ HEADERS += \
     lib/engine/overlays/overlay_box/rs_overlaybox.h \
     lib/engine/document/patterns/rs_pattern.h \
     lib/engine/document/patterns/rs_patternlist.h \
+    lib/engine/lc_colornumbers.h \
+    lib/engine/lc_linetypenames.h \
     lib/engine/rs_pen.h \
     lib/engine/document/entities/rs_point.h \
     lib/engine/document/entities/rs_polyline.h \
@@ -539,6 +565,7 @@ HEADERS += \
     lib/filters/rs_filterdxf1.h \
     lib/filters/rs_filterjww.h \
     lib/filters/rs_filterlff.h \
+    lib/filters/rs_filtershp.h \
     lib/filters/rs_filterinterface.h \
     lib/generators/layers/lc_layersexporter.h \
     lib/generators/image/lc_imageexporter.h \
@@ -699,11 +726,11 @@ HEADERS += \
     ui/main/support/lc_gridviewinvoker.h \
     ui/main/support/lc_infocursorsettingsmanager.h \
     ui/main/workspaces/lc_workspacesinvoker.h \
-    ui/styling/presets_generator/lc_dlg_syles_presets_generator.h \
     ui/view/lc_printpreviewview.h \
     lib/information/rs_locale.h \
     lib/information/rs_information.h \
     lib/information/rs_infoarea.h \
+    lib/math/lc_archparser.h \
     lib/math/lc_convert.h \
     lib/math/lc_linemath.h \
     lib/math/lc_formatter.h \
@@ -747,7 +774,9 @@ HEADERS += \
     lib/selection/metaentity/entities/lc_matchdescriptor_point.h         \
     lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.h \
     lib/math/rs_math.h \
+    lib/math/lc_interval.h \
     lib/math/lc_quadratic.h \
+    main/console_command_utils.h \
     main/console_dxf2png.h \
     test/lc_simpletests.h \
     lib/generators/makercamsvg/lc_makercamsvg.h \
@@ -941,6 +970,9 @@ SOURCES += \
     lib/engine/document/entities/lc_textbidi.cpp \
     lib/engine/document/container/lc_containertraverser.cpp \
     lib/engine/document/entities/lc_mleader.cpp \
+    lib/engine/document/entities/lc_curveoffset.cpp \
+    lib/engine/document/entities/lc_parametriccurveintersection.cpp \
+    lib/engine/document/entities/lc_offsetoutputbudget.cpp \
     lib/engine/document/entities/lc_splinehelper.cpp \
     lib/engine/document/entities/lc_tolerance.cpp \
     lib/engine/document/entities/support/lc_arrow_box.cpp \
@@ -1144,6 +1176,7 @@ SOURCES += \
     lib/engine/document/rs_graphic.cpp \
     lib/engine/document/entities/rs_hatch.cpp \
     lib/engine/document/entities/lc_hyperbola.cpp \
+    lib/engine/document/entities/lc_insert_transform.cpp \
     lib/engine/document/entities/rs_insert.cpp \
     lib/engine/document/entities/rs_image.cpp \
     lib/engine/document/entities/lc_wipeout.cpp \
@@ -1177,6 +1210,7 @@ SOURCES += \
     lib/filters/rs_filterdxf1.cpp \
     lib/filters/rs_filterjww.cpp \
     lib/filters/rs_filterlff.cpp \
+    lib/filters/rs_filtershp.cpp \
     #lib/gui/no_used/rs_painterold.cpp \
    # lib/gui/no_used/rs_painterqtold.cpp \
     ui/action_options/edit/lc_paste_to_points_options_widget.cpp \
@@ -1221,11 +1255,11 @@ SOURCES += \
     ui/main/support/lc_gridviewinvoker.cpp \
     ui/main/support/lc_infocursorsettingsmanager.cpp \
     ui/main/workspaces/lc_workspacesinvoker.cpp \
-    ui/styling/presets_generator/lc_dlg_syles_presets_generator.cpp \
     ui/view/lc_printpreviewview.cpp \
     lib/information/rs_locale.cpp \
     lib/information/rs_information.cpp \
     lib/information/rs_infoarea.cpp \
+    lib/math/lc_archparser.cpp \
     lib/math/lc_convert.cpp \
     lib/math/lc_linemath.cpp \
     lib/math/rs_math.cpp \
@@ -1267,8 +1301,11 @@ SOURCES += \
     lib/properties/lc_property_multi.cpp \
     lib/properties/lc_property_utils.cpp \
     lib/properties/lc_property_view_descriptor.cpp \
+    lib/engine/lc_colornumbers.cpp \
+    lib/engine/lc_linetypenames.cpp \
     lib/engine/rs_color.cpp \
     lib/engine/rs_pen.cpp \
+    main/console_command_utils.cpp \
     main/console_dxf2png.cpp \
     test/lc_simpletests.cpp \
     lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.cpp \
@@ -1381,6 +1418,7 @@ HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
     actions/drawing/draw/line/lc_action_draw_line.h \
     actions/drawing/draw/line/lc_action_draw_line_angle.h \
     actions/drawing/draw/line/lc_action_draw_line_bisector.h \
+    actions/drawing/draw/line/lc_actiondrawlinedirect.h \
     actions/drawing/draw/line/rs_actiondrawlinehorvert.h \
     actions/drawing/draw/line/rs_actiondrawlineorthtan.h \
     actions/drawing/draw/line/lc_action_draw_line_parallel.h \
@@ -1546,6 +1584,7 @@ SOURCES += actions/dock_widgets/block/rs_actionblocksadd.cpp \
     actions/drawing/draw/line/lc_action_draw_line.cpp \
     actions/drawing/draw/line/lc_action_draw_line_angle.cpp \
     actions/drawing/draw/line/lc_action_draw_line_bisector.cpp \
+    actions/drawing/draw/line/lc_actiondrawlinedirect.cpp \
     actions/drawing/draw/line/rs_actiondrawlinehorvert.cpp \
     actions/drawing/draw/line/rs_actiondrawlineorthtan.cpp \
     actions/drawing/draw/line/lc_action_draw_line_parallel.cpp \
@@ -1839,6 +1878,7 @@ HEADERS += ui/action_options/lc_action_options_manager.h \
     ui/main/init/lc_menufactory_main.h \
     ui/main/init/lc_menufactory_graphicview.h \
     ui/main/init/lc_toolbarfactory.h \
+    ui/main/lc_layouttabbar.h \
     ui/main/mainwindowx.h \
     ui/main/qc_applicationwindow.h \
     ui/main/qc_mdiwindow.h \
@@ -2131,6 +2171,7 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/main/init/lc_menufactory_main.cpp \
     ui/main/init/lc_menufactory_graphicview.cpp \
     ui/main/init/lc_toolbarfactory.cpp \
+    ui/main/lc_layouttabbar.cpp \
     ui/main/mainwindowx.cpp \
     ui/main/qc_applicationwindow.cpp \
     ui/main/qc_mdiwindow.cpp \
@@ -2237,8 +2278,7 @@ FORMS = ui/action_options/circle/lc_circle_by_arc_options_widget.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_image.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_insert.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_line.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \        \
-       ui/styling/presets_generator/lc_dlg_syles_presets_generator.ui
+       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \       
        ui/dialogs/entity/lc_pointpickbutton.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_point.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui \
@@ -2297,6 +2337,7 @@ HEADERS += \
     plugins/intern/qc_actiongetselect.h \
     plugins/intern/qc_actiongetent.h \
     main/main.h \
+    main/console_dxf2dwg.h \
     main/console_dxf2pdf/console_dxf2pdf.h \
     main/console_dxf2pdf/pdf_print_loop.h
 
@@ -2307,6 +2348,8 @@ SOURCES += \
     plugins/intern/qc_actiongetselect.cpp \
     plugins/intern/qc_actiongetent.cpp \
     main/main.cpp \
+    main/lc_release_label.cpp \
+    main/console_dxf2dwg.cpp \
     main/console_dxf2pdf/console_dxf2pdf.cpp \
     main/console_dxf2pdf/pdf_print_loop.cpp
 
@@ -2362,6 +2405,7 @@ TRANSLATIONS = \
     ../ts/librecad_ja.ts \
     ../ts/librecad_ka.ts \
     ../ts/librecad_ko.ts \
+    ../ts/librecad_lo.ts \
     ../ts/librecad_lv.ts \
     ../ts/librecad_mk.ts \
     ../ts/librecad_nl.ts \

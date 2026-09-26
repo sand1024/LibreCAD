@@ -24,6 +24,9 @@
 #ifndef RS_GRAPHIC_H
 #define RS_GRAPHIC_H
 
+#include <array>
+#include <cstdint>
+#include <memory>
 #include <QDateTime>
 #include <memory>
 
@@ -31,6 +34,7 @@
 #include "lc_dimstyleslist.h"
 #include "lc_plot_settings.h"
 #include "lc_textstylelist.h"
+#include "lc_dwgadvancedmetadata.h"
 #include "lc_ucslist.h"
 #include "lc_viewslist.h"
 #include "rs_blocklist.h"
@@ -46,7 +50,16 @@ class QString;
 class LC_View;
 class QG_LayerWidget;
 
-
+/**
+ * Thin alias over the DWG layout record persisted by libdxfrw's reader.
+ *
+ * Exposing the round-trip-grade record directly keeps the LibreCAD-side
+ * API zero-cost (no field-copy boilerplate) while routing all mutations
+ * through dedicated RS_Graphic setters that bump the modified flag. The
+ * UI layer (PR 10 tab bar, PR 11 plot dialog) consumes this type via
+ * RS_Graphic::layouts() / RS_Graphic::findLayout().
+ */
+using LC_Layout = LC_DwgAdvancedMetadata::LayoutRecord;
 
 
 /**
@@ -76,6 +89,61 @@ public:
     LC_TextStyleList* getTextStyleList() override {return &m_textStyleList;}
     void addDimStyle(LC_DimStyle* style) {m_dimstyleList.addDimStyle(style);}
     void initForNewDocument() override;
+    LC_DwgAdvancedMetadata& dwgAdvancedMetadata() {return m_dwgAdvancedMetadata;}
+    const LC_DwgAdvancedMetadata& dwgAdvancedMetadata() const {return m_dwgAdvancedMetadata;}
+
+    // ---- Paper-space layouts (PR 9 — DWG OBJECTS surface) -----------
+    /**
+     * Read-only view of the paper-space layouts loaded with the drawing.
+     * Backed by LC_DwgAdvancedMetadata::layouts(); populated by
+     * RS_FilterDXFRW::addLayout during DWG import.  UI code (PR 10 tab
+     * bar) should call this then route mutations through the dedicated
+     * setLayoutMargins / setActiveLayoutHandle setters below — those
+     * bump the modified flag, whereas reaching directly into
+     * dwgAdvancedMetadata() does not.
+     */
+    const std::vector<LC_Layout>& layouts() const {
+        return m_dwgAdvancedMetadata.layouts();
+    }
+    /** @return pointer to the layout record matching @p handle, or nullptr. */
+    const LC_Layout* findLayout(std::uint32_t handle) const;
+
+    /**
+     * Active layout handle (paper-space tab the UI currently shows).
+     * Defaults to 0 — meaning the modelspace / first paper-space layout
+     * is implicitly active, matching legacy behavior.  PR 10 wires this
+     * into the new tab bar; PR 11 wires it into the plot dialog.
+     */
+    std::uint32_t activeLayoutHandle() const { return m_activeLayoutHandle; }
+    void setActiveLayoutHandle(std::uint32_t handle);
+
+    /** Per-layout paper margin setter — mutates the matching LayoutRecord
+     *  in dwgAdvancedMetadata() and bumps the modified flag.  Returns
+     *  false if @p handle has no matching layout. */
+    bool setLayoutMargins(std::uint32_t handle,
+                          double left, double top,
+                          double right, double bottom);
+
+    /**
+     * Active layout's paper margins in millimeters (left/top/right/bottom).
+     *
+     * When activeLayoutHandle() resolves to a stored LayoutRecord, returns
+     * that record's PlotSettings margins.  Otherwise (DXF / no layouts
+     * loaded / unmatched handle) falls back to the legacy document-level
+     * getMarginLeft/Top/Right/Bottom — preserving the existing plot dialog
+     * behavior for DXF documents.
+     */
+    std::array<double, 4> activeLayoutMargins() const;
+
+    /**
+     * Active layout's paper margin setter — writes to the matching
+     * LayoutRecord when activeLayoutHandle() resolves, falls back to
+     * setMargins() otherwise.  Negative components are skipped to mirror
+     * the legacy setMargins() / setLayoutMargins() convention.
+     */
+    void setActiveLayoutMargins(double left, double top,
+                                double right, double bottom);
+
     // Wrappers for Layer functions:
     void clearLayers() {
         m_layerList.clear();
@@ -87,22 +155,21 @@ public:
     void activateLayer(RS_Layer* layer, const bool notify = false) {m_layerList.activate(layer, notify);}
     RS_Layer* getActiveLayer() const {return m_layerList.getActive();}
     virtual void addLayer(RS_Layer* layer) {m_layerList.add(layer);}
-    void addEntity(const RS_Entity* entity) override;
     void removeLayer(RS_Layer* layer);
     void editLayer(RS_Layer* layer, const RS_Layer& source) {m_layerList.edit(layer, source);}
     RS_Layer* findLayer(const QString& name) {return m_layerList.find(name);}
-    void toggleLayer(const QString& name) {m_layerList.toggle(name);validateSelection();}
-    void toggleLayer(RS_Layer* layer) {m_layerList.toggle(layer); validateSelection();}
+    void toggleLayer(const QString& name);
+    void toggleLayer(RS_Layer* layer);
     void toggleLayerLock(RS_Layer* layer) {m_layerList.toggleLock(layer); validateSelection();}
     void toggleLayerPrint(RS_Layer* layer) {m_layerList.togglePrint(layer);}
     void toggleLayerConstruction(RS_Layer* layer) {m_layerList.toggleConstruction(layer);}
-    void freezeAllLayers(const bool freeze) {m_layerList.freezeAll(freeze);validateSelection();}
+    void freezeAllLayers(bool freeze);
     void lockAllLayers(const bool lock) {m_layerList.lockAll(lock);validateSelection();}
     void toggleLockLayers(const QList<RS_Layer*>& layers){m_layerList.toggleLockMulti(layers);validateSelection();}
     void togglePrintLayers(const QList<RS_Layer*>& layers){m_layerList.togglePrintMulti(layers);validateSelection();}
     void toggleConstructionLayers(const QList<RS_Layer*>& layers){m_layerList.toggleConstructionMulti(layers);validateSelection();}
-    void toggleFreezeLayers(const QList<RS_Layer*>& layers){m_layerList.toggleFreezeMulti(layers);validateSelection();}
-    void setFreezeLayers(const QList<RS_Layer*>& layersEnable, const QList<RS_Layer*>& layersDisable){m_layerList.setFreezeMulti(layersEnable, layersDisable);validateSelection();}
+    void toggleFreezeLayers(const QList<RS_Layer*>& layers);
+    void setFreezeLayers(const QList<RS_Layer*>& layersEnable, const QList<RS_Layer*>& layersDisable);
     void setLockLayers(const QList<RS_Layer*>& layersToUnlock, const QList<RS_Layer*>& layersToLock){m_layerList.setLockMulti(layersToUnlock, layersToLock);validateSelection();}
     void setPrintLayers(const QList<RS_Layer*>& layersNoPrint, const QList<RS_Layer*>& layersPrint){m_layerList.setPrintMulti(layersNoPrint, layersPrint);validateSelection();}
     void setConstructionLayers(const QList<RS_Layer*>& layersNoConstruction, const QList<RS_Layer*>& layersConstruction){m_layerList.setConstructionMulti(layersNoConstruction, layersConstruction);validateSelection();}
@@ -124,9 +191,10 @@ public:
     void removeBlock(RS_Block* block) {m_blockList.remove(block);}
     RS_Block* findBlock(const QString& name) {return m_blockList.find(name);}
     QString newBlockName(const QString& suggestion = {}) {return m_blockList.newName(suggestion);}
-    void toggleBlock(const QString& name) {m_blockList.toggle(name);}
-    void toggleBlock(RS_Block* block) {m_blockList.toggle(block);}
-    void freezeAllBlocks(const bool freeze) {m_blockList.freezeAll(freeze);}
+    void toggleBlock(const QString& name);
+    void toggleBlock(RS_Block* block);
+    void toggleBlocks(const QList<RS_Block*>& blocks);
+    void freezeAllBlocks(bool freeze);
     void addBlockListListener(RS_BlockListListener* listener) {m_blockList.addListener(listener);}
     void removeBlockListListener(RS_BlockListListener* listener) {m_blockList.removeListener(listener);}
 
@@ -204,6 +272,19 @@ public:
     void setModified(bool m) override;
     void markSaved(const QDateTime &lastSaveTime);
 
+    /**
+     * Import-time geometry repair (prepare / far re-base) mutates coordinates.
+     * Set during fileImport when a repair switch is on and a mutation ran;
+     * load path should mark the document modified after markSaved so Save
+     * does not silently rewrite the user's file without notice.
+     */
+    void setImportGeometryMutated(bool mutated) { m_importGeometryMutated = mutated; }
+    bool takeImportGeometryMutated() {
+        const bool v = m_importGeometryMutated;
+        m_importGeometryMutated = false;
+        return v;
+    }
+
     QDateTime getLastSaveTime(){return m_lastSaveTime;}
     void setLastSaveTime(const QDateTime &time) { m_lastSaveTime = time;}
 
@@ -264,6 +345,11 @@ public:
 protected:
     void fireGraphicModified(bool modified) const;
 private:
+    /** Rebuild INSERT visibility and refresh cached drawing state after layer changes. */
+    void refreshLayerVisibility();
+    /** Rebuild derived INSERT children after block visibility changes. */
+    void refreshBlockVisibility();
+
     QDateTime m_lastSaveTime;
     QString m_currentFileName; //keep a copy of filename for the modifiedTime
 
@@ -277,8 +363,19 @@ private:
     LC_DimStylesList m_dimstyleList;
     LC_TextStyleList m_textStyleList;
 
+    LC_DwgAdvancedMetadata m_dwgAdvancedMetadata;
+
+    /** Active paper-space layout handle.  0 == "no explicit selection"
+     *  (legacy behavior — UI defaults to modelspace / first layout). */
+    std::uint32_t m_activeLayoutHandle = 0;
+
+    //if set to true, will refuse to modify paper scale
+    bool paperScaleFixed = false;
+
     /** Format type */
     RS2::FormatType m_formatType = RS2::FormatUnknown;
+
+
 
     /** File name of the document or empty for a new document. */
     QString m_filename;
@@ -286,6 +383,9 @@ private:
     QString m_autosaveFilename;
 
     bool m_anglesCounterClockWize;
+
+    /** True when import repairs rewrote block defs and/or model placement. */
+    bool m_importGeometryMutated = false;
 
     std::unique_ptr<LC_PlotSettings> m_plotSettings;
 };

@@ -46,6 +46,7 @@
 #include "rs_information.h"
 #include "rs_insert.h"
 #include "rs_layer.h"
+#include "rs_layerlist.h"
 #include "rs_line.h"
 #include "rs_math.h"
 #include "rs_mtext.h"
@@ -63,6 +64,9 @@ struct RS_Entity::Impl {
     /// import → save cycle. Each shared_ptr<DRW_Variant> is a single
     /// group-code/value pair (see DRW_Entity::extData for the exact
     /// schema). Empty for the common case of entities without XDATA.
+    /// Copies of an entity share the items: nothing modifies them once an
+    /// entity holds them (the DWG reader edits them before the entity
+    /// exists), so replace the whole list with setDrwExtData() instead.
     std::vector<std::shared_ptr<DRW_Variant>> drwExtData;
 
     // Passive metadata sidecars (DBCOLOR-style). All defaults map to
@@ -71,40 +75,16 @@ struct RS_Entity::Impl {
     quint32 m_materialHandle = 0;   // DXF 347
     quint32 m_plotStyleHandle = 0;  // DXF 390
     int m_shadowMode = 0;           // DXF 284, DRW::CastAndReceieveShadows
+    quint32 m_shadowHandle = 0;     // DWG R2007+ AcDbShadow object
     quint32 m_fullVisualStyleH = 0; // DWG R2010+
     quint32 m_faceVisualStyleH = 0;
     quint32 m_edgeVisualStyleH = 0;
-
-    void fromOther(const Impl* other) {
-        if (other != nullptr) {
-            pen = other->pen;
-            varList = other->varList;
-            // Deep-copy so the destination owns independent DRW_Variants;
-            // shared_ptrs would otherwise alias, which is correct only
-            // for read-only consumers.
-
-            // fixme - sand - 2dxli well, it is 100% percents necessary to use deeep-copy?
-            // fixme  - there might be lost of copies and creation of clones during normal user operations and editing
-            // fixme -  operations. It seems no need to create lots of copies for transient data and hold them in
-            // fixme -  undo history and so. Potentially the only case that may be reasonable for deepcopy is copy/paste
-            // fixme - between documents or explicit entity copy creation by the user
-            drwExtData.clear();
-            drwExtData.reserve(other->drwExtData.size());
-            for (const auto &sp : other->drwExtData) {
-              if (sp) {
-                drwExtData.push_back(std::make_shared<DRW_Variant>(*sp));
-              } else {
-                drwExtData.push_back(nullptr);
-              }
-            }
-            m_materialHandle = other->m_materialHandle;
-            m_plotStyleHandle = other->m_plotStyleHandle;
-            m_shadowMode = other->m_shadowMode;
-            m_fullVisualStyleH = other->m_fullVisualStyleH;
-            m_faceVisualStyleH = other->m_faceVisualStyleH;
-            m_edgeVisualStyleH = other->m_edgeVisualStyleH;
-        }
-    }
+    std::vector<quint32> m_reactorHandles;
+    quint32 m_xDictHandle = 0;
+    // Source DXF/DWG entity handle (group code 5) captured on import. 0 = not
+    // set / minted by LibreCAD. Lets the writer build an old->new handle map
+    // for refs that point at model entities (e.g. GROUP code-340 members).
+    quint32 m_sourceHandle = 0;
 };
 
 /**
@@ -123,9 +103,10 @@ RS_Entity::RS_Entity(RS_EntityContainer* parent)
 //     init(setPenToActive);
 // }
 
-RS_Entity::RS_Entity(const RS_Entity& other) : m_parent{other.m_parent}, m_minV{other.m_minV}, m_maxV{other.m_maxV}, m_layer{other.m_layer},
-                                               m_updateEnabled{other.m_updateEnabled}, m_pImpl{std::make_unique<Impl>(*other.m_pImpl)} {
-    setFlag(RS2::FlagVisible);
+RS_Entity::RS_Entity(const RS_Entity& other) : RS_Undoable{other}, m_parent{other.m_parent}, m_minV{other.m_minV}, m_maxV{other.m_maxV},
+                                               m_layer{other.m_layer}, m_updateEnabled{other.m_updateEnabled},
+                                               m_pImpl{std::make_unique<Impl>(*other.m_pImpl)} {
+    delFlag(RS2::FlagsTransient);
     initId();
 }
 
@@ -137,27 +118,7 @@ RS_Entity& RS_Entity::operator =(const RS_Entity& other) {
         m_layer = other.m_layer;
         m_updateEnabled = other.m_updateEnabled;
         m_pImpl = std::make_unique<Impl>(*other.m_pImpl);
-        setFlag(RS2::FlagVisible);
-        initId();
-    }
-    return *this;
-}
-
-RS_Entity::RS_Entity(RS_Entity&& other) noexcept : m_parent{other.m_parent}, m_minV{other.m_minV}, m_maxV{other.m_maxV}, m_layer{other.m_layer},
-                                                   m_updateEnabled{other.m_updateEnabled}, m_pImpl{std::move(other.m_pImpl)} {
-    setFlag(RS2::FlagVisible);
-    initId();
-}
-
-RS_Entity& RS_Entity::operator =(RS_Entity&& other) noexcept {
-    if (this != &other) {
-        m_parent = other.m_parent;
-        m_minV = other.m_minV;
-        m_maxV = other.m_maxV;
-        m_layer = other.m_layer;
-        m_updateEnabled = other.m_updateEnabled;
-        m_pImpl = std::move(other.m_pImpl);
-        setFlag(RS2::FlagVisible);
+        setFlags((getFlags() & RS2::FlagsTransient) | (other.getFlags() & ~RS2::FlagsTransient));
         initId();
     }
     return *this;
@@ -430,6 +391,11 @@ bool RS_Entity::doIsPointOnEntity(const RS_Vector& coord, const double tolerance
     return dist <= std::abs(tolerance);
 }
 
+bool RS_Entity::hasValidBorders() const {
+    return m_minV.valid && m_maxV.valid && std::isfinite(m_minV.x) && std::isfinite(m_minV.y) && std::isfinite(m_maxV.x)
+        && std::isfinite(m_maxV.y) && m_minV.x <= m_maxV.x && m_minV.y <= m_maxV.y;
+}
+
 double RS_Entity::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, [[maybe_unused]]RS2::ResolveLevel level, [[maybe_unused]]double solidDist) const {
     if (entity != nullptr) {
         *entity = const_cast<RS_Entity*>(this);
@@ -437,8 +403,11 @@ double RS_Entity::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entit
     double dToEntity = RS_MAXDOUBLE;
     (void)getNearestPointOnEntity(coord, true, &dToEntity, entity);
 
-    // RVT 6 Jan 2011 : Add selection by center point
-    if (getCenter().valid) {
+    // RVT 6 Jan 2011 : Add selection by center point.
+    // Only an entity of the drawing itself is picked by its center: the center of an arc inside a
+    // polyline, block reference, dimension or text does not pick that container, so a container is
+    // never nearer than its borders.
+    if (getCenter().valid && (m_parent == nullptr || m_parent->isDocument())) {
         const double dToCenter = getCenter().distanceTo(coord);
         return std::min(dToEntity, dToCenter);
     }
@@ -467,7 +436,17 @@ bool RS_Entity::isVisible() const {
         return true;
     }*/
     if (m_layer != nullptr) {
-        return !m_layer->isFrozen();
+        // An expansion child's layer pointer is copied verbatim from the
+        // entity it was cloned from (see the RS_Entity copy constructor);
+        // RS_Graphic::removeLayer() does not sweep a nested INSERT's own
+        // cached children, so this can already be dangling here once the
+        // entity belongs to a graphic (select an insert after deleting a
+        // layer a block it inserts, in turn, draws on). validatedLayer()
+        // only compares the pointer, so it is safe to call even then; the
+        // same fallback getLayerResolved() uses below when there is no
+        // explicit layer applies when the pointer no longer names one.
+        RS_Layer *layer = getGraphic() != nullptr ? validatedLayer(m_layer) : m_layer;
+        return layer == nullptr || !layer->isFrozen();
     }
     /*RS_EntityContainer* parent = getParent();
 if (parent && parent->isUndone()) {
@@ -783,13 +762,37 @@ RS2::Unit RS_Entity::getGraphicUnit() const {
 RS_Layer* RS_Entity::getLayerResolved() const {
     // we have no layer but a parent that might have one.
     // return parent's layer instead:
+    RS_Layer *l = nullptr;
     if (m_layer == nullptr /*|| layer->getName()=="ByBlock"*/) {
         if (m_parent != nullptr) {
             return m_parent->getLayerResolved();
         }
         return nullptr;
     }
-    return m_layer;
+    l = m_layer;
+    // When the entity is in a document, never hand out dangling layer
+    // pointers (block expand / hover quick-info crashed on getName()).
+    if (getGraphic() != nullptr)
+        return validatedLayer(l);
+    return l;
+}
+
+RS_Layer *RS_Entity::validatedLayer(RS_Layer *layer) const {
+    if (layer == nullptr)
+        return nullptr;
+    RS_Graphic *g = getGraphic();
+    if (g == nullptr)
+        return nullptr;
+    RS_LayerList *list = g->getLayerList();
+    // contains() only compares pointers — safe even if layer is dangling.
+    if (list == nullptr || !list->contains(layer))
+        return nullptr;
+    return layer;
+}
+
+bool RS_Entity::layerNameEquals(RS_Layer *layer, const QString &name) const {
+    RS_Layer *valid = validatedLayer(layer);
+    return valid != nullptr && valid->getName() == name;
 }
 
 /**
@@ -802,7 +805,8 @@ RS_Layer* RS_Entity::getLayerResolved() const {
  * @return pointer to the layer this entity is on. If the layer
  * is set to nullptr the layer of the next parent that is not on
  * layer nullptr is returned. If all parents are on layer nullptr, nullptr
- * is returned.
+ * is returned. When resolve is true and the entity belongs to a graphic,
+ * unregistered (dangling) layer pointers are treated as nullptr.
  */
 RS_Layer* RS_Entity::getLayer(const bool resolve) const {
     if (resolve) {
@@ -814,9 +818,12 @@ RS_Layer* RS_Entity::getLayer(const bool resolve) const {
             }
             return nullptr;
         }
+        if (getGraphic() != nullptr)
+            return validatedLayer(m_layer);
+        return m_layer;
     }
 
-    // return our layer. might still be nullptr:
+    // return our layer. might still be nullptr (unresolved / raw pointer):
     return m_layer;
 }
 
@@ -847,22 +854,11 @@ void RS_Entity::setLayer(RS_Layer* l) {
  */
 void RS_Entity::setLayerToActive() {
     const RS_Graphic* graphic = getGraphic();
-    if (graphic != nullptr) {
-        m_layer = graphic->getActiveLayer();
-    }
-    else {
-        m_layer = nullptr;
-    }
+    setLayer(graphic != nullptr ? graphic->getActiveLayer() : nullptr);
 }
 
 void RS_Entity::setPenAndLayerToActive() {
-    const auto graphic = getGraphic();
-    if (graphic != nullptr) {
-        m_layer = graphic->getActiveLayer();
-    }
-    else {
-        m_layer = nullptr;
-    }
+    setLayerToActive();
     const auto doc = getDocument();
     if (doc != nullptr) {
         m_pImpl->pen = doc->getActivePen();
@@ -917,10 +913,13 @@ RS_Pen RS_Entity::getPenResolved() const {
     const bool widthByLayer = p.isWidthByLayer();
     const bool lineByLayer = p.isLineTypeByLayer();
     if (colorByLayer || widthByLayer || lineByLayer) {
-        const RS_Layer* l = getLayerResolved();
+        // Drop dangling layer pointers left on block members after import
+        // (updateInserts crash: getName/getPen on freed RS_Layer).
+        RS_Layer *l = validatedLayer(getLayerResolved());
         // check byLayer attributes:
         if (l != nullptr) {
-            const RS_Pen& layerPen = l->getPen();
+            // Copy by value — avoids holding a reference into layer storage.
+            const RS_Pen layerPen = l->getPen();
             if (colorByLayer) {
                 p.setColorFromPen(layerPen);
             }
@@ -1104,6 +1103,8 @@ void RS_Entity::setPlotStyleHandle(quint32 h) {
 }
 int RS_Entity::shadowMode() const { return m_pImpl->m_shadowMode; }
 void RS_Entity::setShadowMode(int mode) { m_pImpl->m_shadowMode = mode; }
+quint32 RS_Entity::shadowHandle() const { return m_pImpl->m_shadowHandle; }
+void RS_Entity::setShadowHandle(quint32 h) { m_pImpl->m_shadowHandle = h; }
 quint32 RS_Entity::fullVisualStyleHandle() const {
   return m_pImpl->m_fullVisualStyleH;
 }
@@ -1118,6 +1119,32 @@ void RS_Entity::setVisualStyleHandles(quint32 full, quint32 face,
   m_pImpl->m_fullVisualStyleH = full;
   m_pImpl->m_faceVisualStyleH = face;
   m_pImpl->m_edgeVisualStyleH = edge;
+}
+const std::vector<quint32>& RS_Entity::reactorHandles() const {
+  return m_pImpl->m_reactorHandles;
+}
+void RS_Entity::setReactorHandles(std::vector<quint32> handles) {
+  m_pImpl->m_reactorHandles = std::move(handles);
+}
+quint32 RS_Entity::xDictHandle() const { return m_pImpl->m_xDictHandle; }
+void RS_Entity::setXDictHandle(quint32 h) { m_pImpl->m_xDictHandle = h; }
+quint32 RS_Entity::sourceHandle() const { return m_pImpl->m_sourceHandle; }
+void RS_Entity::setSourceHandle(quint32 h) { m_pImpl->m_sourceHandle = h; }
+
+void RS_Entity::clearDwgProvenance(const unsigned what) {
+    if ((what & Identity) != 0) {
+        m_pImpl->m_sourceHandle = 0;
+        m_pImpl->m_xDictHandle = 0;
+        m_pImpl->m_reactorHandles.clear();
+    }
+    if ((what & TableRefs) != 0) {
+        m_pImpl->m_materialHandle = 0;
+        m_pImpl->m_plotStyleHandle = 0;
+        m_pImpl->m_shadowHandle = 0;
+        m_pImpl->m_fullVisualStyleH = 0;
+        m_pImpl->m_faceVisualStyleH = 0;
+        m_pImpl->m_edgeVisualStyleH = 0;
+    }
 }
 
 //! constructionLayer contains entities of infinite length, constructionLayer doesn't show up in print
@@ -1134,7 +1161,19 @@ bool RS_Entity::isConstruction(const bool typeCheck) const {
     /*if (isHatchMember(this))
         return false;*/
 
-    return (m_layer != nullptr) && m_layer->isConstruction();
+    // A polyline's segments carry no layer of their own, so that they follow
+    // the polyline's; they are its own geometry and are drawn and caught as
+    // construction lines with it. The parts a dimension, a leader or a glyph
+    // is built from carry none either, and are not drawn as construction
+    // lines, so only a polyline is looked through. The layer is walked to
+    // rather than resolved with getLayer(): this is called for every entity
+    // of a frame, and no name is read from the layer.
+    const RS_Entity* entity = this;
+    while (entity->m_layer == nullptr && entity->m_parent != nullptr &&
+           entity->m_parent->rtti() == RS2::EntityPolyline) {
+        entity = entity->m_parent;
+    }
+    return (entity->m_layer != nullptr) && entity->m_layer->isConstruction();
 }
 
 //! whether printing is enabled or disabled for the entity's layer

@@ -57,10 +57,9 @@ class RS_Entity : public RS_Undoable, public LC_Drawable {
 public:
     explicit RS_Entity(RS_EntityContainer* parent = nullptr);
     // RS_Entity(RS_EntityContainer *parent, bool setPenToActive = false);
+    /** A copy has the original's value and a new id, and none of its RS2::FlagsTransient. */
     RS_Entity(const RS_Entity& other);
     RS_Entity& operator =(const RS_Entity& other);
-    RS_Entity(RS_Entity&& other) noexcept;
-    RS_Entity& operator =(RS_Entity&& other) noexcept;
     ~RS_Entity() override;
 
     virtual RS_Entity* clone() const = 0;
@@ -130,12 +129,20 @@ public:
     RS_Insert* getInsert() const;
     RS_Entity* getBlockOrInsert() const;
     RS_Document* getDocument() const;
-    void setLayer(const QString& name);
-    void setLayer(RS_Layer* l);
+    virtual void setLayer(const QString& name);
+    virtual void setLayer(RS_Layer* l);
     void setLayerToActive();
     void setPenAndLayerToActive();
     RS_Layer* getLayer(bool resolve = true) const;
     RS_Layer* getLayerResolved() const;
+    /**
+     * Returns \a layer only if it is still registered in this entity's
+     * document layer list. Block clones can retain dangling layer pointers
+     * after import; never call getName()/getPen() without this check.
+     */
+    RS_Layer *validatedLayer(RS_Layer *layer) const;
+    /** True if validated layer name equals \a name (typically "0"). */
+    bool layerNameEquals(RS_Layer *layer, const QString &name) const;
 
     /**
      * Sets the explicit pen for this entity or a pen with special
@@ -214,6 +221,10 @@ public:
         m_updateEnabled = on;
     }
 
+    [[nodiscard]] bool isUpdateEnabled() const noexcept {
+        return m_updateEnabled;
+    }
+
     /**
      * This method doesn't do any calculations.
      * @return minimum coordinate of the entity.
@@ -231,6 +242,12 @@ public:
     RS_Vector getMax() const {
         return m_maxV;
     }
+
+    /**
+     * @return true when getMin() and getMax() form a finite, non-inverted box; invalid vectors
+     * and reset borders (see resetBorders()) do not.
+     */
+    bool hasValidBorders() const;
 
     /**
      * This method returns the difference of max and min returned
@@ -508,10 +525,29 @@ public:
     void setPlotStyleHandle(quint32 h);
     int shadowMode() const;
     void setShadowMode(int mode);
+    quint32 shadowHandle() const;
+    void setShadowHandle(quint32 h);
     quint32 fullVisualStyleHandle() const;
     quint32 faceVisualStyleHandle() const;
     quint32 edgeVisualStyleHandle() const;
     void setVisualStyleHandles(quint32 full, quint32 face, quint32 edge);
+    const std::vector<quint32>& reactorHandles() const;
+    void setReactorHandles(std::vector<quint32> handles);
+    quint32 xDictHandle() const;
+    void setXDictHandle(quint32 h);
+    /// Source DXF/DWG entity handle (group code 5) from import. 0 if unset.
+    quint32 sourceHandle() const;
+    void setSourceHandle(quint32 h);
+
+    /** What clearDwgProvenance() clears, as bits. */
+    enum DwgProvenance : unsigned {
+        /** The source handle, extension dictionary and reactors: one live entity at most holds them. */
+        Identity = 1u << 0,
+        /** Material, plot style, shadow and visual style handles: objects of the drawing read from. */
+        TableRefs = 1u << 1
+    };
+    /** Clears the given DwgProvenance bits here and in the owned children. */
+    virtual void clearDwgProvenance(unsigned what);
 
     friend std::ostream& operator<<(std::ostream& os, RS_Entity& e);
     /** Recalculates the borders of this entity. */

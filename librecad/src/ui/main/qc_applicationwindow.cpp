@@ -32,6 +32,7 @@
 #include <QCloseEvent>
 #include <QDockWidget>
 #include <QGuiApplication>
+#include <QDockWidget>
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -105,6 +106,7 @@
 #include "rs_actioninterface.h"
 #include "rs_actionprintpreview.h"
 #include "rs_debug.h"
+#include "rs_fileio.h"
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "twostackedlabels.h"
@@ -288,8 +290,7 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
         if (drawingFileFullPath.isEmpty()) {
             doActivate(w); // show the user the drawing for save as
         }
-        QString msg = drawingFileFullPath.isEmpty() ? tr("Saving drawing...") : tr("Saving drawing: %1").arg(drawingFileFullPath);
-        showStatusMessage(msg);
+        QString msg;
         bool cancelled = false;
         const bool saved = forceSaveAs ? w->saveDocumentAs(cancelled) : w->saveDocument(cancelled);
         if (saved) {
@@ -299,8 +300,13 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
             }
 
             drawingFileFullPath = w->getFileName();
-            msg = tr("Saved drawing: %1").arg(drawingFileFullPath);
-            notificationMessage(msg, 2000);
+            // Say what the file could not hold; the save itself went through.
+            const QString leftOut = RS_FileIO::instance()->lastExportReport();
+            msg = leftOut.isEmpty()
+                ? tr("Saved drawing: %1").arg(drawingFileFullPath)
+                : tr("Saved drawing: %1. Left out: %2")
+                      .arg(drawingFileFullPath, leftOut.split(QLatin1Char('\n')).join(QStringLiteral("; ")));
+            showStatusMessage(msg, 2000);
 
             m_recentFilesList->addIfAbsent(drawingFileFullPath);
 
@@ -313,7 +319,7 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
         }
         else {
             msg = tr("Cannot save the file ") + w->getFileName() + tr(" , please check the filename and permissions.");
-            notificationMessage(msg, 2000);
+            showStatusMessage(msg, 2000);
             return doSave(w, true);
         }
     }
@@ -330,7 +336,13 @@ void QC_ApplicationWindow::activeMDIWindowChanged(QC_MDIWindow* window) {
  * @param activateNext also activate the next window in the window_list, if any
  */
 void QC_ApplicationWindow::doClose(QC_MDIWindow* w, const bool activateNext) {
-    w->getGraphicView()->killAllActions();
+    RS_GraphicView *graphicView = w->getGraphicView();
+    if (graphicView != nullptr && graphicView->isClosing()) {
+        return;
+    }
+    if (graphicView != nullptr) {
+        graphicView->killAllActions();
+    }
 
     QC_MDIWindow* parentWindow = w->getParentWindow();
     if (parentWindow != nullptr) {
@@ -354,6 +366,7 @@ void QC_ApplicationWindow::doClose(QC_MDIWindow* w, const bool activateNext) {
         // support for cancelling of saving untitled new document (via close all and close event)
         return;
     }
+    w->getGraphicView()->beginClose();
     w->close();
     m_windowList.removeOne(w);
 
@@ -465,7 +478,7 @@ void QC_ApplicationWindow::closeEvent(QCloseEvent* ce) {
 
 bool QC_ApplicationWindow::isAcceptableDragNDropFileName(const QString& fileName) {
     if (fileName.endsWith(R"(.dxf)", Qt::CaseInsensitive) || fileName.endsWith(R"(.cxf)", Qt::CaseInsensitive) || fileName.endsWith(
-        R"(.lff)", Qt::CaseInsensitive)) {
+        R"(.lff)", Qt::CaseInsensitive) || fileName.endsWith(R"(.shp)", Qt::CaseInsensitive)) {
         return QFileInfo::exists(fileName);
     }
     return false;
@@ -710,12 +723,8 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
         activatedDocument->updateInserts();
         // whether to enable undo/redo buttons
         activatedDocument->updateUndoState();
-
-        QAction* lockRelZeroAction = m_actionGroupManager->getActionByName("LockRelativeZero");
-        if (lockRelZeroAction != nullptr) {
-            const bool locked = activatedGraphicView->getViewPort()->isRelativeZeroLocked();
-            lockRelZeroAction->setChecked(locked);
-        }
+        // fixme - sand - merge - check whether qaction is properly updated
+        m_snapManager->setRelativeZeroLock(activatedGraphicView->getViewPort()->isRelativeZeroLocked());
 
         activatedGraphicView->redraw();
 
@@ -749,7 +758,7 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
 
 QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view,
                                                          RS_Entity* entity, const RS_Vector& pos) const {
-    if (m_contextMenuProvider != nullptr) {
+    if (m_contextMenuProvider != nullptr) const {
         return m_contextMenuProvider->createContextMenu(view, entity, pos, event);
     }
     return nullptr;
@@ -902,7 +911,6 @@ bool QC_ApplicationWindow::newDrawingFromTemplate(const QString& fileName, QC_MD
     constexpr RS2::FormatType type = RS2::FormatDXFRW;
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    showStatusMessage(tr("Creating new file..."));
     w = createNewDrawingWindow(nullptr, "");
     qApp->processEvents(QEventLoop::AllEvents, 1000);
 
@@ -922,7 +930,7 @@ bool QC_ApplicationWindow::newDrawingFromTemplate(const QString& fileName, QC_MD
         autoZoomAfterLoad(w->getGraphicView());
         if (!noFile) {
             const QString message = tr("New document from template: ") + fileName;
-            notificationMessage(message, 2000);
+            showStatusMessage(message, 2000);
         }
         else {
             showStatusMessage(tr("New Drawing created."), 2000);
@@ -1131,7 +1139,6 @@ int QC_ApplicationWindow::maybeSurfaceBlocksDock(RS_Graphic *graphic) {
 void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatType type) {
     if (!QFileInfo::exists(fileName)) {
         m_commandWidget->appendHistory(tr("File '%1' does not exist. Opening aborted").arg(fileName));
-        showStatusMessage(tr("Opening aborted"), 2000);
         return;
     }
 
@@ -1139,7 +1146,7 @@ void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatTy
 
     if (m_openedFiles.indexOf(fileName) >= 0) {
         const QString message = tr("Warning: File already opened : ") + fileName;
-        notificationMessage(message, 2000);
+        showStatusMessage(message, 2000);
     }
 
     // Create new document window:
@@ -1206,7 +1213,7 @@ void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatTy
       message = tr("Loaded document: ") + fileName;
       messageTimeout = 2000;
     }
-    notificationMessage(message, messageTimeout);
+    showStatusMessage(message, messageTimeout);
 
     QApplication::restoreOverrideCursor();
 }
@@ -1287,20 +1294,25 @@ void QC_ApplicationWindow::slotFileSaveAll() {
  * Autosave.
  */
 void QC_ApplicationWindow::autoSaveCurrentDrawing() {
-    RS_DEBUG->print("QC_ApplicationWindow::slotFileAutoSave(): begin");
+    RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): begin");
     if (!CFG_Defaults::o_AutoBackupDocument) {
+        RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): AutoBackupDocument disabled");    }
         startAutoSaveTimer(false);
         return;
     }
-    showStatusMessage(tr("Auto-saving drawing..."), 2000);
 
     const QC_MDIWindow* w = getCurrentMDIWindow();
     if (w != nullptr) {
         QString autosaveFileName;
+        RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): calling autoSaveDocument");
         if (w->autoSaveDocument(autosaveFileName)) {
+            RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): auto-save succeeded, file='%s'",
+                            autosaveFileName.toLatin1().data());
             showStatusMessage(tr("Auto-saved drawing"), 2000);
         }
         else {
+            RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): auto-save failed, file='%s'",
+                            autosaveFileName.toLatin1().data());
             // error
             m_autosaveTimer->stop();
             QMessageBox::information(this, QMessageBox::tr("Warning"),
@@ -1308,11 +1320,13 @@ void QC_ApplicationWindow::autoSaveCurrentDrawing() {
                                          autosaveFileName), QMessageBox::Ok);
             showStatusMessage(tr("Auto-saving failed"), 2000);
         }
+    } else {
+        RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): no current window");
     }
 }
 
-void QC_ApplicationWindow::showStatusMessage(const QString& msg, const int timeout) const {
-    statusBar()->showMessage(msg, timeout);
+void QC_ApplicationWindow::showStatusMessage(const QString& msg, [[maybe_unused]] const int timeout) const {
+    commandMessage(msg);
 }
 
 void QC_ApplicationWindow::notificationMessage(const QString& msg, const int timeout) const {
@@ -1452,11 +1466,9 @@ void QC_ApplicationWindow::slotFilePrint(const bool printPDF) {
 
     const RS_Graphic* graphic = w->getDocument()->getGraphic();
     if (graphic != nullptr) {
-        showStatusMessage(tr("Printing..."));
         using namespace LC_Printing;
         const PrinterType type = printPDF ? PrinterType::PDF : PrinterType::Printer;
         print(*w, type);
-        showStatusMessage(tr("Printing complete"), 2000);
     }
 }
 
@@ -1514,15 +1526,9 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
                 const bool bigger = plotSettings->isBiggerThanPaper(graphic->getSize());
                 const bool fixed = plotSettings->isPaperScaleFixed();
 
-                graphic->fitToPage();
-
-                // Calling zoomPage() after fitToPage() always fits
-                // preview paper in preview window. The only reason not
-                // to call zoomPage() is when drawing is bigger than paper,
-                // plus it is fixed. In that case, not calling zoomPage()
-                // prevents displaying empty paper (when drawing is actually
-                // outside the paper and the preview window) and displays
-                // full drawing and smaller paper inside it.
+                // The preview action has already fitted non-fixed drawings.
+                // Do not fit here: fixed previews must preserve the document's
+                // paper scale and $PINSBASE placement.
                 if (bigger && fixed) {
                     RS_DEBUG->print("%s: don't call zoomPage()", __func__);
                 }
@@ -1555,7 +1561,6 @@ void QC_ApplicationWindow::slotFilePrintPreview(const bool on) {
  * Menu file -> quit.
  */
 void QC_ApplicationWindow::slotFileQuit() {
-    showStatusMessage(tr("Exiting application..."));
     qApp->quit(); // signal handler closeEvent() will take care of modifications
 }
 
@@ -1695,6 +1700,11 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
         }
 
         m_actionOptionsManager->update();
+        if (m_actionHandler != nullptr) {
+            if (const auto currentAction = m_actionHandler->getCurrentAction()) {
+                currentAction->refreshBySettings();
+            }
+        }
         // fixme - check this signal, probably it's better to rely on settings change
         const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
         emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
@@ -1951,7 +1961,6 @@ void QC_ApplicationWindow::toggleMainMenu(const bool toggle) {
 void QC_ApplicationWindow::slotFileOpenRecent(const QAction* action) {
     const auto variant = action->data();
     if (variant.isValid()) {
-        showStatusMessage(tr("Opening recent file..."));
         const QString fileName = variant.toString();
         openFile(fileName, RS2::FormatUnknown);
     }

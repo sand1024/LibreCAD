@@ -25,7 +25,7 @@
 #include <QRegularExpression>
 
 #include "lc_linemath.h"
-#include "rs_filterdxfrw.h"
+#include "lc_linetypenames.h"
 #include "rs_math.h"
 
 
@@ -76,6 +76,9 @@ void LC_DimStyle::fillByDefaults() const {
 }
 
 void LC_DimStyle::merge(const LC_DimStyle* src) const {
+    if (src == nullptr) {
+        return;
+    }
     m_angularUnitFormattingStyle->merge(src->angularFormat());
     m_arrowheadStyle->merge(src->arrowhead());
     m_arcStyle->merge(src->arc());
@@ -94,6 +97,9 @@ void LC_DimStyle::merge(const LC_DimStyle* src) const {
 }
 
 void LC_DimStyle::mergeWith(const LC_DimStyle* src, const ModificationAware::CheckFlagMode mergeMode, const ModificationAware::CheckFlagMode nextMode) const {
+    if (src == nullptr) {
+        return;
+    }
     setModifyCheckMode(mergeMode);
     merge(src);
     setModifyCheckMode(nextMode);
@@ -391,13 +397,13 @@ void LC_DimStyle::DimensionLine::setDrawPolicyForOutsideText(const DrawPolicyFor
 void LC_DimStyle::DimensionLine::setLineType(const QString& dimltype) {
     checkModified(dimltype, DIMLTYPE, $DIMLTYPE);
     DIMLTYPE = dimltype;
-    DIMLTYPE_LineType = RS_FilterDXFRW::nameToLineType(dimltype);
+    DIMLTYPE_LineType = LC_LineTypeNames::nameToLineType(dimltype);
 }
 
 void LC_DimStyle::DimensionLine::setLineType(const RS2::LineType lineType) {
     checkModified(lineType, DIMLTYPE_LineType, $DIMLTYPE);
     DIMLTYPE_LineType = lineType;
-    DIMLTYPE = RS_FilterDXFRW::lineTypeToName(lineType);
+    DIMLTYPE = LC_LineTypeNames::lineTypeToName(lineType);
 }
 
 void LC_DimStyle::ExtensionLine::fillByDefaults() {
@@ -498,20 +504,20 @@ void LC_DimStyle::ExtensionLine::setLineWidth(const RS2::LineWidth dimlwe) {
 
 void LC_DimStyle::ExtensionLine::setLineTypeFirst(const QString& dimltex1) {
     checkModified(dimltex1, DIMLTEX1, $DIMLTEX1);
-    DIMLTEX1_linetype = RS_FilterDXFRW::nameToLineType(dimltex1);
+    DIMLTEX1_linetype = LC_LineTypeNames::nameToLineType(dimltex1);
     DIMLTEX1 = dimltex1;
 }
 
 void LC_DimStyle::ExtensionLine::setLineTypeSecond(const QString& dimltex2) {
     checkModified(dimltex2, DIMLTEX2, $DIMLTEX2);
-    DIMLTEX2_linetype = RS_FilterDXFRW::nameToLineType(dimltex2);
+    DIMLTEX2_linetype = LC_LineTypeNames::nameToLineType(dimltex2);
     DIMLTEX2 = dimltex2;
 }
 
 void LC_DimStyle::ExtensionLine::setLineTypeFirst(const RS2::LineType lineType) {
     checkModified(lineType, DIMLTEX1_linetype, $DIMLTEX1);
     DIMLTEX1_linetype = lineType;
-    DIMLTEX1 = RS_FilterDXFRW::lineTypeToName(lineType);
+    DIMLTEX1 = LC_LineTypeNames::lineTypeToName(lineType);
 }
 
 void LC_DimStyle::ExtensionLine::setLineTypeSecond(const RS2::LineType lineType) {
@@ -520,7 +526,7 @@ void LC_DimStyle::ExtensionLine::setLineTypeSecond(const RS2::LineType lineType)
     //     setFlag($DIMLTEX2);
     // }
     DIMLTEX2_linetype = lineType;
-    DIMLTEX2 = RS_FilterDXFRW::lineTypeToName(lineType);
+    DIMLTEX2 = LC_LineTypeNames::lineTypeToName(lineType);
 }
 
 void LC_DimStyle::ExtensionLine::setSuppressFirstLine(const ExtensionLineAndArrowSuppressionPolicy dimse1) {

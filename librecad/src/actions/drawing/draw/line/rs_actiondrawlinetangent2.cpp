@@ -68,6 +68,9 @@ void RS_ActionDrawLineTangent2::init(const int status){
 }
 
 void RS_ActionDrawLineTangent2::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
+    if (contextEntity == nullptr) {
+        return;
+    }
     auto entity = contextEntity;
     if (isPolyline(entity)) {
         const auto polyline = static_cast<RS_Polyline*>(contextEntity);

@@ -53,7 +53,15 @@ void LC_PropertiesProviderArc::doCreateEntitySpecificProperties(LC_PropertyConta
                        [](const RS_Arc* e) -> bool {
                            return e->isReversed();
                        }, [](const bool& v, RS_Arc* e) -> void {
-                           e->setReversed(v);
+                           // fixme - sand - merge
+                           // was   e->setReversed(v);
+                           // fixme - sand - why the logic is changed?
+
+                           // As in the arc dialog, the arc keeps its shape and runs the other way.
+                           // setReversed() alone turns it into the rest of the circle.
+                           if (e->isReversed() != v) {
+                               e->revertDirection();
+                           }
                        }, list, contGeometry);
 
     addWCSAngle<RS_Arc>({"angle1", tr("Start Angle"), tr("Start angle of arc")}, [](const RS_Arc* e) -> double {

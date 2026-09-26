@@ -111,6 +111,9 @@ namespace
 {
     const QStringList FILTERS_STRING_LIST = {
         /* Drawing filters */
+        "Drawing Exchange DXF 2018 (*.dxf)",
+        "Drawing Exchange DXF 2013 (*.dxf)",
+        "Drawing Exchange DXF 2010 (*.dxf)",
         "Drawing Exchange DXF 2007 (*.dxf)",
         "Drawing Exchange DXF 2004 (*.dxf)",
         "Drawing Exchange DXF 2000 (*.dxf)",
@@ -121,6 +124,9 @@ namespace
     const QList<RS2::FormatType> FILTERS_TYPE_LIST =
     {
         /* Drawing filters */
+        RS2::FormatDXFRW2018,
+        RS2::FormatDXFRW2013,
+        RS2::FormatDXFRW2010,
         RS2::FormatDXFRW,
         RS2::FormatDXFRW2004,
         RS2::FormatDXFRW2000,
@@ -139,6 +145,9 @@ bool LC_ExportLayersService::selectExportFile(LC_LayersExportOptions& options, L
     saveFileDialog.setAcceptMode (QFileDialog::AcceptSave);
     saveFileDialog.setOption (QFileDialog::HideNameFilterDetails, false);
     saveFileDialog.setOption (QFileDialog::DontUseNativeDialog, true);
+    // We do our own overwrite confirmation below; suppress the dialog's built-in
+    // one so the two do not stack into a double prompt.
+    saveFileDialog.setOption (QFileDialog::DontConfirmOverwrite, true);
 
     const QString sourceFileName  = options.sourceDrawingFileName;
     QString preselectionFileName;
@@ -197,6 +206,7 @@ std::pair<QString, QString> LC_ExportLayersService::readDefaultDirAndFilter() {
     using namespace CFG_ExportLayers;
     QString defaultDir = o_DirPath;
     QString defaultFilter = o_FileFilter;
+    // DXF 2007 stays the default, as before the newer versions were listed.
     if (defaultFilter.isEmpty()) {
         defaultFilter = FILTERS_STRING_LIST.at(0);
     }

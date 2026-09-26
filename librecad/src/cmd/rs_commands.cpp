@@ -46,13 +46,11 @@ constexpr auto PREFIX_FN = "Fn";
 constexpr auto PREFIX_ALT = "Alt-";
 constexpr auto PREFIX_META = "Meta-";
 
-/*
-struct LC_CommandItem {
-    const std::vector<std::pair<QString, QString>> m_fullCmdList;
-    const std::vector<std::pair<QString, QString>> m_shortCmdList;
-    RS2::ActionType m_actionType;
-};
-*/
+QString resolveCommandText(const LC_CommandText& text) {
+    return text.translatable
+               ? RS_SYSTEM->translateCommand(text.source, text.disambiguation)
+               : QString::fromUtf8(text.source);
+}
 
 // helper function to check and report command collision
 template<typename T1, typename T2>
@@ -77,6 +75,27 @@ bool isCollisionFree(const std::map<T1, T2>& lookUp, const T1& key, const T2& va
 
     RS_DEBUG->print(RS_Debug::D_ERROR, "%s\n", msg.toStdString().c_str());
     return false;
+}
+
+// The action of a command or alias that matches ignoring letter case, or
+// ActionNone if none does or the matches name different actions. Exact matches
+// are looked up first, so aliases that differ only in case still work.
+RS2::ActionType findActionIgnoringCase(const QString& command,
+                                       const std::map<QString, RS2::ActionType>& mainCommands,
+                                       const std::map<QString, RS2::ActionType>& shortCommands) {
+    RS2::ActionType found = RS2::ActionNone;
+    for (const auto* table : {&mainCommands, &shortCommands}) {
+        for (const auto& [key, action] : *table) {
+            if (key.compare(command, Qt::CaseInsensitive) != 0) {
+                continue;
+            }
+            if (found != RS2::ActionNone && found != action) {
+                return RS2::ActionNone;
+            }
+            found = action;
+        }
+    }
+    return found;
 }
 
 // write alias file
@@ -105,8 +124,8 @@ void writeAliasFile(const QString& aliasName,
 
     // full commands should be used first
     for(const auto& item: g_commandList) {
-        for(const auto& [fullCmd, translation]: item.fullCmdList) {
-            actionToMain.emplace(item.actionType, fullCmd);
+        for(const auto& command: item.fullCmdList) {
+            actionToMain.emplace(item.actionType, QString::fromUtf8(command.first.source));
         }
     }
 
@@ -165,7 +184,9 @@ RS_Commands::RS_Commands() {
 
     for(const auto& [fullCmdList, aliasList, action]: g_commandList){
         //add full commands
-        for(const auto& [fullCmd, cmdTranslation]: fullCmdList){
+        for(const auto& [fullCmdText, cmdTranslationText]: fullCmdList){
+            const QString fullCmd = resolveCommandText(fullCmdText);
+            const QString cmdTranslation = resolveCommandText(cmdTranslationText);
             if (fullCmd == cmdTranslation) {
                 continue;
             }
@@ -178,7 +199,8 @@ RS_Commands::RS_Commands() {
                 m_actionToCommand.emplace(action, cmdTranslation);
             }
         }
-        for(const auto& [fullCmd, cmdTranslation]: fullCmdList){
+        for(const auto& command: fullCmdList){
+            const QString fullCmd = resolveCommandText(command.first);
             if(isCollisionFree(m_mainCommands, fullCmd, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
                 // enable english commands, if no conflict is found
                 m_mainCommands.emplace(fullCmd, action);
@@ -186,7 +208,9 @@ RS_Commands::RS_Commands() {
             }
         }
         //add short commands
-        for(const auto& [alias, aliasTranslation]: aliasList){
+        for(const auto& [aliasText, aliasTranslationText]: aliasList){
+            const QString alias = resolveCommandText(aliasText);
+            const QString aliasTranslation = resolveCommandText(aliasTranslationText);
             if (alias == aliasTranslation) {
                 continue;
             }
@@ -201,7 +225,9 @@ RS_Commands::RS_Commands() {
                 }
             }
         }
-        for(const auto& [alias, aliasTranslation]: aliasList){
+        for(const auto& [aliasText, aliasTranslationText]: aliasList){
+            const QString alias = resolveCommandText(aliasText);
+            const QString aliasTranslation = resolveCommandText(aliasTranslationText);
             if(isCollisionFree(m_shortCommands, alias, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
                 // enable english short commands, if no conflict is found
                 m_shortCommands.emplace(alias, action);
@@ -213,8 +239,8 @@ RS_Commands::RS_Commands() {
     }
 
     // translations, overriding existing translation
-    for(const auto& [command, translation]: g_transList) {
-        m_cmdTranslation[command] = translation;
+    for(const auto& [commandText, translationText]: g_transList) {
+        m_cmdTranslation[resolveCommandText(commandText)] = resolveCommandText(translationText);
     }
 
     // prefer to use translated commands and aliases
@@ -232,7 +258,7 @@ RS_Commands::RS_Commands() {
 }
 
 QString RS_Commands::getAliasFile(){
-    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
+    const QString settingsDir = LC_GET_ONE_STR("Paths","OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
     if (settingsDir.isEmpty()) {
         LC_ERR << __func__ << "(): line "<<__LINE__<<": empty alias folder name: aborting";
         return {};
@@ -388,6 +414,9 @@ RS2::ActionType RS_Commands::cmdToAction(const QString& cmd, const bool verbose)
             break;
         }
     }
+    if (ret == RS2::ActionNone) {
+        ret = findActionIgnoringCase(cmd, m_mainCommands, m_shortCommands);
+    }
     if (ret==RS2::ActionNone) {
         return ret;
     }
@@ -407,7 +436,9 @@ RS2::ActionType RS_Commands::cmdToAction(const QString& cmd, const bool verbose)
             return ret;
         }
     }
-    RS_DEBUG->print(QObject::tr("RS_Commands:: command not found: %1").arg(full).toStdString().c_str());
+    const std::string message = QObject::tr(
+        "RS_Commands:: command not found: %1").arg(full).toStdString();
+    RS_DEBUG->print("%s", message.c_str());
     return ret;
 }
 
@@ -428,7 +459,10 @@ RS2::ActionType RS_Commands::keycodeToAction(const QString& code) const {
         }
     }
 
-    const auto action = commandToAction(code);
+    auto action = commandToAction(code);
+    if (action == RS2::ActionNone) {
+        action = findActionIgnoringCase(code, m_mainCommands, m_shortCommands);
+    }
 
     if (action != RS2::ActionNone) {
         //found
@@ -455,6 +489,17 @@ QString RS_Commands::command(const QString& cmd) {
     RS_DEBUG->print(RS_Debug::D_WARNING,
                     "RS_Commands::command: command '%s' unknown", cmd.toLatin1().data());
     return "";
+}
+
+QString RS_Commands::localizedCommand(const char* source, const char* disambiguation,
+                                      const char* context) {
+    return RS_SYSTEM->translateCommand(source, disambiguation, context);
+}
+
+bool RS_Commands::matchesLocalizedCommand(const QString& command, const char* source,
+                                          const char* disambiguation, const char* context) {
+    return command.compare(QLatin1String(source), Qt::CaseInsensitive) == 0
+           || command.compare(localizedCommand(source, disambiguation, context), Qt::CaseInsensitive) == 0;
 }
 
 

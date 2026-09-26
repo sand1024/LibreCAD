@@ -61,6 +61,9 @@ void LC_ActionDrawLineRelAngle::doLoadOptions() {
 }
 
 void LC_ActionDrawLineRelAngle::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
+    if (contextEntity == nullptr) {
+        return;
+    }
     auto entity = contextEntity;
     if (isPolyline(entity)) {
         const auto polyline = static_cast<RS_Polyline*>(contextEntity);

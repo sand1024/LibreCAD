@@ -24,11 +24,11 @@
 **
 **********************************************************************/
 
-#include "rs_previewactioninterface.h"
+#include <cmath>
 
 #include <QMouseEvent>
-#include <boost/core/snprintf.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
+
+#include "rs_previewactioninterface.h"
 
 #include "lc_actioncontext.h"
 #include "lc_actioninfomessagebuilder.h"
@@ -234,6 +234,9 @@ bool RS_PreviewActionInterface::trySnapToRelZeroCoordinateEvent(const LC_MouseEv
 RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent* e, const RS_Vector& basepoint, const RS_Vector& pos,
                                                             const bool drawMark, const bool force) {
     RS_Vector result = pos;
+    if (!basepoint.valid) {
+        return result;
+    }
     if (force) {
         if (m_snapMode.restriction == RS2::RestrictNothing) {
             if (isSnapToGrid()) {
@@ -287,6 +290,24 @@ RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent*
             }
         }
     }
+    else if (m_snapMode.snapAngle && m_snapMode.restriction == RS2::RestrictNothing && !isSnapToGrid() && isLastSnapFree()) {
+        bool snapToAngle = !m_softSnapEnabled;
+        if (m_softSnapEnabled) {
+            double wcsResultingAngle;
+            double ucsResultingAngle;
+            const RS_Vector anglePoint = obtainEndPointForAngleSnap(e->graphPoint, basepoint, m_snapToAngleStep,
+                                                                    wcsResultingAngle, ucsResultingAngle);
+            const double rawAngle = basepoint.angleTo(e->graphPoint);
+            const double snappedAngle = basepoint.angleTo(anglePoint);
+            snapToAngle = std::abs(std::remainder(rawAngle - snappedAngle, 2.0 * M_PI)) <= m_softSnapSensitivityRad;
+        }
+        if (snapToAngle) {
+            result = doSnapToAngle(e->graphPoint, basepoint, m_snapToAngleStep);
+            if (drawMark) {
+                previewSnapAngleMark(basepoint, result);
+            }
+        }
+    }
     m_lastAngleSnapPoint = result;
     m_impData->snapSpot = result;
     m_impData->snapCoord = result;
@@ -324,7 +345,7 @@ RS_Circle* RS_PreviewActionInterface::previewCircle(const RS_CircleData& circleD
 }
 
 void RS_PreviewActionInterface::previewToCreateCircle(const RS_CircleData& circleData) const {
-    const auto* result = previewCircle(circleData);
+    auto* result = previewCircle(circleData);
     prepareEntityDescription(result, RS2::EntityDescriptionLevel::DescriptionCreating);
 }
 
@@ -527,11 +548,13 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, co
     previewSnapAngleMark(center, angle, angleBase, isAnglesCounterClockWise);
 }
 
+
+
 // fixme - sand - snap to relative angle support!!!
 // fixme - rework to natural paint via overlay
 void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle, double angleBase,
                                                      bool isAnglesCounterClockWise) const {
-    // // todo - add separate option that will control visibility of mark?
+    // todo - add separate option that will control visibility of mark?
     const int radiusInPixels = m_angleSnapMarkerSize;
     const int lineInPixels = radiusInPixels * 2; // todo - move to settings
     const double lineLength = toGraphDX(lineInPixels);

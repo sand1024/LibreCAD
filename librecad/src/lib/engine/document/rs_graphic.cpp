@@ -86,11 +86,74 @@ namespace {
     }
 }
 
+void RS_Graphic::refreshBlockVisibility() {
+    updateInserts();
+    calculateBorders();
+    validateSelection();
+}
+
+void RS_Graphic::refreshLayerVisibility() {
+    // Expanded INSERT children flatten nested reference layers into their
+    // visibility flags. Rebuild them before deriving bounds or selection.
+    updateInserts();
+    calculateBorders();
+    validateSelection();
+}
+
+void RS_Graphic::toggleLayer(const QString& name) {
+    toggleLayer(m_layerList.find(name));
+}
+
+void RS_Graphic::toggleLayer(RS_Layer* layer) {
+    if (layer == nullptr) {
+        return;
+    }
+    m_layerList.toggle(layer);
+    refreshLayerVisibility();
+}
+
+void RS_Graphic::freezeAllLayers(const bool freeze) {
+    m_layerList.freezeAll(freeze);
+    refreshLayerVisibility();
+}
+
+void RS_Graphic::toggleFreezeLayers(const QList<RS_Layer*>& layers) {
+    m_layerList.toggleFreezeMulti(layers);
+    refreshLayerVisibility();
+}
+
+void RS_Graphic::setFreezeLayers(const QList<RS_Layer*>& layersEnable,
+                                 const QList<RS_Layer*>& layersDisable) {
+    m_layerList.setFreezeMulti(layersEnable, layersDisable);
+    refreshLayerVisibility();
+}
+
+void RS_Graphic::toggleBlock(const QString& name) {
+    toggleBlock(m_blockList.find(name));
+}
+
+void RS_Graphic::toggleBlock(RS_Block* block) {
+    toggleBlocks(QList<RS_Block*>{block});
+}
+
+void RS_Graphic::toggleBlocks(const QList<RS_Block*>& blocks) {
+    if (m_blockList.toggleMulti(blocks))
+        refreshBlockVisibility();
+}
+
+void RS_Graphic::freezeAllBlocks(const bool freeze) {
+    m_blockList.freezeAll(freeze);
+    refreshBlockVisibility();
+}
+
 /**
  * Default constructor.
  */
 RS_Graphic::RS_Graphic(RS_EntityContainer* parent)
     : RS_Document(parent), m_autosaveFilename{"Unnamed"}, m_plotSettings{std::make_unique<LC_PlotSettings>(this)} {
+
+    RS_DEBUG->print("RS_Graphic constructor: autosaveFilename initialized as '%s'", m_autosaveFilename.toLatin1().data());
+
     LC_GROUP_GUARD("Defaults");
     {
         using namespace CFG_Defaults;
@@ -143,6 +206,8 @@ RS_Graphic::RS_Graphic(RS_EntityContainer* parent)
 RS_Graphic::~RS_Graphic() = default;
 
 void RS_Graphic::onLoadingCompleted() {
+    m_layerList.ensureActiveLayerIsVisible();
+
     const auto fallBackDimStyleFromVars = m_dimstyleList.getFallbackDimStyleFromVars();
     fallBackDimStyleFromVars->fillByDefaults(); // cleanup (is it redundant?)
     LC_DimStyleToVariablesMapper dimStyleToVariablesMapper;
@@ -239,12 +304,14 @@ void RS_Graphic::removeLayer(RS_Layer* layer) {
  * A default layer (0) is created.
  */
 void RS_Graphic::initForNewDocument() {
-    RS_DEBUG->print("RS_Graphic::newDoc");
+    RS_DEBUG->print("RS_Graphic::newDoc: before clear, autosaveFilename='%s'", m_autosaveFilename.toLatin1().data());
+    m_dwgAdvancedMetadata.clear();
     clear();
     clearLayers();
     clearBlocks();
     addLayer(new RS_Layer("0"));
     setModified(false);
+    RS_DEBUG->print("RS_Graphic::newDoc: after clear, autosaveFilename='%s'", m_autosaveFilename.toLatin1().data());
 }
 
 void RS_Graphic::clearVariables() {
@@ -671,17 +738,6 @@ bool RS_Graphic::fitToPage() {
 }
 
 
-void RS_Graphic::addEntity(const RS_Entity* entity) {
-    RS_Document::addEntity(entity);
-    if ( /*entity->rtti() == RS2::EntityBlock ||*/
-        entity->rtti() == RS2::EntityContainer) {
-        auto* e = static_cast<const RS_EntityContainer*>(entity);
-        for (const auto e1 : *e) {
-            addEntity(e1);
-        }
-    }
-}
-
 /**
  * Dumps the entities to stdout.
  */
@@ -720,7 +776,88 @@ int RS_Graphic::clean() {
     return howMany;
 }
 
-QString RS_Graphic::formatAngle(const double angle) const {
+
+// ---- Paper-space layouts (PR 9) -----------------------------------------
+
+const LC_Layout* RS_Graphic::findLayout(std::uint32_t handle) const {
+    if (handle == 0) {
+        return nullptr;
+    }
+    const auto& records = m_dwgAdvancedMetadata.layouts();
+    for (const auto& record : records) {
+        if (record.handle == handle) {
+            return &record;
+        }
+    }
+    return nullptr;
+}
+
+void RS_Graphic::setActiveLayoutHandle(std::uint32_t handle) {
+    if (m_activeLayoutHandle == handle) {
+        return;
+    }
+    m_activeLayoutHandle = handle;
+    setModified(true);
+}
+
+bool RS_Graphic::setLayoutMargins(std::uint32_t handle,
+                                  double left, double top,
+                                  double right, double bottom) {
+    if (handle == 0) {
+        return false;
+    }
+    auto& records = m_dwgAdvancedMetadata.layouts();
+    for (auto& record : records) {
+        if (record.handle != handle) {
+            continue;
+        }
+        bool changed = false;
+        if (left >= 0.0 && record.marginLeft != left) {
+            record.marginLeft = left;
+            changed = true;
+        }
+        if (top >= 0.0 && record.marginTop != top) {
+            record.marginTop = top;
+            changed = true;
+        }
+        if (right >= 0.0 && record.marginRight != right) {
+            record.marginRight = right;
+            changed = true;
+        }
+        if (bottom >= 0.0 && record.marginBottom != bottom) {
+            record.marginBottom = bottom;
+            changed = true;
+        }
+        if (changed) {
+            setModified(true);
+        }
+        return true;
+    }
+    return false;
+}
+
+std::array<double, 4> RS_Graphic::activeLayoutMargins() const {
+    if (m_activeLayoutHandle != 0) {
+        if (const LC_Layout* match = findLayout(m_activeLayoutHandle)) {
+            return {match->marginLeft, match->marginTop,
+                    match->marginRight, match->marginBottom};
+        }
+    }
+    return {m_plotSettings->getMarginLeftMm(), m_plotSettings->getMarginTopMm(), m_plotSettings->getMarginRightMm(), m_plotSettings->getMarginBottomMm()};
+}
+
+void RS_Graphic::setActiveLayoutMargins(double left, double top,
+                                        double right, double bottom) {
+    if (m_activeLayoutHandle != 0
+        && setLayoutMargins(m_activeLayoutHandle, left, top, right, bottom)) {
+        return;
+    }
+    // Fall through to document-singleton margins for DXF / no-layout
+    // documents and for active handles that don't match a stored record.
+    m_plotSettings->setMarginsInMm(left, top, right, bottom);
+}
+
+QString RS_Graphic::formatAngle(const double angle) const{
     return RS_Units::formatAngle(angle, getAngleFormat(), getAnglePrecision());
 }
 
@@ -801,36 +938,34 @@ void RS_Graphic::setDefaultDimStyleName(const QString& name) {
 
 LC_DimStyle* RS_Graphic::getEffectiveDimStyle(const QString& styleName, const RS2::EntityType dimType,
                                               const LC_DimStyle* styleOverride) const {
-    const auto globalDimStyle = getResolvedDimStyle(styleName, dimType);
-    LC_DimStyle* resolvedDimStyle = nullptr;
+    LC_DimStyle* globalDimStyle = getResolvedDimStyle(styleName, dimType);
     if (styleOverride == nullptr) {
-        resolvedDimStyle = globalDimStyle;
+        return globalDimStyle;
     }
-    else {
-        // NOTE: If there is style override, the returned instance SHOULD BE DELETED by caller code!!!
-        // that's pretty ugly, yet avoid to eliminate additional copy operation for most cases, as
-        // it's expected that style override is less commonly used feature comparing to just setting
-        // existing styles to the dimension entity
-        const auto styleOverrideCopy = styleOverride->getCopy();
-        styleOverrideCopy->mergeWith(globalDimStyle, LC_DimStyle::ModificationAware::UNSET, LC_DimStyle::ModificationAware::UNSET);
-        resolvedDimStyle = styleOverrideCopy;
+    // NOTE: If there is style override, the returned instance SHOULD BE DELETED by caller code!!!
+    // that's pretty ugly, yet avoid to eliminate additional copy operation for most cases, as
+    // it's expected that style override is less commonly used feature comparing to just setting
+    // existing styles to the dimension entity
+    LC_DimStyle* styleOverrideCopy = styleOverride->getCopy();
+    if (globalDimStyle != nullptr) {
+        styleOverrideCopy->mergeWith(globalDimStyle, LC_DimStyle::ModificationAware::UNSET,
+                                     LC_DimStyle::ModificationAware::UNSET);
     }
-    return resolvedDimStyle;
+    return styleOverrideCopy;
 }
 
 LC_DimStyle* RS_Graphic::getEffectiveDimStyleForEdit(const QString& styleName, const RS2::EntityType dimType,
                                                      const LC_DimStyle* styleOverride) const {
-    const auto globalDimStyle = getResolvedDimStyle(styleName, dimType);
-    LC_DimStyle* resolvedDimStyle = nullptr;
+    LC_DimStyle* globalDimStyle = getResolvedDimStyle(styleName, dimType);
     if (styleOverride == nullptr) {
-        resolvedDimStyle = globalDimStyle->getCopy();
+        return globalDimStyle != nullptr ? globalDimStyle->getCopy() : nullptr;
     }
-    else {
-        const auto styleOverrideCopy = styleOverride->getCopy();
-        styleOverrideCopy->mergeWith(globalDimStyle, LC_DimStyle::ModificationAware::UNSET, LC_DimStyle::ModificationAware::UNSET);
-        resolvedDimStyle = styleOverrideCopy;
+    LC_DimStyle* styleOverrideCopy = styleOverride->getCopy();
+    if (globalDimStyle != nullptr) {
+        styleOverrideCopy->mergeWith(globalDimStyle, LC_DimStyle::ModificationAware::UNSET,
+                                     LC_DimStyle::ModificationAware::UNSET);
     }
-    return resolvedDimStyle;
+    return styleOverrideCopy;
 }
 
 LC_DimStyle* RS_Graphic::getResolvedDimStyle(const QString& dimStyleName, const RS2::EntityType dimType) const {

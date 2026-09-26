@@ -217,6 +217,7 @@ void LC_GridSystem::drawGridPointsBulk(RS_Painter *painter) const {
     }
     // all points are drawn by single call
     painter->drawPoints(points.data(), points.size());
+    }
 }
 
 void LC_GridSystem::drawGridLines(RS_Painter* painter, LC_GraphicViewport* view) {

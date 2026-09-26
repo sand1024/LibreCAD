@@ -307,6 +307,10 @@ void LC_PenInfoRegistry::registerLineTypes(){
     doRegisterLineType(":linetypes/linetype03.lci", tr("Dash (tiny)"), RS2::DashLineTiny);
     doRegisterLineType(":linetypes/linetype03.lci", tr("Dash (small)"), RS2::DashLine2);
     doRegisterLineType(":linetypes/linetype03.lci", tr("Dash (large)"), RS2::DashLineX2);
+    doRegisterLineType(":linetypes/linetype08.lci", tr("Hidden"), RS2::HiddenLine);
+    doRegisterLineType(":linetypes/linetype08.lci", tr("Hidden (tiny)"), RS2::HiddenLineTiny);
+    doRegisterLineType(":linetypes/linetype08.lci", tr("Hidden (small)"), RS2::HiddenLine2);
+    doRegisterLineType(":linetypes/linetype08.lci", tr("Hidden (large)"), RS2::HiddenLineX2);
     doRegisterLineType(":linetypes/linetype04.lci", tr("Dash Dot"), RS2::DashDotLine);
     doRegisterLineType(":linetypes/linetype04.lci", tr("Dash Dot (tiny)"), RS2::DashDotLineTiny);
     doRegisterLineType(":linetypes/linetype04.lci", tr("Dash Dot (small)"), RS2::DashDotLine2);
@@ -319,6 +323,10 @@ void LC_PenInfoRegistry::registerLineTypes(){
     doRegisterLineType(":linetypes/linetype06.lci", tr("Center (tiny)"), RS2::CenterLineTiny);
     doRegisterLineType(":linetypes/linetype06.lci", tr("Center (small)"), RS2::CenterLine2);
     doRegisterLineType(":linetypes/linetype06.lci", tr("Center (large)"), RS2::CenterLineX2);
+    doRegisterLineType(":linetypes/linetype09.lci", tr("Phantom"), RS2::PhantomLine);
+    doRegisterLineType(":linetypes/linetype09.lci", tr("Phantom (tiny)"), RS2::PhantomLineTiny);
+    doRegisterLineType(":linetypes/linetype09.lci", tr("Phantom (small)"), RS2::PhantomLine2);
+    doRegisterLineType(":linetypes/linetype09.lci", tr("Phantom (large)"), RS2::PhantomLineX2);
     doRegisterLineType(":linetypes/linetype07.lci", tr("Border"), RS2::BorderLine);
     doRegisterLineType(":linetypes/linetype07.lci", tr("Border (tiny)"), RS2::BorderLineTiny);
     doRegisterLineType(":linetypes/linetype07.lci", tr("Border (small)"), RS2::BorderLine2);

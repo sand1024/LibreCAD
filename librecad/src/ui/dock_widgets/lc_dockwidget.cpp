@@ -28,6 +28,7 @@ LC_DockWidget::LC_DockWidget(QWidget* parent, const QString& title, const QStrin
     : QDockWidget{title, parent, flags}, m_verticalTitle{verticalTitle}, m_horizontalTitle{title} {
 }
 
+// fixme - sand - review how title is set and updated!!!
 void LC_DockWidget::updateTitleOld() {
     const DockWidgetFeatures currentFeatures = features();
     const auto verticalTitleBar = currentFeatures & QDockWidget::DockWidgetVerticalTitleBar;

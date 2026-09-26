@@ -22,12 +22,14 @@
 **
 ******************************************************************************/
 
+#include <cstdlib>
+
 #include "pdf_print_loop.h"
 
 #include <QPrinter>
 #include <QtCore>
 
-#include "lc_documentsstorage.h"
+#include "console_command_utils.h"
 #include "lc_graphicviewport.h"
 #include "lc_printing.h"
 #include "lc_printviewportrenderer.h"
@@ -40,38 +42,40 @@ static bool openDocAndSetGraphic(RS_Document**, RS_Graphic**, const QString&);
 static void touchGraphic(RS_Graphic*, const PdfPrintParams&);
 static void setupPrinterAndPaper(const RS_Graphic*, QPrinter&, PdfPrintParams&);
 static void drawGraphic(RS_Graphic *graphic, QPrinter &printer, RS_Painter &painter);
+static void reportWriteFailure(const QString& outFile);
 
 void PdfPrintLoop::run(){
+    int failed = 0;
     if (m_params.outFile.isEmpty()) {
-        for (auto &&f : m_params.dxfFiles) {
-            printOneDxfToOnePdf(f);
+        for (auto &&f : m_params.inputFiles) {
+            if (!printOneFileToOnePdf(f))
+                ++failed;
         }
     } else {
-        printManyDxfToOnePdf();
+        failed = printManyFilesToOnePdf();
     }
-    emit finished();
+    emit finished(failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
 
-void PdfPrintLoop::printOneDxfToOnePdf(const QString& dxfFile) {
+bool PdfPrintLoop::printOneFileToOnePdf(const QString& inputFile) {
 
     // Main code logic and flow for this method is originally stolen from
     // QC_ApplicationWindow::slotFilePrint(bool printPDF) method.
     // But finally it was split in to smaller parts.
 
-    const QFileInfo dxfFileInfo(dxfFile);
+    QFileInfo inputFileInfo(inputFile);
     m_params.outFile =
-        (m_params.outDir.isEmpty() ? dxfFileInfo.path() : m_params.outDir)
-        + "/" + dxfFileInfo.completeBaseName() + ".pdf";
+        (m_params.outDir.isEmpty() ? inputFileInfo.path() : m_params.outDir)
+        + "/" + inputFileInfo.completeBaseName() + ".pdf";
 
     RS_Document *doc = nullptr;
     RS_Graphic *graphic = nullptr;
 
-    if (!openDocAndSetGraphic(&doc, &graphic, dxfFile)) {
-        return;
-    }
+    if (!openDocAndSetGraphic(&doc, &graphic, inputFile))
+        return false;
 
-    qDebug() << "Printing" << dxfFile << "to" << m_params.outFile << ">>>>";
+    qDebug() << "Printing" << inputFile << "to" << m_params.outFile << ">>>>";
 
     touchGraphic(graphic, m_params);
 
@@ -79,7 +83,14 @@ void PdfPrintLoop::printOneDxfToOnePdf(const QString& dxfFile) {
 
     setupPrinterAndPaper(graphic, printer, m_params);
 
+    // The printer opens the output file when painting begins. That is the only
+    // write failure Qt reports: its PDF engine ignores errors once the file is open.
     RS_Painter painter(&printer);
+    if (!painter.isActive()) {
+        reportWriteFailure(m_params.outFile);
+        delete doc;
+        return false;
+    }
 
     if (m_params.monochrome) {
         painter.setDrawingMode(RS2::ModeBW);
@@ -89,16 +100,18 @@ void PdfPrintLoop::printOneDxfToOnePdf(const QString& dxfFile) {
 
     painter.end();
 
-    qDebug() << "Printing" << dxfFile << "to" << m_params.outFile << "DONE";
+    qDebug() << "Printing" << inputFile << "to" << m_params.outFile << "DONE";
 
     delete doc;
+    return true;
 }
 
-void PdfPrintLoop::printManyDxfToOnePdf() {
-    struct DxfContentItems {
+
+int PdfPrintLoop::printManyFilesToOnePdf() {
+    struct PrintContentItem {
         RS_Document* doc;
         RS_Graphic* graphic;
-        QString dxfFile;
+        QString inputFile;
         QPageSize::PageSizeId paperSize;
     };
 
@@ -107,27 +120,32 @@ void PdfPrintLoop::printManyDxfToOnePdf() {
         m_params.outFile = m_params.outDir + "/" + outFileInfo.fileName();
     }
 
-    QVector<DxfContentItems> contentItems;
+    QVector<PrintContentItem> contentItems;
     int nrPages = 0;
+    int failed = 0;
 
-    // FIXME: Should probably open and print all dxf files in one 'for' loop.
+    // FIXME: Should probably open and print all input files in one 'for' loop.
     // Tried but failed to do this. It looks like some 'chicken and egg'
     // situation for the QPrinter and RS_PainterQt. Therefore, first open
-    // all dxf files and apply required actions. Then run another 'for'
+    // all input files and apply required actions. Then run another 'for'
     // loop for actual printing.
-    for (const auto &dxfFile : std::as_const(m_params.dxfFiles)) {
-        DxfContentItems page;
-        page.dxfFile = dxfFile;
-        if (!openDocAndSetGraphic(&page.doc, &page.graphic, dxfFile)) {
+    for (auto inputFile : m_params.inputFiles) {
+        PrintContentItem page;
+        page.inputFile = inputFile;
+        if (!openDocAndSetGraphic(&page.doc, &page.graphic, inputFile)) {
+            ++failed;
             continue;
         }
 
-        qDebug() << "Opened" << dxfFile;
+        qDebug() << "Opened" << inputFile;
 
         touchGraphic(page.graphic, m_params);
         contentItems.append(page);
         nrPages++;
     }
+
+    if (contentItems.isEmpty())
+        return failed == 0 ? m_params.inputFiles.size() : failed;
 
     QPrinter printer(QPrinter::HighResolution);
 
@@ -138,7 +156,15 @@ void PdfPrintLoop::printManyDxfToOnePdf() {
         setupPrinterAndPaper(contentItems.at(0).graphic, printer, m_params);
     }
 
+    // The printer opens the output file when painting begins.
     RS_Painter painter(&printer);
+    if (!painter.isActive()) {
+        reportWriteFailure(m_params.outFile);
+        for (const auto &item : contentItems) {
+            delete item.doc;
+        }
+        return failed + static_cast<int>(contentItems.size());
+    }
 
     if (m_params.monochrome) {
         painter.setDrawingMode(RS2::ModeBW);
@@ -148,12 +174,12 @@ void PdfPrintLoop::printManyDxfToOnePdf() {
     for (const auto &item : contentItems) {
         nrPages--;
 
-        qDebug() << "Printing" << item.dxfFile
+        qDebug() << "Printing" << item.inputFile
                  << "to" << m_params.outFile << ">>>>";
 
         drawGraphic(item.graphic, printer, painter);
 
-        qDebug() << "Printing" << item.dxfFile
+        qDebug() << "Printing" << item.inputFile
                  << "to" << m_params.outFile << "DONE";
 
         delete item.doc;
@@ -164,26 +190,26 @@ void PdfPrintLoop::printManyDxfToOnePdf() {
     }
 
     painter.end();
+    return failed;
+}
+
+static void reportWriteFailure(const QString& outFile){
+    qCritical("ERROR: failed to write '%s'", qPrintable(outFile));
 }
 
 static bool openDocAndSetGraphic(RS_Document** doc, RS_Graphic** graphic,
     const QString& dxfFile){
-    *doc = new RS_Graphic();
-    const LC_DocumentsStorage storage;
-    if (!storage.loadDocument((*doc)->getGraphic(), dxfFile, RS2::FormatUnknown)) {
-    // if (!(*doc)->open(dxfFile, RS2::FormatUnknown)) {
-        qDebug() << "ERROR: Failed to open document" << dxfFile;
+    auto* newGraphic = new RS_Graphic();
+    *doc = newGraphic;
+    // LC_Console::importGraphic() reports on stderr. Importing through the
+    // document storage opens a message box no console command can close.
+    if (!LC_Console::importGraphic(*newGraphic, dxfFile)) {
         delete *doc;
+        *doc = nullptr;
         return false;
     }
 
-    *graphic = (*doc)->getGraphic();
-    if (*graphic == nullptr) {
-        qDebug() << "ERROR: No graphic in" << dxfFile;
-        delete *doc;
-        return false;
-    }
-
+    *graphic = newGraphic;
     return true;
 }
 
@@ -215,29 +241,15 @@ static void setupPrinterAndPaper(const RS_Graphic* graphic, QPrinter& printer,
     bool landscape = false;
     const LC_PlotSettings* ps = graphic->getPlotSettings();
     const RS2::PaperFormat pf = ps->getPaperFormat(&landscape);
-    const QPageSize::PageSizeId paperSize = LC_Printing::rsToQtPaperFormat(pf);
+    const QPageSize::PageSizeId paperSizeName = LC_Printing::rsToQtPaperFormat(pf);
 
-    if (paperSize == QPageSize::Custom){
-        const RS_Vector r = ps->getPaperSize();
-        RS_Vector s = RS_Units::convert(r, graphic->getUnit(),
-            RS2::Millimeter);
-        if (landscape) {
-            s = s.flipXY();
-        }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-        printer.setPageSize(QPageSize{QSizeF{s.x,s.y}, QPageSize::Millimeter});
-#else
-        printer.setPaperSize(QSizeF{s.x,s.y}, QPrinter::Millimeter);
-#endif
-    } else {
-        printer.setPageSize(paperSize);
-    }
+    RS_Vector paperSize = ps->getPaperSize();
+    QMarginsF paperMargins{ps->getMarginLeftMm(),
+                           ps->getMarginRightMm(),
+                           ps->getMarginTopMm(),
+                           ps->getMarginBottomMm()};
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-    printer.setPageOrientation(landscape ? QPageLayout::Landscape : QPageLayout::Portrait);
-#else
-    printer.setOrientation(landscape ? QPrinter::Landscape : QPrinter::Portrait);
-#endif
+    LC_Printing::setupPageLayout(printer, landscape, paperSizeName, paperSize, graphic->getUnit(), paperMargins);
 
     printer.setOutputFileName(params.outFile);
     printer.setOutputFormat(QPrinter::PdfFormat);

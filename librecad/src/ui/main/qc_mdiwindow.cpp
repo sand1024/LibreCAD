@@ -27,19 +27,27 @@
 #include "qc_mdiwindow.h"
 
 #include <QCloseEvent>
+#include <QDir>
+#include <QMdiArea>
 #include <QMdiArea>
 #include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QMdiArea>
+#include <QVBoxLayout>
+#include <QWidget>
+#include<iostream>
 #include<iostream>
 
 #include "lc_documentsstorage.h"
 #include "lc_fontfileviewer.h"
 #include "lc_graphicviewport.h"
+#include "lc_layouttabbar.h"
 #include "lc_printpreviewview.h"
 #include "qc_applicationwindow.h"
 #include "qg_exitdialog.h"
 #include "rs_debug.h"
+#include "rs_settings.h"
 
 /**
  * Constructor.
@@ -56,10 +64,19 @@ QC_MDIWindow::QC_MDIWindow(RS_Document* doc, QWidget* parent, const bool printPr
     m_cadMdiArea = qobject_cast<QMdiArea*>(parent);
 
     if (doc == nullptr) {
+        RS_DEBUG->print("QC_MDIWindow constructor: creating new document");
         m_document = new RS_Graphic();
         m_document->initForNewDocument();
-    }
-    else {
+
+        QString autosaveFilePrefix = LC_GET_ONE_STR("Path", "AutosaveFilePrefix", "#");
+        QString autosaveFileName = QDir::tempPath() + "/" + autosaveFilePrefix + tr("Unnamed") + ".dxf";
+        m_document->getGraphic()->setAutosaveFileName(autosaveFileName);
+        m_document->getGraphic()->setFormatType(RS2::FormatDXFRW);
+
+        RS_DEBUG->print("QC_MDIWindow constructor: new document created, autosaveFilename='%s', formatType=DXF",
+                        m_document->getGraphic()->getAutoSaveFileName().toLatin1().data());
+    } else {
+        RS_DEBUG->print("QC_MDIWindow constructor: using existing document");
         m_document = doc;
     }
 
@@ -79,9 +96,19 @@ QC_MDIWindow::QC_MDIWindow(RS_Document* doc, QWidget* parent, const bool printPr
  */
 QC_MDIWindow::~QC_MDIWindow() {
     try {
+        // Always unregister as a modification listener, regardless of
+        // isCleanUp(): RS_GraphicView::beginClose() sets that flag
+        // unconditionally on every window close (not just full application
+        // shutdown, which is what the guard below is actually meant to
+        // detect), so gating this on it left a dangling QC_MDIWindow*
+        // in RS_Document::m_modificationListeners on every normal close.
+        // For a print-preview window - which shares its parent's document -
+        // the very next print-preview open then walks that list and derefs
+        // the freed pointer. See issue #2764.
+        removeWidgetsListeners();
+
         if (!(m_graphicView != nullptr && m_graphicView->isCleanUp())) {
             //do not clear layer/block lists, if application is being closed
-            removeWidgetsListeners();
             if (m_owner) {
                 delete m_document;
             }
@@ -105,7 +132,38 @@ void QC_MDIWindow::setupGraphicView([[maybe_unused]]const QWidget* parent, const
     m_graphicView->setPrintPreview(printPreview);
     m_graphicView->setObjectName("graphicview");
 
-    setWidget(m_graphicView);
+    // auto receiver = dynamic_cast<QC_ApplicationWindow *>(parent->window());
+    // if (receiver != nullptr) {
+    //     connect(m_graphicView, &RS_GraphicView::previous_zoom_state, receiver, &QC_ApplicationWindow::setPreviousZoomEnable);
+    // }
+
+    if (printPreview) {
+        // Print-preview windows don't show the layout tab bar — the
+        // layout is fixed for the preview lifetime.  Wire the graphic
+        // view as the MDI window's sole widget, matching legacy behavior.
+        setWidget(m_graphicView);
+    } else {
+        // PR 10a — wrap the graphic view and the LC_LayoutTabBar in a
+        // vertical container.  The tab bar surfaces RS_Graphic::layouts()
+        // and tracks the active handle; no rendering swap (deferred to
+        // PR 12 follow-up).  Tab bar binds to the document's graphic
+        // when one is present.
+        auto* container = new QWidget(this);
+        container->setObjectName("mdiContentContainer");
+        auto* containerLayout = new QVBoxLayout(container);
+        containerLayout->setContentsMargins(0, 0, 0, 0);
+        containerLayout->setSpacing(0);
+        containerLayout->addWidget(m_graphicView, /*stretch=*/1);
+
+        m_layoutTabBar = new LC_LayoutTabBar(container);
+        m_layoutTabBar->setObjectName("layoutTabBarHost");
+        containerLayout->addWidget(m_layoutTabBar, /*stretch=*/0);
+
+        if (m_document != nullptr) {
+            m_layoutTabBar->setGraphic(m_document->getGraphic());
+        }
+        setWidget(container);
+    }
 }
 
 void QC_MDIWindow::addWidgetsListeners() {
@@ -262,7 +320,7 @@ void QC_MDIWindow::slotFileNew() const {
  * Creates a new document, loading template, in this MDI window.
  */
 bool QC_MDIWindow::loadDocumentFromTemplate(const QString& fileName, const RS2::FormatType type) const {
-    return m_documentsStorage->loadDocumentFromTemplate(m_document, m_graphicView, fileName, type);
+    return LC_DocumentsStorage{}.loadDocumentFromTemplate(m_document, m_graphicView, fileName, type);
 }
 
 /**
@@ -270,7 +328,7 @@ bool QC_MDIWindow::loadDocumentFromTemplate(const QString& fileName, const RS2::
  */
 bool QC_MDIWindow::loadDocument(const QString& fileName, const RS2::FormatType type) {
     removeWidgetsListeners();
-    const bool loaded = m_documentsStorage->loadDocument(m_document, fileName, type);
+    const bool loaded = LC_DocumentsStorage{}.loadDocument(m_document, fileName, type);
     if (loaded) {
         const RS_Graphic* graphic = m_document->getGraphic();
         if (graphic != nullptr) {
@@ -315,14 +373,13 @@ bool QC_MDIWindow::loadDocument(const QString& fileName, const RS2::FormatType t
  *         is invalid.
  */
 bool QC_MDIWindow::saveDocument(bool& cancelled, [[maybe_unused]] bool isAutoSave) {
-    const bool result = m_documentsStorage->saveDocument(m_document, m_graphicView, cancelled);
+    const bool result = LC_DocumentsStorage{}.saveDocument(m_document, m_graphicView, cancelled);
     setWindowModified(m_document->isModified());
     return result;
 }
 
 bool QC_MDIWindow::autoSaveDocument(QString& autosaveFileName) const {
-    const bool result = m_documentsStorage->autoSaveDocument(m_document, m_graphicView, autosaveFileName);
-    return result;
+    return LC_DocumentsStorage{}.autoSaveDocument(m_document, m_graphicView, autosaveFileName);
 }
 
 /**
@@ -334,7 +391,7 @@ bool QC_MDIWindow::autoSaveDocument(QString& autosaveFileName) const {
  *         is invalid.
  */
 bool QC_MDIWindow::saveDocumentAs(bool& cancelled) {
-    const bool result = m_documentsStorage->saveDocumentAs(m_document, m_graphicView, cancelled);
+    const bool result = LC_DocumentsStorage{}.saveDocumentAs(m_document, m_graphicView, cancelled);
     setWindowModified(m_document->isModified());
     return result;
 }

@@ -56,9 +56,17 @@ public:
      */
     std::unique_ptr<RS_FilterInterface> getExportFilter(const QString& fileName, RS2::FormatType t) const;
 
-    bool fileImport(RS_Graphic& graphic, const QString& file, RS2::FormatType type = RS2::FormatUnknown) const;
+    bool fileImport(RS_Graphic& graphic, const QString& file, RS2::FormatType type = RS2::FormatUnknown,
+        std::function<bool(bool /*partial*/, const QString& /*errorMsg*/)> errorCallback = nullptr) const;
 
     bool fileExport(RS_Graphic& graphic, const QString& file, RS2::FormatType type = RS2::FormatUnknown) const;
+    /** What the last fileExport() left out, one item per line (RS_FilterInterface::exportReport). */
+    QString lastExportReport() const { return m_lastExportReport; }
+    /**
+     * @return true if LibreCAD can write files in format @p type;
+     *         false for RS2::FormatUnknown.
+     */
+    bool canExport(RS2::FormatType type) const;
     /** \brief detectFormat detect file format type
      * \param file type
      * \param forRead read the file to verify dxf/dxfrw type, default to true
@@ -69,6 +77,8 @@ public:
 private:
     /** a list of pointers to static functions to create file filters **/
     static std::vector<std::function<RS_FilterInterface*()>> getFilters();
+
+    mutable QString m_lastExportReport;
 
     //singleton
     RS_FileIO() = default;

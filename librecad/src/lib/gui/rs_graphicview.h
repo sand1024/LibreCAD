@@ -28,6 +28,9 @@
 #ifndef RS_GRAPHICVIEW_H
 #define RS_GRAPHICVIEW_H
 
+#include <memory>
+
+#include <QIcon>
 #include <QWidget>
 #include <memory>
 
@@ -123,6 +126,8 @@ public:
     QIcon getCurrentActionIcon() const;
     void killAllActions() const;
     bool killAllActionsWithResult() const;
+    void beginClose();
+    bool isClosing() const;
     void back(Qt::KeyboardModifiers modifiers) const;
     void processEnterKey() const;
     void commandEvent(RS_CommandEvent *e) const;
@@ -154,7 +159,7 @@ public:
 
     RS2::EntityType getTypeToSelect() const;
     void setTypeToSelect(RS2::EntityType mType);
-    virtual QString obtainEntityDescription(const RS_Entity* entity, RS2::EntityDescriptionLevel descriptionLevel);
+    virtual QString obtainEntityDescription(RS_Entity* entity, RS2::EntityDescriptionLevel descriptionLevel);
     LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPreferences() const;
 
     bool getPanOnZoom() const;
@@ -212,6 +217,7 @@ private:
 
     /** if true, graphicView is under cleanup */
     bool m_bIsCleanUp = false;
+    bool m_closing = false;
     bool m_printPreview = false;
 
     RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;

@@ -21,14 +21,23 @@
  ******************************************************************************/
 #include "lc_graphicviewport.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+
 #include <QDateTime>
 
+#include "lc_defaults.h"
+#include "lc_containertraverser.h"
 #include "lc_defaults.h"
 #include "lc_graphicviewportlistener.h"
 #include "lc_linemath.h"
 #include "lc_overlayentitiescontainer.h"
 #include "lc_refpoint.h"
 #include "lc_settings_appearance.h"
+#include "lc_refpoint.h"
 #include "lc_undoablerelzero.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -38,6 +47,76 @@
 #include "rs_line.h"
 #include "rs_settings.h"
 #include "rs_units.h"
+
+namespace {
+
+// Percentile of sorted samples in [0,1].
+double leafPercentile(std::vector<double> v, double p) {
+    if (v.empty())
+        return 0.0;
+    std::sort(v.begin(), v.end());
+    const size_t i = std::min(
+        v.size() - 1,
+        static_cast<size_t>(p * static_cast<double>(v.size() - 1)));
+    return v[i];
+}
+
+// Tight view envelope from visible leaves (p02/p98 of leaf edge coords).
+// Returns false when the sample is too small to trust.
+bool denseLeafEnvelope(RS_EntityContainer &container, RS_Vector &outMin,
+                       RS_Vector &outMax) {
+    std::vector<double> minXs;
+    std::vector<double> maxXs;
+    std::vector<double> minYs;
+    std::vector<double> maxYs;
+    minXs.reserve(4096);
+    maxXs.reserve(4096);
+    minYs.reserve(4096);
+    maxYs.reserve(4096);
+
+    for (RS_Entity *e :
+         lc::LC_ContainerTraverser{container, RS2::ResolveAll}.entities()) {
+        if (e == nullptr || e->isContainer() || !e->isVisible())
+            continue;
+        e->calculateBorders();
+        const RS_Vector mn = e->getMin();
+        const RS_Vector mx = e->getMax();
+        if (!mn.valid || !mx.valid)
+            continue;
+        if (!std::isfinite(mn.x) || !std::isfinite(mn.y) || !std::isfinite(mx.x)
+            || !std::isfinite(mx.y))
+            continue;
+        if (std::abs(mn.x) > 1.0e9 || std::abs(mn.y) > 1.0e9
+            || std::abs(mx.x) > 1.0e9 || std::abs(mx.y) > 1.0e9)
+            continue;
+        // Skip degenerate origin pins.
+        if (std::abs(mn.x) < 1.0e-9 && std::abs(mx.x) < 1.0e-9
+            && std::abs(mn.y) < 1.0e-9 && std::abs(mx.y) < 1.0e-9)
+            continue;
+        minXs.push_back(mn.x);
+        maxXs.push_back(mx.x);
+        minYs.push_back(mn.y);
+        maxYs.push_back(mx.y);
+    }
+    if (minXs.size() < 50)
+        return false;
+
+    outMin = RS_Vector(leafPercentile(minXs, 0.02), leafPercentile(minYs, 0.02));
+    outMax = RS_Vector(leafPercentile(maxXs, 0.98), leafPercentile(maxYs, 0.98));
+    if (outMax.x <= outMin.x || outMax.y <= outMin.y)
+        return false;
+
+    // Small pad so dense-edge symbols are not flush with the window border.
+    const double padX = 0.02 * (outMax.x - outMin.x);
+    const double padY = 0.02 * (outMax.y - outMin.y);
+    outMin.x -= padX;
+    outMin.y -= padY;
+    outMax.x += padX;
+    outMax.y += padY;
+    return true;
+}
+
+} // namespace
 
 LC_GraphicViewport::LC_GraphicViewport():
     m_grid{std::make_unique<RS_Grid>(this)},
@@ -550,9 +629,15 @@ void LC_GraphicViewport::zoomAutoY(const bool axis) {
 
 void LC_GraphicViewport::zoomAutoEnsurePointsIncluded(const RS_Vector &wcsP1, const RS_Vector &wcsP2, const RS_Vector &wcsP3) {
     if (m_document != nullptr) {
-        m_document->calculateBorders();
-        RS_Vector min = m_document->getMin();
-        RS_Vector max = m_document->getMax();
+        // Match zoomAuto: start from view borders (dense framing when active),
+        // then expand to include the extra WCS points (e.g. UCS axis).
+        RS_Vector min;
+        RS_Vector max;
+        if (!getViewBorders(min, max)) {
+            m_document->calculateBorders();
+            min = m_document->getMin();
+            max = m_document->getMax();
+        }
 
         min = RS_Vector::minimum(min, wcsP1);
         min = RS_Vector::minimum(min, wcsP2);
@@ -561,7 +646,7 @@ void LC_GraphicViewport::zoomAutoEnsurePointsIncluded(const RS_Vector &wcsP1, co
         max = RS_Vector::maximum(max, wcsP1);
         max = RS_Vector::maximum(max, wcsP2);
         max = RS_Vector::maximum(max, wcsP3);
-        doZoomAuto(min,max, true, true);
+        doZoomAuto(min, max, true, true);
     }
 }
 
@@ -572,13 +657,28 @@ void LC_GraphicViewport::zoomAutoEnsurePointsIncluded(const RS_Vector &wcsP1, co
  * @param keepAspectRatio true: keep aspect ratio 1:1
  *                        false: factors in x and y are stretched to the max
  */
+bool LC_GraphicViewport::getViewBorders(RS_Vector &min, RS_Vector &max) {
+    if (m_document == nullptr)
+        return false;
+
+    m_document->calculateBorders();
+    min = m_document->getMin();
+    max = m_document->getMax();
+    if (!min.valid || !max.valid)
+        return false;
+    if (max.x < min.x || max.y < min.y)
+        return false;
+
+    return true;
+}
+
 void LC_GraphicViewport::zoomAuto(const bool axis, const bool keepAspectRatio) {
     RS_DEBUG->print("RS_GraphicView::zoomAuto");
     if (m_document != nullptr) {
-        m_document->calculateBorders();
-        const RS_Vector min = m_document->getMin();
-        const RS_Vector max = m_document->getMax();
-        doZoomAuto(min,max, axis, keepAspectRatio);
+        RS_Vector min;
+        RS_Vector max;
+        if (getViewBorders(min, max))
+            doZoomAuto(min, max, axis, keepAspectRatio);
     }
     RS_DEBUG->print("RS_GraphicView::zoomAuto OK");
 }
@@ -690,7 +790,7 @@ void LC_GraphicViewport::zoomPrevious() {
 void LC_GraphicViewport::saveView() {
     if (m_graphic != nullptr) {
         if (m_modifyOnZoom) {
-            getGraphic()->setModified(true);
+            m_graphic->setModified(true);
         }
     }
     const QDateTime noUpdateWindow = QDateTime::currentDateTime().addMSecs(-500);
@@ -926,7 +1026,10 @@ LC_UCS *LC_GraphicViewport::createUCSEntity(const RS_Vector &origin, const doubl
 }
 
 void LC_GraphicViewport::applyUCSAfterLoad(){
-    LC_UCS* ucsCurrent = getGraphic()->getCurrentUCS();
+    if (m_graphic == nullptr) {
+        return;
+    }
+    LC_UCS* ucsCurrent = m_graphic->getCurrentUCS();
     if (ucsCurrent != nullptr) {
         const RS_Vector originToSet = ucsCurrent->getOrigin();
         const double angleToSet = ucsCurrent->getXAxisDirection();
@@ -1183,12 +1286,15 @@ void LC_GraphicViewport::zoomPageEx() {
     }
 
     const RS_Graphic *graphic = m_document->getGraphic();
-    if (graphic == nullptr) {
+    if (graphic == nullptr || m_graphic == nullptr) {
         return;
     }
 
     const RS2::Unit dest = graphic->getUnit();
     const LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    if (ps == nullptr) {
+        return;
+    }
     const double marginsWidth = RS_Units::convert(ps->getMarginLeftMm() + ps->getMarginRightMm(), RS2::Millimeter, dest);
     const double marginsHeight = RS_Units::convert(ps->getMarginTopMm() + ps->getMarginBottomMm(), RS2::Millimeter, dest);
 

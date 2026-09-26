@@ -881,7 +881,7 @@ QVariant LC_LayerTreeModel::data ( const QModelIndex & index, const int role ) c
                 return displayName;
             }
             break;
-        }
+            }
         case Qt::BackgroundRole: {
             // if (layerItem->isVirtual()) {
             //     // background for virtual layer

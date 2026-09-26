@@ -23,6 +23,121 @@
 
 #include "lc_actionhandlerfactory.h"
 
+#include "lc_action_block_explode.h"
+#include "lc_action_block_insert.h"
+#include "lc_action_block_library_insert.h"
+#include "lc_action_draw_arc_2points_angle.h"
+#include "lc_action_draw_arc_2points_height.h"
+#include "lc_action_draw_arc_2points_length.h"
+#include "lc_action_draw_arc_2points_radius.h"
+#include "lc_action_draw_arc_3points.h"
+#include "lc_action_draw_arc_center_point_param.h"
+#include "lc_action_draw_arc_tangential.h"
+#include "lc_action_draw_bounding_box.h"
+#include "lc_action_draw_center_line.h"
+#include "lc_action_draw_center_mark.h"
+#include "lc_action_draw_circle_2points.h"
+#include "lc_action_draw_circle_2points_radius.h"
+#include "lc_action_draw_circle_3points.h"
+#include "lc_action_draw_circle_by_arc.h"
+#include "lc_action_draw_circle_center_point.h"
+#include "lc_action_draw_circle_center_radius.h"
+#include "lc_action_draw_circle_inscribe.h"
+#include "lc_action_draw_circle_tangental_1entity_2points.h"
+#include "lc_action_draw_circle_tangental_2entities_1point.h"
+#include "lc_action_draw_circle_tangental_2entities_radius.h"
+#include "lc_action_draw_circle_tangental_3entities.h"
+#include "lc_action_draw_ellipse_1point.h"
+#include "lc_action_draw_ellipse_axis.h"
+#include "lc_action_draw_image.h"
+#include "lc_action_draw_line.h"
+#include "lc_action_draw_line_angle.h"
+#include "lc_action_draw_line_angle_rel.h"
+#include "lc_action_draw_line_bisector.h"
+#include "lc_action_draw_line_freehand.h"
+#include "lc_action_draw_line_from_point_to_line.h"
+#include "lc_action_draw_line_parallel.h"
+#include "lc_action_draw_line_parallel_through.h"
+#include "lc_action_draw_line_radiant.h"
+#include "lc_action_draw_line_rel_angle.h"
+#include "lc_action_draw_line_snake.h"
+#include "lc_actiondrawlinedirect.h"
+#include "lc_action_draw_mtext.h"
+#include "lc_action_draw_point.h"
+#include "lc_action_draw_points_lattice.h"
+#include "lc_action_draw_points_line.h"
+#include "lc_action_draw_polygon_center_corner.h"
+#include "lc_action_draw_polygon_center_tan.h"
+#include "lc_action_draw_polygon_corner_corner.h"
+#include "lc_action_draw_polygon_side_side.h"
+#include "lc_action_draw_polyline.h"
+#include "lc_action_draw_rectangle_1point.h"
+#include "lc_action_draw_rectangle_2points.h"
+#include "lc_action_draw_rectangle_3points.h"
+#include "lc_action_draw_rectangle_simple.h"
+#include "lc_action_draw_slice_divide.h"
+#include "lc_action_draw_spline.h"
+#include "lc_action_draw_spline_points.h"
+#include "lc_action_draw_star.h"
+#include "lc_action_draw_text.h"
+#include "lc_action_edit_copy_cut.h"
+#include "lc_action_edit_paste_to_points.h"
+#include "lc_action_edit_paste_transform.h"
+#include "lc_action_edit_undo_redo.h"
+#include "lc_action_info_dist_point_to_entity.h"
+#include "lc_action_modify_align.h"
+#include "lc_action_modify_align_ref.h"
+#include "lc_action_modify_align_single.h"
+#include "lc_action_modify_attributes.h"
+#include "lc_action_modify_bevel.h"
+#include "lc_action_modify_break_divide.h"
+#include "lc_action_modify_cut.h"
+#include "lc_action_modify_delete.h"
+#include "lc_action_modify_delete_free.h"
+#include "lc_action_modify_duplicate.h"
+#include "lc_action_modify_entity.h"
+#include "lc_action_modify_explode_text.h"
+#include "lc_action_modify_line_gap.h"
+#include "lc_action_modify_line_join.h"
+#include "lc_action_modify_mirror.h"
+#include "lc_action_modify_move.h"
+#include "lc_action_modify_move_adjust.h"
+#include "lc_action_modify_move_rotate.h"
+#include "lc_action_modify_offset.h"
+#include "lc_action_modify_order.h"
+#include "lc_action_modify_revert_direction.h"
+#include "lc_action_modify_rotate.h"
+#include "lc_action_modify_rotate_twice.h"
+#include "lc_action_modify_round.h"
+#include "lc_action_modify_scale.h"
+#include "lc_action_modify_stretch.h"
+#include "lc_action_modify_trim.h"
+#include "lc_action_modify_trim_amount.h"
+#include "lc_action_polyline_add.h"
+#include "lc_action_polyline_append.h"
+#include "lc_action_polyline_arcs_to_lines.h"
+#include "lc_action_polyline_change_segment_type.h"
+#include "lc_action_polyline_delete_node.h"
+#include "lc_action_polyline_delete_node_between.h"
+#include "lc_action_polyline_equidistant.h"
+#include "lc_action_polyline_from_segment.h"
+#include "lc_action_polyline_trim.h"
+#include "lc_action_select_all.h"
+#include "lc_action_select_contour.h"
+#include "lc_action_select_generic.h"
+#include "lc_action_select_intersected.h"
+#include "lc_action_select_invert.h"
+#include "lc_action_select_layer.h"
+#include "lc_action_select_mode_toggle.h"
+#include "lc_action_select_points.h"
+#include "lc_action_select_quick.h"
+#include "lc_action_select_single.h"
+#include "lc_action_spline_add_point.h"
+#include "lc_action_spline_append_point.h"
+#include "lc_action_spline_from_polyline.h"
+#include "lc_action_spline_modify_explode.h"
+#include "lc_action_spline_remove_between.h"
+#include "lc_action_spline_remove_points.h"
 #include "lc_actioncontext.h"
 #include "lc_actiondimarc.h"
 #include "lc_actiondimordinate.h"
@@ -454,7 +569,8 @@ namespace InnerFactory{
                 return new LC_ActionDrawLineRelAngle(ctx, M_PI_2, false);
             }
             case RS2::ActionDrawPolyline: {
-                return new LC_ActionDrawPolyline(ctx);
+                const auto* startInLineMode = static_cast<const bool*>(data);
+                return new LC_ActionDrawPolyline(ctx, startInLineMode != nullptr && *startInLineMode);
             }
             case RS2::ActionDrawLineOrthogonalRel: {
                 return new LC_ActionDrawLineAngleRel(ctx, 90.0, true);
@@ -464,6 +580,9 @@ namespace InnerFactory{
             }
             case RS2::ActionDrawLineFromPointToLine: {
                 return new LC_ActionDrawLineFromPointToLine(ctx);
+            }
+            case RS2::ActionDrawLineDirect: {
+                return new LC_ActionDrawLineDirect(ctx);
             }
             case RS2::ActionDrawCenterLine: {
                 return new LC_ActionDrawCenterLine(ctx);
@@ -998,9 +1117,8 @@ namespace InnerFactory{
                 break;
             }
             default:
-                RS_DEBUG->print(RS_Debug::D_WARNING,
-                                &"LC_ActionsHandlerFactory::createActionInstance: No such action found. Type "[
-                                    actionType]);
+                LC_LOG(RS_Debug::D_WARNING) << "LC_ActionsHandlerFactory::createActionInstance: No such action found. Type "
+                                            << static_cast<int>(actionType);
                 break;
         }
         return nullptr;

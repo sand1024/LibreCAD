@@ -79,6 +79,7 @@ protected:
     void updateQuickInfoWidget(const RS_Entity *pEntity);
     void goToNeutralStatus();
     RS2::CursorType doGetMouseCursor(int status) override;
+    bool isInVisualSnapStatus(int status) override;
 
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
@@ -101,7 +102,6 @@ protected:
 private:
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
-    RS2::SnapRestriction m_snapRestriction = RS2::RestrictNothing;
     RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
 
     bool m_allowEntityQuickInfoForCtrl = false;

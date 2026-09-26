@@ -30,6 +30,17 @@
 #include <QStringList>
 #include <fstream>
 
+#include <QTextStream>
+#include <QStringList>
+#include <QDate>
+#include <QRegularExpression>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QStringConverter>
+#endif
+
+
+#include <QFile>
+
 #include "lc_containertraverser.h"
 #include "rs_arc.h"
 #include "rs_block.h"
@@ -92,14 +103,15 @@ bool RS_FilterLFF::fileImport(RS_Graphic& g, const QString& file, RS2::FormatTyp
         RS_Block* ch = font.letterAt(i);
 
         QString uCode;
-        uCode.setNum(ch->getName().at(0).unicode(), 16);
+        // the letter name is a full code point, which is a surrogate pair above U+FFFF
+        uCode.setNum(ch->getName().toUcs4().value(0), 16);
         while (uCode.length() < 4) {
             //            uCode.rightJustified(4, '0');
             uCode = "0" + uCode;
         }
         //ch->setName("[" + uCode + "] " + ch->getName());
         //letterList->rename(ch, QString("[%1]").arg(ch->getName()));
-        letterList->rename(ch, QString("[%1] %2").arg(uCode).arg(ch->getName().at(0)));
+        letterList->rename(ch, QString("[%1] %2").arg(uCode).arg(ch->getName()));
 
         g.addBlock(ch, false);
         ch->reparent(&g);
@@ -134,7 +146,11 @@ bool RS_FilterLFF::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
 
     QFile f(file);
     QTextStream ts(&f);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     ts.setEncoding(QStringConverter::Utf8);
+#else
+    ts.setCodec("UTF-8");
+#endif
     if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         RS_DEBUG->print("RS_FilterLFF::fileExport: open: OK");
 
@@ -193,7 +209,15 @@ bool RS_FilterLFF::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
             if (blk && !blk->isDeleted()) {
                 RS_DEBUG->print("002a: %s", blk->getName().toLocal8Bit().data());
 
-                ts << QString("\n%1\n").arg(blk->getName());
+                // Emit the glyph code compactly: leading zeros are optional in LFF,
+                // so "[0021] !" is written as "[21] !". The block's in-memory name
+                // stays zero-padded (the font viewer and block list rely on that);
+                // only the on-disk file is compacted. Names that do not start with a
+                // bracketed hex code pass through unchanged.
+                QString header = blk->getName();
+                static const QRegularExpression codeRe("^\\[0*([0-9A-Fa-f]+)\\]");
+                header.replace(codeRe, "[\\1]");
+                ts << QString("\n%1\n").arg(header);
 
                 // iterate through entities of this letter:
                 for (RS_Entity* e : lc::LC_ContainerTraverser{*blk, RS2::ResolveNone}.entities()) {
@@ -217,11 +241,10 @@ bool RS_FilterLFF::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
                         }
                         else if (e->rtti() == RS2::EntityBlock) {
                             const auto b = static_cast<RS_Block*>(e);
+                            // Reference codes are written compactly too; leading zeros
+                            // are optional and the reader parses any width.
                             QString uCode;
-                            uCode.setNum(b->getName().at(0).unicode(), 16);
-                            if (uCode.length() < 4) {
-                                uCode = uCode.rightJustified(4, '0');
-                            }
+                            uCode.setNum(b->getName().toUcs4().value(0), 16);
                             ts << QString("C%1\n").arg(uCode);
                         }
                         else if (e->rtti() == RS2::EntityPolyline) {

@@ -52,7 +52,7 @@ public:
 protected:
     QString m_dialogName;
     bool m_positionLoaded = false;
-    void setDialogName(const QString& dialogName) {m_dialogName = dialogName;} ;
+    void setDialogName(const QString& dialogName) {m_dialogName = dialogName;}
     void saveDialogPosition();
     void loadDialogPosition();
 

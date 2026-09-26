@@ -47,17 +47,18 @@ public:
     };
 
     explicit RS_EntityContainer(RS_EntityContainer* parent = nullptr, bool owner = true);
+    /** A deep copy: an owner clones its children, a non-owner shares them. */
     RS_EntityContainer(const RS_EntityContainer& other);
     RS_EntityContainer(const RS_EntityContainer& other, bool copyChildren);
-    RS_EntityContainer& operator =(const RS_EntityContainer& other);
-    RS_EntityContainer(RS_EntityContainer&& other) noexcept;
-    RS_EntityContainer& operator =(RS_EntityContainer&& other) noexcept;
-    //RS_EntityContainer(const RS_EntityContainer& ec);
+    // Containers own their children: an assigned or moved-from container could
+    // neither keep nor share them safely.
+    RS_EntityContainer& operator =(const RS_EntityContainer& other) = delete;
+    RS_EntityContainer(RS_EntityContainer&& other) = delete;
+    RS_EntityContainer& operator =(RS_EntityContainer&& other) = delete;
 
     ~RS_EntityContainer() override;
 
     RS_Entity* clone() const override;
-    virtual void detach();
 
     /** @return RS2::EntityContainer */
     RS2::EntityType rtti() const override {
@@ -65,6 +66,7 @@ public:
     }
 
     void reparent(RS_EntityContainer* newParent) override;
+    void clearDwgProvenance(unsigned what) override;
 
     /**
      * @return true: because entities made from this class
@@ -117,8 +119,10 @@ public:
     virtual void setEntityAt(int index, RS_Entity* en);
     virtual int findEntity(const RS_Entity* entity);
     int findEntityIndex(const RS_Entity* entity) const;
-    bool areNeighborsEntities(const RS_Entity* e1, const RS_Entity* e2) const;
+    bool areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2) const;
     virtual void clear();
+    /** Empties the container without deleting its entities: the caller owns them, parentless. */
+    std::vector<std::unique_ptr<RS_Entity>> takeEntities();
 
     //virtual unsigned long int count() {
     // return count(false);
@@ -217,6 +221,18 @@ public:
      */
     bool ignoredOnModification() const;
 
+    /**
+     * @brief ignoredSnap whether snapping is ignored
+     * @return true when entity of this container won't be considered for snapping points
+     */
+    bool ignoredSnap() const;
+
+    /**
+     * @brief appendNearby appends to nearby, in drawing order, the visible entities of this drawing
+     * that can lie within range of coord, judged from their borders without measuring any geometry.
+     */
+    void appendNearby(const RS_Vector& coord, double range, RS_EntityContainer& nearby) const;
+
     void push_back(RS_Entity* entity) {
         m_entities.push_back(entity);
     }
@@ -279,12 +295,6 @@ protected:
     mutable RS_EntityContainer* m_subContainer = nullptr;
 
 private:
-    /**
-     * @brief ignoredSnap whether snapping is ignored
-     * @return true when entity of this container won't be considered for snapping points
-     */
-    bool ignoredSnap() const;
-
     void debugEntityAlreadyPresentExists(const RS_Entity* entity) const;
 
     /** m_entities in the container */

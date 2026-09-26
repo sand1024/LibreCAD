@@ -27,19 +27,29 @@
 
 #include "rs_entitycontainer.h"
 
+#include <algorithm>
+#include <cmath>
+#include "rs_entitycontainer.h"
+
 #include <iostream>
+#include <optional>
 
 #include "lc_containertraverser.h"
 #include "lc_looputils.h"
 #include "qg_dialogfactory.h"
+#include "rs_block.h"
+#include "rs_blocklist.h"
 #include "rs_constructionline.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dimension.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
+#include "rs_graphic.h"
 #include "rs_information.h"
 #include "rs_insert.h"
 #include "rs_layer.h"
+#include "rs_layerlist.h"
 #include "rs_line.h"
 #include "rs_painter.h"
 #include "rs_solid.h"
@@ -72,6 +82,16 @@ namespace {
         entity.getNearestEndpoint(point, nullptr, &distance);
         return distance;
     }
+
+    void clearSelectionBeforeDeletion(RS_Entity* entity) {
+        if (entity == nullptr || !entity->getFlag(RS2::FlagSelected))
+            return;
+        if (RS_Document* document = entity->getDocument()) {
+            document->unselect(entity);
+        } else {
+            entity->setSelectionFlag(false);
+        }
+    }
 }
 
 /**
@@ -90,72 +110,28 @@ RS_EntityContainer::RS_EntityContainer(RS_EntityContainer* parent, const bool ow
 }
 
 /**
- * Copy constructor. Makes a deep copy of all entities.
+ * Copy constructor: a deep copy.
  */
+RS_EntityContainer::RS_EntityContainer(const RS_EntityContainer& other) : RS_EntityContainer(other, true) {
+}
 
-RS_EntityContainer::RS_EntityContainer(const RS_EntityContainer& other) : RS_Entity{other}, m_subContainer{other.m_subContainer},
-                                                                          m_entities{other.m_entities},
-                                                                          m_autoUpdateBorders{other.m_autoUpdateBorders},
-                                                                          m_entIdx{other.m_entIdx}, m_autoDelete{other.m_autoDelete} {
-    if (m_autoDelete) {
-        // fixme - sand - check this logic, looks suspicious!
-        for (auto& it : *this) {
-            if (it->isContainer()) {
-                it = it->clone();
-            }
-        }
+/**
+ * Copies the container and, with copyChildren, its children: an owner clones
+ * each child for the copy to own, a non-owner shares them.
+ */
+RS_EntityContainer::RS_EntityContainer(const RS_EntityContainer& other, const bool copyChildren)
+    : RS_Entity{other}, m_autoUpdateBorders{other.m_autoUpdateBorders}, m_entIdx{-1}, m_autoDelete{other.m_autoDelete} {
+    if (!copyChildren) {
+        return;
     }
-}
-
-RS_EntityContainer::RS_EntityContainer(const RS_EntityContainer& other, const bool copyChildren) : RS_Entity{other} {
-    m_subContainer = nullptr;
-    m_autoUpdateBorders = other.m_autoUpdateBorders;
-    m_entIdx = other.m_entIdx;
-    m_autoDelete = other.m_autoDelete;
-    if (copyChildren) {
-        m_entities = other.m_entities;
-        if (m_autoDelete) {
-            // fixme - sand - check this logic, looks suspicious!
-            for (auto& it : *this) {
-                if (it->isContainer()) {
-                    it = it->clone();
-                }
-            }
+    m_entities.reserve(other.m_entities.size());
+    for (RS_Entity* entity : std::as_const(other.m_entities)) {
+        if (entity != nullptr && m_autoDelete) {
+            entity = entity->clone();
+            entity->setParent(this);
         }
+        m_entities.append(entity); // same positions as the original's
     }
-}
-
-RS_EntityContainer& RS_EntityContainer::operator =(const RS_EntityContainer& other) {
-    this->RS_Entity::operator =(other);
-    m_subContainer = other.m_subContainer;
-    m_entities = other.m_entities;
-    m_autoUpdateBorders = other.m_autoUpdateBorders;
-    m_entIdx = other.m_entIdx;
-    m_autoDelete = other.m_autoDelete;
-    if (m_autoDelete) {
-        for (auto& it : *this) {
-            if (it->isContainer()) {
-                it = it->clone();
-            }
-        }
-    }
-    return *this;
-}
-
-RS_EntityContainer::RS_EntityContainer(RS_EntityContainer&& other) noexcept : RS_Entity{other}, m_subContainer{other.m_subContainer},
-                                                                              m_entities{std::move(other.m_entities)},
-                                                                              m_autoUpdateBorders{other.m_autoUpdateBorders},
-                                                                              m_entIdx{other.m_entIdx}, m_autoDelete{other.m_autoDelete} {
-}
-
-RS_EntityContainer& RS_EntityContainer::operator =(RS_EntityContainer&& other) noexcept {
-    this->RS_Entity::operator =(other);
-    m_subContainer = other.m_subContainer;
-    m_entities = std::move(other.m_entities);
-    m_autoUpdateBorders = other.m_autoUpdateBorders;
-    m_entIdx = other.m_entIdx;
-    m_autoDelete = other.m_autoDelete;
-    return *this;
 }
 
 /**
@@ -173,46 +149,21 @@ RS_EntityContainer::~RS_EntityContainer() {
 }
 
 RS_Entity* RS_EntityContainer::clone() const {
-    RS_DEBUG->print("RS_EntityContainer::clone: ori autoDel: %d", m_autoDelete);
-
-    auto* ec = new RS_EntityContainer(getParent(), isOwner());
-    if (isOwner()) {
-        for (const RS_Entity* entity : std::as_const(m_entities)) {
-            if (entity != nullptr) {
-                ec->m_entities.push_back(entity->clone());
-            }
-        }
-    }
-    else {
-        ec->m_entities = m_entities;
-    }
-
-    RS_DEBUG->print("RS_EntityContainer::clone: clone autoDel: %d", ec->isOwner());
-
-    ec->detach();
-    return ec;
+    return new RS_EntityContainer(*this);
 }
 
 RS_Entity* RS_EntityContainer::cloneProxy() const {
-    RS_DEBUG->print("RS_EntityContainer::cloneproxy: ori autoDel: %d", m_autoDelete);
-
-    auto* ec = new RS_EntityContainer(getParent(), isOwner());
-    if (isOwner()) {
-        for (const RS_Entity* entity : std::as_const(m_entities)) {
-            if (entity != nullptr) {
-                ec->m_entities.push_back(entity->cloneProxy());
-            }
+    auto* ec = new RS_EntityContainer(*this, false);
+    for (RS_Entity* entity : std::as_const(m_entities)) {
+        if (entity != nullptr && m_autoDelete) {
+            entity = entity->cloneProxy();
+            entity->setParent(ec);
         }
+        ec->m_entities.append(entity);
     }
-    else {
-        ec->m_entities = m_entities;
-    }
-
-    RS_DEBUG->print("RS_EntityContainer::cloneproxy: clone autoDel: %d", ec->isOwner());
-
-    ec->detach(); // fixme - review whether detach is always need... looks like a double clone() ??
     return ec;
 }
+
 
 void RS_EntityContainer::collect(QList<RS_Entity*>& list, const std::function<bool(RS_Entity*)>& funEntityAcceptor) {
     for (auto e: std::as_const(m_entities)) {
@@ -222,40 +173,26 @@ void RS_EntityContainer::collect(QList<RS_Entity*>& list, const std::function<bo
     }
 }
 
-/**
- * Detaches shallow copies and creates deep copies of all subentities.
- * This is called after cloning entity containers.
- */
-void RS_EntityContainer::detach() {
-    QList<RS_Entity*> clonesList;
-    const bool autoDel = isOwner();
-    RS_DEBUG->print("RS_EntityContainer::detach: autoDel: %d", autoDel);
-    setOwner(false);
-
-    // make deep copies of all entities:
-    for (const RS_Entity* e : *this) {
-        if (!e->getFlag(RS2::FlagTemp)) {
-            clonesList.append(e->clone());
+void RS_EntityContainer::reparent(RS_EntityContainer* newParent) {
+    RS_Entity::reparent(newParent);
+    // Owned children stay children of this container, wherever it goes.
+    if (m_autoDelete) {
+        for (RS_Entity* e : std::as_const(m_entities)) {
+            if (e != nullptr) {
+                e->setParent(this);
+            }
         }
-    }
-
-    // clear shared pointers:
-    clear();
-    setOwner(autoDel);
-
-    // point to new deep copies:
-    for (RS_Entity* e : clonesList) {
-        push_back(e);
-        e->reparent(this);
     }
 }
 
-void RS_EntityContainer::reparent(RS_EntityContainer* newParent) {
-    RS_Entity::reparent(newParent);
-
-    // All sub-entities:
-    for (RS_Entity* e : *this) {
-        e->reparent(newParent);
+void RS_EntityContainer::clearDwgProvenance(const unsigned what) {
+    RS_Entity::clearDwgProvenance(what);
+    if (m_autoDelete) {
+        for (RS_Entity* e : std::as_const(m_entities)) {
+            if (e != nullptr) {
+                e->clearDwgProvenance(what);
+            }
+        }
     }
 }
 
@@ -264,6 +201,9 @@ void RS_EntityContainer::setVisible(const bool v) {
 
     // All sub-entities:
     for (const auto e : std::as_const(m_entities)) {
+        if (e == nullptr) {
+            continue;
+        }
         e->setVisible(v);
     }
 }
@@ -275,6 +215,9 @@ double RS_EntityContainer::getLength() const {
     double ret = 0.0;
 
     for (const RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isVisible()) {
             const double length = e->getLength();
             if (std::signbit(length)) {
@@ -302,6 +245,9 @@ bool RS_EntityContainer::setSelected(const bool select) {
 
     // All sub-entity's select:
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isVisible()) {
             e->setSelectionFlag(select);
         }
@@ -318,6 +264,9 @@ bool RS_EntityContainer::doSelectInDocument(const bool select, RS_Document* doc)
 
     // All sub-entity's select:
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isVisible()) {
             e->setSelectionFlag(select);
         }
@@ -333,6 +282,9 @@ void RS_EntityContainer::setSelectionFlag(const bool select) {
     RS_Entity::setSelectionFlag(select);
     // All sub-entity's select:
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isVisible()) {
             e->setSelectionFlag(select);
         }
@@ -341,6 +293,9 @@ void RS_EntityContainer::setSelectionFlag(const bool select) {
 
 void RS_EntityContainer::setHighlighted(const bool on) {
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->setHighlighted(on);
     }
     RS_Entity::setHighlighted(on);
@@ -459,6 +414,11 @@ bool RS_EntityContainer::removeEntity(RS_Entity* entity) {
         if (ret) {
             // actually was contained in container
             const bool mayAffectBorders = entity->isVisible();
+            // A selected child may be owned by a transient container such as
+            // an expanded INSERT. Remove it from the document selection before
+            // its storage is released, so selection never retains a dangling
+            // entity pointer.
+            clearSelectionBeforeDeletion(entity);
             if (m_autoDelete) {
                 delete entity;
             }
@@ -477,7 +437,8 @@ bool RS_EntityContainer::removeEntity(RS_Entity* entity) {
 void RS_EntityContainer::clear() {
     if (m_autoDelete) {
         while (!m_entities.isEmpty()) {
-            const RS_Entity* en = m_entities.takeFirst();
+            RS_Entity* en = m_entities.takeFirst();
+            clearSelectionBeforeDeletion(en);
             delete en;
         }
     }
@@ -485,6 +446,20 @@ void RS_EntityContainer::clear() {
         m_entities.clear();
     }
     resetBorders();
+}
+
+std::vector<std::unique_ptr<RS_Entity>> RS_EntityContainer::takeEntities() {
+    std::vector<std::unique_ptr<RS_Entity>> taken;
+    taken.reserve(static_cast<std::size_t>(m_entities.size()));
+    for (RS_Entity* entity : std::as_const(m_entities)) {
+        if (entity != nullptr) {
+            entity->setParent(nullptr);
+            taken.emplace_back(entity);
+        }
+    }
+    m_entities.clear();
+    resetBorders();
+    return taken;
 }
 
 unsigned int RS_EntityContainer::count() const {
@@ -497,6 +472,9 @@ unsigned int RS_EntityContainer::count() const {
 unsigned int RS_EntityContainer::countDeep() const {
     unsigned int c = 0;
     for (const auto t : *this) {
+        if (t == nullptr) {
+            continue;
+        }
         c += t->countDeep();
     }
     return c;
@@ -513,8 +491,12 @@ void RS_EntityContainer::adjustBorders(const RS_Entity* entity) {
         // make sure a container is not empty (otherwise the border
         //   would get extended to 0/0):
         if (!entity->isContainer() || entity->count() > 0) {
-            m_minV = RS_Vector::minimum(entity->getMin(), m_minV);
-            m_maxV = RS_Vector::maximum(entity->getMax(), m_maxV);
+            const RS_Vector emin = entity->getMin();
+            const RS_Vector emax = entity->getMax();
+            if (!emin.valid || !emax.valid)
+                return;
+            m_minV = RS_Vector::minimum(emin, m_minV);
+            m_maxV = RS_Vector::maximum(emax, m_maxV);
         }
 
         // Notify parents. The border for the parent might
@@ -542,14 +524,16 @@ void RS_EntityContainer::calculateBorders() {
 
     RS_DEBUG->print("RS_EntityContainer::calculateBorders: size 1: %f,%f", getSize().x, getSize().y);
 
-    // needed for correcting corrupt data (PLANS.dxf)
-    if (m_minV.x > m_maxV.x || m_minV.x > RS_MAXDOUBLE || m_maxV.x > RS_MAXDOUBLE || m_minV.x < RS_MINDOUBLE || m_maxV.x < RS_MINDOUBLE) {
-        m_minV.x = 0.0;
-        m_maxV.x = 0.0;
-    }
-    if (m_minV.y > m_maxV.y || m_minV.y > RS_MAXDOUBLE || m_maxV.y > RS_MAXDOUBLE || m_minV.y < RS_MINDOUBLE || m_maxV.y < RS_MINDOUBLE) {
-        m_minV.y = 0.0;
-        m_maxV.y = 0.0;
+    // fixme - sand - merge. Where from infinite values could be there? It's look like an
+    // fixme - sand - attempt to fight the bug occured in somw other place, instead of fixing the reason.
+
+
+    if (!m_minV.valid || !m_maxV.valid || m_minV.x > m_maxV.x
+            || m_minV.y > m_maxV.y || !std::isfinite(m_minV.x)
+            || !std::isfinite(m_minV.y) || !std::isfinite(m_maxV.x)
+            || !std::isfinite(m_maxV.y)) {
+        m_minV = RS_Vector(false);
+        m_maxV = RS_Vector(false);
     }
 
     RS_DEBUG->print("RS_EntityContainer::calculateBorders: size: %f,%f", getSize().x, getSize().y);
@@ -562,24 +546,28 @@ void RS_EntityContainer::calculateBorders() {
 void RS_EntityContainer::forcedCalculateBorders() {
     resetBorders();
     for (RS_Entity* e : *this) {
-        if (e->isContainer()) {
+        if (e == nullptr)
+            continue;
+        // INSERT overrides calculateBorders (origin-pin / empty expand). Prefer
+        // that path over a blind recursive force that collapses empty children
+        // back to (0,0) and inflates MDI resize scroll ranges.
+        if (e->rtti() == RS2::EntityInsert) {
+            e->calculateBorders();
+        } else if (e->isContainer()) {
             const auto container = static_cast<RS_EntityContainer*>(e);
             container->forcedCalculateBorders();
-        }
-        else {
+        } else {
             e->calculateBorders();
         }
         adjustBorders(e);
     }
 
-    // needed for correcting corrupt data (PLANS.dxf)
-    if (m_minV.x > m_maxV.x || m_minV.x > RS_MAXDOUBLE || m_maxV.x > RS_MAXDOUBLE || m_minV.x < RS_MINDOUBLE || m_maxV.x < RS_MINDOUBLE) {
-        m_minV.x = 0.0;
-        m_maxV.x = 0.0;
-    }
-    if (m_minV.y > m_maxV.y || m_minV.y > RS_MAXDOUBLE || m_maxV.y > RS_MAXDOUBLE || m_minV.y < RS_MINDOUBLE || m_maxV.y < RS_MINDOUBLE) {
-        m_minV.y = 0.0;
-        m_maxV.y = 0.0;
+    if (!m_minV.valid || !m_maxV.valid || m_minV.x > m_maxV.x
+            || m_minV.y > m_maxV.y || !std::isfinite(m_minV.x)
+            || !std::isfinite(m_minV.y) || !std::isfinite(m_maxV.x)
+            || !std::isfinite(m_maxV.y)) {
+        m_minV = RS_Vector(false);
+        m_maxV = RS_Vector(false);
     }
 }
 
@@ -594,6 +582,9 @@ int RS_EntityContainer::updateDimensions(const bool autoText) {
     int updatedDimsCount = 0;
 
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isDeleted()) {
             continue;
         }
@@ -621,6 +612,9 @@ int RS_EntityContainer::updateVisibleDimensions(const bool autoText) {
     RS_DEBUG->print("RS_EntityContainer::updateVisibleDimensions()");
     int updatedDimsCount = 0;
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->isVisible()) {
             if (e->rtti() == RS2::EntityDimLeader) {
                 e->update();
@@ -683,6 +677,9 @@ void RS_EntityContainer::updateInserts() {
 void RS_EntityContainer::renameInserts(const QString& oldName, const QString& newName) {
     RS_DEBUG->print("RS_EntityContainer::renameInserts()");
     for (RS_Entity* e : std::as_const(m_entities)) {
+        if (e == nullptr) {
+            continue;
+        }
         if (e->rtti() == RS2::EntityInsert) {
             auto* i = static_cast<RS_Insert*>(e);
             if (i->getName() == oldName) {
@@ -1080,8 +1077,10 @@ RS_Entity* RS_EntityContainer::entityAt(const int index) const {
     return nullptr;
 }
 
+    // fixme - sand - merge. Why here some code related to selection??????
 void RS_EntityContainer::setEntityAt(const int index, RS_Entity* en) {
     if (m_autoDelete && (m_entities.at(index) != nullptr)) {
+        clearSelectionBeforeDeletion(m_entities.at(index));
         delete m_entities.at(index);
     }
     debugEntityAlreadyPresentExists(en);
@@ -1100,8 +1099,9 @@ int RS_EntityContainer::findEntityIndex(const RS_Entity* const entity) const {
     return m_entities.indexOf(const_cast<RS_Entity*>(entity));
 }
 
-bool RS_EntityContainer::areNeighborsEntities(const RS_Entity* const e1, const RS_Entity* const e2) const {
-    return abs(m_entities.indexOf(e1) - m_entities.indexOf(e2)) <= 1;
+    // fixme - sand - .. hme, it's quite non-efficient solution... why don't just interate and check first and last if needed? It is much faster
+bool  RS_EntityContainer::areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2) const {
+   return abs(m_entities.indexOf(const_cast<RS_Entity *>(e1)) - m_entities.indexOf(const_cast<RS_Entity *>(e2))) <= 1;
 }
 
 /**
@@ -1153,6 +1153,9 @@ RS_Vector RS_EntityContainer::obtainNearestEndpoint(const RS_Vector& coord, doub
     RS_Vector closestPoint(false); // closest found endpoint
 
     for (const auto en : m_entities) {
+        if (en == nullptr) {
+            continue;
+        }
         if (en->getParent() == nullptr || !en->getParent()->ignoredOnModification()) {
             //no end point for Insert, text, Dim
             //            std::cout<<"find nearest for entity "<<i0<<std::endl;
@@ -1174,8 +1177,17 @@ RS_Vector RS_EntityContainer::obtainNearestEndpoint(const RS_Vector& coord, doub
 
 RS_Vector RS_EntityContainer::doGetNearestPointOnEntity(const RS_Vector& coord, const bool onEntity, double* dist, RS_Entity** entity) const {
     RS_Vector point(false);
-    const RS_Entity* en = getNearestEntity(coord, dist, RS2::ResolveNone);
-    if (en != nullptr && en->isVisible() && !en->getParent()->ignoredSnap()) {
+    const RS_Entity *en = getNearestEntity(coord, dist, RS2::ResolveNone);
+    // Issue #2670: A container that overrides getDistanceToPoint() for hit-testing (e.g.
+    // RS_Hatch reporting a solid-fill hit) can return itself as the nearest
+    // entity. Recursing into such a self-reference loops forever and overflows
+    // the stack (crash observed when snapping inside a filled hatch), so only
+    // descend into a genuine child entity.
+    // Null parent (orphan / mid-import / dummy container): treat as snap-eligible,
+    // matching obtainNearestEndpoint's ignoredOnModification guard. Never
+    // dereference getParent() without a null check (SIGSEGV on hover/snap).
+    if (en && en != this && en->isVisible()
+        && (en->getParent() == nullptr || !en->getParent()->ignoredSnap())) {
         point = en->getNearestPointOnEntity(coord, onEntity, dist, entity);
     }
     return point;
@@ -1188,7 +1200,8 @@ RS_Vector RS_EntityContainer::doGetNearestCenter(const RS_Vector& coord, double*
     RS_Entity* closestCenterEntity{nullptr};
 
     for (const auto en : m_entities) {
-        if (en != nullptr && en->getId() != 0 && en->isVisible() && !en->getParent()->ignoredSnap()) {
+        if (en != nullptr && en->getId() != 0 && en->isVisible()
+            && (en->getParent() == nullptr || !en->getParent()->ignoredSnap())) {
             //no center point for spline, text, Dim
             RS_Entity* centerEnt;
             const RS_Vector point = en->getNearestCenter(coord, &curDist, &centerEnt);
@@ -1216,7 +1229,8 @@ RS_Vector RS_EntityContainer::doGetNearestMiddle(const RS_Vector& coord, double*
     RS_Vector closestPoint(false); // closest found endpoint
 
     for (const auto en : m_entities) {
-        if (en->isVisible() && !en->getParent()->ignoredSnap()) {
+        if (en != nullptr && en->isVisible()
+            && (en->getParent() == nullptr || !en->getParent()->ignoredSnap())) {
             //no midle point for spline, text, Dim
             const RS_Vector point = en->getNearestMiddle(coord, &curDist, middlePoints);
             if (point.valid && curDist < minDist) {
@@ -1300,6 +1314,9 @@ RS_Vector RS_EntityContainer::doGetNearestRef(const RS_Vector& coord, double* di
     RS_Vector closestPoint(false); // closest found endpoint
 
     for (const RS_Entity* en : *this) {
+        if (en == nullptr) {
+            continue;
+        }
         if (en->isVisible()) {
             const RS_Vector point = en->getNearestRef(coord, &curDist);
             if (point.valid && curDist < minDist) {
@@ -1325,6 +1342,9 @@ RS_EntityContainer::RefInfo RS_EntityContainer::getNearestSelectedRefInfo(const 
     RS_Entity* closestPointEntity = nullptr;
 
     for (RS_Entity* en : *this) {
+        if (en == nullptr) {
+            continue;
+        }
         // fixme - sand - iteration of ver all entities
         if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {
             // fixme - SELECTION - selection collection!
@@ -1344,6 +1364,124 @@ RS_EntityContainer::RefInfo RS_EntityContainer::getNearestSelectedRefInfo(const 
     return result;
 }
 
+namespace {
+    // ResolveAllButTextImage looks for an entity to intersect: images (bug#426) and text have no
+    // intersections. On-entity snapping (ResolveAllButTexts) never lands on text either, and
+    // measuring text would walk every glyph.
+    bool isSkippedAt(const RS2::EntityType type, const RS2::ResolveLevel level) {
+        return (level == RS2::ResolveAllButTextImage && (type == RS2::EntityImage || RS2::isTextEntity(type)))
+            || (level == RS2::ResolveAllButTexts && RS2::isTextEntity(type));
+    }
+
+    // Whether a construction line lies in the container, other than in the block references it holds.
+    bool holdsConstructionLine(const RS_EntityContainer& container) {
+        return std::any_of(container.begin(), container.end(), [](const RS_Entity* entity) {
+            if (entity == nullptr) {
+                return false;
+            }
+            switch (entity->rtti()) {
+                case RS2::EntityConstructionLine:
+                    return true;
+                // a block reference shows a block definition, and each definition is checked on its own
+                case RS2::EntityInsert:
+                    return false;
+                default:
+                    return entity->isContainer() && holdsConstructionLine(static_cast<const RS_EntityContainer&>(*entity));
+            }
+        });
+    }
+
+    /**
+     * Tells from cached borders, without measuring any geometry, when an entity of a drawing lies
+     * farther from a point than a distance. RS_Entity::getDistanceToPoint() never reports less than
+     * the distance to the borders, or to the center of an atomic entity (selection by center point),
+     * except for construction lines and lines on a construction layer, which reach past their
+     * borders. Containers are searched for those only when the drawing has a construction layer or a
+     * block definition holding a construction line.
+     */
+    class DistanceLowerBound {
+    public:
+        explicit DistanceLowerBound(const RS_EntityContainer& drawing) : m_graphic{drawing.getGraphic()} {
+            const RS_LayerList* layers = m_graphic != nullptr ? m_graphic->getLayerList() : nullptr;
+            m_constructionLayers = layers == nullptr || std::any_of(layers->begin(), layers->end(), [](const RS_Layer* layer) {
+                return layer != nullptr && layer->isConstruction();
+            });
+        }
+
+        // whether entity.getDistanceToPoint(coord) is certainly larger than distance
+        bool exceeds(const RS_Entity& entity, const RS_Vector& coord, const double distance) const {
+            const RS_Vector min = entity.getMin();
+            const RS_Vector max = entity.getMax();
+            // unknown, reset or non-finite borders bound nothing
+            if (!coord.valid || !min.valid || !max.valid || !(min.x <= max.x && min.y <= max.y)
+                || !std::isfinite(min.x + min.y + max.x + max.y)) {
+                return false;
+            }
+            // the slack absorbs rounding, so an entity measured exactly as far away is never skipped
+            const double limit = distance + RS_TOLERANCE + 1e-12 * (std::abs(coord.x) + std::abs(coord.y) + distance);
+            const double dx = std::max({min.x - coord.x, 0., coord.x - max.x});
+            const double dy = std::max({min.y - coord.y, 0., coord.y - max.y});
+            if (dx * dx + dy * dy <= limit * limit) {
+                return false;
+            }
+            const RS_Vector center = entity.isContainer() ? RS_Vector(false) : entity.getCenter();
+            return !(center.valid && center.distanceTo(coord) <= limit) && !reachesPastBorders(entity);
+        }
+
+    private:
+        bool reachesPastBorders(const RS_Entity& entity) const {
+            switch (entity.rtti()) {
+                case RS2::EntityConstructionLine:
+                case RS2::EntityRefConstructionLine:
+                case RS2::EntitySnapConstructionLine:
+                    return true;
+                case RS2::EntityLine:
+                    // drawn and hit-tested as infinite on a construction layer
+                    return m_constructionLayers && entity.isConstruction();
+                // glyphs have no layer of their own, and a hatch is measured by its filled area
+                case RS2::EntityText:
+                case RS2::EntityMText:
+                case RS2::EntityHatch:
+                    return false;
+                default:
+                    break;
+            }
+            if (!entity.isContainer() || !containersMayReach()) {
+                return false;
+            }
+            const auto& container = static_cast<const RS_EntityContainer&>(entity);
+            return std::any_of(container.begin(), container.end(), [this](const RS_Entity* child) {
+                return child != nullptr && reachesPastBorders(*child);
+            });
+        }
+
+        bool containersMayReach() const {
+            if (!m_containersMayReach.has_value()) {
+                const RS_BlockList* blocks = m_graphic != nullptr ? m_graphic->getBlockList() : nullptr;
+                m_containersMayReach = m_constructionLayers || blocks == nullptr
+                    || std::any_of(blocks->begin(), blocks->end(), [](const RS_Block* block) {
+                           return block != nullptr && holdsConstructionLine(*block);
+                       });
+            }
+            return *m_containersMayReach;
+        }
+
+        RS_Graphic* m_graphic = nullptr;
+        bool m_constructionLayers = true;
+        mutable std::optional<bool> m_containersMayReach;
+    };
+}
+
+void RS_EntityContainer::appendNearby(const RS_Vector& coord, const double range, RS_EntityContainer& nearby) const {
+    const DistanceLowerBound bound{*this};
+    for (RS_Entity* e : *this) {
+        // push_back keeps the drawing order that settles ties; addEntity() would move hatches and images to the front
+        if (e != nullptr && e->isVisible() && !bound.exceeds(*e, coord, range)) {
+            nearby.push_back(e);
+        }
+    }
+}
+
 double RS_EntityContainer::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, const RS2::ResolveLevel level,
                                               const double solidDist) const {
     RS_DEBUG->print("RS_EntityContainer::getDistanceToPoint");
@@ -1352,13 +1490,21 @@ double RS_EntityContainer::doGetDistanceToPoint(const RS_Vector& coord, RS_Entit
     RS_Entity* closestEntity = nullptr; // closest entity found
     RS_Entity* subEntity = nullptr;
 
+    // a drawing skips every entity whose borders lie farther away than the nearest entity found so far
+    std::optional<DistanceLowerBound> bound;
+    if (isDocument()) {
+        bound.emplace(*this);
+    }
+
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         const auto entityLayer = e->getLayer();
         if (e->isVisible() && (entityLayer == nullptr || !entityLayer->isLocked())) {
             RS_DEBUG->print("entity: getDistanceToPoint");
             RS_DEBUG->print("entity: %d", e->rtti());
-            // bug#426, need to ignore Images to find nearest intersections
-            if (level == RS2::ResolveAllButTextImage && e->rtti() == RS2::EntityImage) {
+            if (isSkippedAt(e->rtti(), level) || (bound.has_value() && bound->exceeds(*e, coord, minDist))) {
                 continue;
             }
             curDist = e->getDistanceToPoint(coord, &subEntity, level, solidDist);
@@ -1378,6 +1524,7 @@ double RS_EntityContainer::doGetDistanceToPoint(const RS_Vector& coord, RS_Entit
                 switch (level) {
                     case RS2::ResolveAll:
                     case RS2::ResolveAllButTextImage:
+                    case RS2::ResolveAllButTexts:
                         closestEntity = subEntity;
                         break;
                     default:
@@ -1444,6 +1591,9 @@ bool RS_EntityContainer::optimizeContours() {
     /** accept all full circles **/
     QList<RS_Entity*> enList;
     for (RS_Entity* e1 : *this) {
+        if (e1 == nullptr) {
+            continue;
+        }
         if (!e1->isEdge() || e1->isContainer()) {
             enList << e1;
             continue;
@@ -1567,13 +1717,16 @@ bool RS_EntityContainer::optimizeContours() {
 
 bool RS_EntityContainer::hasEndpointsWithinWindow(const RS_Vector& v1, const RS_Vector& v2) const {
     return std::any_of(cbegin(), cend(), [&v1, &v2](const RS_Entity* entity) {
-        return entity->hasEndpointsWithinWindow(v1, v2);
+        return entity != nullptr && entity->hasEndpointsWithinWindow(v1, v2);
     });
 }
 
 void RS_EntityContainer::move(const RS_Vector& offset) {
     moveBorders(offset);
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->move(offset);
         adjustBorders(e);
     }
@@ -1587,6 +1740,9 @@ void RS_EntityContainer::rotate(const RS_Vector& center, const double angle) {
 void RS_EntityContainer::rotate(const RS_Vector& center, const RS_Vector& angleVector) {
     resetBorders();
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->rotate(center, angleVector);
         adjustBorders(e);
     }
@@ -1597,6 +1753,9 @@ void RS_EntityContainer::scale(const RS_Vector& center, const RS_Vector& factor)
     if (std::abs(factor.x) > RS_TOLERANCE && std::abs(factor.y) > RS_TOLERANCE) {
         scaleBorders(center, factor);
         for (RS_Entity* e : *this) {
+            if (e == nullptr) {
+                continue;
+            }
             e->scale(center, factor);
             adjustBorders(e);
         }
@@ -1608,6 +1767,9 @@ void RS_EntityContainer::mirror(const RS_Vector& axisPoint1, const RS_Vector& ax
     if (axisPoint1.distanceTo(axisPoint2) > RS_TOLERANCE) {
         resetBorders();
         for (RS_Entity* e : *this) {
+            if (e == nullptr) {
+                continue;
+            }
             e->mirror(axisPoint1, axisPoint2);
             adjustBorders(e);
         }
@@ -1616,6 +1778,9 @@ void RS_EntityContainer::mirror(const RS_Vector& axisPoint1, const RS_Vector& ax
 
 RS_Entity& RS_EntityContainer::shear(const double k) {
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->shear(k);
     }
     calculateBorders();
@@ -1628,11 +1793,16 @@ void RS_EntityContainer::stretch(const RS_Vector& firstCorner, const RS_Vector& 
     }
     else {
         for (RS_Entity* e : *this) {
+            if (e == nullptr) {
+                continue;
+            }
             e->stretch(firstCorner, secondCorner, offset);
         }
     }
     // some entitiycontainers might need an update (e.g. RS_Leader):
     update();
+    // children stretched in place leave the borders of the container behind
+    calculateBorders();
 }
 
 void RS_EntityContainer::calculateBordersIfNeeded() {
@@ -1644,6 +1814,9 @@ void RS_EntityContainer::calculateBordersIfNeeded() {
 void RS_EntityContainer::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
     resetBorders();
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->moveRef(ref, offset);
         adjustBorders(e);
     }
@@ -1653,6 +1826,9 @@ void RS_EntityContainer::moveRef(const RS_Vector& ref, const RS_Vector& offset) 
 void RS_EntityContainer::moveSelectedRef(const RS_Vector& ref, const RS_Vector& offset) {
     resetBorders();
     for (RS_Entity* e : *this) {
+        if (e == nullptr) {
+            continue;
+        }
         e->moveSelectedRef(ref, offset);
         adjustBorders(e);
     }
@@ -1671,6 +1847,9 @@ void RS_EntityContainer::revertDirection() {
 
     // revert each entity itself
     for (RS_Entity* entity : std::as_const(m_entities)) {
+        if (entity == nullptr) {
+            continue;
+        }
         entity->revertDirection();
     }
 }
@@ -1877,12 +2056,10 @@ bool RS_EntityContainer::ignoredSnap() const {
     return ignoredOnModification();
 }
 
-#define DEBUG_CONTAINER_DUPLICATE  // fixme - sand - disable before push!
-
-void RS_EntityContainer::debugEntityAlreadyPresentExists(const RS_Entity* entity) const {
-#ifdef DEBUG_CONTAINER_DUPLICATE
-    const qsizetype countOfEntities = m_entities.count(entity);
-    Q_ASSERT(countOfEntities == 0);
+// A container owns each entity once; adding one twice means a double delete later.
+void RS_EntityContainer::debugEntityAlreadyPresentExists([[maybe_unused]] const RS_Entity* entity) const {
+#ifndef QT_NO_DEBUG
+    Q_ASSERT(!m_entities.contains(entity));
 #endif
 }
 

@@ -27,6 +27,11 @@
 #ifndef RS_BLOCK_H
 #define RS_BLOCK_H
 
+#include <cstdint>
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "rs_document.h"
 
 /**
@@ -45,6 +50,8 @@ struct RS_BlockData {
      * using the insertion point of Insert entities.
      */
     RS_Vector basePoint;
+    int insUnits {0};                  //!< BLOCK_RECORD insertion units
+    std::vector<std::uint8_t> previewData; //!< BLOCK_RECORD preview image bytes
     bool frozen{false}; //!< Frozen flag
     // fixme - sand - rework?
     mutable bool visibleInBlockList{true}; //!< Visible in block list
@@ -95,8 +102,18 @@ public:
         return m_data.basePoint;
     }
 
+    int getInsertionUnits() const {return m_data.insUnits;}
+    void setInsertionUnits(int units) {m_data.insUnits = units;}
+    const std::vector<std::uint8_t>& getPreviewData() const {
+        return m_data.previewData;
+    }
+    void setPreviewData(std::vector<std::uint8_t> data) {
+        m_data.previewData = std::move(data);
+    }
+
     RS_LayerList* getLayerList() override;
     RS_BlockList* getBlockList() override;
+    const RS_BlockList* getBlockList() const;
     LC_DimStylesList* getDimStyleList() override;
     LC_TextStyleList* getTextStyleList() override;
 
@@ -190,10 +207,13 @@ public:
      *
      * @return block name chain to the block that contain searched insert
      */
-    QStringList findNestedInsert(const QString& bName);
+    QStringList findNestedInsert(const QString& bName) const;
     void addByBlockLine(const RS_Vector& start, const RS_Vector& end);
 
-    void addByBlockEntity(const RS_Entity* entity);
+    /// Takes ownership of a non-null entity and assigns the BYBLOCK pen.
+    void addByBlockEntity(std::unique_ptr<RS_Entity> entity);
+    /// Compatibility overload for legacy callers that transfer raw ownership.
+    void addByBlockEntity(RS_Entity* entity);
 
 
 protected:

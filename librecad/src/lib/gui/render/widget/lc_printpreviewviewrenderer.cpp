@@ -26,6 +26,7 @@
 #include "rs_graphic.h"
 #include "rs_math.h"
 #include "rs_painter.h"
+#include "rs_units.h"
 
 #define DEBUG_PRINT_PREVIEW_POINTS_NO
 
@@ -74,10 +75,16 @@ void LC_PrintPreviewViewRenderer::drawPaper(RS_Painter *painter) {
     const double paperFactorX = painter->toGuiDX(1.0) / m_paperScale;
     const double paperFactorY = painter->toGuiDY(1.0) / m_paperScale;
 
-    const int marginLeft = static_cast<int>(ps->getMarginLeftInUnits() * paperFactorX);
-    const int marginTop = static_cast<int>(ps->getMarginTopInUnits() * paperFactorY);
-    const int marginRight = static_cast<int>(ps->getMarginRightInUnits() * paperFactorX);
-    const int marginBottom = static_cast<int>(ps->getMarginBottomInUnits() * paperFactorY);
+    // PR 11 — pull margins from the active LayoutRecord when one is set,
+    // otherwise fall back to the document singleton via activeLayoutMargins().
+    // Returned values are millimeters; convert to graphic units for the
+    // pixel-mapping arithmetic below.
+    const auto previewMm = m_graphic->activeLayoutMargins();
+    const RS2::Unit previewUnit = m_graphic->getUnit();
+    int marginLeft = (int) (RS_Units::convert(previewMm[0], RS2::Millimeter, previewUnit) * paperFactorX);
+    int marginTop = (int) (RS_Units::convert(previewMm[1], RS2::Millimeter, previewUnit) * paperFactorY);
+    int marginRight = (int) (RS_Units::convert(previewMm[2], RS2::Millimeter, previewUnit) * paperFactorX);
+    int marginBottom = (int) (RS_Units::convert(previewMm[3], RS2::Millimeter, previewUnit) * paperFactorY);
 
     const RS_Vector &wcsLeftBottomCorner = (RS_Vector(0, 0) - pinsbase) / m_paperScale;
     const RS_Vector &wcsTopBottomCorner = (printAreaSize - pinsbase) / m_paperScale;
@@ -203,12 +210,13 @@ void LC_PrintPreviewViewRenderer::setPenForPrintingEntity(RS_Painter *painter, R
 #endif
     // Getting pen from entity (or layer)
     RS_Pen pen = e->getPenResolved();
-    RS_Pen originalPen = pen;
 
     double patternOffset = painter->currentDashOffset();
-    if (m_lastPaintEntityPen.isSameAs(pen, patternOffset)) {
+    if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern)) {
         return;
     }
+    m_lastPaintEntityPen.updateBy(pen);
+    m_lastPaintEntityPen.setDashOffset(patternOffset);
     // Avoid negative widths
     double width = pen.getWidth();
 //    int w = std::max(static_cast<int>(pen.getWidth()), 0);
@@ -268,8 +276,7 @@ void LC_PrintPreviewViewRenderer::setPenForPrintingEntity(RS_Painter *painter, R
         pen.setColor(m_colorBackground);
     }
 
-    // we store original pen as last painted, not resolved one - since original pen lead to resulting resolved and may be used by the next entity
-    m_lastPaintEntityPen.updateBy(originalPen);
+    m_lastPaintedPattern = pen.getLineType() != RS2::SolidLine;
     painter->setPen(pen);
 #ifdef DEBUG_RENDERING
     setPenTime += setPenTimer.nsecsElapsed();

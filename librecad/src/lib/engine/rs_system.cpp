@@ -100,30 +100,43 @@ void RS_System::init(const QString& appName,
  */
 void RS_System::initLanguageList() {
     RS_DEBUG->print("RS_System::initLanguageList");
+    m_languageList.clear();
     QStringList lst = getFileList("qm", "qm");
 
     const QString translationsDir = CFG_Paths::o_Translations;
     lst += translationsDir.split(";", Qt::SkipEmptyParts);
 
-    for (auto& it : lst) {
+    for (const QString& file : lst) {
 
-        RS_DEBUG->print("RS_System::initLanguageList: qm file: %s", it.toLatin1().data());
+        RS_DEBUG->print("RS_System::initLanguageList: qm file: %s",
+                        file.toLatin1().data());
 
-       const int i0 = it.lastIndexOf(QString("librecad"), -1, Qt::CaseInsensitive);
-        if (i0 == -1){
+        int i0 = file.lastIndexOf(QString("librecad"),-1,Qt::CaseInsensitive);
+        if (i0 == -1)
             continue;
-       }
-       const int i1 = it.indexOf('_', i0);
-       const int i2 = it.indexOf('.', i1);
+
+        int i1 = file.indexOf('_',i0);
+        int i2 = file.indexOf('.', i1);
         if (i1 == -1 || i2 == -1) {
             continue;
         }
-        QString l = it.mid(i1 + 1, i2 - i1 - 1);
+        QString l = file.mid(i1+1, i2-i1-1);
 
-        if (!m_languageList.contains(l) ) {
-            RS_DEBUG->print("RS_System::initLanguageList: append language: %s",
+        // Validate language code using Qt Locale
+        QLocale locale(l);
+        if (locale == QLocale::c()) {
+            RS_DEBUG->print("RS_System::initLanguageList: invalid locale: %s",
                             l.toLatin1().data());
-            m_languageList.append(l);
+            continue;
+        }
+
+        // Use Qt Locale to get the canonical language code
+        QString canonicalCode = locale.name();
+
+        if (!(m_languageList.contains(canonicalCode, Qt::CaseInsensitive)) ) {
+            RS_DEBUG->print("RS_System::initLanguageList: append language: %s",
+                            canonicalCode.toLatin1().data());
+            m_languageList.append(canonicalCode);
         }
     }
     RS_DEBUG->print("RS_System::initLanguageList: OK");
@@ -380,11 +393,9 @@ void RS_System::initAllLanguagesList() {
 }
 
 /**
- * Loads a different translation for the application GUI.
- *
- *fixme, need to support command language
+ * Loads translations for the application GUI and command line.
  */
-void RS_System::loadTranslation(const QString& lang, const QString& /*langCmd*/) {
+void RS_System::loadTranslation(const QString& lang, const QString& langCmd) {
     static QTranslator* tQt = nullptr;
     static QTranslator* tLibreCAD = nullptr;
     static QTranslator* tPlugIns = nullptr;
@@ -401,6 +412,17 @@ void RS_System::loadTranslation(const QString& lang, const QString& /*langCmd*/)
     else {
         langLower = lang;
         langUpper.clear();
+    }
+    QString langCmdLower("");
+    QString langCmdUpper("");
+    const int i1 = langCmd.indexOf('_');
+    if (i1 >= 2 && langCmd.size() - i1 >= 2) {
+        langCmdLower = langCmd.left(i1) + '_' + langCmd.mid(i1 + 1).toLower();
+        langCmdUpper = langCmd.left(i1) + '_' + langCmd.mid(i1 + 1).toUpper();
+    }
+    else {
+        langCmdLower = langCmd;
+        langCmdUpper.clear();
     }
     // search in various directories for translations
     QStringList lst = getDirectoryList( "qm");
@@ -464,6 +486,28 @@ void RS_System::loadTranslation(const QString& lang, const QString& /*langCmd*/)
     }
 
     delete t;
+
+    delete m_commandTranslator;
+    m_commandTranslator = new QTranslator(nullptr);
+    const QString commandFileLower = "librecad_" + langCmdLower + ".qm";
+    const QString commandFileUpper = "librecad_" + langCmdUpper + ".qm";
+    for (const QString& directory : lst) {
+        if (m_commandTranslator->load(commandFileLower, directory)
+            || (!langCmdUpper.isEmpty() && m_commandTranslator->load(commandFileUpper, directory))) {
+            return;
+        }
+    }
+
+    delete m_commandTranslator;
+    m_commandTranslator = nullptr;
+}
+
+QString RS_System::translateCommand(const char* source, const char* disambiguation,
+                                    const char* context) const {
+    const QString translation = m_commandTranslator != nullptr
+                                    ? m_commandTranslator->translate(context, source, disambiguation)
+                                    : QString{};
+    return translation.isEmpty() ? QString::fromUtf8(source) : translation;
 }
 
 
@@ -599,8 +643,12 @@ QStringList RS_System::getDirectoryList(const QString& subDir) const{
     }
 
 #ifdef Q_OS_MAC
-    // Apple uses the resource directory
     if (!m_appDir.isEmpty() && m_appDir!="/") {
+        if (subDirectory == QStringLiteral("plugins")) {
+            dirList.append(QDir::cleanPath(m_appDir + "/../PlugIns/LibreCAD"));
+        }
+        // Keep the Resources path for bundles produced before plug-ins moved to
+        // the standard nested-code location.
         dirList.append( QDir::cleanPath( m_appDir + "/../Resources/" + subDirectory));
     }
 #endif

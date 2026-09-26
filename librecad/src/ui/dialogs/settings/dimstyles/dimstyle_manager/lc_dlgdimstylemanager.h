@@ -116,7 +116,6 @@ protected slots:
     void onFitFineDrawDimlineBetweenToggled(bool d) const;
     // primaryUnit tab slots
     void onLinearDimUnitFormatIndexChanged(int index) const;
-    void updateLengthPrecisionCombobox(RS2::LinearFormat unit, QComboBox* p) const;
     void onLinearDimPrecisionIndexChanged(int index) const;
     void onLinearDimFractionIndexChanged(int index) const;
     void onLinearDimUnitDecimalSeparatorIndexChanged(int index) const;
@@ -130,6 +129,7 @@ protected slots:
     void onLinearUnitPrefixEditingFinished() const;
     void onAngularFormatIndexChanged(int index) const;
     void updateAnglePrecisionCombobox(RS2::AngleFormat format, QComboBox* p) const;
+    void updateLengthPrecisionCombobox(RS2::LinearFormat unit, QComboBox* p) const;
     void fillLinearUnitsCombobox(QComboBox* combobox) const;
     void fillAngleUnitsCombobox(QComboBox* combobox) const;
     void onAngularPrecisionIndexChanged(int index) const;

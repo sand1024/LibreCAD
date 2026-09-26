@@ -23,6 +23,8 @@
 
 #include "lc_makercamsvg.h"
 
+#include <algorithm>
+
 #include "lc_splinepoints.h"
 #include "lc_xmlwriterinterface.h"
 #include "rs_arc.h"
@@ -242,6 +244,10 @@ void LC_MakerCamSVG::writeEntity(RS_Entity* entity) {
 
 void LC_MakerCamSVG::writeInsert(const RS_Insert* insert) {
     RS_Block* block = insert->getBlockForInsert();
+    if (block == nullptr) {
+        RS_DEBUG->print("RS_MakerCamSVG::writeInsert: Insert references missing block, skipping");
+        return;
+    }
 
     const RS_Vector insertionpoint = insert->getInsertionPoint();
     // The conversion from drawing space to the svg space (column major) transform matrix(M):
@@ -533,7 +539,85 @@ void LC_MakerCamSVG::writeEllipse(RS_Ellipse* ellipse) const {
 //       (if created using the control point method vs. the pass through point
 //       method). However after saving degree 2 splines and reopening the file,
 //       these splines are hold in the "artificial" LC_SplinePoints object.
+namespace {
+/**
+ * True if @p data is a chain of Bezier pieces whose nets are its control
+ * points, shared ends included: an open, non-rational spline of degree 2 or 3
+ * with clamped ends whose interior knots all have multiplicity equal to its
+ * degree. The control points of such a spline need no conversion.
+ */
+bool isBezierChain(const RS_SplineData& data) {
+    const size_t degree = data.degree;
+    const std::vector<double>& knots = data.knotslist;
+    const std::vector<RS_Vector>& points = data.controlPoints;
+    if (degree < 2 || degree > 3 || points.size() < degree + 1 || (points.size() - 1) % degree != 0 ||
+        knots.size() != points.size() + degree + 1) {
+        return false;
+    }
+    if (!data.weights.empty() &&
+        (data.weights.size() != points.size() ||
+         std::any_of(data.weights.begin(), data.weights.end(), [&](double w) { return w != data.weights.front(); }))) {
+        return false;
+    }
+    for (size_t i = 0; i <= degree; ++i) {
+        if (knots[i] != knots.front() || knots[knots.size() - 1 - i] != knots.back()) {
+            return false;
+        }
+    }
+    const size_t end = knots.size() - degree - 1;
+    for (size_t i = degree + 1; i < end;) {
+        size_t j = i;
+        while (j < end && knots[j] == knots[i]) {
+            ++j;
+        }
+        if (j - i != degree || !(knots[i] > knots[i - 1])) {
+            return false;
+        }
+        i = j;
+    }
+    return true;
+}
+} // namespace
+
 void LC_MakerCamSVG::writeSpline(const RS_Spline* spline) {
+    if (spline->getDegree() == 1) {
+        // the polyline through its control points
+        const std::vector<RS_Vector> points = spline->getControlPoints();
+        if (points.size() < 2) {
+            return;
+        }
+        std::string path = svgPathMoveTo(convertToSvg(points.front()));
+        for (size_t i = 1; i < points.size(); ++i) {
+            path += svgPathLineTo(convertToSvg(points[i]));
+        }
+        if (spline->isClosed()) {
+            path += svgPathClose();
+        }
+        m_xmlWriter->addElement("path", NAMESPACE_URI_SVG);
+        m_xmlWriter->addAttribute("d", path);
+        m_xmlWriter->closeElement();
+        return;
+    }
+    if (!spline->isClosed() && isBezierChain(spline->getData())) {
+        RS_DEBUG->print("RS_MakerCamSVG::writeSpline: Writing a Bezier chain as 'path' from its control points");
+        const std::vector<RS_Vector>& points = spline->getData().controlPoints;
+        std::string path = svgPathMoveTo(convertToSvg(points.front()));
+        if (spline->getDegree() == 3) {
+            for (size_t i = 1; i + 2 < points.size(); i += 3) {
+                path += svgPathCurveTo(convertToSvg(points[i + 2]), convertToSvg(points[i]),
+                                       convertToSvg(points[i + 1]));
+            }
+        }
+        else {
+            for (size_t i = 1; i + 1 < points.size(); i += 2) {
+                path += svgPathQuadraticCurveTo(convertToSvg(points[i + 1]), convertToSvg(points[i]));
+            }
+        }
+        m_xmlWriter->addElement("path", NAMESPACE_URI_SVG);
+        m_xmlWriter->addAttribute("d", path);
+        m_xmlWriter->closeElement();
+        return;
+    }
     if (spline->getDegree() == 2) {
         RS_DEBUG->print("RS_MakerCamSVG::writeSpline: Writing piecewise quadratic spline as 'path' with quadratic bézier segments");
 
@@ -804,11 +888,14 @@ std::string LC_MakerCamSVG::svgPathAnyLineType(RS_Vector startpoint, RS_Vector e
     constexpr int divideFactor = 5; // --.. --.. --.. --..
     constexpr int centerFactor = 5; // -- - -- - -- -
     constexpr int borderFactor = 7; // -- -- . -- -- . -- -- .
+    constexpr int phantomFactor = 7; // -- - - -- - - -- - -
 
     constexpr double lineScaleTiny = 0.25;
     constexpr double lineScale2 = 0.5;
     constexpr double lineScaleOne = 1.0;
     constexpr double lineScaleX2 = 2.0;
+    // acad.lin defines HIDDEN as half of DASHED (.25,-.125 vs .5,-.25)
+    constexpr double hiddenScale = 0.5;
 
     std::string path;
     double lineScale;
@@ -854,6 +941,27 @@ std::string LC_MakerCamSVG::svgPathAnyLineType(RS_Vector startpoint, RS_Vector e
         }
         case RS2::DashLineX2: {
             lineScale = lineScaleX2;
+            lineFactor = dashFactor;
+            break;
+        }
+
+        case RS2::HiddenLineTiny: {
+            lineScale = lineScaleTiny * hiddenScale;
+            lineFactor = dashFactor;
+            break;
+        }
+        case RS2::HiddenLine2: {
+            lineScale = lineScale2 * hiddenScale;
+            lineFactor = dashFactor;
+            break;
+        }
+        case RS2::HiddenLine: {
+            lineScale = lineScaleOne * hiddenScale;
+            lineFactor = dashFactor;
+            break;
+        }
+        case RS2::HiddenLineX2: {
+            lineScale = lineScaleX2 * hiddenScale;
             lineFactor = dashFactor;
             break;
         }
@@ -941,6 +1049,27 @@ std::string LC_MakerCamSVG::svgPathAnyLineType(RS_Vector startpoint, RS_Vector e
             lineFactor = borderFactor;
             break;
         }
+
+        case RS2::PhantomLineTiny: {
+            lineScale = lineScaleTiny;
+            lineFactor = phantomFactor;
+            break;
+        }
+        case RS2::PhantomLine2: {
+            lineScale = lineScale2;
+            lineFactor = phantomFactor;
+            break;
+        }
+        case RS2::PhantomLine: {
+            lineScale = lineScaleOne;
+            lineFactor = phantomFactor;
+            break;
+        }
+        case RS2::PhantomLineX2: {
+            lineScale = lineScaleX2;
+            lineFactor = phantomFactor;
+            break;
+        }
         default: {
             lineScale = lineScaleOne;
             lineFactor = dotFactor;
@@ -984,7 +1113,11 @@ std::string LC_MakerCamSVG::getLinePattern(RS_Vector* lastPos, RS_Vector step, R
         case RS2::DashLineTiny:
         case RS2::DashLine2:
         case RS2::DashLine:
-        case RS2::DashLineX2: {
+        case RS2::DashLineX2:
+        case RS2::HiddenLineTiny:
+        case RS2::HiddenLine2:
+        case RS2::HiddenLine:
+        case RS2::HiddenLineX2: {
             path += getLineSegment(lastPos, step, lineScale, true);
             break;
         }
@@ -1024,6 +1157,16 @@ std::string LC_MakerCamSVG::getLinePattern(RS_Vector* lastPos, RS_Vector step, R
             path += getLineSegment(lastPos, step, lineScale, true);
             path += getLineSegment(lastPos, step, lineScale, true);
             path += getPointSegment(lastPos, step, lineScale);
+            break;
+        }
+
+        case RS2::PhantomLineTiny:
+        case RS2::PhantomLine2:
+        case RS2::PhantomLine:
+        case RS2::PhantomLineX2: {
+            path += getLineSegment(lastPos, step, lineScale, true);
+            path += getLineSegment(lastPos, step, lineScale, false);
+            path += getLineSegment(lastPos, step, lineScale, false);
             break;
         }
 

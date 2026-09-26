@@ -77,7 +77,9 @@ void LC_Crosshair::draw(RS_Painter *painter) {
     }
 
     const double offset = drawIndicator(painter, uiCoord);
+
     const LC_GraphicViewport* viewport = painter->getViewPort();
+
     const int width = viewport->getWidth();
     const int height = viewport->getHeight();
 

@@ -122,7 +122,6 @@ void LC_PropertiesSheetPanel::setFontSize(int fontSize) {
     }
 }
 
-
 void LC_PropertiesSheetPanel::updateParts() {
     while (!m_layout->isEmpty()) {
         m_layout->takeAt(0);

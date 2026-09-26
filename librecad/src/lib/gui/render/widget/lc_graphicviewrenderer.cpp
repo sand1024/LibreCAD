@@ -37,11 +37,27 @@
 #include "lc_settings_render.h"
 #include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
+#include "lc_linemath.h"
+#include "lc_overlayentitiescontainer.h"
+#include "lc_ref_snap_circle.h"
+#include "lc_ref_snap_construction_line.h"
+#include "lc_ref_snap_entity.h"
+#include "lc_ref_snap_line.h"
+#include "lc_ref_snap_mark.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 #include "rs_grid.h"
 #include "rs_math.h"
 #include "rs_painter.h"
+#include "rs_grid.h"
+#include "rs_math.h"
+#include "rs_painter.h"
+#include "rs_settings.h"
+
+namespace {
+    // fixme - sand - merge - remove this, it fixes color and prevents styling!!!
+constexpr char const* g_drawingMdiWindowBackground = "#212830";
+}
 
 LC_GraphicViewRenderer::LC_GraphicViewRenderer(LC_GraphicViewport* viewport, QPaintDevice* d)
     : LC_WidgetViewPortRenderer(viewport, d) {
@@ -82,6 +98,13 @@ void LC_GraphicViewRenderer::loadSettings() {
         const RS_Color bgColor(o_BackgroundColor);
         setBackground(bgColor);
         setForegroundColor(RS_Color(o_ForegroundBWColor));
+
+        // fixme - sand - merge - this actually changes be color! What for? no value.
+        // if (background.isValid() && background.toIntColor() == RS_Color::Black) {
+        //     setBackground(RS_Color(QColor(g_drawingMdiWindowBackground)), background);
+        // } else {
+        //     setBackground(background);
+        // }
 
         m_colorSelectedEntity =  RS_Color(o_SelectedEntityColor);
         m_colorHighlightedEntity = RS_Color(o_HighlightedEntityColor);
@@ -341,6 +364,8 @@ void LC_GraphicViewRenderer::drawOverlayEntitiesInOverlay(const LC_OverlaysManag
     LC_OverlayDrawablesContainer* overlayContainer = overlaysManager->drawablesAt(overlayType);
     if (overlayContainer != nullptr) {
         overlayContainer->draw(painter);
+        // Drawables set their own pens, bypassing the entity pen cache.
+        m_lastPaintEntityPen.setFlag(RS2::FlagInvalid);
     }
 }
 
@@ -418,7 +443,7 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
             pen.setScreenWidth(screenWidth);
         }
         else {
-            // pen.setScreenWidth(0.0);
+            pen.setScreenWidth(0.0);
         }
     }
     else {
@@ -494,6 +519,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             break;
         }
         case RS2::EntitySnapLine:{
+
             RS_Pen pen = e->getPen(true);
             const auto ent = static_cast<const LC_RefSnapLine*>(e);
             setupRefSnapEntityPen(painter, pen, ent, e->getFlag(RS2::FlagInVisualSnap));
@@ -517,8 +543,11 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
                     setPenForDraftEntity(painter, e, true);
                 }
             }
+            return;
         }
     }
+    // The pen above bypassed the entity pen cache.
+    m_lastPaintEntityPen.setFlag(RS2::FlagInvalid);
 }
 
 void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entity* e, const bool inOverlay) {
@@ -530,7 +559,6 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
 #ifdef DEBUG_RENDERING
     getPenTime += getPenTimer.nsecsElapsed();
 #endif
-    const RS_Pen originalPen = pen;
     const bool highlighted = e->getFlag(RS2::FlagHighlighted);
     const bool selected = e->getFlag(RS2::FlagSelected);
     const bool overlayPaint = inOverlay || m_inOverlayDrawing;
@@ -540,17 +568,20 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
     // arbitrary QPainter::setPen was called between drawing entities.
     const double patternOffset = painter->currentDashOffset();
     // fixme - replace several booleans by Flags value
-    if (m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
-        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset)) {
+    if (!m_lastPaintedDraft && m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
+        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern)) {
             return;
         }
     }
     else {
+        m_lastPaintedDraft = false;
         m_lastPaintedHighlighted = highlighted;
         m_lastPaintedSelected = selected;
         m_lastPaintOverlay = overlayPaint;
         m_lastPenInVisualSnap = inVisualSnap;
     }
+    m_lastPaintEntityPen.updateBy(pen);
+    m_lastPaintEntityPen.setDashOffset(patternOffset);
 
 #ifdef DEBUG_RENDERING
     setPenTimer.start();
@@ -598,11 +629,18 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
             pen.setLineType(RS2::SolidLine);
         }
         else {
-            if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black)
-                // fixme - sand - think about Black... is it really necessary there?
+            if (pen.getColor().isEqualIgnoringFlags(m_colorBackground)
+                || (pen.getColor().toIntColor() == RS_Color::Black) // fixme - sand - think about Black... is it really necessary there?
                 || (pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
                 pen.setColor(m_colorForeground);
             }
+            // fixme - sand - merge - this is attempt to use more contrast colors? but it to straightforward
+            // fixme - sand - merge - replace varius color by single one. There should be more complicated mapping
+            // if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast) || (pen.getColor().toIntColor() == RS_Color::Black)
+            //     // fixme - sand - think about Black... is it really necessary there?
+            //     || (pen.getColor().colorDistance(m_colorBackgroundForContrast) < RS_Color::MinColorDistance)) {
+            //     pen.setColor(m_colorForeground);
+            // }
         }
     }
     else {
@@ -623,12 +661,17 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         else if (e->getFlag(RS2::FlagTransparent)) {
             pen.setColor(m_colorBackground);
         }
-        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black)){
-            // fixme - sand - think about Black... is it really necessary there?
-            // if (pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance) {
-                pen.setColor(m_colorForeground);
-            // }
+        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground)
+                 || (pen.getColor().toIntColor() == RS_Color::Black// fixme - sand - think about Black... is it really necessary there?
+                     && pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
+            pen.setColor(m_colorForeground);
         }
+        // fixme - sand - merge - another place with attempts to color mapping. Expand later.
+        // else if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast) || (pen.getColor().toIntColor() == RS_Color::Black
+        //     // fixme - sand - think about Black... is it really necessary there?
+        //     && pen.getColor().colorDistance(m_colorBackgroundForContrast) < RS_Color::MinColorDistance)) {
+        //     pen.setColor(m_colorForeground);
+        // }
     }
 
     if (pen.getLineType() != RS2::SolidLine) {
@@ -641,7 +684,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
 #ifdef DEBUG_RENDERING
     setPenTime += setPenTimer.nsecsElapsed(); painterSetPenTimer.start();
 #endif
-    m_lastPaintEntityPen.updateBy(originalPen);
+    m_lastPaintedPattern = pen.getLineType() != RS2::SolidLine;
     painter->setPen(pen);
 #ifdef DEBUG_RENDERING
     painterSetPenTime += painterSetPenTimer.nsecsElapsed();
@@ -654,7 +697,6 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     setPenTimer.start();
 #endif
     RS_Pen pen = e->getPenResolved();
-    const RS_Pen originalPen = pen;
     const bool highlighted = e->getFlag(RS2::FlagHighlighted);
     const bool selected = e->getFlag(RS2::FlagSelected);
     const bool overlayPaint = inOverlay || m_inOverlayDrawing;
@@ -663,17 +705,20 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     // painter pen set previously. This check assumed that that all previous entity drawing were performed via this function and no
     // arbitrary QPainter::setPen was called between drawing entities.
     const double patternOffset = painter->currentDashOffset();
-    if (m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
-        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset)) {
+    if (m_lastPaintedDraft && m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
+        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern)) {
             return;
         }
     }
     else {
+        m_lastPaintedDraft = true;
         m_lastPaintedHighlighted = highlighted;
         m_lastPaintedSelected = selected;
         m_lastPaintOverlay = overlayPaint;
         m_lastPenInVisualSnap = inVisualSnap;
     }
+    m_lastPaintEntityPen.updateBy(pen);
+    m_lastPaintEntityPen.setDashOffset(patternOffset);
     pen.setScreenWidth(0.0);
 
     if (overlayPaint) {
@@ -688,9 +733,15 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
         }
         else {
             if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black && pen.getColor().
-                colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
+               colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
                 pen.setColor(m_colorForeground);
-            }
+               }
+            // fixme - sand - merge - color mapping for contrast. Expand later.
+            // if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast)
+            //     || (pen.getColor().toIntColor() == RS_Color::Black && pen.getColor().
+            //     colorDistance(m_colorBackgroundForContrast) < RS_Color::MinColorDistance)) {
+            //     pen.setColor(m_colorForeground);
+            //     }
         }
     }
     else {
@@ -714,6 +765,12 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
             // if (pen.getColor() .colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
             pen.setColor(m_colorForeground);
         }
+        // fixme - sand - merge - color mapping for contrast. Expand later.
+        // else if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast)
+                // || (pen.getColor().toIntColor() == RS_Color::Black && pen.getColor()
+          // .colorDistance(m_colorBackgroundForContrast) < RS_Color::MinColorDistance)) {
+            // pen.setColor(m_colorForeground);
+          // }
     }
 
     if (pen.getLineType() != RS2::SolidLine) {
@@ -721,7 +778,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     }
 
     // LC_ERR << "PEN " << pen.getColor().name() << "Width: " << pen.getWidth() <<  " | " << pen.getScreenWidth() << " LT " << pen.getLineType();
-    m_lastPaintEntityPen.updateBy(originalPen);
+    m_lastPaintedPattern = pen.getLineType() != RS2::SolidLine;
     painter->setPen(pen);
 #ifdef DEBUG_RENDERING
     setPenTime += setPenTimer.nsecsElapsed();
@@ -765,6 +822,9 @@ void LC_GraphicViewRenderer::drawCoordinateSystems(RS_Painter* painter) {
         bool showByPolicy = true;
         const double baseAngle = m_angleBasisBaseAngle;
         const bool counterClockWise = m_angleBasisCounterClockwise;
+        // fixme - sand - in general, it's not good to use setting in rendering.
+        // fixme - sand - however, ther is only one angle mark on drawing, so it could be fine.
+        //  fixme - sand - yet should be reworked later anyway.
         if (m_anglesBaseOptions.displayPolicy != CFG_Appearance::ShowAnglesBaseMarkType::SHOW_ALWAYS) {
             showByPolicy = LC_LineMath::isMeaningfulAngle(baseAngle) || !counterClockWise;
         }
@@ -780,4 +840,5 @@ void LC_GraphicViewRenderer::doSetupBeforeContainerDraw() {
     m_lastPaintedHighlighted = false;
     m_lastPaintedSelected = false;
     m_lastPaintOverlay = false;
+    m_lastPaintedDraft = false;
 }

@@ -56,7 +56,6 @@ using LC_Rect = lc::geo::Area;
 class RS_Grid {
 public:
     explicit RS_Grid(LC_GraphicViewport* graphicView);
-    ~RS_Grid();
     void calculateGrid();
     void calculateSnapSettings();
     void invalidate(bool gridOn);
@@ -92,7 +91,6 @@ public:
     bool isDrawMetaGrid() const;
 
     LC_GridOptions* getOptions() const {return m_gridOptions.get();}
-
 private:
     //! copy ctor disabled
     RS_Grid(const RS_Grid&) = delete;

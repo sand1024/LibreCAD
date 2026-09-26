@@ -288,24 +288,7 @@ RS_MText::computeBidiVisualOrder(const QString &text,
 }
 
 RS_MText::LC_TextLine* RS_MText::LC_TextLine::clone() const {
-    auto* ec = new LC_TextLine(getParent(), isOwner());
-    if (isOwner()) {
-        for (const RS_Entity* entity : *this) {
-            if (entity != nullptr) {
-                ec->push_back(entity->clone());
-            }
-        }
-    }
-    else {
-        ec->clear();
-        std::copy(cbegin(), cend(), std::back_inserter(*ec));
-    }
-    ec->detach();
-    ec->setTextSize(m_textSize);
-    ec->setLeftBottomCorner(m_leftBottomCorner);
-    ec->setBaselineStart(m_baselineStart);
-    ec->setBaselineEnd(m_baselineEnd);
-    return ec;
+    return new LC_TextLine(*this);
 }
 
 const RS_Vector& RS_MText::LC_TextLine::getTextSize() const {
@@ -371,10 +354,7 @@ RS_MText::RS_MText(RS_EntityContainer* parent, const RS_MTextData& d)
 }
 
 RS_Entity* RS_MText::clone() const {
-    auto* t = new RS_MText(*this);
-    t->setOwner(isOwner());
-    t->detach();
-    return t;
+    return new RS_MText(*this);
 }
 
 // fixme - test concept for using UI proxies for heavy entities on modification operation (rotate, scale etc).
@@ -614,7 +594,13 @@ void RS_MText::update() {
                 if (static_cast<int>(m_data.text.length()) <= i) {
                     continue;
                 }
-                const std::uint32_t ch{m_data.text.toUcs4().at(i)};
+      // `i` is a UTF-16 code-unit index into data.text; index the QString
+      // directly. The previous `data.text.toUcs4().at(i)` indexed a UCS-4
+      // array with a UTF-16 offset — out of bounds / wrong codepoint once any
+      // non-BMP (surrogate-pair) char precedes `i`. All inner cases below are
+      // ASCII ('P','f','F','S'), so a BMP code unit is sufficient and a
+      // non-BMP unit correctly falls to default (--i).
+      char16_t ch{m_data.text.at(i).unicode()};
                 switch (ch) {
                     case 'P':
                         closeLine();

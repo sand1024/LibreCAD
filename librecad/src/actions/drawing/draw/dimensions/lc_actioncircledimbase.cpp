@@ -54,6 +54,12 @@ void LC_ActionCircleDimBase::doTriggerCompletion([[maybe_unused]]bool success) {
     RS_Snapper::finish();
 }
 
+// SetEntity picks a circle or arc and SetText reads from the command line;
+// only SetPos takes a point through the snapper (LibreCAD#2824).
+bool LC_ActionCircleDimBase::isInVisualSnapStatus(int status) {
+    return status == SetPos;
+}
+
 void LC_ActionCircleDimBase::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status) {
@@ -128,6 +134,9 @@ void LC_ActionCircleDimBase::onMouseLeftButtonRelease(const int status, const LC
             break;
         }
         case SetPos: {
+            if (m_entity == nullptr) {
+                break;
+            }
             RS_Vector snap = e->snapPoint;
             snap = getSnapAngleAwarePoint(e, m_entity->getCenter(), snap);
             fireCoordinateEvent(snap);

@@ -27,11 +27,13 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QCoreApplication>
+#include <QApplication>
 #include<iostream>
 
-#include "qc_applicationwindow.h"
 #include "rs_debug.h"
 #include "rs_entitycontainer.h"
+#include "rs_graphic.h"
 #include "rs_line.h"
 #include "rs_math.h"
 #include "rs_painter.h"
@@ -41,16 +43,17 @@
 namespace {
     // fixme - sand - files - move to utility for relative paths calculations
 
-    // Return the file path name to use relative to the dxf file folder
-    QString imageRelativePathName(QString& imageFile) {
-        // fixme - sand - files - this logic is incorrect, as it relies on the currently open document.
-        // relative part should be calculated via graphics...
-        const auto currentDocumentFileName = QC_ApplicationWindow::getAppWindow()->getCurrentDocumentFileName();
-        if (currentDocumentFileName.isEmpty() || imageFile.isEmpty()) {
+    // Return the file path name to use relative to the folder of the image's drawing.
+    // The drawing, not the application window: console tools have no window, and
+    // creating one here crashed them at exit.
+    QString imageRelativePathName(const RS_Entity& image, QString& imageFile) {
+        const RS_Graphic* graphic = image.getGraphic();
+        const QString documentFileName = graphic != nullptr ? graphic->getFilename() : QString();
+        if (documentFileName.isEmpty() || imageFile.isEmpty()) {
             return imageFile;
         }
 
-        const QFileInfo dxfFileInfo(currentDocumentFileName);
+        const QFileInfo dxfFileInfo(documentFileName);
         QFileInfo fileInfo(imageFile);
         if (fileInfo.exists()) {
             // file exists as input file path
@@ -106,8 +109,19 @@ void RS_Image::updateData(const RS_Vector& size, const RS_Vector& Uv, const RS_V
 void RS_Image::update() {
     RS_DEBUG->print("RS_Image::update");
 
+    // fixme - sand - merge - this should be guarded by ifdef. Otherwise, it's not needed runtime overhead!
+
+    // Headless guard: resolving an image path reaches widget-owned document
+    // state. Geometry and borders are unaffected, so skip only the raster load
+    // unless the full widgets application exists (console/test tools often
+    // install only QCoreApplication or QGuiApplication).
+    if (qobject_cast<QApplication *>(QCoreApplication::instance()) == nullptr) {
+        RS_DEBUG->print("RS_Image::update: no widgets application, skipping raster load");
+        return;
+    }
+
     // the whole image:
-    QString filePathName = imageRelativePathName(m_data.file);
+    QString filePathName = imageRelativePathName(*this, m_data.file);
 
     //QImage image = QImage(data.file);
     m_img = std::make_shared<QImage>(filePathName);
@@ -283,7 +297,7 @@ double RS_Image::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity
     if (containsPoint(coord)) {
         //if coord is on image
         // fixme - sand - review why it's picked from settings and not from graphic view
-        const bool draftMode = CFG_Appearance::o_DraftMode;
+        const bool draftMode = LC_GET_ONE_BOOL("Appearance", "DraftMode");
         if (!draftMode) {
             return 0.0;
         }
@@ -323,8 +337,10 @@ void RS_Image::rotate(const RS_Vector& center, const RS_Vector& angleVector) {
 
 void RS_Image::scale(const RS_Vector& center, const RS_Vector& factor) {
     m_data.insertionPoint.scale(center, factor);
-    m_data.uVector.scale(factor.x);
-    m_data.vVector.scale(factor.y);
+    // U and V are WCS vectors, not independent scalar extents.  Apply the
+    // same linear map to both so a rotated image remains a coherent frame.
+    m_data.uVector.scale(factor);
+    m_data.vVector.scale(factor);
     calculateBorders();
 }
 

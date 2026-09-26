@@ -44,6 +44,9 @@ namespace {
 /* Constant variables initialization - START */
     const QStringList FILTERS_STRING_LIST = {
         /* Drawing filters */
+        "Drawing Exchange DXF 2018 (*.dxf)",
+        "Drawing Exchange DXF 2013 (*.dxf)",
+        "Drawing Exchange DXF 2010 (*.dxf)",
         "Drawing Exchange DXF 2007 (*.dxf)",
         "Drawing Exchange DXF 2004 (*.dxf)",
         "Drawing Exchange DXF 2000 (*.dxf)",
@@ -65,6 +68,9 @@ namespace {
     const QList<RS2::FormatType> FILTERS_TYPE_LIST =
     {
         /* Drawing filters */
+        RS2::FormatDXFRW2018,
+        RS2::FormatDXFRW2013,
+        RS2::FormatDXFRW2010,
         RS2::FormatDXFRW,
         RS2::FormatDXFRW2004,
         RS2::FormatDXFRW2000,
@@ -149,10 +155,15 @@ namespace {
 */
 // fixme - sand - decide what to do with this method, whether it's possible to have truly reusable generic file dialogs service?
 LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (const FileDialogMode fileDialogMode,
-                                                                             const QString &currentFileName){
+                                                                             const QString &currentFileName,
+                                                                             const RS2::FormatType preferredType){
     RS_DEBUG->print("LC_FileDialogService::getFileName");
 
     auto [initialDir, nameFilter] = readDefaultDirFilter();
+    const int preferredFilter = FILTERS_TYPE_LIST.indexOf(preferredType);
+    if (preferredFilter >= 0) {
+        nameFilter = FILTERS_STRING_LIST.at(preferredFilter);
+    }
 
     // If the caller passes the current file path, use its directory as the
     // starting location and pre-select its base name (without extension).
@@ -162,7 +173,7 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
         if (fi.dir().exists()) {
             initialDir = fi.absolutePath();
         }
-        preselectName = fi.baseName();
+        preselectName = fi.completeBaseName();
     }
 
     auto saveFileDialog = std::make_unique<QFileDialog>( nullptr,
@@ -179,6 +190,11 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
 
     const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
     saveFileDialog->setOption (QFileDialog::DontUseNativeDialog, useQtFileDialog);
+
+    // Overwrite confirmation is handled once, below, on the final
+    // (extension-corrected) path. Suppress the Qt-drawn dialog's own built-in
+    // confirmation so it does not stack with ours into a double prompt.
+    saveFileDialog->setOption (QFileDialog::DontConfirmOverwrite, true);
 
     // Styling the QFileDialog widget
     std::unique_ptr<QCheckBox> checkBoxCombinedSave;
@@ -198,6 +214,14 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
        }
     }
 
+    // A native OS file panel (macOS/Windows) confirms overwrite itself and
+    // ignores DontConfirmOverwrite; only a Qt-drawn dialog needs our manual
+    // confirmation. Gate it so we never add a second prompt on top of the
+    // native panel's own (the cause of the double "replace?" dialog).
+    const bool qtDrawnDialog =
+        saveFileDialog->testOption(QFileDialog::DontUseNativeDialog) ||
+        QApplication::testAttribute(Qt::AA_DontUseNativeDialogs);
+
     FileDialogResult result{};
     while (true) {
         if (saveFileDialog->QFileDialog::exec() == QDialog::Accepted) {
@@ -211,8 +235,9 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
             // update file extension info
             updateFileExtension(result, selectedFilter);
 
-            /* Confirm if the user wants to overwrite an existing file. */
-            if (QFileInfo::exists(result.filePath)) {
+            /* Confirm overwrite for the Qt-drawn dialog only; a native panel
+               already asked. */
+            if (qtDrawnDialog && QFileInfo::exists(result.filePath)) {
                 const int replaceFileResponse = QMessageBox::warning(
                     QApplication::activeWindow(),
                     FILE_DIALOG_TITLES.at(fileDialogMode),

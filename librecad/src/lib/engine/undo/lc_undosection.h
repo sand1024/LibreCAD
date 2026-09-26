@@ -25,8 +25,8 @@
 
 #ifndef LC_UNDOSECTION_H
 #define LC_UNDOSECTION_H
+#include <QSet>
 #include "rs_document.h"
-
 class RS_Entity;
 class RS_Document;
 class RS_Undoable;
@@ -60,6 +60,8 @@ protected:
 private:
     RS_Document *m_document {nullptr};
     LC_GraphicViewport* m_viewport {nullptr};
+    /** Source handles of the entities this section deleted and no added entity has taken yet. */
+    mutable QSet<quint32> m_freedHandles;
 };
 
 #endif

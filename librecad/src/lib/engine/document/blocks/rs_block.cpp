@@ -24,14 +24,33 @@
 **
 **********************************************************************/
 
-#include "rs_block.h"
+#include <cstddef>
+#include <iostream>
+#include <limits>
+#include <vector>
 
-#include<iostream>
+#include <QSet>
+
+#include "rs_block.h"
 
 #include "rs_blocklist.h"
 #include "rs_graphic.h"
 #include "rs_insert.h"
 #include "rs_line.h"
+
+namespace {
+
+// Presentation-only color for BLOCK definition previews; it is not serialized
+// BLOCK geometry and must not participate in INSERT transform decisions.
+constexpr int kBlockPreviewGrayChannel = 128;
+
+RS_Pen blockDefinitionPreviewPen() {
+    return {RS_Color(kBlockPreviewGrayChannel, kBlockPreviewGrayChannel,
+                     kBlockPreviewGrayChannel),
+            RS2::Width01, RS2::SolidLine};
+}
+
+} // namespace
 
 RS_BlockData::RS_BlockData(const QString& name, const RS_Vector& basePoint, const bool frozen) : name(name), basePoint(basePoint),
     frozen(frozen) {
@@ -47,10 +66,27 @@ bool RS_BlockData::isValid() const {
  */
 RS_Block::RS_Block(RS_EntityContainer* parent, const RS_BlockData& blockData)
     : RS_Document(parent), m_data(blockData) {
-    setPen({RS_Color(128, 128, 128), RS2::Width01, RS2::SolidLine});
+    setPen(blockDefinitionPreviewPen());
 }
 
 RS_Entity* RS_Block::clone() const {
+    const auto blk = new RS_Block(getParent(), RS_BlockData(m_data));
+    blk->setGraphicView(getGraphicView()); // fixme - remove this dependency
+
+    for (const RS_Entity* entity : getEntityList()) {
+        // The block editor edits this RS_Block as its own document: a
+        // deletion there only sets the entity's own FlagDeleted and keeps it
+        // in the list as undo history (RS_Document::undoableDelete). Skip
+        // those here, the same way every writer already does, so a clone
+        // does not resurrect them as live geometry. Check the entity's own
+        // flag, not isDeleted(), which also follows the parent chain and
+        // would make a clone of a deleted block come out empty.
+        if (entity != nullptr && !entity->getFlag(RS2::FlagDeleted)) {
+            RS_Entity* copy = entity->clone();
+            copy->setParent(blk);
+            blk->push_back(copy);
+        }
+    }
     const auto blk = new RS_Block(getParent(), RS_BlockData(m_data));
     blk->setGraphicView(getGraphicView()); // fixme - remove this dependency
 
@@ -80,6 +116,11 @@ RS_LayerList* RS_Block::getLayerList() {
 }
 
 RS_BlockList* RS_Block::getBlockList() {
+    RS_Graphic* g = getGraphic();
+    return (g != nullptr) ? g->getBlockList() : nullptr;
+}
+
+const RS_BlockList* RS_Block::getBlockList() const {
     RS_Graphic* g = getGraphic();
     return (g != nullptr) ? g->getBlockList() : nullptr;
 }
@@ -175,41 +216,63 @@ bool RS_Block::isSelectedInBlockList() const {
  *
  * @return block name chain to the block that contain searched insert
  */
-QStringList RS_Block::findNestedInsert(const QString& bName) {
-    QStringList bnChain;
+QStringList RS_Block::findNestedInsert(const QString& bName) const {
+    struct BlockSearchFrame {
+        const RS_Block* block = nullptr;
+        std::size_t nextEntityIndex = 0U;
+    };
 
-    for (RS_Entity* e : *this) {
-        if (e->rtti() == RS2::EntityInsert) {
-            const auto i = static_cast<RS_Insert*>(e);
-            QString iName = i->getName();
-            if (iName == bName) {
-                bnChain << m_data.name;
-                break;
-            }
-            RS_BlockList* bList = getBlockList();
-            if (bList != nullptr) {
-                RS_Block* nestedBlock = bList->find(iName);
-                if (nestedBlock != nullptr) {
-                    QStringList nestedChain;
-                    nestedChain = nestedBlock->findNestedInsert(bName);
-                    if (!nestedChain.empty()) {
-                        bnChain << m_data.name;
-                        bnChain << nestedChain;
-                        break;
-                    }
-                }
-            }
+    QSet<const RS_Block*> activeBlocks;
+    std::vector<BlockSearchFrame> work;
+    work.push_back({this, 0});
+    activeBlocks.insert(this);
+
+    while (!work.empty()) {
+        BlockSearchFrame& frame = work.back();
+        if (frame.block == nullptr
+            || frame.nextEntityIndex >= static_cast<std::size_t>(frame.block->count())) {
+            activeBlocks.remove(frame.block);
+            work.pop_back();
+            continue;
         }
-    }
 
-    return bnChain;
+        if (frame.nextEntityIndex > static_cast<std::size_t>(std::numeric_limits<int>::max()))
+            return {};
+        const RS_Entity* entity = frame.block->entityAt(
+            static_cast<int>(frame.nextEntityIndex++));
+        if (entity == nullptr || entity->rtti() != RS2::EntityInsert)
+            continue;
+
+        const auto& insert = static_cast<const RS_Insert&>(*entity);
+        if (insert.getName() == bName) {
+            QStringList result;
+            for (const BlockSearchFrame& pathFrame : work)
+                result.push_back(pathFrame.block->m_data.name);
+            return result;
+        }
+
+        const RS_Block* nestedBlock = insert.getBlockForInsert();
+        if (nestedBlock == nullptr || activeBlocks.contains(nestedBlock))
+            continue;
+        activeBlocks.insert(nestedBlock);
+        work.push_back({nestedBlock, 0});
+    }
+    return {};
 }
 
 void RS_Block::addByBlockLine(const RS_Vector& start, const RS_Vector& end) {
-    addByBlockEntity(new RS_Line(start, end));
+    addByBlockEntity(std::make_unique<RS_Line>(start, end));
 }
 
-void RS_Block::addByBlockEntity(const RS_Entity* entity) {
+void RS_Block::addByBlockEntity(std::unique_ptr<RS_Entity> entity) {
+    if (entity == nullptr)
+        return;
+    addByBlockEntity(entity.release());
+}
+
+void RS_Block::addByBlockEntity(RS_Entity* entity) {
+    if (entity == nullptr)
+        return;
     const RS_Pen byBlockPen(RS2::FlagByBlock, RS2::WidthByBlock, RS2::LineByBlock);
     entity->setPen(byBlockPen);
     addEntity(entity);

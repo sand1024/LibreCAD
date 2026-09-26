@@ -32,6 +32,7 @@
 #include <QPoint>
 #include <QPointingDevice>
 #include <QTimer>
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 
@@ -698,6 +699,10 @@ bool QG_GraphicView::isMouseReleaseEventForDefaultAction(const QMouseEvent* even
 }
 
 void QG_GraphicView::mouseMoveEvent(QMouseEvent* event) {
+    if (isClosing()) {
+        event->accept();
+        return;
+    }
     // LC_ERR << "OWN MOUSE MOVE";
     if (isAutoPan(event)) {
         startAutoPanTimer(event);
@@ -859,7 +864,11 @@ void QG_GraphicView::leaveEvent(QEvent* e) {
     QWidget::leaveEvent(e);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 void QG_GraphicView::enterEvent(QEnterEvent* e) {
+#else
+void QG_GraphicView::enterEvent(QEvent* e) {
+#endif
     getEventHandler()->mouseEnterEvent();
     QWidget::enterEvent(e);
 }
@@ -879,50 +888,50 @@ void QG_GraphicView::processTrackpadWheelEvent(QWheelEvent* e, const RS_Vector m
     // high-resolution scrolling triggers Pan instead of Zoom logic
     m_isSmoothScrolling |= !numPixels.isNull();
 
-    if (m_isSmoothScrolling) {
-        if (e->phase() == Qt::ScrollEnd) {
-            m_isSmoothScrolling = false;
+        if (m_isSmoothScrolling) {
+            if (e->phase() == Qt::ScrollEnd) {
+                m_isSmoothScrolling = false;
+            }
         }
-    }
-    else // Trackpads that without high-resolution scrolling
-    // e.g. libinput-XWayland trackpads
-    {
-        numPixels = e->angleDelta() / 4;
-    }
+        else // Trackpads that without high-resolution scrolling
+        // e.g. libinput-XWayland trackpads
+        {
+            numPixels = e->angleDelta() / 4;
+        }
 
-    if (!numPixels.isNull()) {
-        if (e->modifiers() == Qt::ControlModifier) {
-            // Hold ctrl to zoom. 1 % per pixel
-            const double v = (m_invertZoomDirection) ? (numPixels.y() / ZOOM_WHEEL_DIVISOR) : (-numPixels.y() / ZOOM_WHEEL_DIVISOR);
+        if (!numPixels.isNull()) {
+            if (e->modifiers() == Qt::ControlModifier) {
+                // Hold ctrl to zoom. 1 % per pixel
+                const double v = (m_invertZoomDirection) ? (numPixels.y() / ZOOM_WHEEL_DIVISOR) : (-numPixels.y() / ZOOM_WHEEL_DIVISOR);
             RS2::ZoomDirection direction;
             if (v < 0) {
                 direction = RS2::Out;
-            }
-            else {
+                }
+                else {
                 direction = RS2::In;
             }
 
-            const double zoomFact = 1. + std::abs(v);
-            doZoom(direction, mouse, zoomFact);
-        }
-        else {
-            const int hDelta = (m_invertHorizontalScroll) ? -numPixels.x() : numPixels.x();
-            const int vDelta = (m_invertVerticalScroll) ? -numPixels.y() : numPixels.y();
-
-            // scroll by scrollbars: issue #479 (it has its own issues)
-            if (m_scrollbars) {
-                m_hScrollBar->setValue(m_hScrollBar->value() - hDelta);
-                m_vScrollBar->setValue(m_vScrollBar->value() - vDelta);
+                const double zoomFact = 1. + std::abs(v);
+                doZoom(direction, mouse, zoomFact);
             }
             else {
-                getViewPort()->zoomPan(hDelta, vDelta);
+                const int hDelta = (m_invertHorizontalScroll) ? -numPixels.x() : numPixels.x();
+                const int vDelta = (m_invertVerticalScroll) ? -numPixels.y() : numPixels.y();
+
+                // scroll by scrollbars: issue #479 (it has its own issues)
+                if (m_scrollbars) {
+                    m_hScrollBar->setValue(m_hScrollBar->value() - hDelta);
+                    m_vScrollBar->setValue(m_vScrollBar->value() - vDelta);
+                }
+                else {
+                    getViewPort()->zoomPan(hDelta, vDelta);
+                }
             }
+            redraw();
         }
-        redraw();
+        e->accept();
+        return;
     }
-    e->accept();
-    return;
-}
 
 /**
  * mouse wheel event. zooms in/out or scrolls when
@@ -1009,13 +1018,14 @@ void QG_GraphicView::wheelEvent(QWheelEvent* e) {
             case RS2::Right:
                 delta = (m_invertHorizontalScroll) ? -angleDeltaX : angleDeltaX;
                 if (m_hScrollBar != nullptr) {
-                    m_hScrollBar->setValue(m_hScrollBar->value() + delta);
+                m_hScrollBar->setValue(m_hScrollBar->value() + delta);
                 }
                 break;
             default:
                 delta = (m_invertVerticalScroll) ? -angleDeltaY : angleDeltaY;
                 if (m_vScrollBar != nullptr) {
-                    m_vScrollBar->setValue(m_vScrollBar->value() + delta);
+                m_vScrollBar->setValue(m_vScrollBar->value() + delta);
+                break;
                 }
                 break;
         }
@@ -1154,9 +1164,20 @@ void QG_GraphicView::adjustOffsetControls() {
     }
     LC_LOG << __func__ << "(): begin";
 
-    getDocument()->forcedCalculateBorders();
-    RS_Vector vpMin = getDocument()->getMin();
-    RS_Vector vpMax = getDocument()->getMax();
+    // Same border source as LC_GraphicViewport::zoomAuto / MDI tile zoom —
+    // not forcedCalculateBorders, which used to pin empty INSERT/text to (0,0)
+    // and inflate the scroll range after graphic-view resize.
+    auto *viewport = getViewPort();
+    RS_Vector vpMin;
+    RS_Vector vpMax;
+    if (viewport != nullptr
+            && viewport->getViewBorders(vpMin, vpMax)) {
+        // view framing envelope (dense core for sheet-scale drawings)
+    } else if (getDocument() != nullptr) {
+        getDocument()->calculateBorders();
+        vpMin = getDocument()->getMin();
+        vpMax = getDocument()->getMax();
+    }
 
     // no drawing yet - still allow to scroll
     if (!isRectValid(vpMin, vpMax)) {
@@ -1412,7 +1433,7 @@ bool QG_GraphicView::isDraftLinesMode() const {
     return false;
 }
 
-void QG_GraphicView::addScrollbars(bool scrollbarsEnabled) {
+void QG_GraphicView::addScrollbars(bool scrollbarsEnabled){
     m_scrollbars = scrollbarsEnabled;
 
     m_hScrollBar = new QG_ScrollBar(Qt::Horizontal, this);
@@ -1597,7 +1618,7 @@ void QG_GraphicView::autoPanStep() const {
     getViewPort()->zoomPan(m_panData->panOffset.x(), m_panData->panOffset.y());
 }
 
-QString QG_GraphicView::obtainEntityDescription(const RS_Entity* entity, const RS2::EntityDescriptionLevel shortDescription) {
+QString QG_GraphicView::obtainEntityDescription(RS_Entity* entity, const RS2::EntityDescriptionLevel shortDescription) {
     const LC_QuickInfoWidget* entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
     if (entityInfoWidget != nullptr) {
         QString result = entityInfoWidget->getEntityDescription(entity, shortDescription);

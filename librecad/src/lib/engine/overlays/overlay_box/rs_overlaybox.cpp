@@ -45,7 +45,7 @@ void LC_OverlayBoxOptions::loadSettings() {
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFillInverted = fillColorInverted;
     }
-    
+
     {
         using namespace CFG_Appearance;
         lineType = o_SelectionOverlayLineType;

@@ -33,7 +33,6 @@
 #include "lc_linemath.h"
 #include "muParser.h"
 #include "rs_arc.h"
-#include "rs_filterdxfrw.h"
 #include "rs_graphicview.h"
 #include "rs_information.h"
 #include "rs_line.h"
@@ -113,16 +112,16 @@ RS_DimensionData::RS_DimensionData(const RS_DimensionData& other) : RS_Flags(oth
                                                                     horizontalAxisDirection(other.horizontalAxisDirection),
                                                                     autoText{other.autoText}, flipArrow1{other.flipArrow1},
                                                                     flipArrow2{other.flipArrow2} {
-    if (other.dimStyleOverride != nullptr) {
-        dimStyleOverride.reset(other.dimStyleOverride->getCopy());
+    if (other.m_dimStyleOverride != nullptr) {
+        m_dimStyleOverride.reset(other.m_dimStyleOverride->getCopy());
     }
     else {
-        dimStyleOverride.reset();
+        m_dimStyleOverride.reset();
     }
 }
 
 RS_DimensionData::RS_DimensionData() : definitionPoint(false), middleOfText(false), text(""), style("") {
-    dimStyleOverride.reset();
+    m_dimStyleOverride.reset();
 }
 
 /**
@@ -156,7 +155,7 @@ RS_DimensionData::RS_DimensionData(const RS_Vector& definitionPoint, const RS_Ve
                                                           lineSpacingFactor(lineSpacingFactor), text(text), style(style), angle(angle),
                                                           horizontalAxisDirection(hdir), autoText{autoTextLocation}, flipArrow1{flipArr1},
                                                           flipArrow2{flipArr2} {
-    dimStyleOverride.reset(dsOverride);
+    m_dimStyleOverride.reset(dsOverride);
 }
 
 std::ostream& operator <<(std::ostream& os, const RS_DimensionData& dd) {
@@ -225,7 +224,7 @@ QString RS_Dimension::getLabel(const bool resolve) {
         if (okay) {
             ret = functionalText(m_dimGenericData.text, measured);
         }
-        ret = ret.replace(QString("<>"), getMeasuredLabel());
+        ret = ret.replace(QString("<>"), measuredStr);
     }
 
     return ret;
@@ -354,7 +353,7 @@ void RS_Dimension::createHorizontalTextDimensionLine(const RS_Vector& p1, const 
     RS_Pen dimensionLinePen = getPenDimensionLine();
 
     // Create dimension line:
-    auto dimensionLine{new RS_Line{this, p1, p2}};
+    auto dimensionLine = std::make_unique<RS_Line>(this, p1, p2);
     RS_Line* dimensionLineInside1{nullptr};
     RS_Line* dimensionLineInside2{nullptr};
     RS_Line* dimensionLineOutside1{nullptr};
@@ -394,7 +393,7 @@ void RS_Dimension::createHorizontalTextDimensionLine(const RS_Vector& p1, const 
     c.addRectangle(textCorner1, textCorner2);
 
     // treat line as infinitely long in both directions
-    RS_VectorSolutions sol1 = getIntersectionsLineContainer(dimensionLine, &c, true);
+    RS_VectorSolutions sol1 = getIntersectionsLineContainer(dimensionLine.get(), &c, true);
     textIntersectionLength = sol1.get(0).distanceTo(sol1.get(1));
 
     // determine if we should use outside arrows
@@ -515,9 +514,9 @@ void RS_Dimension::createHorizontalTextDimensionLine(const RS_Vector& p1, const 
     h = (text->getUsedTextHeight() / 2) + dimgap;
     RS_Vector s1 = text->getInsertionPoint() - RS_Vector{w, h};
     RS_Vector s2 = text->getInsertionPoint() + RS_Vector{w, h};
-    c = RS_EntityContainer();
+    c.clear();
     c.addRectangle(s1, s2);
-    sol1 = getIntersectionsLineContainer(dimensionLine, &c);
+    sol1 = getIntersectionsLineContainer(dimensionLine.get(), &c);
     if (sol1.size() > 1) {
         // the text bounding box intersects dimensionLine on two sides
         splitDimensionLine = true;
@@ -592,7 +591,7 @@ void RS_Dimension::createHorizontalTextDimensionLine(const RS_Vector& p1, const 
         }
     }
     else {
-        addDimComponentEntity(dimensionLine, dimensionLinePen);
+        addDimComponentEntity(dimensionLine.release(), dimensionLinePen);
     }
 }
 
@@ -1030,7 +1029,7 @@ RS_Color RS_Dimension::getDimensionLineColor() const {
     // fixme - sand - temporary debug code
     return m_dimStyleTransient->dimensionLine()->color();
 
-    // return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRD", 0));
+    // return LC_ColorNumbers::numberToColor(getGraphicVariableInt("$DIMCLRD", 0));
 }
 
 /**
@@ -1039,7 +1038,7 @@ RS_Color RS_Dimension::getDimensionLineColor() const {
 RS_Color RS_Dimension::getExtensionLineColor() const {
     // fixme - sand - temporary debug code
     return m_dimStyleTransient->extensionLine()->color();
-    // return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRE", 0));
+    // return LC_ColorNumbers::numberToColor(getGraphicVariableInt("$DIMCLRE", 0));
 }
 
 /**
@@ -1047,7 +1046,7 @@ RS_Color RS_Dimension::getExtensionLineColor() const {
  */
 RS_Color RS_Dimension::getTextColor() const {
     return m_dimStyleTransient->text()->color();
-    // return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRT", 0));
+    // return LC_ColorNumbers::numberToColor(getGraphicVariableInt("$DIMCLRT", 0));
 }
 
 /**
@@ -1223,23 +1222,25 @@ LC_DimStyle* RS_Dimension::getGlobalDimStyle() const {
 }
 
 LC_DimStyle* RS_Dimension::getEffectiveDimStyle() const {
-    const auto dimStyleName = getStyle();
-    const auto graphic = getGraphic();
-    if (graphic != nullptr) {
-        const auto styleOverride = getDimStyleOverride();
-        LC_DimStyle* result = graphic->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
-        return result;
+    // During import, dimensions may be parented under a temporary container
+    // (e.g. RS_FilterDXFRW::m_dummyContainer) with no path to an RS_Graphic.
+    // Never call into RS_Graphic with a null this — that is a hard SIGSEGV.
+    RS_Graphic* graphic = getGraphic();
+    if (graphic == nullptr) {
+        return nullptr;
     }
-    return nullptr;
+    return graphic->getEffectiveDimStyle(getStyle(), rtti(), getDimStyleOverride());
 }
 
 // note:: copy should be deleted!
 LC_DimStyle* RS_Dimension::getEffectiveCachedDimStyle() {
     if (m_dimStyleTransient == nullptr) {
-        const auto dimStyleName = getStyle();
-        const auto styleOverride = getDimStyleOverride();
-        const auto graphic = getGraphic();
-        m_dimStyleTransient = graphic->getEffectiveDimStyleForEdit(dimStyleName, rtti(), styleOverride);
+        RS_Graphic* graphic = getGraphic();
+        if (graphic == nullptr) {
+            return nullptr;
+        }
+        m_dimStyleTransient = graphic->getEffectiveDimStyleForEdit(
+            getStyle(), rtti(), getDimStyleOverride());
         // fixme - delete copy!
     }
     return m_dimStyleTransient;
@@ -1247,10 +1248,14 @@ LC_DimStyle* RS_Dimension::getEffectiveCachedDimStyle() {
 
 // fixme - review how copies of dimstyle are created and removed
 LC_DimStyle* RS_Dimension::getEffectiveDimStyleOverride() {
+    RS_Graphic* graphic = getGraphic();
+    if (graphic == nullptr) {
+        return getDimStyleOverride();
+    }
     const auto dimStyleName = getStyle();
     auto styleOverride = getDimStyleOverride();
     const bool hasStyleOverride = styleOverride != nullptr;
-    const auto style = getGraphic()->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
+    const auto style = graphic->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
     setDimStyleOverride(style);
     if (hasStyleOverride) {
         delete style; // delete a copy of style that was created for override, as another copy is created and set in setDimStyleOverride
@@ -1286,6 +1291,7 @@ void RS_Dimension::updateDim(const bool autoText) {
         return;
     }
     resolveEffectiveDimStyleAndUpdateDim();
+    calculateBorders();
 }
 
 void RS_Dimension::addDimComponentEntity(RS_Entity* en, const RS_Pen& pen) {
@@ -1348,7 +1354,7 @@ QString RS_Dimension::createLinearMeasuredLabel(const double dist) const {
 
 double RS_Dimension::prepareLabelLinearDistance(const double distance) const {
     double dist = distance * getGeneralFactor();
-    if (!CFG_Appearance::o_UnitlessGrid) {
+    if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)) {
         dist = RS_Units::convert(dist);
     }
     return dist;

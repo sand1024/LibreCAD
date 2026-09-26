@@ -104,8 +104,6 @@ RS_Hatch::~RS_Hatch() = default;
 RS_Entity* RS_Hatch::clone() const {
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::clone()");
     auto* cloneHatch = new RS_Hatch(*this);
-    cloneHatch->setOwner(isOwner());
-    cloneHatch->detach();
 
     // Force re-optimization and update to deep-copy caches and subcontainers
     cloneHatch->m_needOptimization = true;
@@ -275,6 +273,21 @@ void RS_Hatch::update() {
     m_updateRunning = true;
     m_updateError = HATCH_OK;
 
+    // Delete the pattern lines of an earlier update: validate() drops them only
+    // when the loops need optimizing.
+    std::vector<RS_Entity*> loops;
+    std::vector<RS_Entity*> patternLines;
+    for (RS_Entity* en : std::as_const(*this)) {
+        (en->isContainer() ? loops : patternLines).push_back(en);
+    }
+    setOwner(false);
+    clear();
+    setOwner(true);
+    std::copy(loops.begin(), loops.end(), std::back_inserter(*this));
+    for (RS_Entity* en : patternLines) {
+        delete en;
+    }
+
     // Reset caches
     m_area = RS_MAXDOUBLE;
     m_secondMomentValid = false;
@@ -382,19 +395,16 @@ void RS_Hatch::updatePatternHatch(RS_Layer* layer, const RS_Pen& pen) {
     int addedCount = 0;
     for (size_t i = 0; i < m_orderedLoops->size(); ++i) {
         const auto& loop = (*m_orderedLoops)[i];
-        auto trimmedEntities = loop.trimPatternEntities(*pattern);
-        for (RS_Entity* entity : *trimmedEntities) {
-            if (entity != nullptr) {
-                entity->setPen(pen);
-                entity->setLayer(layer);
-                entity->reparent(this);  // Reparent to RS_Hatch
-                entity->setFlag(RS2::FlagHatchChild);
-                entity->rotate(center, rotationVector);
-                addEntity(entity);  // Transfers ownership; direct child
-                ++addedCount;
-            }
+        for (auto& owned : loop.trimPatternEntities(*pattern)->takeEntities()) {
+            RS_Entity* entity = owned.release();
+            entity->setPen(pen);
+            entity->setLayer(layer);
+            entity->reparent(this);
+            entity->setFlag(RS2::FlagHatchChild);
+            entity->rotate(center, rotationVector);
+            addEntity(entity);
+            ++addedCount;
         }
-        trimmedEntities->setOwner(false);  // Release after transfer
     }
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::updatePatternHatch: Added %d direct entities",
@@ -413,8 +423,9 @@ void RS_Hatch::activateContour(const bool visible) const {
         if (sub) {
             for (RS_Entity* entity : *sub) {
                 if (!entity->isDeleted() && !entity->getFlag(RS2::FlagTemp)) {
-                    RS_DEBUG->print("RS_Hatch::activateContour: Setting visibility for entity %d",
-                                    entity->getId());
+                    RS_DEBUG->Log()
+                        << "RS_Hatch::activateContour: Setting visibility for entity "
+                        << entity->getId();
                     entity->setVisible(visible);
                 }
             }

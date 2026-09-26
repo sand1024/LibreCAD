@@ -28,6 +28,7 @@
 #include "lc_settings_defaults.h"
 #include "lc_settings_paths.h"
 #include "qg_filedialog.h"
+#include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_document.h"
@@ -35,6 +36,17 @@
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "rs_settings.h"
+
+namespace {
+    /**
+     * Whether Save can write the drawing back to its file, in the format the
+     * file was read from. It cannot for a format LibreCAD only reads, such as
+     * a Shapefile or a DWG older than R2000.
+     */
+    bool canSaveInPlace(const RS_Graphic* graphic) {
+        return RS_FileIO::instance()->canExport(graphic->getFormatType());
+    }
+}
 
 LC_DocumentsStorage::LC_DocumentsStorage() = default;
 
@@ -48,6 +60,12 @@ bool LC_DocumentsStorage::saveDocument(RS_Document* document, RS_GraphicView * g
         const auto fileName = graphic->getFilename();
         if (fileName.isEmpty()) {
             result = doSaveGraphicAs(graphic, graphicView, cancelled);
+        } else if (!canSaveInPlace(graphic)) {
+            // writing another format under the file's name would destroy it
+            RS_DIALOGFACTORY->commandMessage(
+                tr("LibreCAD cannot save \"%1\" in its own format. Choose a name to save the drawing as.")
+                    .arg(QFileInfo(fileName).fileName()));
+            result = doSaveGraphicAs(graphic, graphicView, cancelled, fileName, RS2::FormatDXFRW);
         } else {
             const QFileInfo info(fileName);
             if (!info.isWritable()) {
@@ -61,9 +79,9 @@ bool LC_DocumentsStorage::saveDocument(RS_Document* document, RS_GraphicView * g
     return result;
 }
 
-bool LC_DocumentsStorage::doSaveGraphicAs(RS_Graphic* graphic, RS_GraphicView *graphicView, bool &cancelled, const QString& currentFileName){
-    auto dialogResult = LC_FileDialogService::getFileDetails(
-        LC_FileDialogService::SaveDrawing, currentFileName);
+bool LC_DocumentsStorage::doSaveGraphicAs(RS_Graphic* graphic, RS_GraphicView *graphicView, bool &cancelled, const QString& currentFileName,
+                                          const RS2::FormatType preferredType){
+    auto dialogResult = askSaveFileDetails(currentFileName, preferredType);
 
     const QString fileName = dialogResult.filePath;
     RS2::FormatType saveFormat = dialogResult.fileType;
@@ -80,6 +98,11 @@ bool LC_DocumentsStorage::doSaveGraphicAs(RS_Graphic* graphic, RS_GraphicView *g
         QApplication::restoreOverrideCursor();
     }
     return result;
+}
+
+LC_FileDialogService::FileDialogResult LC_DocumentsStorage::askSaveFileDetails(const QString& currentFileName,
+                                                                               const RS2::FormatType preferredType) {
+    return LC_FileDialogService::getFileDetails(LC_FileDialogService::SaveDrawing, currentFileName, preferredType);
 }
 
 bool LC_DocumentsStorage::autoSaveDocument(RS_Document* document, RS_GraphicView * graphicView, QString& autosaveFileName){
@@ -153,6 +176,8 @@ bool LC_DocumentsStorage::loadGraphicFromTemplate(RS_Graphic* graphic, const QSt
 
     // import template file:
     const bool ret = RS_FileIO::instance()->fileImport(*graphic, templateFileName, type);
+    // a drawing made from a template is a new drawing, saved as DXF
+    graphic->setFormatType(RS2::FormatDXFRW);
 
     const QFileInfo finfo;
     graphic->markSaved(finfo.lastModified());
@@ -171,7 +196,12 @@ bool LC_DocumentsStorage::loadGraphic(RS_Graphic* graphic,  const QString &filen
         const auto autosaveFileName = createAutoSaveFileName(finfo);
         graphic->setAutosaveFileName(autosaveFileName);
         graphic->setFilename(filename);
+        // markSaved clears modified; re-dirty when import repairs rewrote coords
+        // so Save does not silently rewrite the user's file without notice.
+        const bool importMutated = graphic->takeImportGeometryMutated();
         graphic->markSaved(finfo.lastModified());
+        if (importMutated)
+            graphic->setModified(true);
     }
     return ret;
 }
@@ -209,8 +239,11 @@ bool LC_DocumentsStorage::doSave(RS_Graphic* graphic, const bool sameFile) {
     if (!actualName.isEmpty()) {
         graphic->prepareForSave();
         result = RS_FileIO::instance()->fileExport(*graphic, actualName, actualType);
-        const QFileInfo actualFileInfo(actualName);
-        graphic->markSaved(actualFileInfo.lastModified());
+        // a drawing that failed to save still has changes to lose
+        if (result) {
+            const QFileInfo actualFileInfo(actualName);
+            graphic->markSaved(actualFileInfo.lastModified());
+        }
     }
 
     /*	Remove AutoSave file after user has successfully saved file.*/
@@ -228,23 +261,30 @@ bool LC_DocumentsStorage::doSave(RS_Graphic* graphic, const bool sameFile) {
 
 bool LC_DocumentsStorage::autoSaveGraphic(RS_Graphic* graphic, QString& fileName) {
     bool ret = false;
+    RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: isModified=%d", graphic->isModified());
     if (graphic->isModified()) {
-        RS2::FormatType actualType = graphic->getFormatType();
-        if (actualType == RS2::FormatUnknown) {
-            actualType = RS2::FormatDXFRW;
-        }
+        // Autosave writes DXF, whatever format the drawing is saved in: DXF is
+        // what LibreCAD writes most reliably, and it can write it for every
+        // drawing. createAutoSaveFileName() names the file *.dxf.
+        const RS2::FormatType actualType = RS2::FormatDXFRW;
         const QString autosaveFileName = graphic->getAutoSaveFileName();
+        RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: autosaveFileName='%s'", autosaveFileName.toLatin1().data());
         if (!autosaveFileName.isEmpty()) {
+            RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: attempting export to '%s'", autosaveFileName.toLatin1().data());
             ret = RS_FileIO::instance()->fileExport(*graphic, autosaveFileName, actualType);
+            RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: export result=%d", ret);
             /*
              fixme - sand - don't mark file as non-modified on auto-save.
              *QFileInfo finfo(autosaveFileName);
             graphic->markSaved(finfo.lastModified());
             */
+        } else {
+            RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: autosaveFileName is empty, skipping export");
         }
         fileName = autosaveFileName;
     } else {
         // file not modified
+        RS_DEBUG->print("LC_DocumentsStorage::autoSaveGraphic: file not modified, skipping");
         ret = true;
     }
     return ret;
@@ -333,6 +373,10 @@ bool LC_DocumentsStorage::backupDrawingFile(const QString &drawingFileName, cons
 QString LC_DocumentsStorage::createAutoSaveFileName(const QFileInfo &fileInfo) const {
     const QString autosaveFilePrefix = CFG_Defaults::o_AutosaveFilePrefix;
     QString autosaveFileName = createAutoSaveFileName(fileInfo, autosaveFilePrefix);
+    // autosave writes DXF: name the file so that it opens as DXF
+    if (fileInfo.suffix().compare("dxf", Qt::CaseInsensitive) != 0) {
+        autosaveFileName += ".dxf";
+    }
     return autosaveFileName;
 }
 

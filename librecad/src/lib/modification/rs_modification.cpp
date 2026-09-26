@@ -26,11 +26,21 @@
 **********************************************************************/
 #include "rs_modification.h"
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
 #include "lc_containertraverser.h"
+#include "lc_curveoffset.h"
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
 #include "lc_settings_render.h"
 #include "lc_splinepoints.h"
+#include "rs_spline.h"
 #include "lc_undosection.h"
 #include "rs_arc.h"
 #include "rs_atomicentity.h"
@@ -60,6 +70,11 @@ class LC_SplinePoints;
 
 namespace {
       // fixme - sand - add option for intersection tolerance????
+
+    bool acceptedInsertSourceEdit(const RS_Entity& entity) {
+        return entity.rtti() != RS2::EntityInsert
+               || static_cast<const RS_Insert&>(entity).lastSourceEditSucceeded();
+    }
 
     RS_VectorSolutions findIntersection(const RS_Entity& trimEntity, const RS_Entity& limitEntity, double tolerance = 1e-4) {
         RS_VectorSolutions sol;
@@ -335,48 +350,66 @@ RS_BoundData RS_Modification::getBoundingRect(QList<RS_Entity*>& selected) {
 void RS_Modification::libraryInsert(const LC_LibraryInsertData& data, RS_Graphic* destination, LC_DocumentModificationBatch& ctx) {
     RS_Graphic* src = data.source;
     Q_ASSERT(src != nullptr);
+    Q_ASSERT(destination != nullptr);
 
-    // Scale (units)
-    const RS_Vector scaleV = LC_CopyUtils::getInterGraphicsScaleFactor(data.factor, src, destination);
-
-    src->calculateBorders();
-    const RS_Vector center = (src->getMin() + src->getMax()) * 0.5; // fixme - sand - no insertion point for such block???? Why center?
-
-    // === BLOCK: Bake → angle=0 ===
-    const QString bname = data.blockName.isEmpty() ? getUniqueBlockName(destination) : data.blockName;
-    // fixme - what if the block with such name already exists???
-
-    const auto blockData = RS_BlockData(bname, {0.0, 0.0}, false);
-    auto* block = new RS_Block(destination, blockData);
-
-    for (const RS_Entity* e : *src) {
-        if (e == nullptr || e->isDeleted()) {
-            continue;
+    RS_LayerList* srcLayers = src->getLayerList();
+    if (srcLayers != nullptr) {
+        for (const RS_Layer* layer : *srcLayers) {
+            if (layer == nullptr) {
+                continue;
+            }
+            const QString ln = layer->getName();
+            if (destination->findLayer(ln) == nullptr) {
+                destination->addLayer(layer->clone());
+            }
         }
-        RS_Entity* clone = e->clone();
-        // Bake: center→0 → scale/rot → block@0
-        clone->move(-center); // fixme - sand should the offset be used there???
-        clone->scale(RS_Vector{}, scaleV);
-        clone->rotate(RS_Vector{}, data.angle);
-        block->addByBlockEntity(clone); // **ByBlock** 👌
     }
 
-    destination->addBlock(block);
+    // Everything read is new to this drawing, and goes on its layers of the same names.
+    constexpr unsigned provenance = RS_Entity::Identity | RS_Entity::TableRefs;
+    for (const RS_Entity* e : *src) {
+        if (e == nullptr || e->rtti() != RS2::EntityInsert) {
+            continue;
+        }
+        const RS_Block* block = static_cast<const RS_Insert*>(e)->getBlockForInsert();
+        if (block != nullptr) {
+            LC_CopyUtils::doCopyBlock(block, destination, provenance);
+        }
+    }
 
-    // Insert (baked, **angle=0**)
-    const RS_InsertData idata(bname, data.insertionPoint, {1., 1.}, 0.0, 1, 1, {});
+    const RS_Vector scaleV = LC_CopyUtils::getInterGraphicsScaleFactor(data.factor, src, destination);
+
+    // fixme - blocks - block name: prefer provided, fallback to auto-generated
+    const QString bname = data.blockName.isEmpty() ? getUniqueBlockName(destination) : data.blockName;
+    RS_Block* block = destination->findBlock(bname);
+    if (block == nullptr) {
+        const auto blockData = RS_BlockData(bname, {0.0, 0.0}, false);
+        block = new RS_Block(destination, blockData);
+
+        for (const RS_Entity* e : *src) {
+            if (e == nullptr || e->isDeleted()) {
+                continue;
+            }
+            RS_Entity* clone = e->clone();
+            clone->clearDwgProvenance(provenance);
+            LC_CopyUtils::doCopyEntityLayer(clone, destination, src);
+            block->addByBlockEntity(clone);
+        }
+
+        destination->addBlock(block);
+    }
+
+    // fixme - blocks - outer Insert carries all transformations (scale + angle)
+    const RS_InsertData idata(bname, data.insertionPoint, scaleV, data.angle, 1, 1, RS_Vector{0.0, 0.0});
     auto* insert = new RS_Insert(nullptr, idata);
 
     ctx += insert;
 
-    // Props (inherit)
-    const RS_Entity* first = src->firstEntity(RS2::ResolveNone); // fixme - why properties for insert are from first entity?
-    if (first != nullptr) {
-        insert->setLayer(first->getLayer());
-        insert->setPen(first->getPen(true));
-    }
-
+    insert->setLayer(destination->getActiveLayer());
+    insert->setPen(RS_Pen(RS_Color(RS2::FlagByLayer), RS2::WidthByLayer, RS2::LineByLayer));
     insert->update();
+
+    ctx.dontSetActiveLayerAndPen();
 
     destination->updateInserts(); // fixme - why all inserts are updated there?
 }
@@ -947,21 +980,27 @@ RS_Polyline* RS_Modification::polylineTrim(RS_Polyline* polyline, RS_AtomicEntit
 void RS_Modification::move(const RS_MoveData& data, const QList<RS_Entity*>& entitiesList, const bool forPreviewOnly,
                            LC_DocumentModificationBatch& ctx) {
     const int numberOfCopies = data.obtainNumberOfCopies();
+    QList<RS_Entity*> transformedOriginals = entitiesList;
     for (const auto e : entitiesList) {
         // Create new entities
         for (int num = 1; num <= numberOfCopies; num++) {
             RS_Entity* clone = getClone(forPreviewOnly, e);
             clone->move(data.offset * num);
+            if (!acceptedInsertSourceEdit(*clone)) {
+                transformedOriginals.removeAll(e);
+                delete clone;
+                continue;
+            }
             ctx += clone;
         }
     }
 
     if (!data.keepOriginals) {
-        ctx -= entitiesList;
+        ctx -= transformedOriginals;
     }
     ctx.setActiveLayer = data.useCurrentLayer;
     ctx.setActivePen = data.useCurrentAttributes;
-    ctx.success = true;
+    ctx.success = !transformedOriginals.isEmpty();
 }
 
 RS_Entity* RS_Modification::getClone(const bool forPreviewOnly, const RS_Entity* e) {
@@ -1016,6 +1055,308 @@ bool RS_Modification::alignRef(const LC_AlignRefData& data, const QList<RS_Entit
     return true;
 }
 
+bool LC_OffsetBatchOutcome::anySourceSucceeded() const {
+    return std::any_of(sources.begin(), sources.end(),
+                       [](const LC_OffsetSourceOutcome& source) { return source.succeeded(); });
+}
+
+namespace {
+/**
+ * How far from its curve a point on @p source can be and still be on it as
+ * the user sees it: an RS_Spline is drawn with chords within a thousandth of
+ * its control points' extent (RS_Spline::fillDisplayPoints()), so a point
+ * snapped onto its drawing lies that near the curve and gives no side the
+ * user chose.
+ */
+double drawnCurveTolerance(const RS_Entity& source) {
+    RS_Vector lo = source.getMin();
+    RS_Vector hi = source.getMax();
+    if (const auto* spline = dynamic_cast<const RS_Spline*>(&source)) {
+        for (const RS_Vector& p : spline->getData().controlPoints) {
+            lo = RS_Vector::minimum(lo, p);
+            hi = RS_Vector::maximum(hi, p);
+        }
+    }
+    return (lo.valid && hi.valid) ? 1e-3 * lo.distanceTo(hi) : 0.0;
+}
+
+/**
+ * Selected segments of polylines, grouped: each run of consecutive selected
+ * segments of one polyline, in the polyline's order and, on a closed one,
+ * across its seam. A run is offset as one chain, as its polyline would be,
+ * so that its segments stay joined; a lone segment is offset on its own.
+ */
+struct LC_SegmentRun {
+    std::vector<RS_Entity*> members;
+    /** The chain offset for a run of two or more segments; null for one. */
+    std::unique_ptr<RS_Entity> chain;
+};
+
+/** The polyline that holds @p e as one of its segments, or null. */
+RS_Polyline* holdingPolyline(const RS_Entity* e) {
+    RS_EntityContainer* parent = e != nullptr ? e->getParent() : nullptr;
+    return (parent != nullptr && parent->rtti() == RS2::EntityPolyline) ? static_cast<RS_Polyline*>(parent) : nullptr;
+}
+
+/** Whether @p a and @p b are the same point, to the tolerance a polyline's vertices meet to. */
+bool meet(const RS_Vector& a, const RS_Vector& b) {
+    return a.distanceTo(b) <= RS_TOLERANCE * std::max(1.0, a.magnitude());
+}
+
+/** Whether segment @p next shares an end with segment @p previous. */
+bool touches(const RS_Entity* previous, const RS_Entity* next) {
+    for (const RS_Vector& p : {previous->getStartpoint(), previous->getEndpoint()}) {
+        if (meet(p, next->getStartpoint()) || meet(p, next->getEndpoint())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Whether a polyline offsets @p segment with the others: a line or an arc.
+ * RS_Polyline::offset() leaves an elliptic segment where it is, so one is
+ * offset on its own.
+ */
+bool chainable(const RS_Entity* segment) {
+    return segment->rtti() == RS2::EntityLine || segment->rtti() == RS2::EntityArc;
+}
+
+/** A copy of @p e that is neither selected nor highlighted, nor are its children. */
+RS_Entity* plainCopy(const RS_Entity& e) {
+    RS_Entity* copy = e.clone();
+    copy->setSelectionFlag(false);
+    copy->setHighlighted(false);
+    if (copy->isContainer()) {
+        for (RS_Entity* child : *static_cast<RS_EntityContainer*>(copy)) {
+            child->setSelectionFlag(false);
+            child->setHighlighted(false);
+        }
+    }
+    return copy;
+}
+
+/**
+ * An open polyline through copies of @p segments, in order, with the layer
+ * and pen of @p polyline; a segment stored the other way round is turned.
+ */
+std::unique_ptr<RS_Entity> chainThrough(const RS_Polyline& polyline, const std::vector<RS_Entity*>& segments) {
+    auto chain = std::make_unique<RS_Polyline>(polyline.getParent());
+    chain->setLayer(polyline.getLayer(false));
+    chain->setPen(polyline.getPen(false));
+    RS_Entity* previous = nullptr;
+    for (size_t i = 0; i < segments.size(); ++i) {
+        RS_Entity* piece = plainCopy(*segments[i]);
+        bool turned = false;
+        if (previous != nullptr) {
+            turned = !meet(previous->getEndpoint(), piece->getStartpoint()) &&
+                     meet(previous->getEndpoint(), piece->getEndpoint());
+        }
+        else if (i + 1 < segments.size()) {
+            // the first turns when it starts, rather than ends, where the second one is
+            const RS_Entity* next = segments[i + 1];
+            const auto atNext = [next](const RS_Vector& p) {
+                return meet(p, next->getStartpoint()) || meet(p, next->getEndpoint());
+            };
+            turned = !atNext(piece->getEndpoint()) && atNext(piece->getStartpoint());
+        }
+        if (turned) {
+            piece->revertDirection();
+        }
+        piece->setParent(chain.get());
+        chain->RS_EntityContainer::addEntity(piece);
+        previous = piece;
+    }
+    chain->setStartpoint(chain->firstEntity()->getStartpoint());
+    chain->setEndpoint(previous->getEndpoint());
+    chain->calculateBorders();
+    return chain;
+}
+
+/**
+ * The runs of the selected segments among @p sources, by the segments they
+ * hold. A polyline that is itself among the sources takes its segments with
+ * it, so they are not offset twice. A deleted segment, or a gap between two
+ * segments, ends a run; an elliptic segment is a run of its own.
+ */
+std::vector<std::unique_ptr<LC_SegmentRun>> segmentRuns(const QList<RS_Entity*>& sources,
+                                                        std::unordered_map<const RS_Entity*, LC_SegmentRun*>& runOf) {
+    std::unordered_set<const RS_Entity*> selected{sources.cbegin(), sources.cend()};
+    std::vector<RS_Polyline*> polylines;
+    std::unordered_set<const RS_Polyline*> known;
+    for (const RS_Entity* e : sources) {
+        RS_Polyline* polyline = holdingPolyline(e);
+        if (polyline != nullptr && selected.count(polyline) == 0 && known.insert(polyline).second) {
+            polylines.push_back(polyline);
+        }
+    }
+    std::vector<std::unique_ptr<LC_SegmentRun>> runs;
+    for (RS_Polyline* polyline : polylines) {
+        std::vector<RS_Entity*> segments;
+        for (RS_Entity* segment : *polyline) {
+            segments.push_back(segment);
+        }
+        const size_t n = segments.size();
+        std::vector<bool> chosen(n);
+        size_t count = 0;
+        for (size_t i = 0; i < n; ++i) {
+            chosen[i] = selected.count(segments[i]) != 0 && !segments[i]->isDeleted();
+            count += chosen[i] ? 1 : 0;
+        }
+        if (count == 0) {
+            continue;
+        }
+        // whether a run through segment a goes on into segment b
+        const auto continues = [&](const size_t a, const size_t b) {
+            return chosen[a] && chosen[b] && chainable(segments[a]) && chainable(segments[b]) &&
+                   touches(segments[a], segments[b]);
+        };
+        // on a closed polyline, start where a run cannot come in from the
+        // segment before, so that a run across the seam is one run
+        size_t first = 0;
+        if (polyline->isClosed()) {
+            for (size_t i = 0; i < n; ++i) {
+                if (!continues((i + n - 1) % n, i)) {
+                    first = i;
+                    break;
+                }
+            }
+        }
+        std::vector<std::vector<RS_Entity*>> found;
+        for (size_t step = 0; step < n; ++step) {
+            const size_t i = (first + step) % n;
+            if (!chosen[i]) {
+                continue;
+            }
+            if (step == 0 || !continues((i + n - 1) % n, i)) {
+                found.emplace_back();
+            }
+            found.back().push_back(segments[i]);
+        }
+        for (std::vector<RS_Entity*>& members : found) {
+            auto run = std::make_unique<LC_SegmentRun>();
+            if (members.size() == n && n > 1) {
+                run->chain.reset(plainCopy(*polyline)); // every segment: the polyline, closed if it is
+                run->chain->setParent(polyline->getParent());
+            }
+            else if (members.size() > 1) {
+                run->chain = chainThrough(*polyline, members);
+            }
+            run->members = std::move(members);
+            for (const RS_Entity* member : run->members) {
+                runOf[member] = run.get();
+            }
+            runs.push_back(std::move(run));
+        }
+    }
+    return runs;
+}
+
+/** total += more, unless a count would overflow. */
+bool addUsage(LC_OffsetOutputUsage& total, const LC_OffsetOutputUsage& more) {
+    constexpr std::size_t max = std::numeric_limits<std::size_t>::max();
+    if (more.cubicPieces > max - total.cubicPieces || more.outputEntities > max - total.outputEntities ||
+        more.deepEntities > max - total.deepEntities) {
+        return false;
+    }
+    total.cubicPieces += more.cubicPieces;
+    total.outputEntities += more.outputEntities;
+    total.deepEntities += more.deepEntities;
+    return true;
+}
+
+/** What is left of @p budget after @p used; a field exhausted to zero makes it invalid. */
+LC_OffsetSourceBudget remainingBudget(const LC_OffsetSourceBudget& budget, const LC_OffsetOutputUsage& used) {
+    auto left = [](const std::size_t cap, const std::size_t spent) { return cap > spent ? cap - spent : 0; };
+    return {left(budget.maxCubicPieces, used.cubicPieces), left(budget.maxOutputEntities, used.outputEntities),
+            left(budget.maxDeepEntities, used.deepEntities)};
+}
+
+bool withinBudget(const LC_OffsetOutputUsage& used, const LC_OffsetSourceBudget& budget) {
+    return used.cubicPieces <= budget.maxCubicPieces && used.outputEntities <= budget.maxOutputEntities &&
+           used.deepEntities <= budget.maxDeepEntities;
+}
+
+LC_OffsetSourceStatus engineFailure(const LC_CurveOffsetStatus status) {
+    return status == LC_CurveOffsetStatus::LimitExceeded ? LC_OffsetSourceStatus::LimitExceeded
+                                                         : LC_OffsetSourceStatus::OffsetFailed;
+}
+
+/** Every field of @p a at most that of @p b. */
+bool noLargerThan(const LC_OffsetSourceBudget& a, const LC_OffsetSourceBudget& b) {
+    return a.maxCubicPieces <= b.maxCubicPieces && a.maxOutputEntities <= b.maxOutputEntities &&
+           a.maxDeepEntities <= b.maxDeepEntities;
+}
+} // namespace
+
+LC_OffsetBatchLimits LC_OffsetBatchLimits::preview() {
+    LC_OffsetBatchLimits limits;
+    limits.perSource = {kDefaultOffsetCubicPiecesPerSource / 8, kDefaultOffsetOutputEntitiesPerSource / 8,
+                        kDefaultOffsetDeepEntitiesPerSource / 8};
+    limits.maxDeepEntitiesPerRequest = kDefaultOffsetDeepEntitiesPerRequest / 8;
+    limits.maxSamples = LC_CurveOffset::kDefaultMaxSamples / 8;
+    limits.maxIntersectionPairs = LC_CurveOffset::kDefaultMaxIntersectionPairs / 8;
+    return limits;
+}
+
+struct LC_OffsetPreviewCache::Entry {
+    LC_OffsetSourceBudget budget;
+    LC_CurveOffsetStatus status;
+    LC_OffsetOutputUsage usage;
+    LC_OffsetValidationLevel validationLevel;
+    double maxObservedError;
+    std::vector<std::unique_ptr<RS_Entity>> entities;
+};
+
+LC_OffsetPreviewCache::LC_OffsetPreviewCache() = default;
+LC_OffsetPreviewCache::~LC_OffsetPreviewCache() = default;
+
+bool LC_OffsetPreviewCache::find(const RS_Entity* source, const LC_CurveOffsetSide side, const double magnitude,
+                                 const LC_OffsetSourceBudget& budget, LC_CurveOffsetMaterializationResult& out) const {
+    const auto it = m_entries.find({source, static_cast<int>(side), magnitude});
+    if (it == m_entries.end()) {
+        return false;
+    }
+    const Entry& entry = *it->second;
+    bool reusable = true; // a refusal on the geometry holds under any budget
+    if (entry.status == LC_CurveOffsetStatus::Ok) {
+        reusable = withinBudget(entry.usage, budget);
+    }
+    else if (entry.status == LC_CurveOffsetStatus::LimitExceeded) {
+        reusable = noLargerThan(budget, entry.budget);
+    }
+    if (!reusable) {
+        return false;
+    }
+    out = LC_CurveOffsetMaterializationResult{};
+    out.status = entry.status;
+    out.usage = entry.usage;
+    out.validationLevel = entry.validationLevel;
+    out.maxObservedError = entry.maxObservedError;
+    for (const std::unique_ptr<RS_Entity>& entity : entry.entities) {
+        out.entities.emplace_back(entity->clone());
+    }
+    return true;
+}
+
+void LC_OffsetPreviewCache::keep(const RS_Entity* source, const LC_CurveOffsetSide side, const double magnitude,
+                                 const LC_OffsetSourceBudget& budget, const LC_CurveOffsetMaterializationResult& result) {
+    constexpr std::size_t maxEntries = 256;
+    if (m_entries.size() >= maxEntries) {
+        m_entries.clear();
+    }
+    auto entry = std::make_unique<Entry>(
+        Entry{budget, result.status, result.usage, result.validationLevel, result.maxObservedError, {}});
+    for (const std::unique_ptr<RS_Entity>& entity : result.entities) {
+        entry->entities.emplace_back(entity->clone());
+    }
+    m_entries[{source, static_cast<int>(side), magnitude}] = std::move(entry);
+}
+
+void LC_OffsetPreviewCache::clear() {
+    m_entries.clear();
+}
+
 /**
  * Offset all selected entities with the given mouse position and distance
  *
@@ -1023,39 +1364,272 @@ bool RS_Modification::alignRef(const LC_AlignRefData& data, const QList<RS_Entit
  */
 bool RS_Modification::offset(const RS_OffsetData& data, const QList<RS_Entity*>& entitiesList, const bool forPreviewOnly,
                              LC_DocumentModificationBatch& ctx) {
-    const int numberOfCopies = data.obtainNumberOfCopies();
-    // Create new entities
-    // too slow:
-    for(auto e: entitiesList){
-        for (int num=1; num<= numberOfCopies; num++) {
-            // First try the type-changing path (e.g. ellipse → spline).
-            auto offsetCopies = e->createOffset(data.coord, num*data.distance);
-            if (!offsetCopies.empty()) {
-                for (auto* off : offsetCopies) {
-                    off->setHighlighted(false);
-                    ctx += off;
-                }
-                continue;
-            }
+    return offsetWithOutcome(data, entitiesList, forPreviewOnly, LC_OffsetBatchLimits{}, ctx).anySourceSucceeded();
+}
 
-            // Fall back to the in-place clone+offset path.
-            const auto clone = getClone(forPreviewOnly, e);
-            //highlight is used by trim actions. do not carry over flag
-            clone->setHighlighted(false);
+LC_OffsetBatchOutcome RS_Modification::offsetWithOutcome(const RS_OffsetData& data, const QList<RS_Entity*>& entitiesList,
+                                                         const bool forPreviewOnly, const LC_OffsetBatchLimits& limits,
+                                                         LC_DocumentModificationBatch& ctx,
+                                                         LC_OffsetPreviewCache* const cache) {
+    LC_OffsetBatchOutcome outcome;
+    ctx.setActiveLayer = data.useCurrentLayer;
+    ctx.setActivePen = data.useCurrentAttributes;
 
-            if (!clone->offset(data.coord, num * data.distance)) {
-                delete clone;
-                continue;
-            }
-            ctx += clone;
+    // each identity once, in the order given
+    QList<RS_Entity*> sources;
+    std::unordered_set<const RS_Entity*> seen;
+    for (RS_Entity* e : entitiesList) {
+        if (seen.insert(e).second) {
+            sources.append(e);
         }
     }
 
-    if (!data.keepOriginals) {
-        ctx -= entitiesList;
+    const int numberOfCopies = data.obtainNumberOfCopies();
+    bool distancesFinite = std::isfinite(data.distance);
+    for (int num = 1; distancesFinite && num <= numberOfCopies; ++num) {
+        distancesFinite = std::isfinite(num * data.distance);
     }
 
-    return true;
+    // The current layer, when asked for, is resolved once: a missing, frozen or
+    // locked layer would receive entities the user cannot see or edit.
+    bool targetUsable = true;
+    if (data.useCurrentLayer) {
+        for (const RS_Entity* e : sources) {
+            if (e == nullptr) {
+                continue;
+            }
+            if (RS_Graphic* graphic = e->getGraphic()) {
+                const RS_Layer* layer = graphic->getActiveLayer();
+                targetUsable = layer != nullptr && !layer->isFrozen() && !layer->isLocked();
+            }
+            break;
+        }
+    }
+
+    // The copies of one source, built in local ownership: all or nothing,
+    // except that a copy with nothing left ends the series.
+    auto offsetOneSource = [&](RS_Entity& e, const std::size_t requestDeepLeft,
+                               std::vector<std::unique_ptr<RS_Entity>>& roots,
+                               LC_OffsetSourceOutcome& result) -> LC_OffsetSourceStatus {
+        LC_OffsetOutputUsage& usage = result.usage;
+        LC_OffsetSourceBudget budget = limits.perSource;
+        budget.maxDeepEntities = std::min(budget.maxDeepEntities, requestDeepLeft);
+        auto measureAll = [&roots, &budget]() {
+            std::vector<const RS_Entity*> all;
+            for (const std::unique_ptr<RS_Entity>& root : roots) {
+                all.push_back(root.get());
+            }
+            return measureOffsetOutput(all, budget.maxDeepEntities);
+        };
+
+        if (LC_CurveOffset::isSupportedSource(e)) {
+            // The side is resolved once, so no copy can land on another side.
+            const LC_CurveOffsetOptions sideOptions = LC_CurveOffset::makeOffsetOptions(e, std::abs(data.distance));
+            LC_OffsetSideResolution side = LC_CurveOffset::resolveSide(e, data.coord, sideOptions);
+            // a point on the curve, or on the segments it is drawn with, gives no
+            // side the user chose: the fallback point decides, when it can
+            const bool onCurve = side.status == LC_CurveOffsetStatus::AmbiguousSide ||
+                                 (side.status == LC_CurveOffsetStatus::Ok && side.distance <= drawnCurveTolerance(e));
+            if (onCurve && data.sideFallback.valid) {
+                const LC_OffsetSideResolution fallback = LC_CurveOffset::resolveSide(e, data.sideFallback, sideOptions);
+                if (fallback.status == LC_CurveOffsetStatus::Ok) {
+                    side = fallback;
+                }
+            }
+            if (side.status != LC_CurveOffsetStatus::Ok) {
+                result.engineStatus = side.status;
+                return engineFailure(side.status);
+            }
+            for (int num = 1; num <= numberOfCopies; ++num) {
+                const LC_OffsetSourceBudget left = remainingBudget(budget, usage);
+                if (!isValidOffsetBudget(left)) {
+                    return LC_OffsetSourceStatus::LimitExceeded;
+                }
+                const double magnitude = std::abs(num * data.distance);
+                LC_CurveOffsetMaterializationResult copy;
+                if (cache == nullptr || !cache->find(&e, side.side, magnitude, left, copy)) {
+                    LC_CurveOffsetOptions options = LC_CurveOffset::makeOffsetOptions(e, magnitude);
+                    if (limits.maxSamples > 0) {
+                        options.maxSamples = std::min(options.maxSamples, limits.maxSamples);
+                    }
+                    if (limits.maxIntersectionPairs > 0) {
+                        options.maxIntersectionPairs = std::min(options.maxIntersectionPairs, limits.maxIntersectionPairs);
+                    }
+                    copy = LC_CurveOffset::createEntities(e, LC_CurveOffset::makeSideRequest(side.side, magnitude),
+                                                          options, left);
+                    if (cache != nullptr) {
+                        cache->keep(&e, side.side, magnitude, left, copy);
+                    }
+                }
+                if (copy.status != LC_CurveOffsetStatus::Ok) {
+                    result.engineStatus = copy.status;
+                    return engineFailure(copy.status);
+                }
+                if (copy.entities.empty()) {
+                    break; // trimmed away entirely, as it is at any larger distance on this side
+                }
+                if (!addUsage(usage, copy.usage)) {
+                    return LC_OffsetSourceStatus::LimitExceeded;
+                }
+                for (std::unique_ptr<RS_Entity>& entity : copy.entities) {
+                    roots.push_back(std::move(entity));
+                }
+                ++result.copiesMade;
+            }
+        }
+        else {
+            for (int num = 1; num <= numberOfCopies; ++num) {
+                if (!isValidOffsetBudget(remainingBudget(budget, usage))) {
+                    return LC_OffsetSourceStatus::LimitExceeded;
+                }
+                std::vector<std::unique_ptr<RS_Entity>> copy;
+                // First try the type-changing path (e.g. ellipse → spline).
+                for (RS_Entity* off : e.createOffset(data.coord, num * data.distance)) {
+                    copy.emplace_back(off);
+                }
+                if (copy.empty()) {
+                    // Fall back to the in-place clone+offset path.
+                    std::unique_ptr<RS_Entity> clone{getClone(forPreviewOnly, &e)};
+                    if (!clone->offset(data.coord, num * data.distance)) {
+                        if (e.rtti() == RS2::EntityCircle || e.rtti() == RS2::EntityArc) {
+                            break; // the radius would vanish, as it does at any larger distance inwards
+                        }
+                        return LC_OffsetSourceStatus::OffsetFailed;
+                    }
+                    copy.push_back(std::move(clone));
+                }
+                std::vector<const RS_Entity*> copyRoots;
+                for (const std::unique_ptr<RS_Entity>& entity : copy) {
+                    copyRoots.push_back(entity.get());
+                }
+                // against what the earlier copies left, as for splines
+                const LC_OffsetTreeCost cost =
+                    measureOffsetOutput(copyRoots, remainingBudget(budget, usage).maxDeepEntities);
+                if (cost.status != LC_OffsetTreeStatus::Ok ||
+                    !addUsage(usage, LC_OffsetOutputUsage{0, copy.size(), cost.deepEntities}) ||
+                    !withinBudget(usage, budget)) {
+                    return LC_OffsetSourceStatus::LimitExceeded;
+                }
+                for (std::unique_ptr<RS_Entity>& entity : copy) {
+                    roots.push_back(std::move(entity));
+                }
+                ++result.copiesMade;
+            }
+        }
+        if (result.copiesMade == 0) {
+            return LC_OffsetSourceStatus::Vanished;
+        }
+        // the whole provisional set: within the source's limits, and no root
+        // or child shared between copies
+        const LC_OffsetTreeCost all = measureAll();
+        if (all.status != LC_OffsetTreeStatus::Ok || !withinBudget(usage, budget)) {
+            return LC_OffsetSourceStatus::LimitExceeded;
+        }
+        usage.deepEntities = all.deepEntities;
+        return LC_OffsetSourceStatus::Succeeded;
+    };
+
+    // Selected segments of a polyline: each run of consecutive ones is offset
+    // once, as a chain; its other segments report the same outcome. A
+    // segment is never removed, whatever the options say: that would cut
+    // its polyline.
+    std::unordered_map<const RS_Entity*, LC_SegmentRun*> runOf;
+    const std::vector<std::unique_ptr<LC_SegmentRun>> runs = segmentRuns(sources, runOf);
+    std::unordered_map<const LC_SegmentRun*, LC_OffsetSourceOutcome> runOutcome;
+    // a segment whose polyline is a source too, and that polyline
+    std::unordered_map<const RS_Entity*, const RS_Polyline*> coveredByPolyline;
+    for (RS_Entity* e : sources) {
+        const RS_Polyline* polyline = holdingPolyline(e);
+        if (polyline != nullptr && seen.count(polyline) != 0) {
+            coveredByPolyline.emplace(e, polyline);
+        }
+    }
+
+    std::size_t requestDeepLeft = limits.maxDeepEntitiesPerRequest;
+    QList<RS_Entity*> offsetOriginals;
+    for (RS_Entity* e : sources) {
+        if (coveredByPolyline.count(e) != 0) {
+            continue; // offset with its polyline, and reported after it
+        }
+        const auto run = runOf.find(e);
+        LC_SegmentRun* const segmentRun = run != runOf.end() ? run->second : nullptr;
+        if (segmentRun != nullptr) {
+            const auto done = runOutcome.find(segmentRun);
+            if (done != runOutcome.end()) {
+                LC_OffsetSourceOutcome member = done->second;
+                member.source = e;
+                member.createdEntities.clear(); // handed over once, with the run's first segment
+                outcome.sources.append(member);
+                continue;
+            }
+        }
+        RS_Entity* const target =
+            (segmentRun != nullptr && segmentRun->chain != nullptr) ? segmentRun->chain.get() : e;
+        LC_OffsetSourceOutcome result;
+        result.source = e;
+        result.copiesRequested = numberOfCopies;
+        std::vector<std::unique_ptr<RS_Entity>> roots;
+        if (e == nullptr) {
+            result.status = LC_OffsetSourceStatus::InvalidSource;
+        }
+        else if (e->isDeleted() || !e->isVisible() || e->isLocked()) {
+            result.status = LC_OffsetSourceStatus::NotVisibleOrLocked;
+        }
+        else if (!targetUsable) {
+            result.status = LC_OffsetSourceStatus::TargetLayerUnavailable;
+        }
+        else if (!distancesFinite || !isValidOffsetBudget(limits.perSource)) {
+            result.status = LC_OffsetSourceStatus::OffsetFailed;
+        }
+        else if (requestDeepLeft == 0) {
+            result.status = LC_OffsetSourceStatus::LimitExceeded; // not evaluated
+        }
+        else {
+            result.status = offsetOneSource(*target, requestDeepLeft, roots, result);
+            if (!result.succeeded()) {
+                result.copiesMade = 0; // none is handed over
+            }
+        }
+        if (result.succeeded()) {
+            // only a source that succeeded is handed over, and only then debits the request
+            requestDeepLeft -= std::min(requestDeepLeft, result.usage.deepEntities);
+            for (std::unique_ptr<RS_Entity>& root : roots) {
+                //highlight is used by trim actions. do not carry over flag
+                root->setHighlighted(false);
+                result.createdEntities.append(root.get());
+                ctx += root.release();
+            }
+            if (result.complete() && segmentRun == nullptr) {
+                offsetOriginals.append(e); // a source short of copies is kept
+                result.sourceRemoved = !data.keepOriginals && !forPreviewOnly;
+            }
+        }
+        if (segmentRun != nullptr) {
+            runOutcome[segmentRun] = result;
+        }
+        outcome.sources.append(result);
+    }
+    // a segment offset with its polyline fares as the polyline does
+    for (RS_Entity* e : sources) {
+        const auto covered = coveredByPolyline.find(e);
+        if (covered == coveredByPolyline.end()) {
+            continue;
+        }
+        const auto done = std::find_if(outcome.sources.cbegin(), outcome.sources.cend(),
+                                       [&covered](const LC_OffsetSourceOutcome& o) { return o.source == covered->second; });
+        if (done != outcome.sources.cend()) {
+            LC_OffsetSourceOutcome member = *done;
+            member.source = e;
+            member.createdEntities.clear(); // handed over once, with the polyline
+            outcome.sources.append(member);
+        }
+    }
+
+    if (!data.keepOriginals && !forPreviewOnly) {
+        ctx -= offsetOriginals;
+    }
+    ctx.success = outcome.anySourceSucceeded();
+    return outcome;
 }
 
 /**
@@ -1065,12 +1639,14 @@ bool RS_Modification::rotate(const RS_RotateData& data, const QList<RS_Entity*>&
                              LC_DocumentModificationBatch& ctx) {
     // Create new entities
     const int numberOfCopies = data.obtainNumberOfCopies();
+    QList<RS_Entity*> transformedOriginals = entitiesList;
     for (const auto e : entitiesList) {
         for (int num = 1; num <= numberOfCopies; num++) {
             RS_Entity* clone = getClone(forPreviewOnly, e);
 
             const double rotationAngle = data.angle * num;
             clone->rotate(data.center, rotationAngle);
+            bool accepted = acceptedInsertSourceEdit(*clone);
 
             bool rotateTwice = data.twoRotations;
             const double distance = data.refPoint.distanceTo(data.center);
@@ -1087,14 +1663,20 @@ bool RS_Modification::rotate(const RS_RotateData& data, const QList<RS_Entity*>&
                     secondRotationAngle -= rotationAngle;
                 }
                 clone->rotate(rotatedRefPoint, secondRotationAngle);
+                accepted = accepted && acceptedInsertSourceEdit(*clone);
+            }
+            if (!accepted) {
+                transformedOriginals.removeAll(e);
+                delete clone;
+                continue;
             }
             ctx += clone;
         }
     }
     if (!data.keepOriginals) {
-        ctx -= entitiesList;
+        ctx -= transformedOriginals;
     }
-    return true;
+    return !transformedOriginals.isEmpty();
 }
 
 /**
@@ -1138,6 +1720,7 @@ bool RS_Modification::scale(const RS_ScaleData& data, const QList<RS_Entity*>& e
     }
 
     const int numberOfCopies = data.obtainNumberOfCopies();
+    QList<RS_Entity*> transformedOriginals = entitiesList;
 
     // Create new entities
     for (const RS_Entity* e : entitiesToScale) {
@@ -1145,6 +1728,11 @@ bool RS_Modification::scale(const RS_ScaleData& data, const QList<RS_Entity*>& e
             for (int num = 1; num <= numberOfCopies; num++) {
                 RS_Entity* clone = getClone(forPreviewOnly, e);
                 clone->scale(data.referencePoint, RS_Math::pow(data.factor, num));
+                if (!acceptedInsertSourceEdit(*clone)) {
+                    transformedOriginals.removeAll(const_cast<RS_Entity*>(e));
+                    delete clone;
+                    continue;
+                }
                 ctx += clone;
             }
         }
@@ -1156,10 +1744,10 @@ bool RS_Modification::scale(const RS_ScaleData& data, const QList<RS_Entity*>& e
     }
 
     if (!data.keepOriginals) {
-        ctx -= entitiesList;
+        ctx -= transformedOriginals;
     }
 
-    return true;
+    return !transformedOriginals.isEmpty();
 }
 
 /**
@@ -1173,20 +1761,26 @@ bool RS_Modification::mirror(const RS_MirrorData& data, const QList<RS_Entity*>&
     constexpr int numberOfCopies = 1;
     // fixme - think about support of multiple copies.... may it be something like moving the central point of selection? Like mirror+move?
 
+    QList<RS_Entity*> transformedOriginals = entitiesList;
     // Create new entities
     for (const auto e : entitiesList) {
         for (int num = 1; num <= numberOfCopies; ++num) {
             RS_Entity* clone = getClone(forPreviewOnly, e);
             clone->mirror(data.axisPoint1, data.axisPoint2);
+            if (!acceptedInsertSourceEdit(*clone)) {
+                transformedOriginals.removeAll(e);
+                delete clone;
+                continue;
+            }
             ctx += clone;
         }
     }
 
     if (!data.keepOriginals) {
-        ctx -= entitiesList;
+        ctx -= transformedOriginals;
     }
 
-    return true;
+    return !transformedOriginals.isEmpty();
 }
 
 /**
@@ -1264,8 +1858,14 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord, RS_AtomicEntity*
                                     RS_Entity* limitEntity, const bool both, LC_DocumentModificationBatch& ctx) {
     Q_ASSERT(trimEntity != nullptr && limitEntity != nullptr);
 
-    if (both && !limitEntity->isAtomic()) {
-        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::trim: limitEntity is not atomic");
+    // A container limit entity can still bound a one-sided trim, but it must never
+    // be cast to RS_AtomicEntity: trimStartpoint(), trimEndpoint() and getTrimPoint()
+    // are declared only there, so dispatching them through a container pointer calls
+    // whatever occupies the same vtable slot.
+    const bool limitIsAtomic = limitEntity->isAtomic();
+    if (both && !limitIsAtomic) {
+        RS_DEBUG->print(RS_Debug::D_WARNING,
+                        "RS_Modification::trim: limitEntity is not atomic, trimming one entity only");
     }
 
     LC_TrimResult result;
@@ -1291,7 +1891,7 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord, RS_AtomicEntity*
     }
 
     if (!sol.hasValid()) {
-        if (both) {
+        if (both && limitIsAtomic) {
             return trim(limitCoord, static_cast<RS_AtomicEntity*>(limitEntity), trimCoord, trimEntity, false, ctx);
         }
         return result;
@@ -1325,7 +1925,7 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord, RS_AtomicEntity*
     }
 
     // remove limit entity from view:
-    const bool trimBoth = both && !limitEntity->isLocked() && limitEntity->isVisible();
+    const bool trimBoth = both && limitIsAtomic && !limitEntity->isLocked() && limitEntity->isVisible();
     if (trimBoth) {
         trimmed2 = static_cast<RS_AtomicEntity*>(limitEntity->clone());
     }
@@ -1478,7 +2078,10 @@ bool RS_Modification::cut(const RS_Vector& cutCoord, RS_AtomicEntity* cutEntity,
             // interpolation spline can be closed
             // so we cannot use the default implementation
             // fixme - review cutting for spline points!!!!
-            cut2 = static_cast<LC_SplinePoints*>(cutEntity->clone())->cut(cutCoord);
+            // cut() returns a freshly allocated spline, never the receiver,
+            // so the clone it is called on has to be owned here.
+            const std::unique_ptr<RS_Entity> spline{cutEntity->clone()};
+            cut2 = static_cast<LC_SplinePoints*>(spline.get())->cut(cutCoord);
             cut1 = static_cast<RS_AtomicEntity*>(cutEntity->clone());
             break;
         }
@@ -1741,14 +2344,19 @@ LC_RoundResult RS_Modification::round(const RS_Vector& coord, const RS_Vector& c
         return result;
     }
 
-    // create 2 tmp parallels
-    QList<RS_Entity*> parallels;
-    RS_Creation::createParallel(coord, data.radius, 1, entity1, false, parallels);
-    std::unique_ptr<RS_Entity> par1{parallels.empty() ? nullptr : parallels.front()};
-    parallels.clear();
-
-    RS_Creation::createParallel(coord, data.radius, 1, entity2, false, parallels);
-    std::unique_ptr<RS_Entity> par2{parallels.empty() ? nullptr : parallels.front()};
+    // create 2 tmp parallels; the fillet intersects and trims each as one
+    // atomic curve, so a spline's offset, an RS_Spline drawn as lines, counts as none
+    auto singleParallel = [&coord, &data](RS_AtomicEntity* entity) {
+        QList<RS_Entity*> parallels;
+        RS_Creation::createParallel(coord, data.radius, 1, entity, false, parallels);
+        if (parallels.size() != 1 || parallels.front()->isContainer()) {
+            qDeleteAll(parallels);
+            return std::unique_ptr<RS_Entity>{};
+        }
+        return std::unique_ptr<RS_Entity>{parallels.front()};
+    };
+    const std::unique_ptr<RS_Entity> par1 = singleParallel(entity1);
+    const std::unique_ptr<RS_Entity> par2 = singleParallel(entity2);
 
     if (par1 == nullptr || par2 == nullptr) {
         result.error = LC_RoundResult::NO_PARALLELS;
@@ -2053,6 +2661,21 @@ bool RS_Modification::explode(const QList<RS_Entity*>& entitiesList, LC_Document
             for (const RS_Entity* e2 : entities) {
                 if (e2 != nullptr) {
                     RS_Entity* clone = e2->clone();
+                    if (containerType == RS2::EntityInsert) {
+                        // FlagVisible on an insert's expansion children is derived
+                        // from the frozen-layer/frozen-block state at the time the
+                        // insert was last updated (see hasEffectiveInsertVisibility()
+                        // in rs_insert.cpp), not the child's own code-60 visibility.
+                        // Exploding must not freeze that derived snapshot in: the
+                        // clone becomes a top-level entity with no insert left to
+                        // recompute it, so a frozen layer at explode time would
+                        // otherwise leave it permanently invisible.
+                        clone->setVisible(true);
+                    }
+                    // FlagHatchChild marks a pattern line's role inside its parent
+                    // hatch (see RS_Hatch::updatePatternHatch()); it does not
+                    // describe the exploded, now-independent copy.
+                    clone->delFlag(RS2::FlagHatchChild);
                     ctx += clone;
 
                     // In order to fix bug #819 and escape similar issues,

@@ -63,6 +63,7 @@ void QG_SnapDistOptions::languageChange() {
 void QG_SnapDistOptions::saveSettings() {
     CFG_SnapState::o_Distance = ui->leDist->text();
     emit distanceChanged();
+    emit distanceChanged();
 }
 
 void QG_SnapDistOptions::useSnapDistanceValue(double* d) {

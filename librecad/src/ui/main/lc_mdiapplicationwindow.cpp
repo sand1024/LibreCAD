@@ -28,6 +28,7 @@
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QMenu>
+#include <QStringBuilder>
 #include <QStyle>
 #include <qtabbar.h>
 
@@ -238,7 +239,6 @@ void LC_MDIApplicationWindow::setTabLayout(const RS2::TabShape s, const RS2::Tab
     using namespace CFG_WindowOptions;
     RS2::TabShape shape = (s == RS2::AnyShape) ? o_TabShape : s;
     RS2::TabPosition position  = (p == RS2::AnyPosition) ? o_TabPosition : p;
-
     m_mdiAreaCAD->setTabShape(static_cast<QTabWidget::TabShape>(shape));
     m_mdiAreaCAD->setTabPosition(static_cast<QTabWidget::TabPosition>(position));
     doArrangeWindows(RS2::Maximized);

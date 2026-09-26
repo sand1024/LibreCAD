@@ -32,10 +32,12 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_eventhandler.h"
 #include "lc_graphicviewport.h"
+#include "lc_relative_point_input_widget.h"
 #include "lc_graphicviewrenderer.h"
 #include "lc_relative_point_input_widget.h"
 #include "lc_settings_defaults.h"
 
+#include "lc_visual_snap_data.h"
 #include "lc_visual_snap_data.h"
 #include "lc_widgetviewportrenderer.h"
 #include "rs_actioninterface.h"
@@ -187,6 +189,22 @@ bool RS_GraphicView::killAllActionsWithResult() const {
         return m_eventHandler->killAllActions();
     }
     return true;
+}
+
+void RS_GraphicView::beginClose() {
+    if (m_closing) {
+        return;
+    }
+    m_closing = true;
+    m_bIsCleanUp = true;
+    setEnabled(false);
+    if (m_eventHandler != nullptr) {
+        m_eventHandler->quiesceForClose();
+    }
+}
+
+bool RS_GraphicView::isClosing() const {
+    return m_closing;
 }
 
 /**
@@ -426,12 +444,16 @@ void RS_GraphicView::setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> rend
 }
 
 void RS_GraphicView::showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint,
-                                             RS2::RelativePointParam param, bool readOnly) const {
-    m_relativePointWidgetHolder->show(wcsPos, basePoint, baseIsRelativePoint, param, readOnly);
+    RS2::RelativePointParam param, bool readOnly) const {
+    m_relativePointWidgetHolder->show(wcsPos, basePoint,baseIsRelativePoint, param, readOnly);
 }
 
 void RS_GraphicView::hideRelativeInputWidget() const {
-    m_relativePointWidgetHolder->hide();
+    // Only QG_GraphicView creates the holder, and actions reach these on views
+    // that have none, as isRelativeInputWidgetVisible() already assumes.
+    if (m_relativePointWidgetHolder != nullptr) {
+        m_relativePointWidgetHolder->hide();
+    }
 }
 
 void RS_GraphicView::restoreRelativeInputWidget() const {
@@ -440,5 +462,7 @@ void RS_GraphicView::restoreRelativeInputWidget() const {
 }
 
 bool RS_GraphicView::isInRelativePointInput() const {
-    return m_relativePointWidgetHolder->isVisible();
+    // Only QG_GraphicView creates the holder, so the base class cannot assume
+    // it exists. This is the first statement of every mouse move event.
+    return m_relativePointWidgetHolder != nullptr && m_relativePointWidgetHolder->isVisible();
 }

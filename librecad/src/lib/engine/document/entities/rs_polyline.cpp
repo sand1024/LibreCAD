@@ -27,6 +27,8 @@
 
 #include "rs_polyline.h"
 
+#include <memory>
+
 #include <iostream>
 
 #include "lc_containertraverser.h"
@@ -69,11 +71,33 @@ RS_Polyline::RS_Polyline(RS_EntityContainer* parent, const RS_PolylineData& d)
     RS_Polyline::calculateBorders();
 }
 
+/**
+ * The copy's closing segment is its own, at the same place in its list.
+ */
+RS_Polyline::RS_Polyline(const RS_Polyline& other)
+    : RS_EntityContainer(other), m_data(other.m_data), m_nextBulge(other.m_nextBulge) {
+    if (other.m_closingEntity != nullptr) {
+        const int index = other.findEntityIndex(other.m_closingEntity);
+        m_closingEntity = index >= 0 ? entityAt(index) : nullptr;
+    }
+}
+
 RS_Entity* RS_Polyline::clone() const {
-    auto* p = new RS_Polyline(*this);
-    p->setOwner(isOwner());
-    p->detach();
-    return p;
+    return new RS_Polyline(*this);
+}
+
+void RS_Polyline::setLayer(const QString& name) {
+    RS_Entity::setLayer(name);
+    setLayer(getLayer(false));
+}
+
+void RS_Polyline::setLayer(RS_Layer* layer) {
+    RS_Entity::setLayer(layer);
+    for (RS_Entity* entity : *this) {
+        if (entity != nullptr) {
+            entity->setLayer(nullptr);
+        }
+    }
 }
 
 /**
@@ -229,7 +253,7 @@ std::unique_ptr<RS_Entity> RS_Polyline::createVertex(const RS_Vector& v, const d
     }
     // entity->setSelectionFlag(isSelected());  // fixme - what for? entity is part of the polyline, selected status is from polyline..
     // entity->setPen(RS_Pen(RS2::FlagInvalid));
-    // entity->setLayer(nullptr);
+    entity->setLayer(nullptr);
     return entity;
 }
 
@@ -256,7 +280,17 @@ void RS_Polyline::endPolyline() {
             //data.endpoint = data.startpoint;
         }
     }
-    calculateBorders();
+    // Only do the full O(N) border recompute when borders are NOT auto-
+    // maintained. With m_autoUpdateBorders (the default), addEntity already
+    // extended the polyline border incrementally for every segment (including
+    // the closing entity above), so calculateBorders() here is redundant --
+    // and calling it per vertex (endPolyline runs on each addVertex) made
+    // building an N-vertex polyline O(N^2). Skipping the redundant pass keeps
+    // endPolyline O(1) for the common auto-borders case (fixes the ~10-minute
+    // import of usa_dollar100_front.dwg) while preserving the per-vertex
+    // finalize contract every addVertex caller relies on (closing edge, etc.).
+    if (!getAutoUpdateBorders())
+        calculateBorders();
 }
 
 //RLZ: rewrite this:
@@ -553,7 +587,19 @@ bool RS_Polyline::offset(const RS_Vector& coord, double distance) {
         }
     }
 
-    *this = *pnew;
+    // pnew's segments replace this polyline's own
+    const std::unique_ptr<RS_Polyline> result{pnew};
+    RS_Entity* const closing = result->m_closingEntity;
+    clear();
+    for (auto& segment : result->takeEntities()) {
+        segment->setParent(this);
+        RS_EntityContainer::addEntity(segment.release());
+    }
+    m_closingEntity = closing;
+    // pnew was cloned before its segments moved: the start and end are read
+    // back from the segments
+    updateEndpoints();
+    calculateBorders();
     return true;
 }
 

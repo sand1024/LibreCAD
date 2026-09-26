@@ -26,6 +26,8 @@
 **
 **********************************************************************/
 
+#include <cstddef>
+#include <QApplication>
 #include <QFileInfo>
 #include <QTextStream>
 #include <cstddef>
@@ -33,6 +35,10 @@
 #include <QApplication>
 #include <QMessageBox>
 #endif
+#include <QTextStream>
+#include "rs_debug.h"
+#include "rs_dialogfactory.h"
+#include "rs_dialogfactoryinterface.h"
 #include "rs_fileio.h"
 
 #include "rs_debug.h"
@@ -41,6 +47,7 @@
 #include "rs_filterdxfrw.h"
 #include "rs_filterjww.h"
 #include "rs_filterlff.h"
+#include "rs_filtershp.h"
 
 /**
  * Calls the import method of the filter responsible for the format
@@ -52,7 +59,10 @@
  * @param file Path and name of the file to import.
  * @param type
  */
-bool RS_FileIO::fileImport(RS_Graphic& graphic, const QString& file, const RS2::FormatType type) const {
+bool RS_FileIO::fileImport(RS_Graphic& graphic, const QString& file,
+                           RS2::FormatType type,
+                           std::function<bool(bool, const QString&)> errorCallback) const {
+
     RS_DEBUG->print("Trying to import file '%s'...", file.toLatin1().data());
 
     RS2::FormatType t;
@@ -68,25 +78,17 @@ bool RS_FileIO::fileImport(RS_Graphic& graphic, const QString& file, const RS2::
         if (filter) {
 #ifdef DWGSUPPORT
             const bool isDwg{file.endsWith(".dwg", Qt::CaseInsensitive)};
-            if (isDwg) {
-                QApplication::restoreOverrideCursor(); // disable WaitCursor for massagebox
-
-                // use QStringList to avoid "\n" in translation strings
-                const QStringList info{
-                    QObject::tr("DWG support is not complete!"),
-                    "",
-                    QObject::tr("If this file fails to open try an older DWG format"),
-                    QObject::tr("or try to find a converter to make it a DXF file.")
-                };
-
-                QMessageBox::information(qApp->activeWindow(), QObject::tr("Information"), info.join("\n"), QMessageBox::Ok,
-                                         QMessageBox::NoButton);
-                QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-            }
 #endif
+            // Save writes the drawing back in the format it was read from. A
+            // filter that reads several versions of a format narrows it down.
+            graphic.setFormatType(t);
             const bool bImported{filter->fileImport(graphic, file, t)};
             if (!bImported) {
-                QApplication::restoreOverrideCursor(); // disable WaitCursor for massagebox
+                if (errorCallback != nullptr) {
+                    return errorCallback(!graphic.isEmpty(), filter->lastError());
+                }
+
+                QApplication::restoreOverrideCursor();  // disable WaitCursor for messagebox
 
                 const QString strTitle{QObject::tr("Error", "fileImport")};
                 QString strError{QObject::tr("Import error:", "fileImport")};
@@ -114,6 +116,8 @@ bool RS_FileIO::fileImport(RS_Graphic& graphic, const QString& file, const RS2::
                                                                                         QMessageBox::Yes | QMessageBox::No,
                                                                                         QMessageBox::NoButton);
                         if (QMessageBox::Yes == answer) {
+                            // Save must not write over a file that was not read completely
+                            graphic.setFormatType(RS2::FormatUnknown);
                             return true; // open the file anyhow
                         }
                     }
@@ -149,9 +153,12 @@ RS2::FormatType RS_FileIO::detectFormat(const QString & file, bool forRead){
     std::map<QString, RS2::FormatType> list{
         {"dxf", RS2::FormatDXFRW},
         {"cxf", RS2::FormatCXF},
-        {"lff", RS2::FormatLFF}
+        {"lff", RS2::FormatLFF},
+        {"shp", RS2::FormatSHP}
     };
+#ifdef DWGSUPPORT
     list["dwg"] = RS2::FormatDWG;
+#endif
 
     const QString extension = QFileInfo(file).suffix().toLower();
     RS2::FormatType type = (list.find(extension) != list.end()) ? list[extension] : RS2::FormatUnknown;
@@ -204,13 +211,20 @@ bool RS_FileIO::fileExport(RS_Graphic& graphic, const QString& file, RS2::Format
         type = detectFormat(file, false);
     }
 
+    m_lastExportReport.clear();
     std::unique_ptr<RS_FilterInterface>&& filter(getExportFilter(file, type));
     if (filter) {
-        return filter->fileExport(graphic, file, type);
+        const bool exported = filter->fileExport(graphic, file, type);
+        m_lastExportReport = filter->exportReport();
+        return exported;
     }
     RS_DEBUG->print("RS_FileIO::fileExport: no filter found");
 
     return false;
+}
+
+bool RS_FileIO::canExport(const RS2::FormatType type) const {
+    return type != RS2::FormatUnknown && getExportFilter(QString(), type) != nullptr;
 }
 
 RS_FileIO* RS_FileIO::instance() {
@@ -253,6 +267,7 @@ std::vector<std::function<RS_FilterInterface*()>> RS_FileIO::getFilters() {
         RS_FilterDXFRW::createFilter,
         RS_FilterCXF::createFilter,
         RS_FilterJWW::createFilter,
-        RS_FilterDXF1::createFilter
+        RS_FilterDXF1::createFilter,
+        RS_FilterSHP::createFilter
     };
 }

@@ -61,6 +61,12 @@ RS_Entity* RS_ActionDimLeader::doTriggerCreateEntity() {
     return nullptr;
 }
 
+// Every status of this action picks a point through the snapper
+// (LibreCAD#2824).
+bool RS_ActionDimLeader::isInVisualSnapStatus(int status) {
+    return status == SetStartpoint || status == SetEndpoint;
+}
+
 void RS_ActionDimLeader::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
@@ -125,10 +131,16 @@ void RS_ActionDimLeader::onMouseRightButtonRelease(const int status, [[maybe_unu
 }
 
 void RS_ActionDimLeader::keyPressEvent(QKeyEvent* e) {
-    if (getStatus() == SetEndpoint && e->key() == Qt::Key_Enter) {
+    // The main keyboard sends Return; only the keypad sends Enter. Both end
+    // the leader, as they do everywhere else a step finishes on Enter.
+    const bool finishKey = e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter;
+    if (getStatus() == SetEndpoint && finishKey) {
         trigger();
         reset();
         setStatus(SetStartpoint);
+    }
+    else {
+        RS_PreviewActionInterface::keyPressEvent(e);
     }
 }
 

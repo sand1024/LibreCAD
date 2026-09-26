@@ -94,6 +94,14 @@ public:
   RS2::EntityType rtti() const override { return RS2::EntityHyperbola; }
   bool isValid() const { return m_valid; }
 
+  /**
+   * The trimmed offset of a bounded arc of the hyperbola through the curve
+   * offset engine, as splines; empty for an unbounded one, or where the
+   * engine refuses. See LC_CurveOffset::createLegacyOffset().
+   */
+  std::vector<RS_Entity *> createOffset(const RS_Vector &coord,
+                                        const double &distance) const override;
+
   LC_HyperbolaData &getData() { return m_data; }
   const LC_HyperbolaData &getData() const { return m_data; }
 
@@ -120,8 +128,16 @@ public:
   void setPointOnCurve(const RS_Vector &p);
   void setRatio(double r);
   void setMinorRadius(double b);
-  void setAngle1(double a1) { m_data.angle1 = a1; }
-  void setAngle2(double a2) { m_data.angle2 = a2; }
+  void setAngle1(double a1) {
+    m_data.angle1 = a1;
+    calculateBorders();
+    updateLength();
+  }
+  void setAngle2(double a2) {
+    m_data.angle2 = a2;
+    calculateBorders();
+    updateLength();
+  }
 
   RS_VectorSolutions getRefPoints() const override;
 
@@ -177,15 +193,25 @@ public:
                               bool onEntity = false) const override;
 
   bool isReversed() const { return m_data.reversed; }
-  void setReversed(bool r) { m_data.reversed = r; }
+  void setReversed(bool r) {
+    m_data.reversed = r;
+    calculateBorders();
+  }
 
   double getAngle() const { return m_data.majorP.angle(); }
 
   RS_Vector getCenter() const override { return m_data.center; }
-  void setCenter(const RS_Vector &c) { m_data.center = c; }
+  void setCenter(const RS_Vector &c) {
+    m_data.center = c;
+    calculateBorders();
+  }
 
   RS_Vector getMajorP() const { return m_data.majorP; }
-  void setMajorP(const RS_Vector &p) { m_data.majorP = p; }
+  void setMajorP(const RS_Vector &p) {
+    m_data.majorP = p;
+    calculateBorders();
+    updateLength();
+  }
 
   void calculateBorders() override;
 

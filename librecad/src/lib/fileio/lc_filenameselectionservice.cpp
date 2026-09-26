@@ -34,9 +34,9 @@
 bool LC_FileNameSelectionService::doObtainFileName(QWidget* parent, QString& fileName, const bool forRead, const QString& extensionStr,
                                                    const QString& defaultFileName, const QString& captionForImport,
                                                    const QString& captionForExport, const QString& fileNameFilter) {
-
     const QString defDir = CFG_Paths::o_ExportSettingsDir;
 
+    const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
     const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
 
     const QString& defaultExtension{extensionStr};

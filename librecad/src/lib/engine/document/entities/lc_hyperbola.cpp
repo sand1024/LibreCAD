@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <boost/math/quadrature/gauss_kronrod.hpp>
 
 #include "lc_hyperbola.h"
+#include "lc_curveoffset.h"
 #include "lc_quadratic.h"
 #include "rs_debug.h"
 #include "rs_line.h"
@@ -949,6 +950,11 @@ RS_Vector LC_Hyperbola::getNearestOrthTan(const RS_Vector& /*coord*/,
   return getPoint(phi, m_data.reversed);
 }
 
+std::vector<RS_Entity *> LC_Hyperbola::createOffset(const RS_Vector &coord,
+                                                   const double &distance) const {
+  return LC_CurveOffset::createLegacyOffset(*this, coord, distance);
+}
+
 bool LC_Hyperbola::isInfinite() const
 {
   return RS_Math::equal(m_data.angle1, 0.) && RS_Math::equal(m_data.angle2, 0.);
@@ -1301,22 +1307,31 @@ RS_Vector LC_Hyperbola::doGetNearestPointOnEntity(const RS_Vector &coord,
   double dx = cx + A - px;
   double dy = cy + C - py;
 
-  double p = 4.0 * (A * dx + C * dy) / (B * dx + D * dy);
-  double q = (dx * dx + dy * dy - aa * aa + bb * bb) / (B * dx + D * dy) * 2.0 -
-             p * p / 2.0 - 3.0;
-  double r = -p * (q + 5.0);
-  double s = -(dx * dx + dy * dy - aa * aa - bb * bb) / (B * dx + D * dy) - q;
+  // Every coefficient below divides by this. It is zero when coord lies on a
+  // vertex: the vertex is at (cx + A, cy + C), so dx and dy are both zero
+  // there, and the divisions yield NaN. The loop below already declined to use
+  // any root in that case, but only after the solver had run - and a NaN
+  // coefficient reaches std::polar() with a NaN modulus inside the complex
+  // cubic step, which aborts when the standard library is built with
+  // _GLIBCXX_ASSERTIONS. Leave the roots empty instead; the endpoint and
+  // initial-guess candidates already computed above remain the answer.
+  const double denom = B * dx + D * dy;
 
-  std::vector<double> ce = {s, r, q, p,
-                            1.0}; // t^4 + p t^3 + q t^2 + r t + s = 0
+  std::vector<double> roots;
+  if (std::abs(denom) >= RS_TOLERANCE) {
+    double p = 4.0 * (A * dx + C * dy) / denom;
+    double q = (dx * dx + dy * dy - aa * aa + bb * bb) / denom * 2.0 -
+               p * p / 2.0 - 3.0;
+    double r = -p * (q + 5.0);
+    double s = -(dx * dx + dy * dy - aa * aa - bb * bb) / denom - q;
 
-  std::vector<double> roots = RS_Math::quarticSolverFull(ce);
+    std::vector<double> ce = {s, r, q, p,
+                              1.0}; // t^4 + p t^3 + q t^2 + r t + s = 0
+    roots = RS_Math::quarticSolverFull(ce);
+  }
 
   // Evaluate all valid real roots
   for (double t : roots) {
-    if (std::abs(B * dx + D * dy) < RS_TOLERANCE)
-      continue; // degenerate case skipped
-
     double phi = std::atanh(t);
     if (std::isnan(phi) || std::isinf(phi))
       continue;
@@ -1450,28 +1465,23 @@ void LC_Hyperbola::calculateBorders() {
 
   // Branch offset handled in getPoint() — use raw angles here
 
-  // Analytical extrema along global X and Y axes
-  double rot = getAngle();
-  RS_Vector dirX(cos(rot), sin(rot));
-  RS_Vector dirY(-sin(rot), cos(rot));
+  // Extrema along the world X and Y axes. A world axis u has the components
+  // (ux, uy) in the hyperbola's own frame, where the local point
+  // (±a cosh φ, b sinh φ) projects onto it as ±a·ux·cosh φ + b·uy·sinh φ.
+  // That is stationary where tanh φ = ∓(b·uy)/(a·ux); trying both signs covers
+  // either branch, and a parameter inside the arc always gives a point on it.
+  const double rot = getAngle();
+  const double a = getMajorRadius();
+  const double b = getMinorRadius();
 
-  auto addExtrema = [&](const RS_Vector &dir) {
-    double dx = dir.x, dy = dir.y;
-    if (std::abs(dx) < RS_TOLERANCE && std::abs(dy) < RS_TOLERANCE)
-      return;
-
-    double tanh_phi = -(getMinorRadius() * dy) / (getMajorRadius() * dx);
-    if (std::abs(tanh_phi) >= 1.0)
-      return; // no real solution
-
-    double phi = std::atanh(tanh_phi);
-    // Check both solutions (phi and phi + π) — but only one will be on the
-    // correct branch
-    for (int sign = 0; sign < 2; ++sign) {
-      double phi_cand = phi + sign * M_PI;
-      if (phi_cand >= phiStart - RS_TOLERANCE &&
-          phi_cand <= phiEnd + RS_TOLERANCE) {
-        RS_Vector p = getPoint(phi_cand, m_data.reversed);
+  auto addExtrema = [&](const double ux, const double uy) {
+    if (std::abs(b * uy) >= std::abs(a * ux))
+      return; // monotonic along this axis, so the endpoints bound it
+    const double phi = std::atanh((b * uy) / (a * ux));
+    for (const double candidate : {phi, -phi}) {
+      if (candidate >= phiStart - RS_TOLERANCE &&
+          candidate <= phiEnd + RS_TOLERANCE) {
+        const RS_Vector p = getPoint(candidate, m_data.reversed);
         if (p.valid) {
           m_minV = RS_Vector::minimum(m_minV, p);
           m_maxV = RS_Vector::maximum(m_maxV, p);
@@ -1480,8 +1490,9 @@ void LC_Hyperbola::calculateBorders() {
     }
   };
 
-  addExtrema(RS_Vector(1.0, 0.0)); // global X
-  addExtrema(RS_Vector(0.0, 1.0)); // global Y
+  // the world axes seen in the hyperbola's own frame
+  addExtrema(std::cos(rot), -std::sin(rot)); // world X
+  addExtrema(std::sin(rot), std::cos(rot));  // world Y
 
   // Endpoints
   RS_Vector start = getPoint(phiStart, m_data.reversed);

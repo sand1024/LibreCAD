@@ -23,6 +23,7 @@
 
 #include "lc_dimstylepreviewgraphicview.h"
 
+#include <QList>
 #include <QMouseEvent>
 
 #include "lc_defaultactioncontext.h"
@@ -124,8 +125,11 @@ LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::init(QWidget* pare
         result->hideNonRelevantLayers(dimensionType);
         return result;
     }
-    // how it could be???
-    return nullptr;
+
+    // Keep the settings dialog usable when the optional sample is unavailable.
+    LC_DimStylePreviewGraphicView* result = createAndSetupView(parent, graphic, originalGraphic, true);
+    result->hideNonRelevantLayers(dimensionType);
+    return result;
 }
 
 LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::init(QWidget* parent, RS_Graphic* originalGraphic, const RS_Dimension* dimension) {
@@ -139,6 +143,8 @@ LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::init(QWidget* pare
     return createAndSetupView(parent, graphic, originalGraphic, false);
 }
 
+void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(const RS2::EntityType dimType) const {
+    auto* graphic = getGraphic(false);
 void LC_DimStylePreviewGraphicView::hideNonZeroLayers() const {
     const auto layersList = getGraphic(false)->getLayerList();
     for (const auto layer: *layersList) {
@@ -148,11 +154,14 @@ void LC_DimStylePreviewGraphicView::hideNonZeroLayers() const {
 }
 
 void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(const RS2::EntityType dimType) const {
+    auto* graphic = getGraphic(false);
     if (dimType == RS2::EntityUnknown) {
-        const auto layersList = getGraphic(false)->getLayerList();
-        for (const auto layer: *layersList) {
-            layer->freeze(false);
+        QList<RS_Layer*> layersToShow;
+        const auto layersList = graphic->getLayerList();
+        for (RS_Layer* layer : *layersList) {
+            layersToShow.append(layer);
         }
+        graphic->setFreezeLayers(layersToShow, {});
     }
     else {
         QString layerToShow;
@@ -180,13 +189,20 @@ void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(const RS2::EntityType 
             default:
                 break;
         }
-        const auto layersList = getGraphic(false)->getLayerList();
+        const auto layersList = graphic->getLayerList();
+        QList<RS_Layer*> layersToShow;
+        QList<RS_Layer*> layersToHide;
         for (const auto layer: *layersList) {
-            QString layerName = layer->getName();
+            const QString layerName = layer->getName();
             if (layerName != "0") {
-                layer->freeze(layerName != layerToShow);
+                if (layerName == layerToShow) {
+                    layersToShow.append(layer);
+                } else {
+                    layersToHide.append(layer);
+                }
             }
         }
+        graphic->setFreezeLayers(layersToShow, layersToHide);
     }
 }
 
@@ -260,3 +276,47 @@ void LC_DimStylePreviewGraphicView::setEntityArrowsFlipMode(const bool flipArrow
         }
     }
 }
+
+// void LC_DimStylePreviewGraphicView::zoomPan() const {
+//     switchToAction(RS2::ActionZoomPan);
+// }
+//
+// void LC_DimStylePreviewGraphicView::mousePressEvent(QMouseEvent* event){
+//     // pan zoom with middle mouse button
+//     if (event->button()==Qt::MiddleButton){
+//         switchToAction(RS2::ActionZoomPan);
+//         getCurrentAction()->mousePressEvent(event);
+//     }
+//     else {
+//         getEventHandler()->mousePressEvent(event);
+//     }
+// }
+//
+// void LC_DimStylePreviewGraphicView::mouseDoubleClickEvent(QMouseEvent* e){
+//     switch(e->button()){
+//         case Qt::MiddleButton:
+//             switchToAction(RS2::ActionZoomAuto);
+//             break;
+//         default:
+//             break;
+//     }
+//     e->accept();
+// }
+//
+// void LC_DimStylePreviewGraphicView::mouseReleaseEvent(QMouseEvent* event){
+//     event->accept();
+//
+//     switch (event->button()) {
+//     case Qt::RightButton: {
+//         back(Qt::KeyboardModifier::NoModifier);
+//         break;
+//     }
+//     case Qt::XButton1:
+//         processEnterKey();
+//         emit xbutton1_released();
+//         break;
+//     default:
+//         getEventHandler()->mouseReleaseEvent(event);
+//         break;
+//     }
+// }

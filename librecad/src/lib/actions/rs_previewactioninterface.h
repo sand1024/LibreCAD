@@ -222,7 +222,7 @@ protected:
     RS_Line *previewToCreateLine(const RS_Vector &start, const RS_Vector &end) const;
     RS_Ellipse *previewToCreateEllipse(const RS_EllipseData &ellipseData) const;
     RS_Point *previewToCreatePoint(const RS_Vector &coord) const;
-    void previewEntityToCreate(const RS_Entity* en, bool addToPreview = true) const;
+    void previewEntityToCreate(RS_Entity* en, bool addToPreview = true) const;
 
     void fireCoordinateEventForSnap(const LC_MouseEvent *e);
 

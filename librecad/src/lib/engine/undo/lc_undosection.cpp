@@ -51,9 +51,17 @@ LC_UndoSection::~LC_UndoSection(){
 
 void LC_UndoSection::undoableDelete(RS_Entity* e) const {
     m_document->undoableDelete(e);
+    if (e->sourceHandle() != 0) {
+        m_freedHandles.insert(e->sourceHandle());
+    }
 }
 
 void LC_UndoSection::undoableAdd(RS_Entity* e) const {
+    // Only an entity taking the place of one this section deleted keeps its DWG identity, with its
+    // children's; anything else is new to the drawing, even if made of copies.
+    if (e->sourceHandle() == 0 || !m_freedHandles.remove(e->sourceHandle())) {
+        e->clearDwgProvenance(RS_Entity::Identity);
+    }
     m_document->undoableAdd(e);
 }
 
@@ -62,8 +70,8 @@ void LC_UndoSection::addUndoable(RS_Undoable* u) const {
 }
 
 void LC_UndoSection::undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const {
-     m_document->undoableDelete(entityToDelete);
-     m_document->undoableAdd(entityToAdd);
+    undoableDelete(entityToDelete);
+    undoableAdd(entityToAdd);
 }
 
 bool LC_UndoSection::undoableExecute(const RS_Document::FunUndoable& doUndoable) const {
@@ -77,9 +85,13 @@ bool LC_UndoSection::undoableExecute(const RS_Document::FunUndoable& doUndoable,
     if (success) {
         if (!ctx.entitiesToDelete.isEmpty()) {
             for (const auto e: std::as_const(ctx.entitiesToDelete)) {
+                if (e == nullptr) {
+                    continue;
+                }
                 const auto layer = e->getLayer(true);
-                if (!layer->isLocked()) {
-                      m_document->undoableDelete(e);
+                // Null layer: treat as unlocked (e.g. mid-import / no graphic).
+                if (layer == nullptr || !layer->isLocked()) {
+                    undoableDelete(e);
                 }
             }
         }
@@ -93,15 +105,18 @@ bool LC_UndoSection::undoableExecute(const RS_Document::FunUndoable& doUndoable,
 }
 
 void LC_UndoSection::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, const bool setActiveLayer, const bool setActivePen) const {
-    const auto graphic = m_document->getGraphic();
-    RS_Layer *activeLayer = setActiveLayer ? graphic->getActiveLayer() : nullptr;
-    const RS_Pen activePen      = setActivePen ? graphic->getActivePen() : RS_Pen();
+    const auto graphic = m_document != nullptr ? m_document->getGraphic() : nullptr;
+    RS_Layer *activeLayer = (setActiveLayer && graphic != nullptr) ? graphic->getActiveLayer() : nullptr;
+    const RS_Pen activePen = (setActivePen && graphic != nullptr) ? graphic->getActivePen() : RS_Pen();
     for (const auto ent: entitiesToInsert) {
+        if (ent == nullptr) {
+            continue;
+        }
         undoableAdd(ent);
-        if (setActiveLayer) {
+        if (setActiveLayer && graphic != nullptr) {
             ent->setLayer(activeLayer);
         }
-        if (setActivePen){
+        if (setActivePen && graphic != nullptr){
             ent->setPen(activePen);
         }
         const auto rtti = ent->rtti();
