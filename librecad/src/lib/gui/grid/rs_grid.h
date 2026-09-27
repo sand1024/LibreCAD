@@ -56,6 +56,7 @@ using LC_Rect = lc::geo::Area;
 class RS_Grid {
 public:
     explicit RS_Grid(LC_GraphicViewport* graphicView);
+    ~RS_Grid();
     void calculateGrid();
     void calculateSnapSettings();
     void invalidate(bool gridOn);

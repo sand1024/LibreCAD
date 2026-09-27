@@ -451,7 +451,7 @@ int main(int argc, char** argv) {
         mainWinTitle = applicationName + " [" + versionStr + "]";
     }
 
-    appWin.setWindowTitle(mainWinTitle);
+    appWin->setWindowTitle(mainWinTitle);
 
     RS_DEBUG->print("main: show main window");
 
@@ -478,14 +478,14 @@ int main(int argc, char** argv) {
     const bool maximize = CFG_Startup::o_Maximize;
 
     if (maximize || first_load) {
-        appWin.showMaximized();
+        appWin->showMaximized();
     }
     else {
-        appWin.show();
+        appWin->show();
     }
 
     RS_DEBUG->print("main: set focus");
-    appWin.setFocus();
+    appWin->setFocus();
     RS_DEBUG->print("main: creating main window: OK");
 
     if (splash != nullptr){
@@ -503,12 +503,12 @@ int main(int argc, char** argv) {
     // parse command line arguments that might not need a launched program:
     // fixme - sand - add support of skipping of loading via cmdline flag
     const QStringList fileList = handleArgs(argc, argv, argClean);
-    loadFilesOnStartup(splash.get(), appWin, app, fileList);
+    loadFilesOnStartup(splash.get(), *appWin, app, fileList);
 
-    appWin.initCompleted();
+    appWin->initCompleted();
 
     if (splash != nullptr) {
-        splash->finish(&appWin);
+        splash->finish(appWin);
         splash.release();
     }
 
@@ -517,7 +517,7 @@ int main(int argc, char** argv) {
         // fixme - sand - files - add support of command line flag to suppress version check (may be useful for automation)!
         const bool checkForNewVersion = o_CheckForNewVersions;
         if (checkForNewVersion) {
-            appWin.checkForNewVersion();
+            appWin->checkForNewVersion();
         }
 
         if (first_load) {
@@ -563,22 +563,6 @@ QStringList handleArgs(const int argc, char** argv, const QList<int>& argClean){
     return ret;
 }
 
-QString LCReleaseLabel(){
-    const QString version{XSTR(LC_VERSION)};
-    const std::map<QString, QString> labelMap = {
-        {"rc", QObject::tr("Release Candidate")},
-        {"beta", QObject::tr("BETA")},
-        {"alpha", QObject::tr("ALPHA")}
-    };
-    for (const auto& [key, value]: labelMap) {
-        if (version.contains(key, Qt::CaseInsensitive)) {
-            return value;
-        }
-    }
-
-    // Issue #2371: default version to alpha
-    return QObject::tr("ALPHA");
-}
 
 namespace {
 

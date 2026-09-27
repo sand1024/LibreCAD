@@ -31,6 +31,8 @@
 #include "lc_action_type_mapper.h"
 #include "lc_commandItems.h"
 #include "lc_commands_tree_item.h"
+#include "lc_command_manager.h"
+#include "rs_system.h"
 
 namespace {
     struct TriggerOccurrence {
@@ -45,6 +47,8 @@ namespace {
         bool hasAmbiguity{false};
         QString conflictMessage;
     };
+
+
 
   DomainCheckResult checkDomainCollisions(const QList<TriggerOccurrence>& occurrences) {
         DomainCheckResult result;
@@ -118,65 +122,6 @@ namespace {
         }
 
         return result;
-    }
-
-    void collectActionDefaults(RS2::ActionType actionType,
-                               QStringList& outCommands,
-                               QStringList& outKeycodes,
-                               QStringList& outAliases) {
-        for (const auto& item : g_commandList) {
-            if (item.actionType == actionType) {
-                for (const auto& [fullCmd, cmdTrans] : item.fullCmdList) {
-                    if (!cmdTrans.isEmpty() && !outCommands.contains(cmdTrans, Qt::CaseInsensitive)) {
-                        outCommands.append(cmdTrans);
-                    }
-                    if (!fullCmd.isEmpty() && !outCommands.contains(fullCmd, Qt::CaseInsensitive)) {
-                        outCommands.append(fullCmd);
-                    }
-                }
-                if (!item.shortCmdList.empty()) {
-                    const auto& [firstKey, firstTrans] = item.shortCmdList[0];
-                    if (!firstTrans.isEmpty() && !outKeycodes.contains(firstTrans, Qt::CaseInsensitive)) {
-                        outKeycodes.append(firstTrans);
-                    }
-                    if (!firstKey.isEmpty() && !outKeycodes.contains(firstKey, Qt::CaseInsensitive)) {
-                        outKeycodes.append(firstKey);
-                    }
-                }
-                for (size_t i = 1; i < item.shortCmdList.size(); ++i) {
-                    const auto& [aliasKey, aliasTrans] = item.shortCmdList[i];
-                    if (!aliasTrans.isEmpty() && !outAliases.contains(aliasTrans, Qt::CaseInsensitive)) {
-                        outAliases.append(aliasTrans);
-                    }
-                    if (!aliasKey.isEmpty() && !outAliases.contains(aliasKey, Qt::CaseInsensitive)) {
-                        outAliases.append(aliasKey);
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    void collectKeywordDefaults(const QString& key, QString& outKw, QStringList& outAliases) {
-        outKw = key;
-        outAliases.clear();
-        for (const auto& [cmd, trans] : g_transList) {
-            if (cmd == key) {
-                outKw = trans;
-                break;
-            }
-        }
-
-        for (const auto& [cmd, trans] : g_transList) {
-            if (trans == key) {
-                const QString lower = cmd.trimmed().toLower();
-                if (!lower.isEmpty() && lower != key.toLower() && lower != outKw.toLower()) {
-                    if (!outAliases.contains(lower, Qt::CaseInsensitive)) {
-                        outAliases.append(lower);
-                    }
-                }
-            }
-        }
     }
 
     QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
@@ -552,7 +497,7 @@ QStringList LC_CommandsTreeModel::computeActionEffectiveTriggers(RS2::ActionType
     QStringList sysCmds;
     QStringList sysKeys;
     QStringList sysAliases;
-    collectActionDefaults(actionType, sysCmds, sysKeys, sysAliases);
+    LC_CommandManager::collectActionDefaults(actionType, sysCmds, sysKeys, sysAliases);
 
     // 1. Command slot
     if (def.customCommand != "-") {
@@ -607,7 +552,7 @@ QStringList LC_CommandsTreeModel::computeKeywordEffectiveTriggers(const QString&
 
     QString defKw;
     QStringList defAliases;
-    collectKeywordDefaults(key, defKw, defAliases);
+    LC_CommandManager::collectKeywordDefaults(key, defKw, defAliases);
 
     // 1. Keyword slot
     if (def.customKeyword != "-") {
@@ -729,7 +674,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
     QStringList sysCmds;
     QStringList sysKeys;
     QStringList sysAliases;
-    collectActionDefaults(actionType, sysCmds, sysKeys, sysAliases);
+    LC_CommandManager::collectActionDefaults(actionType, sysCmds, sysKeys, sysAliases);
 
     const QString colCmd = formatSlotDisplay(cmdDef.customCommand, sysCmds);
     const QString colKey = formatSlotDisplay(cmdDef.customKeycode, sysKeys);
@@ -831,7 +776,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createKeywordTreeItem(LC_CommandsTree
 
     QString defKw;
     QStringList defAliases;
-    collectKeywordDefaults(kwDef.key, defKw, defAliases);
+    LC_CommandManager::collectKeywordDefaults(kwDef.key, defKw, defAliases);
 
     const QString colKw  = formatSlotDisplay(kwDef.customKeyword, QStringList{defKw, kwDef.key});
     const QString colKey = QString(); // In-prompt keywords do not participate in keycode mode

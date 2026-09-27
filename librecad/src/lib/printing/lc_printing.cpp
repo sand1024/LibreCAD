@@ -227,6 +227,9 @@ void LC_Printing::print(QC_MDIWindow &mdiWindow, PrinterType printerType) {
     // resulting in portrait-only output regardless of the landscape setting.
     LC_Printing::setupPageLayout(printer, landscape, paperSizeName, paperSize, unit, paperMargins);
 
+    // Issue #2130: populate the output file name for
+    QString defaultFile = setFileNameColor(printer, *graphic);
+
     // printer setup:
     bool bStartPrinting = false;
     if (printerType == PrinterType::PDF) {

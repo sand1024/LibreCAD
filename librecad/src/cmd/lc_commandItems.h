@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QObject>
 
 #include "rs.h"
+#include "rs_system.h"
 
 class QString;
 
@@ -51,8 +52,8 @@ struct LC_CommandText {
 };
 
 struct LC_CommandItem {
-    const std::vector<std::pair<LC_CommandText, LC_CommandText>> fullCmdList;
-    const std::vector<std::pair<LC_CommandText, LC_CommandText>> shortCmdList;
+    const std::vector<std::pair<LC_CommandText, LC_CommandText>> fullCmdList; // why first is not string?
+    const std::vector<std::pair<LC_CommandText, LC_CommandText>> shortCmdList; // why second is not string??
     RS2::ActionType actionType;
 };
 
@@ -86,6 +87,7 @@ struct LC_CommandItem {
  *           ...
  *           etc.
  */
+
 
 const LC_CommandItem g_commandList[] = {
 

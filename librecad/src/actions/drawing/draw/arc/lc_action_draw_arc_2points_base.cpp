@@ -85,7 +85,7 @@ void LC_ActionDrawArc2PointsBase::onMouseMoveEvent(const int status, const LC_Mo
         case SetPoint2:{
             mouse = getSnapAngleAwarePoint(e, m_startPoint, mouse, true);
             const bool alternate = e->isControl;
-            RS_Arc* arc = createArc(status, mouse, alternate);
+            auto* arc = createArc(status, mouse, alternate);
             if (arc != nullptr){
                 previewEntityToCreate(arc);
                 if (m_showRefEntitiesOnPreview) {

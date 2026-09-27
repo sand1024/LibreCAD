@@ -136,7 +136,7 @@ void LC_ActionDrawLineRelAngle::onMouseMoveEvent(const int status, const LC_Mous
         case SetPos: {
             highlightSelected(m_entity);
             *m_pos = getRelZeroAwarePoint(e, snap);
-            const auto lineToCreate = RS_Creation::createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
+            auto lineToCreate = RS_Creation::createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
             if (lineToCreate != nullptr) {
                 previewEntityToCreate(lineToCreate, true);
                 if (m_showRefEntitiesOnPreview) {

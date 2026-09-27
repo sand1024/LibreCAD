@@ -1273,11 +1273,11 @@ void LC_DlgDimStyleManager::init(const RS2::EntityType dimensionType) {
 
     // unit comboboxes
 
-    QG_DlgOptionsDrawing::fillLinearUnitsCombobox(ui->cbLinearDimUnitFormat);
-    QG_DlgOptionsDrawing::fillLinearUnitsCombobox(ui->cbAlternateLinearFormat);
+    fillLinearUnitsCombobox(ui->cbLinearDimUnitFormat);
+    fillLinearUnitsCombobox(ui->cbAlternateLinearFormat);
 
     // init angle units combobox:
-    QG_DlgOptionsDrawing::fillAngleUnitsCombobox(ui->cbAngularFormat);
+    fillAngleUnitsCombobox(ui->cbAngularFormat);
     LC_DimArrowRegistry::fillDefaultArrowTypes(m_defaultArrowsInfo);
 
     for (const LC_DimArrowRegistry::ArrowInfo& arrowInfo : m_defaultArrowsInfo) {

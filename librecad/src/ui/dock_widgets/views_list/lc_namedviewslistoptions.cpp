@@ -22,40 +22,37 @@
 
 #include "lc_namedviewslistoptions.h"
 
+#include "lc_settings_named_views_list_widget.h"
 #include "rs_settings.h"
 
 LC_NamedViewsListOptions::LC_NamedViewsListOptions() = default;
 
 void LC_NamedViewsListOptions::load() {
-    LC_GROUP_GUARD("Widget.ViewsList");
-    {
-       showViewInfoToolTip = LC_GET_BOOL("ShowTooltip", true);
-       showColumnIconType = LC_GET_BOOL("ShowIconType", true);
-       showColumnGridType = LC_GET_BOOL("ShowColumnIconGrid", true);
-       showColumnUCSType = LC_GET_BOOL("ShowColumnIconUCSType", true);
-       showColumnViewDetails = LC_GET_BOOL("ShowColumnViewDetails", true);
-       showColumnUCSDetails = LC_GET_BOOL("ShowColumnUCSDetails", true);
-       askForDeletionConfirmation = LC_GET_BOOL("ConfirmDelete", false);
-       duplicatedNameReplacesSilently = LC_GET_BOOL("ReplaceDuplicateSilently", false);
-       doubleClickPolicy = LC_GET_INT("DoubleClickPolicy", RENAME);
-       restoreViewBySingleClick = LC_GET_BOOL("RestoreViewBySingleClick", true);
-       showGrid = LC_GET_BOOL("ShowGrid", true);
-    }
+    using namespace CFG_WidgetNamedViewsList;
+    showViewInfoToolTip = o_ShowTooltip;
+    showColumnIconType = o_ShowIconType;
+    showColumnGridType = o_ShowColumnIconGrid;
+    showColumnUCSType = o_ShowColumnIconUCSType;
+    showColumnViewDetails = o_ShowColumnViewDetails;
+    showColumnUCSDetails = o_ShowColumnUCSDetails;
+    askForDeletionConfirmation = o_ConfirmDelete;
+    duplicatedNameReplacesSilently = o_ReplaceDuplicateSilently;
+    doubleClickPolicy = o_DoubleClickPolicy;
+    restoreViewBySingleClick = o_RestoreViewBySingleClick;
+    showGrid = o_ShowGrid;
 }
 
 void LC_NamedViewsListOptions::save() const {
-    LC_GROUP_GUARD("Widget.ViewsList");
-    {
-        LC_SET("ShowTooltip", showViewInfoToolTip);
-        LC_SET("ConfirmDelete", askForDeletionConfirmation);
-        LC_SET("ReplaceDuplicateSilently", duplicatedNameReplacesSilently);
-        LC_SET("DoubleClickPolicy", doubleClickPolicy);
-        LC_SET("RestoreViewBySingleClick", restoreViewBySingleClick);
-        LC_SET("ShowIconType", showColumnIconType);
-        LC_SET("ShowColumnIconGrid", showColumnGridType);
-        LC_SET("ShowColumnIconUCSType", showColumnUCSType);
-        LC_SET("ShowColumnViewDetails", showColumnViewDetails);
-        LC_SET("ShowColumnUCSDetails", showColumnUCSDetails);
-        LC_SET("ShowGrid", showGrid);
-    }
+    using namespace CFG_WidgetNamedViewsList;
+    o_ShowTooltip = showViewInfoToolTip;
+    o_ConfirmDelete = askForDeletionConfirmation;
+    o_ReplaceDuplicateSilently = duplicatedNameReplacesSilently;
+    o_DoubleClickPolicy = doubleClickPolicy;
+    o_RestoreViewBySingleClick = restoreViewBySingleClick;
+    o_ShowIconType = showColumnIconType;
+    o_ShowColumnIconGrid = showColumnGridType;
+    o_ShowColumnIconUCSType = showColumnUCSType;
+    o_ShowColumnViewDetails = showColumnViewDetails;
+    o_ShowColumnUCSDetails = showColumnUCSDetails;
+    o_ShowGrid = showGrid;
 }

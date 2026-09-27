@@ -281,7 +281,6 @@ void QG_CommandWidget::escape() const {
         //  m_actionHandler->command(RS_Commands::localizedCommand("escape", "escape, go back from action steps",
         // "QG_ActionHandler"));
     }
-    }
 }
 
 void QG_CommandWidget::setActionHandler(QG_ActionHandler* ah) {

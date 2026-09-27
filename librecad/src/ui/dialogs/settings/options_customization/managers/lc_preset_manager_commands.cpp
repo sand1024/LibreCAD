@@ -145,17 +145,23 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
     m_workingConfig = LC_DefaultCommandsBuilder::createDefaultConfig(m_actionTypeMapper.get());
 
     QMap<QString, QString> cmdToName;
+    auto insertCommands = [&cmdToName](const std::vector<std::pair<LC_CommandText, LC_CommandText>>& cmdList,
+                                      const QString& actionName) {
+        for (const auto& cmdPair : cmdList) {
+            const QString cmdStr = LC_CommandManager::resolveCommandText(cmdPair.first);
+            if (!cmdStr.isEmpty()) {
+                cmdToName.insert(cmdStr.toLower(), actionName);
+            }
+        }
+    };
+
     for (const auto& item : g_commandList) {
         const QString actionName = m_actionTypeMapper->actionNameFromType(item.actionType);
         if (actionName.isEmpty()) {
             continue;
         }
-        for (const auto& [fullCmd, trans] : item.fullCmdList) {
-            cmdToName.insert(fullCmd.toLower(), actionName);
-        }
-        for (const auto& [shortCmd, trans] : item.shortCmdList) {
-            cmdToName.insert(shortCmd.toLower(), actionName);
-        }
+        insertCommands(item.fullCmdList, actionName);
+        insertCommands(item.shortCmdList, actionName);
     }
 
     QMap<QString, int> actionAliasCount;

@@ -199,7 +199,7 @@ void LC_ActionDrawLineFromPointToLine::doPreparePreviewEntities([[maybe_unused]]
 
             highlightHover(m_targetLine);
             auto intersectionPoint = RS_Vector(false);
-            const auto line = createLineFromPointToTarget(m_targetLine, snap, intersectionPoint);
+            auto line = createLineFromPointToTarget(m_targetLine, snap, intersectionPoint);
             if (m_showRefEntitiesOnPreview) {
                 createRefPoint(line->getEndpoint(), list);
                 if (m_sizeMode == SIZE_INTERSECTION && LC_LineMath::isMeaningful(m_endOffset)) {

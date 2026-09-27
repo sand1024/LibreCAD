@@ -129,7 +129,7 @@ void RS_ActionDrawLineOrthTan::onMouseMoveEvent(const int status, const LC_Mouse
                         tangent = RS_Creation::createLineOrthTan(alternativeTangentPoint, line, m_actionData->circle,
                                                                  alternativeTangentPoint);
                     }
-                    const auto tangentClone = tangent->clone();
+                    auto tangentClone = tangent->clone();
                     previewEntityToCreate(tangentClone, true);
                     previewRefSelectablePoint(alternativeTangentPoint);
                     previewRefSelectablePoint(tangent->getEndpoint());

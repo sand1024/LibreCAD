@@ -312,40 +312,8 @@ void LC_SettingsPageCommands::selectItem(LC_CommandsTreeItem* item) {
         const auto* mapper = (m_presetManager != nullptr) ? m_presetManager->getActionTypeMapper() : nullptr;
         const auto actionType = (mapper != nullptr) ? mapper->actionTypeFromName(actionName) : RS2::ActionNone;
 
-        for (const auto& gItem : g_commandList) {
-            if (gItem.actionType == actionType) {
-                // Collect all system full commands (localized and English)
-                for (const auto& [fullCmd, cmdTrans] : gItem.fullCmdList) {
-                    if (!cmdTrans.isEmpty() && !m_systemCommands.contains(cmdTrans, Qt::CaseInsensitive)) {
-                        m_systemCommands.append(cmdTrans);
-                    }
-                    if (!fullCmd.isEmpty() && !m_systemCommands.contains(fullCmd, Qt::CaseInsensitive)) {
-                        m_systemCommands.append(fullCmd);
-                    }
-                }
-                // Collect primary 2-letter keycodes
-                if (!gItem.shortCmdList.empty()) {
-                    const auto& [firstKey, firstTrans] = gItem.shortCmdList[0];
-                    if (!firstTrans.isEmpty() && !m_systemKeycodes.contains(firstTrans, Qt::CaseInsensitive)) {
-                        m_systemKeycodes.append(firstTrans);
-                    }
-                    if (!firstKey.isEmpty() && !m_systemKeycodes.contains(firstKey, Qt::CaseInsensitive)) {
-                        m_systemKeycodes.append(firstKey);
-                    }
-                }
-                // Collect all other aliases
-                for (size_t i = 1; i < gItem.shortCmdList.size(); ++i) {
-                    const auto& [aliasKey, aliasTrans] = gItem.shortCmdList[i];
-                    if (!aliasTrans.isEmpty() && !m_systemAliases.contains(aliasTrans, Qt::CaseInsensitive)) {
-                        m_systemAliases.append(aliasTrans);
-                    }
-                    if (!aliasKey.isEmpty() && !m_systemAliases.contains(aliasKey, Qt::CaseInsensitive)) {
-                        m_systemAliases.append(aliasKey);
-                    }
-                }
-                break;
-            }
-        }
+        LC_CommandManager::collectActionDefaults(actionType, m_systemCommands, m_systemKeycodes, m_systemAliases);
+
 
         const QString actCmd = !m_systemCommands.isEmpty() ? m_systemCommands.first() : QString();
         const QString actKey = !m_systemKeycodes.isEmpty() ? m_systemKeycodes.first() : QString();
@@ -397,13 +365,9 @@ void LC_SettingsPageCommands::selectItem(LC_CommandsTreeItem* item) {
 
         // Keywords: Populate default keyword and default aliases from g_transList
         const QString key = item->identifier();
-        QString transKw = key;
-        for (const auto& [cmd, trans] : g_transList) {
-            if (cmd == key) {
-                transKw = trans;
-                break;
-            }
-        }
+        QString transKw;
+        QStringList keywordAliases;
+        LC_CommandManager::collectKeywordDefaults(key, transKw, keywordAliases);
 
         if (!transKw.isEmpty()) {
             m_systemCommands.append(transKw);
@@ -412,14 +376,9 @@ void LC_SettingsPageCommands::selectItem(LC_CommandsTreeItem* item) {
             m_systemCommands.append(key);
         }
 
-        for (const auto& [cmd, trans] : g_transList) {
-            if (trans == key) {
-                const QString lower = cmd.trimmed().toLower();
-                if (!lower.isEmpty() && lower != key.toLower() && lower != transKw.toLower()) {
-                    if (!m_systemAliases.contains(lower, Qt::CaseInsensitive)) {
-                        m_systemAliases.append(lower);
-                    }
-                }
+        for (const auto& alias : keywordAliases) {
+            if (!m_systemAliases.contains(alias, Qt::CaseInsensitive)) {
+                m_systemAliases.append(alias);
             }
         }
 

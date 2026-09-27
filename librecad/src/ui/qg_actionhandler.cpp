@@ -42,7 +42,6 @@
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_graphicview.h"
-#include "rs_settings.h"
 
 /**
  * Constructor
@@ -202,10 +201,10 @@ bool QG_ActionHandler::command(const QString& cmd) const {
     const QString c = cmd.toLower().trimmed();
 
     // fixme - sand - some messy way to check the command.... review it. We could resolve any form - why localized only?
-    // and what about shortcodes? Standard way of resolving in LC_CommandsManager will be more reliable.
-    if (RS_Commands::matchesLocalizedCommand(c, "escape", "escape, go back from action steps",
-                                              "QG_ActionHandler")) {
-    // if (c == tr("escape", "escape, go back from action steps")) {
+    // fixme - sand - and what about shortcodes? Standard way of resolving in LC_CommandsManager will be more reliable.
+    // if (RS_Commands::matchesLocalizedCommand(c, "escape", "escape, go back from action steps",
+                                              // "QG_ActionHandler")) {
+    if (c == tr("escape", "escape, go back from action steps")) {
         m_view->back(Qt::KeyboardModifier::NoModifier);
         RS_DEBUG->print("QG_ActionHandler::command: back");
         return true;

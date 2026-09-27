@@ -137,6 +137,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void fireCurrentActionIconChanged(QAction* actionIcon);
     // Reports to the command history: a status-bar message hides the status widgets (issue #2841). timeout is ignored.
     void showStatusMessage(const QString& msg, int timeout = 0) const;
+    void notificationMessage(const QString& msg, int timeout) const;
     void initCompleted();
     void openFilesOnStartup(QStringList& fileList, QSplashScreen* splash) const;
     QMenu* createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) const;
@@ -144,7 +145,11 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void relayAction(QAction* q_action);
     /** generates a new document for a graphic. */
     QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
-    void recreateToolbarsMenu();
+    QMenu* getRecentFilesMenu() const;
+    void updateToolbarsIconSize();
+    void updateToolbarsIconSize(bool allowCustom, int customSize);
+    void updateActionsForCommandsInMenus(bool keycodeMode);
+    void onStylingApplied();
 public slots:
     void slotFocus();
     void slotKillAllActions();
@@ -153,7 +158,6 @@ public slots:
     void slotError(const QString& msg) const;
     void slotShowDrawingOptions() const;
     void slotShowDrawingOptionsUnits() const;
-    void slotWorkspacesMenuAboutToShow() const;
     void slotWindowsMenuActivated(bool);
     void slotPenChanged(const RS_Pen& pen);
     //void slotSnapsChanged(RS_SnapMode s);

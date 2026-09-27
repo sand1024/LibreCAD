@@ -1095,7 +1095,7 @@ void RS_ActionDefault::initFromSettings() {
     }
 }
 
-void RS_ActionDefault::updateQuickInfoWidget(RS_Entity *pEntity){
+void RS_ActionDefault::updateQuickInfoWidget( RS_Entity *pEntity){
     LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
     if (entityInfoWidget != nullptr){
         entityInfoWidget->processEntity(pEntity);

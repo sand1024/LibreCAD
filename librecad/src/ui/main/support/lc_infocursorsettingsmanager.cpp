@@ -68,10 +68,6 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
                         action->trigger();
                         break;
                     }
-                    case 6: {
-                        action->trigger();
-                        break;
-                    }
                     default:
                         doUpdate = false;
                         break;

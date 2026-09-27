@@ -27,6 +27,8 @@
 #include <QToolButton>
 
 #include "lc_actioncontext.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_widget.h"
 #include "rs_actioninterface.h"
 
 class LC_LateCompletionRequestor;

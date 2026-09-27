@@ -211,8 +211,8 @@ protected:
     LC_ActionInfoMessageBuilder& msg(const QString& name) const;
     LC_ActionInfoMessageBuilder& msgStart() const;
 
-    QString obtainEntityDescriptionForInfoCursor(const RS_Entity* e, RS2::EntityDescriptionLevel level) const;
-    void prepareEntityDescription(const RS_Entity* entity, RS2::EntityDescriptionLevel level) const;
+    QString obtainEntityDescriptionForInfoCursor(RS_Entity* e, RS2::EntityDescriptionLevel level) const;
+    void prepareEntityDescription(RS_Entity* entity, RS2::EntityDescriptionLevel level) const;
     void appendInfoCursorZoneMessage(const QString& message, int zoneNumber, bool replaceContent) const;
     void appendInfoCursorEntityCreationMessage(const QString& message) const;
 

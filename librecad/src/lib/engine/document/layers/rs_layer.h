@@ -62,10 +62,9 @@ struct RS_LayerData {
  */
 class RS_Layer {
 public:
-
-    static constexpr int NOT_DEFINED_LAYER_TYPE = -1;
     // Layer types
     enum LayerType{
+        NOT_DEFINED_LAYER_TYPE = -1,
         VIRTUAL,
         NORMAL,
         DIMENSIONAL,

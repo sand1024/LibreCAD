@@ -31,6 +31,7 @@
 #include "lc_command_types.h"
 #include "rs.h"
 
+struct LC_CommandText;
 class LC_ActionTypeMapper;
 class LC_RepositoryCommands;
 
@@ -59,6 +60,14 @@ public:
     LC_RepositoryCommands* getRepository() const;
     const CommandsConfig& activeConfig() const { return m_activeConfig; }
 
+
+    static QString resolveCommandText(const LC_CommandText& cmdText);
+    static void appendCommandPair(const std::pair<LC_CommandText, LC_CommandText>& cmdPair, QStringList& targetList);
+    static void collectActionDefaults(const RS2::ActionType actionType,
+                               QStringList& outCommands,
+                               QStringList& outKeycodes,
+                               QStringList& outAliases);
+    static void collectKeywordDefaults(const QString& key, QString& outKw, QStringList& outAliases);
 private:
     RS2::ActionType commandToAction(const QString& cmd) const;
     void populateFactoryDefaults();

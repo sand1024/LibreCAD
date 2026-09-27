@@ -26,6 +26,7 @@
 #include <QJsonArray>
 #include <qjsondocument.h>
 
+#include "lc_settings_startup.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"

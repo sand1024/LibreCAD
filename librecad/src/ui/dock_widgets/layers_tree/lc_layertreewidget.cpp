@@ -1347,14 +1347,7 @@ void LC_LayerTreeWidget::removeActiveLayers(){
         if (activeLayer != nullptr){
             LC_LayerTreeItem *currentItem = m_layerTreeModel->getItemForLayer(activeLayer);
             if (currentItem != nullptr){
-                if (removeWithChildren) {
-                    doRemoveLayersFromSource(currentItem, false);
-                }
-                else {
-                    QList<LC_LayerTreeItem*> layersToRemove;
-                    layersToRemove.push_back(currentItem);
-                    doRemoveLayerItems(layersToRemove);
-                }
+                doRemoveLayersFromSource(currentItem, false);
             }
         }
     }

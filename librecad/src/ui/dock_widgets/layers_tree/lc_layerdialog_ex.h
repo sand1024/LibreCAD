@@ -73,7 +73,7 @@ private:
     LC_LayerTreeItem *m_editedTreeItem {nullptr};
     RS_Layer *m_editedLayer {nullptr};
     QString m_originalLayerName;
-    LC_LayerTreeItem::LayerType m_originalLayerType {LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE};
+    RS_Layer::LayerType m_originalLayerType {RS_Layer::NOT_DEFINED_LAYER_TYPE};
     RS_LayerList* m_layerList;
     bool checkForDuplicatedNames(const QStringList &newLayerNamesList) const;
 };

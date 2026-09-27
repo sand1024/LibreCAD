@@ -758,7 +758,7 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
 
 QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view,
                                                          RS_Entity* entity, const RS_Vector& pos) const {
-    if (m_contextMenuProvider != nullptr) const {
+    if (m_contextMenuProvider != nullptr) {
         return m_contextMenuProvider->createContextMenu(view, entity, pos, event);
     }
     return nullptr;
@@ -1296,7 +1296,7 @@ void QC_ApplicationWindow::slotFileSaveAll() {
 void QC_ApplicationWindow::autoSaveCurrentDrawing() {
     RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): begin");
     if (!CFG_Defaults::o_AutoBackupDocument) {
-        RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): AutoBackupDocument disabled");    }
+        RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): AutoBackupDocument disabled");
         startAutoSaveTimer(false);
         return;
     }

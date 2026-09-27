@@ -633,7 +633,14 @@ void LC_ActionFactory::createRelZeroActions(QMap<QString, QAction *> &map, QActi
 void LC_ActionFactory::createSnapExtraActions(QMap<QString, QAction *> &map, QActionGroup *group) const {
     createActions(map, group, {
         {"ExclusiveSnapMode",tr("Exclusive Snap Mode"),":/icons/exclusive.lci",tr("Toggles exclusive snapping: activates single snap mode, disabling others.")},
-        {"SnapFree",         tr("Free Snap"),          ":/icons/snap_free.lci",tr("Positions cursor freely without magnetic snapping.")}
+        {"SnapFree",         tr("Free Snap"),          ":/icons/snap_free.lci",tr("Positions cursor freely without magnetic snapping.")},
+        // fixme - sand - the action is too raw, implementation is partially.
+        // to do..
+        // - how it's related to hint in actions? (SHIFT)
+        // - it is reasonable to support quick change of the angle in UI. Option in tool option + filler? quick Selector? think about.
+        // - how it affect (if any) commands and relative input assistant
+        // - works only for free snap??? - how it's combined with other snap modes??
+         {"SnapAngle",         tr("Polar Snap"),          ":/icons/line_angle.lci", tr("Snap to angle")} // fixme - sand - update icon, description.
     });
 }
 

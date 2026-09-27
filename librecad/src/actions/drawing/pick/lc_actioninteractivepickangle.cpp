@@ -45,7 +45,7 @@ bool LC_ActionInteractivePickAngle::isInteractiveDataValid() {
 }
 
 void LC_ActionInteractivePickAngle::doSetInteractiveInputValue(
-    LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) {
+    InteractiveInputInfo* interactiveInputInfo) {
     interactiveInputInfo->angleRad = m_angle;
 }
 

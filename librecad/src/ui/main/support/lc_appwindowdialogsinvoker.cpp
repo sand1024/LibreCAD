@@ -35,8 +35,6 @@
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_dialogfactory.h"
-#include "qg_dlgoptionsdrawing.h"
-#include "qg_dlgoptionsgeneral.h"
 #include "qg_exitdialog.h"
 #include "qg_filedialog.h"
 #include "rs_settings.h"

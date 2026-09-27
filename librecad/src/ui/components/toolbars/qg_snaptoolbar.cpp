@@ -152,22 +152,6 @@ void QG_SnapToolBar::setGraphicView(RS_GraphicView* gview) {
     }
 }
 
-void QG_SnapToolBar::setGraphicView(RS_GraphicView* gview) {
-    if (gview != nullptr) {
-        const auto visualSnapData = gview->getVisualSnapData();
-        const bool locked = visualSnapData->isContentLocked();
-        m_actionSnapVisualLock->blockSignals(true);
-        m_actionSnapVisualLock->setChecked(locked);
-        m_actionSnapVisualLock->blockSignals(false);
-        if (locked) {
-            m_actionSnapVisual->setIcon(QIcon(":/icons/snap_visual_lock.lci"));
-        }
-        else {
-            m_actionSnapVisual->setIcon(QIcon(":/icons/snap_visual.lci"));
-        }
-    }
-}
-
 
 void QG_SnapToolBar::slotUnsetSnapMiddleManual() const {
     m_actionSnapMiddleManual->setChecked(false);

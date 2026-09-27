@@ -143,8 +143,6 @@ LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::init(QWidget* pare
     return createAndSetupView(parent, graphic, originalGraphic, false);
 }
 
-void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(const RS2::EntityType dimType) const {
-    auto* graphic = getGraphic(false);
 void LC_DimStylePreviewGraphicView::hideNonZeroLayers() const {
     const auto layersList = getGraphic(false)->getLayerList();
     for (const auto layer: *layersList) {

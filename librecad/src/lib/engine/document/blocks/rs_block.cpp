@@ -87,26 +87,6 @@ RS_Entity* RS_Block::clone() const {
             blk->push_back(copy);
         }
     }
-    const auto blk = new RS_Block(getParent(), RS_BlockData(m_data));
-    blk->setGraphicView(getGraphicView()); // fixme - remove this dependency
-
-    if (isOwner()) {
-        const auto entitylist = getEntityList();
-        for (const RS_Entity* entity : entitylist) {
-            if (entity != nullptr) {
-                blk->push_back(entity->clone());
-            }
-        }
-    }
-    else {
-        const auto entitylist = getEntityList();
-        for (RS_Entity* entity : entitylist) {
-            if (entity != nullptr) {
-                blk->push_back(entity);
-            }
-        }
-    }
-    blk->detach();
     return blk;
 }
 

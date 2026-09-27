@@ -52,13 +52,13 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(const InteractiveIn
             QString tagValue = propertyTag.toString();
             if (tag == tagValue) {
                 switch (inputType) {
-                    case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+                    case InteractiveInputInfo::DISTANCE: {
                         toUIValue(valueOne, lineEdit);
                         emit lineEdit->editingFinished();
                         lineEditFound = true;
                         break;
                     }
-                    case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+                    case InteractiveInputInfo::ANGLE: {
                         // toUIAngleDeg(valueOne, lineEdit);
                         toUIAngleDegRaw(valueOne, lineEdit);
                         emit lineEdit->editingFinished();
