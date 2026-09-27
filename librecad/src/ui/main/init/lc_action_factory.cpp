@@ -141,7 +141,7 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         // ==========================================
         {"dock_widgets",     tr("Tool Windows"),    tr("Tool Windows visibility toggles"),     ":/icons/tool_windows_palette.lci",  false, true,  true,  "Menu:DockWidgets"},
         {"cad_dock_widgets", tr("CAD Tool Windows"),tr("CAD Tool Windows visibility toggles"), ":/icons/dockwidgets_left.lci",      false, true,  true,  "Menu:CadDockWidgets"},
-        {"tool_options",  tr("Tool Options"),            tr("Active Tool Options bar"),           ":/icons/drawing_settings.lci",       false, true,  false},
+        {"tool_options",     tr("Tool Options"),    tr("Active Tool Options bar"),             ":/icons/tool_options.lci",          false, true,  false},
     }, agm);
 
 

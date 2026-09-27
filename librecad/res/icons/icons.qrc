@@ -435,5 +435,6 @@
         <file alias="github.lci">github.svg</file>
         <file alias="tool_windows_palette.lci">tool_windows_palette.svg</file>
         <file alias="status_bar.lci">status_bar.svg</file>
+        <file alias="tool_options.lci">tool_options.svg</file>
     </qresource>
 </RCC>

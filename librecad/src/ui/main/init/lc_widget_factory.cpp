@@ -533,6 +533,7 @@ void LC_WidgetFactory::initSpecialToolbars() {
     optTb->setObjectName("tool_options_toolbar");
     optTb->setProperty("_lc_toolbar_name", "tool_options");
     optTb->setProperty("_group", 1);
+    optTb->toggleViewAction()->setIcon(QIcon(":/icons/tool_options.lci"));
     m_appWin->m_toolOptionsToolbar = optTb;
 }
 
