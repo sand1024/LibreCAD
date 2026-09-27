@@ -680,7 +680,7 @@ void LC_ActionFactory::createViewActions(QMap<QString, QAction*>& map, QActionGr
         {"ViewDraft",        &QC_ApplicationWindow::slotViewDraft,        tr("&Draft"),                ":/icons/draft.lci",             tr("Toggles draft mode: hides line widths for maximum redraw speed.")},
         {"ViewLinesDraft",   &QC_ApplicationWindow::slotViewDraftLines,   tr("&Draft Lines"),          ":/icons/draftLineWidth.lci",    tr("Toggles draft mode for zero-width hair lines.")},
         {"ViewAntialiasing", &QC_ApplicationWindow::slotViewAntialiasing, tr("&Antialiasing"),         ":/icons/anti_aliasing.lci",     tr("Toggles smooth anti-aliased rendering for graphics.")},
-        {"ViewStatusBar",    &QC_ApplicationWindow::slotViewStatusBar,    tr("&Statusbar"),            nullptr,                         tr("Toggles visibility of the bottom status bar.")},
+        {"ViewStatusBar",    &QC_ApplicationWindow::slotViewStatusBar,    tr("&Statusbar"),            ":/icons/status_bar.lci",        tr("Toggles visibility of the bottom status bar.")},
         {"ViewGridOrtho",    &QC_ApplicationWindow::slotViewGridOrtho,    tr("&Orthogonal Grid"),      ":/icons/grid_ortho.lci",        tr("Switches drawing grid to standard Cartesian orthogonal grid.")},
         {"ViewGridIsoLeft",  &QC_ApplicationWindow::slotViewGridIsoLeft,  tr("&Isometric Left Grid"),  ":/icons/grid_iso_left.lci",     tr("Switches drawing grid to isometric left plane.")},
         {"ViewGridIsoTop",   &QC_ApplicationWindow::slotViewGridIsoTop,   tr("&Isometric Top Grid"),   ":/icons/grid_iso_top.lci",      tr("Switches drawing grid to isometric top plane.")},
