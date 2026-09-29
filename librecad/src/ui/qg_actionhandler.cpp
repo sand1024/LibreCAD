@@ -66,6 +66,13 @@ RS_ActionInterface* QG_ActionHandler::getCurrentAction() const {
     return nullptr;
 }
 
+RS_ActionInterface* QG_ActionHandler::getCurrentNonDefaultAction() const {
+    if (m_view != nullptr) {
+        return m_view->getCurrentNonDefaultAction();
+    }
+    return nullptr;
+}
+
 void QG_ActionHandler::promoteCommandIfNeeded(const RS2::ActionType id) const {
     const auto sndr = sender();
     const auto action = dynamic_cast<LC_Action*>(sndr);

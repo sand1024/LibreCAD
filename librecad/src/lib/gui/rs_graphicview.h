@@ -122,6 +122,7 @@ public:
     // fixme - sand - complete changes in plugin and remove this function from the public interface!!!
     bool setCurrentAction(const std::shared_ptr<RS_ActionInterface>& action) const;
     RS_ActionInterface *getCurrentAction() const;
+    RS_ActionInterface *getCurrentNonDefaultAction() const;
     QString getCurrentActionName() const;
     QIcon getCurrentActionIcon() const;
     void killAllActions() const;
@@ -177,7 +178,7 @@ public:
     bool hasAction() const;
     void notifyLastActionFinished() const;
     void onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
-    void showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam param, bool readOnly = false) const;
+    QWidget* showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam param, bool readOnly = false) const;
     void hideRelativeInputWidget() const;
     void restoreRelativeInputWidget() const;
     bool isInRelativePointInput() const;
@@ -195,7 +196,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     LC_EventHandler *getEventHandler() const;
 
-    LC_RelativePointInputWidget* m_relativePointWidgetHolder = nullptr;
+    std::unique_ptr<LC_RelativePointInputWidget> m_relativePointWidgetHolder = nullptr;
 private:
     std::unique_ptr<LC_EventHandler> m_eventHandler;
     RS_Document *m_document = nullptr;

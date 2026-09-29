@@ -308,7 +308,7 @@ struct QG_GraphicView::UCSHighlightData {
 void createViewRenderer();
 
 void QG_GraphicView::initRelativePointInputWidget() {
-    m_relativePointWidgetHolder = new LC_RelativePointInputWidget(this, m_actionContext);
+    m_relativePointWidgetHolder = std::make_unique<LC_RelativePointInputWidget>(this, m_actionContext);
     m_relativePointWidgetHolder->setVisible(false);
 }
 

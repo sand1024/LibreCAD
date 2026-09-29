@@ -36,11 +36,6 @@
 #include "ui_lc_relative_position_editing_widget.h"
 
 namespace {
-    void activateParamUI(QStackedWidget* stacked, QLineEdit* edit) {
-        stacked->setCurrentIndex(0);
-        edit->selectAll();
-        edit->setFocus();
-    }
 
     void setupIconLabel(const char* iconName, QLabel* label) {
         constexpr int iconSize = 22;
@@ -57,6 +52,13 @@ void LC_RelativePositionEditingWidget::updateInputEditorsIcons() const {
     setupIconLabel(":/icons/relative_dy.lci", ui->lblIconDY);
     setupIconLabel(":/icons/relative_x.lci", ui->lblIconX);
     setupIconLabel(":/icons/relative_y.lci", ui->lblIconY);
+}
+
+void LC_RelativePositionEditingWidget::activateParamUI(QStackedWidget* stacked, QLineEdit* edit) {
+    stacked->setCurrentIndex(0);
+    edit->selectAll();
+    edit->setFocus();
+    m_activeEdit = edit;
 }
 
 LC_RelativePositionEditingWidget::LC_RelativePositionEditingWidget(LC_RelativePointInputWidget* parent, LC_GraphicViewport* viewport,

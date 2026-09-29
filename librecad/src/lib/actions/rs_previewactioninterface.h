@@ -80,7 +80,7 @@ public:
     QStringList getAvailableCommands() override;
     bool isClearVisualSnapMarks();
     void setStatus(int status) override;
-    void tryShowRelativeInput(RS2::RelativePointParam type) override;
+    QWidget* tryShowRelativeInput(RS2::RelativePointParam type);
     void tryAddVisualGuidingPointForCurrentPoint(bool hasLength, bool hasAngle, bool hasDx, bool hasDy, bool hasNormal);
     void addProjectedRelativePointToVisualSnap(const LC_RelativePositionData* relativePositionData, bool applyProjectedPosition);
     void moveMouseToRefreshPreview(const RS_Vector& wcsPos);

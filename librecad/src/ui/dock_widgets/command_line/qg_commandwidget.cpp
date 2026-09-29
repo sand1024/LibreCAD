@@ -32,6 +32,7 @@
 
 #include "lc_action_command_updater.h"
 #include "lc_command_manager.h"
+#include "lc_relative_point_input_widget.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_keyboard.h"
 #include "lc_settings_widget.h"
@@ -160,6 +161,41 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
             (key != Qt::Key_Tab);
         // prevent focus for graphic-view specific keys
         if (isGraphicViewEvent) {
+            if (!leCommand->hasFocus()) {
+                auto currentAction = m_actionHandler->getCurrentNonDefaultAction();
+                if (currentAction != nullptr) {
+                    bool numberKey = false;
+                    switch (e->key()) {
+                        case Qt::Key_0:
+                        case Qt::Key_1:
+                        case Qt::Key_2:
+                        case Qt::Key_3:
+                        case Qt::Key_4:
+                        case Qt::Key_5:
+                        case Qt::Key_6:
+                        case Qt::Key_7:
+                        case Qt::Key_8:
+                        case Qt::Key_9: {
+                            numberKey = true;
+                            break;
+                        }
+                    }
+                    if (numberKey) {
+                        QWidget* relativePointWidget = currentAction->tryShowRelativeInput(RS2::REL_POINT_LENGTH);
+                        if (relativePointWidget != nullptr) {
+                            auto inputWidget = dynamic_cast<LC_RelativePointInputWidget*>(relativePointWidget);
+                            if (inputWidget != nullptr) {
+                                QLineEdit* paramLineEdit = inputWidget->getActiveEdit();
+                                if (paramLineEdit != nullptr) {
+                                    QApplication::postEvent(paramLineEdit, e->clone());
+                                    e->accept();
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             focusWidget();
             QApplication::postEvent(leCommand, e->clone());
             e->accept();

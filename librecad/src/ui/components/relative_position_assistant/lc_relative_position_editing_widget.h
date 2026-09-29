@@ -59,7 +59,9 @@ class LC_RelativePositionEditingWidget : public QWidget {
     void updateByInteractiveInput(RS2::RelativePointParam paramType, double value);
     bool toDouble(const QString& strValue, double& res, double notMeaningful, bool positiveOnly);
     void updateInputEditorsIcons() const;
+    void activateParamUI(QStackedWidget* stacked, QLineEdit* edit);
     void setReadOnly(bool readonly) {m_readOnly = readonly;}
+    QLineEdit* getActiveEditor() const {return m_activeEdit;}
 public slots:
     void onEditingReturnPressed();
     void onOKButtonClicked(bool checked);
@@ -95,6 +97,7 @@ private:
     QString m_editingStartValueString;
     bool m_inParamActivation {false};
     bool m_readOnly{false};
+    QLineEdit* m_activeEdit {nullptr};
     void setupLabelAndEditor(QLabel* label, QLineEdit* lineEdit, RS2::RelativePointParam relativePointParam);
     void setupButtons(QToolButton* btnOk, QToolButton* btnInteractivePick, QToolButton* btnManualSnap,
                       RS2::RelativePointParam relativePointParam, InteractiveInputInfo::InputType inputType);

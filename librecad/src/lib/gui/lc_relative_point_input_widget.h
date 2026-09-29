@@ -39,6 +39,7 @@ public:
     LC_RelativePointInputWidget(RS_GraphicView* parent, LC_ActionContext* actionContext);
     void completeInteractiveInput(RS2::RelativePointParam paramType, double value);
     void setContentWidget(QWidget* w);
+    QLineEdit* getActiveEdit() const;
     RS_Vector getGraphPosition() const {return m_graphPosition;}
     void show(const RS_Vector& pos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam activeParam, bool readOnly = false);
     void onViewportChanged() override;

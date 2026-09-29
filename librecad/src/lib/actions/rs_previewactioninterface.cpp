@@ -950,7 +950,7 @@ void RS_PreviewActionInterface::keyPressEvent(QKeyEvent* e) {
     }
 }
 
-void RS_PreviewActionInterface::tryShowRelativeInput(RS2::RelativePointParam type) {
+QWidget* RS_PreviewActionInterface::tryShowRelativeInput(RS2::RelativePointParam type) {
     if (isInVisualSnapStatus(getStatus())) {
         if (m_lastMouseMoveEvent.graphPoint.valid) {
             m_relativeInputInvocationEvent = m_lastMouseMoveEvent;
@@ -967,9 +967,10 @@ void RS_PreviewActionInterface::tryShowRelativeInput(RS2::RelativePointParam typ
                 }
             }
             deleteInfoCursor();
-            m_graphicView->showRelativeInputWidget(currentPoint, basePoint, forRelativePoint, type);
+            return m_graphicView->showRelativeInputWidget(currentPoint, basePoint, forRelativePoint, type);;
         }
     }
+    return nullptr;
 }
 
 void RS_PreviewActionInterface::addProjectedRelativePointToVisualSnap(const LC_RelativePositionData* relativePositionData, bool applyProjectedPosition) {

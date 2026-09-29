@@ -68,6 +68,7 @@ public:
     bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action);
     void resumeAction(const std::shared_ptr<RS_ActionInterface>& action);
     RS_ActionInterface* getCurrentAction() const;
+    RS_ActionInterface* getCurrentNonDefaultAction() const;
     bool isValid(const RS_ActionInterface* action) const;
     bool killAllActions();
     void quiesceForClose();

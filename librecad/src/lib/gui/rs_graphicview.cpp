@@ -135,6 +135,11 @@ RS_ActionInterface *RS_GraphicView::getCurrentAction() const {
     return (nullptr != m_eventHandler) ? m_eventHandler->getCurrentAction() : nullptr;
 }
 
+RS_ActionInterface *RS_GraphicView::getCurrentNonDefaultAction() const {
+    auto action = (nullptr != m_eventHandler) ? m_eventHandler->getCurrentNonDefaultAction() : nullptr;
+    return action;
+}
+
 QString RS_GraphicView::getCurrentActionName() const {
     if (m_eventHandler !=nullptr) {
         const QAction* qaction = m_eventHandler->getQAction();
@@ -443,9 +448,10 @@ void RS_GraphicView::setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> rend
     m_renderer = std::move(renderer);
 }
 
-void RS_GraphicView::showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint,
+QWidget* RS_GraphicView::showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint,
     RS2::RelativePointParam param, bool readOnly) const {
     m_relativePointWidgetHolder->show(wcsPos, basePoint,baseIsRelativePoint, param, readOnly);
+    return m_relativePointWidgetHolder.get();
 }
 
 void RS_GraphicView::hideRelativeInputWidget() const {

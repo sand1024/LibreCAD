@@ -164,3 +164,12 @@ void LC_RelativePointInputWidget::setContentWidget(QWidget* w) {
     layout->addWidget(w, 0, Qt::AlignCenter);
     setLayout(layout);
 }
+
+QLineEdit* LC_RelativePointInputWidget::getActiveEdit() const {
+    if (isVisible()) {
+        if (m_contentWidget != nullptr) {
+            return m_contentWidget->getActiveEditor();
+        }
+    }
+    return nullptr;
+}

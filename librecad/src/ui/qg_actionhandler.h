@@ -51,6 +51,7 @@ public:
     explicit QG_ActionHandler(QC_ApplicationWindow *parent);
     ~QG_ActionHandler() override = default;
     RS_ActionInterface *getCurrentAction() const;
+    RS_ActionInterface *getCurrentNonDefaultAction() const;
     void promoteCommandIfNeeded(RS2::ActionType id) const;
     std::shared_ptr<RS_ActionInterface> setCurrentAction(RS2::ActionType id, void* data = nullptr) const;
     /**

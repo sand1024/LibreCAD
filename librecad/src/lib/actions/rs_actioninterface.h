@@ -44,6 +44,7 @@ class LC_ActionOptionsPropertiesFiller;
 class LC_ActionOptionsWidget;
 class RS_Undoable;
 class LC_ModifiersInfo;
+class QWidget;
 class QInputEvent;
 class QKeyEvent;
 class QMouseEvent;
@@ -55,7 +56,6 @@ class RS_Graphic;
 class RS_Document;
 class QAction;
 class QString;
-
 
 
 /**
@@ -105,7 +105,7 @@ public:
     void onLateRequestCompleted(bool shouldBeSkipped) override;
     void updateOptions(const QString& tagToFocus = "") const;
     void postCreateInit();
-    virtual void tryShowRelativeInput([[maybe_unused]]RS2::RelativePointParam type) {}
+    virtual QWidget* tryShowRelativeInput([[maybe_unused]]RS2::RelativePointParam type) {return nullptr;}
 private:
     /**
      * Current status of the action. After an action has
