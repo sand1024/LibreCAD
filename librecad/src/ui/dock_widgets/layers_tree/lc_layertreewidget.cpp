@@ -1704,6 +1704,7 @@ void LC_LayerTreeWidget::doMoveSelectionToLayer(const LC_LayerTreeItem* layerIte
         bool removeOriginals = !duplicate;
         m_document->undoableModify(m_graphicView->getViewPort(),
                                    [ removeOriginals, targetLayer, resolvePens, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                       ctx.dontSetActiveLayerAndPen();
                                        for (const auto en : selectedEntities) {
                                            // iterate over all entities
                                            if (!en->isParentSelected()) {

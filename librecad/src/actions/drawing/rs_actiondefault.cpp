@@ -809,6 +809,7 @@ void RS_ActionDefault::onMouseMovingCompleted(const LC_MouseEvent* e) {
     bool keepOriginal = e->isControl;
 
     m_document->undoableModify(m_viewport, [this,keepOriginal, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                             ctx.dontSetActiveLayerAndPen();
                              RS_MoveData data;
                              data.number               = 0;
                              data.useCurrentLayer      = false;

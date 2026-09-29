@@ -562,6 +562,7 @@ void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType
             if (!selectedEntities.isEmpty()) {
                 doc->undoableModify(m_graphicView->getViewPort(),
                                     [color, width, lineType, modifyColor, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                        ctx.dontSetActiveLayerAndPen();
                                         RS_AttributesData data;
                                         data.pen = RS_Pen(color, width, lineType);
                                         data.changeColor = modifyColor;

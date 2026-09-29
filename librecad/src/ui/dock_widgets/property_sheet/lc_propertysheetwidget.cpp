@@ -444,9 +444,9 @@ void LC_PropertySheetWidget::onPropertyEdited(LC_Property* property) {
     QTimer::singleShot(30, [this, layerHidden]()-> void {
         // LC_ERR << "On Edited - " << propertyName;
         m_document->undoableModify(m_viewport, [this](LC_DocumentModificationBatch& ctx)-> bool {
+                                       ctx.dontSetActiveLayerAndPen();
                                        ctx.entitiesToAdd.append(m_modifiedEntities);
                                        ctx.entitiesToDelete.append(m_orginalEntities);
-                                       ctx.dontSetActiveLayerAndPen();
                                        clearContextEntities();
                                        return true;
                                    }, [layerHidden](const LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {

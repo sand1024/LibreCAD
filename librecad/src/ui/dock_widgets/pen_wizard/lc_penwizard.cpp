@@ -60,6 +60,7 @@ void LC_PenWizard::setColorForSelected(const QColor color) const {
     QList<RS_Entity*> selection;
     if (graphic->collectSelected(selection)) {
         graphic->undoableModify(m_graphicView->getViewPort(), [selection, pen](LC_DocumentModificationBatch& ctx)-> bool {
+                                    ctx.dontSetActiveLayerAndPen();
                                     for (const auto e : selection) {
                                         RS_Entity* clone = e->clone();
                                         clone->setPen(pen);
