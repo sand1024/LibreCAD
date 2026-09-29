@@ -396,6 +396,13 @@ RS_ActionInterface* LC_EventHandler::getCurrentAction() const {
     return m_defaultAction.get();
 }
 
+RS_ActionInterface* LC_EventHandler::getCurrentNonDefaultAction() const {
+    if (hasAction()) {
+        return m_currentAction.get();
+    }
+    return nullptr;
+}
+
 /**
  * @return The current default action.
  */
