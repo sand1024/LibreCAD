@@ -67,12 +67,14 @@ void LC_QTStatusbarManager::setActionHelp(const QString &left, [[maybe_unused]]c
 
 void LC_QTStatusbarManager::setCurrentQAction(const QAction *a) {
     if (m_actionPromptEnabled && m_statusBar->isVisible()) {
-        const LC_Action* action = dynamic_cast<const LC_Action*>(a);
+        auto action = dynamic_cast<const LC_Action*>(a);
         if (action != nullptr) {
             m_actionToolTip  = action->getClearedText();
         }
         else {
-            m_actionToolTip = a->text().remove('&').trimmed();
+            if (a != nullptr) {
+                m_actionToolTip = a->text().remove('&').trimmed();
+            }
         }
     }
 }

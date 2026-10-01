@@ -46,8 +46,10 @@ public:
     const LC_IconColorsOptions& iconColorsOptions() const { return m_iconColorsOptions; }
     void applyTransientStyle();
 
-    signals:
-        void configLoaded();
+    bool isFusionGated() const override {return false;}
+
+signals:
+    void configLoaded();
     void variantChanged(bool isDark);
 
 protected:

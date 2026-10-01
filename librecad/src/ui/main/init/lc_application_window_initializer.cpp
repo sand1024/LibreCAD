@@ -199,7 +199,8 @@ void LC_ApplicationWindowInitializer::initDockCorners() const {
         using namespace CFG_Widgets;
         const bool allowDockNesting = o_DockAllowNested;
         const bool verticalTabs = o_DockVerticalTabs;
-        LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, verticalTabs);
+        const bool cadVerticalTabs = o_CadDockVerticalTabs;
+        LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, cadVerticalTabs, verticalTabs);
     }
 
     // make the left and right dock areas dominant

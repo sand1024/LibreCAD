@@ -269,11 +269,7 @@ QG_LayerWidget::QG_LayerWidget(LC_ActionGroupManager* actionGroupManager, const 
 
     m_layerView->setTrackingItemDelegate(new LC_LayerTableItemDelegate(m_layerView, m_layerModel));
 
-    m_layerView->setShowGrid(false); // fixme - sand - add to options!*/
-
-#ifndef DONT_FORCE_WIDGETS_CSS
-    m_layerView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
-#endif
+    m_layerView->setShowGrid(false);
 
     auto* lay = new QVBoxLayout(this);
     lay->setContentsMargins(2, 1, 2, 2);

@@ -88,14 +88,7 @@ LC_QuickInfoWidget::LC_QuickInfoWidget(QWidget *parent, QMap<QString, QAction *>
     ui->pteInfo->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->cbPointsCoordinatesMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_QuickInfoWidget::onCoordinateModeIndexChanged);
     ui->pteInfo->setOpenLinks(false);
-
-#ifndef DONT_FORCE_WIDGETS_CSS
-    ui->pteInfo->document()->setDefaultStyleSheet("a {text-decoration: none;} body {background-color: white;}");
-#else
     ui->pteInfo->document()->setDefaultStyleSheet("a {text-decoration: none;}");
-
-#endif
-
     // raw content control useful for debugging, but not needed in live mode
 #ifdef DEBUG_QUICK_INFO_RAW
     ui->pteInfo1->setVisible(true);

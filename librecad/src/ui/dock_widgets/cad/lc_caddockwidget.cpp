@@ -38,8 +38,10 @@
 #include "lc_settings_widget.h"
 
 LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
-    : QDockWidget(parent), m_frame(new QFrame(this)),
+    : LC_DockWidgetBase(parent, QString(), QString(), /*isCadDock=*/true),
+      m_frame(new QFrame(this)),
       m_gridLayout(new QGridLayout), m_allTools{allTools} {
+
   m_frame->setContentsMargins(0, 0, 0, 0);
 
   if (allTools) {
@@ -230,11 +232,11 @@ void LC_CADDockWidget::getMetrics(int& cols, int& sz, bool& flat) const {
     if (m_allTools) {
         cols = o_LeftToolbarAllColumnsCount;
         sz   = o_LeftToolbarAllIconSize;
-        flat = o_LeftToolbarAllFlatIcons;
+        flat = o_CadToolsMatrixFlatIcons;
     } else {
         cols = o_LeftToolbarColumnsCount;
         sz   = o_LeftToolbarIconSize;
-        flat = o_LeftToolbarFlatIcons;
+        flat = o_CadToolsFlatIcons;
     }
 }
 void LC_CADDockWidget::clear() {

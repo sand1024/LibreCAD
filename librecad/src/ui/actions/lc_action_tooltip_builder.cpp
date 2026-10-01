@@ -49,7 +49,18 @@ QString LC_ActionTooltipBuilder::buildTooltip(const QAction* action,
         desc = lcAct->description().trimmed();
     }
     else {
-        desc = "";  // probably more intelligent handling of description may be used? especially if title is not shown
+        const QVariant descProp = action->property(LC_ActionKeys::PROP_DESCRIPTION);
+        if (descProp.isValid() && !descProp.toString().isEmpty()) {
+            desc = descProp.toString().trimmed();
+        }
+        else if (!action->statusTip().isEmpty()) {
+            desc = action->statusTip().trimmed();
+        }
+    }
+
+    // Omit description if it merely duplicates the action title
+    if (desc.compare(title, Qt::CaseInsensitive) == 0) {
+        desc.clear();
     }
 
     // Omit description if it merely duplicates the action title

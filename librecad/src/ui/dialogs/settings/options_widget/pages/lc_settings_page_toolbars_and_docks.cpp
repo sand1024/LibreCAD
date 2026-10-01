@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
 #include "lc_settings_page_toolbars_and_docks.h"
 
 #include <QStatusBar>
@@ -34,11 +33,9 @@
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageToolbarsAndDocks::LC_SettingsPageToolbarsAndDocks(QObject* parent)
-    : LC_SettingsPageBase(tr("Toolbars and Docking"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Widgets::Group),
-                          parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
-    m_styleManager=  QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
+    : LC_SettingsPageBase(tr("Toolbars and Docking"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Widgets::Group), parent),
+      ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
+    m_styleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
 }
 
 LC_SettingsPageToolbarsAndDocks::~LC_SettingsPageToolbarsAndDocks() = default;
@@ -53,6 +50,8 @@ void LC_SettingsPageToolbarsAndDocks::setupBehavior() {
     enableWhenChecked(ui->cbAllowToolbarIconSize, ui->sbToolbarIconSize);
     enableWhenChecked(ui->cbAllowStatusbarHeight, ui->sbStatusbarHeight);
     enableWhenChecked(ui->cbAllowStatusbarFontSize, ui->sbStatusbarFontSize);
+    enableWhenChecked(ui->cbDockTabOverrideIconSize, ui->sbDockTabIconSize);
+    enableWhenChecked(ui->cbCadDockTabOverrideIconSize, ui->sbCadDockTabIconSize);
 
     const QList<QCheckBox*> checkBoxes = m_widget->findChildren<QCheckBox*>();
     for (auto* cb : checkBoxes) {
@@ -63,34 +62,47 @@ void LC_SettingsPageToolbarsAndDocks::setupBehavior() {
     for (auto* sb : spinBoxes) {
         connect(sb, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_SettingsPageToolbarsAndDocks::onControlChanged);
     }
+
+    const QList<QComboBox*> comboBoxes = m_widget->findChildren<QComboBox*>();
+    for (auto* cmb : comboBoxes) {
+        connect(cmb, &QComboBox::currentIndexChanged, this, &LC_SettingsPageToolbarsAndDocks::onControlChanged);
+    }
 }
 
 void LC_SettingsPageToolbarsAndDocks::setupBindings() {
     using namespace CFG_Widgets;
 
     bindBoolean({
-        { ui->cbAllowToolbarIconSize, o_AllowToolbarIconSize },
-        { ui->cbFlatPickValuesButtons, o_PickValueButtonsFlatIcons },
-        { ui->cbLeftTBFlatButtons, o_LeftToolbarFlatIcons },
-        { ui->cbLeftTBAllFlatButtons, o_LeftToolbarAllFlatIcons },
-        { ui->cbDockWidgetsFlatButtons, o_DockWidgetsFlatIcons },
-        { ui->cbDockingAllowNested, o_DockAllowNested },
-        { ui->cbDockingVerticalTitleBar, o_DockTitleBarVertical },
-        { ui->cbDockingVerticalTabs, o_DockVerticalTabs },
-        { ui->cbAllowStatusbarHeight, o_AllowStatusbarHeight },
-        { ui->cbAllowStatusbarFontSize, o_AllowStatusbarFontSize }
+        {ui->cbAllowToolbarIconSize, o_AllowToolbarIconSize},
+        {ui->cbFlatPickValuesButtons, o_PickValueButtonsFlatIcons},
+        {ui->cbAllowStatusbarHeight, o_AllowStatusbarHeight},
+        {ui->cbAllowStatusbarFontSize, o_AllowStatusbarFontSize},
+        {ui->cbDockingAllowNested, o_DockAllowNested},
+        {ui->cbLeftTBFlatButtons, o_CadToolsFlatIcons},
+        {ui->cbLeftTBAllFlatButtons, o_CadToolsMatrixFlatIcons},
+        {ui->cbDockWidgetsFlatButtons, o_DockWidgetsFlatIcons},
+        {ui->cbDockingVerticalTitleBar, o_DockTitleBarVertical},
+        {ui->cbCadDockingVerticalTitleBar, o_CadDockTitleBarVertical},
+        {ui->cbDockingVerticalTabs, o_DockVerticalTabs},
+        {ui->cbCadDockingVerticalTitleBar, o_CadDockVerticalTabs},
+        {ui->cbDockTabOverrideIconSize, o_DockTabOverrideIconSize},
+        {ui->cbCadDockTabOverrideIconSize, o_CadDockTabOverrideIconSize}
     });
 
     bindInt({
-        { ui->sbToolbarIconSize, o_ToolbarIconSize },
-        { ui->sbLeftTBIconSize, o_LeftToolbarIconSize },
-        { ui->sbLeftTBColumnCount, o_LeftToolbarColumnsCount },
-        { ui->sbLeftTBAllIconSize, o_LeftToolbarAllIconSize },
-        { ui->sbLeftTBAllColumnCount, o_LeftToolbarAllColumnsCount },
-        { ui->sbDockWidgetIconSize, o_DockWidgetsIconSize },
-        { ui->sbStatusbarHeight, o_StatusbarHeight },
-        { ui->sbStatusbarFontSize, o_StatusbarFontSize }
+        {ui->sbToolbarIconSize, o_ToolbarIconSize},
+        {ui->sbLeftTBIconSize, o_LeftToolbarIconSize},
+        {ui->sbLeftTBColumnCount, o_LeftToolbarColumnsCount},
+        {ui->sbLeftTBAllIconSize, o_LeftToolbarAllIconSize},
+        {ui->sbLeftTBAllColumnCount, o_LeftToolbarAllColumnsCount},
+        {ui->sbDockWidgetIconSize, o_DockWidgetsIconSize},
+        {ui->sbStatusbarHeight, o_StatusbarHeight},
+        {ui->sbStatusbarFontSize, o_StatusbarFontSize},
+        {ui->sbDockTabIconSize, o_DockTabIconSize},
+        {ui->sbCadDockTabIconSize, o_CadDockTabIconSize}
     });
+
+    bindComboIndex({{ui->cmbDockTabDisplayMode, o_DockTabDisplayMode}, {ui->cmbCadDockTabDisplayMode, o_CadDockTabDisplayMode}});
 }
 
 void LC_SettingsPageToolbarsAndDocks::loadSettings() {
@@ -103,6 +115,9 @@ void LC_SettingsPageToolbarsAndDocks::loadSettings() {
     ui->sbStatusbarHeight->setEnabled(ui->cbAllowStatusbarHeight->isChecked());
     ui->sbStatusbarFontSize->setEnabled(ui->cbAllowStatusbarFontSize->isChecked());
 
+    ui->sbDockTabIconSize->setEnabled(CFG_Widgets::o_DockTabOverrideIconSize);
+    ui->sbCadDockTabIconSize->setEnabled(CFG_Widgets::o_CadDockTabOverrideIconSize);
+
     updateLivePreview();
 }
 
@@ -111,8 +126,7 @@ bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
     if (success) {
         const auto appWindow = QC_ApplicationWindow::getAppWindow();
         if (appWindow != nullptr) {
-            appWindow->updateToolbarsIconSize(ui->cbAllowToolbarIconSize->isChecked(),
-                                              ui->sbToolbarIconSize->value());
+            appWindow->updateToolbarsIconSize(ui->cbAllowToolbarIconSize->isChecked(), ui->sbToolbarIconSize->value());
 
             if (ui->cbAllowStatusbarFontSize->isChecked()) {
                 QFont font;
@@ -123,16 +137,17 @@ bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
                 appWindow->statusBar()->setMinimumHeight(ui->sbStatusbarHeight->value());
             }
 
-            LC_WidgetFactory::updateDockOptions(appWindow,
-                                                ui->cbDockingAllowNested->isChecked(),
+            LC_WidgetFactory::updateDockOptions(appWindow, ui->cbDockingAllowNested->isChecked(), ui->cbCadDockingVerticalTabs->isChecked(),
                                                 ui->cbDockingVerticalTabs->isChecked());
-            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow,
-                                                           ui->cbDockingVerticalTitleBar->isChecked());
+
+            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow, ui->cbCadDockingVerticalTitleBar->isChecked(),
+                                                            ui->cbDockingVerticalTitleBar->isChecked());
+
+            appWindow->fireWidgetSettingsChanged();
         }
     }
     return success;
 }
-
 
 void LC_SettingsPageToolbarsAndDocks::onControlChanged() {
     if (m_blockSignals) {
@@ -154,5 +169,6 @@ void LC_SettingsPageToolbarsAndDocks::setPreviewController(LC_StylingPreviewCont
 
 QWidget* LC_SettingsPageToolbarsAndDocks::getBottomWidget() {
     return (m_previewController != nullptr)
-               ? m_previewController->createBottomWidget(supportsPreviewWindow(), supportsAccessibilityCheck()): nullptr;
+               ? m_previewController->createBottomWidget(supportsPreviewWindow(), supportsAccessibilityCheck())
+               : nullptr;
 }

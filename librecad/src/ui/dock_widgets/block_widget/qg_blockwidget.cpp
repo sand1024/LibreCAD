@@ -39,7 +39,6 @@
 #include "lc_action_group_manager.h"
 #include "lc_flexlayout.h"
 #include "lc_mouse_tracking_table_view.h"
-#include "lc_widgets_common.h"
 #include "qg_actionhandler.h"
 #include "rs_blocklist.h"
 #include "rs_debug.h"
@@ -184,9 +183,6 @@ QG_BlockWidget::QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandle
     m_blockView->horizontalHeader()->setStretchLastSection(true);
     m_blockView->horizontalHeader()->hide();
 
-#ifndef DONT_FORCE_WIDGETS_CSS
-    blockView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
-#endif
     auto* lay = new QVBoxLayout(this);
     lay->setSpacing(1);
     lay->setContentsMargins(0, 1, 2, 2);

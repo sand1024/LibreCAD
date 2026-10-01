@@ -99,32 +99,37 @@ public:
         updatePreview();
     }
 
+    virtual bool isFusionGated() const {
+        return LC_SettingsManagerStyling::isFusionGated();
+    }
+
     bool isGated() const override {
         if (!this->isStorageAvailable()) {
             return true;
         }
-        return LC_SettingsManagerStyling::isFusionGated() || this->isReadOnlyDefault();
+        bool fusionGated = isFusionGated();
+        return fusionGated || this->isReadOnlyDefault();
     }
 
     QString gatedMessage() const override {
         if (!this->isStorageAvailable()) {
             return LC_AbstractPresetManager::gatedMessage();
         }
-        if (LC_SettingsManagerStyling::isFusionGated()) {
+        if (isFusionGated()) {
             return LC_SettingsManagerStyling::fusionGatedMessage(fusionGatingSubject());
         }
         return LC_AbstractPresetManager::gatedMessage();
     }
 
     QString gatedActionText() const override {
-        if (LC_SettingsManagerStyling::isFusionGated()) {
+        if (isFusionGated()) {
             return LC_SettingsManagerStyling::fusionGatedActionText();
         }
         return LC_AbstractPresetManager::gatedActionText();
     }
 
     std::function<void()> gatedActionCallback() const override {
-        if (LC_SettingsManagerStyling::isFusionGated()) {
+        if (isFusionGated()) {
             return [this]() {
                 LC_SettingsManagerStyling::enableFusionStyling(m_styleManager);
             };
@@ -133,7 +138,7 @@ public:
     }
 
     QString gatedIcon() const override {
-        if (LC_SettingsManagerStyling::isFusionGated()) {
+        if (isFusionGated()) {
             return LC_SettingsManagerStyling::fusionGatedIcon();
         }
         return LC_AbstractPresetManager::gatedIcon();

@@ -20,6 +20,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * ********************************************************************************
  */
+/*
+ * ********************************************************************************
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * ********************************************************************************
+ */
 
 // This file was first published at: github.com/r-a-v-a-s/LibreCAD.git
 
@@ -390,7 +412,7 @@ void LC_ActionFactory::createDrawPolylineActions(QMap<QString, QAction *> &map, 
         {"PolylineEquidistant",RS2::ActionPolylineEquidistant,tr("Create &Equidistant Polylines"),   ":/icons/create_equidistant_polyline.lci",      tr("Creates parallel equidistant offset polylines.")},
         {"PolylineSegment",    RS2::ActionPolylineSegment,    tr("Polyline from Existing &Segments"),":/icons/create_polyline_from_existing_segments.lci", tr("Converts connected individual line and arc entities into a polyline.")},
         {"PolylineArcToLines", RS2::ActionPolylineArcsToLines,tr("Polyline Arcs to Chords"),         ":/icons/polyline_arc_to_lines.lci",            tr("Segments curved polyline arcs into straight chord approximations.")},
-        {"PolylineSegmentType", RS2::ActionPolylineChangeSegmentType,    tr("Polyline Change Segment Type"),           ":/icons/polyline_segment_type.lci",           tr("Toggles polyline segments between straight lines and curved arcs.")}
+        {"PolylineSegmentType", RS2::ActionPolylineChangeSegmentType,    tr("Polyline Change Segment Type"),   ":/icons/polyline_segment_type.lci",           tr("Toggles polyline segments between straight lines and curved arcs.")}
     });
 }
 

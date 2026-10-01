@@ -26,8 +26,7 @@
 #include <QWidget>
 
 #include "lc_graphicviewaware.h"
-// do not remove this import!
-#include "lc_widgets_common.h"
+
 
 class LC_GraphicViewAwareWidget: public QWidget, public LC_GraphicViewAware {
 public:

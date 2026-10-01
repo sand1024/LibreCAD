@@ -38,6 +38,7 @@
 #include "lc_ui_style_manager.h"
 
 class LC_ShortcutsManager;
+class LC_DockTabBarManager;
 class LC_CustomizationManager;
 class LC_GraphicViewContextMenuProvider;
 class RS_Graphic;
@@ -130,6 +131,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
         }
     }
 
+public:
     void fireIconsRefresh();
     void fireWidgetSettingsChanged();
     void fireWorkspacesChanged();
@@ -398,12 +400,14 @@ protected:
     bool doSaveAllFiles();
     bool doCloseAllFiles();
     void closeEvent(QCloseEvent*) override;
+    void childEvent(QChildEvent* event);
     bool isAcceptableDragNDropFileName(const QString& fileName);
     //! \{ accept drop files to open
     void dropEvent(QDropEvent* event) override;
     void dragEnterEvent(QDragEnterEvent* event) override;
     void changeEvent(QEvent* event) override;
     //! \}
+    void showEvent(QShowEvent* event) override;
 
     QG_GraphicView* setupNewGraphicView(const QC_MDIWindow* w);
     QC_ApplicationWindow();
@@ -482,6 +486,8 @@ protected:
     LC_PenPaletteWidget* m_penPaletteWidget{nullptr};
     LC_NamedViewsListWidget* m_namedViewsWidget{nullptr};
     LC_UCSListWidget* m_ucsListWidget{nullptr};
+
+    std::unique_ptr<LC_DockTabBarManager> m_dockTabBarManager;
 
     // --- Statusbar ---
     QG_CoordinateWidget* m_coordinateWidget{nullptr};

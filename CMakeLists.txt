@@ -454,7 +454,7 @@ set (SHARED_SOURCES
      libraries/shapelib/src/shapefil.h
      libraries/shapelib/src/shapefil_private.h
      libraries/shapelib/src/shpopen.cpp
-    ${LIBDXFRW_ALL_FILES}
+     ${LIBDXFRW_ALL_FILES}
      librecad/src/actions/dock_widgets/block/rs_actionblocksadd.cpp
      librecad/src/actions/dock_widgets/block/rs_actionblocksadd.h
      librecad/src/actions/dock_widgets/block/rs_actionblocksattributes.cpp
@@ -967,19 +967,19 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/rs_hatch.h
      librecad/src/lib/engine/document/entities/rs_image.cpp
      librecad/src/lib/engine/document/entities/rs_image.h
-        librecad/src/lib/engine/document/entities/lc_wipeout.cpp
-    librecad/src/lib/engine/document/entities/lc_wipeout.h
-    librecad/src/lib/engine/document/entities/lc_insert_transform.cpp
-    librecad/src/lib/engine/document/entities/lc_insert_transform.h
+     librecad/src/lib/engine/document/entities/lc_wipeout.cpp
+     librecad/src/lib/engine/document/entities/lc_wipeout.h
+     librecad/src/lib/engine/document/entities/lc_insert_transform.cpp
+     librecad/src/lib/engine/document/entities/lc_insert_transform.h
      librecad/src/lib/engine/document/entities/rs_insert.cpp
      librecad/src/lib/engine/document/entities/rs_insert.h
      librecad/src/lib/engine/document/entities/rs_leader.cpp
      librecad/src/lib/engine/document/entities/rs_leader.h
      librecad/src/lib/engine/document/entities/lc_mleader.cpp
-    librecad/src/lib/engine/document/entities/lc_mleader.h
-    librecad/src/lib/engine/document/entities/lc_textbidi.cpp
-    librecad/src/lib/engine/document/entities/lc_textbidi.h
-        librecad/src/lib/engine/document/entities/rs_line.cpp
+     librecad/src/lib/engine/document/entities/lc_mleader.h
+     librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+     librecad/src/lib/engine/document/entities/lc_textbidi.h
+     librecad/src/lib/engine/document/entities/rs_line.cpp
      librecad/src/lib/engine/document/entities/rs_line.h
      librecad/src/lib/engine/document/entities/rs_mtext.cpp
      librecad/src/lib/engine/document/entities/rs_mtext.h
@@ -1138,8 +1138,8 @@ set (SHARED_SOURCES
      librecad/src/lib/fileio/rs_fileio.h
      librecad/src/lib/filters/lc_hyperbolaspline.cpp
      librecad/src/lib/filters/lc_hyperbolaspline.h
-        librecad/src/lib/filters/lc_parabolaspline.cpp
-    librecad/src/lib/filters/lc_parabolaspline.h
+     librecad/src/lib/filters/lc_parabolaspline.cpp
+     librecad/src/lib/filters/lc_parabolaspline.h
      librecad/src/lib/filters/rs_filtercxf.cpp
      librecad/src/lib/filters/rs_filterdxf1.cpp
      librecad/src/lib/filters/rs_filterdxf1.h
@@ -1547,12 +1547,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/entity/lc_dlg_tolerance.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h
-    librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp
+     librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.h
-    librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp
+     librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.cpp
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.h
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditor.cpp
@@ -2014,8 +2014,8 @@ set (SHARED_SOURCES
      librecad/src/ui/main/persistence/lc_documentsstorage.h
      librecad/src/ui/main/qc_applicationwindow.cpp
      librecad/src/ui/main/qc_applicationwindow.h
-    librecad/src/ui/main/lc_layouttabbar.cpp
-    librecad/src/ui/main/lc_layouttabbar.h
+     librecad/src/ui/main/lc_layouttabbar.cpp
+     librecad/src/ui/main/lc_layouttabbar.h
      librecad/src/ui/main/qc_mdiwindow.cpp
      librecad/src/ui/main/qc_mdiwindow.h
      librecad/src/ui/main/release_check/lc_releasechecker.cpp
@@ -2642,6 +2642,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/support/lc_preset_manager_config_base.h
      librecad/src/ui/main/customization/lc_customization_manager.cpp
      librecad/src/ui/main/customization/lc_customization_manager.h
+     librecad/src/ui/main/support/lc_dock_tab_bar_manager.cpp
+     librecad/src/ui/main/support/lc_dock_tab_bar_manager.h
+     librecad/src/ui/dock_widgets/lc_dock_widget_base.cpp
+     librecad/src/ui/dock_widgets/lc_dock_widget_base.h
+     librecad/src/ui/components/utils/lc_rotated_icon_engine.cpp
+     librecad/src/ui/components/utils/lc_rotated_icon_engine.h
 )
 
 set (MUPARSER_SOURCES

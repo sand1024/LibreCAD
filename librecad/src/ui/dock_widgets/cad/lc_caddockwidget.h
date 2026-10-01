@@ -27,18 +27,19 @@
 #include <QDockWidget>
 #include <QToolButton>
 
+#include "lc_dock_widget_base.h"
+
 class LC_ActionGroupManager;
 struct ActionNode;
 class QScrollArea;
 class QFrame;
 class QGridLayout;
 
-class LC_CADDockWidget : public QDockWidget{
+class LC_CADDockWidget : public LC_DockWidgetBase {
     Q_OBJECT
 public:
     explicit LC_CADDockWidget(QWidget* parent, bool allTools = false);
     virtual ~LC_CADDockWidget() override = default;
-
 
     void addActions(const QList<QAction*>& list, int columns, int iconSize, bool flatButton);
     void doUpdateWidgetSettings(int leftToolbarColumnsCount,

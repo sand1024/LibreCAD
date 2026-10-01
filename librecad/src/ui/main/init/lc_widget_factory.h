@@ -46,8 +46,10 @@ public:
     explicit LC_WidgetFactory(QC_ApplicationWindow *mainWin);
     ~LC_WidgetFactory() override = default;
     void initWidgets();
-    static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin, bool verticalTitle);
-    static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting, bool verticalTabs);
+    static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting,
+                                  bool cadVerticalTabs, bool normalVerticalTabs);
+    static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin,
+                                             bool cadVerticalTitle, bool normalVerticalTitle);
     template <class T>
     static void setWidgetToggleActionIcon(T* result, const QString& iconName);
     template <class T>

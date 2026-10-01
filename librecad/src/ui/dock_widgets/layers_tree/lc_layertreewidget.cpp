@@ -34,7 +34,6 @@
 #include "lc_layertreeoptionsdialog.h"
 #include "lc_layertreeview.h"
 #include "lc_search_line_edit.h"
-#include "lc_widgets_common.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
 #include "rs_debug.h"
@@ -123,10 +122,6 @@ LC_LayerTreeView *LC_LayerTreeWidget::initTreeView(){
     treeView->setExpandsOnDoubleClick(false);
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-
-#ifndef DONT_FORCE_WIDGETS_CSS
-    treeView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
-#endif
 
     connect(treeView, &QTreeView::customContextMenuRequested, this, &LC_LayerTreeWidget::onCustomContextMenu);
     connect(treeView, &QTreeView::clicked, this, &LC_LayerTreeWidget::slotTreeClicked);

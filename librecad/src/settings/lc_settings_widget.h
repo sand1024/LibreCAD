@@ -27,13 +27,11 @@
 namespace CFG_Widgets {
     inline const LC_SettingsGroupBase Group("Widgets");
 
-    inline const LC_Setting<bool> o_LeftToolbarAllFlatIcons(&Group, "LeftToolbarAllFlatIcons", true);
-    inline const LC_Setting<bool> o_LeftToolbarFlatIcons(&Group, "LeftToolbarFlatIcons", true);
+    inline const LC_Setting<bool> o_CadToolsMatrixFlatIcons(&Group, "LeftToolbarAllFlatIcons", true);
+    inline const LC_Setting<bool> o_CadToolsFlatIcons(&Group, "LeftToolbarFlatIcons", true);
     inline const LC_Setting<bool> o_DockWidgetsFlatIcons(&Group, "DockWidgetsFlatIcons", true);
     inline const LC_Setting<bool> o_PickValueButtonsFlatIcons(&Group, "PickValueButtonsFlatIcons", true);
-    inline const LC_Setting<bool> o_DockTitleBarVertical(&Group, "DockTitleBarVertical", false);
     inline const LC_Setting<bool> o_DockAllowNested(&Group, "DockAllowNested", true);
-    inline const LC_Setting<bool> o_DockVerticalTabs(&Group, "DockVerticalTabs", true);
     inline const LC_Setting<bool> o_AllowStatusbarFontSize(&Group, "AllowStatusbarFontSize", false);
     inline const LC_Setting<bool> o_AllowStatusbarHeight(&Group, "AllowStatusbarHeight", false);
     inline const LC_Setting<bool> o_AllowToolbarIconSize(&Group, "AllowToolbarIconSize", false);
@@ -47,5 +45,24 @@ namespace CFG_Widgets {
     inline const LC_Setting<int> o_ToolbarIconSize(&Group, "ToolbarIconSize", 25);
 
 
+    enum DockTabDisplayMode {
+        TabDisplay_IconAndText = 0,
+        TabDisplay_IconOnly    = 1,
+        TabDisplay_TextOnly    = 2
+    };
+
+    // Standard/Ordinary Dock Widget Tabs
+    inline const LC_Setting<int>  o_DockTabDisplayMode(&Group, "DockTabDisplayMode", TabDisplay_IconAndText);
+    inline const LC_Setting<bool> o_DockTabOverrideIconSize(&Group, "DockTabOverrideIconSize", false);
+    inline const LC_Setting<int>  o_DockTabIconSize(&Group, "DockTabIconSize", 16);
+    inline const LC_Setting<bool> o_DockTitleBarVertical(&Group, "DockTitleBarVertical", false);
+    inline const LC_Setting<bool> o_DockVerticalTabs(&Group, "DockVerticalTabs", true);
+
+    // CAD Dock Widget Tabs
+    inline const LC_Setting<int>  o_CadDockTabDisplayMode(&Group, "CadDockTabDisplayMode", TabDisplay_IconOnly);
+    inline const LC_Setting<bool> o_CadDockTabOverrideIconSize(&Group, "CadDockTabOverrideIconSize", false);
+    inline const LC_Setting<int>  o_CadDockTabIconSize(&Group, "CadDockTabIconSize", 20);
+    inline const LC_Setting<bool> o_CadDockTitleBarVertical(&Group, "CadDockTitleBarVertical", false);
+    inline const LC_Setting<bool> o_CadDockVerticalTabs(&Group, "CadDockVerticalTabs", false);
 }
 #endif

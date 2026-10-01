@@ -155,10 +155,6 @@ void LC_UCSListWidget::createModel() {
     horizontalHeader->setStretchLastSection(true);
     horizontalHeader->hide();
 
-#ifndef DONT_FORCE_WIDGETS_CSS
-    tableView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
-#endif
-
     connect(tableView, &QTableView::customContextMenuRequested, this, &LC_UCSListWidget::onCustomContextMenu);
     connect(tableView, &QTableView::clicked, this, &LC_UCSListWidget::slotTableClicked);
     connect(tableView, &QTableView::doubleClicked, this, &LC_UCSListWidget::onTableDoubleClicked);

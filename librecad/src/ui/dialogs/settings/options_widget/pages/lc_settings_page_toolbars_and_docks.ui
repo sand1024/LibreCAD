@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>580</height>
+    <width>720</width>
+    <height>452</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_main">
@@ -23,290 +23,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="gbToolbars">
-     <property name="title">
-      <string>General Toolbars</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_toolbar">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbFlatPickValuesButtons">
-        <property name="toolTip">
-         <string>If checked, buttons for picking values from drawing will be rendered flat.</string>
-        </property>
-        <property name="text">
-         <string>Flat pick values buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="cbAllowToolbarIconSize">
-        <property name="toolTip">
-         <string>Override default toolbar icon side length in pixels.</string>
-        </property>
-        <property name="text">
-         <string>Custom toolbar icon size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbToolbarIconSize">
-        <property name="toolTip">
-         <string>Side length in pixels.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="1">
-    <widget class="QGroupBox" name="gbDockWidgets">
-     <property name="title">
-      <string>Dock Widgets</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_dockWidgets">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbDockWidgetsFlatButtons">
-        <property name="toolTip">
-         <string>If checked, buttons inside dock widgets will be rendered flat.</string>
-        </property>
-        <property name="text">
-         <string>Flat Buttons in Dock Widgets</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblDocWidgetIconSize">
-        <property name="toolTip">
-         <string>Icon size for actions inside dock panels.</string>
-        </property>
-        <property name="text">
-         <string>Icon Size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbDockWidgetIconSize">
-        <property name="toolTip">
-         <string>Side length in pixels.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="gbCADWidgets">
-     <property name="title">
-      <string>CAD Tools Widgets (Groups)</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_cadWidgets">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbLeftTBFlatButtons">
-        <property name="toolTip">
-         <string>If checked, buttons in grouped CAD widgets will be flat.</string>
-        </property>
-        <property name="text">
-         <string>Flat Buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblLeftTBIconSize">
-        <property name="toolTip">
-         <string>Icon size for grouped CAD tools toolbar.</string>
-        </property>
-        <property name="text">
-         <string>Icon Size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbLeftTBIconSize">
-        <property name="toolTip">
-         <string>Side length in pixels.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblLeftTBColumnCount">
-        <property name="toolTip">
-         <string>Number of columns for actions in grouped CAD sidebar.</string>
-        </property>
-        <property name="text">
-         <string>Columns Count:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbLeftTBColumnCount">
-        <property name="toolTip">
-         <string>Number of columns for actions in left toolbar.</string>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>12</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="gbCADWidgetsUngrouped">
-     <property name="title">
-      <string>CAD Tools Matrix</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_ungrouped">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbLeftTBAllFlatButtons">
-        <property name="toolTip">
-         <string>If checked, buttons in ungrouped CAD matrix will be flat.</string>
-        </property>
-        <property name="text">
-         <string>Flat Buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblLeftTBAllIconSize">
-        <property name="toolTip">
-         <string>Icon size for ungrouped CAD matrix toolbar.</string>
-        </property>
-        <property name="text">
-         <string>Icon Size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbLeftTBAllIconSize">
-        <property name="toolTip">
-         <string>Side length in pixels.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblLeftTBAllColumnCount">
-        <property name="toolTip">
-         <string>Number of columns for actions in ungrouped CAD matrix.</string>
-        </property>
-        <property name="text">
-         <string>Columns Count:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbLeftTBAllColumnCount">
-        <property name="toolTip">
-         <string>Number of columns for actions in left toolbar.</string>
-        </property>
-        <property name="minimum">
-         <number>3</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="gbDocking">
-     <property name="title">
-      <string>General Docking</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_docking">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="cbDockingAllowNested">
-        <property name="toolTip">
-         <string>If not checked, dock areas can only contain a single row of dock widgets. If checked, dock areas can contain multiple split/nested rows.</string>
-        </property>
-        <property name="text">
-         <string>Allow nested docking</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="cbDockingVerticalTitleBar">
-        <property name="toolTip">
-         <string>If selected, title bar for docked widgets will be vertical. Otherwise, it will be horizontal.</string>
-        </property>
-        <property name="text">
-         <string>Titlebar is vertical</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="cbDockingVerticalTabs">
-        <property name="toolTip">
-         <string>If checked, the vertical dock areas on the sides of the main window show their tabs vertically.</string>
-        </property>
-        <property name="text">
-         <string>Vertical tabs on side docks</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
     <widget class="QGroupBox" name="gbStatusBar">
      <property name="title">
       <string>Classic Statusbar</string>
@@ -315,7 +32,9 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="cbAllowStatusbarHeight">
         <property name="toolTip">
-         <string>Explicitly set the height of the classic status bar.</string>
+         <string>Statusbar Height
+
+Explicitly set the height of the classic status bar.</string>
         </property>
         <property name="text">
          <string>Height:</string>
@@ -325,7 +44,9 @@
       <item row="0" column="1">
        <widget class="QSpinBox" name="sbStatusbarHeight">
         <property name="toolTip">
-         <string>Minimum height of the status bar in pixels.</string>
+         <string>Status Bar Height
+
+Minimum height of the &quot;classical&quot; status bar in pixels.</string>
         </property>
         <property name="suffix">
          <string> px</string>
@@ -344,7 +65,9 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbAllowStatusbarFontSize">
         <property name="toolTip">
-         <string>Explicitly set the font size of the classic status bar.</string>
+         <string>Statusbar Font Size
+
+Explicitly set the font size of the classic status bar.</string>
         </property>
         <property name="text">
          <string>Font Size:</string>
@@ -354,7 +77,9 @@
       <item row="1" column="1">
        <widget class="QSpinBox" name="sbStatusbarFontSize">
         <property name="toolTip">
-         <string>Status bar font size in points.</string>
+         <string>Statusbar Font Size
+
+Status bar font size in points.</string>
         </property>
         <property name="suffix">
          <string> pt</string>
@@ -373,7 +98,63 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="gbToolbars">
+     <property name="title">
+      <string>General Toolbars</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_toolbar">
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbFlatPickValuesButtons">
+        <property name="toolTip">
+         <string>Toolbars
+
+If checked, buttons for picking values from drawing will be rendered flat.</string>
+        </property>
+        <property name="text">
+         <string>Flat pick values buttons</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbAllowToolbarIconSize">
+        <property name="toolTip">
+         <string>Icon size
+
+Override default toolbar icon side length in pixels. If selected, 
+provide value will be used. Otherwise, icon size will be determined
+by metrics settings of current UI style.</string>
+        </property>
+        <property name="text">
+         <string>Use custom toolbar icon size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbToolbarIconSize">
+        <property name="toolTip">
+         <string>Icon Size
+
+Size of icons that are shown by buttons in the toolbars.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>8</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -385,6 +166,468 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbDocking">
+     <property name="title">
+      <string>General Docking</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_docking">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbDockingAllowNested">
+        <property name="toolTip">
+         <string>Nested docking
+
+If not checked, dock areas can only contain a single row of dock widgets. If checked, dock areas can contain multiple split/nested rows.</string>
+        </property>
+        <property name="text">
+         <string>Allow nested docking</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="gbDockWidgets">
+     <property name="title">
+      <string>Tool Windows</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_dockWidgets">
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbDockWidgetsFlatButtons">
+        <property name="toolTip">
+         <string>Flat Tool Buttons
+
+If checked, buttons within tool window will be flat.</string>
+        </property>
+        <property name="text">
+         <string>Flat Buttons in Tool Windows</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cmbDockTabDisplayMode">
+        <property name="toolTip">
+         <string>Docked Tabbed Layout
+
+Select whether dock tabs show icons, text, or both.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Icon and Text</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Icon Only</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Text Only</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbDockTabIconSize">
+        <property name="toolTip">
+         <string>Tab Icon Size
+
+Tab icon size in pixels for docked tool windows in tabs.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>8</number>
+        </property>
+        <property name="maximum">
+         <number>64</number>
+        </property>
+        <property name="value">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lblDocWidgetIconSize">
+        <property name="toolTip">
+         <string>Tool Buttons Icon Size
+
+Icon size for tool buttons within tools window </string>
+        </property>
+        <property name="text">
+         <string>Button Icon Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbDockingVerticalTitleBar">
+        <property name="toolTip">
+         <string>Title Layout
+
+If selected, title bar for Tool Winwos will be vertical. Otherwise, it will be horizontal.</string>
+        </property>
+        <property name="text">
+         <string>Titlebar is vertical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblDockTabDisplayMode">
+        <property name="toolTip">
+         <string>Docked Tabbed Layout
+
+Controls how tabs for tabified tool windows are displayed.</string>
+        </property>
+        <property name="text">
+         <string>In tabbed mode display:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="sbDockWidgetIconSize">
+        <property name="toolTip">
+         <string>Tool Button Icon Size
+
+Size of the icon side length in pixels.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>8</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbDockTabOverrideIconSize">
+        <property name="toolTip">
+         <string>Tabbed Mode Icon
+
+Override the default icon side length for Tool Windows tabs. 
+If enabled, specified size will be used. 
+Otherwise, icon size will be defined by metrics of the current UI style.</string>
+        </property>
+        <property name="text">
+         <string>Use custom tab icon size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbDockingVerticalTabs">
+        <property name="toolTip">
+         <string>Tabbed Mode Orientation
+
+If checked, dock tabs for tool windows will be displayed vertically.</string>
+        </property>
+        <property name="text">
+         <string>Vertical tabs</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="gbCADWidgets">
+     <property name="title">
+      <string>CAD Tools Windows (Groups)</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_cadWidgets">
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbLeftTBFlatButtons">
+        <property name="toolTip">
+         <string>Flat Tool Buttons
+
+If checked, buttons in grouped CAD tool window will be flat.</string>
+        </property>
+        <property name="text">
+         <string>Flat Buttons</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="sbLeftTBIconSize">
+        <property name="toolTip">
+         <string>Tool Button Icon Size
+
+Size of the icon side length in pixels.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>8</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lblLeftTBIconSize">
+        <property name="toolTip">
+         <string>Tool Buttons Icon Size
+
+Icon size for tool buttons within grouped CAD tools window.</string>
+        </property>
+        <property name="text">
+         <string>Button Icon Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cmbCadDockTabDisplayMode">
+        <property name="toolTip">
+         <string>Docked Tabbed Layout
+
+Select whether tab for CAD tool window in tabbed mode
+shows icons, text, or both.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Icon and Text</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Icon Only</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Text Only</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblCadDockTabDisplayMode">
+        <property name="toolTip">
+         <string>Docked Tabbed Layout
+
+Controls how tabs for tabified CAD tool widgets are displayed.</string>
+        </property>
+        <property name="text">
+         <string>In tabbed mode display:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="lblLeftTBColumnCount">
+        <property name="toolTip">
+         <string>Tools Columns
+
+Number of columns for actions in grouped CAD tool windows.</string>
+        </property>
+        <property name="text">
+         <string>Columns Count:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbCadDockTabIconSize">
+        <property name="toolTip">
+         <string>Tab Icon Size
+
+Tab icon size in pixels for docked CAD tool windows in tabs.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>8</number>
+        </property>
+        <property name="maximum">
+         <number>64</number>
+        </property>
+        <property name="value">
+         <number>20</number>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="sbLeftTBColumnCount">
+        <property name="toolTip">
+         <string>Tool Columns
+
+Number of columns for tool actions in CAD tool window.</string>
+        </property>
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>12</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbCadDockingVerticalTitleBar">
+        <property name="toolTip">
+         <string>Title Layout
+
+If selected, title bar for CAD dock widgets will be vertical. 
+Otherwise, it will be horizontal.</string>
+        </property>
+        <property name="text">
+         <string>Titlebar is vertical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbCadDockTabOverrideIconSize">
+        <property name="toolTip">
+         <string>Tabbed Mode Icon
+
+Override the default icon side length for CAD tool windows tabs. 
+If enabled, specified size will be used. 
+Otherwise, icon size will be defined by metrics of the current UI style.</string>
+        </property>
+        <property name="text">
+         <string>Use custom tab icon size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbCadDockingVerticalTabs">
+        <property name="toolTip">
+         <string>Tabbed Mode Orientation
+
+If checked, dock tabs for CAD tool windows will be displayed vertically.
+Otherwise, they will be horizontal.</string>
+        </property>
+        <property name="text">
+         <string>Vertical tabs</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QGroupBox" name="gbCADWidgetsUngrouped">
+        <property name="title">
+         <string>CAD Tools Matrix</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_ungrouped">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="cbLeftTBAllFlatButtons">
+           <property name="toolTip">
+            <string>Flat Tool Buttons
+
+If checked, buttons in ungrouped CAD matrix will be flat.</string>
+           </property>
+           <property name="text">
+            <string>Flat Buttons</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="sbLeftTBAllColumnCount">
+           <property name="toolTip">
+            <string>Tool Columns
+
+Number of columns for actions in CAD Tool Matrix.</string>
+           </property>
+           <property name="minimum">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <number>60</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblLeftTBAllIconSize">
+           <property name="toolTip">
+            <string>Tool Buttons Size
+
+Icon size for ungrouped CAD matrix tool window.</string>
+           </property>
+           <property name="text">
+            <string>Button Icon Size:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="sbLeftTBAllIconSize">
+           <property name="toolTip">
+            <string>Tool Buttons Size
+
+Size of tool button icon side length in pixels.</string>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="minimum">
+            <number>8</number>
+           </property>
+           <property name="maximum">
+            <number>150</number>
+           </property>
+           <property name="value">
+            <number>24</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblLeftTBAllColumnCount">
+           <property name="toolTip">
+            <string>Columns Count
+
+Number of columns for actions in  CAD Tools matrix.</string>
+           </property>
+           <property name="text">
+            <string>Columns Count:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

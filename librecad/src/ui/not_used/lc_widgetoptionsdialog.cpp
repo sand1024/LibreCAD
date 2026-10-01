@@ -375,7 +375,7 @@ void LC_WidgetOptionsDialog::setupCADBarSettingsUI() const {
     const int leftToolbarAllColumnsCount = o_LeftToolbarAllColumnsCount;
     sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
 
-    const bool leftToolbarFlatIcons = o_LeftToolbarFlatIcons;
+    const bool leftToolbarFlatIcons = o_CadToolsFlatIcons;
     cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
 }
 
@@ -519,7 +519,7 @@ void LC_WidgetOptionsDialog::accept() {
         o_LeftToolbarColumnsCount  = sbLeftTBColumnCount->value();
         o_LeftToolbarAllColumnsCount  = sbLeftTBAllColumnCount->value();
 
-        o_LeftToolbarFlatIcons  = cbLeftTBFlatButtons->isChecked();
+        o_CadToolsFlatIcons  = cbLeftTBFlatButtons->isChecked();
         o_LeftToolbarAllFlatIcons =  cbLeftTBAllFlatButtons->isChecked();
 
         o_LeftToolbarIconSize = sbLeftTBIconSize->value();

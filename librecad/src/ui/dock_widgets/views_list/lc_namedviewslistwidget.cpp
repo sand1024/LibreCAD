@@ -139,9 +139,6 @@ void LC_NamedViewsListWidget::createModel() {
     tableView->setColumnWidth(m_viewsModel->translateColumn(LC_NamedViewsModel::ICON_TYPE), m_itemHeight);
 
     // tableView->setShowGrid(true); // fixme - sand - add to options!
-#ifndef DONT_FORCE_WIDGETS_CSS
-    tableView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
-#endif
 
     connect(tableView, &QTableView::customContextMenuRequested, this, &LC_NamedViewsListWidget::onCustomContextMenu);
     connect(tableView, &QTableView::clicked, this, &LC_NamedViewsListWidget::slotTableClicked);

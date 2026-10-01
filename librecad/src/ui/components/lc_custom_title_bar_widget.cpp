@@ -877,10 +877,12 @@ void LC_CustomTitleBarWidget::setupConnections() {
                                               &LC_CustomTitleBarWidget::onDockWidgetFeaturesChanged);
 
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::windowTitleChanged, this, [this](const QString &title) {
-            m_horizontalTitle = title;
-            m_verticalTitle = title;
-            delayedUpdate();
-        });
+                    if (!title.isEmpty()) {
+                        m_horizontalTitle = title;
+                        m_verticalTitle = title;
+                        delayedUpdate();
+                    }
+                });
 
         // Setup parent floating orientation feature toggle connection with settings check on docking
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::topLevelChanged, this, [this](bool floating) {

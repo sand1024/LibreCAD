@@ -65,17 +65,45 @@ LC_WidgetFactory::LC_WidgetFactory(QC_ApplicationWindow* mainWin)
       m_actionFactory{mainWin->m_actionFactory.get()} {
 }
 
-void LC_WidgetFactory::updateDockOptions(QC_ApplicationWindow* mainWin, const bool allowDockNesting, const bool verticalTabs) {
+void LC_WidgetFactory::updateDockOptions(QC_ApplicationWindow* mainWin, const bool allowDockNesting,
+                                         const bool cadVerticalTabs, const bool normalVerticalTabs) {
+    if (mainWin == nullptr) {
+        return;
+    }
+
     auto dockOptions = QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks;
     if (allowDockNesting) {
         dockOptions |= QMainWindow::AllowNestedDocks;
     }
-    if (verticalTabs) {
-        dockOptions |= QMainWindow::VerticalTabs;
+    mainWin->setDockOptions(dockOptions);
+
+    mainWin->setTabPosition(Qt::LeftDockWidgetArea, cadVerticalTabs ? QTabWidget::West : QTabWidget::South);
+    mainWin->setTabPosition(Qt::RightDockWidgetArea, normalVerticalTabs ? QTabWidget::East : QTabWidget::South);
+}
+
+void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin,
+                                                     const bool cadVerticalTitle,
+                                                     const bool normalVerticalTitle) {
+    if (mainWin == nullptr) {
+        return;
     }
 
-    mainWin->setDockOptions(dockOptions);
+    const QList<QDockWidget*> dockwidgetsList = mainWin->findChildren<QDockWidget*>();
+    for (QDockWidget* dw : std::as_const(dockwidgetsList)) {
+        if (dw == nullptr) {
+            continue;
+        }
+
+        const bool isCad = dw->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()
+                           || dw->inherits("LC_CADDockWidget");
+        const bool isDoc = dw->property("_lc_doc_widget").isValid();
+
+        if (isCad || isDoc) {
+            setDockWidgetTitleType(dw, isCad ? cadVerticalTitle : normalVerticalTitle);
+        }
+    }
 }
+
 
 void LC_WidgetFactory::initWidgets() {
     initStatusBar();
@@ -91,14 +119,17 @@ void LC_WidgetFactory::initLeftCADSidebar() {
 
         const int leftSidebarAllColumnsCount = o_LeftToolbarAllColumnsCount;
         const int leftSidebarAllIconSize = o_LeftToolbarAllIconSize;
-        const bool flatIconsAll = o_LeftToolbarAllFlatIcons;
+        const bool flatIconsAll = o_CadToolsMatrixFlatIcons;
         createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
 
         const int leftSidebarColumnsCount = o_LeftToolbarColumnsCount;
         const int leftSidebarIconSize = o_LeftToolbarIconSize;
-        const bool flatIcons = o_LeftToolbarFlatIcons;
+        const bool flatIcons = o_CadToolsFlatIcons;
         createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
     }
+
+    LC_WidgetFactory::updateDockWidgetsTitleBarType(m_appWin, CFG_Widgets::o_CadDockTitleBarVertical,
+                                                            CFG_Widgets::o_DockTitleBarVertical);
 }
 
 void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
@@ -173,7 +204,9 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
     result->setProperty("_lc_doc_widget", true);
     auto toggleViewAction = result->toggleViewAction();
     if (!iconName.isEmpty()) {
-        toggleViewAction->setIcon(QIcon(iconName));
+        const QIcon icon(iconName);
+        toggleViewAction->setIcon(icon);
+        result->setWindowIcon(icon);
     }
 
     auto* titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result);
@@ -335,6 +368,13 @@ QDockWidget* LC_WidgetFactory::createCmdWidget(QG_ActionHandler* actionHandler) 
     widget->getDockingAction()->setText(dock->isFloating() ? tr("Dock") : tr("Float"));
 
     connect(widget->leCommand, &QG_CommandEdit::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
+
+    if (auto* dockBase = qobject_cast<LC_DockWidgetBase*>(dock)) {
+        dockBase->setFocusTargetWidget(widget->leCommand);
+    }
+
+    connect(widget->leCommand, &QG_CommandEdit::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
+
     // fixme - sand - disable setting vertical caption so far as this is now controlled in uniform way by widget
     // setttings.
     // fixme - sand - remove this call and the slot later, if there will no request from the users to recover this
@@ -366,14 +406,6 @@ void LC_WidgetFactory::modifyCommandTitleBar(const Qt::DockWidgetArea area) cons
     cmdDockWidget->setFeatures(features);
 }
 
-void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin, const bool verticalTitle) {
-    QList<QDockWidget*> dockwidgetsList = mainWin->findChildren<QDockWidget*>();
-    for (QDockWidget* dw : std::as_const(dockwidgetsList)) {
-        if (dw->property("_lc_doc_widget").isValid()) {
-            setDockWidgetTitleType(dw, verticalTitle);
-        }
-    }
-}
 
 void LC_WidgetFactory::dockAndTabifyGroup(QC_ApplicationWindow* mainWin, const Qt::DockWidgetArea area,
                                           const QList<QDockWidget*>& docks, QDockWidget* toRaise) {
@@ -442,7 +474,10 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler) {
 
     dockAndTabifyGroup(m_appWin, Qt::RightDockWidgetArea, rightDocks);
 
-    updateDockWidgetsTitleBarType(m_appWin, verticalTitle);
+    updateDockWidgetsTitleBarType(m_appWin,
+                                    CFG_Widgets::o_CadDockTitleBarVertical,
+                                    CFG_Widgets::o_DockTitleBarVertical);
+
 
     // Only resize when the app is opened for the first time
     initializeRightDockWidgets();

@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  *
  * This file is part of the LibreCAD project, a 2D CAD program
@@ -20,32 +21,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_PRESET_MANAGER_TYPOGRAPHY_H
-#define LC_PRESET_MANAGER_TYPOGRAPHY_H
+#ifndef LC_ROTATED_ICON_ENGINE_H
+#define LC_ROTATED_ICON_ENGINE_H
 
-#include "lc_preset_manager_styling_base.h"
-#include "lc_repository_typography.h"
+#include <QIcon>
+#include <QIconEngine>
 
-class LC_PresetManagerTypography : public LC_PresetManagerStylingBase<FontConfig, LC_RepositoryTypography> {
-    Q_OBJECT
+class LC_RotatedIconEngine : public QIconEngine {
 public:
-    explicit LC_PresetManagerTypography(LC_UIStyleManager* styleManager);
-    ~LC_PresetManagerTypography() override = default;
+    LC_RotatedIconEngine(const QIcon& sourceIcon, qreal angle);
+    ~LC_RotatedIconEngine() override = default;
 
-    LC_PresetManagerUIStrings presetStrings() const override;
-    QString getAppliedPresetKey() const override;
+    void paint(QPainter* painter, const QRect& rect, QIcon::Mode mode, QIcon::State state) override;
+    QIconEngine* clone() const override;
+    QPixmap pixmap(const QSize& size, QIcon::Mode mode, QIcon::State state) override;
+    QSize actualSize(const QSize& size, QIcon::Mode mode, QIcon::State state) override;
 
-    bool isFusionGated() const override {return false;}
-
-    signals:
-        void configLoaded(const FontConfig& config);
-
-protected:
-    void resetToDefaults(FontConfig& config) override;
-    void applyActiveConfigToSystem(const QString& activeKey) override;
-    void updatePreview() override;
-    void emitConfigLoaded() override;
-    QString fusionGatingSubject() const override { return QString(); }
+private:
+    QIcon m_sourceIcon;
+    qreal m_angle{0.0};
 };
 
-#endif
+#endif // LC_ROTATED_ICON_ENGINE_H

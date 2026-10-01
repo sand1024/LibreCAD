@@ -30,14 +30,12 @@
 #include "qc_applicationwindow.h"
 
 #include <QCloseEvent>
-#include <QDockWidget>
 #include <QGuiApplication>
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
-#include <QPushButton>
 #include <QStatusBar>
 #include <QStyleHints>
 #include <QTimer>
@@ -53,8 +51,9 @@
 #include "lc_anglesbasiswidget.h"
 #include "lc_application_window_initializer.h"
 #include "lc_appwindowdialogsinvoker.h"
-#include "lc_shortcuts_manager.h"
+#include "lc_dock_tab_bar_manager.h"
 #include "lc_customization_manager.h"
+#include "lc_shortcuts_manager.h"
 #include "lc_navigation_creator.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_exporttoimageservice.h"
@@ -76,7 +75,6 @@
 #include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_hardware.h"
-#include "lc_settings_manager_application.h"
 #include "lc_settings_manager_customization.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
@@ -148,6 +146,11 @@ QC_ApplicationWindow::QC_ApplicationWindow() {
 
     LC_ApplicationWindowInitializer initializer(this);
     initializer.initApplication();
+
+
+    m_dockTabBarManager = std::make_unique<LC_DockTabBarManager>(this);
+    connect(this, &QC_ApplicationWindow::widgetSettingsChanged,
+            m_dockTabBarManager.get(), &LC_DockTabBarManager::synchronizeAll);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     // Re-apply icon styling defaults when the OS color scheme flips so the
@@ -474,6 +477,20 @@ LC_ActionContext* QC_ApplicationWindow::getActionContext() const {
  */
 void QC_ApplicationWindow::closeEvent(QCloseEvent* ce) {
     tryCloseAllBeforeExist() ? ce->accept() : ce->ignore();
+}
+
+void QC_ApplicationWindow::childEvent(QChildEvent* event) {
+    LC_MDIApplicationWindow::childEvent(event);
+    if (event != nullptr && event->type() == QEvent::ChildAdded) {
+        if (m_dockTabBarManager != nullptr) {
+            if (auto* bar = qobject_cast<QTabBar*>(event->child())) {
+                m_dockTabBarManager->hookTabBar(bar);
+            }
+            else if (auto* dock = qobject_cast<QDockWidget*>(event->child())) {
+                m_dockTabBarManager->hookDockWidget(dock);
+            }
+        }
+    }
 }
 
 bool QC_ApplicationWindow::isAcceptableDragNDropFileName(const QString& fileName) {
@@ -2098,6 +2115,13 @@ void QC_ApplicationWindow::changeEvent([[maybe_unused]] QEvent* event) {
 #endif
 }
 
+void QC_ApplicationWindow::showEvent(QShowEvent* event) {
+    LC_MDIApplicationWindow::showEvent(event);
+    if (m_dockTabBarManager != nullptr) {
+        m_dockTabBarManager->synchronizeAll();
+    }
+}
+
 void QC_ApplicationWindow::invokeLicenseWindow() const {
     m_dlgHelpr->showLicenseWindow();
 }
@@ -2211,6 +2235,9 @@ void QC_ApplicationWindow::resetLayoutToDefault() {
 
     // 3. Re-dock and tabify dock widgets
     LC_WidgetFactory::redockAllDockWidgets(this);
+    if (m_dockTabBarManager != nullptr) {
+        m_dockTabBarManager->synchronizeAll();
+    }
 
     // 4. Reset toggle action states
     m_dockAreasToggleActions.left->setChecked(true);
