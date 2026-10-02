@@ -64,7 +64,7 @@ void LC_SettingsPageDrawingDimensions::setupUi() {
     // ui->dbDimEmbeddArrowBlocks->setVisible(false);
     ui->lvDimStyles->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatButtons;
     ui->tbDimNew->setAutoRaise(autoRaiseButtons);
     ui->tbDimRemove->setAutoRaise(autoRaiseButtons);
     ui->tbDimEdit->setAutoRaise(autoRaiseButtons);

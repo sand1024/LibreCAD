@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,23 +20,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_APPSTATE_H
-#define LC_SETTINGS_APPSTATE_H
+#ifndef LC_PRESET_MANAGER_WIDGETS_H
+#define LC_PRESET_MANAGER_WIDGETS_H
 
-#include "lc_palette_editor_shared.h"
-#include "lc_setting.h"
+#include "lc_preset_manager_styling_base.h"
+#include "lc_repository_widgets.h"
 
-namespace CFG_AppState {
-    inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT";
-    inline const LC_SettingsGroupBase Group("AppState");
+class LC_PresetManagerWidgets : public LC_PresetManagerStylingBase<LC_WidgetsConfig, LC_RepositoryWidgets> {
+    Q_OBJECT
 
-    inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveContextMenusScheme(&Group, "ActiveContextMenusScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveNavigationLayoutScheme(&Group, "ActiveNavigationLayoutScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveWidgetsScheme(&Group, "ActiveWidgetsScheme", DEFAULT_THEME_KEY);
+public:
+    explicit LC_PresetManagerWidgets(LC_UIStyleManager* styleManager);
+    ~LC_PresetManagerWidgets() override = default;
 
-    inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
-}
+    LC_PresetManagerUIStrings presetStrings() const override;
+    QString getAppliedPresetKey() const override;
+
+    bool isFusionGated() const override { return false; }
+
+    signals:
+        void configLoaded(const LC_WidgetsConfig& config);
+
+protected:
+    void resetToDefaults(LC_WidgetsConfig& config) override;
+    void applyActiveConfigToSystem(const QString& activeKey) override;
+    void updatePreview() override;
+    void emitConfigLoaded() override;
+    QString fusionGatingSubject() const override { return QString(); }
+};
 
 #endif

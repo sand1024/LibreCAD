@@ -29,6 +29,8 @@
 #include "lc_icons_style_shared.h"
 #include "lc_palette_editor_shared.h"
 
+struct LC_WidgetsConfig;
+class LC_RepositoryWidgets;
 class LC_RepositoryViewportTheme;
 // Forward declarations
 class QC_ApplicationWindow;
@@ -87,14 +89,17 @@ class LC_UIStyleManager : public QObject {
     QString getActiveMetrics() const;
     void setActiveMetrics(const QString& name);
 
-    // --- Legacy Compatibility Aliases ---
-    QString getAppliedThemeName() const {
-        return getActiveSkin();
-    }
+    // // --- Legacy Compatibility Aliases ---
+    // QString getAppliedThemeName() const {
+    //     return getActiveSkin();
+    // }
+    //
+    // void saveAppliedThemeName(const QString& themeName) {
+    //     setActiveSkin(themeName);
+    // }
 
-    void saveAppliedThemeName(const QString& themeName) {
-        setActiveSkin(themeName);
-    }
+    QString getActiveWidgetsScheme() const;
+    void setActiveWidgetsScheme(const QString& name);
 
     // --- Icon Colors Options Facade ---
     void loadIconColorsOptions(LC_IconColorsOptions& options) const;
@@ -129,6 +134,10 @@ class LC_UIStyleManager : public QObject {
         return m_importExportHelper.get();
     }
 
+    LC_RepositoryWidgets* getWidgetsRepository() const {
+        return m_widgetsRepository.get();
+    }
+
     bool isCurrentActiveStyleFusion() const {
         const bool stylingAllowed = isStyleAllowed();
         const auto currentStyleName = getActiveStyle();
@@ -138,15 +147,19 @@ class LC_UIStyleManager : public QObject {
 
     // --- High-Level Theme & Style Application Actions ---
     bool applyThemeToApplication(const PaletteConfig& paletteConfig, const ControlStyleConfig& controlStyle,
-                                 const StyleMetricsConfig& metrics, const FontConfig& font, bool isDarkMode);
+                                const StyleMetricsConfig& metrics, const FontConfig& font,
+                                const LC_WidgetsConfig& widgets, bool isDarkMode);
 
     void applyActiveStyleAndTheme();
     void applyActiveThemeOverride();
     void applyActiveIconStyle() const;
+    void applyActiveWidgets();
+
+
     void applyTransientTheme(bool allowStyle, const QString& styleName, const QString& paletteKey, const QString& skinKey,
-                             const QString& metricsKey, const QString& typographyKey, const QString& iconStyleKey,
-                             ThemeModeOverride themeModeOverride);
-    void doApplyStyle(bool isDarkMode, QString activeIconStyle) const;
+                             const QString& metricsKey, const QString& typographyKey, const QString& widgetsKey,
+                             const QString& iconStyleKey, ThemeModeOverride themeModeOverride);
+
     void applyActiveOrThemeIconStyle(const QString& themeLinkedIconStyleName, bool isDarkMode) const;
     void applyActiveOrDefaultIconStyle(bool isDarkMode) const;
     void applyActiveStyleSheet() const;
@@ -163,6 +176,9 @@ private:
     ControlStyleConfig loadSkinOrDefault(const QString& key) const;
     StyleMetricsConfig loadMetricsOrDefault(const QString& key) const;
     FontConfig loadFontOrDefault(const QString& key) const;
+    LC_WidgetsConfig loadWidgetsOrDefault(const QString& key) const;
+
+    void doApplyStyle(bool isDarkMode, QString activeIconStyle) const;
 
     QString resolveEffectiveIconStyle(const QString& themeLinkedIconStyleName) const;
     void applyNonFusionStyle(const QString& styleName);
@@ -170,6 +186,7 @@ private:
     void initRepositories();
     void applyGlobalTypographyAndIcons();
     void applyThemeTypography(const FontConfig& activeFont);
+    void applyWidgetsConfig(const LC_WidgetsConfig& config);
 
     QString m_nativeSystemStyleName;
     QPalette m_nativeSystemPalette;
@@ -183,6 +200,7 @@ private:
     std::unique_ptr<LC_RepositoryViewportTheme> m_graphicViewRepository;
     std::unique_ptr<LC_StylingProfileImportExportHelper> m_importExportHelper;
     QC_ApplicationWindow* m_appWindow {nullptr};
+    std::unique_ptr<LC_RepositoryWidgets> m_widgetsRepository;
 };
 
 #endif

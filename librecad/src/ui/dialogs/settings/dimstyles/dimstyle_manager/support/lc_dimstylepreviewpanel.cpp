@@ -40,7 +40,7 @@ LC_DimStylePreviewPanel::LC_DimStylePreviewPanel(QWidget *parent)
     ui->setupUi(this);
 
     using namespace CFG_Widgets;
-    const bool dockWidgetsFlatIcons = o_DockWidgetsFlatIcons;
+    const bool dockWidgetsFlatIcons = o_DockWidgetsFlatButtons;
     const int docWidgetsIconSize = o_DockWidgetsIconSize;
 
     setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomAuto);

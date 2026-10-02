@@ -82,6 +82,10 @@ void LC_SettingsManagerStyling::initialize(QC_ApplicationWindow* appWindow) {
         return std::make_unique<LC_PresetManagerFusionColorsPalette>(uiStyleManager);
     });
 
+     reg->registerPresetManager(targetDialog, PAGE_STYLING_WIDGETS, [uiStyleManager]() {
+         return std::make_unique<LC_PresetManagerWidgets>(uiStyleManager);
+     });
+
     // 2. Settings Pages Registrations
     const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
      { PAGE_STYLING_GENERAL, "", page<LC_SettingsPageGeneralStyling>(), 10 },

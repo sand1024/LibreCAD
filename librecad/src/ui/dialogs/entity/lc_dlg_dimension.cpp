@@ -301,7 +301,7 @@ QModelIndex LC_DlgDimension::setupStylesList() {
     connect(ui->tbDimDefault, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleSetDefault);
     connect(ui->tbSelectEntityStyle, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleEntitySelect);
 
-    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatButtons;
     ui->tbSetStyle->setAutoRaise(autoRaiseButtons);
     ui->tbDimNew->setAutoRaise(autoRaiseButtons);
     ui->tbDimRemove->setAutoRaise(autoRaiseButtons);

@@ -78,6 +78,7 @@ public:
     bool shouldCommitTransaction() const {
         return (!m_wasDirectlyAccepted || m_saveModifiedPages);
     }
+    void requestInitialPage(const QString& pageId);
 signals:
    void restartRequired();
    void categoryChanged(const QString& pageId);
@@ -146,6 +147,8 @@ private:
     bool m_wasDirectlyAccepted = false;
     bool m_saveModifiedPages = true;
     int m_customResultCode = 0;
+
+    QString m_pendingPageIdToOpen;
 
 };
 #endif

@@ -27,18 +27,26 @@
 #include "ui_lc_settings_page_toolbars_and_docks.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_startup.h"
-#include "lc_settings_widget.h"
 #include "lc_styling_preview_controller.h"
-#include "lc_widget_factory.h"
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageToolbarsAndDocks::LC_SettingsPageToolbarsAndDocks(QObject* parent)
-    : LC_SettingsPageBase(tr("Toolbars and Docking"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Widgets::Group), parent),
-      ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
+    : LC_SettingsPageBase(tr("Toolbars and Docking"), nullptr, parent)
+    , ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
     m_styleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
 }
 
 LC_SettingsPageToolbarsAndDocks::~LC_SettingsPageToolbarsAndDocks() = default;
+
+void LC_SettingsPageToolbarsAndDocks::bindToPresetManager(LC_PresetManagerInterface* manager) {
+    m_presetManager = dynamic_cast<LC_PresetManagerWidgets*>(manager);
+    if (m_presetManager != nullptr) {
+        connect(m_presetManager, &LC_PresetManagerWidgets::configLoaded, this, [this](const LC_WidgetsConfig&) {
+            populateUiFromConfig();
+        });
+        populateUiFromConfig();
+    }
+}
 
 void LC_SettingsPageToolbarsAndDocks::setupUi() {
     ui->setupUi(m_widget);
@@ -69,94 +77,126 @@ void LC_SettingsPageToolbarsAndDocks::setupBehavior() {
     }
 }
 
-void LC_SettingsPageToolbarsAndDocks::setupBindings() {
-    using namespace CFG_Widgets;
+void LC_SettingsPageToolbarsAndDocks::populateUiFromConfig() {
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
-    bindBoolean({
-        {ui->cbAllowToolbarIconSize, o_AllowToolbarIconSize},
-        {ui->cbFlatPickValuesButtons, o_PickValueButtonsFlatIcons},
-        {ui->cbAllowStatusbarHeight, o_AllowStatusbarHeight},
-        {ui->cbAllowStatusbarFontSize, o_AllowStatusbarFontSize},
-        {ui->cbDockingAllowNested, o_DockAllowNested},
-        {ui->cbLeftTBFlatButtons, o_CadToolsFlatIcons},
-        {ui->cbLeftTBAllFlatButtons, o_CadToolsMatrixFlatIcons},
-        {ui->cbDockWidgetsFlatButtons, o_DockWidgetsFlatIcons},
-        {ui->cbDockingVerticalTitleBar, o_DockTitleBarVertical},
-        {ui->cbCadDockingVerticalTitleBar, o_CadDockTitleBarVertical},
-        {ui->cbDockingVerticalTabs, o_DockVerticalTabs},
-        {ui->cbCadDockingVerticalTitleBar, o_CadDockVerticalTabs},
-        {ui->cbDockTabOverrideIconSize, o_DockTabOverrideIconSize},
-        {ui->cbCadDockTabOverrideIconSize, o_CadDockTabOverrideIconSize}
-    });
-
-    bindInt({
-        {ui->sbToolbarIconSize, o_ToolbarIconSize},
-        {ui->sbLeftTBIconSize, o_LeftToolbarIconSize},
-        {ui->sbLeftTBColumnCount, o_LeftToolbarColumnsCount},
-        {ui->sbLeftTBAllIconSize, o_LeftToolbarAllIconSize},
-        {ui->sbLeftTBAllColumnCount, o_LeftToolbarAllColumnsCount},
-        {ui->sbDockWidgetIconSize, o_DockWidgetsIconSize},
-        {ui->sbStatusbarHeight, o_StatusbarHeight},
-        {ui->sbStatusbarFontSize, o_StatusbarFontSize},
-        {ui->sbDockTabIconSize, o_DockTabIconSize},
-        {ui->sbCadDockTabIconSize, o_CadDockTabIconSize}
-    });
-
-    bindComboIndex({{ui->cmbDockTabDisplayMode, o_DockTabDisplayMode}, {ui->cmbCadDockTabDisplayMode, o_CadDockTabDisplayMode}});
-}
-
-void LC_SettingsPageToolbarsAndDocks::loadSettings() {
     m_blockSignals = true;
-    LC_SettingsPageBase::loadSettings();
+    const LC_WidgetsConfig& config = m_presetManager->workingConfig();
+
+    ui->cbAllowToolbarIconSize->setChecked(config.toolbarAllowIconSize);
+    ui->sbToolbarIconSize->setValue(config.toolbarIconSize);
+    ui->cbFlatPickValuesButtons->setChecked(config.pickValueButtonsFlatIcons);
+
+    ui->cbDockWidgetsFlatButtons->setChecked(config.dockWidgetsFlatButtons);
+    ui->sbDockWidgetIconSize->setValue(config.dockWidgetsIconSize);
+    ui->cmbDockTabDisplayMode->setCurrentIndex(config.dockTabDisplayMode);
+    ui->cbDockTabOverrideIconSize->setChecked(config.dockTabOverrideIconSize);
+    ui->sbDockTabIconSize->setValue(config.dockTabIconSize);
+    ui->cbDockingVerticalTitleBar->setChecked(config.dockTitleBarVertical);
+    ui->cbDockingVerticalTabs->setChecked(config.dockTabVertical);
+
+    ui->cbLeftTBFlatButtons->setChecked(config.cadDockWidgetFlatButtons);
+    ui->sbLeftTBIconSize->setValue(config.cadDockWidgetIconSize);
+    ui->sbLeftTBColumnCount->setValue(config.cadDockWidgetColumnsCount);
+    ui->cmbCadDockTabDisplayMode->setCurrentIndex(config.cadDockTabDisplayMode);
+    ui->cbCadDockTabOverrideIconSize->setChecked(config.cadDockTabOverrideIconSize);
+    ui->sbCadDockTabIconSize->setValue(config.cadDockTabIconSize);
+    ui->cbCadDockingVerticalTitleBar->setChecked(config.cadDockTitleBarVertical);
+    ui->cbCadDockingVerticalTabs->setChecked(config.cadDockVerticalTabs);
+
+    ui->cbLeftTBAllFlatButtons->setChecked(config.cadToolsMatrixFlatButtons);
+    ui->sbLeftTBAllIconSize->setValue(config.cadToolsMatrixIconSize);
+    ui->sbLeftTBAllColumnCount->setValue(config.cadToolsMatrixColumnsCount);
+
+    ui->cbDockingAllowNested->setChecked(config.dockAllowNested);
+
+    ui->cbAllowStatusbarHeight->setChecked(config.allowStatusbarHeight);
+    ui->sbStatusbarHeight->setValue(config.statusbarHeight);
+    ui->cbAllowStatusbarFontSize->setChecked(config.allowStatusbarFontSize);
+    ui->sbStatusbarFontSize->setValue(config.statusbarFontSize);
+
+    ui->sbToolbarIconSize->setEnabled(config.toolbarIconSize);
+    ui->sbStatusbarHeight->setEnabled(config.allowStatusbarHeight);
+    ui->sbStatusbarFontSize->setEnabled(config.allowStatusbarFontSize);
+    ui->sbDockTabIconSize->setEnabled(config.dockTabOverrideIconSize);
+    ui->sbCadDockTabIconSize->setEnabled(config.cadDockTabOverrideIconSize);
+
     m_blockSignals = false;
-
-    // Explicitly synchronize dependent controls after binder load (since signals were blocked)
-    ui->sbToolbarIconSize->setEnabled(ui->cbAllowToolbarIconSize->isChecked());
-    ui->sbStatusbarHeight->setEnabled(ui->cbAllowStatusbarHeight->isChecked());
-    ui->sbStatusbarFontSize->setEnabled(ui->cbAllowStatusbarFontSize->isChecked());
-
-    ui->sbDockTabIconSize->setEnabled(CFG_Widgets::o_DockTabOverrideIconSize);
-    ui->sbCadDockTabIconSize->setEnabled(CFG_Widgets::o_CadDockTabOverrideIconSize);
 
     updateLivePreview();
 }
 
-bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
-    const bool success = LC_SettingsPageBase::saveSettings();
-    if (success) {
-        const auto appWindow = QC_ApplicationWindow::getAppWindow();
-        if (appWindow != nullptr) {
-            appWindow->updateToolbarsIconSize(ui->cbAllowToolbarIconSize->isChecked(), ui->sbToolbarIconSize->value());
-
-            if (ui->cbAllowStatusbarFontSize->isChecked()) {
-                QFont font;
-                font.setPointSize(ui->sbStatusbarFontSize->value());
-                appWindow->statusBar()->setFont(font);
-            }
-            if (ui->cbAllowStatusbarHeight->isChecked()) {
-                appWindow->statusBar()->setMinimumHeight(ui->sbStatusbarHeight->value());
-            }
-
-            LC_WidgetFactory::updateDockOptions(appWindow, ui->cbDockingAllowNested->isChecked(), ui->cbCadDockingVerticalTabs->isChecked(),
-                                                ui->cbDockingVerticalTabs->isChecked());
-
-            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow, ui->cbCadDockingVerticalTitleBar->isChecked(),
-                                                            ui->cbDockingVerticalTitleBar->isChecked());
-
-            appWindow->fireWidgetSettingsChanged();
-        }
+void LC_SettingsPageToolbarsAndDocks::syncUiToWorkingConfig() {
+    if (m_presetManager == nullptr) {
+        return;
     }
-    return success;
+
+    LC_WidgetsConfig& config = m_presetManager->workingConfig();
+
+    config.toolbarAllowIconSize = ui->cbAllowToolbarIconSize->isChecked();
+    config.toolbarIconSize = ui->sbToolbarIconSize->value();
+    config.pickValueButtonsFlatIcons = ui->cbFlatPickValuesButtons->isChecked();
+
+    config.dockWidgetsFlatButtons = ui->cbDockWidgetsFlatButtons->isChecked();
+    config.dockWidgetsIconSize = ui->sbDockWidgetIconSize->value();
+    config.dockTabDisplayMode = ui->cmbDockTabDisplayMode->currentIndex();
+    config.dockTabOverrideIconSize = ui->cbDockTabOverrideIconSize->isChecked();
+    config.dockTabIconSize = ui->sbDockTabIconSize->value();
+    config.dockTitleBarVertical = ui->cbDockingVerticalTitleBar->isChecked();
+    config.dockTabVertical = ui->cbDockingVerticalTabs->isChecked();
+
+    config.cadDockWidgetFlatButtons = ui->cbLeftTBFlatButtons->isChecked();
+    config.cadToolsMatrixIconSize = ui->sbLeftTBIconSize->value();
+    config.cadToolsMatrixColumnsCount = ui->sbLeftTBColumnCount->value();
+    config.cadDockTabDisplayMode = ui->cmbCadDockTabDisplayMode->currentIndex();
+    config.cadDockTabOverrideIconSize = ui->cbCadDockTabOverrideIconSize->isChecked();
+    config.cadDockTabIconSize = ui->sbCadDockTabIconSize->value();
+    config.cadDockTitleBarVertical = ui->cbCadDockingVerticalTitleBar->isChecked();
+    config.cadDockVerticalTabs = ui->cbCadDockingVerticalTabs->isChecked();
+
+    config.cadToolsMatrixFlatButtons = ui->cbLeftTBAllFlatButtons->isChecked();
+    config.cadToolsMatrixIconSize = ui->sbLeftTBAllIconSize->value();
+    config.cadToolsMatrixColumnsCount = ui->sbLeftTBAllColumnCount->value();
+
+    config.dockAllowNested = ui->cbDockingAllowNested->isChecked();
+
+    config.allowStatusbarHeight = ui->cbAllowStatusbarHeight->isChecked();
+    config.statusbarHeight = ui->sbStatusbarHeight->value();
+    config.allowStatusbarFontSize = ui->cbAllowStatusbarFontSize->isChecked();
+    config.statusbarFontSize = ui->sbStatusbarFontSize->value();
+}
+
+
+void LC_SettingsPageToolbarsAndDocks::loadSettings() {
+    populateUiFromConfig();
+}
+
+bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
+    syncUiToWorkingConfig();
+    return true;
+}
+
+bool LC_SettingsPageToolbarsAndDocks::isModified() const {
+    return (m_presetManager != nullptr) ? m_presetManager->isPresetModified() : false;
 }
 
 void LC_SettingsPageToolbarsAndDocks::onControlChanged() {
     if (m_blockSignals) {
         return;
     }
+    syncUiToWorkingConfig();
+    if (m_presetManager != nullptr) {
+        m_presetManager->notifyWorkingConfigChanged();
+    }
     updateLivePreview();
 }
 
 void LC_SettingsPageToolbarsAndDocks::updateLivePreview() {
+    if (m_presetManager != nullptr) {
+        syncUiToWorkingConfig();
+    }
     LC_SettingsPageBase::updateLivePreview();
     if (m_previewController != nullptr) {
         m_previewController->updatePreviewToolbarsAndDocks();
@@ -165,6 +205,9 @@ void LC_SettingsPageToolbarsAndDocks::updateLivePreview() {
 
 void LC_SettingsPageToolbarsAndDocks::setPreviewController(LC_StylingPreviewController* controller) {
     m_previewController = controller;
+    if (m_presetManager != nullptr) {
+        m_presetManager->setPreviewController(controller);
+    }
 }
 
 QWidget* LC_SettingsPageToolbarsAndDocks::getBottomWidget() {

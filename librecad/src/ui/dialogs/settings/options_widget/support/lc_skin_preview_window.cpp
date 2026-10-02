@@ -101,7 +101,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     using namespace CFG_Widgets;
 
     // 1. Main Toolbar Icon Sizes
-    const int tbSize = o_AllowToolbarIconSize.get() ? o_ToolbarIconSize.get() : 24;
+    const int tbSize = o_ToolbarAllowIconSize.get() ? o_ToolbarIconSize.get() : 24;
     setIconSize(QSize(tbSize, tbSize));
     for (auto* tb : m_mainToolBars) {
         if (tb != nullptr) {
@@ -119,7 +119,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
 
     // 2. Dock Mini-Toolbar Buttons (Size and Flat/AutoRaise)
     const int dockIconSize = qBound(12, o_DockWidgetsIconSize.get(), 64);
-    const bool dockFlat = o_DockWidgetsFlatIcons.get();
+    const bool dockFlat = o_DockWidgetsFlatButtons.get();
     for (auto* btn : m_dockToolButtons) {
         if (btn != nullptr) {
             btn->setIconSize(QSize(dockIconSize, dockIconSize));
@@ -131,9 +131,9 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
 
     // 3. CAD Tools Matrix (Columns, Icon Size, and Flat/AutoRaise)
     const bool cadSidebarUngrouped = true;
-    const int matrixIconSize = qBound(12, cadSidebarUngrouped ? o_LeftToolbarAllIconSize.get() : o_LeftToolbarIconSize.get(), 64);
-    const int columns = qBound(1, cadSidebarUngrouped ? o_LeftToolbarAllColumnsCount.get() : o_LeftToolbarColumnsCount.get(), 12);
-    const bool matrixFlat = cadSidebarUngrouped ? o_CadToolsMatrixFlatIcons.get() : o_CadToolsFlatIcons.get();
+    const int matrixIconSize = qBound(12, cadSidebarUngrouped ? o_CADToolsMatrixIconSize.get() : o_CADDockWidgetIconSize.get(), 64);
+    const int columns = qBound(1, cadSidebarUngrouped ? o_CADToolsMatrixColumnsCount.get() : o_CADDockWidgetColumnsCount.get(), 12);
+    const bool matrixFlat = cadSidebarUngrouped ? o_CADToolsMatrixFlatButtons.get() : o_CADDockWidgetFlatButtons.get();
 
     if (m_matrixGridLayout != nullptr && !m_matrixToolButtons.isEmpty()) {
         // Clear existing grid positioning
@@ -180,7 +180,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     setDockOptions(opts);
 
     // 5. Dock Title Bar Orientation (Horizontal vs Vertical)
-    const bool verticalTitleBar = o_DockTitleBarVertical.get();
+    const bool verticalTitleBar = o_DockWidgetTitleBarVertical.get();
     for (auto* dock : m_allDockWidgets) {
         if (dock != nullptr && !dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
             QDockWidget::DockWidgetFeatures features = dock->features();
@@ -194,16 +194,16 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     }
 
     // 6. Side Dock Tab Position
-    const bool verticalTabs = o_DockVerticalTabs.get();
+    const bool verticalTabs = o_DockTabVertical.get();
     setTabPosition(Qt::LeftDockWidgetArea, verticalTabs ? QTabWidget::West : QTabWidget::South);
     setTabPosition(Qt::RightDockWidgetArea, verticalTabs ? QTabWidget::East : QTabWidget::South);
 
     // 7. Status Bar Height and Font Size
     if (statusBar() != nullptr) {
-        if (o_AllowStatusbarHeight.get() && o_StatusbarHeight.get() > 0) {
+        if (o_StatusBarAllowHeight.get() && o_StatusbarHeight.get() > 0) {
             statusBar()->setMinimumHeight(o_StatusbarHeight.get());
         }
-        if (o_AllowStatusbarFontSize.get() && o_StatusbarFontSize.get() > 0) {
+        if (o_StatusBarAllowFontSize.get() && o_StatusbarFontSize.get() > 0) {
             QFont f = statusBar()->font();
             f.setPointSize(o_StatusbarFontSize.get());
             statusBar()->setFont(f);

@@ -28,20 +28,23 @@
 #include "lc_repository_metrics.h"
 #include "lc_repository_palette.h"
 #include "lc_repository_typography.h"
+#include "lc_repository_widgets.h"
 
 LC_StylingProfileImportExportHelper::LC_StylingProfileImportExportHelper(LC_RepositoryPalette* paletteRepo,
                                                                          LC_RepositoryFusionSkin* skinRepo,
                                                                          LC_RepositoryIconsStyle* iconRepo,
                                                                          LC_RepositoryTypography* typographyRepo,
-                                                                         LC_RepositoryMetrics* metricsRepo)
+                                                                         LC_RepositoryMetrics* metricsRepo,
+                                                                         LC_RepositoryWidgets* widgetsRepo)
     : LC_ProfileExchangeHelperBase(PROFILE_FILE_IDENTIFIER), m_paletteRepo(paletteRepo), m_skinRepo(skinRepo), m_iconRepo(iconRepo),
-      m_typographyRepo(typographyRepo), m_metricsRepo(metricsRepo) {
+      m_typographyRepo(typographyRepo), m_metricsRepo(metricsRepo), m_widgetsRepo(widgetsRepo) {
 }
 
 bool LC_StylingProfileImportExportHelper::exportProfile(const QString& exportFilePath, const QString& profileName,
                                                         const PaletteConfig* palette, const ControlStyleConfig* controlStyle,
                                                         const IconStyleConfig* icon, const FontConfig* font,
-                                                        const StyleMetricsConfig* metrics) const {
+                                                        const StyleMetricsConfig* metrics,
+                                                        const LC_WidgetsConfig* widgets) const {
     QJsonObject root;
     root["lc_file_format"] = m_fileFormatIdentifier;
     root["lc_file_format_version"] = "1.0";
@@ -72,6 +75,11 @@ bool LC_StylingProfileImportExportHelper::exportProfile(const QString& exportFil
         obj["name"] = metrics->name;
         root["inlined_metrics"] = obj;
     }
+    if (widgets != nullptr && m_widgetsRepo != nullptr) {
+        auto obj = m_widgetsRepo->configToJson(*widgets);
+        obj["name"] = widgets->name;
+        root["inlined_widgets"] = obj;
+    }
 
     return writeJsonFile(exportFilePath, root);
 }
@@ -79,7 +87,8 @@ bool LC_StylingProfileImportExportHelper::exportProfile(const QString& exportFil
 bool LC_StylingProfileImportExportHelper::importProfile(const QString& importFilePath, const QList<LC_ChecklistChoice>& selectedChoices,
                                                         QString& outProfileName, QString& outPaletteName, QString& outControlStyleName,
                                                         QString& outIconStyleName, QString& outTypographyName,
-                                                        QString& outMetricsName) const {
+                                                        QString& outMetricsName,
+                                                        QString& outWidgetsName) const {
     QJsonObject root;
     if (!readJsonFile(importFilePath, root)) {
         return false;
@@ -162,6 +171,18 @@ bool LC_StylingProfileImportExportHelper::importProfile(const QString& importFil
     }
     else {
         outMetricsName = "";
+    }
+
+    QJsonObject widgetsObj = root["inlined_widgets"].toObject();
+    if (isSelected("widgets") && m_widgetsRepo != nullptr && !widgetsObj.isEmpty()) {
+        LC_WidgetsConfig widgets;
+        QString outPath;
+        if (m_widgetsRepo->configFromJson(widgetsObj, widgets) && m_widgetsRepo->save(widgets.name, widgets, outPath)) {
+            outWidgetsName = widgets.name;
+        }
+    }
+    else {
+        outWidgetsName = "";
     }
 
     return true;

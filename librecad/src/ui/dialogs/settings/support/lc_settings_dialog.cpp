@@ -37,6 +37,24 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_management_bar.h"
 
+namespace {
+    class LC_SettingsDlgInnerData {
+    public:
+        LC_SettingsDlgInnerData(const LC_SettingsGroupDialog* original)
+            : o_CategoriesTreeWidth(original, "CategoriesTreeWidth", 150),
+              o_PreviewWidth(original, "PreviewWidth", 150),
+              o_SearchHistory(original, "SearchHistory", ""),
+              o_ActiveCategory(original, "ActiveCategory", "") {
+        }
+
+        LC_Setting<int> o_CategoriesTreeWidth;
+        LC_Setting<int> o_PreviewWidth;
+        LC_Setting<QString> o_SearchHistory;
+        LC_Setting<QString> o_ActiveCategory;
+    };
+}
+
+
 LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
     : LC_Dialog(parent, "Settings." + dialogId), ui(std::make_unique<Ui::LC_SettingsDialog>()), m_dialogId(dialogId) {
     ui->setupUi(this);
@@ -306,11 +324,13 @@ void LC_SettingsDialog::finalizeInitialization() {
 
     restoreTreeExpandedState();
 
-    if (m_treeModel->rowCount() > 0) {
-        const QModelIndex firstIdx = m_filterModel->index(0, 0);
-        ui->tvCategoriesTree->setCurrentIndex(firstIdx);
-        onCategorySelected(firstIdx);
-    }
+    // if (m_treeModel->rowCount() > 0) {
+    //     if (m_pendingPageIdToOpen.isEmpty()) {
+    //         const QModelIndex firstIdx = m_filterModel->index(0, 0);
+    //         ui->tvCategoriesTree->setCurrentIndex(firstIdx);
+    //         onCategorySelected(firstIdx);
+    //     }
+    // }
 }
 
 void LC_SettingsDialog::buildCategoryTree() {
@@ -372,7 +392,17 @@ void LC_SettingsDialog::buildCategoryTree() {
     Q_ASSERT_X(pending.empty(), "LC_SettingsDialog::buildCategoryTree()", "Orphaned not processed settings pages are found");
 }
 
+void LC_SettingsDialog::requestInitialPage(const QString& pageId) {
+    m_pendingPageIdToOpen = pageId;
+}
+
 bool LC_SettingsDialog::selectPage(const QString& pageId) {
+    if (pageId.isEmpty()) {
+            const QModelIndex firstIdx = m_filterModel->index(0, 0);
+            ui->tvCategoriesTree->setCurrentIndex(firstIdx);
+            onCategorySelected(firstIdx);
+            return true;
+    }
     const auto itPage = m_pageMapByPageId.find(pageId);
     if (itPage == m_pageMapByPageId.end()) {
         return false;
@@ -955,20 +985,6 @@ void LC_SettingsDialog::restoreTreeExpandedState() const {
     }
 }
 
-namespace {
-    class LC_SettingsDlgInnerData {
-    public:
-        LC_SettingsDlgInnerData(const LC_SettingsGroupDialog* original)
-            : o_CategoriesTreeWidth(original, "CategoriesTreeWidth", 150),
-              o_PreviewWidth(original, "PreviewWidth", 150),
-              o_SearchHistory(original, "SearchHistory", "") {
-        }
-
-        LC_Setting<int> o_CategoriesTreeWidth;
-        LC_Setting<int> o_PreviewWidth;
-        LC_Setting<QString> o_SearchHistory;
-    };
-}
 
 void LC_SettingsDialog::saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {
     LC_SettingsDlgInnerData CFG_InnerData(&group);
@@ -993,6 +1009,12 @@ void LC_SettingsDialog::saveInnerDialogData(LC_SettingsGroupDialog& group, bool 
             page->saveDialogData(group, savePositions);
         }
     }
+
+    QString activeCategory = "";
+    if (m_activePage != nullptr) {
+        activeCategory = m_activePage->id();
+    }
+    CFG_InnerData.o_ActiveCategory = activeCategory;
 }
 
 void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool loadPosition) {
@@ -1019,6 +1041,16 @@ void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool 
             page->loadDialogData(group, loadPosition);
         }
     }
+
+    QString pageToActivate;
+
+    if (m_pendingPageIdToOpen.isEmpty()) {
+        pageToActivate = CFG_InnerData.o_ActiveCategory;
+    }
+    else {
+        pageToActivate = m_pendingPageIdToOpen; // explicitly requested
+    }
+    selectPage(pageToActivate);
 }
 
 void LC_SettingsDialog::onPresetSelected(const QString& key){

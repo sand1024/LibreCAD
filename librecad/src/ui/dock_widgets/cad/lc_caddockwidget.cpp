@@ -230,13 +230,13 @@ void LC_CADDockWidget::updateActionsFromNodes(const QList<ActionNode>& nodes, LC
 void LC_CADDockWidget::getMetrics(int& cols, int& sz, bool& flat) const {
     using namespace CFG_Widgets;
     if (m_allTools) {
-        cols = o_LeftToolbarAllColumnsCount;
-        sz   = o_LeftToolbarAllIconSize;
-        flat = o_CadToolsMatrixFlatIcons;
+        cols = o_CADToolsMatrixColumnsCount;
+        sz   = o_CADToolsMatrixIconSize;
+        flat = o_CADToolsMatrixFlatButtons;
     } else {
-        cols = o_LeftToolbarColumnsCount;
-        sz   = o_LeftToolbarIconSize;
-        flat = o_CadToolsFlatIcons;
+        cols = o_CADDockWidgetColumnsCount;
+        sz   = o_CADDockWidgetIconSize;
+        flat = o_CADDockWidgetFlatButtons;
     }
 }
 void LC_CADDockWidget::clear() {

@@ -779,7 +779,7 @@ LC_PropertyMatchOperation LC_DlgQuickSelection::obtainOperation(const int index)
 
 void LC_DlgQuickSelection::updateWidgetSettings() const {
     using namespace CFG_Widgets;
-    const bool flatIcons = o_DockWidgetsFlatIcons;
+    const bool flatIcons = o_DockWidgetsFlatButtons;
     const int iconSize = o_DockWidgetsIconSize;
 
     const QSize size(iconSize, iconSize);

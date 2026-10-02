@@ -74,7 +74,7 @@ private:
     QString m_pendingIconName;
     QString m_pendingTypographyName;
     QString m_pendingMetricsName;
-
+    QString m_pendingWidgetsName;
 };
 
 #endif

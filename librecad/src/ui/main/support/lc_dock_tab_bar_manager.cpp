@@ -104,8 +104,8 @@ int LC_DockTabBarManager::resolveTargetIconSize(QTabBar* bar, bool cadDominant) 
     using namespace CFG_Widgets;
 
     if (cadDominant) {
-        if (o_CadDockTabOverrideIconSize) {
-            return qMax(8, static_cast<int>(o_CadDockTabIconSize));
+        if (o_CADDockTabOverrideIconSize) {
+            return qMax(8, static_cast<int>(o_CADDockTabIconSize));
         }
     }
     else {
@@ -162,7 +162,7 @@ void LC_DockTabBarManager::synchronizeTabBar(QTabBar* bar) {
             ++normalTabsCount;
         }
 
-        const int mode = isCad ? static_cast<int>(o_CadDockTabDisplayMode)
+        const int mode = isCad ? static_cast<int>(o_CADDockTabDisplayMode)
                                : static_cast<int>(o_DockTabDisplayMode);
 
         const QIcon rawDockIcon = dockBase->windowIcon();

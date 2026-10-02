@@ -30,8 +30,10 @@
 #include "lc_repository_metrics.h"
 #include "lc_repository_palette.h"
 #include "lc_repository_typography.h"
+#include "lc_repository_widgets.h"
 #include "lc_styling_profile_import_export_helper.h"
 #include "lc_ui_style_manager.h"
+#include "lc_widgets_config.h"
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageStylingProfiles::LC_SettingsPageStylingProfiles(QObject* parent)
@@ -74,7 +76,8 @@ QList<LC_ChecklistChoice> LC_SettingsPageStylingProfiles::getExportChoices() con
         {"skin",       tr("Control Style / Skin"),tr("Export active widget skins and highlight rules"), true, true},
         {"icon",       tr("Icon Style"),          tr("Export active toolbar and CAD icon themes"),  true, true},
         {"typography", tr("Typography & Fonts"),  tr("Export active application font metrics"),     true, true},
-        {"metrics",    tr("Density & Metrics"),   tr("Export active toolbar and margin dimensions"), true, true}
+        {"metrics",    tr("Density & Metrics"),   tr("Export active toolbar and margin dimensions"), true, true},
+        {"widgets",    tr("Toolbars & Docking"),  tr("Export active toolbars and docking layout sizes"), true, true}
     };
 }
 
@@ -108,6 +111,10 @@ bool LC_SettingsPageStylingProfiles::inspectProfileFile(const QString& filePath,
     if (root.contains("inlined_metrics")) {
         outChoices.append({"metrics", tr("Density & Metrics"), tr("Toolbar and widget size metrics"), true, true});
     }
+    if (root.contains("inlined_widgets")) {
+        outChoices.append({"widgets", tr("Toolbars & Docking"), tr("Toolbars and dock widgets layout"), true, true});
+    }
+
 
     return !outChoices.isEmpty();
 }
@@ -149,13 +156,19 @@ bool LC_SettingsPageStylingProfiles::executeExport(const QString& filePath,
     const bool hasMetrics = isChecked("metrics") && m_styleManager->getMetricsRepository() &&
                             m_styleManager->getMetricsRepository()->loadByKey(m_styleManager->getActiveMetrics(), metrics);
 
+    LC_WidgetsConfig widgets;
+    const bool hasWidgets = isChecked("widgets") && m_styleManager->getWidgetsRepository() &&
+                            m_styleManager->getWidgetsRepository()->loadByKey(m_styleManager->getActiveWidgetsScheme(), widgets);
+
+
     return stylingProfileImportExportHelper->exportProfile(
         filePath, profileName,
         hasPalette ? &palette : nullptr,
         hasSkin ? &skin : nullptr,
         hasIcon ? &icon : nullptr,
         hasFont ? &font : nullptr,
-        hasMetrics ? &metrics : nullptr);
+        hasMetrics ? &metrics : nullptr,
+        hasWidgets ? &widgets : nullptr);
 }
 
 bool LC_SettingsPageStylingProfiles::executeImport(const QString& filePath,
@@ -170,6 +183,7 @@ bool LC_SettingsPageStylingProfiles::executeImport(const QString& filePath,
     m_pendingIconName.clear();
     m_pendingTypographyName.clear();
     m_pendingMetricsName.clear();
+    m_pendingWidgetsName.clear();
 
     return m_styleManager->getImportExportHelper()->importProfile(
         filePath, choices, outProfileName,
@@ -177,7 +191,8 @@ bool LC_SettingsPageStylingProfiles::executeImport(const QString& filePath,
         m_pendingSkinName,
         m_pendingIconName,
         m_pendingTypographyName,
-        m_pendingMetricsName);
+        m_pendingMetricsName,
+        m_pendingWidgetsName);
 }
 
 void LC_SettingsPageStylingProfiles::activateImportedProfile() {
@@ -200,6 +215,10 @@ void LC_SettingsPageStylingProfiles::activateImportedProfile() {
     if (!m_pendingMetricsName.isEmpty()) {
         m_styleManager->setActiveMetrics(m_pendingMetricsName);
     }
+    if (!m_pendingWidgetsName.isEmpty()) {
+        m_styleManager->setActiveWidgetsScheme(m_pendingWidgetsName);
+    }
+
 
     m_styleManager->applyActiveStyleAndTheme();
 }

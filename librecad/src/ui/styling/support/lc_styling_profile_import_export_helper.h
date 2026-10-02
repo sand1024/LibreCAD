@@ -31,6 +31,8 @@
 #include "lc_icons_style_shared.h"
 #include "lc_profile_helper_base.h"
 
+struct LC_WidgetsConfig;
+class LC_RepositoryWidgets;
 class LC_RepositoryPalette;
 class LC_RepositoryFusionSkin;
 class LC_RepositoryIconsStyle;
@@ -40,18 +42,20 @@ class LC_RepositoryMetrics;
 class LC_StylingProfileImportExportHelper: public LC_ProfileExchangeHelperBase {
     public:
     LC_StylingProfileImportExportHelper(LC_RepositoryPalette* paletteRepo,
-                                   LC_RepositoryFusionSkin* skinRepo,
-                                   LC_RepositoryIconsStyle* iconRepo,
-                                   LC_RepositoryTypography* typographyRepo,
-                                   LC_RepositoryMetrics* metricsRepo);
+                                          LC_RepositoryFusionSkin* skinRepo,
+                                          LC_RepositoryIconsStyle* iconRepo,
+                                          LC_RepositoryTypography* typographyRepo,
+                                          LC_RepositoryMetrics* metricsRepo,
+                                          LC_RepositoryWidgets* widgetsRepo);
 
     bool exportProfile(const QString& exportFilePath,
-                       const QString& profileName,
-                       const PaletteConfig* palette,
-                       const ControlStyleConfig* controlStyle,
-                       const IconStyleConfig* icon,
-                       const FontConfig* font,
-                       const StyleMetricsConfig* metrics) const;
+                      const QString& profileName,
+                      const PaletteConfig* palette,
+                      const ControlStyleConfig* controlStyle,
+                      const IconStyleConfig* icon,
+                      const FontConfig* font,
+                      const StyleMetricsConfig* metrics,
+                      const LC_WidgetsConfig* widgets = nullptr) const;
 
     bool importProfile(const QString& importFilePath,
                        const QList<LC_ChecklistChoice>& selectedChoices,
@@ -60,7 +64,8 @@ class LC_StylingProfileImportExportHelper: public LC_ProfileExchangeHelperBase {
                        QString& outControlStyleName,
                        QString& outIconStyleName,
                        QString& outTypographyName,
-                       QString& outMetricsName) const;
+                       QString& outMetricsName,
+                       QString& outWidgetsName) const;
 
 
 private:
@@ -69,6 +74,7 @@ private:
     LC_RepositoryIconsStyle*  m_iconRepo;
     LC_RepositoryTypography*  m_typographyRepo;
     LC_RepositoryMetrics*      m_metricsRepo;
+    LC_RepositoryWidgets* m_widgetsRepo{nullptr};
 };
 
 #endif

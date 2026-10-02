@@ -1,4 +1,6 @@
+
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,23 +21,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_APPSTATE_H
-#define LC_SETTINGS_APPSTATE_H
+#ifndef LC_REPOSITORY_WIDGETS_H
+#define LC_REPOSITORY_WIDGETS_H
 
-#include "lc_palette_editor_shared.h"
-#include "lc_setting.h"
+#include "lc_preset_repository_base.h"
+#include "lc_widgets_config.h"
 
-namespace CFG_AppState {
-    inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT";
-    inline const LC_SettingsGroupBase Group("AppState");
+inline const QString WIDGETS_EXTENSION = ".lcwc";
+inline const QString WIDGETS_FILE_IDENTIFIER = "LibreCAD Config: Widgets";
 
-    inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveContextMenusScheme(&Group, "ActiveContextMenusScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveNavigationLayoutScheme(&Group, "ActiveNavigationLayoutScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveWidgetsScheme(&Group, "ActiveWidgetsScheme", DEFAULT_THEME_KEY);
+class LC_RepositoryWidgets : public LC_PresetRepositoryBase<LC_WidgetsConfig> {
+public:
+    explicit LC_RepositoryWidgets(const QString& configDir)
+        : LC_PresetRepositoryBase<LC_WidgetsConfig>(configDir, WIDGETS_EXTENSION, WIDGETS_FILE_IDENTIFIER, "widgets_index.lcix") {
+    }
 
-    inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
-}
+    QJsonObject configToJson(const LC_WidgetsConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, LC_WidgetsConfig& config) const override;
+};
 
 #endif

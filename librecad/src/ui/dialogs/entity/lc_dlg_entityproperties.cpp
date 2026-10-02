@@ -117,7 +117,7 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewpo
     setWindowTitle(windowTitle);
     setDialogName(dlgName);
 
-    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatButtons;
     QList<QToolButton*> list = findChildren<QToolButton*>();
     for (const auto button : std::as_const(list)) {
         button->setAutoRaise(autoRaiseButtons);

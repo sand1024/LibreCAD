@@ -164,11 +164,11 @@ void LC_WorkspacesManager::activateWorkspace(int id){
 void LC_WorkspacesManager::fillIconsAndMenuState(LC_Workspace &ws){
     {
         using namespace CFG_Widgets;
-        ws.columnCountLeftDoc = o_LeftToolbarColumnsCount;
-        ws.columnCountLeftAllDoc = o_LeftToolbarAllColumnsCount;
+        ws.columnCountLeftDoc = o_CADDockWidgetColumnsCount;
+        ws.columnCountLeftAllDoc = o_CADToolsMatrixColumnsCount;
 
-        ws.iconsSizeLeftDock = o_LeftToolbarIconSize;
-        ws.iconsSizeLeftAllDock = o_LeftToolbarAllIconSize;
+        ws.iconsSizeLeftDock = o_CADDockWidgetIconSize;
+        ws.iconsSizeLeftAllDock = o_CADToolsMatrixIconSize;
 
         ws.iconsSizeRightDoc = o_DockWidgetsIconSize;
         ws.iconsSizeToolbar = o_ToolbarIconSize;
@@ -240,11 +240,11 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
     LC_GROUP_END();
     {
         using namespace CFG_Widgets;
-        o_LeftToolbarColumnsCount = ws.columnCountLeftDoc;
-        o_LeftToolbarAllColumnsCount = ws.columnCountLeftAllDoc;
+        o_CADDockWidgetColumnsCount = ws.columnCountLeftDoc;
+        o_CADToolsMatrixColumnsCount = ws.columnCountLeftAllDoc;
 
-        o_LeftToolbarIconSize = ws.iconsSizeLeftDock;
-        o_LeftToolbarAllIconSize = ws.iconsSizeLeftAllDock;
+        o_CADDockWidgetIconSize = ws.iconsSizeLeftDock;
+        o_CADToolsMatrixIconSize = ws.iconsSizeLeftAllDock;
         o_DockWidgetsIconSize = ws.iconsSizeRightDoc;
         o_ToolbarIconSize = ws.iconsSizeToolbar;
     }

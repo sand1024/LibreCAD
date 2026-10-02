@@ -1163,7 +1163,7 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const L
         {"FocusCommand", QKeySequence(Qt::CTRL | Qt::Key_M)},
         // commandLineShortcuts}, // fixme - restore shortcuts for focus command line!!!
 #if defined(Q_OS_LINUX)
-        {"Fullscreen", QKeySequence("F11")},
+           {"Fullscreen", QKeySequence("F11")},
 #else
         {"Fullscreen", QKeySequence::FullScreen},
         {"ExclusiveSnapMode", QKeySequence(Qt::ALT | Qt::Key_X)},
@@ -1178,6 +1178,13 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const L
         {"RelativeAddPoint", QKeySequence(Qt::SHIFT | Qt::Key_P)},
         {"RestrictOrthogonal", QKeySequence(Qt::Key_F8)}, // Issue #2526: default shortcut for snapping: restriction orthogonal
         {LC_ActionNames::ToggleDockProperties, QKeySequence(Qt::CTRL | Qt::Key_1)}, // AutoCAD standard Ctrl+1
+        {LC_ActionNames::ToggleDockLayerTree, QKeySequence(Qt::CTRL | Qt::Key_2)}, // AutoCAD standard Ctrl+1
+        {LC_ActionNames::ToggleDockBlocks, QKeySequence(Qt::CTRL | Qt::Key_3)},
+        {LC_ActionNames::ToggleDockNamedViews, QKeySequence(Qt::CTRL | Qt::Key_4)},
+        {LC_ActionNames::ToggleDockUCS, QKeySequence(Qt::CTRL | Qt::Key_5)},
+        {LC_ActionNames::ToggleDockLibrary, QKeySequence(Qt::CTRL | Qt::Key_6)},
+        {LC_ActionNames::ToggleDockPenPalette, QKeySequence(Qt::CTRL | Qt::Key_7)},
+        {LC_ActionNames::ToggleDockQuickInfo, QKeySequence(Qt::CTRL | Qt::Key_8)},
         {LC_ActionNames::ToggleDockCommandLine, QKeySequence(Qt::CTRL | Qt::Key_9)}  // AutoCAD standard Ctrl+9
     };
 

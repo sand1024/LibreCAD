@@ -402,6 +402,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/styling/support/ui
      librecad/src/ui/styling/typography
      librecad/src/ui/styling/metrics
+     librecad/src/ui/styling/widgets
      librecad/src/ui/styling/viewport
      librecad/src/ui/main
      librecad/src/ui/main/fontviewer
@@ -2648,6 +2649,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/lc_dock_widget_base.h
      librecad/src/ui/components/utils/lc_rotated_icon_engine.cpp
      librecad/src/ui/components/utils/lc_rotated_icon_engine.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.h
 )
 
 set (MUPARSER_SOURCES
@@ -2730,11 +2733,11 @@ endif ()
 
 set (MAIN_SOURCES
      librecad/src/main/main.cpp
-    librecad/src/main/lc_release_label.cpp
-    librecad/src/main/console_command_utils.cpp
-    librecad/src/main/console_command_utils.h
-    librecad/src/main/console_dxf2dwg.cpp
-    librecad/src/main/console_dxf2dwg.h
+     librecad/src/main/lc_release_label.cpp
+     librecad/src/main/console_command_utils.cpp
+     librecad/src/main/console_command_utils.h
+     librecad/src/main/console_dxf2dwg.cpp
+     librecad/src/main/console_dxf2dwg.h
      librecad/src/main/console_dxf2pdf/console_dxf2pdf.cpp
      librecad/src/main/console_dxf2pdf/console_dxf2pdf.h
      librecad/src/main/console_dxf2pdf/pdf_print_loop.cpp
@@ -2744,6 +2747,10 @@ set (MAIN_SOURCES
      librecad/src/ui/dialogs/main/qg_dlginitial.cpp
      librecad/src/ui/dialogs/main/qg_dlginitial.h
      ${LIBRECAD_RES}
+     librecad/src/ui/styling/widgets/lc_widgets_config.cpp
+     librecad/src/ui/styling/widgets/lc_widgets_config.h
+     librecad/src/ui/styling/widgets/lc_repository_widgets.cpp
+     librecad/src/ui/styling/widgets/lc_repository_widgets.h
 )
 
 # Main executable

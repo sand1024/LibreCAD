@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QStyleFactory>
 #include <QCoreApplication>
+#include <QStatusBar>
 
 #include "lc_custom_style_helper.h"
 #include "lc_palette_color_utils.h"
@@ -34,12 +35,15 @@
 #include "lc_repository_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_repository_viewport_theme.h"
+#include "lc_repository_widgets.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_types.h"
+#include "lc_settings_widget.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_styling_profile_import_export_helper.h"
 #include "lc_typography_utils.h"
+#include "lc_widget_factory.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
 #include "rs_system.h"
@@ -52,6 +56,7 @@ LC_UIStyleManager::LC_UIStyleManager(QC_ApplicationWindow* appWindow)
     m_fusionSkinsRepository = std::make_unique<LC_RepositoryFusionSkin>("");
     m_metricsRepository = std::make_unique<LC_RepositoryMetrics>("");
     m_paletteRepository = std::make_unique<LC_RepositoryPalette>("");
+    m_widgetsRepository = std::make_unique<LC_RepositoryWidgets>("");
 }
 
 LC_UIStyleManager::~LC_UIStyleManager() = default;
@@ -80,6 +85,7 @@ void LC_UIStyleManager::initRepositories() {
 
     m_iconStylesRepository->setConfigDir(baseDir + "/icon_styles");
     m_typographyRepository->setConfigDir(baseDir + "/typography");
+    m_widgetsRepository->setConfigDir(baseDir + "/widgets");
     m_graphicViewRepository->setConfigDir(baseDir + "/drafting");
     m_fusionSkinsRepository->setConfigDir(baseDir + "/fusion_skins");
     m_metricsRepository->setConfigDir(baseDir + "/fusion_metrics");
@@ -203,7 +209,7 @@ void LC_UIStyleManager::saveIconColorsOptions(LC_IconColorsOptions& options) con
 
 // --- High-Level Theme & Style Application Actions ---
 bool LC_UIStyleManager::applyThemeToApplication(const PaletteConfig& paletteConfig, const ControlStyleConfig& controlStyle,
-                                                const StyleMetricsConfig& metrics, const FontConfig& font, bool isDarkMode) {
+                                                const StyleMetricsConfig& metrics, const FontConfig& font,  const LC_WidgetsConfig& widgets, bool isDarkMode) {
     const ColorSchemeData& scheme = isDarkMode ? paletteConfig.dark : paletteConfig.light;
 
     // 1. Build custom QPalette using scheme colors and controlStyle's visual archetype
@@ -233,7 +239,10 @@ bool LC_UIStyleManager::applyThemeToApplication(const PaletteConfig& paletteConf
     const auto linkedIconsTheme = paletteConfig.useThemeDefaultIcons ? paletteConfig.linkedIconStyleName : "";
     applyActiveOrThemeIconStyle(linkedIconsTheme, isDarkMode);
 
-    // 8. Force update on top-level widgets
+    // 8. Apply toolbars and docking widgets layout config
+    applyWidgetsConfig(widgets);
+
+    // 9. Force update on top-level widgets
     updateAllTopLevelWidgets();
 
     return true;
@@ -250,6 +259,7 @@ void LC_UIStyleManager::applyActiveStyleAndTheme() {
             applyNonFusionStyle(styleName);
             applyActiveStyleSheet();
             applyGlobalTypographyAndIcons();
+            applyActiveWidgets();
         }
     }
     else {
@@ -277,8 +287,9 @@ void LC_UIStyleManager::applyActiveThemeOverride() {
     const ControlStyleConfig skin = loadSkinOrDefault(getActiveSkin());
     const StyleMetricsConfig metrics = loadMetricsOrDefault(getActiveMetrics());
     const FontConfig font = loadFontOrDefault(getActiveTypography());
+    const LC_WidgetsConfig widgets = loadWidgetsOrDefault(getActiveWidgetsScheme());
 
-    applyThemeToApplication(palette, skin, metrics, font, isDarkMode);
+    applyThemeToApplication(palette, skin, metrics, font, widgets, isDarkMode);
 }
 
 void LC_UIStyleManager::applyActiveIconStyle() const {
@@ -297,13 +308,16 @@ void LC_UIStyleManager::applyActiveIconStyle() const {
 }
 
 void LC_UIStyleManager::applyTransientTheme(bool allowStyle, const QString& styleName, const QString& paletteKey, const QString& skinKey,
-                                            const QString& metricsKey, const QString& typographyKey, const QString& iconStyleKey,
+                                            const QString& metricsKey, const QString& typographyKey, const QString& widgetsKey,const QString& iconStyleKey,
                                             ThemeModeOverride themeModeOverride) {
     if (!allowStyle) {
         resetToNativeStyle();
 
         const FontConfig font = loadFontOrDefault(typographyKey);
         applyThemeTypography(font);
+
+        const LC_WidgetsConfig widgets = loadWidgetsOrDefault(widgetsKey);
+        applyWidgetsConfig(widgets);
 
         const bool isDarkMode = LC_PaletteColorUtils::isPaletteDarkMode();
         applyActiveOrThemeIconStyle(iconStyleKey, isDarkMode);
@@ -317,14 +331,18 @@ void LC_UIStyleManager::applyTransientTheme(bool allowStyle, const QString& styl
         const ControlStyleConfig skin = loadSkinOrDefault(skinKey);
         const StyleMetricsConfig metrics = loadMetricsOrDefault(metricsKey);
         const FontConfig font = loadFontOrDefault(typographyKey);
+        const LC_WidgetsConfig widgets = loadWidgetsOrDefault(widgetsKey);
 
-        applyThemeToApplication(palette, skin, metrics, font, isDarkMode);
+        applyThemeToApplication(palette, skin, metrics, font, widgets, isDarkMode);
     }
     else {
         applyNonFusionStyle(styleName);
 
         const FontConfig font = loadFontOrDefault(typographyKey);
         applyThemeTypography(font);
+
+        const LC_WidgetsConfig widgets = loadWidgetsOrDefault(widgetsKey);
+        applyWidgetsConfig(widgets);
     }
 
     applyActiveOrThemeIconStyle(iconStyleKey, isDarkMode);
@@ -462,6 +480,7 @@ void LC_UIStyleManager::resetToNativeStyle() {
     qApp->setStyleSheet("");
 
     applyGlobalTypographyAndIcons();
+    applyActiveWidgets();
     updateAllTopLevelWidgets();
 }
 
@@ -516,6 +535,15 @@ FontConfig LC_UIStyleManager::loadFontOrDefault(const QString& key) const {
     return font;
 }
 
+LC_WidgetsConfig LC_UIStyleManager::loadWidgetsOrDefault(const QString& key) const {
+    LC_WidgetsConfig widgets;
+    if (key.isEmpty() || key == CFG_AppState::DEFAULT_THEME_KEY || m_widgetsRepository == nullptr || !m_widgetsRepository->
+        loadByKey(key, widgets)) {
+        LC_WidgetsConfigUtils::initializeDefaultConfig(widgets);
+        }
+    return widgets;
+}
+
 void LC_UIStyleManager::applyNonFusionStyle(const QString& styleName) {
     QStyle* nativeStyle = QStyleFactory::create(styleName);
     if (nativeStyle != nullptr) {
@@ -531,4 +559,81 @@ void LC_UIStyleManager::updateAllTopLevelWidgets() const {
             widget->update();
         }
     }
+}
+
+void LC_UIStyleManager::applyActiveWidgets() {
+    const LC_WidgetsConfig widgets = loadWidgetsOrDefault(getActiveWidgetsScheme());
+    applyWidgetsConfig(widgets);
+}
+
+void LC_UIStyleManager::applyWidgetsConfig(const LC_WidgetsConfig& config) {
+    using namespace CFG_Widgets;
+
+    // 1. Commit config values into persistent CFG_Widgets settings
+    o_ToolbarAllowIconSize = config.toolbarAllowIconSize;
+    o_ToolbarIconSize = config.toolbarIconSize;
+    o_PickValueButtonsFlatIcons = config.pickValueButtonsFlatIcons;
+
+    o_DockWidgetsFlatButtons = config.dockWidgetsFlatButtons;
+    o_DockWidgetsIconSize = config.dockWidgetsIconSize;
+    o_DockTabDisplayMode = config.dockTabDisplayMode;
+    o_DockTabOverrideIconSize = config.dockTabOverrideIconSize;
+    o_DockTabIconSize = config.dockTabIconSize;
+    o_DockTabVertical = config.dockTabVertical;
+    o_DockWidgetTitleBarVertical = config.dockTitleBarVertical;
+
+    o_CADDockWidgetFlatButtons = config.cadDockWidgetFlatButtons;
+    o_CADDockWidgetIconSize = config.cadDockWidgetIconSize;
+    o_CADDockWidgetColumnsCount = config.cadDockWidgetColumnsCount;
+    o_CADDockTabDisplayMode = config.cadDockTabDisplayMode;
+    o_CADDockTabOverrideIconSize = config.cadDockTabOverrideIconSize;
+    o_CADDockTabIconSize = config.cadDockTabIconSize;
+    o_CADDockWidgetTitleBarVertical = config.cadDockTitleBarVertical;
+    o_CADDockTabVertical = config.cadDockVerticalTabs;
+
+    o_CADToolsMatrixFlatButtons = config.cadToolsMatrixFlatButtons;
+    o_CADToolsMatrixIconSize = config.cadToolsMatrixIconSize;
+    o_CADToolsMatrixColumnsCount = config.cadToolsMatrixColumnsCount;
+
+    o_DockAllowNested = config.dockAllowNested;
+
+    o_StatusBarAllowHeight = config.allowStatusbarHeight;
+    o_StatusbarHeight = config.statusbarHeight;
+    o_StatusBarAllowFontSize = config.allowStatusbarFontSize;
+    o_StatusbarFontSize = config.statusbarFontSize;
+
+    // 2. Synchronize main window widgets and dock layout
+    if (m_appWindow != nullptr) {
+        m_appWindow->updateToolbarsIconSize(config.toolbarAllowIconSize, config.toolbarIconSize);
+
+        if (m_appWindow->statusBar() != nullptr) {
+            if (config.allowStatusbarFontSize) {
+                QFont font;
+                font.setPointSize(config.statusbarFontSize);
+                m_appWindow->statusBar()->setFont(font);
+            }
+            if (config.allowStatusbarHeight) {
+                m_appWindow->statusBar()->setMinimumHeight(config.statusbarHeight);
+            }
+        }
+
+        LC_WidgetFactory::updateDockOptions(m_appWindow,
+                                            config.dockAllowNested,
+                                            config.cadDockVerticalTabs,
+                                            config.dockTabVertical);
+
+        LC_WidgetFactory::updateDockWidgetsTitleBarType(m_appWindow,
+                                                       config.cadDockTitleBarVertical,
+                                                       config.dockTitleBarVertical);
+
+        m_appWindow->fireWidgetSettingsChanged();
+    }
+}
+
+QString LC_UIStyleManager::getActiveWidgetsScheme() const {
+    return CFG_AppState::o_ActiveWidgetsScheme;
+}
+
+void LC_UIStyleManager::setActiveWidgetsScheme(const QString& name) {
+    CFG_AppState::o_ActiveWidgetsScheme = name;
 }

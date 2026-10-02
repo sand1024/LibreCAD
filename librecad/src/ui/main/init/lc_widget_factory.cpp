@@ -117,19 +117,19 @@ void LC_WidgetFactory::initLeftCADSidebar() {
     if (enable_left_sidebar) {
         using namespace CFG_Widgets;
 
-        const int leftSidebarAllColumnsCount = o_LeftToolbarAllColumnsCount;
-        const int leftSidebarAllIconSize = o_LeftToolbarAllIconSize;
-        const bool flatIconsAll = o_CadToolsMatrixFlatIcons;
+        const int leftSidebarAllColumnsCount = o_CADToolsMatrixColumnsCount;
+        const int leftSidebarAllIconSize = o_CADToolsMatrixIconSize;
+        const bool flatIconsAll = o_CADToolsMatrixFlatButtons;
         createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
 
-        const int leftSidebarColumnsCount = o_LeftToolbarColumnsCount;
-        const int leftSidebarIconSize = o_LeftToolbarIconSize;
-        const bool flatIcons = o_CadToolsFlatIcons;
+        const int leftSidebarColumnsCount = o_CADDockWidgetColumnsCount;
+        const int leftSidebarIconSize = o_CADDockWidgetIconSize;
+        const bool flatIcons = o_CADDockWidgetFlatButtons;
         createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
     }
 
-    LC_WidgetFactory::updateDockWidgetsTitleBarType(m_appWin, CFG_Widgets::o_CadDockTitleBarVertical,
-                                                            CFG_Widgets::o_DockTitleBarVertical);
+    LC_WidgetFactory::updateDockWidgetsTitleBarType(m_appWin, CFG_Widgets::o_CADDockWidgetTitleBarVertical,
+                                                            CFG_Widgets::o_DockWidgetTitleBarVertical);
 }
 
 void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
@@ -456,7 +456,7 @@ void LC_WidgetFactory::dockAndTabifyByName(QC_ApplicationWindow* mainWin, const 
 }
 
 void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler) {
-    const bool verticalTitle = CFG_Widgets::o_DockTitleBarVertical;
+    const bool verticalTitle = CFG_Widgets::o_DockWidgetTitleBarVertical;
 
     const QList<QDockWidget*> rightDocks = {
         createLibraryWidget(actionHandler),
@@ -475,8 +475,8 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler) {
     dockAndTabifyGroup(m_appWin, Qt::RightDockWidgetArea, rightDocks);
 
     updateDockWidgetsTitleBarType(m_appWin,
-                                    CFG_Widgets::o_CadDockTitleBarVertical,
-                                    CFG_Widgets::o_DockTitleBarVertical);
+                                    CFG_Widgets::o_CADDockWidgetTitleBarVertical,
+                                    CFG_Widgets::o_DockWidgetTitleBarVertical);
 
 
     // Only resize when the app is opened for the first time
@@ -694,8 +694,8 @@ void LC_WidgetFactory::initStatusBar() {
 
         {
             using namespace CFG_Widgets;
-            const bool allow_statusbar_fontsize = o_AllowStatusbarFontSize;
-            const bool allow_statusbar_height = o_AllowStatusbarHeight;
+            const bool allow_statusbar_fontsize = o_StatusBarAllowFontSize;
+            const bool allow_statusbar_height = o_StatusBarAllowHeight;
 
             if (allow_statusbar_fontsize) {
                 const int fontsize = o_StatusbarFontSize;

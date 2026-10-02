@@ -851,7 +851,7 @@ QMenu* QC_ApplicationWindow::getRecentFilesMenu() const {
 
 void QC_ApplicationWindow::updateToolbarsIconSize() {
     using namespace CFG_Widgets;
-    updateToolbarsIconSize(o_AllowToolbarIconSize, o_ToolbarIconSize);
+    updateToolbarsIconSize(o_ToolbarAllowIconSize, o_ToolbarIconSize);
 }
 
 void QC_ApplicationWindow::updateToolbarsIconSize(bool allowCustom, int customSize) {

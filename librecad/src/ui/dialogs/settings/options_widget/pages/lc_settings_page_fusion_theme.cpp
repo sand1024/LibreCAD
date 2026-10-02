@@ -175,10 +175,11 @@ void LC_SettingsPageFusionTheme::applyTransientTheme() {
     const QString metricsKey = m_styleManager->getActiveMetrics();
     const QString typographyKey = m_styleManager->getActiveTypography();
     const QString iconStyleKey = m_styleManager->getActiveIconStyle();
+    const QString widgetsKey = m_styleManager->getActiveWidgetsScheme();
 
     m_styleManager->applyTransientTheme(allowStyle, styleName,
                                         paletteKey, skinKey, metricsKey,
-                                        typographyKey, iconStyleKey,
+                                        typographyKey, widgetsKey, iconStyleKey,
                                         themeModeOverride);
 }
 

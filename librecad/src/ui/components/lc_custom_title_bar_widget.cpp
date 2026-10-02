@@ -229,7 +229,7 @@ bool LC_CustomTitleBarWidget::event(QEvent* event) {
 }
 
 bool LC_CustomTitleBarWidget::checkOrientationFromSettings() const {
-    const bool verticalTitle = CFG_Widgets::o_DockTitleBarVertical;
+    const bool verticalTitle = CFG_Widgets::o_DockWidgetTitleBarVertical;
     return verticalTitle;
 }
 

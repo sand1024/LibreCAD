@@ -102,11 +102,7 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
     }
 
     dialog->finalizeInitialization();
-
-    if (!initialPageId.isEmpty()) {
-        dialog->selectPage(initialPageId);
-    }
-
+    dialog->requestInitialPage(initialPageId);
     int execResult = dialog->exec();
     const bool accepted = (execResult == QDialog::Accepted);
 

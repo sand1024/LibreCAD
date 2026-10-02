@@ -24,11 +24,8 @@
 #ifndef LC_SETTINGS_PAGE_TOOLBARS_AND_DOCKS_H
 #define LC_SETTINGS_PAGE_TOOLBARS_AND_DOCKS_H
 
-#include <complex.h>
-
+#include "lc_preset_manager_widgets.h"
 #include "lc_settings_page_base.h"
-#include "lc_styling_preview_controller.h"
-#include "qc_applicationwindow.h"
 
 namespace Ui {
     class LC_SettingsPageToolbarsAndDocks;
@@ -36,29 +33,33 @@ namespace Ui {
 
 class LC_SettingsPageToolbarsAndDocks : public LC_SettingsPageBase, public LC_StylingPreviewAware {
     Q_OBJECT
+
 public:
     explicit LC_SettingsPageToolbarsAndDocks(QObject* parent = nullptr);
     ~LC_SettingsPageToolbarsAndDocks() override;
+    void bindToPresetManager(LC_PresetManagerInterface* manager);
 
     bool saveSettings() override;
+    bool isModified() const;
     bool acceptsSharedPreview() override { return true; }
     void updateLivePreview() override;
     void setPreviewController(LC_StylingPreviewController* controller) override;
     QWidget* getBottomWidget() override;
-
 protected:
     void onControlChanged();
     void setupUi() override;
     void setupBehavior() override;
-    void setupBindings() override;
     void loadSettings();
 
+    void populateUiFromConfig();
+    void syncUiToWorkingConfig();
+
     bool m_blockSignals = false;
-    LC_UIStyleManager* m_styleManager;
+    LC_UIStyleManager* m_styleManager = nullptr;
+    LC_PresetManagerWidgets* m_presetManager = nullptr;
 
 private:
     LC_StylingPreviewController* m_previewController = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageToolbarsAndDocks> ui;
 };
-
 #endif

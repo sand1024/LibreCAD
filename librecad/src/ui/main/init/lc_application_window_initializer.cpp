@@ -198,8 +198,8 @@ void LC_ApplicationWindowInitializer::initDockCorners() const {
     {
         using namespace CFG_Widgets;
         const bool allowDockNesting = o_DockAllowNested;
-        const bool verticalTabs = o_DockVerticalTabs;
-        const bool cadVerticalTabs = o_CadDockVerticalTabs;
+        const bool verticalTabs = o_DockTabVertical;
+        const bool cadVerticalTabs = o_CADDockTabVertical;
         LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, cadVerticalTabs, verticalTabs);
     }
 
@@ -240,7 +240,7 @@ void LC_ApplicationWindowInitializer::initCentralWidget(){
 
 void LC_ApplicationWindowInitializer::initIconSize() const {
     using namespace CFG_Widgets;
-    const bool hasCustomIconSize = o_AllowToolbarIconSize;
+    const bool hasCustomIconSize = o_ToolbarAllowIconSize;
     if (hasCustomIconSize) {
         const int iconSize = o_ToolbarIconSize;
         m_appWin->setIconSize(QSize(iconSize, iconSize));
