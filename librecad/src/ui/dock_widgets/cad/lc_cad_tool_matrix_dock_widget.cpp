@@ -28,6 +28,8 @@
 #include <QPainter>
 #include <QToolButton>
 #include <QProxyStyle>
+#include <QScrollArea>
+#include <QScrollBar>
 
 #include "lc_action_group_manager.h"
 #include "lc_action_node.h"
@@ -36,8 +38,8 @@
 
 class LC_ProxyStyle;
 
-LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent, bool scrollContent)
-    : LC_CADDockWidget(parent, scrollContent) {
+LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent)
+    : LC_CADDockWidget(parent) {
     if (m_frame) {
         m_frame->installEventFilter(this); // Intercept m_frame paint events
     }
@@ -102,6 +104,28 @@ void LC_CADToolMatrixDockWidget::updateActionsFromNodes(const QList<ActionNode>&
     addActions(actions, cols, sz, flat);
 }
 
+void LC_CADToolMatrixDockWidget::setupUI() {
+    m_scrollArea = new QScrollArea(this);
+    m_scrollArea->setWidgetResizable(true);
+    m_scrollArea->setFrameStyle(QFrame::NoFrame); // Avoid double borders with the dock widget
+    m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Clip horizontally instead of showing scrollbars
+    m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    m_scrollArea->setWidget(m_frame);
+    setWidget(m_scrollArea);
+
+    // Connect rangeChanged signal to dynamically trigger minimum width updates on scrollbar transitions [74]
+    connect(m_scrollArea->verticalScrollBar(), &QScrollBar::rangeChanged, this, &LC_CADDockWidget::updateMinimumWidth);
+
+    doSetupGridLayout(m_gridLayout);
+}
+
+void LC_CADToolMatrixDockWidget::getMetrics(int& cols, int& sz, bool& flat) const {
+    using namespace CFG_Widgets;
+    cols = o_CADToolsMatrixColumnsCount;
+    sz   = o_CADToolsMatrixIconSize;
+    flat = o_CADToolsMatrixFlatButtons;
+}
+
 void LC_CADToolMatrixDockWidget::changeEvent(QEvent* event) {
     LC_CADDockWidget::changeEvent(event);
 
@@ -150,7 +174,7 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
     QMap<QPair<int, int>, QToolButton*> gridMap;
     // 1. Scan and map all grid layout toolbuttons to row/column coordinate keys
     for (int i = 0; i < m_gridLayout->count(); ++i) {
-        QLayoutItem* item = m_gridLayout->itemAt(i);
+        const QLayoutItem* item = m_gridLayout->itemAt(i);
         if (!item)
             continue;
         if (auto* btn = qobject_cast<QToolButton*>(item->widget())) {
@@ -161,13 +185,13 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
     }
 
     QSet<int> uniqueGroups;
-    for (auto* btn : gridMap) {
+    for (const auto* btn : gridMap) {
         QVariant g = btn->property("buttonGroup");
         if (g.isValid()) {
             uniqueGroups.insert(g.toInt());
         }
     }
-    int totalGroups = uniqueGroups.size();
+    const int totalGroups = uniqueGroups.size();
 
     auto* style = qobject_cast<const LC_ProxyStyle*>(QApplication::style());
     if (style) {
@@ -187,16 +211,16 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
         }
 
         // Base checks (Any physical button neighbor present)
-        bool hasT = gridMap.contains(qMakePair(r - 1, c));
-        bool hasB = gridMap.contains(qMakePair(r + 1, c));
-        bool hasL = gridMap.contains(qMakePair(r, c - 1));
-        bool hasR = gridMap.contains(qMakePair(r, c + 1));
+        const bool hasT = gridMap.contains(qMakePair(r - 1, c));
+        const bool hasB = gridMap.contains(qMakePair(r + 1, c));
+        const bool hasL = gridMap.contains(qMakePair(r, c - 1));
+        const bool hasR = gridMap.contains(qMakePair(r, c + 1));
 
         // Group-matching checks
-        bool sameT = hasT && (gridMap.value(qMakePair(r - 1, c))->property("buttonGroup") == groupVal);
-        bool sameB = hasB && (gridMap.value(qMakePair(r + 1, c))->property("buttonGroup") == groupVal);
-        bool sameL = hasL && (gridMap.value(qMakePair(r, c - 1))->property("buttonGroup") == groupVal);
-        bool sameR = hasR && (gridMap.value(qMakePair(r, c + 1))->property("buttonGroup") == groupVal);
+        const bool sameT = hasT && (gridMap.value(qMakePair(r - 1, c))->property("buttonGroup") == groupVal);
+        const bool sameB = hasB && (gridMap.value(qMakePair(r + 1, c))->property("buttonGroup") == groupVal);
+        const bool sameL = hasL && (gridMap.value(qMakePair(r, c - 1))->property("buttonGroup") == groupVal);
+        const bool sameR = hasR && (gridMap.value(qMakePair(r, c + 1))->property("buttonGroup") == groupVal);
 
         int mask = 0;
 

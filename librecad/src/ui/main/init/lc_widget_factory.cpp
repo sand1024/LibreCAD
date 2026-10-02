@@ -81,6 +81,8 @@ void LC_WidgetFactory::updateDockOptions(QC_ApplicationWindow* mainWin, const bo
     mainWin->setTabPosition(Qt::RightDockWidgetArea, normalVerticalTabs ? QTabWidget::East : QTabWidget::South);
 }
 
+
+
 void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin,
                                                      const bool cadVerticalTitle,
                                                      const bool normalVerticalTitle) {
@@ -94,11 +96,15 @@ void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow*
             continue;
         }
 
-        const bool isCad = dw->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()
-                           || dw->inherits("LC_CADDockWidget");
+        const bool isCad = LC_CADDockWidget::isCADDockWidget(dw);
+        if (isCad) {
+            setDockWidgetTitleType(dw, cadVerticalTitle);
+            continue;
+        }
+
         const bool isDoc = dw->property("_lc_doc_widget").isValid();
 
-        if (isCad || isDoc) {
+        if (isDoc) {
             setDockWidgetTitleType(dw, isCad ? cadVerticalTitle : normalVerticalTitle);
         }
     }
@@ -107,33 +113,23 @@ void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow*
 
 void LC_WidgetFactory::initWidgets() {
     initStatusBar();
-    initLeftCADSidebar();
+    createCADDockWidgetsSidebar();
     createRightSidebar(m_appWin->m_actionHandler.get());
     initSpecialToolbars();
 }
 
-void LC_WidgetFactory::initLeftCADSidebar() {
-    const bool enable_left_sidebar = CFG_Startup::o_EnableLeftSidebar;
-    if (enable_left_sidebar) {
-        using namespace CFG_Widgets;
-
-        const int leftSidebarAllColumnsCount = o_CADToolsMatrixColumnsCount;
-        const int leftSidebarAllIconSize = o_CADToolsMatrixIconSize;
-        const bool flatIconsAll = o_CADToolsMatrixFlatButtons;
-        createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
-
-        const int leftSidebarColumnsCount = o_CADDockWidgetColumnsCount;
-        const int leftSidebarIconSize = o_CADDockWidgetIconSize;
-        const bool flatIcons = o_CADDockWidgetFlatButtons;
-        createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
+void LC_WidgetFactory::createCADDockWidgetsSidebar() {
+    const bool enabledCADDockWidgets = CFG_Startup::o_EnableCADDockWidgets;
+    if (enabledCADDockWidgets) {
+        createCADToolsMatrixSidebar();
+        createCADSidebar();
     }
 
-    LC_WidgetFactory::updateDockWidgetsTitleBarType(m_appWin, CFG_Widgets::o_CADDockWidgetTitleBarVertical,
-                                                            CFG_Widgets::o_DockWidgetTitleBarVertical);
+    updateDockWidgetsTitleBarType(m_appWin, CFG_Widgets::o_CADDockWidgetTitleBarVertical, CFG_Widgets::o_DockWidgetTitleBarVertical);
 }
 
-void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
-    auto* result = new LC_CADToolMatrixDockWidget(m_appWin, true);
+void LC_WidgetFactory::createCADToolsMatrixSidebar() {
+    auto* result = new LC_CADToolMatrixDockWidget(m_appWin);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     result->setObjectName("dock_cad_mega");
     result->setWindowTitle(tr("Tools"));
@@ -141,7 +137,9 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
 
     auto iconPath = ":/icons/line_polygon_star.lci";
     auto title = tr("CAD Tools Matrix");
-    auto* titleBar = new LC_CustomTitleBarWidget(tr("Matrix"), title, iconPath, result);
+    auto* titleBar = new LC_CustomTitleBarWidget(tr("Matrix"), title, iconPath, result, []()->bool {
+        return CFG_Widgets::o_CADDockWidgetTitleBarVertical;
+    });
     result->setTitleBarWidget(titleBar);
     result->hide();
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -158,7 +156,7 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, result);
 }
 
-void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, const bool flatButtons) {
+void LC_WidgetFactory::createCADSidebar() {
     auto* line = cadDockWidget("line");
     auto* point = cadDockWidget("point");
     auto* shape = cadDockWidget("shape");
@@ -196,7 +194,7 @@ void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, c
 
 QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName,
                                                 const QString& verticalTitle, const char* toggleActionName,
-                                                const QString& toggleActionDescrition) const {
+                                                const QString& toggleActionDescription) const {
     const auto result = new LC_DockWidget(m_appWin, horizontalTitle, verticalTitle);
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     result->setWindowTitle(horizontalTitle);
@@ -209,24 +207,31 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
         result->setWindowIcon(icon);
     }
 
-    auto* titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result);
+    auto* titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result, []()->bool {
+        return CFG_Widgets::o_DockWidgetTitleBarVertical;
+    });
     result->setTitleBarWidget(titleBar);
 
-    registerDockWidgetAction("dock_widgets", result, toggleActionName, horizontalTitle, iconName, toggleActionDescrition);
+    registerDockWidgetAction("dock_widgets", result, toggleActionName, horizontalTitle, iconName, toggleActionDescription);
     return result;
+}
+
+void LC_WidgetFactory::setupDockWidget(QDockWidget* dock, LC_GraphicViewAwareWidget* const widget) {
+    widget->setFocusPolicy(Qt::NoFocus);
+    dock->setWidget(widget);
+
+    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_GraphicViewAwareWidget::updateWidgetSettings);
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
 }
 
 QDockWidget* LC_WidgetFactory::createPenPalletteWidget() {
     const auto dock = createDockWidget(tr("Pens Palette"), "pen_palette_dockwidget", ":/icons/widget_pens_palette.lci", tr("Pens"),
                                        LC_ActionNames::ToggleDockPenPalette, tr("Toggles visibility of Pens Palette tool window."));
     const auto widget = new LC_PenPaletteWidget("PenPalette", dock);
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
+
+    setupDockWidget(dock, widget);
 
     connect(widget, &LC_PenPaletteWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PenPaletteWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
-
     m_appWin->m_penPaletteWidget = widget;
     return dock;
 }
@@ -235,12 +240,10 @@ QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionH
     const auto dock = createDockWidget(tr("Layers"), "layer_dockwidget", ":/icons/widget_layer_list.lci", tr("Layers"),
                                        LC_ActionNames::ToggleDockLayers, tr("Toggles visibility of Layers tool window."));
     const auto widget = new QG_LayerWidget(m_agm, actionHandler, dock, "Layer");
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
+
+    setupDockWidget(dock, widget);
 
     connect(widget, &QG_LayerWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_LayerWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_layerWidget = widget;
     return dock;
 }
@@ -249,12 +252,10 @@ QDockWidget* LC_WidgetFactory::createNamedViewsWidget() {
     const auto dock = createDockWidget(tr("Named Views"), "view_dockwidget", ":/icons/widget_views.lci", tr("Views"),
                                        LC_ActionNames::ToggleDockNamedViews, tr("Toggles visibility of Named Views tool window."));
     const auto widget = new LC_NamedViewsListWidget("View", dock);
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
 
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_NamedViewsListWidget::updateWidgetSettings);
+    setupDockWidget(dock, widget);
+
     connect(m_appWin->m_ucsListWidget, &LC_UCSListWidget::ucsListChanged, widget, &LC_NamedViewsListWidget::onUcsListChanged);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_namedViewsWidget = widget;
 
     QC_ApplicationWindow* win = m_appWin;
@@ -273,11 +274,8 @@ QDockWidget* LC_WidgetFactory::createUCSListWidget() {
     const auto dock = createDockWidget(tr("User Coordinate Systems"), "ucs_dockwidget", ":/icons/widget_ucs.lci", tr("UCSs"),
                                        LC_ActionNames::ToggleDockUCS, tr("Toggles visibility of UCS tool window."));
     const auto widget = new LC_UCSListWidget("UCS", dock);
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
+    setupDockWidget(dock, widget);
 
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_UCSListWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_ucsListWidget = widget;
     return dock;
 }
@@ -286,12 +284,10 @@ QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* act
     QDockWidget* dock = createDockWidget(tr("Layers Tree"), "layer_tree_dockwidget", ":/icons/widget_layer_tree.lci", tr("Layers Tree"),
                                          LC_ActionNames::ToggleDockLayerTree, tr("Toggles visibility of Layers Tree tool window."));
     const auto widget = new LC_LayerTreeWidget(actionHandler, dock, "Layer Tree");
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
+
+    setupDockWidget(dock, widget);
 
     connect(widget, &LC_LayerTreeWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_LayerTreeWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_layerTreeWidget = widget;
     return dock;
 }
@@ -300,11 +296,9 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget() {
     QDockWidget* dock = createDockWidget(tr("Entity Info"), "quick_entity_info", ":/icons/widget_info.lci", tr("Info"),
                                          LC_ActionNames::ToggleDockQuickInfo, tr("Toggles visibility of Entity Info tool window."));
     const auto widget = new LC_QuickInfoWidget(dock, m_agm->getActionsMap());
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
 
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_QuickInfoWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
+    setupDockWidget(dock, widget);
+
     m_appWin->m_quickInfoWidget = widget;
     return dock;
 }
@@ -314,12 +308,11 @@ QDockWidget* LC_WidgetFactory::createPropertySheetWidget() {
                                          LC_ActionNames::ToggleDockProperties, tr("Toggles visibility of Properties tool window."));
 
     const auto widget = new LC_PropertySheetWidget(dock, m_appWin->getActionContext(), m_agm);
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
 
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PropertySheetWidget::updateWidgetSettings);
+    setupDockWidget(dock, widget);
+
     connect(dock, &QDockWidget::visibilityChanged, widget, &LC_PropertySheetWidget::onDockVisibilityChanged);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
+
     m_appWin->m_propertySheetWidget = widget;
     return dock;
 }
@@ -329,12 +322,10 @@ QDockWidget* LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* act
                                        LC_ActionNames::ToggleDockBlocks, tr("Toggles visibility of Blocks tool window."));
 
     const auto widget = new QG_BlockWidget(m_agm, actionHandler, dock, "Block");
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
+
+    setupDockWidget(dock, widget);
 
     connect(widget, &QG_BlockWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_BlockWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
 
     m_appWin->m_blockWidget = widget;
     return dock;
@@ -345,14 +336,10 @@ QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actio
                                        LC_ActionNames::ToggleDockLibrary, tr("Toggles visibility of Library tool window."));
 
     const auto widget = new QG_LibraryWidget(actionHandler, dock, "Library");
-    widget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(widget);
 
-    // result->resize(240, 400);
+    setupDockWidget(dock, widget);
 
     connect(widget, &QG_LibraryWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_LibraryWidget::updateWidgetSettings);
-    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_libraryWidget = widget;
     return dock;
 }
@@ -456,8 +443,6 @@ void LC_WidgetFactory::dockAndTabifyByName(QC_ApplicationWindow* mainWin, const 
 }
 
 void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler) {
-    const bool verticalTitle = CFG_Widgets::o_DockWidgetTitleBarVertical;
-
     const QList<QDockWidget*> rightDocks = {
         createLibraryWidget(actionHandler),
         createBlockListWidget(actionHandler),
@@ -579,6 +564,7 @@ void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget* widget, const bool ve
     if (verticalTitleBar) {
         features |= QDockWidget::DockWidgetVerticalTitleBar;
     }
+    widget->setFeatures(QDockWidget::DockWidgetFeatures());
     widget->setFeatures(features);
     // const auto lcDocWidget = dynamic_cast<LC_DockWidget*>(widget);
     // if (lcDocWidget != nullptr) {
@@ -627,7 +613,9 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& groupName) {
         setWidgetToggleActionIcon(result, icon);
         result->setWindowIcon(icon);
     }
-    auto* titleBar = new LC_CustomTitleBarWidget(title, title, iconName, result);
+    auto* titleBar = new LC_CustomTitleBarWidget(title, title, iconName, result, []()->bool {
+        return CFG_Widgets::o_CADDockWidgetTitleBarVertical;
+    });
     result->setTitleBarWidget(titleBar);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
 

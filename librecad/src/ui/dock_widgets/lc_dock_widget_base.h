@@ -57,6 +57,8 @@ public:
     void setFocusTargetWidget(QWidget* target);
     QWidget* focusTargetWidget() const;
 
+    static const bool isCADDockWidget(QDockWidget* dw);
+
 public slots:
     void toggleDockVisibility();
 

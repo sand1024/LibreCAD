@@ -26,7 +26,7 @@
    <item row="4" column="0">
     <widget class="QGroupBox" name="gbCADWidgets">
      <property name="title">
-      <string>CAD Tools Windows (Groups)</string>
+      <string>CAD Tools Windows</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_cadWidgets">
       <item row="4" column="0" colspan="2">

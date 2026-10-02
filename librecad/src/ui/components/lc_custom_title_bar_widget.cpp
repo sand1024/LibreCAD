@@ -45,10 +45,10 @@
 
 // Constructor with separate strings for horizontal and vertical orientation
 LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle, const QString& verticalTitle, const QString& iconName,
-                                                 QWidget* parent, DisplayMode mode)
+                                                 QWidget* parent, const FunOrientationCheckFromSettings& orientationCheck, DisplayMode mode)
     : QWidget(parent), m_titleLabel(createTitleLabel(horizontalTitle)), m_iconLabel(nullptr), m_dockWidget(nullptr), m_closeButton(nullptr),
       m_floatButton(nullptr), m_horizontalTitle(horizontalTitle), m_verticalTitle(verticalTitle), m_iconName(iconName),
-      m_currentOrientation(Qt::Horizontal), m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false),
+      m_currentOrientation(Qt::Horizontal), m_funOrientationCheck(orientationCheck), m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false),
       m_verticalPixmapCache(nullptr), m_updateTimer(nullptr), m_tooltipTimer(nullptr), m_lastTooltipPos(QPoint()),
       m_textAlignment(TitleTextAlignment::Start), m_textDirection(TitleTextDirection::Vertical) {
 
@@ -84,8 +84,8 @@ LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle,
 
 
 // Backwards compatibility constructor override
-LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& title, const QString& iconName, QWidget* parent, DisplayMode mode)
-    : LC_CustomTitleBarWidget(title, title, iconName, parent, mode) {
+LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& title, const QString& iconName, QWidget* parent, const FunOrientationCheckFromSettings& orientationCheck, DisplayMode mode)
+    : LC_CustomTitleBarWidget(title, title, iconName, parent, orientationCheck, mode) {
 }
 
 LC_CustomTitleBarWidget::~LC_CustomTitleBarWidget() {
@@ -229,7 +229,10 @@ bool LC_CustomTitleBarWidget::event(QEvent* event) {
 }
 
 bool LC_CustomTitleBarWidget::checkOrientationFromSettings() const {
-    const bool verticalTitle = CFG_Widgets::o_DockWidgetTitleBarVertical;
+    bool verticalTitle = false;
+    if (m_funOrientationCheck != nullptr) {
+        verticalTitle = m_funOrientationCheck();
+    }
     return verticalTitle;
 }
 
@@ -409,7 +412,7 @@ void LC_CustomTitleBarWidget::updateButtonAndLabelGeometries() {
     // 2. Resolve Icon Visibility Policy
     bool shouldShowIcon = (m_displayMode != TextOnly);
     if (m_dockWidget != nullptr && proxyStyle != nullptr) {
-        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+        const bool isSpecial = LC_CADDockWidget::isCADDockWidget(m_dockWidget);
         shouldShowIcon = shouldShowIcon && (isSpecial ? proxyStyle->showSpecialDockIcons() : proxyStyle->showGenericDockIcons());
     }
 
@@ -1101,7 +1104,7 @@ void LC_CustomTitleBarWidget::updateTitleBar() {
         const FontConfig &fontCfg = proxyStyle->fontConfig();
 
         // Detect if this is the special (CAD-related) dock widget
-        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+        const bool isSpecial = LC_CADDockWidget::isCADDockWidget(m_dockWidget);
         const FontRoleConfig &roleCfg = isSpecial ? fontCfg.specialDockTitle : fontCfg.genericDockTitle;
 
         QFont font(fontCfg.mainFamily, fontCfg.mainSize + roleCfg.sizeOffset);

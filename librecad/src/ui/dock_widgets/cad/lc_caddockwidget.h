@@ -38,21 +38,24 @@ class QGridLayout;
 class LC_CADDockWidget : public LC_DockWidgetBase {
     Q_OBJECT
 public:
-    explicit LC_CADDockWidget(QWidget* parent, bool allTools = false);
-    virtual ~LC_CADDockWidget() override = default;
+    explicit LC_CADDockWidget(QWidget* parent);
+    ~LC_CADDockWidget() override = default;
 
     void addActions(const QList<QAction*>& list, int columns, int iconSize, bool flatButton);
-    void doUpdateWidgetSettings(int leftToolbarColumnsCount,
-                                int leftToolbarIconSize,
-                                bool leftToolbarFlatIcons);
+    void doUpdateWidgetSettings(int columnsCount,
+                                int iconSize,
+                                bool flatIcons);
     QSize minimumSizeHint() const override;
 
     virtual void updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm);
 
     static constexpr const char* PROPERTY_CAD_DOC_WIDGET = "_lc_cad_doc_widget";
 
+    static bool isCADDockWidget(const QWidget* dw);
+
 protected:
-    void getMetrics(int& cols, int& sz, bool& flat) const;
+    virtual void setupUI();
+    virtual void getMetrics(int& cols, int& sz, bool& flat) const;
     virtual void clear();
     // Hooks for subclass extensions (segmented matrix controls)
     virtual void onBeforeAddActions();
@@ -60,20 +63,20 @@ protected:
     virtual void handleIgnoredAction(QAction* action);
     virtual void configureButton(QToolButton* toolButton, QAction* action);
     virtual void onLayoutUpdated();
+
     virtual void doSetupGridLayout(QGridLayout* newGridLayout);
     void addSpacers(QGridLayout* layout, int columns, bool addHorizontal);
 
     QFrame* m_frame = nullptr;
     QGridLayout* m_gridLayout = nullptr;
     bool m_addHorizontalSpacer = false;
-    bool m_allTools = false;
     int m_columns{5};
     int m_iconSize{24};
     QScrollArea *m_scrollArea{nullptr};
-    void updateMinimumWidth();
 
 public slots:
     void updateWidgetSettings();
+    void updateMinimumWidth();
 };
 
 #endif

@@ -199,7 +199,7 @@ void LC_SpecialMenuService::bindDockWidgetsMenu(QMenu* parentMenu) {
 }
 
 void LC_SpecialMenuService::bindCadDockWidgetsMenu(QMenu* parentMenu) {
-    if (!CFG_Startup::o_EnableLeftSidebar) {
+    if (!CFG_Startup::o_EnableCADDockWidgets) {
         return;
     }
     auto group =  m_appWindow->getActionGroup("cad_dock_widgets");

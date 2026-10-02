@@ -46,7 +46,7 @@ void LC_SettingsPageGeneralStartup::setupBindings() {
         {ui->tab_mode_check_box, o_TabMode},
         {ui->maximize_checkbox, o_Maximize},
         {ui->cbOpenLastFiles, o_OpenLastOpenedFiles},
-        {ui->cbEnableCADDockWidgets, o_EnableLeftSidebar, true},
+        {ui->cbEnableCADDockWidgets, o_EnableCADDockWidgets, true},
         {ui->cad_toolbars_checkbox, o_EnableCADToolbars, true},
         {ui->cbClassicStatusBar, o_UseClassicStatusBar, true},
         {ui->cbDuplicateActionsPromptsInStatusBar, o_ShowCommandPromptInStatusBar},

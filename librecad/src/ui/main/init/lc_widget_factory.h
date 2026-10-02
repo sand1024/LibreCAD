@@ -27,7 +27,9 @@
 #include <lc_appwindowaware.h>
 
 #include "lc_action_factory.h"
+#include "lc_penpalettewidget.h"
 
+class LC_DockWidget;
 class QAction;
 class QToolBar;
 class QDockWidget;
@@ -49,7 +51,7 @@ public:
     static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting,
                                   bool cadVerticalTabs, bool normalVerticalTabs);
     static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin,
-                                             bool cadVerticalTitle, bool normalVerticalTitle);
+                                              bool cadVerticalTitle, bool normalVerticalTitle);
     template <class T>
     static void setWidgetToggleActionIcon(T* result, const QString& iconName);
     template <class T>
@@ -59,7 +61,8 @@ private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
     QDockWidget* createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName, const QString& verticalTitle,
-                                  const char* toggleActionName, const QString& toggleActionDescrition) const;
+                                  const char* toggleActionName, const QString& toggleActionDescription) const;
+    void setupDockWidget(QDockWidget* dock, LC_GraphicViewAwareWidget* widget);
     QDockWidget *createPenPalletteWidget();
     QDockWidget* createLayerWidget(const QG_ActionHandler* actionHandler);
     QDockWidget *createNamedViewsWidget();
@@ -75,11 +78,11 @@ private:
     void modifyCommandTitleBar(Qt::DockWidgetArea area) const;
     QDockWidget* createPenWizardWidget();
     void initSpecialToolbars();
-    void initLeftCADSidebar();
-    void createCADMegaSidebar(int columns, int iconSize, bool flatButtons);
+    void createCADDockWidgetsSidebar();
+    void createCADToolsMatrixSidebar();
     void createRightSidebar(QG_ActionHandler *actionHandler);
     void initStatusBar();
-    void createCADSidebar(int columns, int iconSize, bool flatButtons);
+    void createCADSidebar();
     LC_CADDockWidget *cadDockWidget(const QString &groupName);
     void addToBottom(QToolBar *toolbar) const;
     QToolBar* createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title, const QString& iconName,

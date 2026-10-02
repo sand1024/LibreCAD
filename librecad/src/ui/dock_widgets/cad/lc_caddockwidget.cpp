@@ -37,30 +37,18 @@
 #include "lc_action_node.h"
 #include "lc_settings_widget.h"
 
-LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
+void LC_CADDockWidget::setupUI() {
+    setWidget(m_frame);
+    doSetupGridLayout(m_gridLayout);
+}
+
+LC_CADDockWidget::LC_CADDockWidget(QWidget *parent)
     : LC_DockWidgetBase(parent, QString(), QString(), /*isCadDock=*/true),
       m_frame(new QFrame(this)),
-      m_gridLayout(new QGridLayout), m_allTools{allTools} {
+      m_gridLayout(new QGridLayout) {
 
   m_frame->setContentsMargins(0, 0, 0, 0);
-
-  if (allTools) {
-      m_scrollArea = new QScrollArea(this);
-      m_scrollArea->setWidgetResizable(true);
-      m_scrollArea->setFrameStyle(QFrame::NoFrame); // Avoid double borders with the dock widget
-      m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Clip horizontally instead of showing scrollbars
-      m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-      m_scrollArea->setWidget(m_frame);
-      setWidget(m_scrollArea);
-
-      // Connect rangeChanged signal to dynamically trigger minimum width updates on scrollbar transitions [74]
-      connect(m_scrollArea->verticalScrollBar(), &QScrollBar::rangeChanged,
-              this, &LC_CADDockWidget::updateMinimumWidth);
-  }
-  else {
-      setWidget(m_frame);
-  }
-  doSetupGridLayout(m_gridLayout);
+  setupUI();
   m_frame->setLayout(m_gridLayout);
 }
 
@@ -71,7 +59,7 @@ void LC_CADDockWidget::addSpacers(QGridLayout *layout, const int columns, bool a
   layout->addItem(verticalSpacer, filledRows + 1, 0, 1, 1);
 
     if (addHorizontal) {
-        auto hSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding,
+        const auto hSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding,
        QSizePolicy::Policy::Minimum); layout->addItem(hSpacer, 0, columns,
        filledRows + 1, 1);
     }
@@ -112,41 +100,40 @@ void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns, con
 }
 
 void LC_CADDockWidget::doSetupGridLayout(QGridLayout* newGridLayout) {
-    newGridLayout->setSpacing(0);
-    newGridLayout->setContentsMargins(0, 0, 0, 0);
+
 }
 
-void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const int leftToolbarIconSize, const bool leftToolbarFlatIcons) {
-  const QSize size(leftToolbarIconSize, leftToolbarIconSize);
+void LC_CADDockWidget::doUpdateWidgetSettings(int columnsCount, const int iconSize, const bool flatIcons) {
+  const QSize size(iconSize, iconSize);
 
   QList<QToolButton *> widgets = m_frame->findChildren<QToolButton *>();
 
   auto *newGridLayout = new QGridLayout();
   doSetupGridLayout(newGridLayout);
 
-  if (leftToolbarColumnsCount == 0) {
-    leftToolbarColumnsCount = 5;
+  if (columnsCount == 0) {
+    columnsCount = 5;
   }
 
   foreach (QToolButton *w, widgets) {
-    w->setAutoRaise(leftToolbarFlatIcons);
+    w->setAutoRaise(flatIcons);
     w->setIconSize(size);
 
-    w->setFixedSize(QSize(leftToolbarIconSize + 8, leftToolbarIconSize + 8));
+    w->setFixedSize(QSize(iconSize + 8, iconSize + 8));
 
     m_gridLayout->removeWidget(w);
     const int count = newGridLayout->count();
-    newGridLayout->addWidget(w, count / leftToolbarColumnsCount,
-                             count % leftToolbarColumnsCount);
+    newGridLayout->addWidget(w, count / columnsCount,
+                             count % columnsCount);
   }
   delete m_frame->layout();
 
-  addSpacers(newGridLayout, leftToolbarColumnsCount,m_addHorizontalSpacer);
+  addSpacers(newGridLayout, columnsCount,m_addHorizontalSpacer);
   m_frame->setLayout(newGridLayout);
   m_gridLayout = newGridLayout;
 
-  m_columns = leftToolbarColumnsCount;
-  m_iconSize = leftToolbarIconSize;
+  m_columns = columnsCount;
+  m_iconSize = iconSize;
 
   onLayoutUpdated(); // Hook
 
@@ -229,15 +216,9 @@ void LC_CADDockWidget::updateActionsFromNodes(const QList<ActionNode>& nodes, LC
 
 void LC_CADDockWidget::getMetrics(int& cols, int& sz, bool& flat) const {
     using namespace CFG_Widgets;
-    if (m_allTools) {
-        cols = o_CADToolsMatrixColumnsCount;
-        sz   = o_CADToolsMatrixIconSize;
-        flat = o_CADToolsMatrixFlatButtons;
-    } else {
-        cols = o_CADDockWidgetColumnsCount;
-        sz   = o_CADDockWidgetIconSize;
-        flat = o_CADDockWidgetFlatButtons;
-    }
+    cols = o_CADDockWidgetColumnsCount;
+    sz = o_CADDockWidgetIconSize;
+    flat = o_CADDockWidgetFlatButtons;
 }
 void LC_CADDockWidget::clear() {
     if (m_frame == nullptr) {
@@ -257,7 +238,7 @@ void LC_CADDockWidget::clear() {
 
     // Delete existing layout and recreate fresh grid
     if (m_frame->layout() != nullptr) {
-        QLayoutItem* item = nullptr;
+        const QLayoutItem* item = nullptr;
         while ((item = m_gridLayout->takeAt(0)) != nullptr) {
             delete item;
         }
@@ -270,7 +251,13 @@ void LC_CADDockWidget::clear() {
 }
 
 void LC_CADDockWidget::onBeforeAddActions() {}
-bool LC_CADDockWidget::shouldCreateButtonForAction(QAction* action) const { Q_UNUSED(action); return true; }
-void LC_CADDockWidget::handleIgnoredAction(QAction* action) { Q_UNUSED(action); }
-void LC_CADDockWidget::configureButton(QToolButton* toolButton, QAction* action) { Q_UNUSED(toolButton); Q_UNUSED(action); }
+bool LC_CADDockWidget::shouldCreateButtonForAction([[maybe_unused]]QAction* action) const { return true; }
+void LC_CADDockWidget::handleIgnoredAction([[maybe_unused]]QAction* action) {}
+void LC_CADDockWidget::configureButton([[maybe_unused]]QToolButton* toolButton, [[maybe_unused]]QAction* action) {}
 void LC_CADDockWidget::onLayoutUpdated() {}
+
+
+bool LC_CADDockWidget::isCADDockWidget(const QWidget* dw) {
+    const bool isCad = dw->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool() || dw->inherits("LC_CADDockWidget");
+    return isCad;
+}

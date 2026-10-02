@@ -346,8 +346,8 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
             child->setFont(menuFont);
         }
         else if (child->inherits("QDockWidget") || child->inherits("LC_CustomTitleBarWidget")) {
-            const bool isSpecial = child->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool() ||
-                                   (child->parentWidget() != nullptr && child->parentWidget()->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool());
+            const bool isSpecial = LC_CADDockWidget::isCADDockWidget(child) ||
+                                   (child->parentWidget() != nullptr && LC_CADDockWidget::isCADDockWidget(child->parentWidget()));
             child->setFont(isSpecial ? specialDockFont : genericDockFont);
         }
         else if (child->inherits("QToolBar") || child->inherits("QToolButton") || child->inherits("QPushButton")) {

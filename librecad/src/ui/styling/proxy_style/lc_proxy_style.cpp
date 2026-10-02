@@ -2485,7 +2485,7 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
         }
     }
 
-    const bool isCadDock = (dock != nullptr) && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+    const bool isCadDock = (dock != nullptr) && LC_CADDockWidget::isCADDockWidget(dock);
     const bool showIcon = isCadDock ? m_showSpecialDockIcons : m_showGenericDockIcons;
 
     // Identify if the title bar is an LC_CustomTitleBarWidget (which renders its own child icon/text labels)
@@ -4505,7 +4505,7 @@ void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex* option,
             }
             w = w->parentWidget();
         }
-        if (dock != nullptr && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
+        if (dock != nullptr && LC_CADDockWidget::isCADDockWidget(dock)) {
             strokeColor = desc.dockTitleBar.titleBarButtonStrokeIdleCad;
         }
     }
@@ -4598,7 +4598,7 @@ void LC_ProxyStyle::setupCustomDialogTitleBar(QDialog* dialog) const {
     // Create the custom title bar widget
     // Note: Since m_dockWidget is nullptr, it automatically runs in headless mode,
     // hiding the float button, showing only close, and connecting it to close() [2].
-    auto* titleBar = new LC_CustomTitleBarWidget(dialog->windowTitle(), dialog->windowTitle(), dialog->windowIcon().name(), dialog);
+    auto* titleBar = new LC_CustomTitleBarWidget(dialog->windowTitle(), dialog->windowTitle(), dialog->windowIcon().name(), dialog, nullptr);
 
     if (dialog->layout()) {
         dialog->layout()->setMenuBar(titleBar); // Natively injects above content margins [1]

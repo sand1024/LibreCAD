@@ -182,7 +182,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     // 5. Dock Title Bar Orientation (Horizontal vs Vertical)
     const bool verticalTitleBar = o_DockWidgetTitleBarVertical.get();
     for (auto* dock : m_allDockWidgets) {
-        if (dock != nullptr && !dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
+        if (dock != nullptr && !LC_CADDockWidget::isCADDockWidget(dock)) {
             QDockWidget::DockWidgetFeatures features = dock->features();
             if (verticalTitleBar) {
                 features |= QDockWidget::DockWidgetVerticalTitleBar;

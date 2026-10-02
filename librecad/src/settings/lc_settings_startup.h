@@ -30,7 +30,7 @@ namespace CFG_Startup {
     inline const LC_Setting<bool> o_ShowSplash(&Group, "ShowSplash", true);
     inline const LC_Setting<bool> o_TabMode(&Group, "TabMode", false);
     inline const LC_Setting<bool> o_Maximize(&Group, "Maximize", false);
-    inline const LC_Setting<bool> o_EnableLeftSidebar(&Group, "EnableLeftSidebar", true);
+    inline const LC_Setting<bool> o_EnableCADDockWidgets(&Group, "EnableLeftSidebar", true);
     inline const LC_Setting<bool> o_EnableCADToolbars(&Group, "EnableCADToolbars", true);
     inline const LC_Setting<bool> o_OpenLastOpenedFiles(&Group, "OpenLastOpenedFiles", true);
     inline const LC_Setting<bool> o_UseClassicStatusBar(&Group, "UseClassicStatusBar", false);
