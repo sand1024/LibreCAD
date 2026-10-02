@@ -360,6 +360,7 @@ void LC_NavigationControlsCreator::populateToolbarNodes(QToolBar* tb, const QLis
 
             auto* toolBtn = new QToolButton(tb);
             toolBtn->setIconSize(childButtonIconSize);
+            toolBtn->setToolButtonStyle(tb->toolButtonStyle());
 
             const QString cleanTitle = m_actionGroupManager->displayName(node.groupTitle, /*stripAmpersand=*/true);
             toolBtn->setText(cleanTitle);
@@ -440,6 +441,27 @@ void LC_NavigationControlsCreator::populateToolbar(QToolBar* tb, const ToolbarDe
 
     clearToolbar(tb);
 
+    disconnect(tb, &QToolBar::orientationChanged, nullptr, nullptr);
+
+    const auto applyStyle = [tb, tbDef](Qt::Orientation orientation) {
+        const Qt::ToolButtonStyle targetStyle = resolveToolbarButtonStyle(tbDef.buttonStyle, orientation);
+        if (tb->toolButtonStyle() != targetStyle) {
+            tb->setToolButtonStyle(targetStyle);
+        }
+        for (auto* btn : tb->findChildren<QToolButton*>()) {
+            if (btn != nullptr) {
+                btn->setToolButtonStyle(targetStyle);
+            }
+        }
+    };
+
+    applyStyle(tb->orientation());
+
+    connect(tb, &QToolBar::orientationChanged, this, [applyStyle](Qt::Orientation orientation) {
+        applyStyle(orientation);
+    });
+
+
     if (m_showToolbarTooltips) {
         const QString toolbarTitle = (m_actionGroupManager != nullptr) ? m_actionGroupManager->displayName(tbDef.name, true) : tbDef.name;
         tb->setToolTip(tr("Toolbar: %1").arg(toolbarTitle));
@@ -456,6 +478,9 @@ void LC_NavigationControlsCreator::populateToolbar(QToolBar* tb, const ToolbarDe
     }
 
     populateToolbarNodes(tb, tbDef.nodes);
+
+    // Ensure all child tool buttons populated into the toolbar receive the resolved style
+    applyStyle(tb->orientation());
 }
 
 void LC_NavigationControlsCreator::updatePenToolbar(const ToolbarDef& tbDef) {

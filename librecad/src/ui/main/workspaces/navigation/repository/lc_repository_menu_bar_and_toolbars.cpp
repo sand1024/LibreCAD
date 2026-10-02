@@ -85,6 +85,7 @@ QJsonObject LC_RepositoryMenuBarAndToolbars::configToJson(const NavigationLayout
         tbObj["name"] = tb.name;
         tbObj["icon"] = tb.icon;
         tbObj["area"] = tb.area;
+        tbObj["button_style"] = static_cast<int>(tb.buttonStyle);
         tbObj["visible"] = tb.visible;
         tbObj["kind"] = static_cast<int>(tb.kind);
         tbObj["nodes"] = serializeNodes(tb.nodes);
@@ -116,6 +117,8 @@ bool LC_RepositoryMenuBarAndToolbars::configFromJson(const QJsonObject& json, Na
         tb.icon = tbObj.value("icon").toString();
         tb.area = static_cast<Qt::ToolBarArea>(tbObj.value("area").toInt(static_cast<int>(Qt::TopToolBarArea)));
         tb.visible = tbObj.value("visible").toBool(true);
+        tb.buttonStyle = static_cast<Qt::ToolButtonStyle>(
+           tbObj.value("button_style").toInt(static_cast<int>(Qt::ToolButtonIconOnly)));
         tb.kind = static_cast<ToolbarKind>(tbObj.value("kind").toInt(static_cast<int>(ToolbarKind::Standard)));
         tb.nodes = deserializeNodes(tbObj.value("nodes").toArray());
         config.toolbars.append(tb);

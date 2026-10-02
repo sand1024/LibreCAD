@@ -110,12 +110,19 @@ void LC_SettingsPageMenusToolbars::setupUi() {
     ui->cbDockArea->addItem(tr("Bottom"), static_cast<int>(Qt::BottomToolBarArea));
     ui->cbDockArea->addItem(tr("Left"), static_cast<int>(Qt::LeftToolBarArea));
     ui->cbDockArea->addItem(tr("Right"), static_cast<int>(Qt::RightToolBarArea));
+
+    ui->cbToolButtonStyle->clear();
+    ui->cbToolButtonStyle->addItem(tr("Icon Only"), static_cast<int>(Qt::ToolButtonIconOnly));
+    ui->cbToolButtonStyle->addItem(tr("Text Only"), static_cast<int>(Qt::ToolButtonTextOnly));
+    ui->cbToolButtonStyle->addItem(tr("Text Beside Icon"), static_cast<int>(Qt::ToolButtonTextBesideIcon));
+    ui->cbToolButtonStyle->addItem(tr("Text Below Icon"), static_cast<int>(Qt::ToolButtonTextUnderIcon));
 }
 
 void LC_SettingsPageMenusToolbars::setupBehavior() {
     connect(ui->cbTarget, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageMenusToolbars::onTargetSelected);
     connect(ui->dualListWidget, &LC_ActionsDualListWidget::actionsChanged, this, &LC_SettingsPageMenusToolbars::onActionsModified);
     connect(ui->cbDockArea, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageMenusToolbars::onDockAreaChanged);
+    connect(ui->cbToolButtonStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageMenusToolbars::onToolButtonStyleChanged);
     connect(ui->pbNewToolbar, &QPushButton::clicked, this, &LC_SettingsPageMenusToolbars::onNewToolbarClicked);
     connect(ui->pbRenameToolbar, &QPushButton::clicked, this, &LC_SettingsPageMenusToolbars::onRenameToolbarClicked);
     connect(ui->pbDeleteToolbar, &QPushButton::clicked, this, &LC_SettingsPageMenusToolbars::onDeleteToolbarClicked);
@@ -190,14 +197,14 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
     addCategoryHeader(tr("── CAD Dock Widgets ──"));
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::CadMatrix) {
-            addEntry(config.toolbars[i].name, ContainerKind::CadMatrixItem, i);
+            const QString title = resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
+            addEntry(title, ContainerKind::CadMatrixItem, i);
         }
     }
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::CadDockWidget) {
             const QString title = resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
-            const QString docTitle = tr("%1 (Dock)").arg(title);
-            addEntry(docTitle, ContainerKind::CadDockWidgetItem, i);
+            addEntry(title, ContainerKind::CadDockWidgetItem, i);
         }
     }
 
@@ -246,74 +253,6 @@ void LC_SettingsPageMenusToolbars::updateActiveMenuBold() {
     }
 }
 
-void LC_SettingsPageMenusToolbars::updateEditorState(ContainerKind kind, int tbIdx, bool isReadOnly) {
-    const auto& config = m_presetManager->workingConfig();
-
-    const bool isMenu = (kind == ContainerKind::MenuMinimal ||
-                         kind == ContainerKind::MenuCompact ||
-                         kind == ContainerKind::MenuExtended);
-
-    const bool isMatrix = (kind == ContainerKind::CadMatrixItem);
-    const bool isToolbar = (kind == ContainerKind::ToolbarItem);
-    const bool isDockWidget = (kind == ContainerKind::CadDockWidgetItem || kind == ContainerKind::CadMatrixItem);
-
-
-    const ToolbarDef* tb = (tbIdx >= 0 && tbIdx < config.toolbars.size()) ? &config.toolbars[tbIdx] : nullptr;
-    const bool isCustom = (tb != nullptr && tb->kind == ToolbarKind::Custom);
-
-    // 1. Dock Area Controls
-    ui->lblArea->setVisible(isToolbar);
-    ui->cbDockArea->setVisible(isToolbar);
-    ui->cbDockArea->setEnabled(!isReadOnly);
-    if (isToolbar && tb != nullptr) {
-        const int areaIdx = ui->cbDockArea->findData(static_cast<int>(tb->area));
-        if (areaIdx >= 0) {
-            ui->cbDockArea->setCurrentIndex(areaIdx);
-        }
-    }
-
-    // fixme - sand - Should we mark somehow in UI that we're editing active menu ?
-    // ui->pbMakeActiveMenu->setVisible(isMenu);
-    // ui->pbMakeActiveMenu->setEnabled(!isReadOnly && isMenu && (config.activeMenuVariant != static_cast<int>(kind)));
-
-    // 3. Toolbar Creation / Modification buttons
-    ui->pbNewToolbar->setEnabled(!isReadOnly);
-    ui->pbRenameToolbar->setEnabled(!isReadOnly && isCustom);
-    ui->pbDeleteToolbar->setEnabled(!isReadOnly && isCustom);
-
-    // 4. Dual List Widget: enforce depth policies and palette filter modes
-    using Policy = LC_ActionsDualListWidget::GroupsPolicy;
-    if (isMenu || isMatrix) {
-        ui->dualListWidget->setGroupsPolicy(Policy::NestedGroups);
-    } else if (isDockWidget) {
-        ui->dualListWidget->setGroupsPolicy(Policy::NoGroups); // Strict Depth 1
-    } else {
-        ui->dualListWidget->setGroupsPolicy(Policy::SingleLevelAtRoot); // Depth 2
-    }
-
-    // Filter available actions palette to CAD tools only when editing CAD containers
-    const bool isCadContainer = (isMatrix || isDockWidget || (tb != nullptr && tb->kind == ToolbarKind::Cad));
-    const auto filterMode = isCadContainer
-        ? ActionsFilterMode::CadToolsOnly
-        : ActionsFilterMode::ToolbarsAndMenus;
-
-    ui->dualListWidget->setActionGroupManager(m_actionGroupManager, filterMode);
-    ui->dualListWidget->setReadOnly(isReadOnly);
-
-    // 5. Populate nodes
-    if (kind == ContainerKind::MenuMinimal) {
-        ui->dualListWidget->setNodes(config.menuMinimal);
-    } else if (kind == ContainerKind::MenuCompact) {
-        ui->dualListWidget->setNodes(config.menuCompact);
-    } else if (kind == ContainerKind::MenuExtended) {
-        ui->dualListWidget->setNodes(config.menuExtended);
-    } else if (tb != nullptr) {
-        ui->dualListWidget->setNodes(tb->nodes);
-    } else {
-        ui->dualListWidget->clear();
-    }
-}
-
 void LC_SettingsPageMenusToolbars::syncUiFromWorkingConfig() {
     if (m_presetManager == nullptr) {
         return;
@@ -357,6 +296,7 @@ void LC_SettingsPageMenusToolbars::syncCurrentContainerToConfig() {
         config.toolbars[tbIdx].nodes = ui->dualListWidget->getNodes();
         if (kind == ContainerKind::ToolbarItem) {
             config.toolbars[tbIdx].area = static_cast<Qt::ToolBarArea>(ui->cbDockArea->currentData().toInt());
+            config.toolbars[tbIdx].buttonStyle = static_cast<Qt::ToolButtonStyle>(ui->cbToolButtonStyle->currentData().toInt());
         }
     }
 }
@@ -396,6 +336,14 @@ void LC_SettingsPageMenusToolbars::onActionsModified() {
 }
 
 void LC_SettingsPageMenusToolbars::onDockAreaChanged(int) {
+    if (m_blockSignals) {
+        return;
+    }
+    syncCurrentContainerToConfig();
+    markModified();
+}
+
+void LC_SettingsPageMenusToolbars::onToolButtonStyleChanged(int) {
     if (m_blockSignals) {
         return;
     }
@@ -517,17 +465,11 @@ void LC_SettingsPageMenusToolbars::onDeleteToolbarClicked() {
 }
 
 void LC_SettingsPageMenusToolbars::loadSettings() {
-    if (m_presetManager != nullptr) {
-        m_presetManager->loadPreset(m_presetManager->getActivePresetKey());
-    }
     syncUiFromWorkingConfig();
 }
 
 bool LC_SettingsPageMenusToolbars::saveSettings() {
     syncCurrentContainerToConfig();
-    if (m_presetManager != nullptr) {
-        return m_presetManager->saveCurrentPreset();
-    }
     return true;
 }
 
@@ -577,6 +519,7 @@ void LC_SettingsPageMenusToolbars::updateControlsState(ContainerKind kind, int t
 
     const bool isMatrix = (kind == ContainerKind::CadMatrixItem);
     const bool isDockWidget = (kind == ContainerKind::CadDockWidgetItem);
+    const bool isCADWidget = kind == ContainerKind::CadDockWidgetItem;
     const bool isToolbar = (kind == ContainerKind::ToolbarItem);
 
     const ToolbarDef* tb = (tbIdx >= 0 && tbIdx < config.toolbars.size()) ? &config.toolbars[tbIdx] : nullptr;
@@ -586,6 +529,27 @@ void LC_SettingsPageMenusToolbars::updateControlsState(ContainerKind kind, int t
     ui->lblArea->setVisible(isToolbar);
     ui->cbDockArea->setVisible(isToolbar);
     ui->cbDockArea->setEnabled(!isReadOnly);
+
+    ui->lblButtonStyle->setVisible(isToolbar);
+    ui->cbToolButtonStyle->setVisible(isToolbar);
+    ui->cbToolButtonStyle->setEnabled(!isReadOnly);
+
+    QString navigationWidgetType;
+
+    if (isMenu) {
+        navigationWidgetType = tr("Main Menu Bar");
+    }
+    else if (isMatrix){
+        navigationWidgetType = tr("CAD Tools Matrix");
+    }
+    else if (isToolbar){
+        navigationWidgetType = tr("Toolbar");
+    }
+    else if (isCADWidget){
+        navigationWidgetType = tr("CAD Tools Window");
+    }
+
+    ui->lblWidgetType->setText(navigationWidgetType);
     if (isToolbar && tb != nullptr) {
         const int areaIdx = ui->cbDockArea->findData(static_cast<int>(tb->area));
         if (areaIdx >= 0) {

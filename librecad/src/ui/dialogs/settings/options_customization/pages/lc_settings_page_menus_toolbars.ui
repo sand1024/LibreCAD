@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>683</width>
-    <height>124</height>
+    <height>331</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_main">
@@ -46,45 +46,10 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
       <string>Target Menu or Toolbar</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="5">
-       <widget class="QLabel" name="lblArea">
-        <property name="text">
-         <string>Dock Area:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="pbRenameToolbar">
-        <property name="toolTip">
-         <string>Rename selected custom toolbar</string>
-        </property>
-        <property name="text">
-         <string>Rename...</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="lblTarget">
         <property name="text">
          <string>Navigation widget:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="pbDeleteToolbar">
-        <property name="toolTip">
-         <string>Delete selected custom toolbar</string>
-        </property>
-        <property name="text">
-         <string>Delete</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
         </property>
        </widget>
       </item>
@@ -101,7 +66,35 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
+      <item row="0" column="4">
+       <widget class="QPushButton" name="pbRenameToolbar">
+        <property name="toolTip">
+         <string>Rename selected custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>Rename...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pbDeleteToolbar">
+        <property name="toolTip">
+         <string>Delete selected custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
        <widget class="QPushButton" name="pbNewToolbar">
         <property name="toolTip">
          <string>Create a new user-defined custom toolbar</string>
@@ -115,31 +108,100 @@ Select navigation element from the comboobx belos (main menu bar, toolbar (ordin
         </property>
        </widget>
       </item>
-      <item row="0" column="6">
-       <widget class="QComboBox" name="cbDockArea">
-        <property name="toolTip">
-         <string>Default dock area where this toolbar appears</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Bottom</string>
+      <item row="1" column="0" colspan="6">
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Left</string>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Right</string>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Top</string>
+         <property name="bottomMargin">
+          <number>0</number>
          </property>
-        </item>
+         <item>
+          <widget class="QLabel" name="lblWidgetTypeName">
+           <property name="text">
+            <string>Widget Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblWidgetType">
+           <property name="text">
+            <string>Menu</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblArea">
+           <property name="text">
+            <string>Dock Area:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbDockArea">
+           <property name="toolTip">
+            <string>Default dock area where this toolbar appears</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Bottom</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Top</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblButtonStyle">
+           <property name="toolTip">
+            <string>Display mode for action buttons on this toolbar.</string>
+           </property>
+           <property name="text">
+            <string>Button Style:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbToolButtonStyle">
+           <property name="toolTip">
+            <string>Select whether toolbar buttons display icons only, text only, or icons with text.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

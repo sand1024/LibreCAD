@@ -104,6 +104,7 @@ struct ToolbarDef {
     QString name;
     QString icon;
     Qt::ToolBarArea area = Qt::TopToolBarArea;
+    Qt::ToolButtonStyle buttonStyle = Qt::ToolButtonIconOnly;
     bool visible = true;
     bool lineBreak = false;
     ToolbarKind kind = ToolbarKind::Standard;
@@ -143,5 +144,25 @@ struct ContextMenusConfig {
     QString name;
     QList<ContextMenuDef> menus;
 };
+
+inline Qt::ToolButtonStyle resolveToolbarButtonStyle(Qt::ToolButtonStyle baseStyle, Qt::Orientation orientation) {
+    if (orientation == Qt::Horizontal) {
+        return baseStyle;
+    }
+
+    // Semantic flow adaptation for vertical orientation:
+    // Flow along vertical axis: TextBesideIcon (horizontal) flips to TextUnderIcon (vertical)
+    switch (baseStyle) {
+        case Qt::ToolButtonTextBesideIcon:
+            return Qt::ToolButtonTextUnderIcon;
+        case Qt::ToolButtonTextUnderIcon:
+            return Qt::ToolButtonTextBesideIcon;
+        case Qt::ToolButtonTextOnly:
+            return Qt::ToolButtonTextOnly;
+        case Qt::ToolButtonIconOnly:
+        default:
+            return Qt::ToolButtonIconOnly;
+    }
+}
 
 #endif

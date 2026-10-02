@@ -52,6 +52,7 @@ private slots:
     void onTargetSelected(int index);
     void onActionsModified();
     void onDockAreaChanged(int index);
+    void onToolButtonStyleChanged(int index);
     void onNewToolbarClicked();
     void onRenameToolbarClicked();
     void onDeleteToolbarClicked();
@@ -86,7 +87,6 @@ private:
     void syncCurrentContainerToConfig();
     void markModified();
     void updateActiveMenuBold();
-    void updateEditorState(ContainerKind kind, int tbIdx, bool readOnly);
     bool promptForUniqueName(const QString& title, const QString& label, const QStringList& existingNames,
                              const QString& initialSuggestion, QString& outName);
 };
