@@ -36,6 +36,7 @@ LC_PresetManagerMenus::LC_PresetManagerMenus(LC_GraphicViewContextMenuProvider* 
     , m_contextMenuProvider(provider)
     , m_actionFactory(actionFactory)
     , m_actionGroupManager(groupManager) {
+    loadPreset(m_activeKey);
 }
 
 LC_PresetManagerUIStrings LC_PresetManagerMenus::presetStrings() const {

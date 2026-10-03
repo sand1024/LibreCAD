@@ -418,7 +418,8 @@ void LC_UIStyleManager::applyThemeTypography(const FontConfig& activeFont) {
     static const char* const RESET_WIDGET_CLASSES[] = {
         "QHeaderView", "QTabBar", "QMenuBar", "QMenu", "QPushButton",
         "QToolButton", "QToolBar", "QLineEdit", "QComboBox",
-        "QAbstractSpinBox", "QTextEdit", "QPlainTextEdit", "LC_PropertySheetWidget"
+        "QAbstractSpinBox", "QTextEdit", "QPlainTextEdit", "LC_PropertySheetWidget",
+        "QTreeView", "QListView", "QTableView", "QStatusBar"
     };
 
     if (activeFont.name == CFG_AppState::DEFAULT_THEME_KEY) {
@@ -443,26 +444,58 @@ void LC_UIStyleManager::applyThemeTypography(const FontConfig& activeFont) {
     const QFont mainFont(activeFont.mainFamily, activeFont.mainSize);
     QApplication::setFont(mainFont);
 
-    // Role 2: Section Headings
-    applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.headings, { "QHeaderView", "QTabBar" });
+    // Role 2: Section Headings (Column Headers in Tables and Trees)
+    applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.headings, { "QHeaderView" });
 
-    // Role 3: Main Menu Bar
+    // Role 3: Tab Bars (Document tabs, Dock tabs)
+    applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.tabBars, { "QTabBar" });
+
+    // Role 4: Main Menu Bar
     applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.menuBar, { "QMenuBar" });
 
-    // Role 4: Popup & Dropdown Menus
+    // Role 5: Popup & Dropdown Menus
     applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.menus, { "QMenu" });
 
-    // Role 5: Buttons & Toolbars
+    // Role 6: Buttons & Toolbars
     applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.buttons, { "QPushButton", "QToolButton", "QToolBar" });
 
-    // Role 6: Inputs & Editors
+    // Role 7: Inputs & Editors
     applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.inputs, { "QLineEdit", "QComboBox", "QAbstractSpinBox" });
     applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.propertiesWidget, { "LC_PropertySheetWidget" });
 
-    // Role 7: Code & Technical
+    // Role 8: Group Boxes
+    // applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.groupBoxes, { "QGroupBox" });
+
+    // Role 9: Item Views (Trees, Lists, Tables)
+    applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.itemViews, { "QTreeView", "QListView", "QTableView" });
+
+    // Role 10: Code & Technical
     applyFontRole(activeFont.techFamily, activeFont.mainSize, activeFont.technical, { "QTextEdit", "QPlainTextEdit" });
+
+    // Role 11: Status Bar (Unified application for Classical QStatusBar and Modern Toolbar Pills)
+    applyFontRole(activeFont.mainFamily, activeFont.mainSize, activeFont.statusBar, { "QStatusBar" });
+
+    if (m_appWindow != nullptr) {
+        QFont statusFont(activeFont.mainFamily, activeFont.mainSize + activeFont.statusBar.sizeOffset);
+        statusFont.setBold(activeFont.statusBar.bold);
+        statusFont.setItalic(activeFont.statusBar.italic);
+
+        const QList<QWidget*> statusWidgets = m_appWindow->getStatusBarWidgets();
+
+
+        for (auto* w : statusWidgets) {
+            if (w != nullptr) {
+                w->setFont(statusFont);
+            }
 }
 
+        for (auto* tb : m_appWindow->findChildren<QToolBar*>()) {
+            if (tb != nullptr && tb->property("_group").toInt() == 3) {
+                tb->setFont(statusFont);
+            }
+        }
+    }
+}
 void LC_UIStyleManager::resetToNativeStyle() {
     QStyle* nativeStyle = nullptr;
     if (!m_nativeSystemStyleName.isEmpty()) {

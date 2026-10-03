@@ -33,7 +33,8 @@ LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QAct
                                action != nullptr ? action->icon() : QIcon(),
                                false)
     , m_description(action != nullptr ? action->toolTip() : QString())
-    , m_shortcutInfo(shortcutInfo) {
+    , m_shortcutInfo(shortcutInfo)
+    , m_action(action){
     if (action != nullptr) {
         const auto* lcAct = dynamic_cast<const LC_Action*>(action);
         if (lcAct != nullptr){
@@ -84,8 +85,11 @@ QString LC_ShortcutTreeItem::identifier() const {
 
 
 QString LC_ShortcutTreeItem::getShortcutViewString() const {
-    if (m_isGroup || m_shortcutInfo == nullptr) {
-        return QString();
+    if (m_action != nullptr) {
+        const QVariant customText = m_action->property(LC_ActionKeys::PROP_CUSTOM_SHORTCUT_TEXT);
+        if (customText.isValid() && !customText.toString().isEmpty()) {
+            return customText.toString();
+        }
     }
-    return m_shortcutInfo->getKeyAsString();
+    return (m_shortcutInfo != nullptr) ? m_shortcutInfo->getKey().toString(QKeySequence::NativeText) : QString();
 }

@@ -131,7 +131,6 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
         }
     }
 
-public:
     void fireIconsRefresh();
     void fireWidgetSettingsChanged();
     void fireWorkspacesChanged();
@@ -152,6 +151,7 @@ public:
     void updateToolbarsIconSize(bool allowCustom, int customSize);
     void updateActionsForCommandsInMenus(bool keycodeMode);
     void onStylingApplied();
+    QList<QWidget*> getStatusBarWidgets() const;
 public slots:
     void slotFocus();
     void slotKillAllActions();

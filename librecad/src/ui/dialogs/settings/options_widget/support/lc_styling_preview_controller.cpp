@@ -21,9 +21,17 @@
 
 #include "lc_styling_preview_controller.h"
 #include <QApplication>
+#include <QComboBox>
+#include <QHeaderView>
 #include <QLayout>
+#include <QPlainTextEdit>
 #include <QStyleFactory>
 #include <QTabWidget>
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QGroupBox>
+#include <QStatusBar>
+
 #include "lc_caddockwidget.h"
 #include "lc_preset_manager_icons_style.h"
 #include "lc_proxy_style.h"
@@ -298,71 +306,114 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
         return;
     }
 
-    const QFont mainFont(font.mainFamily, font.mainSize);
+    auto makeFont = [&font](const FontRoleConfig& role, const QString& familyOverride = QString()) -> QFont {
+        const QString family = familyOverride.isEmpty() ? font.mainFamily : familyOverride;
+        QFont f(family, qMax(6, font.mainSize + role.sizeOffset));
+        f.setBold(role.bold);
+        f.setItalic(role.italic);
+        return f;
+    };
 
-    QFont headingFont(font.mainFamily, font.mainSize + font.headings.sizeOffset);
-    headingFont.setBold(font.headings.bold);
-    headingFont.setItalic(font.headings.italic);
+    // 1. Resolve role fonts
+    const QFont baseFont(font.mainFamily, font.mainSize);
+    const QFont headingsFont   = makeFont(font.headings);
+    const QFont tabBarsFont    = makeFont(font.tabBars);
+    const QFont menuBarFont    = makeFont(font.menuBar);
+    const QFont menusFont      = makeFont(font.menus);
+    const QFont buttonsFont    = makeFont(font.buttons);
+    const QFont inputsFont     = makeFont(font.inputs);
+    const QFont groupBoxesFont = makeFont(font.groupBoxes);
+    const QFont itemViewsFont  = makeFont(font.itemViews);
+    const QFont technicalFont  = makeFont(font.technical, font.techFamily);
+    const QFont statusBarFont  = makeFont(font.statusBar);
+    const QFont genericDockFont = makeFont(font.genericDockTitle);
+    const QFont specialDockFont = makeFont(font.specialDockTitle);
+    const QFont propertiesFont  = makeFont(font.propertiesWidget);
 
-    QFont menuBarFont(font.mainFamily, font.mainSize + font.menuBar.sizeOffset);
-    menuBarFont.setBold(font.menuBar.bold);
-    menuBarFont.setItalic(font.menuBar.italic);
+    // 2. Base container font
+    m_previewWindow->setFont(baseFont);
 
-    QFont menuFont(font.mainFamily, font.mainSize + font.menus.sizeOffset);
-    menuFont.setBold(font.menus.bold);
-    menuFont.setItalic(font.menus.italic);
-
-    QFont buttonFont(font.mainFamily, font.mainSize + font.buttons.sizeOffset);
-    buttonFont.setBold(font.buttons.bold);
-    buttonFont.setItalic(font.buttons.italic);
-
-    QFont inputFont(font.mainFamily, font.mainSize + font.inputs.sizeOffset);
-    inputFont.setBold(font.inputs.bold);
-    inputFont.setItalic(font.inputs.italic);
-
-    QFont genericDockFont(font.mainFamily, font.mainSize + font.genericDockTitle.sizeOffset);
-    genericDockFont.setBold(font.genericDockTitle.bold);
-    genericDockFont.setItalic(font.genericDockTitle.italic);
-
-    QFont specialDockFont(font.mainFamily, font.mainSize + font.specialDockTitle.sizeOffset);
-    specialDockFont.setBold(font.specialDockTitle.bold);
-    specialDockFont.setItalic(font.specialDockTitle.italic);
-
-    QFont techFont(font.techFamily, font.mainSize + font.technical.sizeOffset);
-    techFont.setBold(font.technical.bold);
-    techFont.setItalic(font.technical.italic);
-
-    m_previewWindow->setFont(mainFont);
-
-    const QList<QWidget*> children = m_previewWindow->findChildren<QWidget*>();
-    for (QWidget* child : children) {
-        if (child->inherits("QHeaderView") || child->inherits("QTabBar")) {
-            child->setFont(headingFont);
+    // 3. Tab Bars
+    for (auto* tb : m_previewWindow->findChildren<QTabBar*>()) {
+        if (tb != nullptr) {
+            tb->setFont(tabBarsFont);
         }
-        else if (child->inherits("QMenuBar")) {
-            child->setFont(menuBarFont);
-        }
-        else if (child->inherits("QMenu")) {
-            child->setFont(menuFont);
-        }
-        else if (child->inherits("QDockWidget") || child->inherits("LC_CustomTitleBarWidget")) {
-            const bool isSpecial = LC_CADDockWidget::isCADDockWidget(child) ||
-                                   (child->parentWidget() != nullptr && LC_CADDockWidget::isCADDockWidget(child->parentWidget()));
-            child->setFont(isSpecial ? specialDockFont : genericDockFont);
-        }
-        else if (child->inherits("QToolBar") || child->inherits("QToolButton") || child->inherits("QPushButton")) {
-            child->setFont(buttonFont);
-        }
-        else if (child->inherits("QLineEdit") || child->inherits("QComboBox") || child->inherits("QAbstractSpinBox")) {
-            child->setFont(inputFont);
-        }
-        else if (child->inherits("QTextEdit") || child->inherits("QPlainTextEdit") || child->inherits("QListWidget")) {
-            child->setFont(techFont);
-        }
-        else {
-            child->setFont(mainFont);
-        }
-        child->update();
     }
+
+    // 4. Section Headings (Headers)
+    for (auto* hv : m_previewWindow->findChildren<QHeaderView*>()) {
+        if (hv != nullptr) {
+            hv->setFont(headingsFont);
+        }
+    }
+
+    // 5. Item Views (Trees, Lists, Tables)
+    for (auto* iv : m_previewWindow->findChildren<QAbstractItemView*>()) {
+        if (iv != nullptr) {
+            iv->setFont(itemViewsFont);
+        }
+    }
+
+    // 6. Buttons & Toolbars
+    for (auto* btn : m_previewWindow->findChildren<QAbstractButton*>()) {
+        if (btn != nullptr && !btn->inherits("QRadioButton") && !btn->inherits("QCheckBox")) {
+            btn->setFont(buttonsFont);
+        }
+    }
+    for (auto* tb : m_previewWindow->findChildren<QToolBar*>()) {
+        if (tb != nullptr && tb->property("_group").toInt() != 3) {
+            tb->setFont(buttonsFont);
+        }
+    }
+
+    // 7. Inputs & Spinboxes
+    for (auto* le : m_previewWindow->findChildren<QLineEdit*>()) {
+        if (le != nullptr) {
+            le->setFont(inputsFont);
+        }
+    }
+    for (auto* sb : m_previewWindow->findChildren<QAbstractSpinBox*>()) {
+        if (sb != nullptr) {
+            sb->setFont(inputsFont);
+        }
+    }
+    for (auto* cb : m_previewWindow->findChildren<QComboBox*>()) {
+        if (cb != nullptr) {
+            cb->setFont(inputsFont);
+        }
+    }
+
+    // 8. Group Boxes (Title font isolated to title rendering; see Section 2)
+    for (auto* gb : m_previewWindow->findChildren<QGroupBox*>()) {
+        if (gb != nullptr) {
+            gb->setProperty("_lc_custom_title_font", groupBoxesFont);
+            gb->update();
+        }
+        }
+
+    // 9. Status Bar & Status Pill Toolbars
+    for (auto* sb : m_previewWindow->findChildren<QStatusBar*>()) {
+        if (sb != nullptr) {
+            sb->setFont(statusBarFont);
+        }
+        }
+    for (auto* tb : m_previewWindow->findChildren<QToolBar*>()) {
+        if (tb != nullptr && tb->property("_group").toInt() == 3) {
+            tb->setFont(statusBarFont);
+        }
+        }
+
+    // 10. Technical / Monospace Areas
+    for (auto* te : m_previewWindow->findChildren<QPlainTextEdit*>()) {
+        if (te != nullptr) {
+            te->setFont(technicalFont);
+        }
+    }
+    for (auto* te : m_previewWindow->findChildren<QTextEdit*>()) {
+        if (te != nullptr) {
+            te->setFont(technicalFont);
+        }
+}
+
     m_previewWindow->update();
 }

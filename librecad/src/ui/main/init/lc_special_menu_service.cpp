@@ -27,6 +27,7 @@
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QToolBar>
+#include <QMenuBar>
 
 #include "lc_action_factory.h"
 #include "lc_action_group_manager.h"
@@ -34,11 +35,14 @@
 #include "lc_namedviewslistwidget.h"
 #include "lc_settings_appearance.h"
 #include "lc_settings_startup.h"
+#include "lc_settings_window_options.h"
 #include "lc_ucslistwidget.h"
 #include "lc_view.h"
 #include "lc_ucs.h"
 #include "lc_workspacelistbutton.h"
 #include "qc_applicationwindow.h"
+#include "qc_mdiwindow.h"
+#include "qg_graphicview.h"
 
 LC_SpecialMenuService::LC_SpecialMenuService(QC_ApplicationWindow* appWin) : m_appWindow(appWin) {
 }
@@ -93,7 +97,57 @@ QAction* LC_SpecialMenuService::getSpecialAction(const QString& actionToken) con
     return getDockWidgetToggleAction(actionToken);
 }
 
+bool LC_SpecialMenuService::isContextMenuContext(const QMenu* menu) const {
+    if (menu == nullptr) {
+        return false;
+    }
+    if (menu->testAttribute(Qt::WA_DeleteOnClose)) {
+        return true;
+    }
+    const QWidget* w = menu;
+    while (w != nullptr) {
+        if (qobject_cast<const QMenuBar*>(w) != nullptr) {
+            return false; // Under main QMenuBar
+        }
+        if (w->inherits("QG_GraphicView")) {
+            return true; // Context menu on canvas
+        }
+        w = w->parentWidget();
+    }
+    return true; // Default to popup/context policy
+}
+
+QMenu* LC_SpecialMenuService::bindOrOmitSubMenu(QMenu* parentMenu, const QString& title, const QString& iconPath, bool isEmpty,
+                                                const std::function<void(QMenu*)>& populateFunc) const {
+    if (parentMenu == nullptr) {
+        return nullptr;
+    }
+
+    if (isEmpty) {
+        // Option C: In context menus, omit completely to save space
+        if (isContextMenuContext(parentMenu)) {
+            return nullptr;
+        }
+
+        // Option C: In main menu bar, show as disabled so user sees the feature exists
+        auto* subMenu = parentMenu->addMenu(title);
+        if (subMenu != nullptr) {
+            if (!iconPath.isEmpty()) {
+                subMenu->setIcon(QIcon(iconPath));
+            }
+            subMenu->menuAction()->setEnabled(false);
+        }
+        return subMenu;
+    }
+
+    return createDynamicSubMenu(parentMenu, title, iconPath, populateFunc);
+}
+
 bool LC_SpecialMenuService::bindMenu(const QString& specialMenuName, QMenu* parentMenu) {
+    if (specialMenuName == LC_ActionNames::MenuRecentActions) {
+        bindRecentActionsMenu(parentMenu);
+        return true;
+    }
     if (specialMenuName == LC_ActionNames::MenuRecentFiles) {
         bindRecentFilesMenu(parentMenu);
         return true;
@@ -139,36 +193,76 @@ bool LC_SpecialMenuService::bindMenu(const QString& specialMenuName, QMenu* pare
         return true;
     }
 
-    // Individual dock widget toggles
-    auto* toggleAct = getDockWidgetToggleAction(specialMenuName);
-    if (toggleAct != nullptr) {
-        parentMenu->addAction(toggleAct);
-        return true;
+
+    if (specialMenuName.startsWith(LC_ActionNames::PrefixSpecialAction)) {
+        auto* toggleAct = getDockWidgetToggleAction(specialMenuName);
+        if (toggleAct != nullptr) {
+            parentMenu->addAction(toggleAct);
+            return true;
+        }
     }
 
-    QAction* act = getAction(specialMenuName);
-    if (act != nullptr) {
-        parentMenu->addAction(act);
-        return true;
-    }
     return false;
 }
 
-void LC_SpecialMenuService::bindRecentFilesMenu(QMenu* parentMenu) const {
-    if (m_appWindow != nullptr && parentMenu != nullptr) {
-        QMenu* recent = m_appWindow->getRecentFilesMenu();
-        if (recent != nullptr) {
-            const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
-            recent->setTearOffEnabled(allowTearOff);
-            parentMenu->addMenu(recent);
-        }
+void LC_SpecialMenuService::bindRecentActionsMenu(QMenu* parentMenu) {
+    if (m_appWindow == nullptr || parentMenu == nullptr) {
+        return;
     }
+
+    auto* gv = m_appWindow->getCurrentGraphicView();
+    if (gv != nullptr) {
+        auto* view = dynamic_cast<QG_GraphicView*>(gv);
+        const auto recent = (gv != nullptr) ? view->getRecentActions() : QList<QAction*>();
+        const bool isEmpty = recent.isEmpty();
+
+        bindOrOmitSubMenu(parentMenu, QObject::tr("Recent Actions"), ":/icons/recent.lci", isEmpty, [recent](QMenu* menu) {
+            for (auto* a : recent) {
+                if (a != nullptr) {
+                    auto* p = menu->addAction(a->icon(), a->iconText());
+                    QObject::connect(p, &QAction::triggered, a, &QAction::trigger);
+                }
+            }
+        });
+    }
+}
+
+void LC_SpecialMenuService::bindRecentFilesMenu(QMenu* parentMenu) const {
+    if (m_appWindow == nullptr || parentMenu == nullptr) {
+        return;
+    }
+
+    QMenu* recent = m_appWindow->getRecentFilesMenu();
+    const bool isEmpty = recent->actions().isEmpty();
+
+    const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
+    recent->setTearOffEnabled(allowTearOff);
+
+    if (isEmpty) {
+        if (isContextMenuContext(parentMenu)) {
+            return;
+       }
+       recent->menuAction()->setEnabled(false);
+    }
+
+    recent->menuAction()->setEnabled(true);
+    parentMenu->addMenu(recent);
 }
 
 void LC_SpecialMenuService::bindPluginsMenu(QMenu* parentMenu) {
     if (m_appWindow != nullptr && parentMenu != nullptr) {
         QMenu* plugins = m_appWindow->getPluginsMenu();
         if (plugins != nullptr) {
+            const bool isEmpty = plugins->actions().isEmpty();
+            if (isEmpty) {
+                if (isContextMenuContext(parentMenu)) {
+                    return;
+                }
+                plugins->setEnabled(false);
+            }
+            else {
+                plugins->setEnabled(true);
+            }
             const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
             plugins->setTearOffEnabled(allowTearOff);
             parentMenu->addMenu(plugins);
@@ -192,7 +286,7 @@ void LC_SpecialMenuService::populateDockWidgets(QMenu* menu, bool cadWidgetsOnly
 }
 
 void LC_SpecialMenuService::bindDockWidgetsMenu(QMenu* parentMenu) {
-    auto group =  m_appWindow->getActionGroup("dock_widgets");
+    auto group = m_appWindow->getActionGroup("dock_widgets");
     createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, false);
     });
@@ -202,7 +296,7 @@ void LC_SpecialMenuService::bindCadDockWidgetsMenu(QMenu* parentMenu) {
     if (!CFG_Startup::o_EnableCADDockWidgets) {
         return;
     }
-    auto group =  m_appWindow->getActionGroup("cad_dock_widgets");
+    auto group = m_appWindow->getActionGroup("cad_dock_widgets");
     createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, true);
     });
@@ -248,6 +342,29 @@ void LC_SpecialMenuService::bindCadToolbarsMenu(QMenu* parentMenu) {
     });
 }
 
+void LC_SpecialMenuService::bindDrawingsMenu(QMenu* parentMenu) {
+    if (m_appWindow == nullptr || parentMenu == nullptr) {
+        return;
+    }
+
+    const QString cleanTitle = parentMenu->title().remove('&').trimmed();
+    const bool isAlreadyDrawingsMenu = (cleanTitle == QObject::tr("Drawings") || cleanTitle == "Drawings");
+
+    if (isAlreadyDrawingsMenu) {
+        // Direct mounting into top-level menu bar container
+        QObject::connect(parentMenu, &QMenu::aboutToShow, parentMenu, [this, parentMenu]() {
+            parentMenu->clear();
+            populateDrawings(parentMenu);
+        });
+    }
+    else {
+        // Nested mounting as a submenu (e.g. inside Workspace menu)
+        createDynamicSubMenu(parentMenu, QObject::tr("&Drawings"), ":/icons/document.lci", [this](QMenu* menu) {
+            populateDrawings(menu);
+        });
+    }
+}
+
 void LC_SpecialMenuService::bindWorkspacesRescueMenu(QMenu* parentMenu) {
     if (CFG_Appearance::o_MainMenuVisible || parentMenu == nullptr) {
         return;
@@ -290,25 +407,23 @@ void LC_SpecialMenuService::bindWorkspacesRescueMenu(QMenu* parentMenu) {
         if (actRedock != nullptr) {
             menu->addAction(actRedock);
         }
-        auto* actRestoreDefault = getAction("WorkspaceRestore");
-        if (actRestoreDefault != nullptr) {
-            menu->addAction(actRestoreDefault);
-        }
+
+        menu->addSeparator();
         auto* actCreateWs = getAction("WorkspaceCreate");
         if (actCreateWs != nullptr) {
             menu->addAction(actCreateWs);
         }
-        menu->addSeparator();
-
         bindWorkspacesListMenu(menu);
     });
 }
 
 void LC_SpecialMenuService::bindWorkspacesListMenu(QMenu* parentMenu) {
-    createDynamicSubMenu(parentMenu, QObject::tr("Saved Workspaces"), ":/icons/workspace.lci", [this](QMenu* menu) {
-        QList<QPair<int, QString>> wsList;
-        m_appWindow->fillWorkspacesList(wsList);
 
+    QList<QPair<int, QString>> wsList;
+    m_appWindow->fillWorkspacesList(wsList);
+    const bool isEmpty = wsList.isEmpty();
+
+    bindOrOmitSubMenu(parentMenu, QObject::tr("Restore Workspace"), ":/icons/workspace.lci", isEmpty, [this, isEmpty, wsList](QMenu* menu) {
         for (const auto& ws : wsList) {
             auto* act = menu->addAction(ws.second);
             const int id = ws.first;
@@ -329,8 +444,11 @@ void LC_SpecialMenuService::populateDrawings(QMenu* menu) const {
         return;
     }
 
+    using namespace CFG_WindowOptions;
     const bool tabbed = (mdiArea->viewMode() == QMdiArea::TabbedView);
+    const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && menu->isTearOffEnabled();
 
+    // 1. MDI View Mode Toggles
     auto* actTab = menu->addAction(QObject::tr("Ta&b mode"), m_appWindow, &LC_MDIApplicationWindow::slotToggleTab);
     actTab->setCheckable(true);
     actTab->setChecked(tabbed);
@@ -339,41 +457,102 @@ void LC_SpecialMenuService::populateDrawings(QMenu* menu) const {
     actWin->setCheckable(true);
     actWin->setChecked(!tabbed);
 
-    menu->addSeparator();
-    menu->addAction(QObject::tr("&Cascade"), m_appWindow, &LC_MDIApplicationWindow::slotCascade);
-    menu->addAction(QObject::tr("&Tile"), m_appWindow, &LC_MDIApplicationWindow::slotTile);
-    menu->addAction(QObject::tr("Tile &Vertically"), m_appWindow, &LC_MDIApplicationWindow::slotTileVertical);
-    menu->addAction(QObject::tr("Tile &Horizontally"), m_appWindow, &LC_MDIApplicationWindow::slotTileHorizontal);
+    // 2. Conditional Submenus (Layout for Tab Mode, Arrange for Window Mode)
+    if (tabbed) {
+        auto* layoutSub = menu->addMenu(QObject::tr("&Layout"));
+        if (layoutSub != nullptr) {
+            layoutSub->setTearOffEnabled(allowTearOff);
 
+            auto* actRounded = layoutSub->addAction(QObject::tr("Rounded"), m_appWindow, &LC_MDIApplicationWindow::slotTabShapeRounded);
+            actRounded->setCheckable(true);
+            actRounded->setChecked(o_TabShape == RS2::Rounded);
+
+            auto* actTriangular = layoutSub->addAction(QObject::tr("Triangular"), m_appWindow, &LC_MDIApplicationWindow::slotTabShapeTriangular);
+            actTriangular->setCheckable(true);
+            actTriangular->setChecked(o_TabShape == RS2::Triangular);
+
+            layoutSub->addSeparator();
+
+            auto* actNorth = layoutSub->addAction(QObject::tr("North"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionNorth);
+            actNorth->setCheckable(true);
+            actNorth->setChecked(o_TabPosition == RS2::North);
+
+            auto* actSouth = layoutSub->addAction(QObject::tr("South"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionSouth);
+            actSouth->setCheckable(true);
+            actSouth->setChecked(o_TabPosition == RS2::South);
+
+            auto* actEast = layoutSub->addAction(QObject::tr("East"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionEast);
+            actEast->setCheckable(true);
+            actEast->setChecked(o_TabPosition == RS2::East);
+            auto* actWest = layoutSub->addAction(QObject::tr("West"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionWest);
+            actWest->setCheckable(true);
+            actWest->setChecked(o_TabPosition == RS2::West);
+        }
+    }
+    else {
+        auto* arrangeSub = menu->addMenu(QObject::tr("&Arrange"));
+        if (arrangeSub != nullptr) {
+            arrangeSub->setTearOffEnabled(allowTearOff);
+
+            auto* actMax = arrangeSub->addAction(QObject::tr("&Maximized"), m_appWindow, &LC_MDIApplicationWindow::slotSetMaximized);
+            actMax->setCheckable(true);
+            actMax->setChecked(o_SubWindowMode == RS2::Maximized);
+
+            arrangeSub->addSeparator();
+            arrangeSub->addAction(QObject::tr("&Cascade"), m_appWindow, &LC_MDIApplicationWindow::slotCascade);
+            arrangeSub->addAction(QObject::tr("&Tile"), m_appWindow, &LC_MDIApplicationWindow::slotTile);
+            arrangeSub->addAction(QObject::tr("Tile &Vertically"), m_appWindow, &LC_MDIApplicationWindow::slotTileVertical);
+            arrangeSub->addAction(QObject::tr("Tile &Horizontally"), m_appWindow, &LC_MDIApplicationWindow::slotTileHorizontal);
+        }
+    }
+
+    // 3. Open Drawings Subwindow List
     const auto windowList = mdiArea->subWindowList();
     if (!windowList.isEmpty()) {
         menu->addSeparator();
         const QMdiSubWindow* active = mdiArea->activeSubWindow();
         for (int i = 0; i < windowList.size(); ++i) {
             auto* sub = windowList.at(i);
-            if (sub != nullptr) {
-                auto* act = menu->addAction(sub->windowTitle(), m_appWindow, &QC_ApplicationWindow::slotWindowsMenuActivated);
-                act->setCheckable(true);
-                act->setData(i);
-                act->setChecked(sub == active);
+            if (sub == nullptr) {
+                continue;
             }
+
+            QString title = sub->windowTitle();
+            if (title.contains("[*]")) {
+                const qsizetype idx = title.lastIndexOf("[*]");
+                auto* mdiWin = qobject_cast<QC_MDIWindow*>(sub);
+                const bool isMod = (mdiWin != nullptr) ? mdiWin->isWindowModified() : false;
+                if (isMod) {
+                    title.replace(idx, 3, "*");
+                }
+                else {
+                    title.remove(idx, 3);
+                }
+            }
+
+            auto* act = menu->addAction(sub->windowIcon(), title, m_appWindow, &QC_ApplicationWindow::slotWindowsMenuActivated);
+            act->setCheckable(true);
+            act->setData(i);
+            act->setChecked(sub == active);
         }
     }
 }
 
-void LC_SpecialMenuService::bindDrawingsMenu(QMenu* parentMenu) {
-    createDynamicSubMenu(parentMenu, QObject::tr("&Drawings"), QString(), [this](QMenu* menu) {
-        populateDrawings(menu);
-    });
-}
 
 void LC_SpecialMenuService::bindNamedViewsListMenu(QMenu* parentMenu) {
-    createDynamicSubMenu(parentMenu, QObject::tr("Saved Views"), ":/icons/nview_visible.lci", [this](QMenu* menu) {
+    if (m_appWindow == nullptr || parentMenu == nullptr) {
+        return;
+    }
+
+    auto* viewsWidget = m_appWindow->getNamedViewsListWidget();
+    QList<LC_View*> viewsList;
+    if (viewsWidget != nullptr) {
+        viewsWidget->fillViewsList(viewsList);
+    }
+    const bool isEmpty = viewsList.isEmpty();
+    bindOrOmitSubMenu(parentMenu, QObject::tr("Restore View"), ":/icons/nview_visible.lci", isEmpty, [this, viewsList](QMenu* menu) {
         auto* viewsWidget = m_appWindow->getNamedViewsListWidget();
         if (viewsWidget != nullptr) {
-            QList<LC_View*> viewsList;
-            viewsWidget->fillViewsList(viewsList);
-
             for (const auto* v : viewsList) {
                 if (v != nullptr) {
                     const QString name = v->getName();
@@ -388,11 +567,20 @@ void LC_SpecialMenuService::bindNamedViewsListMenu(QMenu* parentMenu) {
 }
 
 void LC_SpecialMenuService::bindUCSListMenu(QMenu* parentMenu) {
-    createDynamicSubMenu(parentMenu, QObject::tr("User Coordinate Systems"), ":/icons/ucs_ucs.lci", [this](QMenu* menu) {
+    if (m_appWindow == nullptr || parentMenu == nullptr) {
+        return;
+    }
+
+    auto* ucsWidget = m_appWindow->getUCSListWidget();
+    QList<LC_UCS*> ucsList;
+    if (ucsWidget != nullptr) {
+        ucsWidget->fillUCSList(ucsList);
+    }
+    const bool isEmpty = ucsList.isEmpty();
+
+    bindOrOmitSubMenu(parentMenu, QObject::tr("User Coordinate Systems"), ":/icons/ucs_ucs.lci", isEmpty, [this, ucsList](QMenu* menu) {
         auto* ucsWidget = m_appWindow->getUCSListWidget();
         if (ucsWidget != nullptr) {
-            QList<LC_UCS*> ucsList;
-            ucsWidget->fillUCSList(ucsList);
             const auto* activeUCS = ucsWidget->getActiveUCS();
 
             for (const auto* u : ucsList) {
@@ -416,7 +604,6 @@ bool LC_SpecialMenuService::embedToolbarControl(const QString& widgetToken, QToo
     if (m_appWindow == nullptr || targetToolbar == nullptr) {
         return false;
     }
-
 
     if (widgetToken == LC_ActionNames::WidgetUCSSelector) {
         auto ucsListWidget = m_appWindow->getUCSListWidget();

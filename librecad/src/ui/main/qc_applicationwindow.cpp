@@ -891,6 +891,20 @@ void QC_ApplicationWindow::onStylingApplied() {
     m_propertySheetWidget->updatePropertiesSheetFont();
 }
 
+QList<QWidget*> QC_ApplicationWindow::getStatusBarWidgets() const {
+    const QList<QWidget*> statusWidgets = {
+        m_coordinateWidget,
+        m_relativeZeroCoordinatesWidget,
+        m_mouseWidget,
+        m_selectionWidget,
+        m_activeLayerNameWidget,
+        m_gridStatusWidget,
+        m_ucsStateWidget,
+        m_anglesBasisWidget
+    };
+   return statusWidgets;
+}
+
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
     QG_GraphicView* view = w->getGraphicView();
     {
@@ -2056,19 +2070,19 @@ void QC_ApplicationWindow::restoreWorkspace(const bool on) {
 }
 
 void QC_ApplicationWindow::restoreNamedView1() {
-    doRestoreNamedView(1);
+    doRestoreNamedView(0);
 }
 
 void QC_ApplicationWindow::restoreNamedView2() {
-    doRestoreNamedView(2);
+    doRestoreNamedView(1);
 }
 
 void QC_ApplicationWindow::restoreNamedView3() {
-    doRestoreNamedView(3);
+    doRestoreNamedView(2);
 }
 
 void QC_ApplicationWindow::restoreNamedView4() {
-    doRestoreNamedView(4);
+    doRestoreNamedView(3);
 }
 
 void QC_ApplicationWindow::restoreNamedViewCurrent() {
@@ -2076,7 +2090,7 @@ void QC_ApplicationWindow::restoreNamedViewCurrent() {
 }
 
 void QC_ApplicationWindow::restoreNamedView5() {
-    doRestoreNamedView(5);
+    doRestoreNamedView(4);
 }
 
 void QC_ApplicationWindow::restoreNamedView(const QString& viewName) const {

@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QFile>
 
+#include "lc_action.h"
 #include "lc_action_tooltip_builder.h"
 #include "lc_repository_shortcuts.h"
 #include "lc_settings_appearance.h"
@@ -68,6 +69,9 @@ void LC_ShortcutsManager::applyShortcutsMapToActionsMap(QMap<QString, LC_Shortcu
     for (auto [key, shortcut] : shortcuts.asKeyValueRange()){
         QAction* action = actionsMap[key];
         if (action != nullptr){
+            if (LC_ActionKeys::isReadOnly(action)) {
+                continue; // Skip built-in system shortcuts
+            }
             auto keySequence = shortcut->getKey();
             action->setShortcut(keySequence);
         }
@@ -85,6 +89,9 @@ void LC_ShortcutsManager::applyKeySequencesMapToActionsMap(QMap<QString, QKeySeq
     for (auto [name, shortcut] : shortcuts.asKeyValueRange()){
         QAction* action = actionsMap[name];
         if (action != nullptr){
+            if (LC_ActionKeys::isReadOnly(action)) {
+                continue; // Skip built-in system shortcuts
+            }
             action->setShortcut(shortcut);
             action->setShortcutContext(Qt::ApplicationShortcut);
         }

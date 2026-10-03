@@ -53,6 +53,8 @@ public:
     void setCollision(const bool val){m_collision = val;}
     static int translateModifiers(Qt::KeyboardModifiers state,const QString &text);
     bool hasTheSameKey(const QKeySequence& sequenceToTest) const;
+    bool isSystemAction() const { return m_isSystemAction; }
+    void setSystemAction(const bool sys) { m_isSystemAction = sys; }
 protected:
     QString m_name;
     QKeySequence m_defaultKey;
@@ -60,6 +62,7 @@ protected:
     QKeySequence m_key;
     bool m_modified = false;
     bool m_collision = false;
+    bool m_isSystemAction = false;
 };
 
 #endif

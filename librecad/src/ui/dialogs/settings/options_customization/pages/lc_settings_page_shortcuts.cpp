@@ -58,6 +58,7 @@ void LC_SettingsPageShortcuts::bindToPresetManager(LC_PresetManagerInterface* ma
     m_presetManager = dynamic_cast<LC_PresetManagerShortcuts*>(manager);
     if (m_presetManager != nullptr && m_mappingTreeModel != nullptr) {
         m_presetManager->setTreeModel(m_mappingTreeModel);
+        m_presetManager->loadPreset(m_presetManager->getActivePresetKey());
         m_mappingTreeModel->setFilterForConflicts(false);
 
         ui->tvMappingsTree->clearSelection();
@@ -188,9 +189,6 @@ void LC_SettingsPageShortcuts::setupBehavior() {
 
 
 bool LC_SettingsPageShortcuts::saveSettings() {
-    if (m_presetManager != nullptr) {
-        return m_presetManager->saveCurrentPreset();
-    }
     return true;
 }
 
@@ -343,11 +341,19 @@ void LC_SettingsPageShortcuts::selectItem(LC_ShortcutTreeItem* item, int row, in
 
     validateCollisions();
 
-    if (m_isReadOnly) {
+    const bool isBuiltInReadOnly = item != nullptr && item->getAction() != nullptr &&
+                                    LC_ActionKeys::isReadOnly(item->getAction());
+
+    if (m_isReadOnly || isBuiltInReadOnly) {
         ui->gbShortcutEditor->setEnabled(false);
         ui->btnRecord->setEnabled(false);
         ui->btnReset->setEnabled(false);
         ui->pbClear->setEnabled(false);
+
+        if (isBuiltInReadOnly) {
+            ui->lblDescription->setText(ui->lblDescription->text() + QStringLiteral("\n\n") +
+                                        tr("(Built-in system shortcut - managed directly by CAD engine)"));
+        }
     }
 }
 
@@ -474,8 +480,11 @@ void LC_SettingsPageShortcuts::onTreeContextMenuRequested(const QPoint& pos) {
 
     QMenu menu(ui->tvMappingsTree);
 
-    // Read-Only / Default Scheme: Only show tree navigation actions
-    if (m_isReadOnly) {
+    const bool isBuiltInReadOnly = item != nullptr && item->getAction() != nullptr &&
+                                    LC_ActionKeys::isReadOnly(item->getAction());
+
+    // Read-Only Scheme or Built-In Action: Only show tree navigation actions
+    if (m_isReadOnly || isBuiltInReadOnly) {
         menu.addAction(QIcon(":/icons/expand_all.lci"), tr("Expand All"), ui->tvMappingsTree, &QTreeView::expandAll);
         menu.addAction(QIcon(":/icons/collapse_all.lci"), tr("Collapse All"), ui->tvMappingsTree, &QTreeView::collapseAll);
         menu.exec(ui->tvMappingsTree->viewport()->mapToGlobal(pos));

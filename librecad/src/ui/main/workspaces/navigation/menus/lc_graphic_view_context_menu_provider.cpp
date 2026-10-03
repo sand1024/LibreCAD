@@ -228,6 +228,12 @@ QMenu* LC_GraphicViewContextMenuProvider::createContextMenu(QG_GraphicView* grap
 bool LC_GraphicViewContextMenuProvider::shouldIncludeNode(const ActionNode& node) const {
     const QString& name = node.actionName;
 
+    if (name == LC_ActionNames::MenuRecentActions) {
+        if (m_currentGraphicView == nullptr || m_currentGraphicView->getRecentActions().isEmpty()) {
+            return false;
+        }
+    }
+
     if (name == LC_ActionNames::EditUndo && !m_undoAvailable) {
         return false;
     }
@@ -260,33 +266,6 @@ void LC_GraphicViewContextMenuProvider::appendActionItem(QMenu* parentMenu, cons
     const auto pos = m_currentPos;
     auto* graphicView = m_currentGraphicView;
 
-    // 1. Dynamic Recent Actions
-    if (name == LC_ActionNames::MenuRecentActions) {
-        auto recent = graphicView->getRecentActions();
-        if (!recent.isEmpty()) {
-            auto* firstAct = recent.first();
-            auto* firstProxy = parentMenu->addAction(firstAct->icon(), firstAct->iconText());
-            connect(firstProxy, &QAction::triggered, this, [actionContext, entity, pos, firstAct]() {
-                if (actionContext != nullptr && entity != nullptr) {
-                    actionContext->saveContextMenuActionContext(entity, pos, false);
-                }
-                firstAct->trigger();
-            });
-
-            auto* recentSub = parentMenu->addMenu(tr("Recent"));
-            for (auto* a : recent) {
-                auto* p = recentSub->addAction(a->icon(), a->iconText());
-                connect(p, &QAction::triggered, this, [actionContext, entity, pos, a]() {
-                    if (actionContext != nullptr && entity != nullptr) {
-                        actionContext->saveContextMenuActionContext(entity, pos, false);
-                    }
-                    a->trigger();
-                });
-            }
-            parentMenu->addSeparator();
-        }
-        return;
-    }
 
     // 2. Dynamic Block Name
     if (name == LC_ActionNames::ActionEditBlock) {

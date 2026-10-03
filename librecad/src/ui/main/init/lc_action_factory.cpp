@@ -32,6 +32,7 @@
 #include <QDesktopServices>
 #include <QKeySequence>
 
+#include "lc_action.h"
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
 #include "lc_settings_manager_drawing.h"
@@ -141,6 +142,9 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         {"dock_widgets",     tr("Tool Windows"),    tr("Tool Windows visibility toggles"),     ":/icons/tool_windows_palette.lci",  false, true,  true,  "Menu:DockWidgets"},
         {"cad_dock_widgets", tr("CAD Tool Windows"),tr("CAD Tool Windows visibility toggles"), ":/icons/dockwidgets_left.lci",      false, true,  true,  "Menu:CadDockWidgets"},
         {"tool_options",     tr("Tool Options"),    tr("Active Tool Options bar"),             ":/icons/tool_options.lci",          false, true,  false},
+
+        // built-in groups
+        {"builtin_system",  tr("System Built-in"), tr("Built-in System & Canvas Shortcuts"), ":/icons/info_cursor_enable.lci", false, true, false}
     }, agm);
 
 
@@ -158,6 +162,120 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
     for (auto actionGroup : toolGroups) {
         connect(actionGroup, &LC_ActionGroup::triggered, m_appWin, &QC_ApplicationWindow::relayAction);
     }*/
+}
+
+
+struct LC_SystemShortcutActionDef {
+    const char* m_name{nullptr};
+    QString m_title;
+    QString m_description;
+    QKeySequence m_shortcut;
+    QString m_customShortcutText;
+
+    LC_SystemShortcutActionDef(const char* name,
+                                  const QString& title,
+                                  const QKeySequence& shortcut,
+                                  const QString& customShortcutText,
+                                  const QString& description)
+           : m_name(name)
+           , m_title(title)
+           , m_shortcut(shortcut)
+           , m_customShortcutText(customShortcutText)
+           , m_description(description) {
+    }
+
+    // 2. Keyboard shortcut only (no custom display text)
+    LC_SystemShortcutActionDef(const char* name,
+                               const QString& title,
+                               const QKeySequence& shortcut,
+                               const QString& description)
+        : m_name(name)
+        , m_title(title)
+        , m_shortcut(shortcut)
+        , m_customShortcutText()
+        , m_description(description) {
+    }
+
+    // 3. Mouse gesture / custom text only (no QKeySequence)
+    LC_SystemShortcutActionDef(const char* name,
+                               const QString& title,
+                               const QString& customShortcutText,
+                               const QString& description)
+        : m_name(name)
+        , m_title(title)
+        , m_shortcut()
+        , m_customShortcutText(customShortcutText)
+        , m_description(description) {
+    }
+};
+
+/**
+ * creates artificial actions for built-in hardcoded shortcuts. These actions acts as data model only, and their purpose is to
+ * be discovered in UI (shortcuts management) and be included into printed cheat-sheet.
+ *
+ * NOTE: If more keybaord shortcuts are handled in GraphivView or so - they should be also duplicted as actions in this method
+ * @param agm
+ */
+void LC_ActionFactory::createBuiltInSystemShortcutActions(QMap<QString, QAction*>& map, QActionGroup* group) {
+
+    if (group == nullptr) {
+        return;
+    }
+
+     const std::vector<LC_SystemShortcutActionDef> actionDefs = {
+        // --- Viewport Navigation ---
+        { "SysNavZoomIn",          tr("Zoom In"),                     QKeySequence(Qt::Key_Plus),                                                                                    tr("Zooms into the active drawing view.") },
+        { "SysNavZoomOut",         tr("Zoom Out"),                    QKeySequence(Qt::Key_Minus),                                                                                   tr("Zooms out of the active drawing view.") },
+        { "SysNavPanScroll",       tr("Pan / Scroll Viewport"),                                                                                 tr("Arrow Keys"),           tr("Scrolls the drawing view in 4 cardinal directions.") },
+        { "SysNavNudgeSubGrid",    tr("Move Selection (Sub-Grid)"),  QKeySequence(Qt::ControlModifier | Qt::Key_Up),                    tr("Ctrl+Arrow"),           tr("Moves selected entities by one sub-grid increment.") },
+        { "SysNavNudgeGrid",       tr("Move Selection (Grid)"),      QKeySequence(Qt::ShiftModifier | Qt::Key_Up),                      tr("Shift+Arrow"),          tr("Moves selected entities by one grid increment.") },
+        { "SysNavNudgeMetaGrid",   tr("Move Selection (Meta-Grid)"), QKeySequence(Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_Up),tr("Ctrl+Shift+Arrow"),     tr("Moves selected entities by one meta-grid increment.") },
+
+
+        // --- Action State & Drafting Control ---
+        { "SysActionCancel",       tr("Cancel Action / Deselect"),    QKeySequence(Qt::Key_Escape),                                        tr("Terminates the active command or clears entity selection.") },
+        { "SysActionStepBack",     tr("Step Back in Visual Snap"),    QKeySequence(Qt::ShiftModifier | Qt::Key_Escape),                    tr("Removes the last added visual snap point reference.") },
+        { "SysActionAccept",       tr("Accept Action Step / Enter"),  QKeySequence(Qt::Key_Return),                                        tr("Confirms the current drafting step or repeats the last command.") },
+        { "SysActionVisualSnap",   tr("Visual Snap Guides"),          QKeySequence(Qt::Key_Tab),                                           tr("Creates visual snap guides for current point.") },
+        { "SysActionModifierShift",tr("Action Modifier"),             QKeySequence(Qt::Key_Shift),                                         tr("Current Action context-aware modifier (angle snap, alt mode etc.).") },
+        { "SysActionModifierCTRL", tr("Action Modifier"),             QKeySequence(Qt::Key_Control),                                       tr("Current Action context-aware modifier (various modes).") },
+        { "SysActionSelectionEnd", tr("Finsh Selection"),             QKeySequence(Qt::Key_Return),                                        tr("Ends entities selection step in selection-aware actions.") },
+        { "SysActionSelectionEnd1", tr("Finsh Selection"),            tr("CTRL+Left Click"),                                      tr("Ends entities selection step in selection-aware actions.") },
+
+        // --- Command Line Navigation ---
+        { "SysCmdComplete",        tr("Command Auto-Complete"),       QKeySequence(Qt::Key_Tab),                                           tr("Cycles through available command completions in the command line.") },
+        { "SysCmdHistoryUp",       tr("Command History Previous"),    QKeySequence(Qt::Key_Up),                                            tr("Recalls previously executed commands in the command line.") },
+        { "SysCmdHistoryDown",     tr("Command History Next"),        QKeySequence(Qt::Key_Down),                                          tr("Recalls next commands in the command line history.") },
+        { "SysCmdRelativeRay",     tr("Directional Relative Ray"),    QKeySequence(Qt::ControlModifier | Qt::Key_Up),tr("Ctrl+Arrow"),  tr("Inserts directional polar distance into command line (@dist,0, etc.).") },
+
+        // --- Mouse Gestures ---
+        { "SysMousePan",           tr("Canvas Pan"),                  tr("Middle Mouse Drag"),     tr("Pans the drawing viewport smoothly.") },
+        { "SysMouseContextMenu",   tr("Context Menu / Step Back"),    tr("Right Click"),           tr("Opens the contextual menu or steps back one step in an active tool.") },
+        { "SysMouseEditProperties",tr("Edit Entity Properties"),      tr("Double Click"),          tr("Opens properties or block editor for the double-clicked entity.") },
+        { "SysMouseToggleFreeSnap",tr("Quick Free Snap"),             tr("Space (without focus)"), tr("Toggles free snap mode without moving focus to the command line.") }
+    };
+
+
+    for (const auto& def : actionDefs) {
+        auto* act = justCreateAction(map, def.m_name, def.m_title, "", group, def.m_description);
+        if (act == nullptr) {
+            continue;
+        }
+
+        act->setProperty(LC_ActionKeys::PROP_READ_ONLY_SHORTCUT, true);
+        act->setProperty(LC_ActionKeys::PROP_DATA_ONLY_ACTION, true);
+        act->setEnabled(false); // Non-invokable data model action
+
+        if (!def.m_customShortcutText.isEmpty()) {
+            act->setProperty(LC_ActionKeys::PROP_CUSTOM_SHORTCUT_TEXT, def.m_customShortcutText);
+        }
+        if (!def.m_shortcut.isEmpty()) {
+            act->setShortcut(def.m_shortcut);
+        }
+
+        group->addAction(act);
+
+    }
 }
 
 void LC_ActionFactory::createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) const {
@@ -245,6 +363,8 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
     createEditActionsUncheckable(actionMap, agm->getGroupByName("edit"));
     createDrawDimensionsUncheckable(actionMap, agm->getGroupByName("dimension"));
     createHelpActionsUncheckable(actionMap, agm->getGroupByName("help"));
+
+    createBuiltInSystemShortcutActions(actionMap, agm->getGroupByName("builtin_system"));
 }
 
 void LC_ActionFactory::createDrawShapeActions(QMap<QString, QAction*>& map, QActionGroup* group) const {

@@ -260,7 +260,7 @@ void LC_NavigationControlsCreator::applyMenuBar(const NavigationLayoutConfig& co
 
         if (topMenu != nullptr) {
             topMenu->setTearOffEnabled(allowTearOff);
-            populateMenuRecursive(topMenu, node.children);
+            populateMenuRecursive(topMenu, node.children, allowTearOff);
         }
     }
 

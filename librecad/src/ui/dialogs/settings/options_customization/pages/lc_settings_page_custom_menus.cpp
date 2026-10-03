@@ -513,17 +513,11 @@ void LC_SettingsPageCustomMenus::onDeleteMenuClicked() {
 }
 
 void LC_SettingsPageCustomMenus::loadSettings() {
-    if (m_presetManager != nullptr) {
-        m_presetManager->loadPreset(m_presetManager->getActivePresetKey());
-    }
     syncUiFromWorkingConfig();
 }
 
 bool LC_SettingsPageCustomMenus::saveSettings() {
     syncCurrentMenuToConfig();
-    if (m_presetManager != nullptr) {
-        return m_presetManager->saveCurrentPreset();
-    }
     return true;
 }
 

@@ -294,13 +294,7 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuMinimal(con
                 "ZoomPan",
                 "-",
                 "ZoomViewSave",
-                {"Menu:ViewsRestore", ":/icons/nview_visible.lci", {
-                    "ZoomViewRestore1",
-                    "ZoomViewRestore2",
-                    "ZoomViewRestore3",
-                    "ZoomViewRestore4",
-                    "ZoomViewRestore5"
-                }},
+                LC_ActionNames::MenuNamedViewsList,
                 "-",
                 "UCSCreate",
                 "UCSSetWCS",
@@ -366,8 +360,8 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuMinimal(con
                 "RedockWidgets",
                 "-",
                 "WorkspaceCreate",
-                "WorkspaceRestore",
                 LC_ActionNames::MenuWorkspacesList,
+                "-",
                 "-",
                 "InvokeMenuCreator",
                 "InvokeToolbarCreator",
@@ -498,6 +492,37 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuExtended(co
     menus.insert(insertIdx++, makeCategoryNode("dimension", agm, af->dimensionActions));
     menus.insert(insertIdx++, makeCategoryNode("info",      agm, af->infoActions));
 
+    // Remove MenuDrawings from Workspace menu in Extended mode
+    for (auto& topNode : menus) {
+        if (topNode.groupTitle == "Menu:Workspace" || topNode.actionName == "Menu:Workspace") {
+            for (int i = 0; i < topNode.children.size(); ++i) {
+                if (topNode.children[i].actionName == LC_ActionNames::MenuDrawings) {
+                    topNode.children.removeAt(i);
+                    // Remove trailing separator if present
+                    if (i > 0 && topNode.children[i - 1].type == ActionNodeType::Separator) {
+                        topNode.children.removeAt(i - 1);
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    // Insert dedicated top-level Drawings/Windows menu right before Help
+    int helpIdx = menus.size();
+    for (int i = 0; i < menus.size(); ++i) {
+        if (menus[i].groupTitle == "Menu:Help" || menus[i].actionName == "Menu:Help") {
+            helpIdx = i;
+            break;
+        }
+    }
+
+    menus.insert(helpIdx, ActionNode{"Menu:Drawings", ":/icons/document.lci", {
+        LC_ActionNames::MenuDrawings
+    }});
+
+
     return menus;
 }
 
@@ -606,7 +631,7 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars(const
             makeCategoryNode("order",     agm, af->orderActions)
         }),
 
-        makeStandardToolbar("order", ":/icons/order.lci", Qt::LeftToolBarArea, toNodes(af->orderActions), false),
+        // makeStandardToolbar("order", ":/icons/order.lci", Qt::LeftToolBarArea, toNodes(af->orderActions), false),
 
         // --- Bottom Area ---
         makeHostToolbar("snap", ":/icons/snap_visual.lci", Qt::BottomToolBarArea, true),

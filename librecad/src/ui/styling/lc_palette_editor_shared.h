@@ -167,6 +167,10 @@ struct FontConfig {
     FontRoleConfig buttons;       // Role 5: Clickable buttons and actions
     FontRoleConfig inputs;          // Role 6: Input fields, dropdowns, spinners
     FontRoleConfig propertiesWidget;     // Role 7: Properties widget font
+    FontRoleConfig tabBars;     // Role 8: Tab bars
+    FontRoleConfig groupBoxes;     // Role 9: Group boxes headings
+    FontRoleConfig itemViews;     // Role 10: Items in views (tables, lists)
+    FontRoleConfig statusBar;     // Role 11: Labels in status bar and toolbars
 
     FontRoleConfig genericDockTitle; // Font for generic dock widget title bar
     FontRoleConfig specialDockTitle; // Font for special (CAD-related) dock widget title bar

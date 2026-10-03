@@ -54,8 +54,10 @@ public:
 
     QString identifier() const;
 
+    const QAction* getAction() const {return m_action;}
 private:
     QString m_description;
+    const QAction* m_action {nullptr};
     LC_ShortcutInfo* m_shortcutInfo{nullptr};
 };
 

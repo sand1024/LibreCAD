@@ -50,7 +50,7 @@ void LC_MenuBuilderBase::populateMenuRecursive(QMenu* parentMenu, const QList<Ac
         return;
     }
 
-    bool effectiveTearOff = allowTearOff && parentMenu->isTearOffEnabled();
+    const bool effectiveTearOff = allowTearOff && parentMenu->isTearOffEnabled();
 
     for (const auto& node : nodes) {
         if (node.type == ActionNodeType::Separator) {
@@ -60,10 +60,9 @@ void LC_MenuBuilderBase::populateMenuRecursive(QMenu* parentMenu, const QList<Ac
         if (!shouldIncludeNode(node)) {
             continue;
         }
-        if (node.actionName.startsWith(LC_ActionNames::PrefixSpecialMenu)) {
-            if (m_specialMenuService != nullptr) {
-                m_specialMenuService->bindMenu(node.actionName, parentMenu);
-            }
+
+        // Delegate to special menu service for all recognized special menu tokens
+        if (m_specialMenuService != nullptr && m_specialMenuService->bindMenu(node.actionName, parentMenu)) {
             continue;
         }
         if (node.type == ActionNodeType::Group || !node.children.isEmpty()) {
@@ -83,7 +82,7 @@ void LC_MenuBuilderBase::populateMenuRecursive(QMenu* parentMenu, const QList<Ac
                 }
 
                 subMenu->setTearOffEnabled(effectiveTearOff);
-                populateMenuRecursive(subMenu, node.children);
+                populateMenuRecursive(subMenu, node.children, effectiveTearOff);
             }
             continue;
         }

@@ -37,10 +37,14 @@ QJsonObject LC_RepositoryTypography::configToJson(const FontConfig& config) cons
     };
 
     root["headings"] = serializeRole(config.headings);
+    root["tab_bars"] = serializeRole(config.tabBars);
     root["menu_bar"] = serializeRole(config.menuBar);
     root["menus"] = serializeRole(config.menus);
     root["buttons"] = serializeRole(config.buttons);
     root["inputs"] = serializeRole(config.inputs);
+    root["group_boxes"] = serializeRole(config.groupBoxes);
+    root["item_views"] = serializeRole(config.itemViews);
+    root["status_bar"] = serializeRole(config.statusBar);
     root["generic_dock"] = serializeRole(config.genericDockTitle);
     root["special_dock"] = serializeRole(config.specialDockTitle);
     root["properties_dock"] = serializeRole(config.propertiesWidget);
@@ -62,10 +66,14 @@ bool LC_RepositoryTypography::configFromJson(const QJsonObject& json, FontConfig
     };
 
     loadRole("headings", config.headings);
+    loadRole("tab_bars", config.tabBars);
     loadRole("menu_bar", config.menuBar);
     loadRole("menus", config.menus);
     loadRole("buttons", config.buttons);
     loadRole("inputs", config.inputs);
+    loadRole("group_boxes", config.groupBoxes);
+    loadRole("item_views", config.itemViews);
+    loadRole("status_bar", config.statusBar);
     loadRole("generic_dock", config.genericDockTitle);
     loadRole("special_dock", config.specialDockTitle);
     loadRole("properties_dock", config.propertiesWidget);

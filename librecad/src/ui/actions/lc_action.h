@@ -29,6 +29,21 @@
 
 namespace LC_ActionKeys {
     inline const char* PROP_DESCRIPTION = "lc_description";
+    inline constexpr const char* PROP_READ_ONLY_SHORTCUT   = "_lc_read_only_shortcut";
+    inline constexpr const char* PROP_DATA_ONLY_ACTION     = "_lc_data_only_action";
+    inline constexpr const char* PROP_CUSTOM_SHORTCUT_TEXT = "_lc_custom_shortcut_text";
+
+    inline bool isReadOnly(const QAction* a) {
+        return a->property(PROP_READ_ONLY_SHORTCUT).toBool();
+    }
+
+    inline bool isReadOnlyAction(const QAction* a) {
+        return a->property(PROP_DATA_ONLY_ACTION).toBool();
+    }
+
+
+
+
 }
 
 class LC_Action: public QAction {

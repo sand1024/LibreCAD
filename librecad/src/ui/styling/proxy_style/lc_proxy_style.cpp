@@ -1920,6 +1920,14 @@ void LC_ProxyStyle::drawCustomGroupBoxFrame(const QStyleOptionFrame* option, QPa
 }
 
 void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox* option, QPainter* painter, const QWidget* widget) const {
+    // 1. Resolve isolated title font from active FontConfig
+    const FontConfig& fontCfg = m_fontConfig;
+    QFont titleFont(fontCfg.mainFamily, qMax(6, fontCfg.mainSize + fontCfg.groupBoxes.sizeOffset));
+    titleFont.setBold(fontCfg.groupBoxes.bold);
+    titleFont.setItalic(fontCfg.groupBoxes.italic);
+
+    // 2. Measure title with the isolated title font
+    const QFontMetrics titleFm(titleFont);
     const QRect textRect = proxy()->subControlRect(CC_GroupBox, option, SC_GroupBoxLabel, widget);
     const QRect checkBoxRect = proxy()->subControlRect(CC_GroupBox, option, SC_GroupBoxCheckBox, widget);
 
@@ -1988,6 +1996,7 @@ void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox* option, QPain
 
         {
             LCPainterGuard textGuard(painter);
+            painter->setFont(titleFont); // Applied strictly to the title painter pass
             painter->setPen(txtColor);
 
             constexpr int textFlags = Qt::TextShowMnemonic | Qt::AlignLeft | Qt::AlignVCenter;

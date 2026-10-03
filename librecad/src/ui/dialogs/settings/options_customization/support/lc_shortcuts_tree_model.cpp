@@ -25,9 +25,12 @@
 #include <QAction>
 #include <QMultiMap>
 
+#include "lc_action.h"
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
 #include "lc_shortcut_tree_item.h"
+
+
 
 LC_ShortcutsTreeModel::LC_ShortcutsTreeModel(QObject* parent, QColor filteredItemColor, QColor conflictItemColor)
     : LC_ActionMappingTreeModelBase(parent, filteredItemColor, conflictItemColor) {
@@ -108,6 +111,10 @@ void LC_ShortcutsTreeModel::rebuildModel(LC_ActionGroupManager* pManager) {
             auto* shortcutInfo = m_shortcuts.value(actionName, nullptr);
             if (shortcutInfo == nullptr) {
                 shortcutInfo = new LC_ShortcutInfo(actionName, action->shortcut());
+
+                const bool isSystem = LC_ActionKeys::isReadOnlyAction(action)
+                              || (group->getName() == "builtin_system");
+                shortcutInfo->setSystemAction(isSystem);
                 m_shortcuts[actionName] = shortcutInfo;
             }
 
@@ -176,6 +183,22 @@ bool LC_ShortcutsTreeModel::checkForCollisions(LC_ShortcutInfo* shortcutInfo, QS
         const int count = keyMap.count(key);
 
         if (count > 1) {
+            // Check if at least one normal action shares this sequence
+            bool hasNormalAction = false;
+            auto checkIt = it;
+            for (int i = 0; i < count; ++i, ++checkIt) {
+                if (!checkIt.value()->isSystemAction()) {
+                    hasNormalAction = true;
+                    break;
+                }
+            }
+
+            // If ONLY system actions share this key, developer context separation applies -> skip conflict
+            if (!hasNormalAction) {
+                it = it + count;
+                continue;
+            }
+
             hasAnyCollision = true;
             auto rangeIt = it;
             for (int i = 0; i < count; ++i, ++rangeIt) {

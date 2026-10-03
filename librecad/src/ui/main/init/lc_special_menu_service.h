@@ -43,14 +43,19 @@ public:
 
 protected:
     // Helpers
+    bool isContextMenuContext(const QMenu* menu) const;
     QMenu* createDynamicSubMenu(QMenu* parentMenu, const QString& title, const QString& iconPath = QString(),
                                 const std::function<void(QMenu*)>& populateFunc = nullptr) const;
+    QMenu* bindOrOmitSubMenu(QMenu* parentMenu, const QString& title, const QString& iconPath,
+                             bool isEmpty, const std::function<void(QMenu*)>& populateFunc) const;
+
     void populateDockWidgets(QMenu* menu, bool cadWidgetsOnly) const;
     void populateToolbars(QMenu* menu, bool cadToolbarsOnly) const;
     void populateDrawings(QMenu* menu) const;
     QAction* getDockWidgetToggleAction(const QString& actionToken) const;
 
     // Sub-menu entry points
+    void bindRecentActionsMenu(QMenu* parentMenu);
     void bindRecentFilesMenu(QMenu* parentMenu) const;
     void bindPluginsMenu(QMenu* menu);
     void bindDockWidgetsMenu(QMenu* parentMenu);
