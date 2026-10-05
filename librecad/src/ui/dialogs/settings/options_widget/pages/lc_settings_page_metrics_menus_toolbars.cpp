@@ -64,7 +64,7 @@ void LC_SettingsPageMetricsMenusToolbars::setupBehavior() {
     }
 }
 
-void LC_SettingsPageMetricsMenusToolbars::loadSettings() {
+void LC_SettingsPageMetricsMenusToolbars::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

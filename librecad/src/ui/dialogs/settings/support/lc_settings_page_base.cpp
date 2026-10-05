@@ -117,7 +117,7 @@ void LC_SettingsPageBase::enableWhenChecked(QCheckBox* source, QWidget* target, 
         target->setEnabled(invert ? !checked : checked);
     };
     connect(source, &QCheckBox::toggled, this, updateState);
-    updateState(source->isChecked());
+    m_widgetsToEnable.push_back({source, target, invert});
 }
 
 void LC_SettingsPageBase::enableWhenChecked(QRadioButton* source, QWidget* target, bool invert) {
@@ -128,7 +128,8 @@ void LC_SettingsPageBase::enableWhenChecked(QRadioButton* source, QWidget* targe
         target->setEnabled(invert ? !checked : checked);
     };
     connect(source, &QRadioButton::toggled, this, updateState);
-    updateState(source->isChecked());
+    // updateState(source->isChecked());
+    m_widgetsToEnable.push_back({source, target, invert});
 }
 
 void LC_SettingsPageBase::showWhenChecked(QCheckBox* source, QWidget* target, bool invert) {
@@ -139,7 +140,31 @@ void LC_SettingsPageBase::showWhenChecked(QCheckBox* source, QWidget* target, bo
         target->setVisible(invert ? !checked : checked);
     };
     connect(source, &QCheckBox::toggled, this, updateState);
-    updateState(source->isChecked());
+    // updateState(source->isChecked());
+    m_widgetsToShow.push_back({source, target});
+}
+
+void LC_SettingsPageBase::updateEnabledState() {
+    for (auto p: m_widgetsToEnable) {
+        auto source = p.source;
+        auto target = p.target;
+        bool checked = source->isChecked();
+        target->setEnabled(p.invert ? !checked : checked);
+    }
+}
+
+void LC_SettingsPageBase::updateVisibleState() {
+    for (auto p: m_widgetsToShow) {
+        auto source = p.source;
+        auto target = p.target;
+        bool checked = source->isChecked();
+        target->setVisible(p.invert ? !checked : checked);
+    }
+}
+
+void LC_SettingsPageBase::updateControlsStates() {
+    updateEnabledState();
+    updateVisibleState();
 }
 
 void LC_SettingsPageBase::bindDirectoryChooser(QAbstractButton* button, QLineEdit* lineEdit, const QString& dialogTitle) {

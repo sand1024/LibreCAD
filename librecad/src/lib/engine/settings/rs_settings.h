@@ -146,6 +146,15 @@ public:
      * store into the current one and stamps `_migratedFrom`,
      * `_schemaMajor`, `_schemaMinor` sentinels at the top level.
      *
+     * The first call creates the settings singleton. A later call keeps
+     * that instance and switches it to the store named by the new keys,
+     * dropping its cache and open group; pointers to the instance and
+     * signal connections made to it stay valid.
+     *
+     * The store is opened in QSettings::defaultFormat(): the native store
+     * (registry, plist or .conf file) unless the program chose another format
+     * before the call.
+     *
      * @param companyKey Company Key
      * @param appKey Application key
      */
@@ -221,7 +230,7 @@ public:
     QStringList getAllKeys() const;
     QStringList getChildKeys() const;
 
-    void remove(const QString &key) const;
+    void remove(const QString &key);
 
     bool writeEntrySingle(const QString &group, const QString &key, const QVariant &value);
 
@@ -231,33 +240,35 @@ signals:
 
 private:
     explicit RS_Settings(QSettings *qsettings);
-
-// fixme - sand - cleanup debug code on code finalization!!!
+    // fixme - sand - cleanup debug code on code finalization!!!
     QVariant readEntryCache(const QString &key) {
         if (m_cache.count(key) == 0) {
             return QVariant();
         }
-/*        auto result = m_cache[key];
-        if (key == "/Appearance/PersistDialogPositions") {
-            LC_ERR << "Read Entry Cache: " << result.toBool();
-        }
-        return result;
-*/
+        /*        auto result = m_cache[key];
+                if (key == "/Appearance/PersistDialogPositions") {
+                    LC_ERR << "Read Entry Cache: " << result.toBool();
+                }
+                return result;
+        */
         return m_cache[key];
     }
 
 
     void writeEntryCache(const QString& key, QVariant value) {
- /*       if (key == "/Appearance/PersistDialogPositions") {
-            int intValue = value.toInt();
-            bool boolValue = value.toBool();
-            auto mType = value.metaType();
-            auto metaType = mType.name();
-            LC_ERR << "Write Entry Cache: " << boolValue<< "  " << intValue << " Type: " << metaType;
-        }
-*/
+        /*       if (key == "/Appearance/PersistDialogPositions") {
+                   int intValue = value.toInt();
+                   bool boolValue = value.toBool();
+                   auto mType = value.metaType();
+                   auto metaType = mType.name();
+                   LC_ERR << "Write Entry Cache: " << boolValue<< "  " << intValue << " Type: " << metaType;
+               }
+       */
         m_cache[key] = value;
     }
+
+
+    void replaceStore(QSettings *qsettings);
 
 protected:
     std::map<QString, QVariant> m_cache;

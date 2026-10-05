@@ -413,6 +413,7 @@ HEADERS += \
     lib/engine/document/entities/lc_curveoffset.h \
     lib/engine/document/entities/lc_parametriccurveintersection.h \
     lib/engine/document/entities/lc_offsetoutputbudget.h \
+    lib/engine/document/entities/lc_offsetresultcheck.h \
     lib/engine/document/entities/lc_splinehelper.h \
     lib/engine/document/entities/lc_tolerance.h \
     lib/engine/document/entities/support/lc_arrow_box.h \
@@ -429,6 +430,7 @@ HEADERS += \
     lib/engine/document/entities/support/lc_dimarrowblock.h \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.h \
     lib/engine/document/lc_graphicvariables.h \
+    lib/engine/document/lc_trackedlistener.h \
     lib/engine/document/selection/lc_selectedset.h \
     lib/engine/document/selection/lc_selectedsetlistener.h \
     lib/engine/document/textstyles/lc_textstyle.h \
@@ -573,6 +575,8 @@ HEADERS += \
     lib/gui/lc_eventhandler.h \
     lib/gui/lc_graphicviewport.h \
     lib/gui/lc_graphicviewportlistener.h \
+    lib/gui/lc_scrollmodel.h \
+    lib/gui/lc_viewmath.h \
     lib/gui/lc_latecompletionrequestor.h \
     lib/gui/render/headless/lc_printviewportrenderer.h \
     lib/gui/render/lc_graphicviewportrenderer.h \
@@ -973,6 +977,7 @@ SOURCES += \
     lib/engine/document/entities/lc_curveoffset.cpp \
     lib/engine/document/entities/lc_parametriccurveintersection.cpp \
     lib/engine/document/entities/lc_offsetoutputbudget.cpp \
+    lib/engine/document/entities/lc_offsetresultcheck.cpp \
     lib/engine/document/entities/lc_splinehelper.cpp \
     lib/engine/document/entities/lc_tolerance.cpp \
     lib/engine/document/entities/support/lc_arrow_box.cpp \
@@ -1013,6 +1018,7 @@ SOURCES += \
     lib/gui/lc_coordinates_parser.cpp \
     lib/gui/lc_eventhandler.cpp \
     lib/gui/lc_graphicviewport.cpp \
+    lib/gui/lc_scrollmodel.cpp \
     lib/gui/render/headless/lc_printviewportrenderer.cpp \
     lib/gui/lc_relative_point_input_widget.cpp \
     lib/math/lc_quadraticutils.cpp \
@@ -1024,6 +1030,7 @@ SOURCES += \
     ui/action_options/lc_action_options_properties_filler_base.cpp \
     ui/action_options/line/lc_line_radiant_options_widget.cpp \
     ui/action_options/line/lc_line_radiant_options_filler.cpp \
+    ui/components/qg_scrollbar.cpp \
     ui/components/relative_position_assistant/lc_relative_position_editing_widget.cpp \
     ui/components/relative_position_assistant/lc_relative_position_evaluator.cpp \
     ui/components/utils/lc_entitymetauiutils.cpp \

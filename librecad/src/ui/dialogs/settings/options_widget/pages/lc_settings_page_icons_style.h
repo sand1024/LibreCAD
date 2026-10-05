@@ -41,14 +41,14 @@ public:
 
     void bindToPresetManager(LC_PresetManagerInterface* manager) override;
 
-    void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
     void updateLivePreview() override;
-    void setReadOnly(bool readOnly) override;
 protected:
+    void doLoadSettings() override;
     void setupUi() override;
     void setupBehavior() override;
+    void setReadOnly(bool readOnly) override;
 
 private slots:
     void onControlChanged();

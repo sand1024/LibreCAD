@@ -47,7 +47,7 @@ void LC_SettingsPageSkinControls::setupBehavior() {
     }
 }
 
-void LC_SettingsPageSkinControls::loadSettings() {
+void LC_SettingsPageSkinControls::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

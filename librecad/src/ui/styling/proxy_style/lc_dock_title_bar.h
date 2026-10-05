@@ -60,9 +60,11 @@ private:
 #endif
 
 
+// fixme - sand - remove class completely
 class LC_DockTitleBar : public QWidget {
     Q_OBJECT
 public:
+    [[deprecated]]
     explicit LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, QWidget *parent = nullptr);
 
     QSize sizeHint() const override;

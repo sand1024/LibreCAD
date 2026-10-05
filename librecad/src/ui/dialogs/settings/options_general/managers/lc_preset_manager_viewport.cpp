@@ -149,7 +149,7 @@ namespace {
         }, LC_ViewportThemeComponent::Sizing);
 
         mapSettings({
-            o_ScrollBars, o_Antialiasing, o_ClassicRenderer,
+            o_ScrollBars, o_ScrollBarsContentBand,o_ScrollBarsContentToolTip, o_Antialiasing, o_ClassicRenderer,
             CFG_ZoomAndPan::o_Autopanning,
             o_ModifyOnViewChange,
             o_ScaleGrid, o_UnitlessGrid, o_MetaGridEvery, o_MinGridSpacing,

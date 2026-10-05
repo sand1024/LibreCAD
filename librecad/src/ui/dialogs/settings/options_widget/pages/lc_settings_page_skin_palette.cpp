@@ -180,7 +180,7 @@ void LC_SettingsPageSkinPalette::onPaletteTabChanged(int index) {
     }
 }
 
-void LC_SettingsPageSkinPalette::loadSettings() {
+void LC_SettingsPageSkinPalette::doLoadSettings() {
     populateTablesFromConfig();
 }
 

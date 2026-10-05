@@ -32,13 +32,13 @@ class LC_DockWidget : public LC_DockWidgetBase {
     Q_OBJECT
 public:
     LC_DockWidget(QWidget* parent, const QString& title, const QString& verticalTitle, const Qt::WindowFlags& flags = Qt::WindowFlags());
-    void updateTitleOld();
-
-protected:
-    void showEvent(QShowEvent* event) override { m_ownVisible = true; }
-    void hideEvent(QHideEvent* event) override { m_ownVisible = false; }
-
+    void paintEvent(QPaintEvent* event);
     void setVisible(bool visible) override;
+
+    void updateTitleOld();
+protected:
+    void showEvent(QShowEvent* event) override { LC_DockWidgetBase::showEvent(event); m_ownVisible = true; }
+    void hideEvent(QHideEvent* event) override { LC_DockWidgetBase::hideEvent(event); m_ownVisible = false; }
 
 private:
     bool m_ownVisible = false;

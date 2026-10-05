@@ -34,6 +34,12 @@ LC_SettingsPageGraphicViewBehavior::LC_SettingsPageGraphicViewBehavior(QObject* 
 
 LC_SettingsPageGraphicViewBehavior::~LC_SettingsPageGraphicViewBehavior() = default;
 
+void LC_SettingsPageGraphicViewBehavior::setupBehavior() {
+    LC_SettingsPageBase::setupBehavior();
+    enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtent);
+    enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtentTooltip);
+}
+
 void LC_SettingsPageGraphicViewBehavior::setupUi() {
     ui->setupUi(m_widget);
 }
@@ -42,7 +48,9 @@ void LC_SettingsPageGraphicViewBehavior::setupBindings() {
     using namespace CFG_Appearance;
 
     bindBoolean({
-        { ui->scrollbars_check_box, o_ScrollBars },
+        { ui->cbShowScrollbars, o_ScrollBars },
+        { ui->cbScrollBarsDrawingExtent, o_ScrollBarsContentBand },
+        { ui->cbScrollBarsDrawingExtentTooltip, o_ScrollBarsContentToolTip },
         { ui->cb_antialiasing, o_Antialiasing },
         { ui->cbClassicRendering, o_ClassicRenderer },
         { ui->cb_autopanning, CFG_ZoomAndPan::o_Autopanning },

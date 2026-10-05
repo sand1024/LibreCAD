@@ -36,6 +36,8 @@ namespace CFG_Appearance {
     inline const LC_Setting<bool> o_FullscreenMode(&Group, "FullscreenMode", false);
 
     inline const LC_Setting<bool> o_ScrollBars(&Group, "ScrollBars", true);
+    inline const LC_Setting<bool> o_ScrollBarsContentBand(&Group, "ScrollBarContentBand", true);
+    inline const LC_Setting<bool> o_ScrollBarsContentToolTip(&Group, "ScrollBarContentTooltip", true);
     inline const LC_Setting<bool> o_Antialiasing(&Group, "Antialiasing", false);
     inline const LC_Setting<bool> o_ClassicRenderer(&Group, "ClassicRenderer", true);
 

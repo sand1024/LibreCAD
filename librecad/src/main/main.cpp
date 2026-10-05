@@ -477,6 +477,7 @@ int main(int argc, char** argv) {
 
     const bool maximize = CFG_Startup::o_Maximize;
 
+    appWin->prepareWindowForShow();
     if (maximize || first_load) {
         appWin->showMaximized();
     }

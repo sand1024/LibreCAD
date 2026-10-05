@@ -28,17 +28,33 @@
 **********************************************************************/
 
 #include "qc_applicationwindow.h"
-
+#ifdef _WINDOWS
+#include <windows.h>
+#endif
 #include <QCloseEvent>
+#include <QApplication>
 #include <QGuiApplication>
 #include <QDockWidget>
+#include <QLayout>
+#include <QMenuBar>
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QScopedValueRollback>
+#include <QScreen>
+#include <QShowEvent>
+#include <QSignalBlocker>
 #include <QStatusBar>
+#include <QTabBar>
 #include <QStyleHints>
 #include <QTimer>
+#include <QToolBar>
+#include <QWindow>
+
+#include <algorithm>
 
 
 
@@ -173,8 +189,9 @@ QC_ApplicationWindow::QC_ApplicationWindow() {
     // through to the per-MDI-window renderer is follow-up work documented in
     // Task D of the plan; this connect at least refreshes icons and any
     // listener wired to iconsRefreshed().
-    connect(qApp, &QGuiApplication::primaryScreenChanged,
-            this, [this](QScreen*) { fireIconsRefresh(); });
+    connect(qApp, &QGuiApplication::primaryScreenChanged, this, [this](QScreen*) {
+        fireIconsRefresh();
+    });
 }
 
 /**
@@ -183,6 +200,28 @@ QC_ApplicationWindow::QC_ApplicationWindow() {
 QC_ApplicationWindow::~QC_ApplicationWindow() {
     RS_DEBUG->print("QC_ApplicationWindow::~QC_ApplicationWindow");
 
+    // Quitting closes every drawing through doClose(), and the windows' deferred
+    // deletes run as the event loop ends. Should a window be left, destroy it
+    // (and its drawing) now, detached from the widgets and while the action
+    // context and dialog factory it uses still exist: as a child widget it would
+    // be destroyed after them.
+    setupWidgetsByWindow(nullptr);
+    m_actionHandler->setDocumentAndView(nullptr, nullptr);
+    QList<QPointer<QC_MDIWindow>> leftWindows;
+    for (QMdiSubWindow* subWindow : m_mdiAreaCAD->subWindowList()) {
+        auto* w = qobject_cast<QC_MDIWindow*>(subWindow);
+        if (w != nullptr) {
+            // the views' signals must not reach this half-destroyed window
+            w->getGraphicView()->disconnect(this);
+            leftWindows.append(w);
+        }
+    }
+    for (const QPointer<QC_MDIWindow>& w : std::as_const(leftWindows)) {
+        // null if its parent window already destroyed it
+        delete w.data();
+    }
+    m_windowList.clear();
+
 #ifdef _WINDOWS
     qt_ntfs_permission_lookup--; // turn it off again
 #endif
@@ -190,6 +229,74 @@ QC_ApplicationWindow::~QC_ApplicationWindow() {
     delete m_dialogFactory;
     delete m_actionContext;
 }
+
+
+// fixme - sand - merge review - Hm.... What is this????
+void QC_ApplicationWindow::initializeDockLayout() {
+    m_dockLayoutManager->initializeDockLayout();
+}
+
+void QC_ApplicationWindow::prepareWindowForShow() {
+    m_dockLayoutManager->prepareWindowForShow();
+}
+
+// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
+QMap<QString, bool> QC_ApplicationWindow::requestedDockVisibility() const {
+    return m_dockLayoutManager->requestedDockVisibility();
+}
+
+// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
+bool QC_ApplicationWindow::dockAreaRequested(Qt::DockWidgetArea area) const {
+    return m_dockLayoutManager->dockAreaRequested(area);
+}
+
+// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
+bool QC_ApplicationWindow::floatingDocksRequested() const {
+    return m_dockLayoutManager->floatingDocksRequested();
+}
+
+// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
+void QC_ApplicationWindow::restoreDockLayout(const QMap<QString, bool>& requested,
+                                              bool hasRequested, const QHash<int, bool>& areas,
+                                              const QByteArray& state) {
+    m_dockLayoutManager->restoreDockLayout(requested,  hasRequested, areas, state);
+}
+
+void QC_ApplicationWindow::setDockAreaRequested(Qt::DockWidgetArea area, bool state) {
+    m_dockLayoutManager->setDockAreaRequested(area, state);
+}
+
+void QC_ApplicationWindow::toggleLeftDockArea(bool state) {
+    setDockAreaRequested(Qt::LeftDockWidgetArea, state);
+}
+void QC_ApplicationWindow::toggleRightDockArea(bool state) {
+    setDockAreaRequested(Qt::RightDockWidgetArea, state);
+}
+void QC_ApplicationWindow::toggleTopDockArea(bool state) {
+    setDockAreaRequested(Qt::TopDockWidgetArea, state);
+}
+void QC_ApplicationWindow::toggleBottomDockArea(bool state) {
+    setDockAreaRequested(Qt::BottomDockWidgetArea, state);
+}
+
+void QC_ApplicationWindow::toggleFloatingDockwidgets(bool state) {
+    m_dockLayoutManager->toggleFloatingDockwidgets(state);
+}
+
+void QC_ApplicationWindow::requestDockVisible(QDockWidget* dock) {
+    m_dockLayoutManager->requestDockVisible(dock);
+}
+
+// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
+QByteArray QC_ApplicationWindow::dockLayoutStateForSaving() {
+  return m_dockLayoutManager->dockLayoutStateForSaving();
+}
+
+void QC_ApplicationWindow::scheduleDockFit() {
+    m_dockLayoutManager->scheduleDockFit();
+}
+
+// fixme - sand - merge review - Hm.... What is this???? - End
 
 void QC_ApplicationWindow::checkForNewVersion() const {
     m_releaseChecker->checkForNewVersion();
@@ -358,7 +465,9 @@ void QC_ApplicationWindow::doClose(QC_MDIWindow* w, const bool activateNext) {
         graphic->removeLayerListListener(view);
     }
 
-    for (auto && child : std::as_const(w->getChildWindows())) {
+    // doClose(child) removes the child from this list: iterate over a copy
+    const QList<QC_MDIWindow*> children = w->getChildWindows();
+    for (const auto child : children) {
         // block editors and print previews; just force these closed
         doClose(child, false); // they belong to the document (changes already saved there)
     }
@@ -624,9 +733,7 @@ void QC_ApplicationWindow::slotKillAllActions() {
 void QC_ApplicationWindow::slotFocusCommandLine() {
     // if command widget is not visible - show it first
     auto* cmd_dockwidget = findChild<QDockWidget*>("command_dockwidget");
-    if (cmd_dockwidget->isHidden()) {
-        cmd_dockwidget->show();
-    }
+    requestDockVisible(cmd_dockwidget);
     m_commandWidget->focusWidget();
 }
 
@@ -680,6 +787,16 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
         emit windowsChanged(false);
         activeMDIWindowChanged(nullptr);
         return;
+    }
+
+    // doClose() has detached the widgets from a closed window, whose document
+    // is freed with it: do not attach them again.
+    const auto* activatedMdiWindow = qobject_cast<QC_MDIWindow*>(w);
+    if (activatedMdiWindow != nullptr) {
+        const QG_GraphicView* activatedView = activatedMdiWindow->getGraphicView();
+        if (activatedView == nullptr || activatedView->isClosing()) {
+            return;
+        }
     }
 
     if (w == m_activeMdiSubWindow) {
@@ -909,13 +1026,12 @@ QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w)
     QG_GraphicView* view = w->getGraphicView();
     {
         using namespace CFG_Appearance;
-        const bool antialiasing = o_Antialiasing; // fixme - sand - check whether its not loaded in loadSettings() later
+        const bool antialiasing = o_Antialiasing; // fixme - sand - check whether its not loaded in loadSettings() later!!!
         const bool showScrollbars = o_ScrollBars;
         const bool cursor_hiding = o_CursorHidingWhenSnapping;
         view->setAntialiasing(antialiasing);
         view->setCursorHiding(cursor_hiding);
         view->addScrollbars(showScrollbars);
-
     }
 
     view->setDeviceName(CFG_Hardware::o_Device);
@@ -1159,10 +1275,9 @@ int QC_ApplicationWindow::maybeSurfaceBlocksDock(RS_Graphic *graphic) {
     return 0;
 
   if (auto *dock = qobject_cast<QDockWidget *>(m_blockWidget->parentWidget())) {
-    dock->show();
-    dock->raise();
+    requestDockVisible(dock);
     if (dock->isFloating())
-      dock->activateWindow();
+        dock->activateWindow();
   }
   return hits;
 }
@@ -1416,8 +1531,12 @@ void QC_ApplicationWindow::closeWindow(QC_MDIWindow* win) {
 bool QC_ApplicationWindow::doCloseAllFiles() {
     bool hasParent(false);
     QC_MDIWindow::SaveOnClosePolicy policy = QC_MDIWindow::SaveOnClosePolicy::ASK;
-    for (const auto w : std::as_const(m_windowList)) {
-        if (w != nullptr) {
+    // doClose() removes windows from m_windowList, a parent's block editors
+    // too, and processEvents() below may already destroy them: iterate over a
+    // copy, and skip a window once it is no longer listed.
+    const QList<QC_MDIWindow*> windows = m_windowList;
+    for (const auto w : windows) {
+        if (w != nullptr && m_windowList.contains(w)) {
             hasParent = w->getParentWindow() != nullptr;
             if (w->isModified() && !hasParent && policy == QC_MDIWindow::SaveOnClosePolicy::ASK) {
                 doActivate(w);
@@ -1500,6 +1619,12 @@ void QC_ApplicationWindow::slotFilePrint(const bool printPDF) {
         using namespace LC_Printing;
         const PrinterType type = printPDF ? PrinterType::PDF : PrinterType::Printer;
         print(*w, type);
+    }
+}
+
+void QC_ApplicationWindow::doRedockWidgets() {
+    if (m_dockLayoutManager != nullptr) {
+        m_dockLayoutManager->redockAllWidgets();
     }
 }
 
@@ -2017,7 +2142,17 @@ bool QC_ApplicationWindow::eventFilter(QObject* obj, QEvent* event) {
         openFile(openEvent->file(), RS2::FormatUnknown);
         return true;
     }
+    if (m_dockLayoutManager->processEvent(obj, event)) {
+        return true;
+    }
     return QObject::eventFilter(obj, event);
+}
+
+
+void QC_ApplicationWindow::resizeEvent(QResizeEvent* event) {
+    LC_MDIApplicationWindow::resizeEvent(event);
+    m_dockLayoutManager->clearPriorityDockName();
+    scheduleDockFit();
 }
 
 void QC_ApplicationWindow::onViewCurrentActionChanged(const RS2::ActionType actionType) {
@@ -2114,6 +2249,9 @@ LC_NavigationControlsCreator* QC_ApplicationWindow::getCreatorInvoker() {
 }
 
 void QC_ApplicationWindow::changeEvent([[maybe_unused]] QEvent* event) {
+    if (event->type() == QEvent::WindowStateChange) {
+        scheduleDockFit();
+    }
     // returning to LC via Command+Tab won't always activate a subwindow #821
 
 #if defined(Q_OS_MACOS)
@@ -2134,6 +2272,38 @@ void QC_ApplicationWindow::showEvent(QShowEvent* event) {
     if (m_dockTabBarManager != nullptr) {
         m_dockTabBarManager->synchronizeAll();
     }
+    if (!m_screenSignalsConnected) {
+        m_screenSignalsConnected = true;
+        const auto watchScreen = [this](QScreen* screen) {
+            if (screen != nullptr) {
+                connect(screen, &QScreen::availableGeometryChanged, this, [this](const QRect&) {
+                    scheduleDockFit();
+                });
+            }
+        };
+        for (QScreen* screen : QGuiApplication::screens()) {
+            watchScreen(screen);
+        }
+        connect(qApp, &QGuiApplication::screenAdded, this, [this, watchScreen](QScreen* screen) {
+            watchScreen(screen);
+            scheduleDockFit();
+        });
+        connect(qApp, &QGuiApplication::screenRemoved, this, [this](QScreen*) {
+            scheduleDockFit();
+        });
+        if (windowHandle() != nullptr) {
+            connect(windowHandle(), &QWindow::screenChanged, this, [this](QScreen*) {
+                scheduleDockFit();
+            });
+        }
+    }
+
+    // Now that the main window is shown and mapped to the OS, float any docks that were saved as floating
+    if (m_dockLayoutManager != nullptr) {
+        m_dockLayoutManager->applyPendingFloatingDocks();
+    }
+
+    scheduleDockFit();
 }
 
 void QC_ApplicationWindow::invokeLicenseWindow() const {
@@ -2229,8 +2399,8 @@ void QC_ApplicationWindow::fireWorkspacesChanged() {
     emit workspacesChanged(hasWorkspaces);
 }
 
-
 // fixme - sand - or it's better move implementation outside, say to init?
+// Fixmed - sand - and how this is related to new dock layout manager???? They should be synched up
 void QC_ApplicationWindow::resetLayoutToDefault() {
     LC_WaitCursorGuard guard;
     if (m_navigationControlsCreator == nullptr) {

@@ -49,6 +49,7 @@ public:
     bool eventFilter(QObject* watched, QEvent* event) override;
 private:
     bool handleToolTipEvent(QTabBar* bar, QHelpEvent* helpEvent);
+    bool handleMiddleMouseClose(QTabBar* bar, QMouseEvent* mouseEvent) const;
     LC_DockWidgetBase* resolveDockForTab(QTabBar* bar, int index) const;
     QIcon resolveTabIcon(const QIcon& baseIcon, QTabBar::Shape shape) const;
     int resolveTargetIconSize(QTabBar* bar, bool cadDominant) const;

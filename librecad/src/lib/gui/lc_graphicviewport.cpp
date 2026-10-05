@@ -50,72 +50,6 @@
 
 namespace {
 
-// Percentile of sorted samples in [0,1].
-double leafPercentile(std::vector<double> v, double p) {
-    if (v.empty())
-        return 0.0;
-    std::sort(v.begin(), v.end());
-    const size_t i = std::min(
-        v.size() - 1,
-        static_cast<size_t>(p * static_cast<double>(v.size() - 1)));
-    return v[i];
-}
-
-// Tight view envelope from visible leaves (p02/p98 of leaf edge coords).
-// Returns false when the sample is too small to trust.
-bool denseLeafEnvelope(RS_EntityContainer &container, RS_Vector &outMin,
-                       RS_Vector &outMax) {
-    std::vector<double> minXs;
-    std::vector<double> maxXs;
-    std::vector<double> minYs;
-    std::vector<double> maxYs;
-    minXs.reserve(4096);
-    maxXs.reserve(4096);
-    minYs.reserve(4096);
-    maxYs.reserve(4096);
-
-    for (RS_Entity *e :
-         lc::LC_ContainerTraverser{container, RS2::ResolveAll}.entities()) {
-        if (e == nullptr || e->isContainer() || !e->isVisible())
-            continue;
-        e->calculateBorders();
-        const RS_Vector mn = e->getMin();
-        const RS_Vector mx = e->getMax();
-        if (!mn.valid || !mx.valid)
-            continue;
-        if (!std::isfinite(mn.x) || !std::isfinite(mn.y) || !std::isfinite(mx.x)
-            || !std::isfinite(mx.y))
-            continue;
-        if (std::abs(mn.x) > 1.0e9 || std::abs(mn.y) > 1.0e9
-            || std::abs(mx.x) > 1.0e9 || std::abs(mx.y) > 1.0e9)
-            continue;
-        // Skip degenerate origin pins.
-        if (std::abs(mn.x) < 1.0e-9 && std::abs(mx.x) < 1.0e-9
-            && std::abs(mn.y) < 1.0e-9 && std::abs(mx.y) < 1.0e-9)
-            continue;
-        minXs.push_back(mn.x);
-        maxXs.push_back(mx.x);
-        minYs.push_back(mn.y);
-        maxYs.push_back(mx.y);
-    }
-    if (minXs.size() < 50)
-        return false;
-
-    outMin = RS_Vector(leafPercentile(minXs, 0.02), leafPercentile(minYs, 0.02));
-    outMax = RS_Vector(leafPercentile(maxXs, 0.98), leafPercentile(maxYs, 0.98));
-    if (outMax.x <= outMin.x || outMax.y <= outMin.y)
-        return false;
-
-    // Small pad so dense-edge symbols are not flush with the window border.
-    const double padX = 0.02 * (outMax.x - outMin.x);
-    const double padY = 0.02 * (outMax.y - outMin.y);
-    outMin.x -= padX;
-    outMin.y -= padY;
-    outMax.x += padX;
-    outMax.y += padY;
-    return true;
-}
-
 } // namespace
 
 LC_GraphicViewport::LC_GraphicViewport():
@@ -692,7 +626,10 @@ void LC_GraphicViewport::doZoomAuto(const RS_Vector& min, const RS_Vector& max, 
         RS_Vector ucsMin;
         RS_Vector ucsMax;
 
-        ucsBoundingBox(min, max, ucsMin, ucsMax);
+        // Issue #2131: the old two-corner ucsBoundingBox() can be narrower than the WCS
+        // box's true UCS extent under a rotated UCS; ucsBoundsOfWcsBox() transforms all
+        // four corners, matching what the scrollbars already frame (adjustOffsetControls()).
+        ucsBoundsOfWcsBox(min, max, ucsMin, ucsMax);
 
         const RS_Vector ucsSize = ucsMax - ucsMin;
 
@@ -1158,9 +1095,9 @@ void LC_GraphicViewport::doUpdateViewByGraphicView(LC_View *view) const {
 
     view->setTargetPoint({0, 0, 0});
 
+    // the view takes ownership of the UCS set here and frees the one it held
     LC_UCS* viewUCS = getCurrentUCS();
     if (viewUCS != nullptr) {
-        view->setUCS(viewUCS);
         if (m_graphic != nullptr) {
             LC_UCSList *ucsList = m_graphic->getUCSList();
 
@@ -1170,6 +1107,7 @@ void LC_GraphicViewport::doUpdateViewByGraphicView(LC_View *view) const {
                 viewUCS->setName(ucsName);
             }
         }
+        view->setUCS(viewUCS);
     }
     else{
         // this is WCS

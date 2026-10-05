@@ -89,6 +89,8 @@ public:
     void checkActions(const std::vector<QString>& actionList, bool enable) const;
     virtual QAction* getAction(const QString& name) const = 0;
 
+    QMdiArea* mdiAreaCAD() const {return m_mdiAreaCAD;}
+
 public slots :
     void slotCascade();
     void slotTileHorizontal();
@@ -106,6 +108,7 @@ public slots :
     void slotZoomAuto() const;
     void slotWindowActivated(QMdiSubWindow* w);
     void slotWindowActivatedByIndex(int);
+
     void slotRedockWidgets();
     friend class QC_MDIWindow;
     QMenu* findMenu(const QString& searchMenu, const QObjectList& thisMenuList, const QString& currentEntry);
@@ -121,6 +124,7 @@ protected:
     QMdiSubWindow* m_activeMdiSubWindow{nullptr};
     QMdiSubWindow* m_currentSubWindow{nullptr};
     QList<QC_MDIWindow*> m_windowList;
+    virtual void doRedockWidgets();
     void doArrangeWindows(RS2::SubWindowMode subwindowMode, bool actuallyDont = false);
     void setTabLayout(RS2::TabShape s, RS2::TabPosition p);
     virtual void doActivate(QMdiSubWindow* win);

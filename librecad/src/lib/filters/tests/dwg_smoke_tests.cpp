@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -1964,6 +1965,79 @@ TEST_CASE("DWG R2007 stored-page: usa_dollar100_front.dwg reads tables",
   CHECK(iface.layers == 1);
 }
 
+// Extruder2.dwg (AC1018, ~/doc/dwg) was BAD_READ_TABLES.
+// Its BLOCK_CONTROL still lists the handle of an erased BLOCK_RECORD (0x64FD),
+// and the BLOCK, ENDBLK and contents of 40 erased anonymous dimension blocks
+// (*D27 ... *D73) were left in the file with owners that no longer exist.
+// dwgread 0.14 agrees: 100 BLOCK entities but 60 BLOCK_HEADER objects. What the
+// file holds in live blocks is what dwgread reports minus those leftovers
+// (dwgread: 8621 LINE, 135 MTEXT, 180 POINT, 168 SOLID, 100 BLOCK; the leftovers
+// are 170 LINE, 54 MTEXT, 90 POINT, 80 SOLID, 40 BLOCK, 40 ENDBLK). Hidden and
+// developer-local: the file is not shipped.
+TEST_CASE("DWG Extruder2: erased dimension blocks are skipped, the rest reads",
+          "[.dwg_extruder2]") {
+  const char *home = std::getenv("HOME");
+  if (!home) {
+    SKIP("HOME not set; skipping");
+  }
+  const std::string path = std::string(home) + "/doc/dwg/Extruder2.dwg";
+  if (!std::filesystem::is_regular_file(path)) {
+    SKIP("Extruder2.dwg not present; skipping");
+  }
+
+  TypeTrackingIface iface;
+  dwgR reader(path.c_str());
+  REQUIRE(reader.read(&iface, true));
+  REQUIRE(reader.getError() == DRW::BAD_NONE); // was BAD_READ_TABLES
+  CHECK(reader.getVersion() == DRW::AC1018);
+
+  CHECK(iface.layers == 9);
+  CHECK(iface.blocks == 60);
+  const auto count = [&iface](const char *type) {
+    const auto it = iface.typeCounts.find(type);
+    return it == iface.typeCounts.end() ? 0 : it->second;
+  };
+  CHECK(count("LINE") == 8621 - 170);
+  CHECK(count("ARC") == 4130);
+  CHECK(count("CIRCLE") == 302);
+  CHECK(count("TEXT") == 497);
+  CHECK(count("MTEXT") == 135 - 54);
+  CHECK(count("POINT") == 180 - 90);
+  CHECK(count("SOLID") == 168 - 80);
+  CHECK(count("LWPOLYLINE") == 131);
+  CHECK(count("INSERT") == 76);
+  CHECK(count("HATCH") == 19);
+  CHECK(count("ELLIPSE") == 18);
+  CHECK(count("SPLINE") == 14);
+  CHECK(count("DIM_LINEAR") == 31);
+  CHECK(count("DIM_DIAMETRIC") == 6);
+  CHECK(count("DIM_ALIGNED") == 4);
+
+  // Every leftover is counted and reported; nothing else is. The import
+  // filter tells the user about the erased records from these two counts.
+  CHECK(reader.getEntityParseFailures() == 474u);
+  CHECK(reader.getDanglingBlockRecords() == 1u);
+  CHECK(reader.getOrphanedEntities() == 474u);
+  std::size_t danglingControlEntries = 0;
+  std::size_t orphans = 0;
+  std::set<std::uint64_t> erasedOwners;
+  for (const DwgIntegrityDiagnostic &diagnostic :
+       reader.getIntegrityDiagnostics()) {
+    CHECK(diagnostic.severity == DwgIntegritySeverity::Warning);
+    if (diagnostic.kind == DwgIntegrityCheckKind::TableControlDanglingHandle) {
+      ++danglingControlEntries;
+      CHECK(diagnostic.logicalHandle == 0x64FDu);
+    } else if (diagnostic.kind ==
+               DwgIntegrityCheckKind::EntityOwnerRecordMissing) {
+      ++orphans;
+      erasedOwners.insert(diagnostic.expected);
+    }
+  }
+  CHECK(danglingControlEntries == 1u);
+  CHECK(orphans == 474u);
+  CHECK(erasedOwners.size() == 40u);
+}
+
 TEST_CASE("DWG XLINE reads as typed construction line across LibreDWG versions",
           "[dwg][xline]") {
   struct Fixture {
@@ -3853,6 +3927,83 @@ TEST_CASE("RS_FilterDXFRW: XREF A->B->A cycle terminates", "[xref][filter]") {
 
   std::filesystem::remove(pathA);
   std::filesystem::remove(pathB);
+}
+
+// embedXref loads the XREF into a local drawing that is destroyed when it
+// returns, so the entities it copies into the host must end up on the
+// host's namespaced copies of the XREF's layers ("PART|WALLS"), children of
+// containers included. It used to look the layer up after parenting the
+// clone into the host, where getLayer() only answers the host's own layers,
+// so every copied entity kept a pointer to a freed layer of the XREF.
+TEST_CASE("RS_FilterDXFRW: XREF entities land on the host's namespaced layers",
+          "[xref][filter][layers]") {
+  static int qargc = 1;
+  static char qarg0[] = "librecad_tests";
+  static char *qargv[] = {qarg0, nullptr};
+  static QCoreApplication *qapp = QCoreApplication::instance()
+                                      ? QCoreApplication::instance()
+                                      : new QCoreApplication(qargc, qargv);
+  static bool settingsReady = [] {
+    QCoreApplication::setOrganizationName("LibreCAD");
+    QCoreApplication::setApplicationName("LibreCAD-tests");
+    RS_Settings::init("LibreCAD", "LibreCAD-tests");
+    return true;
+  }();
+  (void)qapp;
+  (void)settingsReady;
+
+  const auto xrefPath =
+      std::filesystem::temp_directory_path() / "librecad_xref_layers_part.dxf";
+  const auto hostPath =
+      std::filesystem::temp_directory_path() / "librecad_xref_layers_host.dxf";
+  writeFile(xrefPath.string(),
+            "0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1015\n0\nENDSEC\n"
+            "0\nSECTION\n2\nTABLES\n"
+            "0\nTABLE\n2\nLAYER\n70\n2\n"
+            "0\nLAYER\n5\n10\n2\n0\n70\n0\n62\n7\n6\nCONTINUOUS\n"
+            "0\nLAYER\n5\n11\n2\nWALLS\n70\n0\n62\n1\n6\nCONTINUOUS\n"
+            "0\nENDTAB\n0\nENDSEC\n"
+            "0\nSECTION\n2\nENTITIES\n"
+            "0\nLINE\n5\n30\n8\nWALLS\n10\n0.0\n20\n0.0\n30\n0.0\n"
+            "11\n10.0\n21\n0.0\n31\n0.0\n"
+            "0\nLWPOLYLINE\n5\n31\n8\nWALLS\n90\n3\n70\n0\n"
+            "10\n0.0\n20\n5.0\n10\n5.0\n20\n5.0\n10\n5.0\n20\n10.0\n"
+            "0\nENDSEC\n0\nEOF\n");
+  writeFile(hostPath.string(), buildCycleDxf("PART", xrefPath.string()));
+
+  RS_Graphic graphic;
+  RS_FilterDXFRW filter;
+  REQUIRE(filter.fileImport(graphic, QString::fromStdString(hostPath.string()),
+                            RS2::FormatDXFRW));
+
+  RS_LayerList *layers = graphic.getLayerList();
+  RS_Layer *walls = layers->find("PART|WALLS");
+  REQUIRE(walls != nullptr);
+  CHECK(walls->getPen().getColor() == RS_Color(255, 0, 0));
+  const RS_Block *part = graphic.getBlockList()->find("PART");
+  REQUIRE(part != nullptr);
+  REQUIRE(part->count() == 2);
+
+  int onWalls = 0;
+  std::function<void(const RS_EntityContainer &)> check =
+      [&](const RS_EntityContainer &container) {
+        for (const RS_Entity *e : container) {
+          RS_Layer *layer = e->getLayer(false);
+          // Compare pointers only: a leftover XREF layer is already freed.
+          CHECK((layer == nullptr || layers->contains(layer)));
+          if (layer == walls) {
+            ++onWalls;
+          }
+          if (e->isContainer()) {
+            check(*static_cast<const RS_EntityContainer *>(e));
+          }
+        }
+      };
+  check(*part);
+  CHECK(onWalls >= 2);
+
+  std::filesystem::remove(xrefPath);
+  std::filesystem::remove(hostPath);
 }
 
 // Cross-check: load the source XREF (gripper_assembly_new.dwg) and report

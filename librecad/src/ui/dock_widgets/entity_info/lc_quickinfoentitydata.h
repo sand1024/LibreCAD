@@ -71,7 +71,8 @@ public:
         PROPERTY_TYPE_LINEAR, // holds linear value
         PROPERTY_TYPE_ANGLE, // holds angle value
         PROPERTY_TYPE_AREA, // holds area value
-        PROPERTY_TYPE_OTHER // holds generic purpose value
+        PROPERTY_TYPE_OTHER, // holds generic purpose value
+        PROPERTY_TYPE_OTHER_ATTR // holds generic purpose value
     };
 
     /**

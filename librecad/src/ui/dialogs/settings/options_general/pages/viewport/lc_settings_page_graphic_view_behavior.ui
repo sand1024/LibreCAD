@@ -58,7 +58,7 @@ If selected, drawing will be panned automatically if mouse is near drawing view 
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QCheckBox" name="scrollbars_check_box">
+       <widget class="QCheckBox" name="cbShowScrollbars">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -72,6 +72,50 @@ Defines whether scrollbar should be shown in graphic view. </string>
         </property>
         <property name="text">
          <string>Display scrollbars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="cbScrollBarsDrawingExtent">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Drawing Extent
+
+Marks the drawing's range along each scrollbar where it lies outside the view,
+so the drawing can be found again when panned far away. </string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>Show drawing extents on scrollbars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="cbScrollBarsDrawingExtentTooltip">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Drawing Extent Tooltip
+
+Gives the ranges and the drawing's distance in the scrollbar's tooltip,
+so the drawing can be found again when panned far away. </string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>Show scrollbar tooltip with drawing extents</string>
         </property>
        </widget>
       </item>

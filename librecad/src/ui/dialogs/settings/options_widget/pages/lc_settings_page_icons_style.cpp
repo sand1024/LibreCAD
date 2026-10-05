@@ -208,7 +208,7 @@ void LC_SettingsPageIconsStyle::setupBehavior() {
     wireCompoundControl(ui->chkBackPalette, ui->btnBackColor, ui->cbBackPaletteRole);
 }
 
-void LC_SettingsPageIconsStyle::loadSettings() {
+void LC_SettingsPageIconsStyle::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

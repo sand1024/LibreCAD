@@ -34,6 +34,8 @@ public:
     ~LC_SettingsPageGraphicViewBehavior() override;
 
 protected:
+    void setupBehavior() override;
+
     void setupUi() override;
     void setupBindings() override;
 

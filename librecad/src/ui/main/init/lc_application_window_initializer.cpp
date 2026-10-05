@@ -78,6 +78,7 @@ LC_ApplicationWindowInitializer::LC_ApplicationWindowInitializer(QC_ApplicationW
 }
 
 void LC_ApplicationWindowInitializer::initGeneralMembers() {
+    m_appWin->m_dockLayoutManager = std::make_unique<LC_AppWindowDockLayoutManger>(m_appWin);
     m_appWin->m_actionHandler = std::make_unique<QG_ActionHandler>(m_appWin);
     m_appWin->m_dlgHelpr = std::make_unique<LC_AppWindowDialogsInvoker>(m_appWin);
     m_appWin->m_workspacesInvoker = std::make_unique<LC_WorkspacesInvoker>(m_appWin);
@@ -141,6 +142,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initDialogFactory();
     initRecentFilesList();
     initNavigationLayout();
+    m_appWin->initializeDockLayout();
     m_appWin->initSettings(true);
     loadCmdWidgetVariablesFile();
     initAutoSaveTimer();

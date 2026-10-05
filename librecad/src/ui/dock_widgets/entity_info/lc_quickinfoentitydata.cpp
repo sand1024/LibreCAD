@@ -454,10 +454,16 @@ QString LC_QuickInfoEntityData::generateView() {
         else if (property->type == PropertyType::PROPERTY_TYPE_LINEAR || property->type == PropertyType::PROPERTY_TYPE_ANGLE) {
             createLink(data, "val", i, tr("To Cmd"), property->value);
         }
-        else {
+        else if (property->type == PropertyType::PROPERTY_TYPE_OTHER_ATTR){
             data.append("<b>");
             data.append(property->value.toHtmlEscaped());
             data.append("</b>");
+        }
+        else {
+            // fixme - sand - decide later whether bold is better - or add setting?
+            // data.append("<b>");
+            data.append(property->value.toHtmlEscaped());
+            // data.append("</b>");
         }
         data.append("</td>");
         data.append("</tr>");
@@ -531,24 +537,24 @@ void LC_QuickInfoEntityData::collectGenericProperties(const RS_Entity* e) {
     if (m_options->displayEntityID) {
         QString idStr;
         idStr.setNum(id);
-        addProperty(tr("ID"), idStr, PROPERTY_TYPE_OTHER);
+        addProperty(tr("ID"), idStr, PROPERTY_TYPE_OTHER_ATTR);
     }
-    addProperty(tr("Layer"), layerName, PROPERTY_TYPE_OTHER);
+    addProperty(tr("Layer"), layerName, PROPERTY_TYPE_OTHER_ATTR);
     if (resolvedColor != color) {
         QString actualColorName = m_penRegistry->getColorName(resolvedColor, colorType);
         colorName = colorName.append(" / ").append(actualColorName);
     }
-    addProperty(tr("Color"), colorName, PROPERTY_TYPE_OTHER);
+    addProperty(tr("Color"), colorName, PROPERTY_TYPE_OTHER_ATTR);
     if (resolvedLineType != lineType) {
         QString resolvedLineTypeName = m_penRegistry->getLineTypeText(resolvedLineType);
         lineTypeName.append(" / ").append(resolvedLineTypeName);
     }
-    addProperty(tr("Line Type"), lineTypeName, PROPERTY_TYPE_OTHER);
+    addProperty(tr("Line Type"), lineTypeName, PROPERTY_TYPE_OTHER_ATTR);
     if (resolvedLineType != lineType) {
         QString resolvedLineWidthName = m_penRegistry->getLineWidthText(resolvedLineWidth);
         lineWidthName.append(" / ").append(resolvedLineWidthName);
     }
-    addProperty(tr("Line Width"), lineWidthName, PROPERTY_TYPE_OTHER);
+    addProperty(tr("Line Width"), lineWidthName, PROPERTY_TYPE_OTHER_ATTR);
     if (m_options->displayEntityBoundaries) {
         addVectorProperty(tr("Min"), e->getMin());
         addVectorProperty(tr("Max"), e->getMax());
@@ -1684,7 +1690,7 @@ void LC_QuickInfoEntityData::addAreaProperty(const QString& name, const double v
 RS_Vector LC_QuickInfoEntityData::getVectorForIndex(const int index) const {
     auto result = RS_Vector(false);
     const size_t size = m_properties.size();
-    if (index < size) {
+    if (index >= 0 && static_cast<std::size_t>(index) < size) {
         const auto property = static_cast<VectorPropertyInfo*>(m_properties.at(index));
         result = property->data;
     }

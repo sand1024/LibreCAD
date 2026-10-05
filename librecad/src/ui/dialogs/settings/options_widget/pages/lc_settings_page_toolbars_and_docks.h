@@ -37,10 +37,10 @@ class LC_SettingsPageToolbarsAndDocks : public LC_SettingsPageBase, public LC_St
 public:
     explicit LC_SettingsPageToolbarsAndDocks(QObject* parent = nullptr);
     ~LC_SettingsPageToolbarsAndDocks() override;
-    void bindToPresetManager(LC_PresetManagerInterface* manager);
+    void bindToPresetManager(LC_PresetManagerInterface* manager) override;
 
     bool saveSettings() override;
-    bool isModified() const;
+    bool isModified() const override;
     bool acceptsSharedPreview() override { return true; }
     void updateLivePreview() override;
     void setPreviewController(LC_StylingPreviewController* controller) override;
@@ -49,7 +49,7 @@ protected:
     void onControlChanged();
     void setupUi() override;
     void setupBehavior() override;
-    void loadSettings();
+    void doLoadSettings() override;
 
     void populateUiFromConfig();
     void syncUiToWorkingConfig();

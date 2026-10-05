@@ -24,7 +24,9 @@
 
 #include <QAction>
 #include <QMainWindow>
+#include <QScreen>
 #include <QTabBar>
+#include <QTimer>
 
 LC_DockWidgetBase::LC_DockWidgetBase(QWidget* parent,
                                      const QString& title,
@@ -36,6 +38,11 @@ LC_DockWidgetBase::LC_DockWidgetBase(QWidget* parent,
     , m_verticalTitle(verticalTitle.isEmpty() ? title : verticalTitle)
     , m_isCadDock(isCadDock) {
     connect(this, &QDockWidget::topLevelChanged, this, &LC_DockWidgetBase::onTopLevelChanged);
+    connect(this, &QDockWidget::dockLocationChanged, this, [this](Qt::DockWidgetArea area) {
+      if (area != Qt::NoDockWidgetArea) {
+          m_lastDockArea = area;
+      }
+  });
     QAction* toggleAct = toggleViewAction();
     if (toggleAct != nullptr) {
         // 2. Disconnect Qt's default _q_toggleView(bool) slot
@@ -43,6 +50,17 @@ LC_DockWidgetBase::LC_DockWidgetBase(QWidget* parent,
 
         // 3. Connect to our 3-state tab-aware toggle logic
         connect(toggleAct, &QAction::triggered, this, &LC_DockWidgetBase::toggleDockVisibility);
+    }
+}
+
+void LC_DockWidgetBase::showEvent(QShowEvent* event) {
+    QDockWidget::showEvent(event);
+
+    if (widget() != nullptr && widget()->isHidden()) {
+        widget()->show();
+    }
+    if (isFloating() && titleBarWidget() != nullptr && titleBarWidget()->isHidden()) {
+        titleBarWidget()->show();
     }
 }
 
@@ -146,6 +164,59 @@ bool LC_DockWidgetBase::activateDockTab() {
     return false;
 }
 
+void LC_DockWidgetBase::floatWithOffset() {
+    if (isFloating()) {
+        setFloating(false);
+        return;
+    }
+
+    auto* mw = qobject_cast<QMainWindow*>(parentWidget());
+    if (mw != nullptr) {
+        const Qt::DockWidgetArea currentArea = mw->dockWidgetArea(this);
+        if (currentArea != Qt::NoDockWidgetArea) {
+            m_lastDockArea = currentArea;
+        }
+    }
+
+    setFloating(true);
+
+    constexpr int delta = 32;
+    QPoint offset(0, 0);
+
+    switch (m_lastDockArea) {
+        case Qt::LeftDockWidgetArea:
+            offset = QPoint(delta, delta / 2); // Shift right & slightly down
+            break;
+        case Qt::RightDockWidgetArea:
+            offset = QPoint(-delta, delta / 2); // Shift left & slightly down
+            break;
+        case Qt::TopDockWidgetArea:
+            offset = QPoint(0, delta); // Shift down into canvas
+            break;
+        case Qt::BottomDockWidgetArea:
+            offset = QPoint(0, -delta); // Shift up into canvas
+            break;
+        default:
+            offset = QPoint(delta, delta);
+            break;
+    }
+
+    // Apply move asynchronously so the OS window manager finishes detaching
+    QTimer::singleShot(0, this, [this, offset]() {
+        QPoint targetPos = pos() + offset;
+
+        // Ensure window titlebar stays fully inside available screen boundaries
+        if (screen() != nullptr) {
+            const QRect availGeo = screen()->availableGeometry();
+            const QRect frameGeo = frameGeometry();
+            targetPos.setX(std::clamp(targetPos.x(), availGeo.left(), availGeo.right() - frameGeo.width()));
+            targetPos.setY(std::clamp(targetPos.y(), availGeo.top(), availGeo.bottom() - frameGeo.height()));
+        }
+
+        move(targetPos);
+    });
+}
+
 void LC_DockWidgetBase::toggleDockVisibility() {
     auto* mw = qobject_cast<QMainWindow*>(parentWidget());
     const bool isTabbed = (mw != nullptr) && !mw->tabifiedDockWidgets(this).isEmpty();
@@ -227,9 +298,18 @@ void LC_DockWidgetBase::onTopLevelChanged(const bool floating) {
         if (windowTitle() != m_realTitle) {
             QDockWidget::setWindowTitle(m_realTitle);
         }
+        if (titleBarWidget() != nullptr && titleBarWidget()->isHidden()) {
+            titleBarWidget()->show();
+        }
+        if (widget() != nullptr && widget()->isHidden()) {
+            widget()->show();
+        }
     }
     else {
         setIconOnlyTabMode(m_iconOnlyTabMode);
+        if (widget() != nullptr && widget()->isHidden()) {
+            widget()->show();
+        }
     }
 }
 

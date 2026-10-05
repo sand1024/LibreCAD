@@ -61,8 +61,7 @@ RS_Grid::RS_Grid(LC_GraphicViewport* graphicView)
     :m_viewport(graphicView), m_minGridSpacing{10}, m_gridOptions{std::make_unique<LC_GridOptions>()}{
 }
 
-RS_Grid::~RS_Grid() {
-}
+RS_Grid::~RS_Grid() = default;
 
 /**
  * find the closest grid point
@@ -100,13 +99,12 @@ void RS_Grid::loadSettings(){
 
     m_gridOptions->loadSettings();
 
-    delete m_gridSystem;
 
     if (m_isometric){
-        m_gridSystem = new LC_IsometricGrid(m_gridOptions.get(), m_isoViewType);
+        m_gridSystem = std::make_unique<LC_IsometricGrid>(m_gridOptions.get(), m_isoViewType);
     }
     else{
-        m_gridSystem = new LC_OrthogonalGrid(m_gridOptions.get());
+        m_gridSystem = std::make_unique<LC_OrthogonalGrid>(m_gridOptions.get());
     }
 }
 

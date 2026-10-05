@@ -40,12 +40,12 @@ public:
 
     void bindToPresetManager([[maybe_unused]] LC_PresetManagerInterface* manager) override;
 
-    void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
     void updateLivePreview() override;
 
 protected:
+    void doLoadSettings() override;
     void setupUi() override;
     void setupBehavior() override;
 

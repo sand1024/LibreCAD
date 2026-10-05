@@ -934,6 +934,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/lc_parametriccurveintersection.h
      librecad/src/lib/engine/document/entities/lc_offsetoutputbudget.cpp
      librecad/src/lib/engine/document/entities/lc_offsetoutputbudget.h
+     librecad/src/lib/engine/document/entities/lc_offsetresultcheck.cpp
+     librecad/src/lib/engine/document/entities/lc_offsetresultcheck.h
      librecad/src/lib/engine/document/entities/lc_splinehelper.cpp
      librecad/src/lib/engine/document/entities/lc_splinehelper.h
      librecad/src/lib/engine/document/entities/lc_splinepoints.cpp
@@ -1032,6 +1034,7 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/layers/rs_layerlistlistener.h
      librecad/src/lib/engine/document/lc_graphicvariables.cpp
      librecad/src/lib/engine/document/lc_graphicvariables.h
+     librecad/src/lib/engine/document/lc_trackedlistener.h
      librecad/src/lib/engine/document/patterns/rs_pattern.cpp
      librecad/src/lib/engine/document/patterns/rs_pattern.h
      librecad/src/lib/engine/document/patterns/rs_patternlist.cpp
@@ -1181,6 +1184,9 @@ set (SHARED_SOURCES
      librecad/src/lib/gui/lc_graphicviewport.h
      librecad/src/lib/gui/lc_graphicviewportlistener.h
      librecad/src/lib/gui/lc_latecompletionrequestor.h
+     librecad/src/lib/gui/lc_scrollmodel.cpp
+     librecad/src/lib/gui/lc_scrollmodel.h
+     librecad/src/lib/gui/lc_viewmath.h
      librecad/src/lib/gui/render/headless/lc_printviewportrenderer.cpp
      librecad/src/lib/gui/render/headless/lc_printviewportrenderer.h
      librecad/src/lib/gui/render/lc_graphicviewportrenderer.cpp
@@ -1493,6 +1499,7 @@ set (SHARED_SOURCES
      librecad/src/ui/components/pen/qg_widgetpen.h
      librecad/src/ui/components/relative_position_assistant/lc_relative_position_editing_widget.h
      librecad/src/ui/components/relative_position_assistant/lc_relative_position_editing_widget.cpp
+     librecad/src/ui/components/qg_scrollbar.cpp
      librecad/src/ui/components/qg_scrollbar.h
      librecad/src/ui/components/status_bar/lc_anglesbasiswidget.cpp
      librecad/src/ui/components/status_bar/lc_anglesbasiswidget.h
@@ -2651,6 +2658,8 @@ set (SHARED_SOURCES
      librecad/src/ui/components/utils/lc_rotated_icon_engine.h
      librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.cpp
      librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.h
+     librecad/src/ui/main/support/lc_app_window_dock_layout_manger.cpp
+     librecad/src/ui/main/support/lc_app_window_dock_layout_manger.h
 )
 
 set (MUPARSER_SOURCES
@@ -2937,11 +2946,20 @@ if (BUILD_TESTS)
         endif()
     endif()
 
+    # A Catch2 listener that gives each test process a settings store of its own
+    # (see librecad/src/test/lc_testsettingsisolation.h). It registers itself
+    # through a static object, so every test executable that links the
+    # application library lists this file among its sources rather than
+    # reaching it through an archive.
+    set(LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE
+        librecad/src/test/lc_testsettingsisolation.cpp)
+
     # The complete test executable is a milestone/release target. Keep it out
     # of the default build so ordinary incremental application and library
     # builds do not compile every unrelated test translation unit.
     qt_add_executable(librecad_tests
 	EXCLUDE_FROM_ALL
+	${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
 	# this is needed to allow testing methods used by main()
 	# main() is excluded when BUILD_TEST=ON
 	${MAIN_SOURCES}
@@ -2953,6 +2971,9 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/entities/tests/lc_hyperbola_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_parabola_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_ellipse_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_ellipse_length_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_ellipse_nearest_dist_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_ellipse_axis_swap_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_spline_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_splinepoints_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_spline_d0_tests.cpp
@@ -2960,24 +2981,36 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/entities/tests/lc_parametriccurveintersection_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_curveoffset_trim_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_curveoffset_region_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_curveoffsetellipsetests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_curveoffset_backend_experiments.cpp
         librecad/src/lib/engine/document/entities/tests/lc_offsetoutputbudget_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_curveoffset_entity_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_circletests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_arctests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_dimarc_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_polylineclosing_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_dimarrowtests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_hatch_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_image_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_insert_transform_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_text_bidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_text_alignment_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_container_ownership_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_copy_semantics_tests.cpp
+        librecad/src/lib/engine/tests/rs_color_tests.cpp
+        librecad/src/lib/engine/document/layers/tests/lc_layerlist_tests.cpp
+        librecad/src/lib/engine/document/tests/lc_trackedlistener_tests.cpp
+        librecad/src/lib/engine/document/blocks/tests/lc_blocklist_tests.cpp
+        librecad/src/lib/engine/document/ucs/tests/lc_ucslist_tests.cpp
+        librecad/src/lib/engine/document/ucs/tests/lc_wcs_tests.cpp
+        librecad/src/lib/engine/document/views/tests/lc_view_tests.cpp
         librecad/src/lib/engine/tests/rs_pen_tests.cpp
         librecad/src/lib/actions/tests/lc_snappercatchtests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_round_tests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_offset_tests.cpp
+        librecad/src/actions/drawing/modify/tests/lc_offsetmatrixtests.cpp
         librecad/src/lib/filters/tests/dwg_pre_r13_codepage_tests.cpp
         librecad/src/lib/filters/tests/dwg_pre_r13_section_size_tests.cpp
         librecad/src/lib/filters/tests/dwg_pre_r13_record_layout_tests.cpp
@@ -2988,18 +3021,24 @@ if (BUILD_TESTS)
         librecad/src/lib/math/tests/lc_quadratic_tests.cpp
         librecad/src/lib/math/tests/lc_interval_tests.cpp
         librecad/src/lib/creation/tests/rs_creation_null_entity_tests.cpp
+        librecad/src/lib/creation/tests/lc_creation_ellipse_tests.cpp
         librecad/src/actions/print_preview/tests/rs_actionprintpreview_tests.cpp
         librecad/src/lib/printing/tests/lc_printingtests.cpp
         librecad/src/lib/modification/tests/lc_copy_identity_tests.cpp
+        librecad/src/lib/modification/tests/lc_copy_insert_transform_tests.cpp
         librecad/src/lib/modification/tests/lc_division_tests.cpp
         librecad/src/lib/modification/tests/rs_modification_trim_tests.cpp
         librecad/src/lib/modification/tests/rs_modification_offset_tests.cpp
+        librecad/src/lib/modification/tests/lc_offsetresultchecktests.cpp
+        librecad/src/lib/modification/tests/rs_modification_attributes_tests.cpp
         librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
         librecad/src/lib/filters/tests/spline_offset_representation_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_line_parallel_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_fast_tests.cpp
+        librecad/src/lib/creation/tests/lc_action_draw_circle_center_point_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_polyline_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_spline_tests.cpp
+        librecad/src/lib/creation/tests/lc_closedshapetoolstests.cpp
         librecad/src/cmd/tests/rs_commands_tests.cpp
         librecad/src/lib/engine/undo/tests/rs_undo_tests.cpp
         librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
@@ -3068,13 +3107,33 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_tarch_tests.cpp
         librecad/src/lib/filters/tests/datastorage_tests.cpp
         librecad/src/lib/engine/settings/tests/rs_settings_migration_tests.cpp
+        librecad/src/lib/engine/settings/tests/lc_settings_init_tests.cpp
+        librecad/src/lib/engine/settings/tests/lc_settings_isolation_tests.cpp
+        librecad/src/lib/engine/document/tests/lc_graphic_unit_tests.cpp
         librecad/src/lib/gui/tests/rs_graphicview_close_tests.cpp
+        librecad/src/lib/gui/tests/lc_grid_tests.cpp
         librecad/src/lib/gui/tests/rs_painter_tests.cpp
         librecad/src/actions/drawing/draw/dimensions/tests/rs_actiondimleader_tests.cpp
         librecad/src/ui/dock_widgets/command_line/tests/qg_commandwidget_tests.cpp
+        librecad/src/ui/dock_widgets/layer_widget/tests/lc_layerblockwidgets_tests.cpp
+        librecad/src/ui/dock_widgets/ucs_list/tests/lc_ucsviewsselectiondocks_tests.cpp
+        librecad/src/ui/dock_widgets/property_sheet/tests/lc_propertysheetlifetime_tests.cpp
+        librecad/src/actions/dock_widgets/block/tests/lc_actionblockssave_tests.cpp
+        librecad/src/ui/dock_widgets/ucs_list/tests/lc_ucslistmodel_tests.cpp
+        librecad/src/ui/dock_widgets/views_list/tests/lc_namedviewsmodel_tests.cpp
+        librecad/src/lib/generators/layers/tests/lc_layersexporter_tests.cpp
         librecad/src/ui/main/persistence/tests/lc_documentsstorage_tests.cpp
+        librecad/src/ui/main/tests/lc_mdiwindow_close_tests.cpp
+        librecad/src/ui/main/tests/lc_docklayout_tests.cpp
+        librecad/src/ui/components/pen/tests/qg_widgetpen_tests.cpp
+        librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreewidget_tests.cpp
         librecad/src/plugins/tests/qc_actiongetselect_tests.cpp
         librecad/src/lib/gui/tests/lc_graphicviewrenderer_tests.cpp
+        librecad/src/lib/gui/tests/lc_scrollmodel_tests.cpp
+        librecad/src/lib/gui/tests/lc_graphicviewport_zoomauto_tests.cpp
+        librecad/src/ui/view/tests/qg_graphicview_scroll_tests.cpp
+        librecad/src/ui/view/tests/qg_scrollbar_band_tests.cpp
+        librecad/src/ui/view/tests/lc_scroll_beyond_tests.cpp
         librecad/src/main/tests/console_command_utils_tests.cpp
         librecad/src/main/tests/lc_pdfprintlooptests.cpp
         librecad/src/main/tests/lc_consoleimporttests.cpp
@@ -3137,6 +3196,7 @@ if (BUILD_TESTS)
     qt_add_executable(librecad_fast_tests
         EXCLUDE_FROM_ALL
         ${MAIN_SOURCES}
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
         ${LIBRECAD_FAST_TEST_SOURCES}
     )
     target_include_directories(librecad_fast_tests PRIVATE ${SHARED_INCLUDES})
@@ -3183,6 +3243,7 @@ if (BUILD_TESTS)
     add_executable(librecad_dwg_fast_tests
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
         ${LIBRECAD_DWG_FAST_TEST_SOURCES}
     )
     set_target_properties(librecad_dwg_fast_tests PROPERTIES
@@ -3218,6 +3279,7 @@ if (BUILD_TESTS)
     add_executable(librecad_dwg_write_fast_tests
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
         librecad/src/lib/filters/tests/dwg_write_smoke_tests.cpp
     )
     set_target_properties(librecad_dwg_write_fast_tests PROPERTIES
@@ -3259,6 +3321,7 @@ if (BUILD_TESTS)
     add_executable(librecad_dxf_fast_tests
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
         ${LIBRECAD_DXF_FAST_TEST_SOURCES}
     )
     set_target_properties(librecad_dxf_fast_tests PROPERTIES
@@ -3297,6 +3360,7 @@ if (BUILD_TESTS)
         add_executable(${target}
             EXCLUDE_FROM_ALL
             librecad/src/main/lc_release_label.cpp
+            ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
             "${source}"
         )
         set_target_properties(${target} PROPERTIES
@@ -3339,6 +3403,11 @@ if (BUILD_TESTS)
     add_librecad_filter_micro_test(
         librecad_draw_fast_tests
         librecad/src/lib/creation/tests/lc_action_draw_fast_tests.cpp)
+    add_librecad_filter_micro_test(
+        librecad_snake_action_tests
+        librecad/src/lib/creation/tests/lc_action_draw_line_snake_tests.cpp)
+    target_include_directories(librecad_snake_action_tests PRIVATE
+        "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include")
     target_include_directories(librecad_draw_fast_tests PRIVATE
         "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include")
     add_librecad_filter_micro_test(
@@ -3347,9 +3416,19 @@ if (BUILD_TESTS)
     add_librecad_filter_micro_test(
         librecad_spline_command_tests
         librecad/src/lib/creation/tests/lc_action_draw_spline_tests.cpp)
+    # Isolate GUI tests from the text tests' static offscreen bootstraps.
+    add_librecad_filter_micro_test(
+        librecad_dock_layout_tests
+        librecad/src/ui/main/tests/lc_docklayout_tests.cpp)
+    target_sources(librecad_dock_layout_tests PRIVATE ${LIBRECAD_RES})
+    set_target_properties(librecad_dock_layout_tests PROPERTIES AUTORCC ON)
+    add_librecad_filter_micro_test(
+        librecad_translation_fallback_tests
+        librecad/src/lib/engine/tests/rs_system_translation_tests.cpp)
     add_executable(librecad_console_command_utils_tests
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
         librecad/src/main/console_command_utils.cpp
         librecad/src/main/tests/console_command_utils_tests.cpp
     )
@@ -3591,6 +3670,10 @@ if (BUILD_TESTS)
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
             ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
         )
+        add_test(NAME librecad_dock_layout_tests
+            COMMAND $<TARGET_FILE:librecad_dock_layout_tests> "[dock-window]" --reporter compact)
+        set_tests_properties(librecad_dock_layout_tests PROPERTIES
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
     endif()
     if (LIBRECAD_REGISTER_INTEGRATION_TESTS)
         add_test(NAME librecad_dwg_fast_tests

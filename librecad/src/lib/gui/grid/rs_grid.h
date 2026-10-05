@@ -28,6 +28,8 @@
 #ifndef RS_GRID_H
 #define RS_GRID_H
 
+#include <memory>
+
 #include <QString>
 
 #include "rs.h"
@@ -110,7 +112,7 @@ private:
     RS_Vector m_userGrid;
     int m_minGridSpacing;
     int m_metaGridEvery{10};
-    LC_GridSystem* m_gridSystem{nullptr};
+    std::unique_ptr<LC_GridSystem> m_gridSystem;
     RS_Vector prepareGridWidth();
     std::unique_ptr<LC_GridOptions> m_gridOptions;
 };

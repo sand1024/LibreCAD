@@ -475,6 +475,18 @@ void LC_WidgetFactory::initializeRightDockWidgets() const {
         return;
     }
 
+    int preferredWidth = 390;
+    if (const auto* screen = QGuiApplication::primaryScreen()) {
+        int leftWidth = 0;
+        for (QDockWidget* dock : m_appWin->findChildren<QDockWidget*>()) {
+            if (!dock->isFloating() && m_appWin->dockWidgetArea(dock) == Qt::LeftDockWidgetArea && !dock->isHidden()) {
+                leftWidth = qMax(leftWidth, dock->sizeHint().width());
+            }
+        }
+        preferredWidth = qMin(preferredWidth,
+                              qMax(120, screen->availableGeometry().width() - leftWidth - 480 - 48));
+    }
+
     for (QDockWidget* dock : m_appWin->findChildren<QDockWidget*>()) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
         if (dock != nullptr && dock->dockLocation() == Qt::RightDockWidgetArea) {
@@ -482,7 +494,7 @@ void LC_WidgetFactory::initializeRightDockWidgets() const {
             if (dock != nullptr && m_appWin->dockWidgetArea(dock) == Qt::RightDockWidgetArea) {
 
 #endif
-            dock->resize(390, dock->height());
+            dock->resize(preferredWidth, dock->height());
         }
     }
 }

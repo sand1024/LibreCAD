@@ -269,13 +269,15 @@ void RS_Polyline::endPolyline() {
         // remove old closing entity:
         if (m_closingEntity != nullptr) {
             removeEntity(m_closingEntity);
+            m_closingEntity = nullptr;
         }
 
-        // add closing entity to the polyline:
+        // add closing entity to the polyline, unless it has no length (the last
+        // vertex is the start): it adds nothing then, and is freed here, as no
+        // list holds it to free it later
         std::unique_ptr<RS_Entity> vertex = createVertex(m_data.startpoint, m_nextBulge);
-        m_closingEntity = vertex.get();
-        vertex.release();
-        if ((m_closingEntity != nullptr) && m_closingEntity->getLength() > 1.0E-4) {
+        if (vertex != nullptr && vertex->getLength() > 1.0E-4) {
+            m_closingEntity = vertex.release();
             RS_EntityContainer::addEntity(m_closingEntity);
             //data.endpoint = data.startpoint;
         }
@@ -425,7 +427,8 @@ RS_Vector RS_Polyline::doGetNearestSelectedRef(const RS_Vector& coord, double* d
   *@Author, Dongxu Li
   */
 bool RS_Polyline::offset(const RS_Vector& coord, double distance) {
-    double dist;
+    // getNearestEntity() reads it as the distance to beat
+    double dist = RS_MAXDOUBLE;
     //find the nearest one
     int length = count();
     std::vector<RS_Vector> intersections(length);

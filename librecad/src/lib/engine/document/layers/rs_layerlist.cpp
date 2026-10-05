@@ -30,6 +30,7 @@
 #include<iostream>
 
 #include <QSet>
+#include <QtAlgorithms>
 
 #include "rs_debug.h"
 #include "rs_layer.h"
@@ -43,18 +44,41 @@ RS_LayerList::RS_LayerList() {
     setModified(false);
 }
 
+/**
+ * Frees the layers, after telling the listeners that still listen (see
+ * RS_LayerListListener::layerListDestroyed()): a dock attached to the list has a pointer to it, and
+ * rows for the layers. The listeners are unlisted one at a time, oldest first, each before it is told,
+ * so one that unregisters itself in the callback, or deletes another, cannot make the loop skip or
+ * repeat one.
+ */
 RS_LayerList::~RS_LayerList() {
-    // LC_ERR << "LayerList destructor";
+    QList<RS_Layer*> removed;
+    removed.swap(m_layers);
+    m_layerSet.clear();
+    m_activeLayer = nullptr;
+    m_layerListListeners.drain([](RS_LayerListListener* listener) {
+        listener->layerListDestroyed();
+    });
+    qDeleteAll(removed);
 }
 
 /**
- * Removes all layers in the layerlist.
+ * Removes all layers in the layerlist and frees them: the list owns its
+ * layers, as remove() and add() (for a rejected duplicate) always assumed.
+ * Listeners are told once the list is empty and before the layers are freed,
+ * as remove() does for one layer: a dock's table model lists layers by
+ * pointer, and reading a freed one crashed (#2969).
  */
 void RS_LayerList::clear() {
-    m_layers.clear();
+    QList<RS_Layer*> removed;
+    removed.swap(m_layers);
     m_layerSet.clear();
     m_activeLayer = nullptr;
     setModified(true);
+    for (const auto l : std::as_const(m_layerListListeners)) {
+        l->layerListCleared();
+    }
+    qDeleteAll(removed);
 }
 
 QList<RS_Layer*>::iterator RS_LayerList::begin() {
@@ -156,6 +180,10 @@ void RS_LayerList::add(RS_Layer* layerToAdd) {
         // if there was no active layer so far, activate this one.
         if (m_activeLayer == nullptr) {
             activate(existingLayer);
+        }
+        if (existingLayer == layerToAdd) {
+            // already listed: nothing to merge, and it must not be freed
+            return;
         }
 
         existingLayer->freeze(layerToAdd->isFrozen());
@@ -553,23 +581,15 @@ void RS_LayerList::ensureActiveLayerIsVisible() {
  * Typical listeners are: layer list widgets, pen toolbar, graphic view
  */
 void RS_LayerList::addListener(RS_LayerListListener* listener) {
-    // ensure that listener is added only once
-    if (listener == nullptr) {
-        return;
-    }
-    for (const auto l : std::as_const(m_layerListListeners)) {
-        if (l == listener) {
-            return;
-        }
-    }
-    m_layerListListeners.append(listener);
+    // added only once; the listener is told which lists have it, and removes itself when destroyed
+    m_layerListListeners.add(listener);
 }
 
 /**
  * removes a LayerListListener from the list of listeners.
  */
 void RS_LayerList::removeListener(RS_LayerListListener* listener) {
-    m_layerListListeners.removeOne(listener);
+    m_layerListListeners.remove(listener);
 }
 
 /**

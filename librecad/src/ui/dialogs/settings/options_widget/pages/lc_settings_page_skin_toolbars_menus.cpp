@@ -78,7 +78,7 @@ void LC_SettingsPageSkinToolbarsMenus::setupBehavior() {
     connect(ui->chkSyncCheckedMenuState, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
 }
 
-void LC_SettingsPageSkinToolbarsMenus::loadSettings() {
+void LC_SettingsPageSkinToolbarsMenus::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

@@ -65,7 +65,7 @@ void LC_SettingsPageTypography::setupBehavior() {
     }
 }
 
-void LC_SettingsPageTypography::loadSettings() {
+void LC_SettingsPageTypography::doLoadSettings() {
     populateUiFromConfig();
 }
 

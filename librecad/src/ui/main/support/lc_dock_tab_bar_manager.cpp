@@ -154,6 +154,17 @@ void LC_DockTabBarManager::synchronizeTabBar(QTabBar* bar) {
             continue;
         }
 
+        if (dockBase != nullptr) {
+            QWidget* inner = dockBase->widget();
+            auto size = inner ? inner->size() : QSize();
+            LC_ERR << " [TAB_AUDIT] Tab: " << i << " Title: " << bar->tabText(i)
+                   << " Dock: " << dockBase->objectName()
+                   << " dockVisible: " << dockBase->isVisible()
+                   << " innerPtr: " << (inner != nullptr)
+                   << " innerVisible: " << (inner ? inner->isVisible() : false)
+                   << " innerSize: " << size.width() << ", " << size.height();
+        }
+
         const bool isCad = dockBase->isCadDock();
         if (isCad) {
             ++cadTabsCount;
@@ -243,17 +254,31 @@ bool LC_DockTabBarManager::eventFilter(QObject* watched, QEvent* event) {
     if (event == nullptr) {
         return false;
     }
-
     auto* bar = qobject_cast<QTabBar*>(watched);
     if (bar != nullptr) {
-        if (event->type() == QEvent::ToolTip) {
-            auto* helpEvent = static_cast<QHelpEvent*>(event);
-            if (handleToolTipEvent(bar, helpEvent)) {
-                return true;
+        switch (event->type()) {
+            case QEvent::MouseButtonRelease: {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                if (mouseEvent->button() == Qt::MiddleButton) {
+                    if (handleMiddleMouseClose(bar, mouseEvent)) {
+                        return true;
+                    }
+                }
+                break;
             }
-        }
-        else if (event->type() == QEvent::Show) {
-            synchronizeTabBar(bar);
+            case (QEvent::ToolTip): {
+                auto* helpEvent = static_cast<QHelpEvent*>(event);
+                if (handleToolTipEvent(bar, helpEvent)) {
+                    return true;
+                };
+                break;
+            }
+            case (QEvent::Show): {
+                synchronizeTabBar(bar);
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -295,6 +320,34 @@ bool LC_DockTabBarManager::handleToolTipEvent(QTabBar* bar, QHelpEvent* helpEven
 
     const QRect rect = bar->tabRect(index);
     QToolTip::showText(helpEvent->globalPos(), tip, bar, rect);
+    return true;
+}
+
+bool LC_DockTabBarManager::handleMiddleMouseClose(QTabBar* bar, QMouseEvent* mouseEvent) const {
+    if (bar == nullptr || mouseEvent == nullptr) {
+        return false;
+    }
+
+    const QPoint localPos = mouseEvent->position().toPoint();
+
+    const int index = bar->tabAt(localPos);
+    if (index < 0 || index >= bar->count()) {
+        return false;
+    }
+
+    LC_DockWidgetBase* dockBase = resolveDockForTab(bar, index);
+    if (dockBase == nullptr) {
+        return false;
+    }
+
+    // Verify the dock widget actually allows being closed
+    if (!dockBase->features().testFlag(QDockWidget::DockWidgetClosable)) {
+        return false;
+    }
+
+    // Close the dock widget (hides it and removes it from active tabs)
+    dockBase->close();
+    mouseEvent->accept();
     return true;
 }
 

@@ -29,6 +29,8 @@
 #ifndef QC_APPLICATIONWINDOW_H
 #define QC_APPLICATIONWINDOW_H
 
+
+
 #include "lc_actioncontext.h"
 #include "lc_action_factory.h"
 #include "lc_mdiapplicationwindow.h"
@@ -36,6 +38,13 @@
 #include "lc_settings_manager_styling.h"
 #include "lc_special_menu_service_interface.h"
 #include "lc_ui_style_manager.h"
+
+#include <QHash>
+#include <QMap>
+#include <QSet>
+#include <QStringList>
+
+#include "lc_app_window_dock_layout_manger.h"
 
 class LC_ShortcutsManager;
 class LC_DockTabBarManager;
@@ -82,6 +91,7 @@ class QG_RecentFiles;
 class QG_SelectionWidget;
 class QG_SnapToolBar;
 class QSplashScreen;
+class QDockWidget;
 class RS_ActionInterface;
 class RS_Block;
 class RS_Pen;
@@ -152,10 +162,24 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void updateActionsForCommandsInMenus(bool keycodeMode);
     void onStylingApplied();
     QList<QWidget*> getStatusBarWidgets() const;
+    void initializeDockLayout();
+    void prepareWindowForShow();
+    void restoreDockLayout(const QMap<QString, bool>& requested, bool hasRequested,
+                           const QHash<int, bool>& areas, const QByteArray& state);
+    QMap<QString, bool> requestedDockVisibility() const;
+    QByteArray dockLayoutStateForSaving();
+    bool dockAreaRequested(Qt::DockWidgetArea area) const;
+    bool floatingDocksRequested() const;
+    void requestDockVisible(QDockWidget* dock);
 public slots:
     void slotFocus();
     void slotKillAllActions();
     void slotFocusCommandLine();
+    void toggleLeftDockArea(bool state);
+    void toggleRightDockArea(bool state);
+    void toggleTopDockArea(bool state);
+    void toggleBottomDockArea(bool state);
+    void toggleFloatingDockwidgets(bool state);
     void slotFocusOptionsWidget();
     void slotError(const QString& msg) const;
     void slotShowDrawingOptions() const;
@@ -394,7 +418,13 @@ public:
     void setUIStyleManager(LC_UIStyleManager* manager) {
         m_uiStyleManager.reset(manager);
     }
+
+    AreasToggleActions getDockAreasToggleActions() const {return m_dockAreasToggleActions;}
+    AreasToggleActions getToolbarToggleActions() const {return m_toolbarAreasToggleActions;}
+    LC_DockTabBarManager* getDockTabBarManager() const { return m_dockTabBarManager.get(); }
 protected:
+    friend struct LC_DockLayoutTestAccess;
+    void doRedockWidgets() override;
     bool closePrintPreview(QC_MDIWindow* parent);
     void openPrintPreview(QC_MDIWindow* parent);
     bool doSaveAllFiles();
@@ -402,12 +432,11 @@ protected:
     void closeEvent(QCloseEvent*) override;
     void childEvent(QChildEvent* event);
     bool isAcceptableDragNDropFileName(const QString& fileName);
-    //! \{ accept drop files to open
     void dropEvent(QDropEvent* event) override;
     void dragEnterEvent(QDragEnterEvent* event) override;
     void changeEvent(QEvent* event) override;
-    //! \}
     void showEvent(QShowEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
     QG_GraphicView* setupNewGraphicView(const QC_MDIWindow* w);
     QC_ApplicationWindow();
@@ -426,6 +455,8 @@ protected:
 
     bool tryCloseAllBeforeExist();
 
+    void setDockAreaRequested(Qt::DockWidgetArea area, bool state);
+    void scheduleDockFit();
     void enableWidgets(bool enable);
     void doRestoreNamedView(int i) const;
 
@@ -473,6 +504,9 @@ protected:
     //! toggle actions for the dock areas
     AreasToggleActions m_dockAreasToggleActions;
     AreasToggleActions m_toolbarAreasToggleActions;
+
+    bool m_screenSignalsConnected = false;
+    std::unique_ptr<LC_AppWindowDockLayoutManger> m_dockLayoutManager;
 
     // --- Dock widgets ---
     QG_LayerWidget* m_layerWidget{nullptr};

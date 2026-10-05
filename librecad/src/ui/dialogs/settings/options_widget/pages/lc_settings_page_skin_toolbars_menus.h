@@ -16,12 +16,12 @@ public:
     ~LC_SettingsPageSkinToolbarsMenus() override;
 
     void bindToPresetManager(LC_PresetManagerInterface* manager) override;
-    void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
     bool disablesWidgetOnGating() const override { return false; }
 
 protected:
+    void doLoadSettings() override;
     void setupUi() override;
     void setupBehavior() override;
 

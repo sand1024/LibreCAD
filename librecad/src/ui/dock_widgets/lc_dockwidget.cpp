@@ -22,10 +22,22 @@
  *
  */
 #include "lc_dockwidget.h"
+
+#include <QPainter>
+
 #include "QMainWindow"
 
 LC_DockWidget::LC_DockWidget(QWidget* parent, const QString& title, const QString& verticalTitle, const Qt::WindowFlags& flags)
     : LC_DockWidgetBase(parent, title, verticalTitle, /*isCadDock=*/false, flags) {
+    setAutoFillBackground(true);
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(QStringLiteral("QDockWidget { background-color: palette(window); border: 1px solid palette(mid); }"));
+}
+
+void LC_DockWidget::paintEvent(QPaintEvent* event) {
+    QPainter painter(this);
+    painter.fillRect(rect(), palette().window());
+    QDockWidget::paintEvent(event);
 }
 
 // fixme - sand - review how title is set and updated!!!

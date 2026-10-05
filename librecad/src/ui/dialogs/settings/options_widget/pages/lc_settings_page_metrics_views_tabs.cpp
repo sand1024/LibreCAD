@@ -67,7 +67,7 @@ void LC_SettingsPageMetricsViewsTabs::setupBehavior() {
     }
 }
 
-void LC_SettingsPageMetricsViewsTabs::loadSettings() {
+void LC_SettingsPageMetricsViewsTabs::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

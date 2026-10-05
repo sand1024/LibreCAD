@@ -169,7 +169,7 @@ void LC_SettingsPageToolbarsAndDocks::syncUiToWorkingConfig() {
 }
 
 
-void LC_SettingsPageToolbarsAndDocks::loadSettings() {
+void LC_SettingsPageToolbarsAndDocks::doLoadSettings() {
     populateUiFromConfig();
 }
 

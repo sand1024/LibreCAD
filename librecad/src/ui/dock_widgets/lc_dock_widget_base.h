@@ -35,6 +35,7 @@ public:
                                const QString& verticalTitle = QString(),
                                bool isCadDock = false,
                                const Qt::WindowFlags& flags = Qt::WindowFlags());
+    void showEvent(QShowEvent* event);
     ~LC_DockWidgetBase() override = default;
 
     QString realTitle() const;
@@ -53,6 +54,7 @@ public:
 
     bool isTabActive() const;
     bool activateDockTab();
+    void floatWithOffset();
 
     void setFocusTargetWidget(QWidget* target);
     QWidget* focusTargetWidget() const;
@@ -70,6 +72,7 @@ private:
     QString m_verticalTitle;
     bool m_isCadDock{false};
     bool m_iconOnlyTabMode{false};
+    Qt::DockWidgetArea m_lastDockArea{Qt::NoDockWidgetArea};
     QPointer<QWidget> m_focusTargetWidget{nullptr};
 };
 

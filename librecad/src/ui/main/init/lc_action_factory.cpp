@@ -240,7 +240,7 @@ void LC_ActionFactory::createBuiltInSystemShortcutActions(QMap<QString, QAction*
         { "SysActionModifierShift",tr("Action Modifier"),             QKeySequence(Qt::Key_Shift),                                         tr("Current Action context-aware modifier (angle snap, alt mode etc.).") },
         { "SysActionModifierCTRL", tr("Action Modifier"),             QKeySequence(Qt::Key_Control),                                       tr("Current Action context-aware modifier (various modes).") },
         { "SysActionSelectionEnd", tr("Finsh Selection"),             QKeySequence(Qt::Key_Return),                                        tr("Ends entities selection step in selection-aware actions.") },
-        { "SysActionSelectionEnd1", tr("Finsh Selection"),            tr("CTRL+Left Click"),                                      tr("Ends entities selection step in selection-aware actions.") },
+        { "SysActionSelectionEnd1", tr("Finsh Selection"),            tr("CTRL+Left Click"),                                               tr("Ends entities selection step in selection-aware actions.") },
 
         // --- Command Line Navigation ---
         { "SysCmdComplete",        tr("Command Auto-Complete"),       QKeySequence(Qt::Key_Tab),                                           tr("Cycles through available command completions in the command line.") },
@@ -252,7 +252,8 @@ void LC_ActionFactory::createBuiltInSystemShortcutActions(QMap<QString, QAction*
         { "SysMousePan",           tr("Canvas Pan"),                  tr("Middle Mouse Drag"),     tr("Pans the drawing viewport smoothly.") },
         { "SysMouseContextMenu",   tr("Context Menu / Step Back"),    tr("Right Click"),           tr("Opens the contextual menu or steps back one step in an active tool.") },
         { "SysMouseEditProperties",tr("Edit Entity Properties"),      tr("Double Click"),          tr("Opens properties or block editor for the double-clicked entity.") },
-        { "SysMouseToggleFreeSnap",tr("Quick Free Snap"),             tr("Space (without focus)"), tr("Toggles free snap mode without moving focus to the command line.") }
+        { "SysMouseToggleFreeSnap",tr("Quick Free Snap"),             tr("Space (without focus)"), tr("Toggles free snap mode without moving focus to the command line.") },
+        { "SysMouseToolWindowClose",tr("Close Tool Window"),           tr("Middle Mouse Click"), tr("Closes docked tool window if click is on the tab.") }
     };
 
 

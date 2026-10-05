@@ -123,7 +123,7 @@ void LC_SettingsPageSkinContainers::updateCloseButtonUiState() const {
     ui->cbCloseColorPolicy->setEnabled(hasActiveTitleBar);
 }
 
-void LC_SettingsPageSkinContainers::loadSettings() {
+void LC_SettingsPageSkinContainers::doLoadSettings() {
     populateUiFromWorkingConfig();
 }
 

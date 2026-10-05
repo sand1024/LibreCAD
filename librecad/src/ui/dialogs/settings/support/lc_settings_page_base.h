@@ -119,8 +119,10 @@ class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
 
     bool isGated() const { return m_isGated; }
 
+
     void loadSettings() override {
-        m_binder.loadAll();
+        doLoadSettings();
+        updateControlsStates();
     }
 
     bool saveSettings() override {
@@ -170,6 +172,11 @@ signals:
     void livePreviewRequested();
     void directAcceptRequested(bool saveModifiedPages = true, int customResultCode = 1);
 protected:
+
+    virtual void doLoadSettings() {
+        m_binder.loadAll();
+    }
+
     void requestDialogClose(bool saveModifiedPages = true, int customResultCode = 1) {
         emit directAcceptRequested(saveModifiedPages, customResultCode);
     }
@@ -216,6 +223,9 @@ protected:
     void enableWhenChecked(QCheckBox* source, QWidget* target, bool invert = false);
     void enableWhenChecked(QRadioButton* source, QWidget* target, bool invert = false);
     void showWhenChecked(QCheckBox* source, QWidget* target, bool invert = false);
+    void updateEnabledState();
+    void updateVisibleState();
+    void updateControlsStates();
 
     void bindDirectoryChooser(QAbstractButton* button, QLineEdit* lineEdit, const QString& dialogTitle);
     void bindFileChooser(QAbstractButton* button, QLineEdit* lineEdit, const QString& dialogTitle, const QString& filter);
@@ -253,11 +263,21 @@ protected:
     QSplitter* m_trackedSplitter{nullptr};
     int m_trackedSplitterDefaultWidth{480};
     int m_savedSplitterWidth{-1};
+
+    struct RelatedStateBinding {
+        QAbstractButton* source {nullptr};
+        QWidget* target {nullptr};
+        bool invert = false;
+
+        RelatedStateBinding() = default;
+    };
 private:
     QString m_id;
     QString m_parentId;
     QString m_displayName;
     std::unique_ptr<LC_SettingsBackend> m_backend;
+    QList<RelatedStateBinding> m_widgetsToEnable;
+    QList<RelatedStateBinding> m_widgetsToShow;
     LC_SettingsBinder m_binder;
     bool m_restartRequired = false;
     QList<LC_SearchTarget> m_searchTargets;
