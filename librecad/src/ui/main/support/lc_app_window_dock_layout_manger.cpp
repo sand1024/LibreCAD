@@ -734,54 +734,6 @@ void LC_AppWindowDockLayoutManger::redockAllWidgets() {
     }
 }
 
-void LC_AppWindowDockLayoutManger::restoreDockLayout(const QMap<QString, bool>& requested, bool hasRequested, const QHash<int, bool>& areas,
-                                                     const QByteArray& state) {
-    QScopedValueRollback<bool> guard(m_dockLayoutApplying, true);
-    m_fittedDockState.clear();
-    m_selectedTabs.clear();
-    m_priorityDockName.clear();
-    m_requestedDockVisibility.clear();
-    m_pendingFloatingDocks.clear();
-    m_pendingFloatingPos.clear();
-    m_pendingFloatingSize.clear();
-
-    const bool stateRestored = !state.isEmpty() && m_appWin->restoreState(state);
-
-    for (QDockWidget* dock : m_appWin->findChildren<QDockWidget*>()) {
-        if (dock == nullptr) {
-            continue;
-        }
-        const QString name = dock->objectName();
-        if (name.isEmpty()) {
-            continue;
-        }
-
-        // If restored as floating while main window is still hidden, defer floating to showEvent
-        if (dock->isFloating()) {
-            m_pendingFloatingDocks.insert(name);
-            m_pendingFloatingPos.insert(name, dock->pos());
-            m_pendingFloatingSize.insert(name, dock->size());
-            dock->setFloating(false);
-        }
-
-        const bool factoryDefault = m_factoryDockVisibility.value(name, !dock->isHidden());
-        const auto area = m_appWin->dockWidgetArea(dock);
-        const bool visible = hasRequested
-                                 ? requested.value(name, factoryDefault)
-                                 : stateRestored && areas.value(int(area), true)
-                                 ? !dock->isHidden()
-                                 : factoryDefault;
-        m_requestedDockVisibility.insert(name, visible);
-    }
-    for (auto it = areas.cbegin(); it != areas.cend(); ++it) {
-        m_requestedDockAreas.insert(it.key(), it.value());
-    }
-    m_floatingDocksRequested = areas.value(int(Qt::NoDockWidgetArea), true);
-    applyRequestedDockVisibility();
-    updateDockAreaActions();
-    scheduleDockFit();
-}
-
 void LC_AppWindowDockLayoutManger::applyPendingFloatingDocks() {
     if (m_appWin == nullptr || m_pendingFloatingDocks.isEmpty()) {
         return;
