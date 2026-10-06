@@ -27,10 +27,8 @@
 #include <QMenu>
 
 #include "lc_action_node.h"
-// #include "lc_actions_naming_utils.h"
 #include "lc_action_factory.h"
 #include "lc_action_group_manager.h"
-#include "lc_action_naming_service_interface.h"
 #include "lc_special_menu_service_interface.h"
 
 LC_MenuBuilderBase::LC_MenuBuilderBase(LC_ActionGroupManager* actionGroupManager, LC_SpecialMenuServiceInterface* specialMenuService)

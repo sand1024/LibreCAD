@@ -45,7 +45,9 @@
 #include <QStringList>
 
 #include "lc_app_window_dock_layout_manger.h"
+#include "lc_app_window_tool_bar_manager.h"
 
+class LC_AppWindowToolBarManager;
 class LC_ShortcutsManager;
 class LC_DockTabBarManager;
 class LC_CustomizationManager;
@@ -164,12 +166,6 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     QList<QWidget*> getStatusBarWidgets() const;
     void initializeDockLayout();
     void prepareWindowForShow();
-    void restoreDockLayout(const QMap<QString, bool>& requested, bool hasRequested,
-                           const QHash<int, bool>& areas, const QByteArray& state);
-    QMap<QString, bool> requestedDockVisibility() const;
-    QByteArray dockLayoutStateForSaving();
-    bool dockAreaRequested(Qt::DockWidgetArea area) const;
-    bool floatingDocksRequested() const;
     void requestDockVisible(QDockWidget* dock);
 public slots:
     void slotFocus();
@@ -179,6 +175,10 @@ public slots:
     void toggleRightDockArea(bool state);
     void toggleTopDockArea(bool state);
     void toggleBottomDockArea(bool state);
+    void toggleLeftToolbarArea(bool state);
+    void toggleRightToolbarArea(bool state);
+    void toggleTopToolbarArea(bool state);
+    void toggleBottomToolbarArea(bool state);
     void toggleFloatingDockwidgets(bool state);
     void slotFocusOptionsWidget();
     void slotError(const QString& msg) const;
@@ -315,12 +315,29 @@ public:
         return m_penPaletteWidget;
     }
 
-    AreasToggleActions& getDockAreaToggleActions() {
-        return m_dockAreasToggleActions;
+    const DockAreasToggleActions& getDockAreasToggleActions() const {
+        if (m_dockLayoutManager != nullptr) {
+            return m_dockLayoutManager->getDockAreasToggleActions();
+        }
+        static const DockAreasToggleActions empty{};
+        return empty;
     }
 
-    AreasToggleActions& getToolbarAreaToggleActions() {
-        return m_toolbarAreasToggleActions;
+    const DockAreasToggleActions& getDockAreaToggleActions() const {
+        return getDockAreasToggleActions();
+    }
+
+
+    const ToolBarAreasToggleActions& getToolbarAreasToggleActions() const {
+        if (m_toolBarManager != nullptr) {
+            return m_toolBarManager->getToolBarAreasToggleActions();
+        }
+        static const ToolBarAreasToggleActions empty{};
+        return empty;
+    }
+
+    const ToolBarAreasToggleActions& getToolbarToggleActions() const {
+        return getToolbarAreasToggleActions();
     }
 
     LC_QuickInfoWidget* getEntityInfoWidget() const {
@@ -340,6 +357,9 @@ public:
         return m_contextMenuProvider.get();
     }
     LC_UCSStateWidget* getUcsStateWidget(){return m_ucsStateWidget;}
+
+    LC_AppWindowDockLayoutManger* getDockLayoutManager() const { return m_dockLayoutManager.get(); }
+    LC_AppWindowToolBarManager* getToolBarManager() const { return m_toolBarManager.get(); }
 
     QMenu* getPluginsMenu() const {return m_pluginsMenu.get();}
     // Highlight the active block in the block widget
@@ -419,8 +439,6 @@ public:
         m_uiStyleManager.reset(manager);
     }
 
-    AreasToggleActions getDockAreasToggleActions() const {return m_dockAreasToggleActions;}
-    AreasToggleActions getToolbarToggleActions() const {return m_toolbarAreasToggleActions;}
     LC_DockTabBarManager* getDockTabBarManager() const { return m_dockTabBarManager.get(); }
 protected:
     friend struct LC_DockLayoutTestAccess;
@@ -501,12 +519,9 @@ protected:
     QG_RecentFiles* m_recentFilesList{nullptr};
 
     // --- Dockwidgets ---
-    //! toggle actions for the dock areas
-    AreasToggleActions m_dockAreasToggleActions;
-    AreasToggleActions m_toolbarAreasToggleActions;
-
     bool m_screenSignalsConnected = false;
     std::unique_ptr<LC_AppWindowDockLayoutManger> m_dockLayoutManager;
+    std::unique_ptr<LC_AppWindowToolBarManager> m_toolBarManager;
 
     // --- Dock widgets ---
     QG_LayerWidget* m_layerWidget{nullptr};

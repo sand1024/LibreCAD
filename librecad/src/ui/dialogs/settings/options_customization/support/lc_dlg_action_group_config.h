@@ -29,7 +29,6 @@
 #include "lc_action_node.h"
 
 class LC_ActionGroupManager;
-class LC_ActionNamingServiceInterface;
 
 namespace Ui {
     class LC_DlgActionGroupConfig;

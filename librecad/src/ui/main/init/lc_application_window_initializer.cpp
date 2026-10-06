@@ -31,6 +31,7 @@
 #include "lc_action_tooltip_builder.h"
 #include "lc_action_type_mapper.h"
 #include "lc_appwindowdialogsinvoker.h"
+#include "lc_app_window_tool_bar_manager.h"
 #include "lc_centralwidget.h"
 #include "lc_command_manager.h"
 #include "lc_customization_manager.h"
@@ -79,6 +80,7 @@ LC_ApplicationWindowInitializer::LC_ApplicationWindowInitializer(QC_ApplicationW
 
 void LC_ApplicationWindowInitializer::initGeneralMembers() {
     m_appWin->m_dockLayoutManager = std::make_unique<LC_AppWindowDockLayoutManger>(m_appWin);
+    m_appWin->m_toolBarManager = std::make_unique<LC_AppWindowToolBarManager>(m_appWin);
     m_appWin->m_actionHandler = std::make_unique<QG_ActionHandler>(m_appWin);
     m_appWin->m_dlgHelpr = std::make_unique<LC_AppWindowDialogsInvoker>(m_appWin);
     m_appWin->m_workspacesInvoker = std::make_unique<LC_WorkspacesInvoker>(m_appWin);
@@ -257,17 +259,15 @@ void LC_ApplicationWindowInitializer::loadCmdWidgetVariablesFile() const {
 }
 
 void LC_ApplicationWindowInitializer::initDockAndToolbarAreasActions() const {
-    m_appWin->m_dockAreasToggleActions.left = m_appWin->getAction("LeftDockAreaToggle");
-    m_appWin->m_dockAreasToggleActions.right = m_appWin->getAction("RightDockAreaToggle");
-    m_appWin->m_dockAreasToggleActions.top = m_appWin->getAction("TopDockAreaToggle");
-    m_appWin->m_dockAreasToggleActions.bottom = m_appWin->getAction("BottomDockAreaToggle");
-    m_appWin->m_dockAreasToggleActions.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
+    auto appWindowDockLayoutManger = m_appWin->getDockLayoutManager();
+    if (appWindowDockLayoutManger != nullptr) {
+        appWindowDockLayoutManger->initializeDockAreas();
+    }
 
-    m_appWin->m_toolbarAreasToggleActions.left = m_appWin->getAction("LeftTBAreaToggle");
-    m_appWin->m_toolbarAreasToggleActions.right = m_appWin->getAction("RightTBAreaToggle");
-    m_appWin->m_toolbarAreasToggleActions.top = m_appWin->getAction("TopTBAreaToggle");
-    m_appWin->m_toolbarAreasToggleActions.bottom = m_appWin->getAction("BottomTBAreaToggle");
-    // m_appWin->m_toolbarAreasToggleActions.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
+    auto appWindowToolBarManager = m_appWin->getToolBarManager();
+    if (appWindowToolBarManager != nullptr) {
+        appWindowToolBarManager->initializeToolBarAreas();
+    }
 }
 
 

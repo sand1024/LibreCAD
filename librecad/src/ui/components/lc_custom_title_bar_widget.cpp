@@ -190,12 +190,11 @@ void LC_CustomTitleBarWidget::mouseReleaseEvent(QMouseEvent* event) {
 }
 void LC_CustomTitleBarWidget::leaveEvent(QEvent* event) { hideTooltip(); QWidget::leaveEvent(event); }
 
-void LC_CustomTitleBarWidget::paintEvent(QPaintEvent* event) {
-    LC_ERR << "[TITLEBAR_PAINT_AUDIT] Paint called on" << (m_dockWidget ? m_dockWidget->objectName() : "unknown");
-    Q_UNUSED(event);
+void LC_CustomTitleBarWidget::paintEvent([[maybe_unused]]QPaintEvent* event) {
+    // LC_ERR << "[TITLEBAR_PAINT_AUDIT] Paint called on" << (m_dockWidget ? m_dockWidget->objectName() : "unknown");
+
     QPainter painter(this);
 
-    // Ensure the title bar always has a solid, opaque background fill
     painter.fillRect(rect(), palette().window());
 
     QStyleOptionDockWidget opt;
@@ -896,64 +895,6 @@ void LC_CustomTitleBarWidget::setupConnections() {
                         delayedUpdate();
                     }
                 });
-
-        // Setup parent floating orientation feature toggle connection with settings check on docking
-        // m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::topLevelChanged, this, [this](bool floating) {
-        //     if (m_dockWidget != nullptr) {
-        //         const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
-        //         const bool useCustomFloating = (proxyStyle != nullptr && proxyStyle->useFloatingHUDDocksEnabled());
-        //
-        //         QDockWidget::DockWidgetFeatures features = static_cast<QDockWidget::DockWidgetFeatures>(
-        //             m_dockWidget->property("lcfs_originalFeatures").toInt());
-        //
-        //         if (floating) {
-        //             features &= ~QDockWidget::DockWidgetVerticalTitleBar;
-        //
-        //             // Strip native OS window title bar and border if custom floating styling is active
-        //             if (useCustomFloating) {
-        //                 const Qt::WindowFlags targetFlags = Qt::Tool | Qt::FramelessWindowHint;
-        //                 if ((m_dockWidget->windowFlags() & targetFlags) != targetFlags) {
-        //                     const bool wasVisible = m_dockWidget->isVisible() || !m_dockWidget->isHidden();
-        //                     m_dockWidget->setWindowFlags(targetFlags);
-        //                 if (wasVisible) {
-        //                     m_dockWidget->show();
-        //                         if (m_dockWidget->widget() != nullptr) {
-        //                             m_dockWidget->widget()->show();
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         } else {
-        //             if (checkOrientationFromSettings()) {
-        //                 features |= QDockWidget::DockWidgetVerticalTitleBar;
-        //             } else {
-        //                 features &= ~QDockWidget::DockWidgetVerticalTitleBar;
-        //             }
-        //
-        //             // Restore standard docked child widget flags (Qt::SubWindow)
-        //             if (useCustomFloating) {
-        //                 if (m_dockWidget->windowFlags().testFlag(Qt::FramelessWindowHint)) {
-        //                     const bool wasVisible = m_dockWidget->isVisible() || !m_dockWidget->isHidden();
-        //                     m_dockWidget->setWindowFlags(Qt::SubWindow);
-        //                     if (wasVisible) {
-        //                         m_dockWidget->show();
-        //                         if (m_dockWidget->widget() != nullptr) {
-        //                             m_dockWidget->widget()->show();
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //
-        //         m_dockWidget->blockSignals(true);
-        //         m_dockWidget->setFeatures(features);
-        //         m_dockWidget->blockSignals(false);
-        //
-        //         updateOrientation();
-        //         updateButtonAndLabelGeometries();
-        //         m_dockWidget->updateGeometry();
-        //     }
-        // });
 
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::topLevelChanged, this, [this](bool floating) {
            if (m_dockWidget != nullptr) {

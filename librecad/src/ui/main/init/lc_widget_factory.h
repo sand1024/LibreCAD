@@ -23,7 +23,6 @@
 #ifndef LC_WIDGETFACTORY_H
 #define LC_WIDGETFACTORY_H
 
-
 #include <lc_appwindowaware.h>
 
 #include "lc_action_factory.h"
@@ -37,42 +36,41 @@ class QG_ActionHandler;
 class LC_CADDockWidget;
 class QC_ApplicationWindow;
 class LC_ActionGroupManager;
+struct StatusBarInfo;
 
 /**
  * creates the widgets and adds them to the main window;
  * it also "tags" a few widgets that the main window uses
  */
-class LC_WidgetFactory:public QObject, public LC_AppWindowAware {
-    Q_OBJECT
-public:
-    explicit LC_WidgetFactory(QC_ApplicationWindow *mainWin);
+class LC_WidgetFactory : public QObject, public LC_AppWindowAware {
+    Q_OBJECT public:
+    explicit LC_WidgetFactory(QC_ApplicationWindow* mainWin);
+    void createStatusToolbars(std::initializer_list<StatusBarInfo> toolbars);
+    QToolBar* createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title,
+                                     const QString& iconName, const char* name, bool showToolTip, bool usePillChips);
     ~LC_WidgetFactory() override = default;
     void initWidgets();
-    static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting,
-                                  bool cadVerticalTabs, bool normalVerticalTabs);
-    static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin,
-                                              bool cadVerticalTitle, bool normalVerticalTitle);
-    template <class T>
-    static void setWidgetToggleActionIcon(T* result, const QString& iconName);
-    template <class T>
-    static void setWidgetToggleActionIcon(T* result, const QIcon& iconName);
+    static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting, bool cadVerticalTabs, bool normalVerticalTabs);
+    static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin, bool cadVerticalTitle, bool normalVerticalTitle);
+
     static void redockAllDockWidgets(QC_ApplicationWindow* mainWin);
+
 private:
-    LC_ActionGroupManager *m_agm {nullptr};
-    LC_ActionFactory *m_actionFactory {nullptr};
+    LC_ActionGroupManager* m_agm{nullptr};
+    LC_ActionFactory* m_actionFactory{nullptr};
     QDockWidget* createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName, const QString& verticalTitle,
                                   const char* toggleActionName, const QString& toggleActionDescription) const;
     void setupDockWidget(QDockWidget* dock, LC_GraphicViewAwareWidget* widget);
-    QDockWidget *createPenPalletteWidget();
+    QDockWidget* createPenPalletteWidget();
     QDockWidget* createLayerWidget(const QG_ActionHandler* actionHandler);
-    QDockWidget *createNamedViewsWidget();
-    QDockWidget *createUCSListWidget();
-    QDockWidget *createLayerTreeWidget(const QG_ActionHandler* actionHandler);
-    QDockWidget *createEntityInfoWidget();
+    QDockWidget* createNamedViewsWidget();
+    QDockWidget* createUCSListWidget();
+    QDockWidget* createLayerTreeWidget(const QG_ActionHandler* actionHandler);
+    QDockWidget* createEntityInfoWidget();
     QDockWidget* createPropertySheetWidget();
-    QDockWidget *createBlockListWidget(const QG_ActionHandler* actionHandler);
+    QDockWidget* createBlockListWidget(const QG_ActionHandler* actionHandler);
     QDockWidget* createLibraryWidget(const QG_ActionHandler* actionHandler);
-    QDockWidget *createCmdWidget(QG_ActionHandler *actionHandler);
+    QDockWidget* createCmdWidget(QG_ActionHandler* actionHandler);
     // Avoid right dock widgets getting too large, when opened for the first time
     void initializeRightDockWidgets() const;
     void modifyCommandTitleBar(Qt::DockWidgetArea area) const;
@@ -80,40 +78,24 @@ private:
     void initSpecialToolbars();
     void createCADDockWidgetsSidebar();
     void createCADToolsMatrixSidebar();
-    void createRightSidebar(QG_ActionHandler *actionHandler);
+    void createRightSidebar(QG_ActionHandler* actionHandler);
     void initStatusBar();
     void createCADSidebar();
-    LC_CADDockWidget *cadDockWidget(const QString &groupName);
-    void addToBottom(QToolBar *toolbar) const;
-    QToolBar* createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title, const QString& iconName,
-                                     const char* name, bool showToolTip, bool usePillChips = false) const;
-    void addAction(QToolBar *toolbar, const char *actionName) const;
-    void makeActionsInvisible(const std::vector<QString> &actionNames) const;
-    static void setDockWidgetTitleType(QDockWidget *widget, bool verticalTitleBar);
-    void registerDockWidgetAction(const char* groupName,
-                                  QDockWidget* dockWidget,
-                                  const QString& actionName,
-                                  const QString& title,
-                                  const QString& iconPath,
-                                  const QString& description) const;
+    LC_CADDockWidget* cadDockWidget(const QString& groupName);
+    void addToBottom(QToolBar* toolbar) const;
 
-    static void dockAndTabifyGroup(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
-                                   const QList<QDockWidget*>& docks, QDockWidget* toRaise = nullptr);
-    static void dockAndTabifyByName(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
-                                    const std::vector<const char*>& names, const char* raiseName = nullptr);
+    static void setDockWidgetTitleType(QDockWidget* widget, bool verticalTitleBar);
+    void registerDockWidgetAction(const char* groupName, QDockWidget* dockWidget, const QString& actionName, const QString& title,
+                                  const QString& iconPath, const QString& description) const;
+
+    static void dockAndTabifyGroup(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area, const QList<QDockWidget*>& docks,
+                                   QDockWidget* toRaise = nullptr);
+
+    static void dockAndTabifyCadDocks(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area, const std::vector<const char*>& categories,
+                                      const char* raiseCategory = nullptr);
+
+    static void dockAndTabifyStandardDocks(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area, const std::vector<const char*>& names,
+                                           const char* raiseName = nullptr);
 };
 
-template <class T>
-void LC_WidgetFactory::setWidgetToggleActionIcon(T* result, const QString& iconName) {
-    if (!iconName.isEmpty()) {
-        auto toggleAction = result->toggleViewAction();
-        toggleAction->setIcon(QIcon(iconName));
-    }
-}
-
-template <class T>
-void LC_WidgetFactory::setWidgetToggleActionIcon(T* result, const QIcon& icon) {
-        auto toggleAction = result->toggleViewAction();
-        toggleAction->setIcon(icon);
-}
 #endif

@@ -31,6 +31,7 @@
 
 #include "lc_action_factory.h"
 #include "lc_action_group_manager.h"
+#include "lc_group_names.h"
 #include "lc_mdiapplicationwindow.h"
 #include "lc_namedviewslistwidget.h"
 #include "lc_settings_appearance.h"
@@ -275,7 +276,7 @@ void LC_SpecialMenuService::populateDockWidgets(QMenu* menu, bool cadWidgetsOnly
         return;
     }
 
-    auto* group = m_appWindow->getActionGroup(cadWidgetsOnly ? "cad_dock_widgets" : "dock_widgets");
+    auto* group = m_appWindow->getActionGroup(cadWidgetsOnly ? LC_GroupNames::CAD_DOCK_WIDGETS : LC_GroupNames::DOCK_WIDGETS);
     if (group != nullptr) {
         for (auto* act : group->actions()) {
             if (act != nullptr) {
@@ -286,7 +287,7 @@ void LC_SpecialMenuService::populateDockWidgets(QMenu* menu, bool cadWidgetsOnly
 }
 
 void LC_SpecialMenuService::bindDockWidgetsMenu(QMenu* parentMenu) {
-    auto group = m_appWindow->getActionGroup("dock_widgets");
+    auto* group = m_appWindow->getActionGroup(LC_GroupNames::DOCK_WIDGETS);
     createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, false);
     });
@@ -296,7 +297,7 @@ void LC_SpecialMenuService::bindCadDockWidgetsMenu(QMenu* parentMenu) {
     if (!CFG_Startup::o_EnableCADDockWidgets) {
         return;
     }
-    auto group = m_appWindow->getActionGroup("cad_dock_widgets");
+    auto* group = m_appWindow->getActionGroup(LC_GroupNames::CAD_DOCK_WIDGETS);
     createDynamicSubMenu(parentMenu, group->getTitle(), QString(group->getIconPath()), [this](QMenu* menu) {
         populateDockWidgets(menu, true);
     });

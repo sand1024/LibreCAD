@@ -29,6 +29,7 @@
 
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
+#include "lc_navigation_creator.h"
 #include "lc_preset_manager_menus_toolbars.h"
 #include "lc_settings_startup.h"
 
@@ -36,54 +37,6 @@ namespace {
     const int ROLE_IS_HEADER = Qt::UserRole + 1;
     const int ROLE_CONTAINER_KIND = Qt::UserRole + 2;
     const int ROLE_TOOLBAR_INDEX = Qt::UserRole + 3;
-
-    QString resolveToolbarTitle(const ToolbarDef& tb, const LC_ActionGroupManager* agm) {
-        if (tb.kind == ToolbarKind::CadMatrix) {
-            return QObject::tr("CAD Tools Matrix");
-        }
-
-        if (tb.kind == ToolbarKind::Cad || tb.kind == ToolbarKind::CadDockWidget) {
-            QString groupKey = tb.name;
-            if (groupKey.startsWith("dock_cad_")) {
-                groupKey = groupKey.mid(9);
-            }
-            else if (groupKey.startsWith("tb_cad_")) {
-                groupKey = groupKey.mid(7);
-            }
-            else if (groupKey.startsWith("dock_")) {
-                groupKey = groupKey.mid(5);
-            }
-            else if (groupKey.startsWith("cad_")) {
-                groupKey = groupKey.mid(4);
-            }
-
-            if (groupKey == "mega") {
-                return QObject::tr("CAD Tools Matrix");
-            }
-
-            if (agm != nullptr) {
-                const auto* group = agm->getActionGroup(groupKey);
-                if (group != nullptr) {
-                    return group->cleanTitle();
-                }
-                return agm->displayName(groupKey, /*stripAmpersand=*/true);
-            }
-            return groupKey;
-        }
-
-        QString token = tb.name;
-        if (token.startsWith("tb_s_") || token.startsWith("tb_c_")) {
-            token = token.mid(5);
-        }
-        else if (token.startsWith("dock_")) {
-            token = token.mid(5);
-        }
-
-        if (agm != nullptr) {
-            return agm->displayName(token, /*stripAmpersand=*/true);
-        }
-        return token;
-    }
 }
 
 LC_SettingsPageMenusToolbars::LC_SettingsPageMenusToolbars(LC_ActionGroupManager* groupManager, QObject* parent)
@@ -166,9 +119,9 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
 
     // 1. Main Menus Category
     addCategoryHeader(tr("── Main Menus ──"));
-    addEntry(tr("Main Menu - Minimal"), ContainerKind::MenuMinimal, -1);
-    addEntry(tr("Main Menu - Compact"), ContainerKind::MenuCompact, -1);
-    addEntry(tr("Main Menu - Extended"), ContainerKind::MenuExtended, -1);
+    addEntry(tr("Main Menu - Minimal"), MenuMinimal, -1);
+    addEntry(tr("Main Menu - Compact"), MenuCompact, -1);
+    addEntry(tr("Main Menu - Extended"), MenuExtended, -1);
 
     // 2. Standard Toolbars Category
     addCategoryHeader(tr("── Standard Toolbars ──"));
@@ -179,8 +132,8 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
             // if (tb.name == tr("Snap Selection") || tb.name == tr("Tool Options")) {
             //     continue;
             // }
-            const QString title = resolveToolbarTitle(tb, m_actionGroupManager);
-            addEntry(title, ContainerKind::ToolbarItem, i);
+            const QString title = LC_NavigationControlsCreator::resolveToolbarTitle(tb, m_actionGroupManager);
+            addEntry(title, ToolbarItem, i);
         }
     }
 
@@ -188,8 +141,8 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
     addCategoryHeader(tr("── CAD Toolbars ──"));
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::Cad) {
-            const QString title = resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
-            addEntry(title, ContainerKind::ToolbarItem, i);
+            const QString title = LC_NavigationControlsCreator::resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
+            addEntry(title, ToolbarItem, i);
         }
     }
 
@@ -197,14 +150,14 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
     addCategoryHeader(tr("── CAD Dock Widgets ──"));
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::CadMatrix) {
-            const QString title = resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
-            addEntry(title, ContainerKind::CadMatrixItem, i);
+            const QString title = LC_NavigationControlsCreator::resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
+            addEntry(title, CadMatrixItem, i);
         }
     }
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::CadDockWidget) {
-            const QString title = resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
-            addEntry(title, ContainerKind::CadDockWidgetItem, i);
+            const QString title = LC_NavigationControlsCreator::resolveToolbarTitle(config.toolbars[i], m_actionGroupManager);
+            addEntry(title, CadDockWidgetItem, i);
         }
     }
 
@@ -212,7 +165,7 @@ void LC_SettingsPageMenusToolbars::populateCombobox() {
     addCategoryHeader(tr("── Custom Toolbars ──"));
     for (int i = 0; i < config.toolbars.size(); ++i) {
         if (config.toolbars[i].kind == ToolbarKind::Custom) {
-            addEntry(config.toolbars[i].name, ContainerKind::ToolbarItem, i);
+            addEntry(config.toolbars[i].name, ToolbarItem, i);
         }
     }
 
@@ -246,7 +199,7 @@ void LC_SettingsPageMenusToolbars::updateActiveMenuBold() {
         }
 
         const int kindInt = ui->cbTarget->itemData(i, ROLE_CONTAINER_KIND).toInt();
-        if (kindInt == ContainerKind::MenuMinimal || kindInt == ContainerKind::MenuCompact || kindInt == ContainerKind::MenuExtended) {
+        if (kindInt == MenuMinimal || kindInt == MenuCompact || kindInt == MenuExtended) {
             const bool isActive = (kindInt == activeVar);
             item->setFont(isActive ? boldFont : normalFont);
         }
@@ -282,22 +235,33 @@ void LC_SettingsPageMenusToolbars::syncCurrentContainerToConfig() {
     const auto kind = static_cast<ContainerKind>(ui->cbTarget->itemData(m_currentComboIndex, ROLE_CONTAINER_KIND).toInt());
     const int tbIdx = ui->cbTarget->itemData(m_currentComboIndex, ROLE_TOOLBAR_INDEX).toInt();
 
-    if (kind == ContainerKind::MenuMinimal) {
-        config.menuMinimal = ui->dualListWidget->getNodes();
-    }
-    else if (kind == ContainerKind::MenuCompact) {
-        config.menuCompact = ui->dualListWidget->getNodes();
-    }
-    else if (kind == ContainerKind::MenuExtended) {
-        config.menuExtended = ui->dualListWidget->getNodes();
-    }
-    else if ((kind == ContainerKind::ToolbarItem || kind == ContainerKind::CadDockWidgetItem || kind == ContainerKind::CadMatrixItem) &&
-        tbIdx >= 0 && tbIdx < config.toolbars.size()) {
-        config.toolbars[tbIdx].nodes = ui->dualListWidget->getNodes();
-        if (kind == ContainerKind::ToolbarItem) {
-            config.toolbars[tbIdx].area = static_cast<Qt::ToolBarArea>(ui->cbDockArea->currentData().toInt());
-            config.toolbars[tbIdx].buttonStyle = static_cast<Qt::ToolButtonStyle>(ui->cbToolButtonStyle->currentData().toInt());
+    switch (kind) {
+        case MenuMinimal: {
+            config.menuMinimal = ui->dualListWidget->getNodes();
+            break;
         }
+        case MenuCompact: {
+            config.menuCompact = ui->dualListWidget->getNodes();
+            break;
+        }
+        case MenuExtended: {
+            config.menuExtended = ui->dualListWidget->getNodes();
+            break;
+        }
+        case ToolbarItem:
+        case CadDockWidgetItem:
+        case CadMatrixItem: {
+            if (tbIdx >= 0 && tbIdx < config.toolbars.size()) {
+                config.toolbars[tbIdx].nodes = ui->dualListWidget->getNodes();
+                if (kind == ToolbarItem) {
+                    config.toolbars[tbIdx].area = static_cast<Qt::ToolBarArea>(ui->cbDockArea->currentData().toInt());
+                    config.toolbars[tbIdx].buttonStyle = static_cast<Qt::ToolButtonStyle>(ui->cbToolButtonStyle->currentData().toInt());
+                }
+            }
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -394,7 +358,7 @@ void LC_SettingsPageMenusToolbars::onNewToolbarClicked() {
     const int newTbIdx = config.toolbars.size() - 1;
     for (int i = 0; i < ui->cbTarget->count(); ++i) {
         if (!ui->cbTarget->itemData(i, ROLE_IS_HEADER).toBool() && ui->cbTarget->itemData(i, ROLE_CONTAINER_KIND).toInt() ==
-            ContainerKind::ToolbarItem && ui->cbTarget->itemData(i, ROLE_TOOLBAR_INDEX).toInt() == newTbIdx) {
+            ToolbarItem && ui->cbTarget->itemData(i, ROLE_TOOLBAR_INDEX).toInt() == newTbIdx) {
             ui->cbTarget->setCurrentIndex(i);
             break;
         }
@@ -408,7 +372,7 @@ void LC_SettingsPageMenusToolbars::onRenameToolbarClicked() {
         return;
     }
 
-    if (ui->cbTarget->itemData(m_currentComboIndex, ROLE_CONTAINER_KIND).toInt() != ContainerKind::ToolbarItem) {
+    if (ui->cbTarget->itemData(m_currentComboIndex, ROLE_CONTAINER_KIND).toInt() != ToolbarItem) {
         return;
     }
 
@@ -445,7 +409,7 @@ void LC_SettingsPageMenusToolbars::onDeleteToolbarClicked() {
         return;
     }
 
-    if (ui->cbTarget->itemData(m_currentComboIndex, ROLE_CONTAINER_KIND).toInt() != ContainerKind::ToolbarItem) {
+    if (ui->cbTarget->itemData(m_currentComboIndex, ROLE_CONTAINER_KIND).toInt() != ToolbarItem) {
         return;
     }
 
@@ -513,14 +477,14 @@ bool LC_SettingsPageMenusToolbars::promptForUniqueName(const QString& title, con
 void LC_SettingsPageMenusToolbars::updateControlsState(ContainerKind kind, int tbIdx, bool isReadOnly) {
     const auto& config = m_presetManager->workingConfig();
 
-    const bool isMenu = (kind == ContainerKind::MenuMinimal ||
-                         kind == ContainerKind::MenuCompact ||
-                         kind == ContainerKind::MenuExtended);
+    const bool isMenu = (kind == MenuMinimal ||
+                         kind == MenuCompact ||
+                         kind == MenuExtended);
 
-    const bool isMatrix = (kind == ContainerKind::CadMatrixItem);
-    const bool isDockWidget = (kind == ContainerKind::CadDockWidgetItem);
-    const bool isCADWidget = kind == ContainerKind::CadDockWidgetItem;
-    const bool isToolbar = (kind == ContainerKind::ToolbarItem);
+    const bool isMatrix = (kind == CadMatrixItem);
+    const bool isDockWidget = (kind == CadDockWidgetItem);
+    const bool isCADWidget = kind == CadDockWidgetItem;
+    const bool isToolbar = (kind == ToolbarItem);
 
     const ToolbarDef* tb = (tbIdx >= 0 && tbIdx < config.toolbars.size()) ? &config.toolbars[tbIdx] : nullptr;
     const bool isCustom = (tb != nullptr && tb->kind == ToolbarKind::Custom);
@@ -543,8 +507,14 @@ void LC_SettingsPageMenusToolbars::updateControlsState(ContainerKind kind, int t
         navigationWidgetType = tr("CAD Tools Matrix");
     }
     else if (isToolbar){
-        navigationWidgetType = tr("Toolbar");
+        if (tb != nullptr && (tb->kind == ToolbarKind::Cad)) {
+            navigationWidgetType = tr("CAD Toolbar");
+        }
+        else {
+            navigationWidgetType = tr("Toolbar");
+        }
     }
+
     else if (isCADWidget){
         navigationWidgetType = tr("CAD Tools Window");
     }
@@ -585,11 +555,11 @@ void LC_SettingsPageMenusToolbars::loadContainerContent(ContainerKind kind, int 
     const auto& config = m_presetManager->workingConfig();
     const ToolbarDef* tb = (tbIdx >= 0 && tbIdx < config.toolbars.size()) ? &config.toolbars[tbIdx] : nullptr;
 
-    if (kind == ContainerKind::MenuMinimal) {
+    if (kind == MenuMinimal) {
         ui->dualListWidget->setNodes(config.menuMinimal);
-    } else if (kind == ContainerKind::MenuCompact) {
+    } else if (kind == MenuCompact) {
         ui->dualListWidget->setNodes(config.menuCompact);
-    } else if (kind == ContainerKind::MenuExtended) {
+    } else if (kind == MenuExtended) {
         ui->dualListWidget->setNodes(config.menuExtended);
     } else if (tb != nullptr) {
         ui->dualListWidget->setNodes(tb->nodes);

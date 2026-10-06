@@ -32,6 +32,7 @@
 #include "lc_cad_tool_matrix_dock_widget.h"
 #include "lc_custom_title_bar_widget.h"
 #include "lc_dockwidget.h"
+#include "lc_dock_names.h"
 #include "lc_layertreewidget.h"
 #include "lc_namedviewslistwidget.h"
 #include "lc_penpalettewidget.h"
@@ -43,6 +44,7 @@
 #include "lc_relzerocoordinateswidget.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
+#include "lc_toolbar_names.h"
 #include "lc_ucslistwidget.h"
 #include "lc_ucsstatewidget.h"
 #include "qc_applicationwindow.h"
@@ -60,9 +62,62 @@
 #include "rs_settings.h"
 #include "twostackedlabels.h"
 
+struct StatusBarInfo{
+    const char* name;
+    QString title;
+    QString iconName;
+    QWidget* widget;
+};
+
+namespace {
+
+    template <class T>
+    void setWidgetToggleActionIcon(T* result, const QString& iconName) {
+        if (!iconName.isEmpty()) {
+            auto toggleAction = result->toggleViewAction();
+            toggleAction->setIcon(QIcon(iconName));
+        }
+    }
+
+    template <class T>
+    void setWidgetToggleActionIcon(T* result, const QIcon& icon) {
+        auto toggleAction = result->toggleViewAction();
+        toggleAction->setIcon(icon);
+    }
+
+}
+
 LC_WidgetFactory::LC_WidgetFactory(QC_ApplicationWindow* mainWin)
     : QObject(nullptr), LC_AppWindowAware(mainWin), m_agm(mainWin->m_actionGroupManager.get()),
       m_actionFactory{mainWin->m_actionFactory.get()} {
+}
+
+void LC_WidgetFactory::createStatusToolbars(std::initializer_list<StatusBarInfo> toolbars) {
+    constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    const bool showToolbarTooltips = CFG_Startup::o_ShowToolbarsTooltip;
+    for (auto i: toolbars) {
+        createStatusBarToolbar(tbPolicy, i.widget, i.title,  i.iconName,  i.name, showToolbarTooltips, true);
+    }
+}
+
+
+QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title, const QString& iconName,
+                                     const char* name, const bool showToolTip, bool usePillChips) {
+    const auto tb = new QToolBar(title, m_appWin);
+    tb->setSizePolicy(tbPolicy);
+    tb->addWidget(widget);
+    tb->setObjectName(LC_ToolbarNames::standardToolBarName(name));
+    tb->setProperty("_group", 3);
+    tb->setProperty("_lc_toolbar_name", name);
+    if (showToolTip) {
+        tb->setToolTip(tr("Toolbar: %1").arg(title));
+    }
+    if (usePillChips) {
+        tb->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);
+    }
+    setWidgetToggleActionIcon(tb, iconName);
+    addToBottom(tb);
+    return tb;
 }
 
 void LC_WidgetFactory::updateDockOptions(QC_ApplicationWindow* mainWin, const bool allowDockNesting,
@@ -131,7 +186,7 @@ void LC_WidgetFactory::createCADDockWidgetsSidebar() {
 void LC_WidgetFactory::createCADToolsMatrixSidebar() {
     auto* result = new LC_CADToolMatrixDockWidget(m_appWin);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-    result->setObjectName("dock_cad_mega");
+    result->setObjectName(LC_DockNames::cadDockName(LC_DockNames::CAD_MEGA));
     result->setWindowTitle(tr("Tools"));
     result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
 
@@ -150,28 +205,28 @@ void LC_WidgetFactory::createCADToolsMatrixSidebar() {
     result->setWindowIcon(icon);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
     const QString actionName = QString("ToggleDock_CAD_All");
-    registerDockWidgetAction("cad_dock_widgets", result, actionName, tr("%1 (CAD Dock)").arg(title), iconPath,
+      registerDockWidgetAction(LC_GroupNames::CAD_DOCK_WIDGETS, result, actionName, tr("%1 (CAD Dock)").arg(title), iconPath,
                              tr("Toggles visibility of %1 CAD tool window.").arg(title));
 
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, result);
 }
 
 void LC_WidgetFactory::createCADSidebar() {
-    auto* line = cadDockWidget("line");
-    auto* point = cadDockWidget("point");
-    auto* shape = cadDockWidget("shape");
-    auto* circle = cadDockWidget("circle");
-    auto* curve = cadDockWidget("curve");
-    auto* spline = cadDockWidget("spline");
-    auto* ellipse = cadDockWidget("ellipse");
-    auto* polyline = cadDockWidget("polyline");
-    auto* select = cadDockWidget("select");
-    auto* text = cadDockWidget("text");
-    auto* dimension = cadDockWidget("dimension");
-    auto* other = cadDockWidget("other");
-    auto* modify = cadDockWidget("modify");
-    auto* info = cadDockWidget("info");
-    auto* order = cadDockWidget("order");
+    auto* line = cadDockWidget(LC_DockNames::CAD_LINE);
+    auto* point = cadDockWidget(LC_DockNames::CAD_POINT);
+    auto* shape = cadDockWidget(LC_DockNames::CAD_SHAPE);
+    auto* circle = cadDockWidget(LC_DockNames::CAD_CIRCLE);
+    auto* curve = cadDockWidget(LC_DockNames::CAD_CURVE);
+    auto* spline = cadDockWidget(LC_DockNames::CAD_SPLINE);
+    auto* ellipse = cadDockWidget(LC_DockNames::CAD_ELLIPSE);
+    auto* polyline = cadDockWidget(LC_DockNames::CAD_POLYLINE);
+    auto* select = cadDockWidget(LC_DockNames::CAD_SELECT);
+    auto* text = cadDockWidget(LC_DockNames::CAD_TEXT);
+    auto* dimension = cadDockWidget(LC_DockNames::CAD_DIMENSION);
+    auto* other = cadDockWidget(LC_DockNames::CAD_OTHER);
+    auto* modify = cadDockWidget(LC_DockNames::CAD_MODIFY);
+    auto* info = cadDockWidget(LC_DockNames::CAD_INFO);
+    auto* order = cadDockWidget(LC_DockNames::CAD_ORDER);
 
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, line);
     m_appWin->tabifyDockWidget(line, polyline);
@@ -185,7 +240,8 @@ void LC_WidgetFactory::createCADSidebar() {
     circle->raise();
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, dimension);
     m_appWin->tabifyDockWidget(dimension, other);
-    m_appWin->tabifyDockWidget(other, info);
+    m_appWin->tabifyDockWidget(other, text);
+    m_appWin->tabifyDockWidget(text, info);
     m_appWin->tabifyDockWidget(info, select);
     dimension->raise();
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, modify);
@@ -198,7 +254,7 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
     const auto result = new LC_DockWidget(m_appWin, horizontalTitle, verticalTitle);
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     result->setWindowTitle(horizontalTitle);
-    result->setObjectName(name);
+    result->setObjectName(LC_DockNames::standardDockName(name));
     result->setProperty("_lc_doc_widget", true);
     auto toggleViewAction = result->toggleViewAction();
     if (!iconName.isEmpty()) {
@@ -212,7 +268,7 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
     });
     result->setTitleBarWidget(titleBar);
 
-    registerDockWidgetAction("dock_widgets", result, toggleActionName, horizontalTitle, iconName, toggleActionDescription);
+    registerDockWidgetAction(LC_GroupNames::DOCK_WIDGETS, result, toggleActionName, horizontalTitle, iconName, toggleActionDescription);
     return result;
 }
 
@@ -225,7 +281,7 @@ void LC_WidgetFactory::setupDockWidget(QDockWidget* dock, LC_GraphicViewAwareWid
 }
 
 QDockWidget* LC_WidgetFactory::createPenPalletteWidget() {
-    const auto dock = createDockWidget(tr("Pens Palette"), "pen_palette_dockwidget", ":/icons/widget_pens_palette.lci", tr("Pens"),
+    const auto dock = createDockWidget(tr("Pens Palette"), LC_DockNames::PEN_PALETTE, ":/icons/widget_pens_palette.lci", tr("Pens"),
                                        LC_ActionNames::ToggleDockPenPalette, tr("Toggles visibility of Pens Palette tool window."));
     const auto widget = new LC_PenPaletteWidget("PenPalette", dock);
 
@@ -237,7 +293,7 @@ QDockWidget* LC_WidgetFactory::createPenPalletteWidget() {
 }
 
 QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionHandler) {
-    const auto dock = createDockWidget(tr("Layers"), "layer_dockwidget", ":/icons/widget_layer_list.lci", tr("Layers"),
+    const auto dock = createDockWidget(tr("Layers"), LC_DockNames::LAYERS, ":/icons/widget_layer_list.lci", tr("Layers"),
                                        LC_ActionNames::ToggleDockLayers, tr("Toggles visibility of Layers tool window."));
     const auto widget = new QG_LayerWidget(m_agm, actionHandler, dock, "Layer");
 
@@ -249,7 +305,7 @@ QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionH
 }
 
 QDockWidget* LC_WidgetFactory::createNamedViewsWidget() {
-    const auto dock = createDockWidget(tr("Named Views"), "view_dockwidget", ":/icons/widget_views.lci", tr("Views"),
+    const auto dock = createDockWidget(tr("Named Views"), LC_DockNames::NAMED_VIEWS, ":/icons/widget_views.lci", tr("Views"),
                                        LC_ActionNames::ToggleDockNamedViews, tr("Toggles visibility of Named Views tool window."));
     const auto widget = new LC_NamedViewsListWidget("View", dock);
 
@@ -271,7 +327,7 @@ QDockWidget* LC_WidgetFactory::createNamedViewsWidget() {
 }
 
 QDockWidget* LC_WidgetFactory::createUCSListWidget() {
-    const auto dock = createDockWidget(tr("User Coordinate Systems"), "ucs_dockwidget", ":/icons/widget_ucs.lci", tr("UCSs"),
+    const auto dock = createDockWidget(tr("User Coordinate Systems"), LC_DockNames::UCS, ":/icons/widget_ucs.lci", tr("UCSs"),
                                        LC_ActionNames::ToggleDockUCS, tr("Toggles visibility of UCS tool window."));
     const auto widget = new LC_UCSListWidget("UCS", dock);
     setupDockWidget(dock, widget);
@@ -281,7 +337,7 @@ QDockWidget* LC_WidgetFactory::createUCSListWidget() {
 }
 
 QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* actionHandler) {
-    QDockWidget* dock = createDockWidget(tr("Layers Tree"), "layer_tree_dockwidget", ":/icons/widget_layer_tree.lci", tr("Layers Tree"),
+    QDockWidget* dock = createDockWidget(tr("Layers Tree"), LC_DockNames::LAYER_TREE, ":/icons/widget_layer_tree.lci", tr("Layers Tree"),
                                          LC_ActionNames::ToggleDockLayerTree, tr("Toggles visibility of Layers Tree tool window."));
     const auto widget = new LC_LayerTreeWidget(actionHandler, dock, "Layer Tree");
 
@@ -293,7 +349,7 @@ QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* act
 }
 
 QDockWidget* LC_WidgetFactory::createEntityInfoWidget() {
-    QDockWidget* dock = createDockWidget(tr("Entity Info"), "quick_entity_info", ":/icons/widget_info.lci", tr("Info"),
+    QDockWidget* dock = createDockWidget(tr("Entity Info"), LC_DockNames::ENTITY_INFO, ":/icons/widget_info.lci", tr("Info"),
                                          LC_ActionNames::ToggleDockQuickInfo, tr("Toggles visibility of Entity Info tool window."));
     const auto widget = new LC_QuickInfoWidget(dock, m_agm->getActionsMap());
 
@@ -304,7 +360,7 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget() {
 }
 
 QDockWidget* LC_WidgetFactory::createPropertySheetWidget() {
-    QDockWidget* dock = createDockWidget(tr("Properties"), "property_sheet", ":/icons/widget_properties.lci", tr("Properties"),
+    QDockWidget* dock = createDockWidget(tr("Properties"), LC_DockNames::PROPERTIES, ":/icons/widget_properties.lci", tr("Properties"),
                                          LC_ActionNames::ToggleDockProperties, tr("Toggles visibility of Properties tool window."));
 
     const auto widget = new LC_PropertySheetWidget(dock, m_appWin->getActionContext(), m_agm);
@@ -318,7 +374,7 @@ QDockWidget* LC_WidgetFactory::createPropertySheetWidget() {
 }
 
 QDockWidget* LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* actionHandler) {
-    const auto dock = createDockWidget(tr("Blocks"), "block_dockwidget", ":/icons/widget_blocks.lci", tr("Blocks"),
+    const auto dock = createDockWidget(tr("Blocks"), LC_DockNames::BLOCKS, ":/icons/widget_blocks.lci", tr("Blocks"),
                                        LC_ActionNames::ToggleDockBlocks, tr("Toggles visibility of Blocks tool window."));
 
     const auto widget = new QG_BlockWidget(m_agm, actionHandler, dock, "Block");
@@ -332,7 +388,7 @@ QDockWidget* LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* act
 }
 
 QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actionHandler) {
-    const auto dock = createDockWidget(tr("Library Browser"), "library_dockwidget", ":/icons/widget_library.lci", tr("Library"),
+    const auto dock = createDockWidget(tr("Library Browser"), LC_DockNames::LIBRARY, ":/icons/widget_library.lci", tr("Library"),
                                        LC_ActionNames::ToggleDockLibrary, tr("Toggles visibility of Library tool window."));
 
     const auto widget = new QG_LibraryWidget(actionHandler, dock, "Library");
@@ -345,7 +401,7 @@ QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actio
 }
 
 QDockWidget* LC_WidgetFactory::createCmdWidget(QG_ActionHandler* actionHandler) {
-    const auto dock = createDockWidget(tr("Command Line"), "command_dockwidget", ":/icons/widget_cmd.lci", tr("Cmd"),
+    const auto dock = createDockWidget(tr("Command Line"), LC_DockNames::COMMAND, ":/icons/widget_cmd.lci", tr("Cmd"),
                                        LC_ActionNames::ToggleDockCommandLine, tr("Toggles visibility of Command Line tool window."));
 
     const auto widget = new QG_CommandWidget(actionHandler, dock, "Command");
@@ -377,7 +433,10 @@ QDockWidget* LC_WidgetFactory::createCmdWidget(QG_ActionHandler* actionHandler) 
  */
 // fixme - sand - files - remove later, just port from ApppWindow - use uniform way
 void LC_WidgetFactory::modifyCommandTitleBar(const Qt::DockWidgetArea area) const {
-    auto* cmdDockWidget = findChild<QDockWidget*>("command_dockwidget");
+    auto* cmdDockWidget = findChild<QDockWidget*>(LC_DockNames::standardDockName(LC_DockNames::COMMAND));
+    if (cmdDockWidget == nullptr) {
+        return;
+    }
 
     const auto* commandWidget = static_cast<QG_CommandWidget*>(cmdDockWidget->widget());
     QAction* dockingAction = commandWidget->getDockingAction();
@@ -393,54 +452,6 @@ void LC_WidgetFactory::modifyCommandTitleBar(const Qt::DockWidgetArea area) cons
     cmdDockWidget->setFeatures(features);
 }
 
-
-void LC_WidgetFactory::dockAndTabifyGroup(QC_ApplicationWindow* mainWin, const Qt::DockWidgetArea area,
-                                          const QList<QDockWidget*>& docks, QDockWidget* toRaise) {
-    if (mainWin == nullptr || docks.isEmpty()) {
-        return;
-    }
-
-    QDockWidget* anchor = nullptr;
-    for (auto* dw : docks) {
-        if (dw == nullptr) {
-            continue;
-        }
-
-        mainWin->addDockWidget(area, dw);
-        if (anchor == nullptr) {
-            anchor = dw;
-        }
-        else {
-            mainWin->tabifyDockWidget(anchor, dw);
-        }
-    }
-
-    if (toRaise != nullptr) {
-        toRaise->raise();
-    }
-}
-
-void LC_WidgetFactory::dockAndTabifyByName(QC_ApplicationWindow* mainWin, const Qt::DockWidgetArea area,
-                                           const std::vector<const char*>& names, const char* raiseName) {
-    if (mainWin == nullptr) {
-        return;
-    }
-
-    QList<QDockWidget*> docks;
-    QDockWidget* toRaise = nullptr;
-
-    for (const char* name : names) {
-        auto* dw = mainWin->findChild<QDockWidget*>(name);
-        if (dw != nullptr) {
-            docks.append(dw);
-            if (raiseName != nullptr && strcmp(name, raiseName) == 0) {
-                toRaise = dw;
-            }
-        }
-    }
-
-    dockAndTabifyGroup(mainWin, area, docks, toRaise);
-}
 
 void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler) {
     const QList<QDockWidget*> rightDocks = {
@@ -499,26 +510,9 @@ void LC_WidgetFactory::initializeRightDockWidgets() const {
     }
 }
 
-// fixme - sand - remove this method
-void LC_WidgetFactory::makeActionsInvisible(const std::vector<QString>& actionNames) const {
-    for (const QString& actionName : actionNames) {
-        QAction* action = m_agm->getActionByName(actionName);
-        if (action != nullptr) {
-            action->setVisible(false);
-        }
-    }
-}
-
-// fixme - sand - remove this method
-void LC_WidgetFactory::addAction(QToolBar* toolbar, const char* actionName) const {
-    QAction* action = m_agm->getActionByName(actionName);
-    if (action != nullptr) {
-        toolbar->addAction(action);
-    }
-}
 
 QDockWidget* LC_WidgetFactory::createPenWizardWidget() {
-    const auto dock = createDockWidget(tr("Pen Wizard"), "pen_wiz_dockwidget", ":/icons/widget_pen_wiz.lci", tr("PenWiz"),
+    const auto dock = createDockWidget(tr("Pen Wizard"), LC_DockNames::PEN_WIZARD, ":/icons/widget_pen_wiz.lci", tr("PenWiz"),
                                        LC_ActionNames::ToggleDockPenWizard, tr("Toggles visibility of Pens Wizard tool window."));
     const auto widget = new LC_PenWizard(dock);
     widget->setFocusPolicy(Qt::NoFocus);
@@ -532,17 +526,20 @@ QDockWidget* LC_WidgetFactory::createPenWizardWidget() {
     return dock;
 }
 
-void LC_WidgetFactory::initSpecialToolbars() {
+void setupSpecialToolbar(QToolBar* toolbar, const char* objectName, int group, QString icon) {
     constexpr QSizePolicy tbPolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    toolbar->setSizePolicy(tbPolicy);
+    toolbar->setObjectName(LC_ToolbarNames::standardToolBarName(objectName));
+    toolbar->setProperty("_group", group);
+    toolbar->setProperty("_lc_toolbar_name", objectName);
+    toolbar->toggleViewAction()->setIcon(QIcon(icon));
+}
 
+void LC_WidgetFactory::initSpecialToolbars() {
     // 1. Pen Toolbar
     const auto penTitle = tr("Pen");
     auto* penTb = new QG_PenToolBar(penTitle, m_appWin);
-    penTb->setSizePolicy(tbPolicy);
-    penTb->setObjectName("pen_toolbar");
-    penTb->setProperty("_group", 1);
-    penTb->setProperty("_lc_toolbar_name", "pen");
-    penTb->toggleViewAction()->setIcon(QIcon(":/icons/pen_apply.lci"));
+    setupSpecialToolbar(penTb, LC_ToolbarNames::PEN, 1, QStringLiteral(":/icons/pen_apply.lci"));
     m_appWin->m_penToolBar = penTb;
 
     connect(penTb, &QG_PenToolBar::penChanged, m_appWin, &QC_ApplicationWindow::slotPenChanged);
@@ -552,20 +549,12 @@ void LC_WidgetFactory::initSpecialToolbars() {
     const auto snapTitle = tr("Snap Selection");
     auto* snapTb = new QG_SnapToolBar(m_appWin, m_appWin->m_actionHandler.get(), m_agm, m_agm->getActionsMap());
     snapTb->setWindowTitle(snapTitle);
-    snapTb->setSizePolicy(tbPolicy);
-    snapTb->setObjectName("snap_toolbar");
-    snapTb->setProperty("_group", 3);
-    snapTb->setProperty("_lc_toolbar_name", "snap");
-    snapTb->toggleViewAction()->setIcon(QIcon(":/icons/snap_visual.lci"));
+    setupSpecialToolbar(snapTb, LC_ToolbarNames::SNAP, 3, QStringLiteral(":/icons/snap_visual.lci"));
     m_appWin->m_snapToolBar = snapTb;
 
     // 3. Tool Options Toolbar (Container for interactive CAD options)
     auto* optTb = new QToolBar(tr("Tool Options"), m_appWin);
-    optTb->setSizePolicy(tbPolicy);
-    optTb->setObjectName("tool_options_toolbar");
-    optTb->setProperty("_lc_toolbar_name", "tool_options");
-    optTb->setProperty("_group", 1);
-    optTb->toggleViewAction()->setIcon(QIcon(":/icons/tool_options.lci"));
+    setupSpecialToolbar(optTb, LC_ToolbarNames::TOOL_OPTIONS, 1, QStringLiteral(":/icons/tool_options.lci"));
     m_appWin->m_toolOptionsToolbar = optTb;
 }
 
@@ -578,10 +567,6 @@ void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget* widget, const bool ve
     }
     widget->setFeatures(QDockWidget::DockWidgetFeatures());
     widget->setFeatures(features);
-    // const auto lcDocWidget = dynamic_cast<LC_DockWidget*>(widget);
-    // if (lcDocWidget != nullptr) {
-    // lcDocWidget->updateTitle();
-    // }
 }
 
 void LC_WidgetFactory::registerDockWidgetAction(const char* groupName, QDockWidget* dockWidget, const QString& actionName,
@@ -615,7 +600,7 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& groupName) {
 
     auto* result = new LC_CADDockWidget(m_appWin);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    result->setObjectName("dock_" + groupName.toLower());
+    result->setObjectName(LC_DockNames::cadDockName(groupName));
     result->setWindowTitle(title);
     result->hide();
 
@@ -633,30 +618,9 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& groupName) {
 
     // Dynamic registration in cad_dock_widgets action group
     const QString actionName = QString("ToggleDock_CAD_") + groupName;
-    registerDockWidgetAction("cad_dock_widgets", result, actionName, tr("%1 (CAD Dock)").arg(title), iconName,
+    registerDockWidgetAction(LC_GroupNames::CAD_DOCK_WIDGETS, result, actionName, tr("%1 (CAD Dock)").arg(title), iconName,
                              tr("Toggles visibility of %1 CAD tool window.").arg(title));
     return result;
-}
-
-QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title,
-                                                   const QString& iconName, const char* name, const bool showToolTip,
-                                                   bool usePillChips) const {
-    const auto tb = new QToolBar(title, m_appWin);
-    tb->setSizePolicy(tbPolicy);
-    tb->addWidget(widget);
-    tb->setObjectName(name);
-    tb->setProperty("_group", 3);
-    tb->setProperty("_lc_toolbar_name", name);
-    if (showToolTip) {
-        tb->setToolTip(tr("Toolbar: %1").arg(title));
-    }
-    if (usePillChips) {
-        tb->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);
-    }
-    setWidgetToggleActionIcon(tb, iconName);
-    addToBottom(tb);
-    // fixme - sand - registration of action for toggle!!
-    return tb;
 }
 
 void LC_WidgetFactory::initStatusBar() {
@@ -712,23 +676,18 @@ void LC_WidgetFactory::initStatusBar() {
         }
     }
     else {
-        constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-        const bool showToolbarTooltips = CFG_Startup::o_ShowToolbarsTooltip;
-        createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), ":/icons/info_point.lci", "TBCoordinates",
-                               showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"), ":/icons/set_rel_zero.lci",
-                               "TBRelZero", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), ":/icons/mouse.lci", "TBMouse", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), ":/icons/select_conditional.lci",
-                               "TBSelectionInfo", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), ":/icons/item_by_layer.lci",
-                               "TBActiveLayer", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), ":/icons/grid.lci", "TBGridStatus",
-                               showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), ":/icons/ucs_ucs.lci", "TBUCSStatus",
-                               showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_anglesBasisWidget, tr("Angles Basis"), ":/icons/dirpos.lci", "TBAnglesBasis",
-                               showToolbarTooltips, true);
+        using namespace  LC_ToolbarNames;
+        createStatusToolbars({
+            {STAT_COORDINATES,  tr("Coordinates"),   ":/icons/info_point.lci",         m_appWin->m_coordinateWidget},
+            {STAT_REL_ZERO,     tr("Relative Zero"), ":/icons/set_rel_zero.lci",       m_appWin->m_relativeZeroCoordinatesWidget},
+            {STAT_MOUSE,        tr("Mouse"),         ":/icons/mouse.lci",              m_appWin->m_mouseWidget},
+            {STAT_SELECTION,    tr("Selection Info"),":/icons/select_conditional.lci", m_appWin->m_selectionWidget},
+            {STAT_ACTIVE_LAYER, tr("Active Layer"),  ":/icons/item_by_layer.lci",      m_appWin->m_activeLayerNameWidget},
+            {STAT_GRID_STATUS,  tr("Grid Status"),   ":/icons/grid.lci",               m_appWin->m_gridStatusWidget},
+            {STAT_UCS_STATUS,   tr("UCS Status"),    ":/icons/ucs_ucs.lci",            m_appWin->m_ucsStateWidget},
+            {STAT_ANGLES_BASIS, tr("Angles Basis"),  ":/icons/dirpos.lci",             m_appWin->m_anglesBasisWidget}
+        });
+
 
         m_appWin->m_statusbarManager->setup();
 
@@ -749,37 +708,136 @@ void LC_WidgetFactory::initStatusBar() {
     status_bar->setVisible(statusBarVisible);
 }
 
+
 void LC_WidgetFactory::addToBottom(QToolBar* toolbar) const {
     m_appWin->addToolBar(Qt::BottomToolBarArea, toolbar);
 }
+
+void LC_WidgetFactory::dockAndTabifyGroup(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area, const QList<QDockWidget*>& docks, QDockWidget* toRaise) {
+    if (mainWin == nullptr || docks.isEmpty()) {
+        return;
+    }
+
+    QDockWidget* anchor = nullptr;
+    for (auto* dw : docks) {
+        if (dw == nullptr) {
+            continue;
+        }
+
+        mainWin->addDockWidget(area, dw);
+        if (anchor == nullptr) {
+            anchor = dw;
+        }
+        else {
+            mainWin->tabifyDockWidget(anchor, dw);
+        }
+    }
+
+    if (toRaise != nullptr) {
+        toRaise->raise();
+    }
+}
+
+void LC_WidgetFactory::dockAndTabifyCadDocks(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
+                                             const std::vector<const char*>& categories, const char* raiseCategory) {
+    if (mainWin == nullptr) {
+        return;
+    }
+
+    QList<QDockWidget*> docks;
+    QDockWidget* toRaise = nullptr;
+
+    for (const char* cat : categories) {
+        const QString objName = LC_DockNames::cadDockName(QLatin1String(cat));
+        auto* dw = mainWin->findChild<QDockWidget*>(objName);
+        if (dw != nullptr) {
+            docks.append(dw);
+            if (raiseCategory != nullptr && strcmp(cat, raiseCategory) == 0) {
+                toRaise = dw;
+            }
+        }
+    }
+
+    dockAndTabifyGroup(mainWin, area, docks, toRaise);
+}
+
+void LC_WidgetFactory::dockAndTabifyStandardDocks(QC_ApplicationWindow* mainWin, Qt::DockWidgetArea area,
+                                                  const std::vector<const char*>& names, const char* raiseName) {
+    if (mainWin == nullptr) {
+        return;
+    }
+
+    QList<QDockWidget*> docks;
+    QDockWidget* toRaise = nullptr;
+
+    for (const char* name : names) {
+        const QString objName = LC_DockNames::standardDockName(QLatin1String(name));
+        auto* dw = mainWin->findChild<QDockWidget*>(objName);
+        if (dw != nullptr) {
+            docks.append(dw);
+            if (raiseName != nullptr && strcmp(name, raiseName) == 0) {
+                toRaise = dw;
+            }
+        }
+    }
+
+    dockAndTabifyGroup(mainWin, area, docks, toRaise);
+}
+
 
 void LC_WidgetFactory::redockAllDockWidgets(QC_ApplicationWindow* mainWin) {
     if (mainWin == nullptr) {
         return;
     }
 
-    // 1. Left CAD Sidebar Groups
-    dockAndTabifyByName(mainWin, Qt::LeftDockWidgetArea,
-                        {"dock_line", "dock_polyline", "dock_point", "dock_shape"}, "dock_line");
-    dockAndTabifyByName(mainWin, Qt::LeftDockWidgetArea,
-                        {"dock_circle", "dock_curve", "dock_spline", "dock_ellipse"}, "dock_circle");
-    dockAndTabifyByName(mainWin, Qt::LeftDockWidgetArea,
-                        {"dock_dimension", "dock_other", "dock_info", "dock_select"}, "dock_dimension");
-    dockAndTabifyByName(mainWin, Qt::LeftDockWidgetArea,
-                        {"dock_modify", "dock_order"});
+    using namespace LC_DockNames;
 
-    // 2. Right Sidebar (Full Tabified Stack)
-    dockAndTabifyByName(mainWin, Qt::RightDockWidgetArea, {
-        "library_dockwidget",
-        "block_dockwidget",
-        "pen_wiz_dockwidget",
-        "pen_palette_dockwidget",
-        "layer_tree_dockwidget",
-        "layer_dockwidget",
-        "quick_entity_info",
-        "property_sheet",
-        "ucs_dockwidget",
-        "view_dockwidget",
-        "command_dockwidget"
+    // 1. Left CAD Sidebar (Helpers use m_appWin and compose "dock_cad_" internally)
+    dockAndTabifyCadDocks(mainWin, Qt::LeftDockWidgetArea, {
+        CAD_MEGA
+    });
+    dockAndTabifyCadDocks(mainWin, Qt::LeftDockWidgetArea,
+                          {
+                              CAD_LINE,
+                              CAD_POLYLINE,
+                              CAD_POINT,
+                              CAD_SHAPE},
+                              CAD_LINE);
+
+    dockAndTabifyCadDocks(mainWin, Qt::LeftDockWidgetArea,
+                          {
+                              CAD_CIRCLE,
+                              CAD_CURVE,
+                              CAD_SPLINE,
+                              CAD_ELLIPSE
+                          },CAD_CIRCLE);
+
+    dockAndTabifyCadDocks(mainWin, Qt::LeftDockWidgetArea,
+                          {
+                              CAD_DIMENSION,
+                              CAD_OTHER,
+                              CAD_TEXT,
+                              CAD_INFO,
+                              CAD_SELECT
+                          }, CAD_DIMENSION);
+
+    dockAndTabifyCadDocks(mainWin, Qt::LeftDockWidgetArea,
+                          {
+                              CAD_MODIFY,
+                              CAD_ORDER});
+
+    // 2. Right Sidebar (Helper uses m_appWin and composes "dock_" internally)
+    dockAndTabifyStandardDocks(mainWin, Qt::RightDockWidgetArea, {
+        LIBRARY,
+        BLOCKS,
+        PEN_WIZARD,
+        PEN_PALETTE,
+        LAYER_TREE,
+        LAYERS,
+        ENTITY_INFO,
+        PROPERTIES,
+        UCS,
+        NAMED_VIEWS,
+        COMMAND
     });
 }

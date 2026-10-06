@@ -60,28 +60,28 @@ protected:
         bool dockAreaRightActive = false;
         bool dockAreaTopActive = false;
         bool dockAreaBottomActive = false;
-        bool docAreaFloatingActive = false;
+        bool docAreaFloatingActive = true;
 
         bool tbAreaLeftActive = false;
         bool tbAreaRightActive = false;
-        bool tbAreaToptActive = false;
+        bool tbAreaTopActive = false;
         bool tbAreaBottomActive = false;
         bool tbAreaFloatingActive = false;
 
         int iconsSizeToolbar = 24;
         int iconsSizeLeftDock = 24;
-        int iconsSizeRightDoc = 16;
-        int columnCountLeftDoc = 6;
+        int iconsSizeRightDock = 16;
+        int columnCountLeftDock = 6;
 
-        int columnCountLeftAllDoc = 5;
+        int columnCountLeftAllDock = 5;
         int iconsSizeLeftAllDock = 22;
 
-        int mainMenuType = false;
+        int mainMenuType = 2;
         bool mainMenuTopLevelIconsOnly = false;
         bool showStatusBar = false;
         bool showMainMenu = true;
         bool showFullScreen= true;
-    };
+    };;
 
     int m_workspaceID = 0;
     int m_lastActivatedId = -1;

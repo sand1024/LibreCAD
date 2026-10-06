@@ -35,6 +35,7 @@
 #include "lc_action.h"
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
+#include "lc_group_names.h"
 #include "lc_settings_manager_drawing.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_settings_keyboard.h"
@@ -59,97 +60,97 @@ void LC_ActionFactory::initActions(LC_ActionGroupManager* agm, const bool useThe
 }
 
 void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
-    // NOTE: the order is imprortant now!
-  createActionGroups(
+    // NOTE: the order is important now!
+    using namespace LC_GroupNames;
+    createActionGroups(
     {
         // ==========================================
         // 1. DRAFTING GEOMETRY (Core CAD Tools)
         // ==========================================
-        {"line",          tr("Line"),                    tr("Line drawing commands"),          ":/icons/line.lci",                   true, true, true, "Menu:Line"},
-        {"point",         tr("Point"),                   tr("Point drawing commands"),         ":/icons/points.lci",                 true, true, true, "Menu:Point"},
-        {"shape",         tr("Polygon"),                 tr("Polygon drawing commands"),       ":/icons/rectangle_2_points.lci",     true, true, true, "Menu:Polygon"},
-        {"circle",        tr("Circle"),                  tr("Circle drawing commands"),        ":/icons/circle.lci",                 true, true, true, "Menu:Circle"},
-        {"curve",         tr("Arc"),                     tr("Arc drawing commands"),           ":/icons/arc_center_point_angle.lci", true, true, true, "Menu:Arc"},
-        {"spline",        tr("Spline"),                  tr("Spline drawing commands"),        ":/icons/spline_points.lci",          true, true, true, "Menu:Spline"},
-        {"ellipse",       tr("Ellipse"),                 tr("Ellipse drawing commands"),       ":/icons/ellipses.lci",               true, true, true, "Menu:Ellipse"},
-        {"polyline",      tr("Polyline"),                tr("Polyline drawing commands"),      ":/icons/polylines_polyline.lci",     true, true, true, "Menu:Polyline"},
-        {"text",          tr("Text"),                    tr("Text and annotation commands"),   ":/icons/text.lci",                   true, true, true, "Menu:Text"},
-        {"other",         tr("Other"),                   tr("Other operations"),               ":/icons/camera.lci",                 true, true, true, "Menu:Other"},
+        {LINE,          tr("Line"),                    tr("Line drawing commands"),          ":/icons/line.lci",                   true, true, true, "Menu:Line"},
+        {POINT,         tr("Point"),                   tr("Point drawing commands"),         ":/icons/points.lci",                 true, true, true, "Menu:Point"},
+        {SHAPE,         tr("Polygon"),                 tr("Polygon drawing commands"),       ":/icons/rectangle_2_points.lci",     true, true, true, "Menu:Polygon"},
+        {CIRCLE,        tr("Circle"),                  tr("Circle drawing commands"),        ":/icons/circle.lci",                 true, true, true, "Menu:Circle"},
+        {CURVE,         tr("Arc"),                     tr("Arc drawing commands"),           ":/icons/arc_center_point_angle.lci", true, true, true, "Menu:Arc"},
+        {SPLINE,        tr("Spline"),                  tr("Spline drawing commands"),        ":/icons/spline_points.lci",          true, true, true, "Menu:Spline"},
+        {ELLIPSE,       tr("Ellipse"),                 tr("Ellipse drawing commands"),       ":/icons/ellipses.lci",               true, true, true, "Menu:Ellipse"},
+        {POLYLINE,      tr("Polyline"),                tr("Polyline drawing commands"),      ":/icons/polylines_polyline.lci",     true, true, true, "Menu:Polyline"},
+        {TEXT,          tr("Text"),                    tr("Text and annotation commands"),   ":/icons/text.lci",                   true, true, true, "Menu:Text"},
+        {OTHER,         tr("Other"),                   tr("Other operations"),               ":/icons/camera.lci",                 true, true, true, "Menu:Other"},
 
         // ==========================================
         // 2. SELECTION, TRANSFORMS & EDITING
         // ==========================================
-        {"select",        tr("Select"),                  tr("Entity selection operations"),    ":/icons/select.lci",                 true,  true, true, "Menu:Select"},
-        {"modify",        tr("Modify"),                  tr("Modification operations"),        ":/icons/move_rotate.lci",            true,  true, true, "Menu:Modify"},
-        {"align",         tr("Align"),                   tr("Alignment operations"),           ":/icons/align_one.lci",              false, true, true, "Menu:Align"},
-        {"order",         tr("Order"),                   tr("Draw order operations"),          ":/icons/order.lci",                  true,  true, true, "Menu:Order"},
-        {"edit",          tr("Edit"),                    tr("Editing operations"),             ":/icons/rename_active_block.lci",    false, true, false, "Menu:Edit"},
-
+        {SELECT,        tr("Select"),                  tr("Entity selection operations"),    ":/icons/select.lci",                 true,  true, true, "Menu:Select"},
+        {MODIFY,        tr("Modify"),                  tr("Modification operations"),        ":/icons/move_rotate.lci",            true,  true, true, "Menu:Modify"},
+        {ALIGN,         tr("Align"),                   tr("Alignment operations"),           ":/icons/align_one.lci",              false, true, true, "Menu:Align"},
+        {ORDER,         tr("Order"),                   tr("Draw order operations"),          ":/icons/order.lci",                  true,  true, true, "Menu:Order"},
+        {EDIT,          tr("Edit"),                    tr("Editing operations"),             ":/icons/rename_active_block.lci",    false, true, false, "Menu:Edit"},
 
         // ==========================================
         // 3. ANNOTATIONS & MEASUREMENT
         // ==========================================
-        {"dimension",     tr("Dimension"),               tr("Dimensions creation commands"),   ":/icons/dim_horizontal.lci",         true, true, true, "Menu:Dimension"},
-        {"info",          tr("Info"),                    tr("Informational commands"),         ":/icons/measure.lci",                true, true, true, "Menu:Info"},
+        {DIMENSION,     tr("Dimension"),               tr("Dimensions creation commands"),   ":/icons/dim_horizontal.lci",         true, true, true, "Menu:Dimension"},
+        {INFO,          tr("Info"),                    tr("Informational commands"),         ":/icons/measure.lci",                true, true, true, "Menu:Info"},
 
         // ==========================================
         // 4. PRECISION & SNAPPING
         // ==========================================
-        {"snap",          tr("Snap"),                    tr("Snapping operations"),            ":/icons/snap_intersection.lci",      false, true, false, "Menu:Snap"},
-        {"snap_extras",   tr("Snap Extras"),             tr("Additional Snaps"),               ":/icons/snap_free.lci",              false, true, false},
-        {"restriction",   tr("Restriction"),             tr("Snap restrictions"),              ":/icons/restr_ortho.lci",            false, true, false},
-        {"relative_input",tr("Relative Point Assistant"),tr("Relative Point Assistant"),       ":/icons/snap_visual.lci",            false, true, false},
-        {"relZero",       tr("Relative Zero"),           tr("Relative Zero"),                  ":/icons/set_rel_zero.lci",           false, true, false},
-        {"infoCursor",    tr("InfoCursor"),              tr("Informational Cursor"),           ":/icons/info_cursor_enable.lci",     false, true, false},
+        {SNAP,          tr("Snap"),                    tr("Snapping operations"),            ":/icons/snap_intersection.lci",      false, true, false, "Menu:Snap"},
+        {SNAP_EXTRAS,   tr("Snap Extras"),             tr("Additional Snaps"),               ":/icons/snap_free.lci",              false, true, false},
+        {RESTRICTION,   tr("Restriction"),             tr("Snap restrictions"),              ":/icons/restr_ortho.lci",            false, true, false},
+        {RELATIVE_INPUT,tr("Relative Point Assistant"),tr("Relative Point Assistant"),       ":/icons/snap_visual.lci",            false, true, false},
+        {REL_ZERO,      tr("Relative Zero"),           tr("Relative Zero"),                  ":/icons/set_rel_zero.lci",           false, true, false},
+        {INFO_CURSOR,   tr("InfoCursor"),              tr("Informational Cursor"),           ":/icons/info_cursor_enable.lci",     false, true, false},
 
         // ==========================================
         // 5. CAD DOCUMENT STRUCTURE & CONTEXT
         // ==========================================
-        {"layer",         tr("Layer"),                   tr("Layers operations"),              ":/icons/deselect_layer.lci",         false, true, false, "Menu:Layer"},
-        {"entity_layer",  tr("Entity Layer"),            tr("Entity's Layer"),                 ":/icons/layer_list.lci",             false, true, false},
-        {"block",         tr("Block"),                   tr("Block related operations"),       ":/icons/create_block.lci",           false, true, true,  "Menu:Block"},
-        {"ucs",           tr("UCS"),                     tr("UCS operations"),                 ":/icons/set_ucs.lci",                true,  true, false, "Menu:UCS"},
-        {"pen",           tr("Pen"),                     tr("Pen related operations"),         ":/icons/pen_apply.lci",              false, true, false},
+        {LAYER,         tr("Layer"),                   tr("Layers operations"),              ":/icons/deselect_layer.lci",         false, true, false, "Menu:Layer"},
+        {ENTITY_LAYER,  tr("Entity Layer"),            tr("Entity's Layer"),                 ":/icons/layer_list.lci",             false, true, false},
+        {BLOCK,         tr("Block"),                   tr("Block related operations"),       ":/icons/create_block.lci",           false, true, true,  "Menu:Block"},
+        {UCS,           tr("UCS"),                     tr("UCS operations"),                 ":/icons/set_ucs.lci",                true,  true, false, "Menu:UCS"},
+        {PEN,           tr("Pen"),                     tr("Pen related operations"),         ":/icons/pen_apply.lci",              false, true, false},
 
         // ==========================================
         // 6. APPLICATION & WORKSPACE MANAGEMENT
         // ==========================================
-        {"file",          tr("File"),                    tr("File Operations"),                ":/icons/save.lci",                   false, false, false, "Menu:File"},
-        {"view",          tr("View"),                    tr("View related operations"),        ":/icons/zoom_in.lci",                false, true,  false, "Menu:View"},
-        {"plugins",       tr("&Plugins"),                tr("External plugins"),               ":/icons/plugin.lci",                 false, false, false, "Menu:Plugins"},
-        {"draw",          tr("&Draw"),                   tr("CAD drafting commands"),          ":/icons/line.lci",                   false, false, true,  "Menu:Draw"},
-        {"tools",         tr("&Tools"),                  tr("CAD tools"),                      ":/icons/line_polygon_star.lci",      false, false, true,  "Menu:Tools"},
-        {"namedViews",    tr("Named Views"),             tr("Persistent Views operations"),    ":/icons/visible.lci",                false, true,  false},
-        {"workspaces",    tr("Workspaces"),              tr("Workspaces operations"),          ":/icons/workspace.lci",              false, true, true, "Menu:Workspace"},
-        {"categories",    tr("Categories"),              tr("CAD tool categories"),            ":/icons/line_polygon_star.lci",      false, false, false},
-        {"creators",      tr("Creators"),                tr("Custom toolbars and menus creators"), ":/icons/create_toolbar.lci",     false, false, false},
-        {"options",       tr("Options"),                 tr("Options management"),             ":/icons/settings.lci",               false, true,  false, "Menu:Options"},
-        {"interactive_pick", tr("Interactive"),          tr("Interactive Pick"),               ":/icons/interactive_pick_point.lci", true,  false, false},
-        {"help",          tr("Help"),                    tr("Help and Online Documentation"),  ":/icons/help.lci",                   false, false, false, "Menu:Help"},
+        {FILES,          tr("File"),                    tr("File Operations"),                ":/icons/save.lci",                   false, false, false, "Menu:File"},
+        {VIEW,          tr("View"),                    tr("View related operations"),        ":/icons/zoom_in.lci",                false, true,  false, "Menu:View"},
+        {PLUGINS,       tr("&Plugins"),                tr("External plugins"),               ":/icons/plugin.lci",                 false, false, false, "Menu:Plugins"},
+        {DRAW,          tr("&Draw"),                   tr("CAD drafting commands"),          ":/icons/line.lci",                   false, false, true,  "Menu:Draw"},
+        {TOOLS,         tr("&Tools"),                  tr("CAD tools"),                      ":/icons/line_polygon_star.lci",      false, false, true,  "Menu:Tools"},
+        {NAMED_VIEWS,   tr("Named Views"),             tr("Persistent Views operations"),    ":/icons/visible.lci",                false, true,  false},
+        {WORKSPACES,    tr("Workspaces"),              tr("Workspaces operations"),          ":/icons/workspace.lci",              false, true, true, "Menu:Workspace"},
+        {CATEGORIES,    tr("Categories"),              tr("CAD tool categories"),            ":/icons/line_polygon_star.lci",      false, false, false},
+        {CREATORS,      tr("Creators"),                tr("Custom toolbars and menus creators"), ":/icons/create_toolbar.lci",     false, false, false},
+        {OPTIONS,       tr("Options"),                 tr("Options management"),             ":/icons/settings.lci",               false, true,  false, "Menu:Options"},
+        {INTERACTIVE_PICK, tr("Interactive"),          tr("Interactive Pick"),               ":/icons/interactive_pick_point.lci", true,  false, false},
+        {HELP,          tr("Help"),                    tr("Help and Online Documentation"),  ":/icons/help.lci",                   false, false, false, "Menu:Help"},
 
         // ==========================================
         // 7. STRUCTURAL NAVIGATION SUBMENUS
-       // ==========================================
-        {"import",        tr("Import"),                  tr("Import operations"),              ":/icons/import.lci",                 false, false, false, "Menu:Import"},
-        {"export",        tr("Export"),                  tr("Export operations"),              ":/icons/export.lci",                 false, false, false, "Menu:Export"},
-        {"views_restore", tr("&Views Restore"),          tr("Restore saved views"),            ":/icons/nview_visible.lci",          false, false, false, "Menu:ViewsRestore"},
-        {"dock_areas",    tr("Dock Areas"),              tr("Toggle dock areas"),              "",                                   false, true, true, "Menu:DockAreas"},
-        {"tb_areas",      tr("Toolbar Areas"),           tr("Toggle toolbar areas"),           "",                                   false, true, true, "Menu:ToolbarAreas"},
-        {"online_docs",   tr("On&line Docs"),            tr("Online documentation links"),     ":/icons/help.lci",                   false, false, false, "Menu:OnlineDocs"},
+        // ==========================================
+        {IMPORT,        tr("Import"),                  tr("Import operations"),              ":/icons/import.lci",                 false, false, false, "Menu:Import"},
+        {EXPORT,        tr("Export"),                  tr("Export operations"),              ":/icons/export.lci",                 false, false, false, "Menu:Export"},
+        {VIEWS_RESTORE, tr("&Views Restore"),          tr("Restore saved views"),            ":/icons/nview_visible.lci",          false, false, false, "Menu:ViewsRestore"},
+        {DOCK_AREAS,    tr("Dock Areas"),              tr("Toggle dock areas"),              "",                                   false, true, true, "Menu:DockAreas"},
+        {TB_AREAS,      tr("Toolbar Areas"),           tr("Toggle toolbar areas"),           "",                                   false, true, true, "Menu:ToolbarAreas"},
+        {ONLINE_DOCS,   tr("On&line Docs"),            tr("Online documentation links"),     ":/icons/help.lci",                   false, false, false, "Menu:OnlineDocs"},
+
         // ==========================================
         // 8. Widgets toggle actions
         // ==========================================
-        {"dock_widgets",     tr("Tool Windows"),    tr("Tool Windows visibility toggles"),     ":/icons/tool_windows_palette.lci",  false, true,  true,  "Menu:DockWidgets"},
-        {"cad_dock_widgets", tr("CAD Tool Windows"),tr("CAD Tool Windows visibility toggles"), ":/icons/dockwidgets_left.lci",      false, true,  true,  "Menu:CadDockWidgets"},
-        {"tool_options",     tr("Tool Options"),    tr("Active Tool Options bar"),             ":/icons/tool_options.lci",          false, true,  false},
+        {DOCK_WIDGETS,     tr("Tool Windows"),    tr("Tool Windows visibility toggles"),     ":/icons/tool_windows_palette.lci",  false, true,  true,  "Menu:DockWidgets"},
+        {CAD_DOCK_WIDGETS, tr("CAD Tool Windows"),tr("CAD Tool Windows visibility toggles"), ":/icons/dockwidgets_left.lci",      false, true,  true,  "Menu:CadDockWidgets"},
+        {TOOL_OPTIONS,     tr("Tool Options"),    tr("Active Tool Options bar"),             ":/icons/tool_options.lci",          false, true,  false},
 
         // built-in groups
-        {"builtin_system",  tr("System Built-in"), tr("Built-in System & Canvas Shortcuts"), ":/icons/info_cursor_enable.lci", false, true, false}
+        {BUILTIN_SYSTEM,   tr("System Built-in"), tr("Built-in System & Canvas Shortcuts"),  ":/icons/info_cursor_enable.lci", false, true, false}
     }, agm);
 
-
-    const auto fileGroup = agm->getGroupByName("file");
-    const auto optionsGroup = agm->getGroupByName("options");
+    const auto fileGroup = agm->getGroupByName(FILES);
+    const auto optionsGroup = agm->getGroupByName(OPTIONS);
 
     for (const auto& actionGroup : agm->findChildren<LC_ActionGroup*>()) {
         actionGroup->setExclusive(false);
@@ -157,7 +158,6 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
             connect(m_appWin, &QC_ApplicationWindow::windowsChanged, actionGroup, &LC_ActionGroup::setEnabled);
         }
     }
-
     /*auto toolGroups = agm->toolGroups();
     for (auto actionGroup : toolGroups) {
         connect(actionGroup, &LC_ActionGroup::triggered, m_appWin, &QC_ApplicationWindow::relayAction);
@@ -312,37 +312,38 @@ void LC_ActionFactory::setupDefaultShortcutsAndCompleteInit(LC_ActionGroupManage
 
 void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const bool useTheme){
     m_usingTheme = useTheme;
+    using namespace LC_GroupNames;
     QMap<QString, QAction *> &actionMap = agm->getActionsMap();
-    createSelectActions(actionMap, agm->getGroupByName("select"));
-    createDrawLineActions(actionMap, agm->getGroupByName("line"));
-    createDrawPointsActions(actionMap, agm->getGroupByName("point"));
-    createDrawShapeActions(actionMap, agm->getGroupByName("shape"));
-    createDrawCircleActions(actionMap, agm->getGroupByName("circle"));
-    createDrawCurveActions(actionMap, agm->getGroupByName("curve"));
-    createDrawSplineActions(actionMap, agm->getGroupByName("spline"));
-    createDrawEllipseActions(actionMap, agm->getGroupByName("ellipse"));
-    createDrawPolylineActions(actionMap, agm->getGroupByName("polyline"));
-    createDrawOtherActions(actionMap, agm->getGroupByName("other"));
-    createDrawDimensionsActions(actionMap, agm->getGroupByName("dimension"));
-    createModifyActions(actionMap, agm->getGroupByName("modify"));
-    createPenActions(actionMap, agm->getGroupByName("pen"));
-    createInfoActions(actionMap, agm->getGroupByName("info"));
-    createViewActions(actionMap, agm->getGroupByName("view"));
-    createDockAreasActions(actionMap, agm->getGroupByName("dock_areas"));
-    createToolbarAreasActions(actionMap, agm->getGroupByName("tb_areas"));
-    createFileActions(actionMap, agm->getGroupByName("file"));
+    createSelectActions(actionMap, agm->getGroupByName(SELECT));
+    createDrawLineActions(actionMap, agm->getGroupByName(LINE));
+    createDrawPointsActions(actionMap, agm->getGroupByName(POINT));
+    createDrawShapeActions(actionMap, agm->getGroupByName(SHAPE));
+    createDrawCircleActions(actionMap, agm->getGroupByName(CIRCLE));
+    createDrawCurveActions(actionMap, agm->getGroupByName(CURVE));
+    createDrawSplineActions(actionMap, agm->getGroupByName(SPLINE));
+    createDrawEllipseActions(actionMap, agm->getGroupByName(ELLIPSE));
+    createDrawPolylineActions(actionMap, agm->getGroupByName(POLYLINE));
+    createDrawOtherActions(actionMap, agm->getGroupByName(OTHER));
+    createDrawDimensionsActions(actionMap, agm->getGroupByName(DIMENSION));
+    createModifyActions(actionMap, agm->getGroupByName(MODIFY));
+    createPenActions(actionMap, agm->getGroupByName(PEN));
+    createInfoActions(actionMap, agm->getGroupByName(INFO));
+    createViewActions(actionMap, agm->getGroupByName(VIEW));
+    createDockAreasActions(actionMap, agm->getGroupByName(DOCK_AREAS));
+    createToolbarAreasActions(actionMap, agm->getGroupByName(TB_AREAS));
+    createFileActions(actionMap, agm->getGroupByName(FILES));
 
-    createSnapActions(actionMap, agm->getGroupByName("snap"));
-    createRelativeInputActions(actionMap, agm->getGroupByName("relative_input"));
-    createInfoCursorActions(actionMap, agm->getGroupByName("infoCursor"));
-    createSnapExtraActions(actionMap, agm->getGroupByName("snap_extras"));
-    createRestrictActions(actionMap, agm->getGroupByName("restriction"));
-    createRelZeroActions(actionMap, agm->getGroupByName("other"));
-    createUCSActions(actionMap, agm->getGroupByName("ucs"));
-    createEditActions(actionMap, agm->getGroupByName("edit"));
+    createSnapActions(actionMap, agm->getGroupByName(SNAP));
+    createRelativeInputActions(actionMap, agm->getGroupByName(RELATIVE_INPUT));
+    createInfoCursorActions(actionMap, agm->getGroupByName(INFO_CURSOR));
+    createSnapExtraActions(actionMap, agm->getGroupByName(SNAP_EXTRAS));
+    createRestrictActions(actionMap, agm->getGroupByName(RESTRICTION));
+    createRelZeroActions(actionMap, agm->getGroupByName(OTHER));
+    createUCSActions(actionMap, agm->getGroupByName(UCS));
+    createEditActions(actionMap, agm->getGroupByName(EDIT));
 
-    createEntityLayerActions(actionMap, agm->getGroupByName("entity_layer"));
-    createInteractivePickActions(actionMap, agm->getGroupByName("interactive_pick"));
+    createEntityLayerActions(actionMap, agm->getGroupByName(ENTITY_LAYER));
+    createInteractivePickActions(actionMap, agm->getGroupByName(INTERACTIVE_PICK));
 
     for (QAction* value: std::as_const(actionMap)){
         if (value != nullptr) {
@@ -351,21 +352,21 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
     }
 
     // not checkable actions
-    createPenActionsUncheckable(actionMap, agm->getGroupByName("pen"));
-    createOrderActionsUncheckable(actionMap, agm->getGroupByName("order"));
-    createLayerActionsUncheckable(actionMap, agm->getGroupByName("layer"));
-    createBlockActionsUncheckable(actionMap, agm->getGroupByName("block"));
-    createOptionsActionsUncheckable(actionMap, agm->getGroupByName("options"));
-    createSelectActionsUncheckable(actionMap, agm->getGroupByName("select"));
-    createFileActionsUncheckable(actionMap, agm->getGroupByName("file"));
-    createViewActionsUncheckable(actionMap, agm->getGroupByName("view"));
-    createNamedViewActionsUncheckable(actionMap, agm->getGroupByName("namedViews"));
-    createWorkspacesActionsUncheckable(actionMap, agm->getGroupByName("workspaces"));
-    createEditActionsUncheckable(actionMap, agm->getGroupByName("edit"));
-    createDrawDimensionsUncheckable(actionMap, agm->getGroupByName("dimension"));
-    createHelpActionsUncheckable(actionMap, agm->getGroupByName("help"));
+    createPenActionsUncheckable(actionMap, agm->getGroupByName(PEN));
+    createOrderActionsUncheckable(actionMap, agm->getGroupByName(ORDER));
+    createLayerActionsUncheckable(actionMap, agm->getGroupByName(LAYER));
+    createBlockActionsUncheckable(actionMap, agm->getGroupByName(BLOCK));
+    createOptionsActionsUncheckable(actionMap, agm->getGroupByName(OPTIONS));
+    createSelectActionsUncheckable(actionMap, agm->getGroupByName(SELECT));
+    createFileActionsUncheckable(actionMap, agm->getGroupByName(FILES));
+    createViewActionsUncheckable(actionMap, agm->getGroupByName(VIEW));
+    createNamedViewActionsUncheckable(actionMap, agm->getGroupByName(NAMED_VIEWS));
+    createWorkspacesActionsUncheckable(actionMap, agm->getGroupByName(WORKSPACES));
+    createEditActionsUncheckable(actionMap, agm->getGroupByName(EDIT));
+    createDrawDimensionsUncheckable(actionMap, agm->getGroupByName(DIMENSION));
+    createHelpActionsUncheckable(actionMap, agm->getGroupByName(HELP));
 
-    createBuiltInSystemShortcutActions(actionMap, agm->getGroupByName("builtin_system"));
+    createBuiltInSystemShortcutActions(actionMap, agm->getGroupByName(BUILTIN_SYSTEM));
 }
 
 void LC_ActionFactory::createDrawShapeActions(QMap<QString, QAction*>& map, QActionGroup* group) const {

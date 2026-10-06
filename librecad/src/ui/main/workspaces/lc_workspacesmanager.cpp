@@ -116,13 +116,13 @@ void LC_WorkspacesManager::activateWorkspace(int id){
 void LC_WorkspacesManager::fillIconsAndMenuState(LC_Workspace &ws){
     {
         using namespace CFG_Widgets;
-        ws.columnCountLeftDoc = o_CADDockWidgetColumnsCount;
-        ws.columnCountLeftAllDoc = o_CADToolsMatrixColumnsCount;
+        ws.columnCountLeftDock  = o_CADDockWidgetColumnsCount;
+        ws.columnCountLeftAllDock  = o_CADToolsMatrixColumnsCount;
 
         ws.iconsSizeLeftDock = o_CADDockWidgetIconSize;
         ws.iconsSizeLeftAllDock = o_CADToolsMatrixIconSize;
 
-        ws.iconsSizeRightDoc = o_DockWidgetsIconSize;
+        ws.iconsSizeRightDock = o_DockWidgetsIconSize;
         ws.iconsSizeToolbar = o_ToolbarIconSize;
     }
     {
@@ -156,7 +156,9 @@ void LC_WorkspacesManager::fillBySettings(LC_Workspace &workspace){
             workspace.hasDockVisibility = true;
             const QJsonObject values = dockVisibility.object();
             for (auto it = values.begin(); it != values.end(); ++it) {
-                if (it.value().isBool()) workspace.dockVisibility.insert(it.key(), it.value().toBool());
+                if (it.value().isBool()) {
+                    workspace.dockVisibility.insert(it.key(), it.value().toBool());
+                }
             }
         }
 
@@ -164,18 +166,18 @@ void LC_WorkspacesManager::fillBySettings(LC_Workspace &workspace){
         workspace.dockAreaRightActive = LC_GET_BOOL("RightDockArea", true);
         workspace.dockAreaTopActive = LC_GET_BOOL("TopDockArea", false);
         workspace.dockAreaBottomActive = LC_GET_BOOL("BottomDockArea", false);
-        workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", false);
+        workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", true);
 
-        workspace.tbAreaLeftActive = LC_GET_BOOL("LeftTBArea", false);
-        workspace.tbAreaRightActive = LC_GET_BOOL("RightTBArea", true);
-        workspace.tbAreaToptActive = LC_GET_BOOL("TopTBArea", false);
-        workspace.tbAreaBottomActive = LC_GET_BOOL("BottomTBArea", false);
-        // workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", false);
+        workspace.tbAreaLeftActive = LC_GET_BOOL("LeftTBArea", true);
+        workspace.tbAreaRightActive = LC_GET_BOOL("RightTBArea", false);
+        workspace.tbAreaTopActive = LC_GET_BOOL("TopTBArea", true);
+        workspace.tbAreaBottomActive = LC_GET_BOOL("BottomTBArea", true);
     }
     LC_GROUP_END();
 
     fillIconsAndMenuState(workspace);
 }
+
 
 void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
     LC_GROUP("Geometry");
@@ -202,18 +204,18 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
 
         LC_SET("LeftTBArea", ws.tbAreaLeftActive);
         LC_SET("RightTBArea", ws.tbAreaRightActive);
-        LC_SET("TopTBArea", ws.tbAreaToptActive);
+        LC_SET("TopTBArea", ws.tbAreaTopActive);
         LC_SET("BottomTBArea", ws.tbAreaBottomActive);
     }
     LC_GROUP_END();
     {
         using namespace CFG_Widgets;
-        o_CADDockWidgetColumnsCount = ws.columnCountLeftDoc;
-        o_CADToolsMatrixColumnsCount = ws.columnCountLeftAllDoc;
+        o_CADDockWidgetColumnsCount = ws.columnCountLeftDock;
+        o_CADToolsMatrixColumnsCount = ws.columnCountLeftAllDock;
 
         o_CADDockWidgetIconSize = ws.iconsSizeLeftDock;
         o_CADToolsMatrixIconSize = ws.iconsSizeLeftAllDock;
-        o_DockWidgetsIconSize = ws.iconsSizeRightDoc;
+        o_DockWidgetsIconSize = ws.iconsSizeRightDock;
         o_ToolbarIconSize = ws.iconsSizeToolbar;
     }
     {
@@ -229,29 +231,38 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
 void LC_WorkspacesManager::fillByState(LC_Workspace &workspace){
     QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
     const QString geometryB64 = appWin.saveGeometry().toBase64(QByteArray::Base64Encoding);
-    const QString stateB64 = appWin.dockLayoutStateForSaving().toBase64(QByteArray::Base64Encoding);
+
+    auto* dockLayoutMgr = appWin.getDockLayoutManager();
+    if (dockLayoutMgr != nullptr) {
+        workspace.widgetsState = dockLayoutMgr->dockLayoutStateForSaving().toBase64(QByteArray::Base64Encoding);
+        workspace.dockVisibility = dockLayoutMgr->requestedDockVisibility();
+        workspace.hasDockVisibility = true;
+
+        workspace.dockAreaLeftActive = dockLayoutMgr->dockAreaRequested(Qt::LeftDockWidgetArea);
+        workspace.dockAreaRightActive = dockLayoutMgr->dockAreaRequested(Qt::RightDockWidgetArea);
+        workspace.dockAreaBottomActive = dockLayoutMgr->dockAreaRequested(Qt::BottomDockWidgetArea);
+        workspace.dockAreaTopActive = dockLayoutMgr->dockAreaRequested(Qt::TopDockWidgetArea);
+        workspace.docAreaFloatingActive = dockLayoutMgr->floatingDocksRequested();
+    }
+    else {
+        workspace.widgetsState.clear();
+        workspace.dockVisibility.clear();
+        workspace.hasDockVisibility = false;
+    }
+
     workspace.geometry = geometryB64;
-    workspace.widgetsState = stateB64;
-    workspace.dockVisibility = appWin.requestedDockVisibility();
-    workspace.hasDockVisibility = true;
     workspace.windowHeight = appWin.height();
     workspace.windowWidth = appWin.width();
     workspace.windowX = appWin.x();
     workspace.windowY = appWin.y();
 
-    workspace.dockAreaLeftActive = appWin.dockAreaRequested(Qt::LeftDockWidgetArea);
-    workspace.dockAreaRightActive = appWin.dockAreaRequested(Qt::RightDockWidgetArea);
-    workspace.dockAreaBottomActive = appWin.dockAreaRequested(Qt::BottomDockWidgetArea);
-    workspace.dockAreaTopActive = appWin.dockAreaRequested(Qt::TopDockWidgetArea);
-    workspace.docAreaFloatingActive = appWin.floatingDocksRequested();
-
-    const auto& tbAreaToggleActions = appWin.getToolbarAreaToggleActions();
-
-    workspace.tbAreaLeftActive = tbAreaToggleActions.left->isChecked();
-    workspace.tbAreaRightActive = tbAreaToggleActions.right->isChecked();
-    workspace.tbAreaBottomActive = tbAreaToggleActions.bottom->isChecked();
-    workspace.tbAreaToptActive = tbAreaToggleActions.top->isChecked();
-    // workspace.docAreaFloatingActive = appWin.getDockAreas().floating->isChecked();
+    auto* toolBarMgr = appWin.getToolBarManager();
+    if (toolBarMgr != nullptr) {
+        workspace.tbAreaLeftActive = toolBarMgr->isToolBarAreaRequested(Qt::LeftToolBarArea);
+        workspace.tbAreaRightActive = toolBarMgr->isToolBarAreaRequested(Qt::RightToolBarArea);
+        workspace.tbAreaTopActive = toolBarMgr->isToolBarAreaRequested(Qt::TopToolBarArea);
+        workspace.tbAreaBottomActive = toolBarMgr->isToolBarAreaRequested(Qt::BottomToolBarArea);
+    }
 
     fillIconsAndMenuState(workspace);
 }
@@ -278,41 +289,27 @@ void LC_WorkspacesManager::restoreGeometryAndState(const LC_Workspace &workspace
         appWin.move(workspace.windowX, workspace.windowY);
     }
 
-    // 3. Restore dock layout and widgets state
+    // 3. Restore dock layout directly via layout manager
     const auto widgetsState = QByteArray::fromBase64(workspace.widgetsState.toUtf8(), QByteArray::Base64Encoding);
     const QHash<int, bool> areas{{int(Qt::LeftDockWidgetArea), workspace.dockAreaLeftActive},
                                  {int(Qt::RightDockWidgetArea), workspace.dockAreaRightActive},
                                  {int(Qt::TopDockWidgetArea), workspace.dockAreaTopActive},
                                  {int(Qt::BottomDockWidgetArea), workspace.dockAreaBottomActive},
                                  {int(Qt::NoDockWidgetArea), workspace.docAreaFloatingActive}};
-    appWin.restoreDockLayout(workspace.dockVisibility, workspace.hasDockVisibility, areas, widgetsState);
 
-    appWin.prepareWindowForShow();
-
-    const auto& dockAreas = appWin.getDockAreaToggleActions();
-    {
-        const QSignalBlocker b1(dockAreas.left);
-        const QSignalBlocker b2(dockAreas.right);
-        const QSignalBlocker b3(dockAreas.bottom);
-        const QSignalBlocker b4(dockAreas.top);
-        const QSignalBlocker b5(dockAreas.floating);
-        dockAreas.left->setChecked(workspace.dockAreaLeftActive);
-        dockAreas.right->setChecked(workspace.dockAreaRightActive);
-        dockAreas.bottom->setChecked(workspace.dockAreaBottomActive);
-        dockAreas.top->setChecked(workspace.dockAreaTopActive);
-        dockAreas.floating->setChecked(workspace.docAreaFloatingActive);
+    auto* dockLayoutMgr = appWin.getDockLayoutManager();
+    if (dockLayoutMgr != nullptr) {
+        dockLayoutMgr->restoreDockLayout(workspace.dockVisibility, workspace.hasDockVisibility, areas, widgetsState);
+        dockLayoutMgr->prepareWindowForShow();
     }
 
-    const auto& tbAreas = appWin.getToolbarAreaToggleActions();
-    {
-        const QSignalBlocker b1(tbAreas.left);
-        const QSignalBlocker b2(tbAreas.right);
-        const QSignalBlocker b3(tbAreas.bottom);
-        const QSignalBlocker b4(tbAreas.top);
-        tbAreas.left->setChecked(workspace.tbAreaLeftActive);
-        tbAreas.right->setChecked(workspace.tbAreaRightActive);
-        tbAreas.bottom->setChecked(workspace.tbAreaBottomActive);
-        tbAreas.top->setChecked(workspace.tbAreaToptActive);
+    // 4. Restore toolbar areas directly via toolbar manager
+    auto* toolBarMgr = appWin.getToolBarManager();
+    if (toolBarMgr != nullptr) {
+        toolBarMgr->setToolBarAreaRequested(Qt::LeftToolBarArea, workspace.tbAreaLeftActive);
+        toolBarMgr->setToolBarAreaRequested(Qt::RightToolBarArea, workspace.tbAreaRightActive);
+        toolBarMgr->setToolBarAreaRequested(Qt::TopToolBarArea, workspace.tbAreaTopActive);
+        toolBarMgr->setToolBarAreaRequested(Qt::BottomToolBarArea, workspace.tbAreaBottomActive);
     }
 
     appWin.setIconSize(QSize(workspace.iconsSizeToolbar, workspace.iconsSizeToolbar));
@@ -409,15 +406,20 @@ void LC_WorkspacesManager::loadWorkspaces(){
                                 p->dockAreaBottomActive = wsObj["dockBottom"].toBool();
                                 p->docAreaFloatingActive = wsObj["dockFloat"].toBool();
 
-                                p->columnCountLeftDoc = wsObj["columnCountLeftDock"].toInt(6);
-                                p->columnCountLeftAllDoc = wsObj["columnCountLeftAllDock"].toInt(6);
+                                p->tbAreaLeftActive = wsObj["tbLeft"].toBool(false);
+                                p->tbAreaRightActive = wsObj["tbRight"].toBool(false);
+                                p->tbAreaTopActive = wsObj["tbTop"].toBool(true);
+                                p->tbAreaBottomActive = wsObj["tbBottom"].toBool(true);
+
+                                p->columnCountLeftDock = wsObj["columnCountLeftDock"].toInt(6);
+                                p->columnCountLeftAllDock = wsObj["columnCountLeftAllDock"].toInt(6);
 
                                 p->iconsSizeToolbar = wsObj["iconSizeToolbar"].toInt(24);
 
                                 p->iconsSizeLeftDock = wsObj["iconSizeLeftDock"].toInt(24);
                                 p->iconsSizeLeftAllDock = wsObj["iconSizeLeftAllDock"].toInt(24);
 
-                                p->iconsSizeRightDoc = wsObj["iconSizeRightDock"].toInt(16);
+                                p->iconsSizeRightDock = wsObj["iconSizeRightDock"].toInt(16);
 
                                 p->mainMenuType  = wsObj["mainMenuType"].toInt(2);
                                 p->mainMenuTopLevelIconsOnly = wsObj["mainMenuTopLevelIcons"].toBool(false);
@@ -490,15 +492,20 @@ void LC_WorkspacesManager::saveWorkspaces(QWidget* parent){
                 wsObj.insert("dockBottom", QJsonValue::fromVariant(p->dockAreaBottomActive));
                 wsObj.insert("dockFloat", QJsonValue::fromVariant(p->docAreaFloatingActive));
 
-                wsObj.insert("columnCountLeftDock", QJsonValue::fromVariant(p->columnCountLeftDoc));
-                wsObj.insert("columnCountLeftAllDock", QJsonValue::fromVariant(p->columnCountLeftAllDoc));
+                wsObj.insert("tbLeft", QJsonValue::fromVariant(p->tbAreaLeftActive));
+                wsObj.insert("tbRight", QJsonValue::fromVariant(p->tbAreaRightActive));
+                wsObj.insert("tbTop", QJsonValue::fromVariant(p->tbAreaTopActive));
+                wsObj.insert("tbBottom", QJsonValue::fromVariant(p->tbAreaBottomActive));
+
+                wsObj.insert("columnCountLeftDock", QJsonValue::fromVariant(p->columnCountLeftDock));
+                wsObj.insert("columnCountLeftAllDock", QJsonValue::fromVariant(p->columnCountLeftAllDock));
 
                 wsObj.insert("iconSizeToolbar", QJsonValue::fromVariant(p->iconsSizeToolbar));
 
                 wsObj.insert("iconSizeLeftDock", QJsonValue::fromVariant(p->iconsSizeLeftDock));
                 wsObj.insert("iconSizeLeftAllDock", QJsonValue::fromVariant(p->iconsSizeLeftAllDock));
 
-                wsObj.insert("iconSizeRightDock", QJsonValue::fromVariant(p->iconsSizeRightDoc));
+                wsObj.insert("iconSizeRightDock", QJsonValue::fromVariant(p->iconsSizeRightDock));
 
                 wsObj.insert("mainMenuType", QJsonValue::fromVariant(p->mainMenuType));
                 wsObj.insert("mainMenuTopLevelIcons", QJsonValue::fromVariant(p->mainMenuTopLevelIconsOnly));

@@ -67,6 +67,7 @@
 #include "lc_anglesbasiswidget.h"
 #include "lc_application_window_initializer.h"
 #include "lc_appwindowdialogsinvoker.h"
+#include "lc_app_window_tool_bar_manager.h"
 #include "lc_dock_tab_bar_manager.h"
 #include "lc_customization_manager.h"
 #include "lc_shortcuts_manager.h"
@@ -96,6 +97,7 @@
 #include "lc_settings_startup.h"
 #include "lc_command_manager.h"
 #include "lc_default_navigation_layout_builder.h"
+#include "lc_dock_names.h"
 #include "lc_snapmanager.h"
 #include "lc_snapoptionswidgetsholder.h"
 #include "lc_ucslistwidget.h"
@@ -231,35 +233,12 @@ QC_ApplicationWindow::~QC_ApplicationWindow() {
 }
 
 
-// fixme - sand - merge review - Hm.... What is this????
 void QC_ApplicationWindow::initializeDockLayout() {
     m_dockLayoutManager->initializeDockLayout();
 }
 
 void QC_ApplicationWindow::prepareWindowForShow() {
     m_dockLayoutManager->prepareWindowForShow();
-}
-
-// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
-QMap<QString, bool> QC_ApplicationWindow::requestedDockVisibility() const {
-    return m_dockLayoutManager->requestedDockVisibility();
-}
-
-// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
-bool QC_ApplicationWindow::dockAreaRequested(Qt::DockWidgetArea area) const {
-    return m_dockLayoutManager->dockAreaRequested(area);
-}
-
-// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
-bool QC_ApplicationWindow::floatingDocksRequested() const {
-    return m_dockLayoutManager->floatingDocksRequested();
-}
-
-// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
-void QC_ApplicationWindow::restoreDockLayout(const QMap<QString, bool>& requested,
-                                              bool hasRequested, const QHash<int, bool>& areas,
-                                              const QByteArray& state) {
-    m_dockLayoutManager->restoreDockLayout(requested,  hasRequested, areas, state);
 }
 
 void QC_ApplicationWindow::setDockAreaRequested(Qt::DockWidgetArea area, bool state) {
@@ -279,6 +258,42 @@ void QC_ApplicationWindow::toggleBottomDockArea(bool state) {
     setDockAreaRequested(Qt::BottomDockWidgetArea, state);
 }
 
+void QC_ApplicationWindow::toggleLeftToolbarArea(bool state) {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->toggleLeftToolBarArea(state);
+    }
+}
+
+void QC_ApplicationWindow::toggleRightToolbarArea(bool state) {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->toggleRightToolBarArea(state);
+    }
+}
+
+void QC_ApplicationWindow::toggleTopToolbarArea(bool state) {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->toggleTopToolBarArea(state);
+    }
+}
+
+void QC_ApplicationWindow::toggleBottomToolbarArea(bool state) {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->toggleBottomToolBarArea(state);
+    }
+}
+
+void QC_ApplicationWindow::updateToolbarsIconSize() {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->updateToolbarsIconSize();
+    }
+}
+
+void QC_ApplicationWindow::updateToolbarsIconSize(bool allowCustom, int customSize) {
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->updateToolbarsIconSize(allowCustom, customSize);
+    }
+}
+
 void QC_ApplicationWindow::toggleFloatingDockwidgets(bool state) {
     m_dockLayoutManager->toggleFloatingDockwidgets(state);
 }
@@ -287,16 +302,10 @@ void QC_ApplicationWindow::requestDockVisible(QDockWidget* dock) {
     m_dockLayoutManager->requestDockVisible(dock);
 }
 
-// fixme - sand - used only by LC_WorkspacesManager - most probably should be fully moved there
-QByteArray QC_ApplicationWindow::dockLayoutStateForSaving() {
-  return m_dockLayoutManager->dockLayoutStateForSaving();
-}
 
 void QC_ApplicationWindow::scheduleDockFit() {
     m_dockLayoutManager->scheduleDockFit();
 }
-
-// fixme - sand - merge review - Hm.... What is this???? - End
 
 void QC_ApplicationWindow::checkForNewVersion() const {
     m_releaseChecker->checkForNewVersion();
@@ -732,7 +741,7 @@ void QC_ApplicationWindow::slotKillAllActions() {
  */
 void QC_ApplicationWindow::slotFocusCommandLine() {
     // if command widget is not visible - show it first
-    auto* cmd_dockwidget = findChild<QDockWidget*>("command_dockwidget");
+    auto* cmd_dockwidget = findChild<QDockWidget*>(LC_DockNames::standardDockName(LC_DockNames::COMMAND));
     requestDockVisible(cmd_dockwidget);
     m_commandWidget->focusWidget();
 }
@@ -964,34 +973,6 @@ QC_MDIWindow* QC_ApplicationWindow::createNewDrawingWindow(RS_Document* doc, con
 
 QMenu* QC_ApplicationWindow::getRecentFilesMenu() const {
    return m_recentFilesMenu.get();
-}
-
-void QC_ApplicationWindow::updateToolbarsIconSize() {
-    using namespace CFG_Widgets;
-    updateToolbarsIconSize(o_ToolbarAllowIconSize, o_ToolbarIconSize);
-}
-
-void QC_ApplicationWindow::updateToolbarsIconSize(bool allowCustom, int customSize) {
-    QSize targetSize;
-    if (allowCustom && customSize > 0) {
-        targetSize = QSize(customSize, customSize);
-    } else {
-        const int defSz = style()->pixelMetric(QStyle::PM_ToolBarIconSize, nullptr, this);
-        targetSize = QSize(defSz, defSz);
-    }
-
-    setIconSize(targetSize);
-
-    for (auto* tb : findChildren<QToolBar*>()) {
-        if (tb != nullptr) {
-            tb->setIconSize(targetSize);
-            for (auto* btn : tb->findChildren<QToolButton*>()) {
-                if (btn != nullptr) {
-                    btn->setIconSize(targetSize);
-                }
-            }
-        }
-    }
 }
 
 void QC_ApplicationWindow::updateActionsForCommandsInMenus(bool keycodeMode) {
@@ -2142,9 +2123,6 @@ bool QC_ApplicationWindow::eventFilter(QObject* obj, QEvent* event) {
         openFile(openEvent->file(), RS2::FormatUnknown);
         return true;
     }
-    if (m_dockLayoutManager->processEvent(obj, event)) {
-        return true;
-    }
     return QObject::eventFilter(obj, event);
 }
 
@@ -2399,43 +2377,35 @@ void QC_ApplicationWindow::fireWorkspacesChanged() {
     emit workspacesChanged(hasWorkspaces);
 }
 
-// fixme - sand - or it's better move implementation outside, say to init?
-// Fixmed - sand - and how this is related to new dock layout manager???? They should be synched up
+
 void QC_ApplicationWindow::resetLayoutToDefault() {
     LC_WaitCursorGuard guard;
     if (m_navigationControlsCreator == nullptr) {
         return;
     }
 
+    // Reset active layout scheme setting to default
+    CFG_AppState::o_ActiveNavigationLayoutScheme = QString();
+
     auto* actionFactory = getActionFactory();
     const NavigationLayoutConfig defaultConfig =
         LC_DefaultNavigationLayoutBuilder::createDefaultConfig(actionFactory, m_actionGroupManager.get());
 
-    // 1. Remove all toolbars from QMainWindow layout to clear breaks and row states
+    // 1. Re-build and re-dock toolbars from default configuration
     m_navigationControlsCreator->resetToolbarsLayout(defaultConfig);
-
-    // 2. Re-dock toolbars with original breaks and areas, enforcing default visibility
     m_navigationControlsCreator->applyMenusToolbarsScheme(defaultConfig, /*applyInitialVisibility=*/true);
 
-    // 3. Re-dock and tabify dock widgets
-    LC_WidgetFactory::redockAllDockWidgets(this);
-    if (m_dockTabBarManager != nullptr) {
-        m_dockTabBarManager->synchronizeAll();
+    // 2. Reset dock layout via manager (resets areas, visibility, tabifies, and syncs action checkmarks)
+    if (m_dockLayoutManager != nullptr) {
+        m_dockLayoutManager->resetLayoutToDefault();
     }
 
-    // 4. Reset toggle action states
-    m_dockAreasToggleActions.left->setChecked(true);
-    m_dockAreasToggleActions.right->setChecked(true);
-    m_dockAreasToggleActions.top->setChecked(false);
-    m_dockAreasToggleActions.bottom->setChecked(false);
-    m_dockAreasToggleActions.floating->setChecked(false);
+    // 3. Reset toolbar manager (resets areas, snapshots, breaks, icon sizes, and action checkmarks)
+    if (m_toolBarManager != nullptr) {
+        m_toolBarManager->resetLayoutToDefault();
+    }
 
-    m_toolbarAreasToggleActions.left->setChecked(true);
-    m_toolbarAreasToggleActions.right->setChecked(false);
-    m_toolbarAreasToggleActions.top->setChecked(true);
-    m_toolbarAreasToggleActions.bottom->setChecked(true);
-
-    // 5. Restore persistence and save fresh state
+    // 4. Save clean defaults to persistence
     RS_Settings::saveIsAllowed = true;
     m_workspacesInvoker->persist();
 }

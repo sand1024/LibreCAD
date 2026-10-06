@@ -67,11 +67,15 @@ public:
     void updateToolbarsTooltips();
     void resetToolbarsLayout(const NavigationLayoutConfig& config);
 
+    static QString resolveToolbarTitle(const ToolbarDef& tbDef, const LC_ActionGroupManager* agm);
+
 protected slots:
     // void createToolbar(const QString& toolbarName, const QStringList& actionNames, int areaIndex) const;
     void destroyToolbar(const QString& toolbarName) const;
-    void onCustomToolbarVisibilityChanged(bool visible);
 protected:
+    static QString normalizeToolbarObjectName(const QString& name);
+    static QStringList buildToolbarCandidateNames(const QString& name);
+
     void applyMenuBar(const NavigationLayoutConfig& config);
     void applyCadDockWidgets(const NavigationLayoutConfig& config, bool applyInitialVisibility);
     void applyToolbars(const NavigationLayoutConfig& config, bool applyInitialVisibility);

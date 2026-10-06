@@ -2596,7 +2596,6 @@ set (SHARED_SOURCES
      librecad/src/ui/main/workspaces/navigation/menus/lc_menu_builder_base.h
      librecad/src/ui/main/init/lc_default_context_menus_builder.cpp
      librecad/src/ui/main/init/lc_default_context_menus_builder.h
-     librecad/src/ui/actions/lc_action_naming_service_interface.h
      librecad/src/cmd/lc_command_types.h
      librecad/src/cmd/lc_action_type_mapper.cpp
      librecad/src/cmd/lc_action_type_mapper.h
@@ -2660,6 +2659,11 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.h
      librecad/src/ui/main/support/lc_app_window_dock_layout_manger.cpp
      librecad/src/ui/main/support/lc_app_window_dock_layout_manger.h
+     librecad/src/ui/main/support/lc_app_window_tool_bar_manager.cpp
+     librecad/src/ui/main/support/lc_app_window_tool_bar_manager.h
+     librecad/src/ui/main/init/lc_dock_names.h
+     librecad/src/ui/main/init/lc_toolbar_names.h
+     "librecad/src/ui/main/init/lc_group_names.h"
 )
 
 set (MUPARSER_SOURCES

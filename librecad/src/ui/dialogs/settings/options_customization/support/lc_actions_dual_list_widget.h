@@ -29,7 +29,6 @@
 #include "lc_actions_tree_model.h"
 #include "lc_action_node.h"
 
-class LC_ActionNamingServiceInterface;
 
 namespace Ui {
     class LC_ActionsDualListWidget;

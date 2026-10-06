@@ -35,7 +35,6 @@ public:
                                const QString& verticalTitle = QString(),
                                bool isCadDock = false,
                                const Qt::WindowFlags& flags = Qt::WindowFlags());
-    void showEvent(QShowEvent* event);
     ~LC_DockWidgetBase() override = default;
 
     QString realTitle() const;
@@ -59,12 +58,11 @@ public:
     void setFocusTargetWidget(QWidget* target);
     QWidget* focusTargetWidget() const;
 
-    static const bool isCADDockWidget(QDockWidget* dw);
-
 public slots:
     void toggleDockVisibility();
 
 protected slots:
+    void showEvent(QShowEvent* event) override;
     void onTopLevelChanged(bool floating);
 
 private:

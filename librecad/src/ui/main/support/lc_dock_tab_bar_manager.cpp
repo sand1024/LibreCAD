@@ -154,16 +154,16 @@ void LC_DockTabBarManager::synchronizeTabBar(QTabBar* bar) {
             continue;
         }
 
-        if (dockBase != nullptr) {
-            QWidget* inner = dockBase->widget();
-            auto size = inner ? inner->size() : QSize();
-            LC_ERR << " [TAB_AUDIT] Tab: " << i << " Title: " << bar->tabText(i)
-                   << " Dock: " << dockBase->objectName()
-                   << " dockVisible: " << dockBase->isVisible()
-                   << " innerPtr: " << (inner != nullptr)
-                   << " innerVisible: " << (inner ? inner->isVisible() : false)
-                   << " innerSize: " << size.width() << ", " << size.height();
-        }
+        // if (dockBase != nullptr) {
+        //     QWidget* inner = dockBase->widget();
+        //     auto size = inner ? inner->size() : QSize();
+        //     LC_ERR << " [TAB_AUDIT] Tab: " << i << " Title: " << bar->tabText(i)
+        //            << " Dock: " << dockBase->objectName()
+        //            << " dockVisible: " << dockBase->isVisible()
+        //            << " innerPtr: " << (inner != nullptr)
+        //            << " innerVisible: " << (inner ? inner->isVisible() : false)
+        //            << " innerSize: " << size.width() << ", " << size.height();
+        // }
 
         const bool isCad = dockBase->isCadDock();
         if (isCad) {

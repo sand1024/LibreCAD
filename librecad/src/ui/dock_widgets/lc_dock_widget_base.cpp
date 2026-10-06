@@ -254,8 +254,8 @@ void LC_DockWidgetBase::toggleDockVisibility() {
         return;
     }
 
-    // 3. If visible and currently active tab (or standalone): hide it (close)
-    hide();
+    // 3. If visible and currently active tab (or standalone): close it cleanly
+    close();
     if (toggleViewAction() != nullptr) {
         toggleViewAction()->setChecked(false);
     }

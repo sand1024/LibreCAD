@@ -33,12 +33,25 @@
 
 class QC_ApplicationWindow;
 
+struct DockAreasToggleActions {
+    QAction* left{nullptr};
+    QAction* right{nullptr};
+    QAction* top{nullptr};
+    QAction* bottom{nullptr};
+    QAction* floating{nullptr};
+};
+
+
 class LC_AppWindowDockLayoutManger: public QObject {
     Q_OBJECT
 public:
     LC_AppWindowDockLayoutManger(QC_ApplicationWindow* appWindow);
     void initializeDockLayout();
+    void initializeDockAreas();
     void prepareWindowForShow();
+    void redockAllWidgets();
+    void resetLayoutToDefault();
+    void applyPendingFloatingDocks();
     void toggleLeftDockArea(bool state);
     void toggleRightDockArea(bool state);
     void toggleTopDockArea(bool state);
@@ -49,22 +62,18 @@ public:
     bool dockAreaRequested(Qt::DockWidgetArea area) const;
     bool floatingDocksRequested() const;
     void restoreDockLayout(const QMap<QString, bool>& requested, bool hasRequested, const QHash<int, bool>& areas, const QByteArray& state);
-    void setDockAreaRequested(Qt::DockWidgetArea area, bool state);
+    void setDockAreaRequested(Qt::DockWidgetArea area, bool enable);
     void requestDockVisible(QDockWidget* dock);
     QByteArray dockLayoutStateForSaving();
-    bool processEvent(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void clearPriorityDockName();
-    void redockAllWidgets();
-    void applyPendingFloatingDocks();
+    const DockAreasToggleActions& getDockAreasToggleActions() const { return m_dockAreasToggleActions; }
 private:
+    bool processEvent(QObject* obj, QEvent* event);
+
     QMap<QString, bool> m_requestedDockVisibility;
     QMap<QString, bool> m_factoryDockVisibility;
     QHash<int, bool> m_requestedDockAreas;
-    QStringList m_autoCollapsedGroups;
-    QHash<QString, QString> m_collapsedSelectedTabs;
-    QHash<QString, QStringList> m_collapsedGroupMembers;
-    QHash<QString, QString> m_collapsedMemberKey;
-    QHash<QString, Qt::Orientation> m_collapsedPressure;
     QSet<QString> m_autoToolbarBreaks;
     QHash<QString, QString> m_selectedTabs;
     QString m_priorityDockName;
@@ -73,25 +82,25 @@ private:
     bool m_dockFitPending{false};
     bool m_dockFitRunning{false};
     bool m_dockLayoutInitialized{false};
-    bool m_screenSignalsConnected{false};
-    QSet<QString> m_pendingFloatingDocks;
-    QHash<QString, QPoint> m_pendingFloatingPos;
-    QHash<QString, QSize> m_pendingFloatingSize;
+    bool m_autoCollapsedLeftArea{false};
+    bool m_autoCollapsedRightArea{false};
     QByteArray m_fittedDockState;
     QSize m_fittedDockCanvas;
     QSize m_fittedDockScreen;
-    QC_ApplicationWindow* m_appWin {nullptr};
+    QC_ApplicationWindow* m_appWin{nullptr};
+    DockAreasToggleActions m_dockAreasToggleActions;
 
+    QSet<QString> m_pendingFloatingDocks;
+    QHash<QString, QPoint> m_pendingFloatingPos;
+    QHash<QString, QSize> m_pendingFloatingSize;
+
+    QHash<QString, bool> m_preCloseDockVisibility;
+    QHash<int, QString> m_preCloseActiveDock;
 
     QString dockGroupKey(QDockWidget* dock) const;
-    void collapseDockGroup(const QList<QDockWidget*>& docks, const QString& key, QDockWidget* selected, Qt::Orientation pressure);
-    void restoreCollapsedGroup(const QString& key);
-
     void applyRequestedDockVisibility();
     void updateDockAreaActions();
     void clampWindowToScreen(QWidget* window);
-    void reflowBottomToolbars(int availableWidth);
     void fitDocksToWindow();
 };
-
 #endif

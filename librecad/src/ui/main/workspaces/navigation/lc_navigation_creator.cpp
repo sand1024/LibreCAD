@@ -34,11 +34,13 @@
 #include "lc_action_group_manager.h"
 #include "lc_cad_tool_matrix_dock_widget.h"
 #include "lc_default_navigation_layout_builder.h"
+#include "lc_dock_names.h"
 #include "lc_repository_menu_bar_and_toolbars.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_special_menu_service_interface.h"
+#include "lc_toolbar_names.h"
 #include "lc_wait_cursor_guard.h"
 #include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
@@ -47,30 +49,49 @@
 
 class QWidgetAction;
 
-namespace {
-    inline const LC_SettingsGroupBase Group("CustomToolbarsVisibility");
-    inline const LC_Setting<QString> o_InvisibleCustomToolbars(&Group, "InvisibleCustomToolbars", "");
-    inline const char* TOOLBAR_NAMES_SEPARATOR = "{_lc_names_separator_}";
+namespace NavigationConstants {
+    inline const char* PROP_IS_CUSTOM_TOOLBAR = "_is_custom_toolbar";
+    inline const char* PROP_TOOLBAR_NAME      = "_lc_toolbar_name";
+    inline const char* PROP_TOOLBAR_GROUP     = "_group";
 
-    QStringList getInvisibleCustomToolbars() {
-        QString packed = o_InvisibleCustomToolbars;
-        return packed.split(TOOLBAR_NAMES_SEPARATOR, Qt::SkipEmptyParts);
+    constexpr int TOOLBAR_GROUP_GENERAL       = 1;
+    constexpr int TOOLBAR_GROUP_CAD           = 2;
+    constexpr int DEFAULT_TOOLBAR_BUTTON_SIZE = 24;
+}
+
+LC_NavigationControlsCreator::LC_NavigationControlsCreator(LC_RepositoryMenuBarAndToolbars* repository, QC_ApplicationWindow* appWin,
+                                                           LC_ActionGroupManager* actionGroupManager,
+                                                           LC_SpecialMenuServiceInterface* specialMenuService)
+    : LC_MenuBuilderBase(actionGroupManager, specialMenuService), m_appWindow{appWin}, m_repository(repository) {
+}
+
+QString LC_NavigationControlsCreator::normalizeToolbarObjectName(const QString& name) {
+    return LC_ToolbarNames::normalizeToolBarName(name);
+}
+
+QStringList LC_NavigationControlsCreator::buildToolbarCandidateNames(const QString& name) {
+    const QString lowerName = name.toLower();
+    QStringList candidates;
+    candidates << lowerName;
+
+    if (!lowerName.endsWith(QLatin1String(LC_ToolbarNames::SUFFIX_TOOLBAR))) {
+        candidates << LC_ToolbarNames::normalizeToolBarName(lowerName);
     }
 
-    void updateInvisibleCustomToolbars(const QString& toolbarName, bool add) {
-        QStringList list = getInvisibleCustomToolbars();
-        if (add) {
-            list.push_back(toolbarName);
-        }
-        else {
-            list.removeAll(toolbarName);
-        }
-        QString value;
-        if (!list.isEmpty()) {
-            value = list.join(TOOLBAR_NAMES_SEPARATOR);
-        }
-        o_InvisibleCustomToolbars = value;
+    if (lowerName.startsWith(QLatin1String(LC_ToolbarNames::PREFIX_STANDARD))) {
+        const QString base = lowerName.mid(static_cast<qsizetype>(std::strlen(LC_ToolbarNames::PREFIX_STANDARD)));
+        candidates << base << LC_ToolbarNames::normalizeToolBarName(base);
     }
+    else if (lowerName.startsWith(QLatin1String(LC_ToolbarNames::PREFIX_CAD))) {
+        const QString base = lowerName.mid(static_cast<qsizetype>(std::strlen(LC_ToolbarNames::PREFIX_CAD)));
+        candidates << base << LC_ToolbarNames::normalizeToolBarName(base);
+    }
+    else if (lowerName.startsWith(QLatin1String(LC_ToolbarNames::PREFIX_CUSTOM))) {
+        const QString base = lowerName.mid(static_cast<qsizetype>(std::strlen(LC_ToolbarNames::PREFIX_CUSTOM)));
+        candidates << base << LC_ToolbarNames::normalizeToolBarName(base);
+    }
+
+    return candidates;
 }
 
 QToolBar* LC_NavigationControlsCreator::findExistingToolbar(const QString& name, const QString& resolvedTitle) const {
@@ -79,23 +100,9 @@ QToolBar* LC_NavigationControlsCreator::findExistingToolbar(const QString& name,
     }
 
     const QString lowerName = name.toLower();
-    const bool isCadToolbar = lowerName.startsWith("tb_cad_") || lowerName.startsWith("cad_");
+    const bool isCadToolbar = lowerName.startsWith(QLatin1String(LC_ToolbarNames::PREFIX_CAD));
 
-    QStringList candidateNames;
-    candidateNames << lowerName;
-    if (!lowerName.endsWith("_toolbar")) {
-        candidateNames << (lowerName + "_toolbar");
-    }
-
-    if (lowerName.startsWith("tb_s_")) {
-        const QString base = lowerName.mid(5);
-        candidateNames << base << (base + "_toolbar");
-    }
-    else if (lowerName.startsWith("tb_cad_")) {
-        const QString base = lowerName.mid(7);
-        candidateNames << ("cad_" + base) << ("cad_" + base + "_toolbar");
-    }
-
+    const QStringList candidateNames = buildToolbarCandidateNames(name);
     const auto toolbars = m_appWindow->findChildren<QToolBar*>();
 
     // 1. Primary search: exact objectName match
@@ -103,7 +110,6 @@ QToolBar* LC_NavigationControlsCreator::findExistingToolbar(const QString& name,
         if (tb == nullptr) {
             continue;
         }
-        // Exclude toolbars hosted inside QDockWidgets to prevent reparenting them
         if (tb->parentWidget() != m_appWindow && tb->parent() != m_appWindow) {
             continue;
         }
@@ -131,7 +137,7 @@ QToolBar* LC_NavigationControlsCreator::findExistingToolbar(const QString& name,
 
             if (winTitle == name || winTitle == resolvedTitle) {
                 const QString objName = tb->objectName().toLower();
-                const bool candidateIsCad = objName.startsWith("tb_cad_") || objName.startsWith("cad_");
+                const bool candidateIsCad = objName.startsWith(QLatin1String(LC_ToolbarNames::PREFIX_CAD));
 
                 if (isCadToolbar == candidateIsCad) {
                     return tb;
@@ -143,25 +149,15 @@ QToolBar* LC_NavigationControlsCreator::findExistingToolbar(const QString& name,
     return nullptr;
 }
 
-LC_NavigationControlsCreator::LC_NavigationControlsCreator(LC_RepositoryMenuBarAndToolbars* repository, QC_ApplicationWindow* appWin,
-                                                           LC_ActionGroupManager* actionGroupManager,
-                                                           LC_SpecialMenuServiceInterface* specialMenuService)
-    : LC_MenuBuilderBase(actionGroupManager, specialMenuService), m_appWindow{appWin}, m_repository(repository) {
-    const QString baseFolder = CFG_Paths::o_OtherSettingsDir;
-}
-
 void LC_NavigationControlsCreator::destroyToolbar(const QString& toolbarName) const {
-    const auto toolbar = m_appWindow->findChild<QToolBar*>(toolbarName);
-    toolbar->setVisible(false);
-    disconnect(toolbar, &QToolBar::visibilityChanged, this, &LC_NavigationControlsCreator::onCustomToolbarVisibilityChanged);
-    delete toolbar;
-}
+    if (m_appWindow == nullptr || toolbarName.isEmpty()) {
+        return;
+    }
 
-void LC_NavigationControlsCreator::onCustomToolbarVisibilityChanged(const bool visible) {
-    const auto toolbar = dynamic_cast<QToolBar*>(sender());
+    auto* toolbar = m_appWindow->findChild<QToolBar*>(toolbarName);
     if (toolbar != nullptr) {
-        const QString toolbarName = toolbar->objectName();
-        updateInvisibleCustomToolbars(toolbarName, !visible);
+        toolbar->setVisible(false);
+        toolbar->deleteLater();
     }
 }
 
@@ -269,7 +265,7 @@ void LC_NavigationControlsCreator::applyMenuBar(const NavigationLayoutConfig& co
 
 void LC_NavigationControlsCreator::applyCadDockWidgets(const NavigationLayoutConfig& config, bool applyInitialVisibility) {
     // 1. Update CAD Tools Matrix (find by type or objectName)
-    auto* megaDock = m_appWindow->findChild<LC_CADToolMatrixDockWidget*>("dock_cad_mega");
+    auto* megaDock = m_appWindow->findChild<LC_CADToolMatrixDockWidget*>(LC_DockNames::cadDockName(LC_DockNames::CAD_MEGA));
     if (megaDock == nullptr) {
         megaDock = m_appWindow->findChild<LC_CADToolMatrixDockWidget*>();
     }
@@ -294,22 +290,13 @@ void LC_NavigationControlsCreator::applyCadDockWidgets(const NavigationLayoutCon
             continue;
         }
 
-        const QString targetName = tbDef.name.toLower(); // "dock_cad_<group>"
-        QString shortToken = targetName;
-        if (shortToken.startsWith("dock_cad_")) {
-            shortToken = shortToken.mid(9);
-        }
-        else if (shortToken.startsWith("dock_")) {
-            shortToken = shortToken.mid(5);
-        }
-
+        const QString targetName = tbDef.name.toLower();
         LC_CADDockWidget* cadDock = nullptr;
         for (auto* dock : allCadDocks) {
             if (dock == nullptr) {
                 continue;
             }
-            const QString objName = dock->objectName().toLower();
-            if (objName == targetName || objName == ("dock_cad_" + shortToken) || objName == ("dock_" + shortToken)) {
+            if (dock->objectName().toLower() == targetName) {
                 cadDock = dock;
                 break;
             }
@@ -505,9 +492,6 @@ void LC_NavigationControlsCreator::applyToolbars(const NavigationLayoutConfig& c
         return;
     }
 
-    QStringList invisibleToolbars = getInvisibleCustomToolbars();
-
-    // Collect existing custom toolbars to clean up any removed by scheme modifications
     QSet<QString> activeToolbarNames;
 
     for (const auto& tbDef : config.toolbars) {
@@ -520,59 +504,37 @@ void LC_NavigationControlsCreator::applyToolbars(const NavigationLayoutConfig& c
             continue;
         }
 
-       activeToolbarNames.insert(tbDef.name);
+        activeToolbarNames.insert(tbDef.name);
 
-        QString toolbarTitle;
-        if (tbDef.kind == ToolbarKind::Cad) {
-            QString groupKey = tbDef.name;
-            if (groupKey.startsWith("tb_cad_")) {
-                groupKey = groupKey.mid(7);
-            }
-            else if (groupKey.startsWith("cad_")) {
-                groupKey = groupKey.mid(4);
-            }
-            const auto* group = (m_actionGroupManager != nullptr) ? m_actionGroupManager->getActionGroup(groupKey) : nullptr;
-            toolbarTitle = (group != nullptr) ? group->cleanTitle() : tbDef.name;
-        }
-        else {
-            QString displayNameKey = tbDef.name;
-            if (displayNameKey.startsWith("tb_s_")) {
-                displayNameKey = displayNameKey.mid(5);
-            }
-            else if (displayNameKey.startsWith("tb_c_")) {
-                displayNameKey = displayNameKey.mid(5);
-            }
-            toolbarTitle = (m_actionGroupManager != nullptr)
-                               ? m_actionGroupManager->displayName(displayNameKey, /*stripAmpersand=*/true)
-                               : tbDef.name;
-        }
-
+        const QString toolbarTitle = resolveToolbarTitle(tbDef, m_actionGroupManager);
         QToolBar* tb = findExistingToolbar(tbDef.name, toolbarTitle);
         const bool isNew = (tb == nullptr);
 
         if (isNew) {
             tb = new QToolBar(toolbarTitle, m_appWindow);
-            const QString objectName = tbDef.name.endsWith("_toolbar") ? tbDef.name : (tbDef.name + "_toolbar");
+            const QString objectName = (tbDef.kind == ToolbarKind::Custom)
+                                       ? LC_ToolbarNames::customToolBarName(tbDef.name)
+                                       : LC_ToolbarNames::normalizeToolBarName(tbDef.name);
             tb->setObjectName(objectName);
-
             m_appWindow->addToolBar(tbDef.area, tb);
             if (tbDef.lineBreak) {
                 m_appWindow->insertToolBarBreak(tb);
             }
 
             if (tbDef.kind == ToolbarKind::Custom) {
-                const bool visible = !invisibleToolbars.contains(objectName);
-                tb->setVisible(visible);
-                connect(tb, &QToolBar::visibilityChanged, this, &LC_NavigationControlsCreator::onCustomToolbarVisibilityChanged);
+                // Custom toolbars default to visible only on initial creation without saved session state
+                if (applyInitialVisibility) {
+                    tb->setVisible(true);
+                }
             }
-            else /*if (applyInitialVisibility)*/ {
-                tb->setVisible(tbDef.visible);
+            else {
+                tb->setVisible(applyInitialVisibility ? tbDef.visible : tbDef.visible);
             }
         }
         else {
             tb->setWindowTitle(toolbarTitle);
 
-            // Dock pre-instantiated special toolbars (pen, snap, tool_options) into their designated area and row
+            // Dock pre-instantiated special toolbars into their designated area and row
             if (m_appWindow->toolBarArea(tb) == Qt::NoToolBarArea) {
                 m_appWindow->addToolBar(tbDef.area, tb);
                 if (tbDef.lineBreak) {
@@ -584,12 +546,14 @@ void LC_NavigationControlsCreator::applyToolbars(const NavigationLayoutConfig& c
             }
         }
 
-        const int groupProp = (tbDef.kind == ToolbarKind::Cad) ? 2 : 1;
-        tb->setProperty("_group", groupProp);
-        tb->setProperty("_lc_toolbar_name", tbDef.name);
+        const int groupProp = (tbDef.kind == ToolbarKind::Cad)
+                                  ? NavigationConstants::TOOLBAR_GROUP_CAD
+                                  : NavigationConstants::TOOLBAR_GROUP_GENERAL;
+        tb->setProperty(NavigationConstants::PROP_TOOLBAR_GROUP, groupProp);
+        tb->setProperty(NavigationConstants::PROP_TOOLBAR_NAME, tbDef.name);
 
         if (tbDef.kind == ToolbarKind::Custom) {
-            tb->setProperty("_is_custom_toolbar", true);
+            tb->setProperty(NavigationConstants::PROP_IS_CUSTOM_TOOLBAR, true);
         }
 
         populateToolbar(tb, tbDef);
@@ -597,8 +561,8 @@ void LC_NavigationControlsCreator::applyToolbars(const NavigationLayoutConfig& c
 
     const auto allToolbars = m_appWindow->findChildren<QToolBar*>();
     for (auto* tb : allToolbars) {
-        if (tb != nullptr && tb->property("_is_custom_toolbar").toBool()) {
-            const QString name = tb->property("_lc_toolbar_name").toString();
+        if (tb != nullptr && tb->property(NavigationConstants::PROP_IS_CUSTOM_TOOLBAR).toBool()) {
+            const QString name = tb->property(NavigationConstants::PROP_TOOLBAR_NAME).toString();
             if (!activeToolbarNames.contains(name)) {
                 m_appWindow->removeToolBar(tb);
                 tb->deleteLater();
@@ -677,31 +641,7 @@ void LC_NavigationControlsCreator::resetToolbarsLayout(const NavigationLayoutCon
             continue;
         }
 
-        QString toolbarTitle;
-        if (tbDef.kind == ToolbarKind::Cad) {
-            QString groupKey = tbDef.name;
-            if (groupKey.startsWith("tb_cad_")) {
-                groupKey = groupKey.mid(7);
-            }
-            else if (groupKey.startsWith("cad_")) {
-                groupKey = groupKey.mid(4);
-            }
-            const auto* group = (m_actionGroupManager != nullptr) ? m_actionGroupManager->getActionGroup(groupKey) : nullptr;
-            toolbarTitle = (group != nullptr) ? group->cleanTitle() : tbDef.name;
-        }
-        else {
-            QString displayNameKey = tbDef.name;
-            if (displayNameKey.startsWith("tb_s_")) {
-                displayNameKey = displayNameKey.mid(5);
-            }
-            else if (displayNameKey.startsWith("tb_c_")) {
-                displayNameKey = displayNameKey.mid(5);
-            }
-            toolbarTitle = (m_actionGroupManager != nullptr)
-                               ? m_actionGroupManager->displayName(displayNameKey, /*stripAmpersand=*/true)
-                               : tbDef.name;
-        }
-
+        const QString toolbarTitle = resolveToolbarTitle(tbDef, m_actionGroupManager);
         QToolBar* tb = findExistingToolbar(tbDef.name, toolbarTitle);
         if (tb != nullptr) {
             m_appWindow->removeToolBar(tb);
@@ -727,4 +667,35 @@ void createCustomMenuForFirstRunIfNeeded() {
 
         settings.setValue(activatorKey, menuName);
     }
+}
+
+QString LC_NavigationControlsCreator::resolveToolbarTitle(const ToolbarDef& tbDef, const LC_ActionGroupManager* agm) {
+    if (tbDef.kind == ToolbarKind::CadMatrix) {
+        return QObject::tr("CAD Tools Matrix");
+    }
+
+    if (tbDef.kind == ToolbarKind::Cad || tbDef.kind == ToolbarKind::CadDockWidget) {
+        const QString groupKey = (tbDef.kind == ToolbarKind::Cad)
+                                     ? LC_ToolbarNames::cleanName(tbDef.name)
+                                     : LC_DockNames::cleanName(tbDef.name);
+
+        if (groupKey == LC_DockNames::CAD_MEGA) {
+            return QObject::tr("CAD Tools Matrix");
+        }
+
+        if (agm != nullptr) {
+            const auto* group = agm->getActionGroup(groupKey);
+            if (group != nullptr) {
+                return group->cleanTitle();
+            }
+            return agm->displayName(groupKey, /*stripAmpersand=*/true);
+        }
+        return groupKey;
+    }
+
+    const QString token = LC_ToolbarNames::cleanName(tbDef.name);
+    if (agm != nullptr) {
+        return agm->displayName(token, /*stripAmpersand=*/true);
+    }
+    return token;
 }
