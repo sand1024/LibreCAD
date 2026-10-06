@@ -124,23 +124,45 @@ namespace {
         return result;
     }
 
-    QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
-        if (overrideVal == "-") {
-            return QObject::tr("— (suppressed)");
-        }
 
-        QStringList list;
-        if (!overrideVal.trimmed().isEmpty()) {
-            list.append(overrideVal.trimmed());
-        }
-        for (const QString& def : defaults) {
-            const QString lower = def.trimmed().toLower();
-            if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
-                list.append(lower);
-            }
-        }
-        return list.join(", ");
-    }
+    QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
+      if (overrideVal == "-") {
+          return QObject::tr("— (suppressed)");
+      }
+
+      QStringList list;
+      if (!overrideVal.trimmed().isEmpty()) {
+          list.append(overrideVal.trimmed());
+      }
+      for (const QString& def : defaults) {
+          const QString lower = def.trimmed().toLower();
+          if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
+              list.append(lower);
+          }
+      }
+      return list.join(", ");
+  }
+
+    QString formatSlotDisplay(const QStringList& overrideVals, const QStringList& defaults) {
+      if (overrideVals.contains("-")) {
+          return QObject::tr("— (suppressed)");
+      }
+
+      QStringList list;
+      for (const QString& val : overrideVals) {
+          const QString trimmed = val.trimmed();
+          if (!trimmed.isEmpty() && !list.contains(trimmed, Qt::CaseInsensitive)) {
+              list.append(trimmed);
+          }
+      }
+      for (const QString& def : defaults) {
+          const QString lower = def.trimmed().toLower();
+          if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
+              list.append(lower);
+          }
+      }
+      return list.join(", ");
+  }
 
     QString resolveSlot(const QString& customOverride, const QString& fallbackDefault) {
         if (!customOverride.isEmpty()) {
@@ -355,12 +377,26 @@ bool LC_CommandsTreeModel::evaluateActionCollision(LC_CommandsTreeItem* item,
     // 2. Intra-action slot collision check
     const QString c = cmdDef.customCommand.trimmed();
     const QString k = cmdDef.customKeycode.trimmed();
-    const QString a = cmdDef.customAlias.trimmed();
-    if (!c.isEmpty() && c != "-" && (c == k || c == a)) {
-        return true;
+    if (!c.isEmpty() && c != "-") {
+        if (c == k || cmdDef.customAliases.contains(c, Qt::CaseInsensitive)) {
+            return true;
+        }
     }
-    if (!k.isEmpty() && k != "-" && k == a) {
-        return true;
+    if (!k.isEmpty() && k != "-") {
+        if (cmdDef.customAliases.contains(k, Qt::CaseInsensitive)) {
+            return true;
+        }
+    }
+
+    QSet<QString> seenAliases;
+    for (const QString& alias : cmdDef.customAliases) {
+        const QString alTrimmed = alias.trimmed();
+        if (!alTrimmed.isEmpty() && alTrimmed != "-") {
+            if (seenAliases.contains(alTrimmed)) {
+                return true;
+            }
+            seenAliases.insert(alTrimmed);
+        }
     }
 
     return false;
@@ -519,11 +555,14 @@ QStringList LC_CommandsTreeModel::computeActionEffectiveTriggers(RS2::ActionType
         }
     }
 
-    // 3. Alias slot (override + unsuppressed alias defaults)
-    if (def.customAlias != "-") {
-        if (!def.customAlias.trimmed().isEmpty()) {
-            appendUnique(def.customAlias);
+    // 3. Multi-alias slot (overrides + unsuppressed alias defaults)
+    const bool suppressAliases = def.customAliases.contains("-");
+    for (const QString& als : def.customAliases) {
+        if (als != "-") {
+            appendUnique(als);
         }
+    }
+    if (!suppressAliases) {
         for (const QString& als : sysAliases) {
             appendUnique(als);
         }
@@ -536,7 +575,6 @@ QStringList LC_CommandsTreeModel::computeActionEffectiveTriggers(RS2::ActionType
         }
         return a.compare(b, Qt::CaseInsensitive) < 0;
     });
-
 
     return triggers;
 }
@@ -678,7 +716,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
 
     const QString colCmd = formatSlotDisplay(cmdDef.customCommand, sysCmds);
     const QString colKey = formatSlotDisplay(cmdDef.customKeycode, sysKeys);
-    const QString colAls = formatSlotDisplay(cmdDef.customAlias, sysAliases);
+    const QString colAls = formatSlotDisplay(cmdDef.customAliases, sysAliases);
 
     const QStringList effectiveTriggers = computeActionEffectiveTriggers(actionType, cmdDef);
 
@@ -694,12 +732,27 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
     // 2. Evaluate intra-action slot duplicates
     const QString c = cmdDef.customCommand.trimmed();
     const QString k = cmdDef.customKeycode.trimmed();
-    const QString a = cmdDef.customAlias.trimmed();
-    if (!c.isEmpty() && c != "-" && (c == k || c == a)) {
+    if (!c.isEmpty() && c != "-") {
+        if (c == k || cmdDef.customAliases.contains(c, Qt::CaseInsensitive)) {
+            itemHasCollision = true;
+        }
+    }
+    if (!k.isEmpty() && k != "-") {
+        if (cmdDef.customAliases.contains(k, Qt::CaseInsensitive)) {
         itemHasCollision = true;
     }
-    if (!k.isEmpty() && k != "-" && k == a) {
+    }
+
+    QSet<QString> seenAliases;
+    for (const QString& alias : cmdDef.customAliases) {
+        const QString alTrimmed = alias.trimmed();
+        if (!alTrimmed.isEmpty() && alTrimmed != "-") {
+            if (seenAliases.contains(alTrimmed)) {
         itemHasCollision = true;
+                break;
+            }
+            seenAliases.insert(alTrimmed);
+        }
     }
 
     if (m_filterForConflicts && !itemHasCollision) {
@@ -720,7 +773,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
     childItem->setKeyCode(colKey);
     childItem->setAlias(colAls);
     childItem->setEffectiveTriggers(effectiveTriggers);
-    childItem->setModified(!cmdDef.customCommand.isEmpty() || !cmdDef.customKeycode.isEmpty() || !cmdDef.customAlias.isEmpty());
+    childItem->setModified(!cmdDef.customCommand.isEmpty() || !cmdDef.customKeycode.isEmpty() || !cmdDef.customAliases.isEmpty());
     childItem->setCollision(itemHasCollision);
     childItem->setMatched(m_hasFilter && m_highlightOnly && matches);
 

@@ -195,9 +195,11 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
                     def.customKeycode = alias;
                     actionAliasCount[actionName] = 1;
                 }
-                else if (count == 1) {
-                    def.customAlias = alias;
-                    actionAliasCount[actionName] = 2;
+                else {
+                    if (!def.customAliases.contains(alias, Qt::CaseInsensitive)) {
+                        def.customAliases.append(alias);
+                    }
+                    actionAliasCount[actionName] = count + 1;
                 }
                 break;
             }
@@ -210,8 +212,17 @@ bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
 }
 
 bool LC_PresetManagerCommands::importPresetFromFile(const QString& filePath, QWidget* parent) {
-    if (filePath.endsWith(".alias", Qt::CaseInsensitive)) {
-        return importLegacyAliasFile(filePath);
+    if (filePath.endsWith(QStringLiteral(".alias"), Qt::CaseInsensitive)) {
+        clearLastError();
+        if (m_repository != nullptr && m_repository->importLegacyAliasFile(filePath, m_workingConfig, m_actionTypeMapper.get())) {
+            setDirtyState(true);
+            return true;
+        }
+        setLastError(LC_PresetError::fromCode(
+            LC_PresetErrorCode::FileReadFailed,
+            tr("Cannot open legacy aliases file '%1' for reading.").arg(filePath)
+        ));
+        return false;
     }
     return LC_PresetManagerConfigBase::importPresetFromFile(filePath, parent);
 }

@@ -43,7 +43,7 @@ QList<CommandDefinition> LC_DefaultCommandsBuilder::buildDefaultCommands(const L
         def.actionName = actionName;
         def.customCommand = "";
         def.customKeycode = "";
-        def.customAlias = "";
+        def.customAliases.clear();
         commands.append(def);
     }
 

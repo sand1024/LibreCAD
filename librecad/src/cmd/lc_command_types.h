@@ -25,16 +25,17 @@
 
 #include <QList>
 #include <QString>
+#include <QStringList>
 
 struct CommandDefinition {
     QString actionName;               // Canonical action name (e.g. "DrawLine")
     QString customCommand;        // User override for full command (empty = inherit default, "-" = suppress)
     QString customKeycode;        // User override for 2-letter keycode
-    QString customAlias;          // User override for alternative alias
+    QStringList customAliases;    // User overrides for alternative aliases
 };
 
 struct KeywordDefinition {
-    QString key;                      // Canonical English keyword (e.g. "close", "radius")
+    QString key;                  // Canonical English keyword (e.g. "close", "radius")
     QString customKeyword;        // User override for in-prompt keyword
     QString customAlias;          // User override for secondary keyword trigger
 };

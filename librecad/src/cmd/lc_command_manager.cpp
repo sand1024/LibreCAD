@@ -370,6 +370,22 @@ LC_RepositoryCommands* LC_CommandManager::getRepository() const {
     return m_repository;
 }
 
+QStringList LC_CommandManager::tokenizeAliases(const QString& rawInput) {
+    QStringList result;
+    const QStringList tokens = rawInput.split(',', Qt::SkipEmptyParts);
+    for (const QString& t : tokens) {
+        const QString clean = t.trimmed();
+        if (!clean.isEmpty() && !result.contains(clean, Qt::CaseInsensitive)) {
+            result.append(clean);
+        }
+    }
+    return result;
+}
+
+QString LC_CommandManager::formatAliases(const QStringList& aliases) {
+    return aliases.join(QStringLiteral(", "));
+}
+
 void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const LC_ActionTypeMapper* mapper) {
     m_activeConfig = config;
     populateFactoryDefaults();
@@ -424,9 +440,9 @@ void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const 
         }
 
         // 3. Alias slot
-        if (!cmd.customAlias.isEmpty()) {
-            const QString aTrimmed = cmd.customAlias.trimmed();
-            if (aTrimmed == "-") {
+        if (!cmd.customAliases.isEmpty()) {
+            const bool suppressDefaults = cmd.customAliases.contains("-");
+            if (suppressDefaults) {
                 // Erase default aliases (non-keycodes) from short commands
                 for (auto it = m_shortCommands.begin(); it != m_shortCommands.end();) {
                     if (it->second == action && it->first.length() != 2) {
@@ -437,8 +453,12 @@ void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const 
                     }
                 }
             }
-            else {
-                m_shortCommands[aTrimmed] = action;
+
+            for (const auto& a : cmd.customAliases) {
+                const QString aTrimmed = a.trimmed();
+                if (!aTrimmed.isEmpty() && aTrimmed != "-") {
+                    m_shortCommands[aTrimmed] = action;
+                }
             }
         }
     }
@@ -539,5 +559,11 @@ void LC_CommandManager::collectKeywordDefaults(const QString& key, QString& outK
                 }
             }
         }
+    }
+}
+
+void LC_CommandManager::migrateLegacyAliasIfNeeded(const LC_ActionTypeMapper* mapper) {
+    if (m_repository != nullptr) {
+        m_repository->migrateLegacyAliasIfNeeded(mapper);
     }
 }

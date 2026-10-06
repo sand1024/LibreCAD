@@ -37,6 +37,7 @@
 #include "lc_commandItems.h"
 #include "lc_commands_tree_item.h"
 #include "lc_commands_tree_model.h"
+#include "lc_command_trigger_validator.h"
 #include "lc_dlg_cheatsheet_options.h"
 #include "lc_pages_utils.h"
 #include "lc_palette_color_utils.h"
@@ -128,6 +129,11 @@ void LC_SettingsPageCommands::setupUi() {
     LC_PagesUtils::updateLabelFont(ui->lblActionName, 1);
 
     connect(ui->bannerCollision, &LC_SettingsBannerWidget::linkActivated, this, &LC_SettingsPageCommands::onFilterConflictsRequested);
+
+    ui->leMainOverride->setValidator(new LC_CommandTriggerValidator(LC_CommandTriggerValidator::SingleTrigger, -1, this));
+    ui->leAlias1Override->setValidator(new LC_CommandTriggerValidator(LC_CommandTriggerValidator::SingleTrigger, 2, this));
+    ui->leAlias2Override->setValidator(new LC_CommandTriggerValidator(LC_CommandTriggerValidator::CommaSeparatedAliases, -1, this));
+
 
     ui->swDetails->setCurrentWidget(ui->pageEmpty);
 }
@@ -338,13 +344,15 @@ void LC_SettingsPageCommands::selectItem(LC_CommandsTreeItem* item) {
         tipAls += "\n" + tr("Default Alias: %1").arg(!m_systemAliases.isEmpty() ? m_systemAliases.join(", ") : tr("<None>"));
         ui->leAlias2Override->setToolTip(tipAls);
 
-        QString ovCmd, ovKey, ovAls;
+        QString ovCmd;
+        QString ovKey;
+        QStringList ovAliases;
         if (m_presetManager != nullptr) {
             for (const auto& def : m_presetManager->workingConfig().commands) {
                 if (def.actionName == actionName) {
                     ovCmd = def.customCommand;
                     ovKey = def.customKeycode;
-                    ovAls = def.customAlias;
+                    ovAliases = def.customAliases;
                     break;
                 }
             }
@@ -352,7 +360,7 @@ void LC_SettingsPageCommands::selectItem(LC_CommandsTreeItem* item) {
 
         ui->leMainOverride->setText(ovCmd);
         ui->leAlias1Override->setText(ovKey);
-        ui->leAlias2Override->setText(ovAls);
+        ui->leAlias2Override->setText(LC_CommandManager::formatAliases(ovAliases));
 
         const QString desc = m_currentItem->description();
         ui->lblDescription->setText(!desc.isEmpty() ? desc : tr("No description available."));
@@ -463,7 +471,7 @@ void LC_SettingsPageCommands::onOverrideEdited() {
     const QString id = m_currentItem->identifier();
     const QString ovCmd = ui->leMainOverride->text().trimmed();
     const QString ovKey = ui->leAlias1Override->text().trimmed();
-    const QString ovAls = ui->leAlias2Override->text().trimmed();
+    const QStringList ovAliases = LC_CommandManager::tokenizeAliases(ui->leAlias2Override->text());
 
     auto& config = m_presetManager->workingConfig();
     QStringList effectiveTriggers;
@@ -473,7 +481,7 @@ void LC_SettingsPageCommands::onOverrideEdited() {
         if (def != nullptr) {
             def->customCommand = ovCmd;
             def->customKeycode = ovKey;
-            def->customAlias = ovAls;
+            def->customAliases = ovAliases;
 
             const auto* mapper = m_presetManager->getActionTypeMapper();
             const auto actionType = (mapper != nullptr) ? mapper->actionTypeFromName(id) : RS2::ActionNone;
@@ -484,20 +492,22 @@ void LC_SettingsPageCommands::onOverrideEdited() {
         auto* kw = findOrAddKeywordDef(config, id);
         if (kw != nullptr) {
             kw->customKeyword = ovCmd;
-            kw->customAlias = ovAls;
+            kw->customAlias = !ovAliases.isEmpty() ? ovAliases.first() : QString();
 
             effectiveTriggers = LC_CommandsTreeModel::computeKeywordEffectiveTriggers(id, *kw);
         }
     }
 
     // Format the working trigger lists for the 3 table columns
-    auto formatCol = [](const QString& ov, const QStringList& defs) -> QString {
-        if (ov == "-") {
+   auto formatCol = [](const QStringList& overrides, const QStringList& defs) -> QString {
+        if (overrides.contains("-")) {
             return tr("— (suppressed)");
         }
         QStringList list;
-        if (!ov.isEmpty()) {
+        for (const auto& ov : overrides) {
+            if (!ov.isEmpty() && ov != "-") {
             list.append(ov);
+        }
         }
         for (const QString& d : defs) {
             if (!list.contains(d, Qt::CaseInsensitive)) {
@@ -507,13 +517,13 @@ void LC_SettingsPageCommands::onOverrideEdited() {
         return list.join(", ");
     };
 
-    const QString colCmd = formatCol(ovCmd, m_systemCommands);
-    const QString colKey = !m_currentItem->isKeyword() ? formatCol(ovKey, m_systemKeycodes) : QString();
-    const QString colAls = formatCol(ovAls, m_systemAliases);
+    const QString colCmd = formatCol(QStringList{ovCmd}, m_systemCommands);
+    const QString colKey = !m_currentItem->isKeyword() ? formatCol(QStringList{ovKey}, m_systemKeycodes) : QString();
+    const QString colAls = formatCol(ovAliases, m_systemAliases);
 
     const bool isModified = !m_currentItem->isKeyword()
-                                ? (!ovCmd.isEmpty() || !ovKey.isEmpty() || !ovAls.isEmpty())
-                                : (!ovCmd.isEmpty() || !ovAls.isEmpty());
+                                ? (!ovCmd.isEmpty() || !ovKey.isEmpty() || !ovAliases.isEmpty())
+                                : (!ovCmd.isEmpty() || !ovAliases.isEmpty());
 
     m_commandsTreeModel->updateItemTriggers(m_currentItem, colCmd, colKey, colAls, effectiveTriggers, isModified);
 

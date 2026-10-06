@@ -21,25 +21,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_REPOSITORY_COMMANDS_H
-#define LC_REPOSITORY_COMMANDS_H
+#ifndef LC_COMMAND_TRIGGER_VALIDATOR_H
+#define LC_COMMAND_TRIGGER_VALIDATOR_H
 
-#include <QJsonObject>
-#include "lc_command_types.h"
-#include "lc_preset_repository_base.h"
+#include <QValidator>
 
-class LC_ActionTypeMapper;
-
-class LC_RepositoryCommands : public LC_PresetRepositoryBase<CommandsConfig> {
+class LC_CommandTriggerValidator : public QValidator {
+    Q_OBJECT
 public:
-    explicit LC_RepositoryCommands(const QString& configDir);
-    ~LC_RepositoryCommands() override = default;
+    enum Mode {
+        SingleTrigger,
+        CommaSeparatedAliases
+    };
 
-    QJsonObject configToJson(const CommandsConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, CommandsConfig& config) const override;
+    explicit LC_CommandTriggerValidator(Mode mode, int maxTokenLength = -1, QObject* parent = nullptr);
 
-    bool importLegacyAliasFile(const QString& filePath, CommandsConfig& outConfig, const LC_ActionTypeMapper* mapper) const;
-    bool migrateLegacyAliasIfNeeded(const LC_ActionTypeMapper* mapper);
+    State validate(QString& input, int& pos) const override;
+
+private:
+    Mode m_mode{SingleTrigger};
+    int m_maxTokenLength{-1};
 };
 
 #endif

@@ -2664,6 +2664,8 @@ set (SHARED_SOURCES
      librecad/src/ui/main/init/lc_dock_names.h
      librecad/src/ui/main/init/lc_toolbar_names.h
      "librecad/src/ui/main/init/lc_group_names.h"
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.h
 )
 
 set (MUPARSER_SOURCES

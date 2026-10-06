@@ -26,6 +26,12 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include "lc_action_type_mapper.h"
+#include "lc_commandItems.h"
+#include "lc_command_manager.h"
+#include "lc_default_commands_builder.h"
+#include "lc_settings_paths.h"
+
 namespace {
     inline constexpr const char* COMMANDS_EXTENSION = ".lcca";
     inline constexpr const char* COMMANDS_FILE_IDENTIFIER = "LibreCAD Config: Command Aliases";
@@ -51,8 +57,8 @@ QJsonObject LC_RepositoryCommands::configToJson(const CommandsConfig& config) co
         if (!cmd.customKeycode.isEmpty()) {
             obj["keycode"] = cmd.customKeycode;
         }
-        if (!cmd.customAlias.isEmpty()) {
-            obj["alias"] = cmd.customAlias;
+        if (!cmd.customAliases.isEmpty()) {
+            obj["aliases"] = QJsonArray::fromStringList(cmd.customAliases);
         }
         cmdArray.append(obj);
     }
@@ -89,7 +95,15 @@ bool LC_RepositoryCommands::configFromJson(const QJsonObject& json, CommandsConf
         cmd.actionName = obj.value("action").toString();
         cmd.customCommand = obj.contains("command") ? obj.value("command").toString() : "";
         cmd.customKeycode = obj.contains("keycode") ? obj.value("keycode").toString() : "";
-        cmd.customAlias = obj.contains("alias") ? obj.value("alias").toString() : "";
+        if (obj.contains("aliases") && obj.value("aliases").isArray()) {
+            const QJsonArray arr = obj.value("aliases").toArray();
+            for (const auto& a : arr) {
+                const QString str = a.toString().trimmed();
+                if (!str.isEmpty()) {
+                    cmd.customAliases.append(str);
+                }
+            }
+        }
         config.commands.append(cmd);
     }
 
@@ -107,6 +121,133 @@ bool LC_RepositoryCommands::configFromJson(const QJsonObject& json, CommandsConf
         kw.customAlias = obj.contains("alias") ? obj.value("alias").toString() : "";
         config.keywords.append(kw);
     }
+
+    return true;
+}
+
+bool LC_RepositoryCommands::importLegacyAliasFile(const QString& filePath, CommandsConfig& outConfig,
+                                                  const LC_ActionTypeMapper* mapper) const {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+
+    outConfig = LC_DefaultCommandsBuilder::createDefaultConfig(mapper);
+
+    struct ActionDefaults {
+        QStringList cmds;
+        QStringList keys;
+        QStringList aliases;
+    };
+
+    QMap<QString, QString> cmdToName;
+    QMap<QString, ActionDefaults> actionDefaultsMap;
+
+    auto insertCommands = [&cmdToName](const std::vector<std::pair<LC_CommandText, LC_CommandText>>& cmdList,
+                                       const QString& actionName) {
+        for (const auto& cmdPair : cmdList) {
+            const QString cmdStr = LC_CommandManager::resolveCommandText(cmdPair.first);
+            if (!cmdStr.isEmpty()) {
+                cmdToName.insert(cmdStr.toLower(), actionName);
+            }
+        }
+    };
+
+    if (mapper != nullptr) {
+        for (const auto& item : g_commandList) {
+            const QString actionName = mapper->actionNameFromType(item.actionType);
+            if (!actionName.isEmpty()) {
+                insertCommands(item.fullCmdList, actionName);
+                insertCommands(item.shortCmdList, actionName);
+
+                ActionDefaults defs;
+                LC_CommandManager::collectActionDefaults(item.actionType, defs.cmds, defs.keys, defs.aliases);
+                actionDefaultsMap.insert(actionName, defs);
+            }
+        }
+    }
+
+    QTextStream ts(&file);
+    static const QRegularExpression wsRe(R"(\s+)");
+
+    while (!ts.atEnd()) {
+        const QString line = ts.readLine().trimmed();
+        if (line.isEmpty() || line.startsWith('#')) {
+            continue;
+        }
+
+        const QStringList tokens = line.split(wsRe, Qt::SkipEmptyParts);
+        if (tokens.size() < 2) {
+            continue;
+        }
+
+        const QString alias = tokens.at(0).toLower();
+        const QString targetCmd = tokens.at(1).toLower();
+
+        const auto it = cmdToName.find(targetCmd);
+        if (it == cmdToName.end()) {
+            continue;
+        }
+
+        const QString actionName = it.value();
+        const ActionDefaults& defs = actionDefaultsMap.value(actionName);
+
+        // If this alias is already part of the action's built-in defaults, do not treat it as a user override
+        const bool isBuiltInDefault = defs.keys.contains(alias, Qt::CaseInsensitive)
+                                   || defs.aliases.contains(alias, Qt::CaseInsensitive)
+                                   || defs.cmds.contains(alias, Qt::CaseInsensitive);
+        if (isBuiltInDefault) {
+            continue;
+        }
+
+        // Genuine custom override: assign to customKeycode if 2 letters and empty, otherwise append to customAliases
+        for (auto& def : outConfig.commands) {
+            if (def.actionName == actionName) {
+                if (alias.length() == 2 && def.customKeycode.isEmpty()) {
+                    def.customKeycode = alias;
+                }
+                else if (!def.customAliases.contains(alias, Qt::CaseInsensitive)) {
+                    def.customAliases.append(alias);
+                }
+                break;
+            }
+        }
+    }
+
+    outConfig.name = QFileInfo(filePath).baseName();
+    return true;
+}
+
+bool LC_RepositoryCommands::migrateLegacyAliasIfNeeded(const LC_ActionTypeMapper* mapper) {
+    const QString legacyAliasPath = CFG_Paths::o_OtherSettingsDir.get() + QStringLiteral("/librecad.alias");
+    if (!QFile::exists(legacyAliasPath)) {
+        return false;
+    }
+
+    const QString presetDisplayName = QObject::tr("Imported Legacy Aliases");
+    const QString targetKey = sanitizeFileName(presetDisplayName).toLower();
+
+    // Check if the legacy file has already been migrated into a preset
+    if (exists(targetKey)) {
+        return false;
+    }
+
+    CommandsConfig migratedConfig;
+    if (!importLegacyAliasFile(legacyAliasPath, migratedConfig, mapper)) {
+        return false;
+    }
+
+    migratedConfig.name = presetDisplayName;
+    QString outKey;
+    if (!save(presetDisplayName, migratedConfig, outKey)) {
+        return false;
+    }
+
+    // If the active scheme is still the default/unspecified, automatically activate the migrated scheme
+    if (CFG_AppState::o_ActiveCommandsScheme.get().isEmpty() ||
+        CFG_AppState::o_ActiveCommandsScheme == CFG_AppState::DEFAULT_THEME_KEY) {
+        CFG_AppState::o_ActiveCommandsScheme = outKey;
+        }
 
     return true;
 }

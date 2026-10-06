@@ -60,6 +60,8 @@ public:
     LC_RepositoryCommands* getRepository() const;
     const CommandsConfig& activeConfig() const { return m_activeConfig; }
 
+    static QStringList tokenizeAliases(const QString& rawInput);
+    static QString formatAliases(const QStringList& aliases);
 
     static QString resolveCommandText(const LC_CommandText& cmdText);
     static void appendCommandPair(const std::pair<LC_CommandText, LC_CommandText>& cmdPair, QStringList& targetList);
@@ -68,6 +70,7 @@ public:
                                QStringList& outKeycodes,
                                QStringList& outAliases);
     static void collectKeywordDefaults(const QString& key, QString& outKw, QStringList& outAliases);
+    void migrateLegacyAliasIfNeeded(const LC_ActionTypeMapper* mapper);
 private:
     RS2::ActionType commandToAction(const QString& cmd) const;
     void populateFactoryDefaults();

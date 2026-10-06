@@ -6,11 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1224</width>
-    <height>900</height>
+    <width>610</width>
+    <height>866</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_root" stretch="0,5">
+  <layout class="QVBoxLayout" name="verticalLayout_root" stretch="0,0">
    <property name="spacing">
     <number>8</number>
    </property>
@@ -340,26 +340,7 @@ Export command aliases cheatsheet as PDF or print...</string>
               <property name="spacing">
                <number>6</number>
               </property>
-              <item row="3" column="1">
-               <widget class="QLineEdit" name="leAlias1Override">
-                <property name="toolTip">
-                 <string>Override two-letter keycode (leave empty to use default, '-' to suppress)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" colspan="3">
-               <widget class="QLabel" name="lblHdrEffectiveTriggers">
-                <property name="font">
-                 <font>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Effective Triggers:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0" colspan="3">
+              <item row="8" column="0" colspan="3">
                <widget class="QLabel" name="lblAllTriggers">
                 <property name="toolTip">
                  <string>All invocation triggers currently active for this command</string>
@@ -372,83 +353,32 @@ Export command aliases cheatsheet as PDF or print...</string>
                 </property>
                </widget>
               </item>
-              <item row="6" column="0">
-               <widget class="QLabel" name="lblHdrKeycodes">
-                <property name="font">
-                 <font>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Keycodes:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="1" colspan="2">
-               <widget class="QLabel" name="lblKeycodes">
-                <property name="toolTip">
-                 <string>Two-letter triggers executed immediately without pressing Enter</string>
-                </property>
-                <property name="text">
-                 <string>&lt;None&gt;</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="leAlias2Override">
-                <property name="toolTip">
-                 <string>Override alternative alias (leave empty to use default, '-' to suppress)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <layout class="QHBoxLayout" name="layoutBtnAlias2">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <item>
-                 <widget class="QToolButton" name="tbResetAlias2">
-                  <property name="toolTip">
-                   <string>Reset alias to default</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../../../../../../res/icons/icons.qrc">
-                    <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QToolButton" name="tbSuppressAlias2">
-                  <property name="toolTip">
-                   <string>Suppress this alias (disable without replacement)</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../../../../../../res/icons/icons.qrc">
-                    <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="lblAlias1">
-                <property name="toolTip">
-                 <string>Keycode
-
-Two-character keycode (e.g. 'li', 'ci', 're'). In Keycode Mode, typing these two characters triggers the action immediately without pressing Enter.</string>
-                </property>
-                <property name="text">
-                 <string>Keycode:</string>
-                </property>
-               </widget>
-              </item>
               <item row="1" column="1">
                <widget class="QLineEdit" name="leMainOverride">
                 <property name="toolTip">
                  <string>Override command name (leave empty to use localized default, '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="leAlias2Override">
+                <property name="toolTip">
+                 <string>Override alternative aliases separated by commas (leave empty to use defaults, '-' to suppress)</string>
+                </property>
+                <property name="placeholderText">
+                 <string>e.g. l, lin, segment (or '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="lblAlias2">
+                <property name="toolTip">
+                 <string>Alias
+
+Alternative shortcut or single-letter alias (e.g. 'l', 'c', 'rect').</string>
+                </property>
+                <property name="text">
+                 <string>Aliases:</string>
                 </property>
                </widget>
               </item>
@@ -464,18 +394,7 @@ Full command name executed by pressing Enter or Space.</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="2">
-               <widget class="QToolButton" name="tbResetMain">
-                <property name="toolTip">
-                 <string>Reset command to default</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../../../../../res/icons/icons.qrc">
-                  <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
+              <item row="2" column="2">
                <layout class="QHBoxLayout" name="layoutBtnAlias1">
                 <property name="spacing">
                  <number>2</number>
@@ -504,25 +423,127 @@ Full command name executed by pressing Enter or Space.</string>
                 </item>
                </layout>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="lblAlias2">
-                <property name="toolTip">
-                 <string>Alias
-
-Alternative shortcut or single-letter alias (e.g. 'l', 'c', 'rect').</string>
-                </property>
-                <property name="text">
-                 <string>Alias:</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="0" colspan="3" alignment="Qt::AlignmentFlag::AlignTop">
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>It is possible to specify primary command and alias, as well as 2-characters keycode (keycode mode should be enabled in Cmd widget). Either command or alias may be used to invoke the command, as well as original system command's name.</string>
+                 <string>It is possible to specify primary command and aliases, as well as 2-characters keycode (keycode mode should be enabled in Cmd widget). Either command or alias may be used to invoke the command, as well as original system command's name.</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="0">
+               <widget class="QLabel" name="lblHdrKeycodes">
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Keycodes:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2">
+               <layout class="QHBoxLayout" name="layoutBtnAlias2">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QToolButton" name="tbResetAlias2">
+                  <property name="toolTip">
+                   <string>Reset alias to default</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../../../../../res/icons/icons.qrc">
+                    <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="tbSuppressAlias2">
+                  <property name="toolTip">
+                   <string>Suppress this alias (disable without replacement)</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../../../../../res/icons/icons.qrc">
+                    <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="leAlias1Override">
+                <property name="toolTip">
+                 <string>Override two-letter keycode (leave empty to use default, '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="1" colspan="2">
+               <widget class="QLabel" name="lblKeycodes">
+                <property name="toolTip">
+                 <string>Two-letter triggers executed immediately without pressing Enter</string>
+                </property>
+                <property name="text">
+                 <string>&lt;None&gt;</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0" colspan="2">
+               <widget class="QLabel" name="lblAliasHint">
+                <property name="font">
+                 <font>
+                  <italic>true</italic>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Format guidance for command aliases</string>
+                </property>
+                <property name="text">
+                 <string>Specify one or multiple aliases separated by commas (e.g. 'l, lin, segment'). Use '-' to suppress defaults.</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="lblAlias1">
+                <property name="toolTip">
+                 <string>Keycode
+
+Two-character keycode (e.g. 'li', 'ci', 're'). In Keycode Mode, typing these two characters triggers the action immediately without pressing Enter.</string>
+                </property>
+                <property name="text">
+                 <string>Keycode:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="0" colspan="3">
+               <widget class="QLabel" name="lblHdrEffectiveTriggers">
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Effective Triggers:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QToolButton" name="tbResetMain">
+                <property name="toolTip">
+                 <string>Reset command to default</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../../../../../res/icons/icons.qrc">
+                  <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
                 </property>
                </widget>
               </item>

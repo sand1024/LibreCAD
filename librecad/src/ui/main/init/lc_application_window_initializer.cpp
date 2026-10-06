@@ -272,18 +272,19 @@ void LC_ApplicationWindowInitializer::initDockAndToolbarAreasActions() const {
 
 
 void LC_ApplicationWindowInitializer::initCommandsScheme() const {
-    auto actionGroupManager = m_appWin->m_actionGroupManager.get();
+    auto* actionGroupManager = m_appWin->m_actionGroupManager.get();
     if (m_appWin->m_commandManager != nullptr && actionGroupManager != nullptr) {
-            const LC_ActionTypeMapper mapper(actionGroupManager);
-            m_appWin->m_commandManager->loadActiveScheme(&mapper);
-            bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
-            if (clearTooltips) {
-                LC_ActionCommandUpdater::clearActions(actionGroupManager);
-            }
-            else {
-                const bool keycodeMode = CFG_AppState::o_KeycodeMode;
-                LC_ActionCommandUpdater::updateActions(actionGroupManager, m_appWin->m_commandManager.get(), keycodeMode);
-            }
+        const LC_ActionTypeMapper mapper(actionGroupManager);
+        m_appWin->m_commandManager->migrateLegacyAliasIfNeeded(&mapper);
+        m_appWin->m_commandManager->loadActiveScheme(&mapper);
+        const bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+        if (clearTooltips) {
+            LC_ActionCommandUpdater::clearActions(actionGroupManager);
+        }
+        else {
+            const bool keycodeMode = CFG_AppState::o_KeycodeMode;
+            LC_ActionCommandUpdater::updateActions(actionGroupManager, m_appWin->m_commandManager.get(), keycodeMode);
+        }
     }
 
     LC_ActionTooltipBuilder::updateAllTooltips(m_appWin->m_actionGroupManager->getActionsMap());
