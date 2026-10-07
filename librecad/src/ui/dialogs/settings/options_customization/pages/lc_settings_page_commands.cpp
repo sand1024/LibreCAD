@@ -34,7 +34,7 @@
 #include "lc_action_type_mapper.h"
 #include "lc_cheatsheet_generator.h"
 #include "lc_cheatsheet_options.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_commands_tree_item.h"
 #include "lc_commands_tree_model.h"
 #include "lc_command_trigger_validator.h"
@@ -499,22 +499,28 @@ void LC_SettingsPageCommands::onOverrideEdited() {
     }
 
     // Format the working trigger lists for the 3 table columns
-   auto formatCol = [](const QStringList& overrides, const QStringList& defs) -> QString {
-        if (overrides.contains("-")) {
-            return tr("— (suppressed)");
-        }
+    auto formatCol = [](const QStringList& overrides, const QStringList& defs) -> QString {
+        const bool suppressDefaults = overrides.contains("-");
         QStringList list;
         for (const auto& ov : overrides) {
-            if (!ov.isEmpty() && ov != "-") {
-            list.append(ov);
-        }
-        }
-        for (const QString& d : defs) {
-            if (!list.contains(d, Qt::CaseInsensitive)) {
-                list.append(d);
+            const QString trimmed = ov.trimmed();
+            if (!trimmed.isEmpty() && trimmed != "-" && !list.contains(trimmed, Qt::CaseInsensitive)) {
+                list.append(trimmed);
             }
         }
-        return list.join(", ");
+
+        if (!suppressDefaults) {
+            for (const QString& d : defs) {
+                if (!list.contains(d, Qt::CaseInsensitive)) {
+                    list.append(d);
+                }
+            }
+        }
+
+        if (list.isEmpty()) {
+            return QString();
+        }
+        return list.join(QStringLiteral(", "));
     };
 
     const QString colCmd = formatCol(QStringList{ovCmd}, m_systemCommands);

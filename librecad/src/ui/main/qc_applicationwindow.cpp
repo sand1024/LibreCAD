@@ -1867,7 +1867,7 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
         // Refresh command engine defaults with the active language
         if (m_commandManager != nullptr && m_actionGroupManager != nullptr) {
             const LC_ActionTypeMapper mapper(m_actionGroupManager.get()); // fixme - review mapper outer dependency
-            m_commandManager->loadActiveScheme(&mapper);
+            m_commandManager->retranslate(&mapper);
         }
 
         bool keyMode = CFG_AppState::o_KeycodeMode;

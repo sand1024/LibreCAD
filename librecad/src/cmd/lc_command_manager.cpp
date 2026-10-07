@@ -25,7 +25,7 @@
 #include <QRegularExpression>
 
 #include "lc_action_type_mapper.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_default_commands_builder.h"
 #include "lc_repository_commands.h"
 #include "lc_settings_app_state.h"
@@ -33,56 +33,13 @@
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
+#include "rs_system.h"
 
 namespace {
     constexpr auto PREFIX_FN = "Fn";
     constexpr auto PREFIX_ALT = "Alt-";
     constexpr auto PREFIX_META = "Meta-";
 
-    template <typename T1, typename T2>
-    bool isCollisionFree(const std::map<T1, T2>& lookUp, const T1& key, const T2& value, const QString& cmd = QString()) {
-        if (key == cmd) {
-            return false;
-        }
-        if (lookUp.count(key) == 0 || lookUp.at(key) == value) {
-            return true;
-        }
-        return false;
-    }
-
-    // Resolves an action ignoring case only if the match is completely unambiguous
-    RS2::ActionType findActionIgnoringCase(const QString& command, const std::map<QString, RS2::ActionType>& mainCommands,
-                                           const std::map<QString, RS2::ActionType>& shortCommands,
-                                           QString* outAmbiguityDetails = nullptr) {
-        QMap<RS2::ActionType, QString> matchingActions;
-
-        for (const auto* table : {&mainCommands, &shortCommands}) {
-            for (const auto& [key, action] : *table) {
-                if (key.compare(command, Qt::CaseInsensitive) == 0) {
-                    matchingActions.insert(action, key);
-                }
-            }
-        }
-
-        if (matchingActions.isEmpty()) {
-            return RS2::ActionNone;
-        }
-
-        if (matchingActions.size() == 1) {
-            return matchingActions.begin().key();
-        }
-
-        // Multiple distinct actions match case-insensitively -> Ambiguity!
-        if (outAmbiguityDetails != nullptr) {
-            QStringList triggers;
-            for (auto it = matchingActions.constBegin(); it != matchingActions.constEnd(); ++it) {
-                triggers.append(it.value());
-            }
-            *outAmbiguityDetails = triggers.join(", ");
-        }
-
-        return RS2::ActionNone;
-    }
 }
 
 LC_CommandManager::LC_CommandManager(LC_RepositoryCommands* repo) : m_repository(repo) {
@@ -92,164 +49,66 @@ LC_CommandManager::LC_CommandManager(LC_RepositoryCommands* repo) : m_repository
 LC_CommandManager::~LC_CommandManager() {
 }
 
-void LC_CommandManager::populateFactoryDefaults() {
-    m_mainCommands.clear();
-    m_shortCommands.clear();
-    m_actionToCommand.clear();
-    m_cmdTranslation.clear();
-    m_revTranslation.clear();
 
-    auto getExistingCmd = [this](const RS2::ActionType action) -> QString {
-        const auto it = m_actionToCommand.find(action);
-        if (it != m_actionToCommand.end()) {
-            return it->second;
-        }
-        return QString{};
-    };
-
-    for (const auto& item : g_commandList) {
-        const RS2::ActionType action = item.actionType;
-
-        // 1. Translated full commands
-        for (const auto& [fullCmd, cmdTranslation] : item.fullCmdList) {
-            const QString cmdStr = resolveCommandText(fullCmd);
-            const QString transStr = resolveCommandText(cmdTranslation);
-            if (cmdStr.isEmpty() || transStr.isEmpty() || cmdStr == transStr) {
-                continue;
-            }
-            if (isCollisionFree(m_cmdTranslation, cmdStr, transStr)) {
-                m_cmdTranslation.emplace(cmdStr, transStr);
-            }
-            const QString existingCmd = getExistingCmd(action);
-            if (isCollisionFree(m_mainCommands, transStr, action, existingCmd)) {
-                m_mainCommands.emplace(transStr, action);
-                m_actionToCommand.emplace(action, transStr);
-            }
-        }
-
-        // 2. Raw / system full commands
-        for (const auto& [fullCmd, cmdTranslation] : item.fullCmdList) {
-            const QString cmdStr = resolveCommandText(fullCmd);
-            if (cmdStr.isEmpty()) {
-                continue;
-            }
-            const QString existingCmd = getExistingCmd(action);
-            if (isCollisionFree(m_mainCommands, cmdStr, action, existingCmd)) {
-                m_mainCommands.emplace(cmdStr, action);
-                m_actionToCommand.emplace(action, cmdStr);
-            }
-        }
-
-        // 3. Translated short commands / aliases
-        for (const auto& [alias, aliasTranslation] : item.shortCmdList) {
-            const QString aliasStr = resolveCommandText(alias);
-            const QString transStr = resolveCommandText(aliasTranslation);
-            if (aliasStr.isEmpty() || transStr.isEmpty() || aliasStr == transStr) {
-                continue;
-            }
-            if (isCollisionFree(m_cmdTranslation, aliasStr, transStr)) {
-                m_cmdTranslation.emplace(aliasStr, transStr);
-            }
-            const QString existingCmd = getExistingCmd(action);
-            if (isCollisionFree(m_shortCommands, transStr, action, existingCmd)) {
-                m_shortCommands.emplace(transStr, action);
-                if (m_actionToCommand.count(action) == 0) {
-                    m_actionToCommand.emplace(action, transStr);
-                }
-            }
-        }
-
-        // 4. Raw / system short commands / aliases
-        for (const auto& [alias, aliasTranslation] : item.shortCmdList) {
-            const QString aliasStr = resolveCommandText(alias);
-            if (aliasStr.isEmpty()) {
-                continue;
-            }
-            const QString existingCmd = getExistingCmd(action);
-            if (isCollisionFree(m_shortCommands, aliasStr, action, existingCmd)) {
-                m_shortCommands.emplace(aliasStr, action);
-                if (m_actionToCommand.count(action) == 0) {
-                    const QString transStr = resolveCommandText(aliasTranslation);
-                    m_actionToCommand.emplace(action, transStr);
-                }
-            }
-        }
+void LC_CommandManager::registerCommandTrigger(const QString& trigger, RS2::ActionType action) {
+    if (trigger.isEmpty() || action == RS2::ActionNone) {
+        return;
     }
 
-    for (const auto& [cmd, trans] : g_transList) {
-        const QString cmdStr = resolveCommandText(cmd);
-        const QString transStr = resolveCommandText(trans);
-        if (!cmdStr.isEmpty()) {
-            m_cmdTranslation[cmdStr] = transStr;
-        }
-    }
+    // Tier 1: Exact case lookup
+    m_exactCommands.insert(trigger, action);
 
-    for (const auto& [cmd, trans] : m_cmdTranslation) {
-        m_revTranslation[trans] = cmd;
-        if (m_shortCommands.count(trans) == 1) {
-            m_shortCommands[cmd] = m_shortCommands[trans];
-        }
+    // Tier 2: Precomputed unambiguous lowercase lookup
+    const QString lower = trigger.toLower();
+    auto it = m_caseInsensitiveCommands.find(lower);
+    if (it == m_caseInsensitiveCommands.end()) {
+        CaseInsensitiveEntry entry;
+        entry.action = action;
+        entry.isAmbiguous = false;
+        entry.candidateTriggers.append(trigger);
+        m_caseInsensitiveCommands.insert(lower, entry);
     }
-
-    for (const auto& [cmd, action] : m_mainCommands) {
-        m_actionToCommand[action] = cmd;
+    else {
+        if (!it->candidateTriggers.contains(trigger)) {
+            it->candidateTriggers.append(trigger);
+        }
+        if (it->action != action) {
+            it->isAmbiguous = true;
+            it->action = RS2::ActionNone;
+        }
     }
 }
 
-RS2::ActionType LC_CommandManager::commandToAction(const QString& cmd) const {
-    if (m_mainCommands.count(cmd) == 1) {
-        return m_mainCommands.at(cmd);
-    }
-    if (m_shortCommands.count(cmd) == 1) {
-        return m_shortCommands.at(cmd);
-    }
-    if (m_cmdTranslation.count(cmd) == 1) {
-        const QString trans = m_cmdTranslation.at(cmd);
-        if (m_mainCommands.count(trans) == 1) {
-            return m_mainCommands.at(trans);
-        }
-        if (m_shortCommands.count(trans) == 1) {
-            return m_shortCommands.at(trans);
-        }
-    }
-    return RS2::ActionNone;
+void LC_CommandManager::populateFactoryDefaults() {
+    applyCommandsScheme(CommandsConfig{}, nullptr);
 }
 
 RS2::ActionType LC_CommandManager::cmdToAction(const QString& cmd, const bool verbose, QString* outAmbiguityDetails) const {
+    Q_UNUSED(verbose);
     const QString trimmed = cmd.trimmed();
     if (trimmed.isEmpty()) {
         return RS2::ActionNone;
     }
 
-    RS2::ActionType ret = RS2::ActionNone;
+    // Tier 1: Exact case lookup (O(1))
+    const auto itExact = m_exactCommands.constFind(trimmed);
+    if (itExact != m_exactCommands.constEnd()) {
+        return itExact.value();
+    }
 
-    // 1. Tier 1: Exact case lookup (O(1))
-    for (const auto& table : {m_mainCommands, m_shortCommands}) {
-        if (table.count(trimmed)) {
-            ret = table.at(trimmed);
-            break;
+    // Tier 2: Unambiguous case-insensitive fallback (O(1))
+    const auto itLower = m_caseInsensitiveCommands.constFind(trimmed.toLower());
+    if (itLower != m_caseInsensitiveCommands.constEnd()) {
+        const auto& entry = itLower.value();
+        if (!entry.isAmbiguous) {
+            return entry.action;
+        }
+        if (outAmbiguityDetails != nullptr) {
+            *outAmbiguityDetails = entry.candidateTriggers.join(QStringLiteral(", "));
         }
     }
 
-    // 2. Tier 2: Unambiguous case-insensitive fallback
-    if (ret == RS2::ActionNone) {
-        ret = findActionIgnoringCase(trimmed, m_mainCommands, m_shortCommands, outAmbiguityDetails);
-    }
-
-    if (ret == RS2::ActionNone) {
-        return RS2::ActionNone;
-    }
-
-    if (!verbose) {
-        return ret;
-    }
-
-    for (const auto& p : m_mainCommands) {
-        if (p.second == ret) {
-            return ret;
-        }
-    }
-    return ret;
+    return RS2::ActionNone;
 }
 
 RS2::ActionType LC_CommandManager::keycodeToAction(const QString& code) const {
@@ -258,22 +117,17 @@ RS2::ActionType LC_CommandManager::keycodeToAction(const QString& code) const {
         return RS2::ActionNone;
     }
 
-    if (!(trimmed.startsWith(PREFIX_FN) || trimmed.startsWith(PREFIX_ALT) || trimmed.startsWith(PREFIX_META))) {
-        if (!trimmed.contains(QRegularExpression("^[a-zA-Z].*"))) {
+    if (!trimmed.startsWith(QLatin1String(PREFIX_FN)) &&
+        !trimmed.startsWith(QLatin1String(PREFIX_ALT)) &&
+        !trimmed.startsWith(QLatin1String(PREFIX_META))) {
+        if (!trimmed.at(0).isLetter()) {
             return RS2::ActionNone;
         }
     }
 
-    // 1. Tier 1: Exact case lookup
-    auto action = commandToAction(trimmed);
-
-    // 2. Tier 2: Unambiguous case-insensitive fallback
-    if (action == RS2::ActionNone) {
-        action = findActionIgnoringCase(trimmed, m_mainCommands, m_shortCommands);
-    }
-
+    const RS2::ActionType action = cmdToAction(trimmed, false);
     if (action != RS2::ActionNone) {
-        const QString& cmd = (m_actionToCommand.count(action) == 1) ? m_actionToCommand.at(action) : QString();
+        const QString cmd = m_actionToCommand.value(action);
         RS_DIALOGFACTORY->commandMessage(QObject::tr("keycode: %1 (%2)").arg(trimmed, cmd));
     }
     else {
@@ -283,83 +137,302 @@ RS2::ActionType LC_CommandManager::keycodeToAction(const QString& code) const {
     return action;
 }
 
-QString LC_CommandManager::command(const QString& cmd) const {
-    const auto it = m_cmdTranslation.find(cmd);
-    if (it != m_cmdTranslation.end()) {
-        return it->second;
-    }
-    return QString();
-}
+bool LC_CommandManager::checkCommand(const QString& keyword, const QString& input, RS2::ActionType) const {
+    const QString cleanInput = input.trimmed().toLower();
+    const QString canonicalTarget = keyword.trimmed().toLower();
 
-bool LC_CommandManager::checkCommand(const QString& cmd, const QString& str, RS2::ActionType) const {
-    const QString strl = str.toLower().trimmed();
-    const QString cmdLower = cmd.toLower().trimmed();
-
-    const auto it = m_cmdTranslation.find(cmdLower);
-    if (it != m_cmdTranslation.end()) {
-        const RS2::ActionType type0 = cmdToAction(it->second, false);
-        if (type0 != RS2::ActionNone) {
-            return type0 == cmdToAction(strl, false);
-        }
+    if (cleanInput.isEmpty() || canonicalTarget.isEmpty()) {
+        return false;
     }
 
-    const auto itStr = m_cmdTranslation.find(strl);
-    if (itStr != m_cmdTranslation.end()) {
-        return itStr->second == cmdLower;
+    if (cleanInput == canonicalTarget) {
+        return true;
     }
+
+    const auto it = m_keywordToCanonical.constFind(cleanInput);
+    if (it != m_keywordToCanonical.constEnd()) {
+        return it.value() == canonicalTarget;
+    }
+
     return false;
 }
 
+QString LC_CommandManager::command(const QString& cmd) const {
+    const QString cleanCmd = cmd.trimmed();
+    return m_canonicalToLocalizedKeyword.value(cleanCmd.toLower(), cleanCmd);
+}
+
 QStringList LC_CommandManager::complete(const QString& prefix) const {
-    QStringList ret;
-    for (const auto& [fst, snd] : m_mainCommands) {
-        if (fst.startsWith(prefix, Qt::CaseInsensitive)) {
-            ret << fst;
+    const QString cleanPrefix = prefix.trimmed();
+    if (cleanPrefix.isEmpty()) {
+        return QStringList();
+    }
+
+    QStringList results;
+    for (const auto& candidate : m_completionCandidates) {
+        if (candidate.startsWith(cleanPrefix, Qt::CaseInsensitive)) {
+            results.append(candidate);
         }
     }
-    ret.sort();
-    return ret;
+    return results;
 }
 
 QString LC_CommandManager::getCommandForAction(RS2::ActionType action) const {
-    if (m_actionToCommand.count(action)) {
-        return m_actionToCommand.at(action);
-    }
-    return QString();
+    return m_actionToCommand.value(action);
 }
 
 QStringList LC_CommandManager::getCommandsForAction(RS2::ActionType action) const {
-    QStringList triggers;
+    return m_actionCommandsCache.value(action);
+}
 
-    // 1. Primary command first
-    const auto it = m_actionToCommand.find(action);
-    if (it != m_actionToCommand.end() && !it->second.isEmpty()) {
-        triggers.append(it->second);
-    }
+void LC_CommandManager::rebuildActionCommandsCache() {
+    m_actionCommandsCache.clear();
 
-    // 2. Full command triggers
-    for (const auto& [cmd, act] : m_mainCommands) {
-        if (act == action && !triggers.contains(cmd, Qt::CaseInsensitive)) {
-            triggers.append(cmd);
+    // 1. Group triggers directly by ActionType in the cache
+    for (auto it = m_exactCommands.constBegin(); it != m_exactCommands.constEnd(); ++it) {
+        const RS2::ActionType act = it.value();
+        const QString& trigger = it.key();
+
+        if (act != RS2::ActionNone && !trigger.isEmpty()) {
+            m_actionCommandsCache[act].append(trigger);
         }
     }
 
-    // 3. Short aliases and keycodes
-    for (const auto& [alias, act] : m_shortCommands) {
-        if (act == action && !triggers.contains(alias, Qt::CaseInsensitive)) {
-            triggers.append(alias);
+    // 2. Sort each action's triggers: shortest first, tie-breaking alphabetically
+    for (auto it = m_actionCommandsCache.begin(); it != m_actionCommandsCache.end(); ++it) {
+        QStringList& triggers = it.value();
+        std::sort(triggers.begin(), triggers.end(), [](const QString& a, const QString& b) {
+            if (a.length() != b.length()) {
+                return a.length() < b.length();
+            }
+            return a.compare(b, Qt::CaseInsensitive) < 0;
+        });
+    }
+}
+
+void LC_CommandManager::rebuildCompletionCandidates(const CommandsConfig& config, const LC_ActionTypeMapper* mapper) {
+    m_completionCandidates.clear();
+
+    QMap<QString, CommandDefinition> cmdMap;
+    for (const auto& def : config.commands) {
+        cmdMap.insert(def.actionName, def);
+    }
+
+    QStringList primaryList;
+    QStringList secondaryList;
+
+    for (const auto& item : g_commandList) {
+        const QString actionName = (mapper != nullptr) ? mapper->actionNameFromType(item.actionType) : QString();
+        const CommandDefinition cmdDef = (!actionName.isEmpty()) ? cmdMap.value(actionName) : CommandDefinition{};
+
+        // 1. Primary commands & user custom overrides
+        if (cmdDef.customCommand == "-") {
+            // Suppressed: omit from completion
+        }
+        else if (!cmdDef.customCommand.trimmed().isEmpty()) {
+            primaryList.append(cmdDef.customCommand.trimmed());
+        }
+        else if (!item.primary.isEmpty()) {
+            const QString trans = resolveCommandText(item.primary);
+            const QString raw = QString::fromUtf8(item.primary.text);
+            if (!trans.isEmpty()) {
+                primaryList.append(trans);
+            }
+            if (!raw.isEmpty() && raw != trans) {
+                primaryList.append(raw);
+            }
+        }
+
+        // Custom aliases (excluding '-')
+        for (const auto& ca : cmdDef.customAliases) {
+            const QString trimmed = ca.trimmed();
+            if (!trimmed.isEmpty() && trimmed != "-") {
+                primaryList.append(trimmed);
+            }
+        }
+
+        // 2. Secondary built-in aliases (only if not suppressed, length > 2)
+        const bool suppressDefaultAliases = cmdDef.customAliases.contains("-");
+        if (!suppressDefaultAliases) {
+            for (const auto& al : item.aliases) {
+                if (al.isEmpty()) {
+                    continue;
+                }
+                const QString raw = QString::fromUtf8(al.text);
+                if (raw.length() > 2) {
+                    secondaryList.append(raw);
+                    const QString trans = resolveCommandText(al);
+                    if (!trans.isEmpty() && trans != raw) {
+                        secondaryList.append(trans);
+                    }
+                }
+            }
         }
     }
 
-    // Sort shortest string first, tie-breaking alphabetically ignoring case
-    std::sort(triggers.begin(), triggers.end(), [](const QString& a, const QString& b) {
-        if (a.length() != b.length()) {
-            return a.length() < b.length();
-        }
-        return a.compare(b, Qt::CaseInsensitive) < 0;
-    });
+    primaryList.sort(Qt::CaseInsensitive);
+    secondaryList.sort(Qt::CaseInsensitive);
 
-    return triggers;
+    for (const auto& str : primaryList) {
+        if (!str.isEmpty() && !m_completionCandidates.contains(str, Qt::CaseInsensitive)) {
+            m_completionCandidates.append(str);
+        }
+    }
+
+    for (const auto& str : secondaryList) {
+        if (!str.isEmpty() && !m_completionCandidates.contains(str, Qt::CaseInsensitive)) {
+            m_completionCandidates.append(str);
+        }
+    }
+}
+
+void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const LC_ActionTypeMapper* mapper) {
+    m_activeConfig = config;
+
+    m_exactCommands.clear();
+    m_caseInsensitiveCommands.clear();
+    m_actionToCommand.clear();
+    m_keywordToCanonical.clear();
+    m_canonicalToLocalizedKeyword.clear();
+    m_actionCommandsCache.clear();
+    m_completionCandidates.clear();
+
+    QMap<QString, CommandDefinition> cmdMap;
+    for (const auto& def : config.commands) {
+        cmdMap.insert(def.actionName, def);
+    }
+
+    QMap<QString, KeywordDefinition> kwMap;
+    for (const auto& kw : config.keywords) {
+        kwMap.insert(kw.key, kw);
+    }
+
+    // 1. Process Actions from g_commandList
+    for (const auto& item : g_commandList) {
+        const RS2::ActionType action = item.actionType;
+        const QString actionName = (mapper != nullptr) ? mapper->actionNameFromType(action) : QString();
+        const CommandDefinition cmdDef = (!actionName.isEmpty()) ? cmdMap.value(actionName) : CommandDefinition{};
+
+        // Primary command slot
+        if (cmdDef.customCommand == "-") {
+            // Suppressed entirely: do not register any primary command trigger
+        }
+        else if (!cmdDef.customCommand.trimmed().isEmpty()) {
+            const QString custom = cmdDef.customCommand.trimmed();
+            registerCommandTrigger(custom, action);
+            m_actionToCommand.insert(action, custom);
+        }
+        else if (!item.primary.isEmpty()) {
+            const QString transCmd = resolveCommandText(item.primary);
+            const QString rawCmd = QString::fromUtf8(item.primary.text);
+
+            registerCommandTrigger(transCmd, action);
+            if (!rawCmd.isEmpty() && rawCmd != transCmd) {
+                registerCommandTrigger(rawCmd, action);
+            }
+            if (!m_actionToCommand.contains(action)) {
+                m_actionToCommand.insert(action, transCmd);
+            }
+        }
+
+        // Keycode slot
+        if (cmdDef.customKeycode == "-") {
+            // Suppressed entirely: do not register any keycode
+        }
+        else if (!cmdDef.customKeycode.trimmed().isEmpty()) {
+            registerCommandTrigger(cmdDef.customKeycode.trimmed(), action);
+        }
+        else if (!item.keycode.isEmpty()) {
+            const QString transKey = resolveCommandText(item.keycode);
+            const QString rawKey = QString::fromUtf8(item.keycode.text);
+
+            registerCommandTrigger(transKey, action);
+            if (!rawKey.isEmpty() && rawKey != transKey) {
+                registerCommandTrigger(rawKey, action);
+            }
+        }
+
+        // Aliases slot (Custom + unsuppressed defaults)
+        const bool suppressDefaultAliases = cmdDef.customAliases.contains("-");
+
+        // Register custom aliases (excluding '-')
+        for (const auto& ca : cmdDef.customAliases) {
+            const QString trimmed = ca.trimmed();
+            if (!trimmed.isEmpty() && trimmed != "-") {
+                registerCommandTrigger(trimmed, action);
+            }
+        }
+
+        // If default aliases are not suppressed, register built-in aliases
+        if (!suppressDefaultAliases) {
+            for (const auto& aliasTrigger : item.aliases) {
+                if (aliasTrigger.isEmpty()) {
+                    continue;
+                }
+                const QString transAls = resolveCommandText(aliasTrigger);
+                const QString rawAls = QString::fromUtf8(aliasTrigger.text);
+
+                registerCommandTrigger(transAls, action);
+                if (!rawAls.isEmpty() && rawAls != transAls) {
+                    registerCommandTrigger(rawAls, action);
+                }
+            }
+        }
+    }
+
+    // 2. Process Keywords from g_keywordList
+    for (const auto& kwItem : g_keywordList) {
+        if (kwItem.primary.isEmpty()) {
+            continue;
+        }
+        const QString rawKw = QString::fromUtf8(kwItem.primary.text);
+        const QString transKw = resolveCommandText(kwItem.primary);
+        const QString canonicalLower = rawKw.toLower();
+        const KeywordDefinition kwDef = kwMap.value(rawKw);
+
+        // Primary keyword
+        if (kwDef.customKeyword == "-") {
+            // Suppressed
+        }
+        else if (!kwDef.customKeyword.trimmed().isEmpty()) {
+            const QString customLower = kwDef.customKeyword.trimmed().toLower();
+            m_keywordToCanonical.insert(customLower, canonicalLower);
+            m_canonicalToLocalizedKeyword.insert(canonicalLower, kwDef.customKeyword.trimmed());
+        }
+        else {
+            if (!rawKw.isEmpty()) {
+                m_keywordToCanonical.insert(canonicalLower, canonicalLower);
+                m_keywordToCanonical.insert(transKw.toLower(), canonicalLower);
+                m_canonicalToLocalizedKeyword.insert(canonicalLower, transKw);
+            }
+        }
+
+        // Keyword aliases
+        const bool suppressKwAliases = (kwDef.customAlias == "-");
+        if (!kwDef.customAlias.trimmed().isEmpty() && kwDef.customAlias != "-") {
+            m_keywordToCanonical.insert(kwDef.customAlias.trimmed().toLower(), canonicalLower);
+        }
+
+        if (!suppressKwAliases) {
+            for (const auto& aliasTrigger : kwItem.aliases) {
+                if (aliasTrigger.isEmpty()) {
+                    continue;
+                }
+                const QString rawAls = QString::fromUtf8(aliasTrigger.text);
+                const QString transAls = resolveCommandText(aliasTrigger);
+
+                if (!rawAls.isEmpty()) {
+                    m_keywordToCanonical.insert(rawAls.toLower(), canonicalLower);
+                }
+                if (!transAls.isEmpty()) {
+                    m_keywordToCanonical.insert(transAls.toLower(), canonicalLower);
+                }
+            }
+        }
+    }
+
+    rebuildActionCommandsCache();
+    rebuildCompletionCandidates(config, mapper);
 }
 
 QString LC_CommandManager::msgAvailableCommands() const {
@@ -368,6 +441,10 @@ QString LC_CommandManager::msgAvailableCommands() const {
 
 LC_RepositoryCommands* LC_CommandManager::getRepository() const {
     return m_repository;
+}
+
+void LC_CommandManager::retranslate(const LC_ActionTypeMapper* mapper) {
+    applyCommandsScheme(m_activeConfig, mapper);
 }
 
 QStringList LC_CommandManager::tokenizeAliases(const QString& rawInput) {
@@ -384,101 +461,6 @@ QStringList LC_CommandManager::tokenizeAliases(const QString& rawInput) {
 
 QString LC_CommandManager::formatAliases(const QStringList& aliases) {
     return aliases.join(QStringLiteral(", "));
-}
-
-void LC_CommandManager::applyCommandsScheme(const CommandsConfig& config, const LC_ActionTypeMapper* mapper) {
-    m_activeConfig = config;
-    populateFactoryDefaults();
-
-    if (mapper == nullptr) {
-        return;
-    }
-
-    // Apply custom command overrides
-    for (const auto& cmd : config.commands) {
-        const RS2::ActionType action = mapper->actionTypeFromName(cmd.actionName);
-        if (action == RS2::ActionNone) {
-            continue;
-        }
-
-        // 1. Full command slot
-        if (!cmd.customCommand.isEmpty()) {
-            const QString cTrimmed = cmd.customCommand.trimmed();
-            if (cTrimmed == "-") {
-                for (auto it = m_mainCommands.begin(); it != m_mainCommands.end();) {
-                    if (it->second == action) {
-                        it = m_mainCommands.erase(it);
-                    }
-                    else {
-                        ++it;
-                    }
-                }
-            }
-            else {
-                m_mainCommands[cTrimmed] = action;
-                m_actionToCommand[action] = cTrimmed;
-            }
-        }
-
-        // 2. Keycode slot
-        if (!cmd.customKeycode.isEmpty()) {
-            const QString kTrimmed = cmd.customKeycode.trimmed();
-            if (kTrimmed == "-") {
-                // Erase default keycode from short commands
-                for (auto it = m_shortCommands.begin(); it != m_shortCommands.end();) {
-                    if (it->second == action && it->first.length() == 2) {
-                        it = m_shortCommands.erase(it);
-                    }
-                    else {
-                        ++it;
-                    }
-                }
-            }
-            else {
-                m_shortCommands[kTrimmed] = action;
-            }
-        }
-
-        // 3. Alias slot
-        if (!cmd.customAliases.isEmpty()) {
-            const bool suppressDefaults = cmd.customAliases.contains("-");
-            if (suppressDefaults) {
-                // Erase default aliases (non-keycodes) from short commands
-                for (auto it = m_shortCommands.begin(); it != m_shortCommands.end();) {
-                    if (it->second == action && it->first.length() != 2) {
-                        it = m_shortCommands.erase(it);
-                    }
-                    else {
-                        ++it;
-                    }
-                }
-            }
-
-            for (const auto& a : cmd.customAliases) {
-                const QString aTrimmed = a.trimmed();
-                if (!aTrimmed.isEmpty() && aTrimmed != "-") {
-                    m_shortCommands[aTrimmed] = action;
-                }
-            }
-        }
-    }
-
-    // Apply custom keyword overrides
-    for (const auto& kw : config.keywords) {
-        if (!kw.customKeyword.isEmpty() && kw.customKeyword != "-") {
-            m_cmdTranslation[kw.key] = kw.customKeyword.trimmed();
-        }
-        if (!kw.customAlias.isEmpty() && kw.customAlias != "-") {
-            m_cmdTranslation[kw.customAlias.trimmed()] = kw.key;
-        }
-    }
-
-    for (const auto& [cmd, trans] : m_cmdTranslation) {
-        m_revTranslation[trans] = cmd;
-        if (m_shortCommands.count(trans) == 1) {
-            m_shortCommands[cmd] = m_shortCommands[trans];
-        }
-    }
 }
 
 void LC_CommandManager::loadActiveScheme(const LC_ActionTypeMapper* mapper) {
@@ -498,39 +480,41 @@ void LC_CommandManager::loadActiveScheme(const LC_ActionTypeMapper* mapper) {
     applyCommandsScheme(config, mapper);
 }
 
-QString LC_CommandManager::resolveCommandText(const LC_CommandText& cmdText) {
-    if (cmdText.source == nullptr || *cmdText.source == '\0') {
-        return QString{};
+QString LC_CommandManager::resolveCommandText(const LC_CommandTrigger& trigger) {
+    if (trigger.isEmpty()) {
+        return QString();
     }
-    if (cmdText.translatable) {
-        return RS_SYSTEM->translateCommand(cmdText.source, cmdText.disambiguation);
-    }
-    return QString::fromUtf8(cmdText.source);
+    return RS_SYSTEM->translateCommand(trigger.text, trigger.disambiguation, "cmd");
 }
 
-void LC_CommandManager::appendCommandPair(const std::pair<LC_CommandText, LC_CommandText>& cmdPair, QStringList& targetList) {
-    const QString transStr = resolveCommandText(cmdPair.second);
-    if (!transStr.isEmpty() && !targetList.contains(transStr, Qt::CaseInsensitive)) {
-        targetList.append(transStr);
-    }
-    const QString keyStr = resolveCommandText(cmdPair.first);
-    if (!keyStr.isEmpty() && !targetList.contains(keyStr, Qt::CaseInsensitive)) {
-        targetList.append(keyStr);
-    }
-}
-
-void LC_CommandManager::collectActionDefaults(const RS2::ActionType actionType, QStringList& outCommands, QStringList& outKeycodes,
+void LC_CommandManager::collectActionDefaults(const RS2::ActionType actionType,
+                                              QStringList& outCommands,
+                                              QStringList& outKeycodes,
                                               QStringList& outAliases) {
+    outCommands.clear();
+    outKeycodes.clear();
+    outAliases.clear();
+
+    auto appendTrigger = [](const LC_CommandTrigger& trigger, QStringList& targetList) {
+        if (trigger.isEmpty()) {
+            return;
+        }
+        const QString trans = resolveCommandText(trigger);
+        if (!trans.isEmpty() && !targetList.contains(trans, Qt::CaseInsensitive)) {
+            targetList.append(trans);
+        }
+        const QString raw = QString::fromUtf8(trigger.text);
+        if (!raw.isEmpty() && !targetList.contains(raw, Qt::CaseInsensitive)) {
+            targetList.append(raw);
+        }
+    };
+
     for (const auto& item : g_commandList) {
         if (item.actionType == actionType) {
-            for (const auto& cmdPair : item.fullCmdList) {
-                appendCommandPair(cmdPair, outCommands);
-            }
-            if (!item.shortCmdList.empty()) {
-                appendCommandPair(item.shortCmdList.front(), outKeycodes);
-                for (size_t i = 1; i < item.shortCmdList.size(); ++i) {
-                    appendCommandPair(item.shortCmdList[i], outAliases);
-                }
+            appendTrigger(item.primary, outCommands);
+            appendTrigger(item.keycode, outKeycodes);
+            for (const auto& alias : item.aliases) {
+                appendTrigger(alias, outAliases);
             }
             break;
         }
@@ -540,24 +524,27 @@ void LC_CommandManager::collectActionDefaults(const RS2::ActionType actionType, 
 void LC_CommandManager::collectKeywordDefaults(const QString& key, QString& outKw, QStringList& outAliases) {
     outKw = key;
     outAliases.clear();
-    for (const auto& [cmd, trans] : g_transList) {
-        const QString cmdStr = resolveCommandText(cmd);
-        if (cmdStr == key) {
-            outKw = resolveCommandText(trans);
-            break;
-        }
-    }
 
-    for (const auto& [cmd, trans] : g_transList) {
-        const QString transStr = resolveCommandText(trans);
-        if (transStr == key) {
-            const QString cmdStr = resolveCommandText(cmd);
-            const QString lower = cmdStr.trimmed().toLower();
-            if (!lower.isEmpty() && lower != key.toLower() && lower != outKw.toLower()) {
-                if (!outAliases.contains(lower, Qt::CaseInsensitive)) {
-                    outAliases.append(lower);
+    for (const auto& item : g_keywordList) {
+        if (item.primary.isEmpty()) {
+            continue;
+        }
+        if (key.compare(QLatin1String(item.primary.text), Qt::CaseInsensitive) == 0) {
+            outKw = resolveCommandText(item.primary);
+            for (const auto& alias : item.aliases) {
+                if (alias.isEmpty()) {
+                    continue;
+                }
+                const QString trans = resolveCommandText(alias);
+                if (!trans.isEmpty() && !outAliases.contains(trans, Qt::CaseInsensitive)) {
+                    outAliases.append(trans);
+                }
+                const QString raw = QString::fromUtf8(alias.text);
+                if (!raw.isEmpty() && !outAliases.contains(raw, Qt::CaseInsensitive)) {
+                    outAliases.append(raw);
                 }
             }
+            break;
         }
     }
 }

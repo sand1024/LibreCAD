@@ -436,5 +436,6 @@
         <file alias="tool_windows_palette.lci">tool_windows_palette.svg</file>
         <file alias="status_bar.lci">status_bar.svg</file>
         <file alias="tool_options.lci">tool_options.svg</file>
+        <file alias="move_copy_only.lci">move_copy_only.svg</file>
     </qresource>
 </RCC>

@@ -553,7 +553,8 @@ void LC_ActionFactory::createModifyActions(QMap<QString, QAction *> &map, QActio
     createActionHandlerActions(map, group,{
         {"ModifyAttributes",     RS2::ActionModifyAttributes,     tr("&Attributes"),               ":/icons/attributes.lci",             tr("Modifies layer, color, line type, and pen width attributes.")},
         {"ModifyDelete",         RS2::ActionModifyDelete,         tr("&Delete"),                   ":/icons/delete.lci",                 tr("Permanently removes selected entities from the drawing.")},
-        {"ModifyMove",           RS2::ActionModifyMove,           tr("&Move / Copy"),              ":/icons/move_copy.lci",              tr("Moves or duplicates selected entities from a base point.")},
+        {"ModifyMove",           RS2::ActionModifyMove,           tr("&Move"),                     ":/icons/move_copy.lci",              tr("Moves or duplicates selected entities from a base point.")},
+        {"ModifyCopy",           RS2::ActionModifyCopy,           tr("&Copy"),                     ":/icons/move_copy_only.lci",         tr("Copies or moves selected entities from a base point.")},
         {"ModifyRevertDirection",RS2::ActionModifyRevertDirection,tr("Re&vert direction"),         ":/icons/revert_direction.lci",       tr("Inverts the start and end orientation of lines, arcs, and polylines.")},
         {"ModifyRotate",         RS2::ActionModifyRotate,         tr("&Rotate"),                   ":/icons/rotate.lci",                 tr("Rotates selected entities around a reference center point.")},
         {"ModifyScale",          RS2::ActionModifyScale,          tr("&Scale"),                    ":/icons/scale.lci",                  tr("Scales selected entities larger or smaller around a reference point.")},
@@ -1472,6 +1473,7 @@ void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
 
     modifyActions = {
         "ModifyMove",
+        "ModifyCopy",
         "ModifyDuplicate",
         "ModifyAlign",
         "ModifyAlignOne",

@@ -39,7 +39,7 @@ struct RS_MoveData;
 class LC_ActionModifyMove : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    explicit LC_ActionModifyMove(LC_ActionContext *actionContext);
+    explicit LC_ActionModifyMove(LC_ActionContext *actionContext, bool removeOriginals);
     ~LC_ActionModifyMove() override;
 protected:
     /**

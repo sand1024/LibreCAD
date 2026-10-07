@@ -26,7 +26,7 @@
 
 #include <memory>
 #include "lc_action_type_mapper.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_command_manager.h"
 #include "lc_preset_manager_config_base.h"
 #include "lc_repository_commands.h"
@@ -55,9 +55,6 @@ public:
 protected:
     void applyActiveConfigToSystem(const QString& activeKey) override;
     void onPostApplyPreset() override;
-
-    bool importLegacyAliasFile(const QString& filePath);
-
 private:
     LC_CommandManager* m_commandManager = nullptr;
     LC_ActionGroupManager* m_actionGroupManager = nullptr;

@@ -29,7 +29,7 @@
 #include "lc_action_group.h"
 #include "lc_action_group_manager.h"
 #include "lc_action_type_mapper.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_commands_tree_item.h"
 #include "lc_command_manager.h"
 #include "rs_system.h"
@@ -125,84 +125,34 @@ namespace {
     }
 
 
-    QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
-      if (overrideVal == "-") {
-          return QObject::tr("— (suppressed)");
-      }
-
-      QStringList list;
-      if (!overrideVal.trimmed().isEmpty()) {
-          list.append(overrideVal.trimmed());
-      }
-      for (const QString& def : defaults) {
-          const QString lower = def.trimmed().toLower();
-          if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
-              list.append(lower);
-          }
-      }
-      return list.join(", ");
-  }
-
     QString formatSlotDisplay(const QStringList& overrideVals, const QStringList& defaults) {
-      if (overrideVals.contains("-")) {
-          return QObject::tr("— (suppressed)");
-      }
-
+      const bool suppressDefaults = overrideVals.contains("-");
       QStringList list;
       for (const QString& val : overrideVals) {
           const QString trimmed = val.trimmed();
-          if (!trimmed.isEmpty() && !list.contains(trimmed, Qt::CaseInsensitive)) {
+          if (!trimmed.isEmpty() && trimmed != "-" && !list.contains(trimmed, Qt::CaseInsensitive)) {
               list.append(trimmed);
           }
       }
-      for (const QString& def : defaults) {
-          const QString lower = def.trimmed().toLower();
-          if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
-              list.append(lower);
+
+      if (!suppressDefaults) {
+          for (const QString& def : defaults) {
+              const QString lower = def.trimmed().toLower();
+              if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
+                  list.append(lower);
+              }
           }
       }
-      return list.join(", ");
+
+      if (list.isEmpty()) {
+            return QString();
+      }
+        return list.join(QStringLiteral(", "));
   }
 
-    QString resolveSlot(const QString& customOverride, const QString& fallbackDefault) {
-        if (!customOverride.isEmpty()) {
-            return (customOverride == "-") ? QString() : customOverride.trimmed();
-        }
-        return fallbackDefault;
-    }
-
-    bool checkDomainCollisions(const QMultiMap<QString, TriggerOccurrence>& triggerMap,
-                              QString* outFirstConflict) {
-        bool hasCollision = false;
-        for (auto it = triggerMap.begin(); it != triggerMap.end();) {
-            const QString trigger = it.key();
-            const int count = triggerMap.count(trigger);
-
-            if (count > 1) {
-                hasCollision = true;
-                if (outFirstConflict != nullptr && outFirstConflict->isEmpty()) {
-                    auto firstIt = it;
-                    const TriggerOccurrence firstOcc = firstIt.value();
-                    ++firstIt;
-                    const TriggerOccurrence secondOcc = firstIt.value();
-
-                    if (firstOcc.ownerId == secondOcc.ownerId) {
-                        *outFirstConflict = QObject::tr("Trigger '%1' is duplicated between %2 and %3 in '%4'")
-                            .arg(trigger, firstOcc.slotTitle, secondOcc.slotTitle, firstOcc.displayName);
-                    }
-                    else {
-                        *outFirstConflict = QObject::tr("Trigger '%1' is assigned to both '%2' (%3) and '%4' (%5)")
-                            .arg(trigger, firstOcc.displayName, firstOcc.slotTitle, secondOcc.displayName, secondOcc.slotTitle);
-                    }
-                }
-                it += count;
-            }
-            else {
-                ++it;
-            }
-        }
-        return hasCollision;
-    }
+  QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
+      return formatSlotDisplay(overrideVal.isEmpty() ? QStringList{} : QStringList{overrideVal}, defaults);
+  }
 }
 
 LC_CommandsTreeModel::LC_CommandsTreeModel(QObject* parent, const QColor& filterColor, const QColor& conflictColor)

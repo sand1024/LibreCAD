@@ -39,16 +39,16 @@ struct LC_ActionModifyMove::MoveActionData {
     bool createCopy{false};
 };
 
-LC_ActionModifyMove::LC_ActionModifyMove(LC_ActionContext* actionContext)
-    : LC_ActionModifyBase("ActionModifyMove", actionContext, RS2::ActionModifyMove), m_actionData(std::make_unique<MoveActionData>()) {
-}
+LC_ActionModifyMove::LC_ActionModifyMove(LC_ActionContext* actionContext, bool removeOriginals)
+    : LC_ActionModifyBase(removeOriginals ? "ActionModifyMove" : "ActionModifyCopy", actionContext, (removeOriginals ? RS2::ActionModifyMove : RS2::ActionModifyCopy)),
+                          m_actionData(std::make_unique<MoveActionData>()) {}
 
 LC_ActionModifyMove::~LC_ActionModifyMove() = default;
 
 void LC_ActionModifyMove::doSaveOptions() {
     save("UseCurrentLayer", isUseCurrentLayer());
     save("UseCurrentAttributes", isUseCurrentAttributes());
-    save("KeepOriginals", isKeepOriginals());
+    // save("KeepOriginals", isKeepOriginals());
     save("MultipleCopies", isUseMultipleCopies());
     save("Copies", getCopiesNumber());
 }
@@ -58,7 +58,8 @@ void LC_ActionModifyMove::doLoadOptions() {
     setUseCurrentLayer(curLayer);
     const bool curAttrs = loadBool("UseCurrentAttributes", true);
     setUseCurrentAttributes(curAttrs);
-    const bool keepOriginals = loadBool("KeepOriginals", false);
+    // const bool keepOriginals = loadBool("KeepOriginals", false);
+    const bool keepOriginals =  (m_actionType == RS2::ActionModifyCopy) ? true : false;
     setKeepOriginals(keepOriginals);
     const bool multiCopy = loadBool("MultipleCopies", false);
     setUseMultipleCopies(multiCopy);
@@ -137,8 +138,13 @@ void LC_ActionModifyMove::onMouseMoveEventSelected(const int status, const LC_Mo
                     }
                 }
                 if (isInfoCursorForModificationEnabled()) {
-                    msg(e->isControl ? tr("Copy Offset") : tr("Moving Offset")).relative(offset).relativePolar(offset).
-                                                                                toInfoCursorZone2(false);
+                    bool copy = m_actionData->data.keepOriginals;
+                    bool alternated = e->isControl;
+                    bool willCopy = copy != alternated;
+
+                    auto offsetLabel =  willCopy ? tr("Copy Offset") : tr("Moving Offset");
+                    msg(offsetLabel).relative(offset).relativePolar(offset).
+                               toInfoCursorZone2(false);
                 }
             }
             break;
@@ -154,7 +160,10 @@ void LC_ActionModifyMove::onMouseLeftButtonReleaseSelected(const int status, con
     RS_Vector snapped = e->snapPoint;
     if (status == SetTargetPoint) {
         snapped = getSnapAngleAwarePoint(e, m_actionData->referencePoint, snapped);
-        m_actionData->createCopy = e->isControl;
+        bool copy = m_actionData->data.keepOriginals;
+        bool alternated = e->isControl;
+        bool willCopy = copy != alternated;
+        m_actionData->createCopy = willCopy;
     }
     fireCoordinateEvent(snapped);
 }
@@ -200,21 +209,26 @@ void LC_ActionModifyMove::onCoordinateEvent(const int status, [[maybe_unused]] b
 
 void LC_ActionModifyMove::updateActionPromptForSelected(const int status) {
     switch (status) {
-        case SetReferencePoint:
+        case SetReferencePoint: {
             updatePromptTRCancel(tr("Specify reference point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
-        case SetTargetPoint:
-            updatePromptTRBack(tr("Specify target point"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Create a Copy")));
+        }
+        case SetTargetPoint: {
+            bool copy = m_actionData->data.keepOriginals;
+            updatePromptTRBack(tr("Specify target point"), MOD_SHIFT_AND_CTRL_ANGLE(copy? tr("Move") : tr("Create a Copy")));
             break;
-        default:
+        }
+        default: {
             updatePrompt();
             break;
+        }
     }
 }
 
 void LC_ActionModifyMove::updateActionPromptForSelection() {
-    updatePromptTRCancel(tr("Select to move") + getSelectionCompletionHintMsg(),
-                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Move immediately after selection")));
+    bool copy = m_actionData->data.keepOriginals;
+    updatePromptTRCancel((copy ? tr("Select to copy") : tr("Select to move")) + getSelectionCompletionHintMsg(),
+                         MOD_SHIFT_AND_CTRL(tr("Select contour"), copy ? tr("Copy immediately after selection") : tr("Move immediately after selection")));
 }
 
 RS2::CursorType LC_ActionModifyMove::doGetMouseCursorSelected([[maybe_unused]] int status) {

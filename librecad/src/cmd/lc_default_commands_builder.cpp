@@ -24,7 +24,7 @@
 
 #include <QSet>
 #include "lc_action_type_mapper.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 
 QList<CommandDefinition> LC_DefaultCommandsBuilder::buildDefaultCommands(const LC_ActionTypeMapper* mapper) {
     QList<CommandDefinition> commands;
@@ -52,17 +52,14 @@ QList<CommandDefinition> LC_DefaultCommandsBuilder::buildDefaultCommands(const L
 
 QList<KeywordDefinition> LC_DefaultCommandsBuilder::buildDefaultKeywords() {
     QList<KeywordDefinition> keywords;
+    keywords.reserve(static_cast<qsizetype>(std::size(g_keywordList)));
 
-    static const QStringList primaryKeywords = {
-        "angle", "center", "chordlen", "close", "columns", "columnspacing",
-        "distance", "equation", "factor", "height", "length", "number",
-        "radius", "reversed", "row", "rowspacing", "size", "text",
-        "through", "undo", "redo", "width", "back", "snap"
-    };
-
-    for (const auto& key : primaryKeywords) {
+    for (const auto& kwItem : g_keywordList) {
+        if (kwItem.primary.isEmpty()) {
+            continue;
+        }
         KeywordDefinition kw;
-        kw.key = key;
+        kw.key = QString::fromUtf8(kwItem.primary.text);
         kw.customKeyword = "";
         kw.customAlias = "";
         keywords.append(kw);
@@ -70,6 +67,7 @@ QList<KeywordDefinition> LC_DefaultCommandsBuilder::buildDefaultKeywords() {
 
     return keywords;
 }
+
 
 CommandsConfig LC_DefaultCommandsBuilder::createDefaultConfig(const LC_ActionTypeMapper* mapper) {
     CommandsConfig config;

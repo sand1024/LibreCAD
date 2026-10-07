@@ -833,7 +833,10 @@ namespace InnerFactory{
                 return new LC_ActionModifyDeleteFree(ctx);
             }
             case RS2::ActionModifyMove: {
-                return new LC_ActionModifyMove(ctx);
+                return new LC_ActionModifyMove(ctx, true);
+            }
+            case RS2::ActionModifyCopy: {
+                return new LC_ActionModifyMove(ctx, false);
             }
             case RS2::ActionModifyRevertDirection: {
                 return new LC_ActionModifyRevertDirection(ctx);

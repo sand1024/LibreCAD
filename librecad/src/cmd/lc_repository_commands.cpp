@@ -27,7 +27,7 @@
 #include <QJsonObject>
 
 #include "lc_action_type_mapper.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_command_manager.h"
 #include "lc_default_commands_builder.h"
 #include "lc_settings_paths.h"
@@ -143,13 +143,14 @@ bool LC_RepositoryCommands::importLegacyAliasFile(const QString& filePath, Comma
     QMap<QString, QString> cmdToName;
     QMap<QString, ActionDefaults> actionDefaultsMap;
 
-    auto insertCommands = [&cmdToName](const std::vector<std::pair<LC_CommandText, LC_CommandText>>& cmdList,
-                                       const QString& actionName) {
-        for (const auto& cmdPair : cmdList) {
-            const QString cmdStr = LC_CommandManager::resolveCommandText(cmdPair.first);
-            if (!cmdStr.isEmpty()) {
-                cmdToName.insert(cmdStr.toLower(), actionName);
-            }
+    auto insertTrigger = [&cmdToName](const LC_CommandTrigger& trigger, const QString& actionName) {
+        if (trigger.isEmpty()) {
+            return;
+        }
+        cmdToName.insert(QString::fromUtf8(trigger.text).toLower(), actionName);
+        const QString trans = LC_CommandManager::resolveCommandText(trigger);
+        if (!trans.isEmpty()) {
+            cmdToName.insert(trans.toLower(), actionName);
         }
     };
 
@@ -157,8 +158,11 @@ bool LC_RepositoryCommands::importLegacyAliasFile(const QString& filePath, Comma
         for (const auto& item : g_commandList) {
             const QString actionName = mapper->actionNameFromType(item.actionType);
             if (!actionName.isEmpty()) {
-                insertCommands(item.fullCmdList, actionName);
-                insertCommands(item.shortCmdList, actionName);
+                insertTrigger(item.primary, actionName);
+                insertTrigger(item.keycode, actionName);
+                for (const auto& aliasTrigger : item.aliases) {
+                    insertTrigger(aliasTrigger, actionName);
+                }
 
                 ActionDefaults defs;
                 LC_CommandManager::collectActionDefaults(item.actionType, defs.cmds, defs.keys, defs.aliases);

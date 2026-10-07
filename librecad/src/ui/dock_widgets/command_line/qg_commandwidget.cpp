@@ -77,6 +77,7 @@ QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* par
 
     if (CFG_AppState::o_KeycodeMode) {
         leCommand->setKeyCodeMode(true);
+        QSignalBlocker guard(a1);
         a1->setChecked(true);
     }
 
@@ -299,10 +300,10 @@ void QG_CommandWidget::tabPressed() const {
             const QString proposal = getRootCommand(reducedChoices, typed);
             appendHistory(reducedChoices.join(", "));
             // fixme - sand - merge - rework this!!! And completion
-            const QString aliasFile = RS_Commands::getAliasFile();
-            if (!aliasFile.isEmpty()) {
-                appendHistory(tr("Command Alias File: %1").arg(aliasFile));
-            }
+            // const QString aliasFile = RS_Commands::getAliasFile();
+            // if (!aliasFile.isEmpty()) {
+                // appendHistory(tr("Command Alias File: %1").arg(aliasFile));
+            // }
             leCommand->setText(proposal);
         }
     }

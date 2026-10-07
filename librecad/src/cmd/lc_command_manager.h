@@ -26,17 +26,26 @@
 
 #include <map>
 #include <memory>
+#include <QHash>
 #include <QStringList>
 
 #include "lc_command_types.h"
 #include "rs.h"
 
+struct LC_CommandTrigger;
 struct LC_CommandText;
 class LC_ActionTypeMapper;
 class LC_RepositoryCommands;
 
 class LC_CommandManager {
 public:
+    struct CaseInsensitiveEntry {
+        RS2::ActionType action{RS2::ActionNone};
+        bool isAmbiguous{false};
+        QStringList candidateTriggers;
+    };
+
+
     explicit LC_CommandManager(LC_RepositoryCommands* repo);
     ~LC_CommandManager();
 
@@ -60,27 +69,33 @@ public:
     LC_RepositoryCommands* getRepository() const;
     const CommandsConfig& activeConfig() const { return m_activeConfig; }
 
+    void retranslate(const LC_ActionTypeMapper* mapper);
+
     static QStringList tokenizeAliases(const QString& rawInput);
     static QString formatAliases(const QStringList& aliases);
 
-    static QString resolveCommandText(const LC_CommandText& cmdText);
-    static void appendCommandPair(const std::pair<LC_CommandText, LC_CommandText>& cmdPair, QStringList& targetList);
-    static void collectActionDefaults(const RS2::ActionType actionType,
-                               QStringList& outCommands,
-                               QStringList& outKeycodes,
-                               QStringList& outAliases);
+    static QString resolveCommandText(const LC_CommandTrigger& trigger);
+    static void collectActionDefaults(RS2::ActionType actionType,
+                                      QStringList& outCommands,
+                                      QStringList& outKeycodes,
+                                      QStringList& outAliases);
     static void collectKeywordDefaults(const QString& key, QString& outKw, QStringList& outAliases);
+
     void migrateLegacyAliasIfNeeded(const LC_ActionTypeMapper* mapper);
 private:
-    RS2::ActionType commandToAction(const QString& cmd) const;
     void populateFactoryDefaults();
+    void registerCommandTrigger(const QString& trigger, RS2::ActionType action);
+    void rebuildActionCommandsCache();
+    void rebuildCompletionCandidates(const CommandsConfig& config, const LC_ActionTypeMapper* mapper);
 
-    LC_RepositoryCommands* m_repository;
-    std::map<QString, RS2::ActionType> m_mainCommands;
-    std::map<QString, RS2::ActionType> m_shortCommands;
-    std::map<RS2::ActionType, QString> m_actionToCommand;
-    std::map<QString, QString> m_cmdTranslation;
-    std::map<QString, QString> m_revTranslation;
+    LC_RepositoryCommands* m_repository{nullptr};
+    QHash<QString, RS2::ActionType> m_exactCommands;
+    QHash<QString, CaseInsensitiveEntry> m_caseInsensitiveCommands;
+    QHash<RS2::ActionType, QString> m_actionToCommand;
+    QHash<QString, QString> m_keywordToCanonical;
+    QHash<QString, QString> m_canonicalToLocalizedKeyword;
+    QHash<RS2::ActionType, QStringList> m_actionCommandsCache;
+    QStringList m_completionCandidates;
     CommandsConfig m_activeConfig;
 };
 

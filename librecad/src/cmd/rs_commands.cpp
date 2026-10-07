@@ -32,7 +32,7 @@
 #include <QTextStream>
 #include<vector>
 
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 #include "lc_settings_paths.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -46,11 +46,14 @@ constexpr auto PREFIX_FN = "Fn";
 constexpr auto PREFIX_ALT = "Alt-";
 constexpr auto PREFIX_META = "Meta-";
 
-QString resolveCommandText(const LC_CommandText& text) {
-    return text.translatable
-               ? RS_SYSTEM->translateCommand(text.source, text.disambiguation)
-               : QString::fromUtf8(text.source);
+
+ QString resolveTriggerText(const LC_CommandTrigger& trigger) {
+    if (trigger.isEmpty()) {
+        return QString();
+    }
+    return RS_SYSTEM->translateCommand(trigger.text, trigger.disambiguation, "cmd");
 }
+
 
 // helper function to check and report command collision
 template<typename T1, typename T2>
@@ -99,48 +102,46 @@ RS2::ActionType findActionIgnoringCase(const QString& command,
 }
 
 // write alias file
-void writeAliasFile(const QString& aliasName,
-                    const std::map<QString, RS2::ActionType>& shortCommands,
-                    const std::map<QString, RS2::ActionType>& mainCommands){
-    LC_LOG<<__func__<<"(): begin";
-    LC_LOG<<"Creating "<<QFileInfo(aliasName).absoluteFilePath();
+    void writeAliasFile(const QString& aliasName,
+                        const std::map<QString, RS2::ActionType>& shortCommands,
+                        const std::map<QString, RS2::ActionType>& mainCommands){
+     LC_LOG<<__func__<<"(): begin";
+     LC_LOG<<"Creating "<<QFileInfo(aliasName).absoluteFilePath();
 
-    QFile aliasFile{aliasName};
-    if (!aliasFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        LC_ERR<<__func__<<"(): line "<<__LINE__<<": failed to create "<<QFileInfo(aliasName).absoluteFilePath();
-        return;
-    }
-    QTextStream ts(&aliasFile);
-    ts << "#LibreCAD alias v1\n\n";
-    ts << "# lines starting with # are comments\n";
-    ts << "# format are:\n";
-    ts << R"(# <alias>\t<command-untranslated>)" "\n";
-    ts << "# the alias cannot be an existing command";
-    ts << "# example\n";
-    ts << "# l\tline\n\n";
+     QFile aliasFile{aliasName};
+     if (!aliasFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+         LC_ERR<<__func__<<"(): line "<<__LINE__<<": failed to create "<<QFileInfo(aliasName).absoluteFilePath();
+         return;
+     }
+     QTextStream ts(&aliasFile);
+     ts << "#LibreCAD alias v1\n\n";
+     ts << "# lines starting with # are comments\n";
+     ts << "# format are:\n";
+     ts << R"(# <alias>\t<command-untranslated>)" "\n";
+     ts << "# the alias cannot be an existing command\n";
+     ts << "# example\n";
+     ts << "# l\tline\n\n";
 
-    // the reverse look up from action type to avoid quadratic time complexity
-    std::map<RS2::ActionType, QString> actionToMain;
+     std::map<RS2::ActionType, QString> actionToMain;
 
-    // full commands should be used first
-    for(const auto& item: g_commandList) {
-        for(const auto& command: item.fullCmdList) {
-            actionToMain.emplace(item.actionType, QString::fromUtf8(command.first.source));
-        }
-    }
+     for (const auto& item : g_commandList) {
+         if (!item.primary.isEmpty()) {
+             actionToMain.emplace(item.actionType, QString::fromUtf8(item.primary.text));
+         }
+     }
 
-    for(const auto& [cmd, action]: mainCommands) {
-        if (actionToMain.count(action) == 0) {
-            actionToMain.emplace(action, cmd);
-        }
-    }
-    for(const auto& [alias, action]: shortCommands) {
-        if (actionToMain.count(action) == 1) {
-            ts<<alias<<'\t'<<actionToMain.at(action)<<Qt::endl;
-        }
-    }
-    LC_LOG<<__func__<<"(): end";
-}
+     for (const auto& [cmd, action] : mainCommands) {
+         if (actionToMain.count(action) == 0) {
+             actionToMain.emplace(action, cmd);
+         }
+     }
+     for (const auto& [alias, action] : shortCommands) {
+         if (actionToMain.count(action) == 1) {
+             ts << alias << '\t' << actionToMain.at(action) << Qt::endl;
+         }
+     }
+     LC_LOG<<__func__<<"(): end";
+ }
 }
 
 RS_Commands* RS_Commands::instance() {
@@ -181,78 +182,91 @@ RS_Commands* RS_Commands::instance() {
  */
 
 RS_Commands::RS_Commands() {
+    for (const auto& item : g_commandList) {
+        const RS2::ActionType action = item.actionType;
 
-    for(const auto& [fullCmdList, aliasList, action]: g_commandList){
-        //add full commands
-        for(const auto& [fullCmdText, cmdTranslationText]: fullCmdList){
-            const QString fullCmd = resolveCommandText(fullCmdText);
-            const QString cmdTranslation = resolveCommandText(cmdTranslationText);
-            if (fullCmd == cmdTranslation) {
+        // Primary command
+        if (!item.primary.isEmpty()) {
+            const QString rawCmd = QString::fromUtf8(item.primary.text);
+            const QString transCmd = resolveTriggerText(item.primary);
+
+            if (rawCmd != transCmd && isCollisionFree(m_cmdTranslation, rawCmd, transCmd)) {
+                m_cmdTranslation.emplace(rawCmd, transCmd);
+            }
+            if (isCollisionFree(m_mainCommands, transCmd, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_mainCommands.emplace(transCmd, action);
+                m_actionToCommand.emplace(action, transCmd);
+            }
+            if (isCollisionFree(m_mainCommands, rawCmd, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_mainCommands.emplace(rawCmd, action);
+                m_actionToCommand.emplace(action, rawCmd);
+            }
+        }
+
+        // Keycode
+        if (!item.keycode.isEmpty()) {
+            const QString rawKey = QString::fromUtf8(item.keycode.text);
+            const QString transKey = resolveTriggerText(item.keycode);
+
+            if (rawKey != transKey && isCollisionFree(m_cmdTranslation, rawKey, transKey)) {
+                m_cmdTranslation.emplace(rawKey, transKey);
+            }
+            if (isCollisionFree(m_shortCommands, transKey, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_shortCommands.emplace(transKey, action);
+            }
+            if (isCollisionFree(m_shortCommands, rawKey, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_shortCommands.emplace(rawKey, action);
+            }
+        }
+
+        // Aliases
+        for (const auto& aliasTrigger : item.aliases) {
+            if (aliasTrigger.isEmpty()) {
                 continue;
             }
-            // use translated commands first
-            if (isCollisionFree(m_cmdTranslation, fullCmd, cmdTranslation)) {
-                m_cmdTranslation.emplace(fullCmd, cmdTranslation);
+            const QString rawAls = QString::fromUtf8(aliasTrigger.text);
+            const QString transAls = resolveTriggerText(aliasTrigger);
+
+            if (rawAls != transAls && isCollisionFree(m_cmdTranslation, rawAls, transAls)) {
+                m_cmdTranslation.emplace(rawAls, transAls);
             }
-            if (isCollisionFree(m_mainCommands, cmdTranslation, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
-                m_mainCommands.emplace(cmdTranslation, action);
-                m_actionToCommand.emplace(action, cmdTranslation);
+            if (isCollisionFree(m_shortCommands, transAls, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_shortCommands.emplace(transAls, action);
             }
-        }
-        for(const auto& command: fullCmdList){
-            const QString fullCmd = resolveCommandText(command.first);
-            if(isCollisionFree(m_mainCommands, fullCmd, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
-                // enable english commands, if no conflict is found
-                m_mainCommands.emplace(fullCmd, action);
-                m_actionToCommand.emplace(action, fullCmd);
-            }
-        }
-        //add short commands
-        for(const auto& [aliasText, aliasTranslationText]: aliasList){
-            const QString alias = resolveCommandText(aliasText);
-            const QString aliasTranslation = resolveCommandText(aliasTranslationText);
-            if (alias == aliasTranslation) {
-                continue;
-            }
-            // use translated alias first
-            if(isCollisionFree(m_cmdTranslation, alias, aliasTranslation)) {
-                m_cmdTranslation.emplace(alias, aliasTranslation);
-            }
-            if(isCollisionFree(m_shortCommands, aliasTranslation, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
-                m_shortCommands.emplace(aliasTranslation, action);
-                if (m_actionToCommand.count(action) == 0) {
-                    m_actionToCommand.emplace(action, aliasTranslation);
-                }
-            }
-        }
-        for(const auto& [aliasText, aliasTranslationText]: aliasList){
-            const QString alias = resolveCommandText(aliasText);
-            const QString aliasTranslation = resolveCommandText(aliasTranslationText);
-            if(isCollisionFree(m_shortCommands, alias, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
-                // enable english short commands, if no conflict is found
-                m_shortCommands.emplace(alias, action);
-                if (m_actionToCommand.count(action) == 0) {
-                    m_actionToCommand.emplace(action, aliasTranslation);
-                }
+            if (isCollisionFree(m_shortCommands, rawAls, action, m_actionToCommand.count(action) ? m_actionToCommand[action] : QString{})) {
+                m_shortCommands.emplace(rawAls, action);
             }
         }
     }
 
-    // translations, overriding existing translation
-    for(const auto& [commandText, translationText]: g_transList) {
-        m_cmdTranslation[resolveCommandText(commandText)] = resolveCommandText(translationText);
+    // Process Keywords from g_keywordList
+    for (const auto& kwItem : g_keywordList) {
+        if (kwItem.primary.isEmpty()) {
+            continue;
+        }
+        const QString rawKw = QString::fromUtf8(kwItem.primary.text);
+        const QString transKw = resolveTriggerText(kwItem.primary);
+        m_cmdTranslation[rawKw] = transKw;
+
+        for (const auto& aliasTrigger : kwItem.aliases) {
+            if (aliasTrigger.isEmpty()) {
+                continue;
+            }
+            const QString rawAls = QString::fromUtf8(aliasTrigger.text);
+            const QString transAls = resolveTriggerText(aliasTrigger);
+            m_cmdTranslation[rawAls] = rawKw;
+            m_cmdTranslation[transAls] = rawKw;
+        }
     }
 
-    // prefer to use translated commands and aliases
-    for (const auto& [command, translation]: m_cmdTranslation) {
+    for (const auto& [command, translation] : m_cmdTranslation) {
         m_revTranslation[translation] = command;
         if (m_shortCommands.count(translation) == 1) {
             m_shortCommands[command] = m_shortCommands[translation];
         }
     }
 
-    // ensure action to command mapping is consistent
-    for(const auto& [command, action]: m_mainCommands) {
+    for (const auto& [command, action] : m_mainCommands) {
         m_actionToCommand[action] = command;
     }
 }

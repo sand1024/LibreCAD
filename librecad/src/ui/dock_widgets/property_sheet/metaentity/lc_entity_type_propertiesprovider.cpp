@@ -86,19 +86,20 @@ void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyCon
     const std::list<CommandLinkInfo> commands = {
         {
             tr("Moving or rotating operations"),
-            {RS2::ActionModifyMove, tr("Move / Copy"), tr("Move selected entities")},
+            {RS2::ActionModifyMove, tr("Copy"), tr("Move selected entities")},
             {RS2::ActionModifyRotate, tr("Rotate"), tr("Rotate of selected entities")}
         },
         {
             tr("Duplicating or mirroring"),
+            {RS2::ActionModifyCopy, tr("Copy"), tr("Copy selected entities")},
             {RS2::ActionModifyDuplicate, tr("Duplicate"), tr("Duplicate selection")},
-            {RS2::ActionModifyMirror, tr("Mirror"), tr("Mirror selection")}
         },
         {
             tr("Scaling and stretching"),
             {RS2::ActionModifyScale, tr("Scale"), tr("Selection scaling")},
             {RS2::ActionModifyStretch, tr("Stretch"), tr("Strech selection")}
         },
+        {tr("Mirroring"), {RS2::ActionModifyMirror, tr("Mirror"), tr("Mirror selection")}},
         {
             tr("Aligning selection"),
             {RS2::ActionModifyAlign, tr("Align"), tr("Align selection")},

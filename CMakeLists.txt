@@ -856,7 +856,7 @@ set (SHARED_SOURCES
      librecad/src/actions/options/rs_actionoptionsdrawing.h
      librecad/src/actions/print_preview/rs_actionprintpreview.cpp
      librecad/src/actions/print_preview/rs_actionprintpreview.h
-     librecad/src/cmd/lc_commandItems.h
+     librecad/src/cmd/lc_default_command_aliases.h
      librecad/src/cmd/rs_commands.cpp
      librecad/src/cmd/rs_commands.h
      librecad/src/lib/actions/lc_actioncontext.h

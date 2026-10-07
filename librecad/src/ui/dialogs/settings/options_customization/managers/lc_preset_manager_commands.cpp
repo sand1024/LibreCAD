@@ -27,6 +27,7 @@
 #include <QRegularExpression>
 #include <QTextStream>
 
+#include "lc_default_command_aliases.h"
 #include "lc_action_command_updater.h"
 #include "lc_action_group_manager.h"
 #include "lc_default_commands_builder.h"
@@ -129,86 +130,6 @@ void LC_PresetManagerCommands::rollbackState() {
 
 void LC_PresetManagerCommands::notifyConfigChanged() {
     setDirtyState(true);
-}
-
-bool LC_PresetManagerCommands::importLegacyAliasFile(const QString& filePath) {
-    clearLastError();
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        setLastError(LC_PresetError::fromCode(
-            LC_PresetErrorCode::FileReadFailed,
-            tr("Cannot open legacy aliases file '%1' for reading.").arg(filePath)
-        ));
-        return false;
-    }
-
-    m_workingConfig = LC_DefaultCommandsBuilder::createDefaultConfig(m_actionTypeMapper.get());
-
-    QMap<QString, QString> cmdToName;
-    auto insertCommands = [&cmdToName](const std::vector<std::pair<LC_CommandText, LC_CommandText>>& cmdList,
-                                      const QString& actionName) {
-        for (const auto& cmdPair : cmdList) {
-            const QString cmdStr = LC_CommandManager::resolveCommandText(cmdPair.first);
-            if (!cmdStr.isEmpty()) {
-                cmdToName.insert(cmdStr.toLower(), actionName);
-            }
-        }
-    };
-
-    for (const auto& item : g_commandList) {
-        const QString actionName = m_actionTypeMapper->actionNameFromType(item.actionType);
-        if (actionName.isEmpty()) {
-            continue;
-        }
-        insertCommands(item.fullCmdList, actionName);
-        insertCommands(item.shortCmdList, actionName);
-    }
-
-    QMap<QString, int> actionAliasCount;
-    QTextStream ts(&file);
-    static const QRegularExpression wsRe(R"(\s+)");
-
-    while (!ts.atEnd()) {
-        const QString line = ts.readLine().trimmed();
-        if (line.isEmpty() || line.startsWith('#')) {
-            continue;
-        }
-
-        const QStringList tokens = line.split(wsRe, Qt::SkipEmptyParts);
-        if (tokens.size() < 2) {
-            continue;
-        }
-
-        const QString alias = tokens[0].toLower();
-        const QString targetCmd = tokens[1].toLower();
-
-        const auto it = cmdToName.find(targetCmd);
-        if (it == cmdToName.end()) {
-            continue;
-        }
-
-        const QString actionName = it.value();
-        for (auto& def : m_workingConfig.commands) {
-            if (def.actionName == actionName) {
-                const int count = actionAliasCount.value(actionName, 0);
-                if (count == 0) {
-                    def.customKeycode = alias;
-                    actionAliasCount[actionName] = 1;
-                }
-                else {
-                    if (!def.customAliases.contains(alias, Qt::CaseInsensitive)) {
-                        def.customAliases.append(alias);
-                    }
-                    actionAliasCount[actionName] = count + 1;
-                }
-                break;
-            }
-        }
-    }
-
-    m_workingConfig.name = QFileInfo(filePath).baseName();
-    setDirtyState(true);
-    return true;
 }
 
 bool LC_PresetManagerCommands::importPresetFromFile(const QString& filePath, QWidget* parent) {

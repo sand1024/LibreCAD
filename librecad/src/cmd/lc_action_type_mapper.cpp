@@ -24,7 +24,7 @@
 
 #include <QAction>
 #include "lc_action_group_manager.h"
-#include "lc_commandItems.h"
+#include "lc_default_command_aliases.h"
 
 LC_ActionTypeMapper::LC_ActionTypeMapper(const LC_ActionGroupManager* agm)
     : m_agm(agm) {

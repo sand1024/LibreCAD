@@ -374,7 +374,7 @@ QG_GraphicView::~QG_GraphicView() {
  * @return width of widget.
  */
 int QG_GraphicView::getWidth() const {
-    if (m_scrollbars) {
+    if (m_scrollbars && m_vScrollBar != nullptr) {
         return width() - m_vScrollBar->sizeHint().width();
     }
     return width();
@@ -384,7 +384,7 @@ int QG_GraphicView::getWidth() const {
  * @return height of widget.
  */
 int QG_GraphicView::getHeight() const {
-    if (m_scrollbars) {
+    if (m_scrollbars && m_hScrollBar != nullptr) {
         return height() - m_hScrollBar->sizeHint().height();
     }
     return height();

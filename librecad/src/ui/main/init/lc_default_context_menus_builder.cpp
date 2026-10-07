@@ -762,6 +762,7 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonSelectActions() {
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonModifyActions() {
     return {
         {"ModifyMove"},
+        {"ModifyCopy"},
         {"ModifyDuplicate"},
         {"ModifyRotate"},
         {"ModifyMirror"},
