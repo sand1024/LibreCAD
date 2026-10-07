@@ -1367,8 +1367,9 @@ void QC_ApplicationWindow::changeDrawingOptions(const QString& pageId) {
 
     const bool dialogResultAccepted = m_dlgHelpr->requestOptionsDrawingDialog(*graphic, pageId);
     if (dialogResultAccepted) {
-        notifyCurrentDrawingOptionsChanged();
-        // fixme - sand - emit signal?
+        QTimer::singleShot(20, this, [this]()->void {
+            notifyCurrentDrawingOptionsChanged(); // fixme - emit signal?
+        });
     }
     else {
     }
@@ -1640,7 +1641,7 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             const bool draftMode = CFG_Appearance::o_DraftMode;
             setupMDIWindowTitleByFile(w, parent->getFileName(), draftMode, true);
 
-            w->setWindowIcon(QIcon(":/icons/document.lci"));
+            w->setWindowIcon(QIcon(":/icons/document.lci")); // fixme - sand - replace the icon for pint preview!
             QG_GraphicView* view = w->getGraphicView();
             view->setDeviceName(CFG_Hardware::o_Device);
             const auto printPreviewAction = new RS_ActionPrintPreview(m_actionContext);
