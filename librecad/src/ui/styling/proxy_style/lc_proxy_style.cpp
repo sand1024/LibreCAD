@@ -1011,11 +1011,32 @@ int LC_ProxyStyle::styleHint(const StyleHint hint, const QStyleOption* option, c
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
+
 QSize LC_ProxyStyle::sizeFromContents(const ContentsType type, const QStyleOption* option, const QSize& size, const QWidget* widget) const {
+
+    const QStyleOption* actualOption = option;
+    QStyleOptionGroupBox updatedGroupBoxOpt;
+
+    if (type == CT_GroupBox && option) {
+        if (auto boxOpt = qstyleoption_cast<const QStyleOptionGroupBox*>(option)) {
+            updatedGroupBoxOpt = *boxOpt;
+            updatedGroupBoxOpt.fontMetrics = QFontMetrics(getGroupBoxTitleFont());
+            actualOption = &updatedGroupBoxOpt;
+        }
+    }
+
     QSize calculatedSize = QProxyStyle::sizeFromContents(type, option, size, widget);
     const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
 
+
     switch (type) {
+
+        // --- Your existing CT_GroupBox addition ---
+        case CT_GroupBox:
+        // Fusion's implementation based on actualOption is usually accurate enough.
+        // If you need explicit padding overrides for your custom skin theme later,
+        // you can easily add adjustments here (e.g., calculatedSize.setHeight(...)).
+        break;
         case CT_ItemViewItem:
             calculatedSize.setHeight(calculatedSize.height() + geoms.scaledMetrics.itemViewRowPadding);
             break;
@@ -1919,12 +1940,13 @@ void LC_ProxyStyle::drawCustomGroupBoxFrame(const QStyleOptionFrame* option, QPa
     painter->drawRect(option->rect.adjusted(0, geoms.ints.scale8, -1, -1));
 }
 
+const QFont& LC_ProxyStyle::getGroupBoxTitleFont() const {
+   return m_groupBoxTitleFont;
+}
+
 void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox* option, QPainter* painter, const QWidget* widget) const {
     // 1. Resolve isolated title font from active FontConfig
-    const FontConfig& fontCfg = m_fontConfig;
-    QFont titleFont(fontCfg.mainFamily, qMax(6, fontCfg.mainSize + fontCfg.groupBoxes.sizeOffset));
-    titleFont.setBold(fontCfg.groupBoxes.bold);
-    titleFont.setItalic(fontCfg.groupBoxes.italic);
+    QFont titleFont = getGroupBoxTitleFont();
 
     // 2. Measure title with the isolated title font
     const QFontMetrics titleFm(titleFont);
@@ -3474,7 +3496,18 @@ void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem* option, QP
 
 QRect LC_ProxyStyle::subControlRect(const ComplexControl control, const QStyleOptionComplex* option, const SubControl subControl,
                                     const QWidget* widget) const {
-    QRect rect = QProxyStyle::subControlRect(control, option, subControl, widget);
+    const QStyleOptionComplex* actualOption = option;
+    QStyleOptionGroupBox updatedGroupBoxOpt;
+
+    if (control == CC_GroupBox && option) {
+        if (auto boxOpt = qstyleoption_cast<const QStyleOptionGroupBox*>(option)) {
+            updatedGroupBoxOpt = *boxOpt;
+            updatedGroupBoxOpt.fontMetrics = QFontMetrics(getGroupBoxTitleFont());
+            actualOption = &updatedGroupBoxOpt;
+        }
+    }
+
+    QRect rect = QProxyStyle::subControlRect(control, actualOption, subControl, widget);
 
     if (control == CC_GroupBox) {
         if (subControl == SC_GroupBoxLabel && !m_isClassic) {
@@ -4586,6 +4619,11 @@ Qt::CursorShape LC_ProxyStyle::resolveDragCursor() const {
 
 void LC_ProxyStyle::setFont(const FontConfig& font) {
     m_fontConfig = font;
+
+    m_groupBoxTitleFont = QFont(m_fontConfig.mainFamily, qMax(6, m_fontConfig.mainSize + m_fontConfig.groupBoxes.sizeOffset));
+    m_groupBoxTitleFont.setBold(m_fontConfig.groupBoxes.bold);
+    m_groupBoxTitleFont.setItalic(m_fontConfig.groupBoxes.italic);
+
     invalidateCache();
 }
 

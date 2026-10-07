@@ -137,6 +137,7 @@ private:
     void drawSpinBoxProgressBar(QPainter* painter, const QRect& rect, const SkinScaledGeometries& geoms, const SkinColors& desc, qreal pct, bool hasFocus, const QWidget*
                                 widget, const QAbstractSpinBox* spinBox) const;
     void drawCustomGroupBoxFrame(const QStyleOptionFrame *option, QPainter *painter, const QWidget *widget) const;
+    const QFont& getGroupBoxTitleFont() const;
     void drawCustomPanelButton(const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
     void drawCustomPanelButtonTool(const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
     void drawCustomSlider(const QStyleOptionSlider *option, QPainter *painter, const QWidget *widget) const;
@@ -261,6 +262,8 @@ private:
     bool m_customDialogTitleBar = false;
 
     FontConfig m_fontConfig;
+
+    QFont m_groupBoxTitleFont;
 
     CloseButtonColorPolicy m_closeButtonColorPolicy = CloseButtonColorPolicy::AccentColor;
     mutable LC_SkinScaledGeometryProvider m_scaledGeometryProvider;
