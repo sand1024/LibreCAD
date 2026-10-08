@@ -64,11 +64,6 @@ void LC_PropertiesProviderDimAngular::doCreateDimGeometrySection(LC_PropertyCont
 
 void LC_PropertiesProviderDimAngular::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto dim = static_cast<RS_DimAngular*>(entity);
-    const std::list<CommandLinkInfo> commandsContextual = {
-        {
-            tr("Apply dimension style to other dimension"),
-            {RS2::ActionDimStyleApply, tr("Apply style"), tr("Applies dimension style to other dimensions")}
-        }
-    };
+    const std::list<CommandLinkInfo> commandsContextual = {{tr("Apply dimension style to other dimension"), RS2::ActionDimStyleApply}};
     createEntityContextCommands<RS_DimAngular>(commandsContextual, cont, dim, "dimCommandsCtx");
 }

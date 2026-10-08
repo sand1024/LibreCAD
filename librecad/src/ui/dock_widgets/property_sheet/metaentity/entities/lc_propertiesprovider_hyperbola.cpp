@@ -132,11 +132,7 @@ void LC_PropertiesProviderHyperbola::doCreateCalculatedProperties(LC_PropertyCon
 void LC_PropertiesProviderHyperbola::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto ellipse = static_cast<LC_Hyperbola*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Dividing hyperbola or creation of bounding box"),
-            {RS2::ActionModifyCut, tr("Divide"), tr("Divide hyperbola in given point")},
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for hyperbola")}
-        },
+        {tr("Dividing hyperbola or creation of bounding box"), {RS2::ActionModifyCut}, RS2::ActionDrawBoundingBox},
     };
 
     createEntityContextCommands<LC_Hyperbola>(commands, cont, ellipse, "hypCommands");

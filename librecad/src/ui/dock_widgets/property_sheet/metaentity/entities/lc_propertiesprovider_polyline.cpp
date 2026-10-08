@@ -95,35 +95,16 @@ void LC_PropertiesProviderPolyline::doCreateCalculatedProperties(LC_PropertyCont
 void LC_PropertiesProviderPolyline::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto polyline = static_cast<RS_Polyline*>(entity);
     const std::list<CommandLinkInfo> commands = {
+        {tr("Polyline structure expanding"), RS2::ActionPolylineAdd, RS2::ActionPolylineAppend},
+        {tr("Polyline nodes removal"), RS2::ActionPolylineDel, RS2::ActionPolylineDelBetween},
+        {tr("Trimming and exploding polyline"), RS2::ActionPolylineTrim, RS2::ActionPolylineArcsToLines,},
+        {tr("Modification of segments of polyline"), RS2::ActionBlocksExplode, RS2::ActionPolylineChangeSegmentType},
+        {tr("Parallel polyline and changing direction"), RS2::ActionPolylineEquidistant, RS2::ActionModifyRevertDirection},
         {
-            tr("Polyline structure expanding"),
-            {RS2::ActionPolylineAdd, tr("Add node"), tr("Inserts node of polyline")},
-            {RS2::ActionPolylineAppend, tr("Append node"), tr("Append nodes to start or end points of polyline")}
-        },
-        {
-            tr("Polyline nodes removal"),
-            {RS2::ActionPolylineDel, tr("Delete node"), tr("Delete node")},
-            {RS2::ActionPolylineDelBetween, tr("Delete between 2 nodes"), tr("Delete segments between two nodes")}
-        },
-        {
-            tr("Trimming and exploding polyline"),
-            {RS2::ActionPolylineTrim, tr("Trim segments"), tr("Trim segments of polyline")},
-            {RS2::ActionPolylineArcsToLines, tr("Arc segments to lines"), tr("Change arc segments to lines")},
-        },
-        {
-            tr("Modification of segments of polyline"),
-            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes polyline to individual segments")},
-            {RS2::ActionPolylineChangeSegmentType, tr("Change segment type"), tr("Changes type of selected segment")}
-        },
-        {
-            tr("Parallel polyline and changing direction"),
-            {RS2::ActionPolylineEquidistant, tr("Equidistant"), tr("Creates equidistnat polyline")},
-            {RS2::ActionModifyRevertDirection, tr("Revert direction"), tr("Reverst direction of polyline, swapping start and end points")}
-        },
-        {tr("Creation of bounding box or spline"),
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for polyline")},
-            // fixme - will be be more conveient if spline from polyline will be called without context?
-           {RS2::ActionDrawSplineFromPolyline, tr("Spline"), tr("Creates spline from polyline")}
+            tr("Creation of bounding box or spline"),
+            RS2::ActionDrawBoundingBox,
+
+            RS2::ActionDrawSplineFromPolyline
         }
     };
     createEntityContextCommands<RS_Polyline>(commands, cont, polyline, "polylineCommands");

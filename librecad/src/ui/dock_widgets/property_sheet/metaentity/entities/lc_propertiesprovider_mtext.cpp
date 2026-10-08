@@ -147,14 +147,8 @@ void LC_PropertiesProviderMText::doCreateSingleEntityCommands(LC_PropertyContain
     const auto text = static_cast<RS_MText*>(entity);
 
     const std::list<CommandLinkInfo> commands = {
-        {tr("Explode operations"),
-            {RS2::ActionModifyExplodeText, tr("Explode text"), tr("Explodes text into individual letters")},
-            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes text to individual strokes")}
-       },
-        {
-            tr("Other text operations"),
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for text")}
-        }
+        {tr("Explode operations"), RS2::ActionModifyExplodeText, RS2::ActionBlocksExplode},
+        {tr("Other text operations"), RS2::ActionDrawBoundingBox}
     };
 
     createEntityContextCommands<RS_MText>(commands, cont, text, "textCommands");

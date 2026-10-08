@@ -147,8 +147,10 @@ void LC_PropertiesProviderGraphicUCS::createUCSListCommands(LC_PropertyContainer
         }
     };
 
-    createSingleEntityCommand<RS_Graphic>(cont, "ucsStructure", tr("Add UCS..."), tr("New UCS creation"),
-        isUCS ? tr("Remove UCS...") : "",  isUCS ? tr("Invokes removal of current UCS") : "", graphic, clickHandler,
+    LC_ActionDescriptor right = m_widget->getActionDescriptor(RS2::ActionUCSCreate);
+
+    createSingleEntityCommand<RS_Graphic>(cont, "ucsStructure", tr("Add UCS..."), right.tooltip,
+        isUCS ? tr("Remove UCS...") : "",  isUCS ? tr("Remove UCS\n\nInvokes removal of current UCS") : "", graphic, clickHandler,
         tr(""));
 }
 
@@ -172,10 +174,12 @@ void LC_PropertiesProviderGraphicUCS::createUCSOperations(LC_PropertyContainer* 
                 break;
         }
     };
-    createSingleEntityCommand<RS_Graphic>(cont, "ucsOps", tr("By ordinate dimension"),
-                                          tr("Set ucs that corresponds to selected ordinate dimension"),
+
+    auto leftDescriptor = m_widget->getActionDescriptor(RS2::ActionUCSSetByDimOrdinate);
+    createSingleEntityCommand<RS_Graphic>(cont, "ucsOps", leftDescriptor.title,
+                                          leftDescriptor.tooltip,
                                           isUCS ? tr("Rename UCS...") : "",
-                                          isUCS ? tr("Renames UCS (ones with empty names are temporary and are not saved)") : "",
+                                          isUCS ? tr("Rename\n\nRenames UCS (ones with empty names are temporary and are not saved)") : "",
                                           graphic, clickHandler, tr("UCS-related commands"));
 
     // todo - 1) "by ordinate" - may be be valid if there will be quick check for dimensions existence

@@ -94,21 +94,9 @@ void LC_PropertiesProviderLine::doCreateSingleEntityCommands(LC_PropertyContaine
     const auto line = static_cast<RS_Line*>(ent);
 
     const std::list<CommandLinkInfo> commands1 = {
-        {
-            tr("Length and lines join"),
-            {RS2::ActionModifyTrimAmount, tr("Lengthen"), tr("Create parallel line through point")},
-            {RS2::ActionModifyLineJoin, tr("Line Join"), tr("Join two lines")}
-        },
-        {
-            tr("Trimming two lines"),
-            {RS2::ActionModifyTrim, tr("Trim"), tr("Trim line by limiting entity")},
-            {RS2::ActionModifyTrim2, tr("Trim Two"), tr("Trim two lines")}
-        },
-        {
-            tr("Cutting and gap"),
-            {RS2::ActionModifyCut, tr("Divide"), tr("Divide line")},
-            {RS2::ActionModifyLineGap, tr("Line Gap"), tr("Break the line by gap")}
-        }
+        {tr("Length and lines join"), RS2::ActionModifyTrimAmount, RS2::ActionModifyLineJoin},
+        {tr("Trimming two lines"), RS2::ActionModifyTrim, RS2::ActionModifyTrim2},
+        {tr("Cutting and gap"), RS2::ActionModifyCut, RS2::ActionModifyLineGap}
     };
 
     createEntityContextCommands<RS_Line>(commands1, container, line, "lineCommands1");
@@ -129,66 +117,23 @@ void LC_PropertiesProviderLine::doCreateSingleEntityCommands(LC_PropertyContaine
                 break;
         }
     };
-    LC_PropertyProviderUtils::createSingleEntityCommand<RS_Line>(container, "lineActTanStart", tr("Tangental Arc (start)"),
-                                                                   tr("Create tangental arc in start point"),
-                                                                   tr("Tangental Arc (end)"), tr("Create tangental arc in end point"),line,
-                                                                   clickHandler, tr("Creation of tangental arc"));
+    LC_PropertyProviderUtils::createSingleEntityCommand<RS_Line>(container, "lineActTanStart", tr("Tangential Arc (start)"),
+                                                                   tr("Create tangential arc in start point"),
+                                                                   tr("Tangential Arc (end)"), tr("Create tangential arc in end point"),line,
+                                                                   clickHandler, tr("Creation of tangential arc"));
 
     const std::list<CommandLinkInfo> commands2 = {
-        {
-            tr("Creation of parallels or bisector lines"),
-            {RS2::ActionDrawLineParallelThrough, tr("Parallel"), tr("Create parallel line through point")},
-            {RS2::ActionDrawLineBisector, tr("Bisector"), tr("Create bisector between lines")}
-        },
-        {
-            tr("Creating orthogonal or relative angle lines"),
-            {RS2::ActionDrawLineOrthogonal, tr("Orthogonal"), tr("Create line orhtogonal to this line")},
-            {RS2::ActionDrawLineRelAngle, tr("Relative Angle"), tr("Create line with related angle to this line")}
-        },
-        {
-            tr("Creation line from point or tangental orthogonal"),
-            {RS2::ActionDrawLineFromPointToLine, tr("Line from Point"), tr("Create line from point to this line")},
-            {RS2::ActionDrawLineOrthTan, tr("Tangent Ort"), tr("Create orthogonal line that is tangental to other entity")}
-        },
-        {
-            tr("Creation of circle tangental to line"),
-            {RS2::ActionDrawCircleTangental1Entity2Points, tr("Tangential Circle (2 P)"), tr("Create circle tangental 2 points")},
-            {RS2::ActionDrawCircleTangental2Entities1Point, tr("Tangential Circle (2 E, 1 P)"), tr("Create circle tangental by 2 entitites and 1 point")}
-        },
-        {
-            tr("Creation of circle tangental to line"),
-            {RS2::ActionDrawCircleTan3Entities, tr("Tangential Circle (3 E)"), tr("Create circle tangental to 3 entities")},
-            {RS2::ActionDrawCircleTan2EntitiesRadius, tr("Tangential Cicle (2 E, R)"), tr("Create circle tangental by 2 entities and radius")}
-        },
-        {
-            tr("Creation of ellipse or bounding box"),
-            {RS2::ActionDrawEllipseInscribe, tr("Ellipse inscribed"), tr("Create elipse inscribed")},
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Create of bounding box for line")}
-        },
-        {
-            tr("Modification of line with bevel or fillet"),
-            {RS2::ActionModifyBevel, tr("Bevel"), tr("Create a bevel")},
-            {RS2::ActionModifyRound, tr("Round"), tr("Create rounding between line and other entity")}
-        },
-        {
-            tr("Dividing line"),
-            {RS2::ActionDrawSliceDivideLine, tr("Slice/Divide"), tr("Slice or divide a line")},
-            {RS2::ActionModifyBreakDivide, tr("Break/Divide"), tr("Break or divide the line by intesection points")}
-        },
-        {tr("Center line"),
-            {RS2::ActionDrawCenterLine, tr("Centerline"), tr("Create center line between two lines")},
-            {RS2::ActionDrawLineRadiant, tr("Radiant"), tr("Create radiant line from center point")},
-        },
-        {
-            tr("Creation of dimension, aligned or linear"),
-            {RS2::ActionDimAligned, tr("Dim Aligned"), tr("Create aligned dimension for line")},
-            {RS2::ActionDimLinear, tr("Dim Linear"), tr("Create linear dimension for line")}
-        },
-        {
-            tr("Creation of dimension, angular or ordinate"),
-            {RS2::ActionDimAngular, tr("Dim Angular"), tr("Create angular dimension for line")},
-            {RS2::ActionDimOrdinate, tr("Dim Ordinate"), tr("Create ordinate dimension for line")}
-        }
+        {tr("Creation of parallels or bisector lines"), RS2::ActionDrawLineParallelThrough, RS2::ActionDrawLineBisector},
+        {tr("Creating orthogonal or relative angle lines"), RS2::ActionDrawLineOrthogonal, RS2::ActionDrawLineRelAngle},
+        {tr("Creation line from point or tangential orthogonal"), RS2::ActionDrawLineFromPointToLine, RS2::ActionDrawLineOrthTan},
+        {tr("Creation of circle tangential to line"),RS2::ActionDrawCircleTangental1Entity2Points,RS2::ActionDrawCircleTangental2Entities1Point},
+        {tr("Creation of circle tangential to line"), RS2::ActionDrawCircleTan3Entities, RS2::ActionDrawCircleTan2EntitiesRadius},
+        {tr("Creation of ellipse or bounding box"), RS2::ActionDrawEllipseInscribe, RS2::ActionDrawBoundingBox},
+        {tr("Modification of line with bevel or fillet"), RS2::ActionModifyBevel, RS2::ActionModifyRound},
+        {tr("Dividing line"), RS2::ActionDrawSliceDivideLine, RS2::ActionModifyBreakDivide},
+        {tr("Center line"), RS2::ActionDrawCenterLine, RS2::ActionDrawLineRadiant,},
+        {tr("Creation of dimension, aligned or linear"), RS2::ActionDimAligned, RS2::ActionDimLinear},
+        {tr("Creation of dimension, angular or ordinate"), RS2::ActionDimAngular, RS2::ActionDimOrdinate}
     };
 
     createEntityContextCommands<RS_Line>(commands2, container, line, "lineCommands2");
@@ -197,11 +142,6 @@ void LC_PropertiesProviderLine::doCreateSingleEntityCommands(LC_PropertyContaine
 void LC_PropertiesProviderLine::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
     LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
 
-    const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Reverting direction"),
-            {RS2::ActionModifyRevertDirection, tr("Revert direction"), tr("Change direction of line by swapping start and end points")}
-        }
-    };
+    const std::list<CommandLinkInfo> commands = {{tr("Reverting direction"), RS2::ActionModifyRevertDirection}};
     createEntityContextCommands<RS_Line>(commands, propertyContainer, nullptr, "arcMultiCommands", false);
 }

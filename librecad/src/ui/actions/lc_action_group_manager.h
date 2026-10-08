@@ -27,6 +27,7 @@
 #include <QMap>
 #include <QObject>
 
+#include "lc_action.h"
 #include "rs.h"
 
 class LC_ShortcutsManager;
@@ -61,6 +62,8 @@ public:
     bool isActionTypeSetsTheIcon(RS2::ActionType actionType);
     void completeInit();
     QAction* getActionByType(RS2::ActionType actionType) const;
+    LC_ActionDescriptor getActionItem(RS2::ActionType actionType) const;
+    LC_ActionDescriptor getActionItem(QString actionName) const;
     static void associateQActionWithActionType(QAction* action, RS2::ActionType actionType);
     void persist();
     LC_ActionGroup* getGroupByName(const QString &name) const;

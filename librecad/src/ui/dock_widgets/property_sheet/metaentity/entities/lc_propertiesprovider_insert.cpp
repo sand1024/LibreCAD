@@ -122,13 +122,7 @@ void LC_PropertiesProviderInsert::fillComputedProperites([[maybe_unused]]LC_Prop
 }
 
 void LC_PropertiesProviderInsert::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
-    const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Block exploding and editing"),
-            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes insert to individual entities of the block")},
-            {RS2::ActionBlocksEdit, tr("Edit block"), tr("Performs editing of insert's block")}
-        }
-    };
+    const std::list<CommandLinkInfo> commands = {{tr("Block exploding and editing"), RS2::ActionBlocksExplode, RS2::ActionBlocksEdit}};
     const auto insert = static_cast<RS_Insert*>(entity);
     createEntityContextCommands<RS_Insert>(commands, cont, insert, "insertCommands", true);
 }

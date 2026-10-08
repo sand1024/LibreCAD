@@ -185,7 +185,14 @@ void LC_PropertiesSheetPanel::setActiveProperty(const LC_Property* activePropert
                 m_propertyInfoLabel->setText(description);
             }
             else {
-                m_propertyInfoLabel->setText(QStringLiteral("<b>%1</b><br>%2").arg(displayName,description));
+                if (description.contains("\n\n")) {
+                    QString desc = description;
+                    desc.replace("\n\n", "</b><br>");
+                    m_propertyInfoLabel->setText("<b>" + desc);
+                }
+                else {
+                    m_propertyInfoLabel->setText(QStringLiteral("<b>%1</b><br>%2").arg(displayName,description));
+                }
             }
         }
     }

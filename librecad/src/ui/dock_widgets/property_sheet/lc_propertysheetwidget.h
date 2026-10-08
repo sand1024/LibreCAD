@@ -26,6 +26,7 @@
 
 #include <QPointer>
 
+#include "lc_action.h"
 #include "lc_actioncontext.h"
 #include "lc_entitypropertyvaluedelegate.h"
 #include "lc_graphicviewawarewidget.h"
@@ -87,6 +88,7 @@ public:
     void selectedSetDestroyed() override {onDocumentDestroyed();}
     LC_PropertySheetWidgetOptions* getOptions() const {return m_propertySheetOptions.get();}
     void updatePropertiesSheetFont() const;
+    LC_ActionDescriptor getActionDescriptor(RS2::ActionType actionType) const;
 public slots :
     void onViewDestroyed();
     void onUcsChanged(LC_UCS* ucs);
@@ -146,6 +148,7 @@ private:
     QList<RS_Entity*> m_modifiedEntities;
     OperationMode m_operationMode = MODE_SELECTION;
     QString m_activePropertyName;
+    LC_ActionGroupManager* m_actionGroupManager{nullptr};
 };
 
 #endif

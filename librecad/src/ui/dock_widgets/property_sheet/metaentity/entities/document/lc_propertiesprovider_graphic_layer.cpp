@@ -264,9 +264,9 @@ void LC_PropertiesProviderGraphicLayer::createAddRemoveCommands(LC_PropertyConta
                 break;
         }
     };
-    createSingleEntityCommand<RS_Graphic>(cont, "layerStructure", tr("Add layer..."), tr("Invokes creation of the layer"),
+    createSingleEntityCommand<RS_Graphic>(cont, "layerStructure", tr("Add layer..."), tr("Add Layer\n\nInvokes creation of the layer"),
                                           nonZeroLayer ? tr("Remove layer...") : "",
-                                          nonZeroLayer ? tr("Invokes removal of the layer from the drawing") : "", graphic,
+                                          nonZeroLayer ? tr("Remove Layer\n\nInvokes removal of the layer from the drawing") : "", graphic,
                                           clickHandler, tr("Layers list commands"));
 }
 
@@ -302,8 +302,8 @@ void LC_PropertiesProviderGraphicLayer::createLockingCommand(LC_PropertyContaine
                 break;
         }
     };
-    createSingleEntityCommand<RS_Graphic>(cont, "layerLocking", tr("Unlock all layers"), tr("All layers will be unlocked"),
-                                          tr("Lock other layers"), tr("All layers except active one will be locked"), graphic,
+    createSingleEntityCommand<RS_Graphic>(cont, "layerLocking", tr("Unlock All Layers"), tr("All layers will be unlocked"),
+                                          tr("Lock Other Layers"), tr("All layers except active one will be locked"), graphic,
                                           clickHandler, tr("Layers locking commands"));
 }
 
@@ -340,8 +340,8 @@ void LC_PropertiesProviderGraphicLayer::createVisibleCommand(LC_PropertyContaine
                 break;
         }
     };
-    createSingleEntityCommand<RS_Graphic>(cont, "layerHiding", tr("Show all layers"), tr("All layers become visible"),
-                                          tr("Hide other layers"), tr("All layers except active one will be hidden"), graphic,
+    createSingleEntityCommand<RS_Graphic>(cont, "layerHiding", tr("Show All Layers"), tr("All layers become visible"),
+                                          tr("Hide Other Layers"), tr("All layers except active one will be hidden"), graphic,
                                           clickHandler, tr("Layers visibility commands"));
 }
 

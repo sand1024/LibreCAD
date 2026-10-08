@@ -116,26 +116,10 @@ void LC_PropertiesProviderEllipse::doCreateCalculatedProperties(LC_PropertyConta
 void LC_PropertiesProviderEllipse::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto ellipse = static_cast<RS_Ellipse*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Creation of line tangental to ellipse"),
-            {RS2::ActionDrawLineOrthogonal, tr("Orthogonal"), tr("Create line orthogonal to ellipse")},
-            {RS2::ActionDrawLineOrthTan, tr("Tangent Orthogonal"), tr("Create tangental orthogonal line to line")},
-        },
-        {
-            tr("Creation of line tangental to ellipse"),
-            {RS2::ActionDrawLineTangent1, tr("Tangent (P,C)"), tr("Create line tangental to ellipse")},
-            {RS2::ActionDrawLineTangent2, tr("Tangent (C,C)"), tr("Create line tangental for two entitiers")}
-        },
-        {
-            tr("Creation of line with relative angle"),
-            {RS2::ActionDrawLineAngleRel, tr("Relative"), tr("Create line with relative angle to ellipse")},
-            {RS2::ActionModifyRound, tr("Fillet"), tr("Create fillet for ellipse")},
-        },
-        {
-            tr("Dividing ellipse or creation of bounding box"),
-            {RS2::ActionModifyCut, tr("Divide"), tr("Divide ellipse in given point")},
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Create bounding box for ellipse")}
-        },
+        {tr("Creation of line tangential to ellipse"), RS2::ActionDrawLineOrthogonal, RS2::ActionDrawLineOrthTan,},
+        {tr("Creation of line tangential to ellipse"), RS2::ActionDrawLineTangent1, RS2::ActionDrawLineTangent2},
+        {tr("Creation of line with relative angle"), RS2::ActionDrawLineAngleRel, RS2::ActionModifyRound,},
+        {tr("Dividing ellipse or creation of bounding box"), RS2::ActionModifyCut, RS2::ActionDrawBoundingBox},
     };
 
     createEntityContextCommands<RS_Ellipse>(commands, cont, ellipse, "ellipseCommands");
@@ -143,11 +127,6 @@ void LC_PropertiesProviderEllipse::doCreateSingleEntityCommands(LC_PropertyConta
 
 void LC_PropertiesProviderEllipse::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
     LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
-    const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Center marks creation"),
-            {RS2::ActionDrawCenterMark, tr("Center mark"), tr("Create center mark for selected circles, ellipses and arcs")}
-        }
-    };
+    const std::list<CommandLinkInfo> commands = {{tr("Center marks creation"), RS2::ActionDrawCenterMark}};
     createEntityContextCommands<RS_Ellipse>(commands, propertyContainer, nullptr, "ellipseMultiCommands", false);
 }

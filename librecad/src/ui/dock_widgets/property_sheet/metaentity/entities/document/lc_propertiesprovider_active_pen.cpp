@@ -115,40 +115,8 @@ void LC_PropertiesProviderActivePen::createLineWidth(LC_PropertyContainer* conta
     container->addChildProperty(layerLineTypeProperty);
 }
 
-void LC_PropertiesProviderActivePen::createCommands(LC_PropertyContainer* cont) const {
-    auto pickClickHandler = [this]([[maybe_unused]] RS_Document* g, const int linkIndex) {
-        switch (linkIndex) {
-            case 0: {
-                m_actionContext->setCurrentAction(RS2::ActionPenPick, nullptr);
-                break;
-            }
-            case 1: {
-                m_actionContext->setCurrentAction(RS2::ActionPenPickResolved, nullptr);
-                break;
-            }
-            default:
-                break;
-        }
-    };
-    createSingleEntityCommand<RS_Document>(cont, "activePenZoom", tr("Pick"), tr("Pick pen from entity and make it active one"),
-                                           tr("Pick resolved"), tr("Pick resolved pen from entity and make it active"), nullptr,
-                                           pickClickHandler, tr("Pen pick commands"));
 
-    auto applyClickHandler = [this]([[maybe_unused]] RS_Document* g, const int linkIndex) {
-        switch (linkIndex) {
-            case 0: {
-                m_actionContext->setCurrentAction(RS2::ActionPenApply, nullptr);
-                break;
-            }
-            case 1: {
-                m_actionContext->setCurrentAction(RS2::ActionPenSyncFromLayer, nullptr);
-                break;
-            }
-            default:
-                break;
-        }
-    };
-    createSingleEntityCommand<RS_Document>(cont, "activePenZoom", tr("Apply"), tr("Applies active pen to selected entities"),
-                                           tr("From layer"), tr("Pen of active layer becomes active pen"), nullptr, applyClickHandler,
-                                           tr("Pen applying commands"));
+void LC_PropertiesProviderActivePen::createCommands(LC_PropertyContainer* cont) const {
+    createActionBasedCommands(cont, "activePenPick", tr("Pen pick commands"), RS2::ActionPenPick, RS2::ActionPenPickResolved);
+    createActionBasedCommands(cont, "activePenApply", tr("Pen applying commands"), RS2::ActionPenApply, RS2::ActionPenSyncFromLayer);
 }

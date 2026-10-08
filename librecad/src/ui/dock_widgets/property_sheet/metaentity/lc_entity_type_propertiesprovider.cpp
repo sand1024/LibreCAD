@@ -84,32 +84,12 @@ LC_PropertyContainer* LC_EntityTypePropertiesProvider::createMultipleEntityActio
 
 void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, [[maybe_unused]]const QList<RS_Entity*>& list) {
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Moving or rotating operations"),
-            {RS2::ActionModifyMove, tr("Copy"), tr("Move selected entities")},
-            {RS2::ActionModifyRotate, tr("Rotate"), tr("Rotate of selected entities")}
-        },
-        {
-            tr("Duplicating or mirroring"),
-            {RS2::ActionModifyCopy, tr("Copy"), tr("Copy selected entities")},
-            {RS2::ActionModifyDuplicate, tr("Duplicate"), tr("Duplicate selection")},
-        },
-        {
-            tr("Scaling and stretching"),
-            {RS2::ActionModifyScale, tr("Scale"), tr("Selection scaling")},
-            {RS2::ActionModifyStretch, tr("Stretch"), tr("Strech selection")}
-        },
-        {tr("Mirroring"), {RS2::ActionModifyMirror, tr("Mirror"), tr("Mirror selection")}},
-        {
-            tr("Aligning selection"),
-            {RS2::ActionModifyAlign, tr("Align"), tr("Align selection")},
-            {RS2::ActionModifyAlignRef, tr("Align ref"), tr("Align selection by reference points")}
-        },
-        {
-            tr("Aligning selection"),
-            {RS2::ActionModifyMoveRotate, tr("Move rotate"), tr("Move and rotate selection")},
-            {RS2::ActionModifyRotateTwice, tr("Rotate two"), tr("Rotate selection two times")}
-        }
+        {tr("Moving or rotating operations"), RS2::ActionModifyMove, RS2::ActionModifyRotate},
+        {tr("Duplicating or mirroring"), RS2::ActionModifyCopy, RS2::ActionModifyDuplicate,},
+        {tr("Scaling and stretching"), RS2::ActionModifyScale, RS2::ActionModifyStretch},
+        {tr("Mirroring"), RS2::ActionModifyMirror},
+        {tr("Aligning selection"), RS2::ActionModifyAlign, RS2::ActionModifyAlignRef},
+        {tr("Aligning selection"), RS2::ActionModifyMoveRotate, RS2::ActionModifyRotateTwice}
     };
 
     createEntityContextCommands<RS_Document>(commands, propertyContainer, nullptr, "multiEntityCommands", false);
@@ -146,6 +126,7 @@ void LC_EntityTypePropertiesProvider::fillEntityProperties(LC_PropertyContainer*
         fillSelectedSetCommands(container, entitiesList);
     }
 }
+
 
 void LC_EntityTypePropertiesProvider::addCommon(const LC_Property::Names& names, const FunCreateGenericProperty& propertyInit,
                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
@@ -202,9 +183,10 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
             const RS_Selection s(getDocument(), m_actionContext->getViewport());
             s.selectLayer(entity->getLayer(true), select);
         };
+
         LC_PropertyProviderUtils::createSingleEntityCommand<RS_Entity>(containerGeneric, "layerSingleSelect", tr("Select all"),
-                                                                       tr("Select all entities in layer"), tr("Unselect All"),
-                                                                       tr("Unselect all entities in layer"), list.first(),
+                                                                       tr("Select All\n\nSelect all entities in layer"), tr("Unselect All"),
+                                                                       tr("Unselect All\n\nUnselect all entities in layer"), list.first(),
                                                                        layerClickHandler, tr("Selection of layer's entities"));
     }
 
@@ -260,4 +242,28 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                                          }, entity, property);
                   props->push_back(property);
               }, list, containerGeneric);
+}
+
+void LC_EntityTypePropertiesProvider::createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName,
+    QString commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const {
+    auto pickClickHandler = [this, actionType1, actionType2]([[maybe_unused]] RS_Document* g, const int linkIndex) {
+        switch (linkIndex) {
+            case 0: {
+                m_actionContext->setCurrentAction(actionType1, nullptr);
+                break;
+            }
+            case 1: {
+                m_actionContext->setCurrentAction(actionType2, nullptr);
+                break;
+            }
+            default:
+                break;
+        }
+    };
+
+    const auto left = m_widget->getActionDescriptor(actionType1);
+    auto right = m_widget->getActionDescriptor(actionType2);
+
+    LC_PropertyProviderUtils::createSingleEntityCommand<RS_Document>(cont, propertyName, left.title, left.tooltip, right.title,
+                                                                     right.tooltip, nullptr, pickClickHandler, commonDescription);
 }

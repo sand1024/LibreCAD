@@ -132,6 +132,7 @@ bool LC_ActionGroupManager::isActionTypeSetsTheIcon([[maybe_unused]]RS2::ActionT
 
 void LC_ActionGroupManager::associateQActionWithActionType(QAction *action, const RS2::ActionType actionType){
     action->setProperty("RS2:actionType", actionType);
+
 }
 
 void LC_ActionGroupManager::persist() {
@@ -169,6 +170,16 @@ void LC_ActionGroupManager::completeInit(){
 
 QAction* LC_ActionGroupManager::getActionByType(const RS2::ActionType actionType) const {
     return m_actionsByTypes.value(actionType);
+}
+
+LC_ActionDescriptor LC_ActionGroupManager::getActionItem(RS2::ActionType actionType) const {
+    const auto action = getActionByType(actionType);
+    return LC_ActionKeys::getActionItem(action);
+}
+
+LC_ActionDescriptor LC_ActionGroupManager::getActionItem(QString actionName) const {
+    const auto action = getActionByName(actionName);
+    return LC_ActionKeys::getActionItem(action);
 }
 
 const LC_ActionGroup* LC_ActionGroupManager::findGroup(const QString& nameOrToken) const {

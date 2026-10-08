@@ -114,6 +114,7 @@ protected:
     template <class EntityClass>
     void createEntityContextCommands(const std::list<CommandLinkInfo>& links, LC_PropertyContainer* container, EntityClass* entity, const QString& namePrefix, bool setContextEntity = true);
 
+    void createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName, QString commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const;
 
     template <class EntityClass>
     void doCreateDelegatedVector(const LC_Property::Names& names,
@@ -646,10 +647,44 @@ void LC_EntityTypePropertiesProvider::createEntityContextCommands(const std::lis
     int idx = 0;
     for (const auto &i: links) {
         QString propertyName = QString("%1_%2").arg(namePrefix).arg(idx);
-        createEntityContextCommand(container, propertyName, i.leftLink.actionType, i.leftLink.title, i.leftLink.tooltip,
-                i.rightLink.actionType, i.rightLink.title, i.rightLink.tooltip, entity, i.description, setContextEntity);
+
+        auto leftActionType = i.leftLink.actionType;
+        QString leftLinkTitle;
+        QString leftLinkTooltip;
+
+        const bool leftImplicit = i.leftLink.implicit;
+        if (leftImplicit) {
+            const auto actionItem = m_widget->getActionDescriptor(leftActionType);
+            leftLinkTitle = actionItem.title;
+            leftLinkTooltip = actionItem.tooltip;
+        }
+        else {
+            leftLinkTitle = i.leftLink.title;
+            leftLinkTooltip = i.leftLink.tooltip;
+        }
+
+        auto rightActionType = i.rightLink.actionType;
+        bool rightImplicit = i.rightLink.implicit;
+
+        QString rightLinkTitle;
+        QString rightLinkTooltip;
+
+        if (rightImplicit) {
+            const auto actionItem = m_widget->getActionDescriptor(rightActionType);
+            rightLinkTitle = actionItem.title;
+            rightLinkTooltip = actionItem.tooltip;
+        }
+        else {
+            rightLinkTitle = i.rightLink.title;
+            rightLinkTooltip = i.rightLink.tooltip;
+        }
+
+        createEntityContextCommand(container, propertyName, leftActionType, leftLinkTitle, leftLinkTooltip,
+                                   rightActionType, rightLinkTitle, rightLinkTooltip, entity, i.description, setContextEntity);
         idx++;
     }
 }
+
+
 
 #endif

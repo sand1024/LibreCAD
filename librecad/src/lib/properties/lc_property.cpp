@@ -103,8 +103,13 @@ void LC_Property::setNames(const Names& names) {
     }
     QString compoundName = parentName + "$" +ownName;
     setName(compoundName);
-    setDisplayName(names.displayName);
-    setDescription(names.description);
+    auto displayName = names.displayName;
+    auto desc = names.description;
+    setDisplayName(displayName);
+    if (!desc.contains("\n\n")) {
+        desc = displayName + "\n\n"+desc;
+     }
+    setDescription(desc);
 }
 
 void LC_Property::setName(const QString& name) {

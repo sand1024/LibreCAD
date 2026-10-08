@@ -131,21 +131,9 @@ void LC_PropertiesProviderSpline::doCreateCalculatedProperties(LC_PropertyContai
 void LC_PropertiesProviderSpline::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto spline = static_cast<RS_Spline*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Spline points adding"),
-            {RS2::ActionDrawSplinePointAdd, tr("Insert point"), tr("Insert point of spline")},
-            {RS2::ActionDrawSplinePointAppend, tr("Append point"), tr("Append point to start or end points of spline")}
-        },
-        {
-            tr("Spline points removal"),
-            {RS2::ActionDrawSplinePointRemove, tr("Remove point"), tr("Remove point of spline")},
-            {RS2::ActionDrawSplinePointDelTwo, tr("Delete between 2"), tr("Delete points between two points of spline")}
-        },
-        {
-            tr("Exploding spline and creating rounding box"),
-            {RS2::ActionDrawSplineExplode, tr("Explode"), tr("Explode spline to lines")},
-            {RS2::ActionDrawBoundingBox, tr("Rounding box"), tr("Create bounding box around spline")}
-        }
+        {tr("Spline points adding"), RS2::ActionDrawSplinePointAdd, RS2::ActionDrawSplinePointAppend},
+        {tr("Spline points removal"), RS2::ActionDrawSplinePointRemove, RS2::ActionDrawSplinePointDelTwo},
+        {tr("Exploding spline and creating rounding box"), RS2::ActionDrawSplineExplode, RS2::ActionDrawBoundingBox}
     };
     createEntityContextCommands<RS_Spline>(commands, cont, spline, "splineCommands");
 }
@@ -153,11 +141,6 @@ void LC_PropertiesProviderSpline::doCreateSingleEntityCommands(LC_PropertyContai
 void LC_PropertiesProviderSpline::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
     LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
 
-    const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Reverting direction"),
-            {RS2::ActionModifyRevertDirection, tr("Revert direction"), tr("Changes direction of spline by swapping start and end points")}
-        }
-    };
+    const std::list<CommandLinkInfo> commands = {{tr("Reverting direction"), RS2::ActionModifyRevertDirection}};
     createEntityContextCommands<RS_Spline>(commands, propertyContainer, nullptr, "splineMultiCommands", false);
 }

@@ -181,6 +181,15 @@ namespace LC_PropertyProviderUtils {
         container->addChildProperty(property);
     }
 
+
+    inline QString updateTooltip(const QString& linkTitle, const QString& linkTooltip) {
+        QString tooltipLeft = linkTooltip;
+        if (!linkTooltip.contains("\n\n") && !linkTooltip.startsWith("<")) {
+            tooltipLeft = linkTitle  + "\n\n" + linkTooltip;
+        }
+        return tooltipLeft;
+    }
+
     template <typename EntityClass>
     void createSingleEntityCommand(LC_PropertyContainer* container, const QString& propertyName, const QString& linkTitle,
                                                       const QString& linkTooltip, const QString& linkTitleRight,
@@ -191,10 +200,12 @@ namespace LC_PropertyProviderUtils {
         property->setDisplayName("");
         LC_PropertyViewDescriptor viewDescriptor("Link");
         viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = linkTitle;
-        viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT] = linkTooltip;
+        const QString tooltipLeft = updateTooltip(linkTitle, linkTooltip);
+        viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT] = tooltipLeft;
         if (!linkTitleRight.isEmpty()) {
             viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE_RIGHT] = linkTitleRight;
-            viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_RIGHT] = linkTooltipRight;
+            const QString tooltipRight = updateTooltip(linkTitleRight, linkTooltipRight);
+            viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_RIGHT] = tooltipRight;
         }
         property->setEntity(entity);
         auto wrappingClickHandler = [entity, clickHandler](const LC_PropertyAction*, int linkIndex) {

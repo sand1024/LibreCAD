@@ -43,9 +43,11 @@ public:
             RS2::ActionType actionType;
             QString title;
             QString tooltip;
+            bool implicit = false;
 
             LinkPartInfo(){title = "";actionType = RS2::ActionNone, tooltip = "";}
             LinkPartInfo(RS2::ActionType type, const QString& title, const QString tooltip):actionType{type}, title{title}, tooltip{tooltip} {}
+            LinkPartInfo(RS2::ActionType type):actionType{type}, implicit(true) {}
         };
         QString description;
         LinkPartInfo leftLink;

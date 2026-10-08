@@ -27,24 +27,14 @@
 #include <QAction>
 #include <QElapsedTimer>
 
-namespace LC_ActionKeys {
-    inline const char* PROP_DESCRIPTION = "lc_description";
-    inline constexpr const char* PROP_READ_ONLY_SHORTCUT   = "_lc_read_only_shortcut";
-    inline constexpr const char* PROP_DATA_ONLY_ACTION     = "_lc_data_only_action";
-    inline constexpr const char* PROP_CUSTOM_SHORTCUT_TEXT = "_lc_custom_shortcut_text";
+struct LC_ActionDescriptor {
+    QIcon icon;
+    QString title;
+    QString description;
+    QString tooltip;
+};
 
-    inline bool isReadOnly(const QAction* a) {
-        return a->property(PROP_READ_ONLY_SHORTCUT).toBool();
-    }
-
-    inline bool isReadOnlyAction(const QAction* a) {
-        return a->property(PROP_DATA_ONLY_ACTION).toBool();
-    }
-
-
-
-
-}
+// fixme - sand - add typed properties?? readonly, action type?
 
 class LC_Action: public QAction {
     Q_OBJECT
@@ -77,5 +67,35 @@ protected:
     QElapsedTimer m_elapsedTimer;
     QString m_description;
 };
+
+namespace LC_ActionKeys {
+    inline const char* PROP_DESCRIPTION = "lc_description";
+    inline constexpr const char* PROP_READ_ONLY_SHORTCUT   = "_lc_read_only_shortcut";
+    inline constexpr const char* PROP_DATA_ONLY_ACTION     = "_lc_data_only_action";
+    inline constexpr const char* PROP_CUSTOM_SHORTCUT_TEXT = "_lc_custom_shortcut_text";
+
+    inline bool isReadOnly(const QAction* a) {
+        return a->property(PROP_READ_ONLY_SHORTCUT).toBool();
+    }
+
+    inline bool isReadOnlyAction(const QAction* a) {
+        return a->property(PROP_DATA_ONLY_ACTION).toBool();
+    }
+
+    inline LC_ActionDescriptor getActionItem(const QAction* a) {
+        LC_ActionDescriptor result;
+        if (a!= nullptr) {
+            result.title = a->text().remove('&').trimmed(); // fixme - sand - caching? Actually, it could be system wide
+            result.tooltip = a->toolTip();
+            result.icon = a->icon();
+            // fixme - sand - check whether we'll need description too if it's necessary
+            // auto*  lc_action = dynamic_cast<const LC_Action*>(a);
+            // if (lc_action != nullptr) {
+                // result.description = lc_action->description();
+            // }
+        }
+        return result;
+    }
+}
 
 #endif

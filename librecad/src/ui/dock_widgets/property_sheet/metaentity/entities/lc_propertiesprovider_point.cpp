@@ -43,16 +43,8 @@ void LC_PropertiesProviderPoint::doCreateSingleEntityCommands(LC_PropertyContain
     const auto text = static_cast<RS_Point*>(entity);
 
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Selection operations"),
-            {RS2::ActionSelectPoints, tr("Select points"), tr("Selecting points within selected area")},
-            {RS2::ActionDrawPointsMiddle, tr("Middle points"), tr("Draw points in the middle of line between two points")}
-        },
-        {
-            tr("Other point operations"),
-            {RS2::ActionDrawPointsLine, tr("Line of points"), tr("Creation of several points along specified direction")},
-            {RS2::ActionDrawPointsLattice, tr("Lattice of points"), tr("Creation of lattice of points")}
-        }
+        {tr("Selection operations"), RS2::ActionSelectPoints, RS2::ActionDrawPointsMiddle},
+        {tr("Other point operations"), RS2::ActionDrawPointsLine, RS2::ActionDrawPointsLattice}
     };
 
     createEntityContextCommands<RS_Point>(commands, cont, text, "pointCommands", false);
@@ -61,16 +53,7 @@ void LC_PropertiesProviderPoint::doCreateSingleEntityCommands(LC_PropertyContain
 void LC_PropertiesProviderPoint::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
     LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
 
-    const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Point operations"),
-            {
-                RS2::ActionPasteToPoints,
-                tr("Paste to points"),
-                tr("Perform paste from clipboard, inserting copied content into positions of selected points")
-            }
-        }
-    };
+    const std::list<CommandLinkInfo> commands = {{tr("Point operations"), RS2::ActionPasteToPoints}};
 
     createEntityContextCommands<RS_Point>(commands, propertyContainer, nullptr, "pointCommands", false);
 }

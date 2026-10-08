@@ -126,7 +126,7 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
             QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(LC_SettingsPagesDrawing::Dimensions);
         };
         LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles.."),
-                                                                       tr("Invokes dimension styles management UI"), "",
+                                                                       tr("Manage Styles\n\nInvokes dimension styles management UI"), "",
                                                                        "", nullptr,
                                                                        clickHandler, tr("Dimension styles management"));
     }
@@ -1770,7 +1770,7 @@ void LC_PropertiesProviderDimBase::doCreateSelectedSetCommands(LC_PropertyContai
     const std::list<CommandLinkInfo> commands = {
         {
             tr("Regenerate dimensions"),
-            {RS2::ActionDimRegenerate, tr("Dim Regenerate"), tr("Regenerate dimensions")},
+            RS2::ActionDimRegenerate
             // {RS2::ActionDimeStyles, tr("Dimension Styles"), tr("Uses aligned dimension as base line and creates other dimensions")}
         }
     };

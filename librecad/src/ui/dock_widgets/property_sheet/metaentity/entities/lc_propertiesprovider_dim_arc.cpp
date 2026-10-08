@@ -37,11 +37,6 @@ void LC_PropertiesProviderDimArc::doCreateDimGeometrySection(LC_PropertyContaine
 
 void LC_PropertiesProviderDimArc::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto dim = static_cast<LC_DimArc*>(entity);
-    const std::list<CommandLinkInfo> commandsContextual = {
-        {
-            tr("Apply dimension style to other dimension"),
-            {RS2::ActionDimStyleApply, tr("Apply style"), tr("Applies dimension style to other dimensions")}
-        }
-    };
+    const std::list<CommandLinkInfo> commandsContextual = {{tr("Apply dimension style to other dimension"), RS2::ActionDimStyleApply}};
     createEntityContextCommands<LC_DimArc>(commandsContextual, cont, dim, "dimCommandsCtx");
 }

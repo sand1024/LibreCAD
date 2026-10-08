@@ -584,7 +584,7 @@ void LC_ActionFactory::createModifyActions(QMap<QString, QAction *> &map, QActio
 
 void LC_ActionFactory::createPenActionsUncheckable(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group, {
-        {"PenSyncFromLayer", RS2::ActionPenSyncFromLayer, tr("Update Current Pen by Active Layer' Pen"), ":/icons/back.lci", tr("Synchronizes current pen attributes to match the active layer.")}
+        {"PenSyncFromLayer", RS2::ActionPenSyncFromLayer, tr("Set Active Layer' Pen Current"), ":/icons/back.lci", tr("Synchronizes current pen attributes to match the active layer pen settings.")}
     });
 }
 void LC_ActionFactory::createPenActions(QMap<QString, QAction *> &map, QActionGroup *group) const {
@@ -957,8 +957,8 @@ void LC_ActionFactory::createViewActionsUncheckable(QMap<QString, QAction *> &ma
     createActionHandlerActions(map, group, {
         {"ZoomIn",      RS2::ActionZoomIn,      tr("Zoom &In"),      ":/icons/zoom_in.lci",      tr("Zooms viewport closer in to magnify drawing details.")},
         {"ZoomOut",     RS2::ActionZoomOut,     tr("Zoom &Out"),     ":/icons/zoom_out.lci",     tr("Zooms viewport further out to view a larger drawing area.")},
-        {"ZoomAuto",    RS2::ActionZoomAuto,    tr("&Auto Zoom"),    ":/icons/zoom_auto.lci",    tr("Fits and centers all drawing entities within the viewport window.")},
-        {"ZoomPrevious",RS2::ActionZoomPrevious,tr("Previous &View"),":/icons/zoom_previous.lci",tr("Restores the previous viewport zoom magnification and pan center.")},
+        {"ZoomAuto",    RS2::ActionZoomAuto,    tr("Zoom &Auto"),    ":/icons/zoom_auto.lci",    tr("Fits and centers all drawing entities within the viewport window.")},
+        {"ZoomPrevious",RS2::ActionZoomPrevious,tr("Zoom &Previous"),":/icons/zoom_previous.lci",tr("Restores the previous viewport zoom magnification and pan center.")},
         {"ZoomRedraw",  RS2::ActionZoomRedraw,  tr("&Redraw"),       ":/icons/redraw.lci",       tr("Forces complete redraw and graphics cache refresh.")}
     });
 }

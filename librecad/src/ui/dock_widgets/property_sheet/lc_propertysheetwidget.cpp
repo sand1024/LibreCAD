@@ -72,7 +72,7 @@ void LC_PropertySheetWidget::setupSelectionButton(QToolButton* selectionButton, 
 
 LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, LC_ActionGroupManager* actionGroupManager)
     : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext},
-      m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()} {
+      m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()}, m_actionGroupManager(actionGroupManager) {
     const auto viewFactory = LC_PropertyViewFactory::staticInstance();
     LC_PropertyViewRegistrator registrator(*viewFactory);
     registrator.registerViews();
@@ -131,6 +131,13 @@ void LC_PropertySheetWidget::updatePropertiesSheetFont() const {
     ui->propertySheet->setFontSize(fontPointsSize);
 }
 
+LC_ActionDescriptor LC_PropertySheetWidget::getActionDescriptor(RS2::ActionType actionType) const {
+    if (m_actionGroupManager != nullptr) {
+        return m_actionGroupManager->getActionItem(actionType);
+    }
+    return LC_ActionDescriptor();
+}
+
 void LC_PropertySheetWidget::loadCollapsedSections() {
     const QString sectionsList = CFG_WidgetPropertySheet::o_CollapsedSections;
     if (!sectionsList.isEmpty()) {
@@ -152,6 +159,7 @@ void LC_PropertySheetWidget::saveCollapsedSections() {
 void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
     if (gv != m_graphicView) {
         // an edit that was begun and not applied yet (its 30 ms timer is pending) belongs to the drawing that is being left
+        m_toolOptionsPropertiesContainerProvider = nullptr;
         forgetEditedEntities();
     }
     // remove tracking of relative point from old view

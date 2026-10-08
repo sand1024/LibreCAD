@@ -93,27 +93,10 @@ void LC_PropertiesProviderGraphicViews::createViewCommands(LC_PropertyContainer*
     };
 
     createSingleEntityCommand<RS_Graphic>(cont, "viewSave", tr("Save current view..."),
-                                          tr("Create view for current zoom and offset of drawing"),
+                                          tr("Save View\n\nCreate view for current zoom and offset of drawing"),
                                           "", "", graphic, saveClickHandler,
                                           tr("Create view for current zoom and offset of drawing"));
 
-    auto zoomClickHandler = [this]([[maybe_unused]] RS_Graphic* g, const int linkIndex) {
-        switch (linkIndex) {
-            case 0: {
-                //adding ucs
-                m_actionContext->setCurrentAction(RS2::ActionZoomAuto, nullptr);
-                break;
-            }
-            case 1: {
-                m_actionContext->setCurrentAction(RS2::ActionZoomPrevious, nullptr);
-                break;
-            }
-            default:
-                break;
-        }
-    };
-    createSingleEntityCommand<RS_Graphic>(cont, "viewsZoom", tr("Auto zoom"),
-                                          tr("Adjusts drawing zoom and view to ensure that all content of drawing is visible"),
-                                          tr("Previous View..."), tr("Positions drawing to previous view"), graphic, zoomClickHandler,
-                                          tr("Zoom related commands"));
+
+    createActionBasedCommands(cont, "viewsZoom", tr("Zoom related commands"), RS2::ActionZoomAuto, RS2::ActionZoomPrevious);
 }

@@ -116,6 +116,6 @@ void LC_PropertiesProviderGraphicWorkspace::createWorkspaceCommands(LC_PropertyC
     };
 
     createSingleEntityCommand<RS_Graphic>(cont, "workspaceSave", tr("Save workspace..."),
-                                          tr("Save current workspace for later use"), "", "", nullptr, saveClickHandler,
+                                          tr("Save Workspace\n\nSave current workspace for later use"), "", "", nullptr, saveClickHandler,
                                           tr("Saving current workspace for later use"));
 }

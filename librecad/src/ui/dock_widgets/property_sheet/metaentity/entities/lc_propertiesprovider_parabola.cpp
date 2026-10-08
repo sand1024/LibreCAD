@@ -61,11 +61,7 @@ void LC_PropertiesProviderParabola::fillComputedProperites([[maybe_unused]]LC_Pr
 void LC_PropertiesProviderParabola::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto ellipse = static_cast<LC_Parabola*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {
-            tr("Dividing parabola or creation of bounding box"),
-            {RS2::ActionModifyCut, tr("Divide"), tr("Divide parabola in given point")},
-            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for parabola")}
-        },
+        {tr("Dividing parabola or creation of bounding box"), RS2::ActionModifyCut, RS2::ActionDrawBoundingBox},
     };
 
     createEntityContextCommands<LC_Parabola>(commands, cont, ellipse, "parCommands");
