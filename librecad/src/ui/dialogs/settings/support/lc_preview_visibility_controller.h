@@ -20,8 +20,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-//
-// Created by sand1 on 29/08/2026.
-//
+#ifndef LC_PREVIEW_VISIBILITY_CONTROLLER_H
+#define LC_PREVIEW_VISIBILITY_CONTROLLER_H
 
-#include "lc_settings_manager_base.h"
+#include <functional>
+
+class LC_PreviewVisibilityController {
+public:
+    virtual ~LC_PreviewVisibilityController() = default;
+    virtual bool isPreviewVisible() const = 0;
+    virtual void setOnPreviewVisibilityChanged(std::function<void(bool)> callback) = 0;
+};
+
+#endif

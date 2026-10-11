@@ -38,6 +38,7 @@
 #include "lc_settings_render.h"
 #include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
+#include "lc_viewport_preview_bottom_bar.h"
 #include "rs_settings.h"
 
 namespace {
@@ -226,6 +227,13 @@ LC_PresetManagerViewport::LC_PresetManagerViewport(LC_RepositoryViewportTheme* r
     loadPreset(m_activeKey);
 }
 
+LC_PresetManagerViewport::~LC_PresetManagerViewport() {
+    if (m_bottomBar != nullptr && m_bottomBar->parent() == nullptr) {
+        delete m_bottomBar;
+        m_bottomBar = nullptr;
+    }
+}
+
 LC_PresetManagerUIStrings LC_PresetManagerViewport::presetStrings() const {
     LC_PresetManagerUIStrings s;
     s.defaultPresetName = tr("Default Theme");
@@ -253,6 +261,18 @@ LC_PresetManagerUIStrings LC_PresetManagerViewport::presetStrings() const {
     s.discardConfirmTitle = tr("Discard Changes");
     s.discardConfirmMessage = tr("You have unsaved modifications to visual scheme '%1'.\n\nAre you sure you want to discard these changes?");
     return s;
+}
+
+QWidget* LC_PresetManagerViewport::getSharedPreviewWidget() {
+    return m_previewWidget;
+}
+
+
+QWidget* LC_PresetManagerViewport::getSharedBottomWidget() {
+    if (m_bottomBar == nullptr) {
+        m_bottomBar = new LC_ViewportPreviewBottomBar();
+    }
+    return m_bottomBar;
 }
 
 bool LC_PresetManagerViewport::resetToDefaults(const QString& key) {

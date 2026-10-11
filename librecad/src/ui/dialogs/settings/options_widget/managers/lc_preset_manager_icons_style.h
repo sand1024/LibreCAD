@@ -47,12 +47,13 @@ public:
     void applyTransientStyle();
 
     bool isFusionGated() const override {return false;}
-
+    bool supportsAccessibilityCheck() const override {return true;}
 signals:
     void configLoaded();
     void variantChanged(bool isDark);
 
 protected:
+
     void resetToDefaults(IconStyleConfig& config) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;
     void onPostApplyPreset() override;

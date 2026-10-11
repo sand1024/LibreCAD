@@ -2409,8 +2409,6 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_relative_zero.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_input_assistant.h
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_input_assistant.cpp
-     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual.h
-     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_appearance.h
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_appearance.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_behavior.h
@@ -2536,7 +2534,6 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.cpp
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.h
-     librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.cpp
      librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.h
      librecad/src/ui/styling/fusion_skin/lc_repository_palette.cpp
      librecad/src/ui/styling/fusion_skin/lc_repository_palette.h
@@ -2666,6 +2663,9 @@ set (SHARED_SOURCES
      "librecad/src/ui/main/init/lc_group_names.h"
      librecad/src/ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.cpp
      librecad/src/ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.h
+     librecad/src/ui/dialogs/settings/options_general/support/lc_viewport_preview_bottom_bar.cpp
+     librecad/src/ui/dialogs/settings/options_general/support/lc_viewport_preview_bottom_bar.h
+     librecad/src/ui/dialogs/settings/support/lc_preview_visibility_controller.h
 )
 
 set (MUPARSER_SOURCES

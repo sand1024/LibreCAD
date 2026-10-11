@@ -46,6 +46,7 @@ public:
     void generateTwoColorTheme(const QColor& surface, const QColor& accent);
     void generateHighContrastTheme(const QColor& baseColor);
     void activatePreviewTab(const QString& tag);
+    bool supportsAccessibilityCheck() const override {return true;}
 
     signals:
         void configLoaded(const PaletteConfig& config);

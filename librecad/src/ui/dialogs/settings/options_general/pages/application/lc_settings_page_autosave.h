@@ -35,10 +35,10 @@ public:
     explicit LC_SettingsPageAutosave(QObject* parent = nullptr);
     ~LC_SettingsPageAutosave() override;
 
-private:
+protected:
     void setupUi() override;
     void setupBehavior() override;
-    void setupBindings();
+    void setupBindings() override;
     std::unique_ptr<Ui::LC_SettingsPageAutosave> ui;
 };
 

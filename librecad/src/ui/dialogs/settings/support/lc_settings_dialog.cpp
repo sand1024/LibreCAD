@@ -36,6 +36,7 @@
 
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_management_bar.h"
+#include "lc_preview_visibility_controller.h"
 
 namespace {
     class LC_SettingsDlgInnerData {
@@ -113,23 +114,6 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
 
 LC_SettingsDialog::~LC_SettingsDialog() = default;
 
-void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) const {
-    QWidget* preview = page->getPreviewWidget();
-    if (preview == nullptr) {
-        if (auto* manager = getPresetManagerForPage(page->id())) {
-            preview = manager->getSharedPreviewWidget();
-        }
-    }
-    if (preview != nullptr) {
-        auto* livePreview = dynamic_cast<LC_LivePreview*>(preview);
-        if (livePreview != nullptr) {
-            livePreview->updateLivePreview();
-        }
-        else {
-            preview->update(); // Forces instant redraw on screen
-        }
-    }
-}
 
 void LC_SettingsDialog::showEvent(QShowEvent* event) {
     LC_Dialog::showEvent(event);
@@ -544,21 +528,26 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         }
     }
 
+    // Resolve preview widget early so both bottom bar and preview layout can reference it
+    QWidget* targetPreview = resolvePreviewWidget(page);
+
     // 3. Dynamic Shared Bottom Mounting (e.g. Preview Controls Bar)
     auto* bottomLayout = ui->wContainerBottom->layout();
     const QWidget* currentBottom = (bottomLayout->count() > 0) ? bottomLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetBottom = page->getBottomWidget();
-    if (targetBottom == nullptr && manager != nullptr) {
-        // Re-evaluates supportsPreviewWindow() and supportsAccessibilityCheck() for the active manager
+
+    // Mount shared bottom bar only if the page belongs to the manager AND participates in preview
+    if (targetBottom == nullptr && manager != nullptr && page->acceptsSharedPreview()) {
         targetBottom = manager->getSharedBottomWidget();
-    } else if (targetBottom == nullptr && page->acceptsSharedPreview() && currentBottom != nullptr) {
-        targetBottom = const_cast<QWidget*>(currentBottom);
     }
 
     if (targetBottom != currentBottom) {
         if (bottomLayout->count() > 0) {
             const QLayoutItem* item = bottomLayout->takeAt(0);
             if (item->widget() != nullptr) {
+                if (auto* prevController = dynamic_cast<LC_PreviewVisibilityController*>(item->widget())) {
+                    prevController->setOnPreviewVisibilityChanged(nullptr);
+                }
                 item->widget()->hide();
                 bottomLayout->removeWidget(item->widget());
             }
@@ -573,31 +562,32 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         else {
             ui->wContainerBottom->setVisible(false);
         }
-    } else if (targetBottom != nullptr) {
-        // Force refresh visibility of sub-controls even if container pointer is reused
+    }
+    else if (targetBottom != nullptr) {
         targetBottom->show();
         ui->wContainerBottom->setVisible(true);
-    } else {
+    }
+    else {
         ui->wContainerBottom->setVisible(false);
     }
 
+    // Connect embedded preview controller if the bottom bar supports it
+    auto* previewController = dynamic_cast<LC_PreviewVisibilityController*>(targetBottom);
+    if (previewController != nullptr) {
+        previewController->setOnPreviewVisibilityChanged([this](bool visible) {
+            setEmbeddedPreviewVisible(visible);
+        });
+    }
     // 5. Embedded Preview Layout Handling & Symmetrical Category Cleanup
     auto* previewLayout = ui->wContainerPreview->layout();
     QWidget* currentPreview = (previewLayout->count() > 0) ? previewLayout->itemAt(0)->widget() : nullptr;
-    QWidget* targetPreview = page->getPreviewWidget();
-    if (!targetPreview && manager != nullptr) {
-        if (page->acceptsSharedPreview()) {
-            targetPreview = manager->getSharedPreviewWidget();
-        }
-    }
 
     if (currentPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(currentPreview);
         if (livePreview != nullptr && previousPage != nullptr && previousPage != page) {
-            // Clean up using the PREVIOUS category ID being left
             livePreview->cleanupPreviewForContentCategory(previousPage->id());
-            }
         }
+    }
 
     if (targetPreview != currentPreview) {
         if (previewLayout->count() > 0) {
@@ -611,20 +601,19 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
 
         if (targetPreview != nullptr) {
             previewLayout->addWidget(targetPreview);
-            targetPreview->show();
-            ui->wContainerPreview->setVisible(true);
-            ui->splPreview->setSizes(QList<int>{500, 250});
-        }
-        else {
-            ui->wContainerPreview->setVisible(false);
-            ui->splPreview->setSizes(QList<int>{750, 0});
         }
     }
 
-    if (targetPreview != nullptr) {
+    bool shouldShowPreview = (targetPreview != nullptr);
+    if (shouldShowPreview && previewController != nullptr) {
+        shouldShowPreview = previewController->isPreviewVisible();
+    }
+
+    setEmbeddedPreviewVisible(shouldShowPreview);
+
+    if (shouldShowPreview && targetPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(targetPreview);
         if (livePreview != nullptr) {
-            // Update using the NEW category ID being activated
             livePreview->updatePreviewForContentCategory(pageId);
         }
     }
@@ -682,6 +671,23 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     }
 
     emit categoryChanged(pageId);
+}
+
+void LC_SettingsDialog::setEmbeddedPreviewVisible(bool visible) {
+    if (m_activePage == nullptr) {
+        return;
+    }
+
+    QWidget* targetPreview = resolvePreviewWidget(m_activePage);
+    const bool shouldShow = visible && (targetPreview != nullptr);
+
+    ui->wContainerPreview->setVisible(shouldShow);
+    applyPreviewSplitterSizes(shouldShow);
+
+    if (shouldShow) {
+        targetPreview->show();
+        doUpdatePageLivePreview(m_activePage);
+    }
 }
 
 void LC_SettingsDialog::updateGatingState() {
@@ -1026,9 +1032,11 @@ void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool 
         }
         ui->splMain->setSizes(QList<int>() << treeViewWidth << 10000);
 
-        const int previewWidth = CFG_InnerData.o_PreviewWidth;
-        const int otherWidth = ui->splPreview->width() - previewWidth;
-        ui->splPreview->setSizes(QList<int>() << previewWidth << otherWidth);
+        int previewWidth = CFG_InnerData.o_PreviewWidth;
+        if (previewWidth < 150) {
+            previewWidth = 250;
+        }
+        m_savedPreviewWidth = previewWidth;
     }
     const QString searchHistory = CFG_InnerData.o_SearchHistory;
     if (!searchHistory.isEmpty()) {
@@ -1048,7 +1056,7 @@ void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool 
         pageToActivate = CFG_InnerData.o_ActiveCategory;
     }
     else {
-        pageToActivate = m_pendingPageIdToOpen; // explicitly requested
+        pageToActivate = m_pendingPageIdToOpen;
     }
     selectPage(pageToActivate);
 }
@@ -1142,6 +1150,55 @@ void LC_SettingsDialog::forEachPage(const std::function<void(LC_SettingsPageInte
     for (const auto& page : m_pages) {
         if (page != nullptr) {
             callback(page.get());
+        }
+    }
+}
+
+QWidget* LC_SettingsDialog::resolvePreviewWidget(LC_SettingsPageInterface* page) const {
+    if (page == nullptr) {
+        return nullptr;
+    }
+    QWidget* preview = page->getPreviewWidget();
+    if (preview == nullptr && page->acceptsSharedPreview()) {
+        LC_PresetManagerInterface* manager = getPresetManagerForPage(page->id());
+        if (manager != nullptr) {
+            preview = manager->getSharedPreviewWidget();
+        }
+    }
+    return preview;
+}
+
+void LC_SettingsDialog::applyPreviewSplitterSizes(bool visible) {
+    if (visible) {
+        int previewWidth = m_savedPreviewWidth;
+        if (previewWidth < 150) {
+            previewWidth = 250;
+        }
+        int leftWidth = ui->splPreview->width() - previewWidth;
+        if (leftWidth < 200) {
+            leftWidth = 500;
+            previewWidth = 250;
+        }
+        ui->splPreview->setSizes(QList<int>{leftWidth, previewWidth});
+    }
+    else {
+        const QList<int> currentSizes = ui->splPreview->sizes();
+        if (currentSizes.size() >= 2 && currentSizes[1] > 50) {
+            m_savedPreviewWidth = currentSizes[1];
+        }
+        ui->splPreview->setSizes(QList<int>{ui->splPreview->width(), 0});
+    }
+}
+
+void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) const {
+    QWidget* preview = resolvePreviewWidget(page);
+    if (preview != nullptr) {
+        auto* livePreview = dynamic_cast<LC_LivePreview*>(preview);
+        if (livePreview != nullptr) {
+            livePreview->updateLivePreview();
+        }
+        else {
+            preview->update();
         }
     }
 }

@@ -27,6 +27,7 @@
 #include "lc_preset_manager_config_base.h"
 #include "lc_repository_viewport_theme.h"
 
+class LC_ViewportPreviewBottomBar;
 class QWidget;
 
 class LC_PresetManagerViewport : public LC_PresetManagerConfigBase<LC_ViewportThemeConfig, LC_RepositoryViewportTheme> {
@@ -35,7 +36,7 @@ public:
     explicit LC_PresetManagerViewport(LC_RepositoryViewportTheme* repository,
                                       QObject* parent = nullptr,
                                       QWidget* previewWidget = nullptr);
-    ~LC_PresetManagerViewport() override = default;
+    ~LC_PresetManagerViewport() override;
 
     LC_PresetManagerUIStrings presetStrings() const override;
 
@@ -43,6 +44,8 @@ public:
     bool isPresetModified() override;
     bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
 
+    QWidget* getSharedPreviewWidget() override;
+    QWidget* getSharedBottomWidget() override;
 protected:
     void prepareWorkingConfigForSave() override;
     void onPostSavePreset(const QString& outKey) override;
@@ -57,6 +60,7 @@ protected:
 private:
     QWidget* m_previewWidget = nullptr;
     bool m_registryDiverged = false;
+    mutable LC_ViewportPreviewBottomBar* m_bottomBar = nullptr;
 };
 
 #endif

@@ -1,5 +1,5 @@
-
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -20,26 +20,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_SNAP_VISUAL_H
-#define LC_SETTINGS_PAGE_SNAP_VISUAL_H
+#ifndef LC_VIEWPORT_PREVIEW_BOTTOM_BAR_H
+#define LC_VIEWPORT_PREVIEW_BOTTOM_BAR_H
 
-#include "lc_settings_page_base.h"
+#include <QWidget>
 
-namespace Ui { class LC_SettingsPageSnapVisual; }
+#include "lc_preview_visibility_controller.h"
 
-class LC_SettingsPageSnapVisual : public LC_SettingsPageBase {
+class QCheckBox;
+class QHBoxLayout;
+
+namespace Ui {
+    class LC_ViewportPreviewBottomBar;
+}
+
+class LC_ViewportPreviewBottomBar : public QWidget, public LC_PreviewVisibilityController {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageSnapVisual(QObject* parent = nullptr);
-    ~LC_SettingsPageSnapVisual() override;
+    explicit LC_ViewportPreviewBottomBar(QWidget* parent = nullptr);
+    ~LC_ViewportPreviewBottomBar();
 
-protected:
-    void setupUi() override;
-    void setupBehavior() override;
-    void setupBindings() override;
+    bool isPreviewChecked() const;
+    void setPreviewChecked(bool checked);
+
+    bool isPreviewVisible() const override;
+    void setOnPreviewVisibilityChanged(std::function<void(bool)> callback) override;
+
+    signals:
+        void previewToggled(bool checked);
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageSnapVisual> ui;
+    std::unique_ptr<Ui::LC_ViewportPreviewBottomBar> ui;
+    std::function<void(bool)> m_visibilityCallback;
 };
 
 #endif

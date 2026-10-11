@@ -64,6 +64,8 @@ public:
     LC_PresetManagerInterface* getPresetManagerForPage(const QString& pageId) const;
     void forEachPresetManager(const std::function<void(LC_PresetManagerInterface*)>& callback) const;
     void forEachPage(const std::function<void(LC_SettingsPageInterface*)>& callback) const;
+    QWidget* resolvePreviewWidget(LC_SettingsPageInterface* page) const;
+    void applyPreviewSplitterSizes(bool visible);
     void accept() override;
     void reject() override;
     LC_SettingsPageInterface* activePage() const { return m_activePage; }
@@ -108,6 +110,7 @@ private slots:
     void onSearchReturnPressed();
     QModelIndex findFirstVisibleIndex(const QModelIndex& parent = QModelIndex()) const; 
     void onCategorySelected(const QModelIndex& index);
+    void setEmbeddedPreviewVisible(bool visible);
     void onNavigateBack();
     void onNavigateForward();
     void onDirectAcceptRequested(bool saveModifiedPages, int customResultCode);
@@ -147,7 +150,7 @@ private:
     bool m_wasDirectlyAccepted = false;
     bool m_saveModifiedPages = true;
     int m_customResultCode = 0;
-
+    int m_savedPreviewWidth = 250;
     QString m_pendingPageIdToOpen;
 
 };
