@@ -124,7 +124,7 @@ void LC_Dialog::showEvent(QShowEvent *event) {
     QDialog::showEvent(event);
     if (!m_positionLoaded) {
 
-        // fixme - sane - review how it will work with lazy loading of settings pages??? Add separate method
+        // fixme - sand - review how it will work with lazy loading of settings pages??? Add separate method, probably move to styling?
         for (auto* spinBox : findChildren<QAbstractSpinBox*>()) {
             if (qobject_cast<QSpinBox*>(spinBox) || qobject_cast<QDoubleSpinBox*>(spinBox)) {
                 new SpinBoxSelectionFilter(spinBox);
