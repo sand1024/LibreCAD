@@ -34,6 +34,7 @@
 #include <QByteArray>
 #include <QFile>
 #include <QFileInfo>
+#include <QHash>
 #include <QObject>
 #include <QString>
 #include <QStringConverter>
@@ -253,12 +254,36 @@ RS2::LineWidth widthFromNumber(double v) {
     return best;
 }
 
+// Reject C0 controls and reserved symbol-name punctuation, but keep C1
+// characters preserved by the DBF decoder's Latin-1 fallback.
+bool notInSymbolName(const QChar c) {
+    static const QString illegal = QStringLiteral("<>/\\\":;?*|,=`");
+    return c.unicode() < 0x20 || illegal.contains(c);
+}
+
+// Bound session-wide RS_Pen name interning to 256 identities per import.
+// Reuse the first spelling for ASCII-case and NFC-equivalent names.
+constexpr int kMaxLineTypeNames = 256;
+
+bool keepLineTypeName(QString& name, QHash<QString, QString>& kept) {
+    const QString fold = LC_LineTypeNames::foldName(name);
+    const auto known = kept.constFind(fold);
+    if (known != kept.constEnd()) {
+        name = known.value();
+        return true;
+    }
+    if (kept.size() >= kMaxLineTypeNames) return false;
+    kept.insert(fold, name);
+    return true;
+}
+
 // Build an RS_Pen from resolved fields for one DBF record.  If no styling
 // fields are present, returns std::nullopt so callers can leave the entity
-// at ByLayer defaults.
+// at ByLayer defaults.  @p lineTypeNames holds the names the import has kept.
 std::optional<RS_Pen> penFromRecord(DBFHandle dbf, int record,
                                     const ResolvedFields& rf,
-                                    const QString& codepage) {
+                                    const QString& codepage,
+                                    QHash<QString, QString>& lineTypeNames) {
     if (!dbf || record < 0) return std::nullopt;
     bool any = false;
     RS_Pen pen{RS_Color(RS2::FlagByLayer), RS2::WidthByLayer, RS2::LineByLayer};
@@ -269,10 +294,16 @@ std::optional<RS_Pen> penFromRecord(DBFHandle dbf, int record,
         any = true;
     }
     if (rf.ltype >= 0 && !DBFIsAttributeNULL(dbf, record, rf.ltype)) {
-        const QString name = decodeDbfString(
-            DBFReadStringAttribute(dbf, record, rf.ltype), codepage);
+        // Trim DBF padding before replacing reserved characters.
+        QString name = decodeDbfString(
+            DBFReadStringAttribute(dbf, record, rf.ltype), codepage).trimmed();
+        std::replace_if(name.begin(), name.end(), notInSymbolName,
+                        QLatin1Char('_'));
         if (!name.isEmpty()) {
-            pen.setLineType(LC_LineTypeNames::nameToLineType(name));
+            if (keepLineTypeName(name, lineTypeNames))
+                pen.setLineTypeName(name);
+            else
+                pen.setLineType(LC_LineTypeNames::nameToLineType(name));
             any = true;
         }
     }
@@ -285,8 +316,12 @@ std::optional<RS_Pen> penFromRecord(DBFHandle dbf, int record,
     return pen;
 }
 
-// Ensure a layer with the given name exists on @p g; return it.
-RS_Layer* ensureLayer(RS_Graphic& g, const QString& name) {
+// Ensure a layer with the given name exists on @p g; return it.  A character
+// DXF cannot hold in a symbol name becomes '_': AutoCAD refuses a layer with
+// one, and the DXF writer fails on a line break.
+RS_Layer* ensureLayer(RS_Graphic& g, QString name) {
+    std::replace_if(name.begin(), name.end(), notInSymbolName,
+                    QLatin1Char('_'));
     if (RS_Layer* existing = g.findLayer(name)) return existing;
     auto* layer = new RS_Layer(name);
     // Default pen — ByBlock via RS_Layer's default constructor.
@@ -441,6 +476,7 @@ bool RS_FilterSHP::fileImport(RS_Graphic& g, const QString& file,
 
     LC_ShpImportOptions opts;
     const ResolvedFields rf = resolveFields(dbf.get(), opts);
+    QHash<QString, QString> lineTypeNames;
 
     RS_Layer* defaultLayer = ensureLayer(g, "0");
     int emitted = 0, skipped = 0;
@@ -462,7 +498,7 @@ bool RS_FilterSHP::fileImport(RS_Graphic& g, const QString& file,
         }
 
         const std::optional<RS_Pen> pen =
-            penFromRecord(dbf.get(), i, rf, codepage);
+            penFromRecord(dbf.get(), i, rf, codepage, lineTypeNames);
 
         switch (rec->nSHPType) {
         case SHPT_POINT:

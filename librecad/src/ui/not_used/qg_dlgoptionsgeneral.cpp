@@ -631,9 +631,9 @@ void QG_DlgOptionsGeneral::init(){
         QString autosaveFileNamePrefix = LC_GET_STR("AutosaveFilePrefix", "#");
         cbAutoSaveFileNamePrefix->setCurrentText(autosaveFileNamePrefix);
 
-        QString backupFileNameSuffix = LC_GET_STR("BackupFileSuffix", "#");
+        QString backupFileNameSuffix = LC_GET_STR("BackupFileSuffix", "~");
         cbBackupFileSuffix->setCurrentText(backupFileNameSuffix);
-
+        cbHideBackupFiles->setChecked(LC_GET_BOOL("HideBackupFiles", true));
 
         cbAutoBackup->setChecked(autoBackup);
         cbAutoSaveTime->setEnabled(autoBackup);
@@ -1026,6 +1026,7 @@ void QG_DlgOptionsGeneral::ok(){
 
             const QString backupFileNameSuffix = cbBackupFileSuffix->currentText();
             LC_SET("BackupFileSuffix", backupFileNameSuffix);
+            LC_SET("HideBackupFiles", cbHideBackupFiles->isChecked());
 
             LC_SET("UseQtFileOpenDialog", cbUseQtFileOpenDialog->isChecked());
             LC_SET("WheelScrollInvertH", cbWheelScrollInvertH->isChecked());

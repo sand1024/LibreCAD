@@ -249,5 +249,33 @@
       "generator": "scripts/make_shp_fixtures.py",
       "expect": "SHPReadObject returns null (nParts=15M > 10M cap)"
     }
+  ],
+  "generated_linetype": [
+    {
+      "name": "ltype_point.shp",
+      "shp_size": 408,
+      "has_shx": true,
+      "has_prj": false,
+      "generator": "scripts/make_shp_fixtures.py",
+      "expect": "each DBF LTYPE value reaches its point's pen"
+    },
+    {
+      "name": "ltype_many.shp",
+      "shp_size": 7408,
+      "has_shx": true,
+      "has_prj": false,
+      "generator": "scripts/make_shp_fixtures.py",
+      "expect": "the first 256 LTYPE names stay on the pen, in any case"
+    }
+  ],
+  "generated_layer": [
+    {
+      "name": "layer_point.shp",
+      "shp_size": 380,
+      "has_shx": true,
+      "has_prj": false,
+      "generator": "scripts/make_shp_fixtures.py",
+      "expect": "each DBF LAYER value becomes a legal layer name"
+    }
   ]
 }

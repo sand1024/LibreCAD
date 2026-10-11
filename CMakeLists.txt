@@ -1495,6 +1495,8 @@ set (SHARED_SOURCES
      librecad/src/ui/components/layouts/lc_flexlayout.cpp
      librecad/src/ui/components/layouts/lc_flexlayout.h
      librecad/src/ui/components/lc_plaintextedit.h
+     librecad/src/ui/components/lc_textedit.h
+     librecad/src/ui/components/lc_textedit.cpp
      librecad/src/ui/components/pen/qg_widgetpen.cpp
      librecad/src/ui/components/pen/qg_widgetpen.h
      librecad/src/ui/components/relative_position_assistant/lc_relative_position_editing_widget.h
@@ -2692,6 +2694,12 @@ set (MUPARSER_SOURCES
 )
 
 # Static library from shared sources
+add_subdirectory(libraries/qtbidi)
+set_source_files_properties(
+    librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+    librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp PROPERTIES
+    INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/libraries/qtbidi")
+
 qt_add_library (librecad_lib STATIC
                 ${MUPARSER_SOURCES}
                 ${SHARED_SOURCES}
@@ -2709,6 +2717,7 @@ target_include_directories (librecad_lib PRIVATE
 )
 
 target_link_libraries (librecad_lib PRIVATE
+                       lcqtbidi
                        Qt6::Core Qt6::Widgets Qt6::Gui Qt6::PrintSupport Qt6::Svg Qt6::Network
 )
 set_property (TARGET librecad_lib PROPERTY AUTOUIC_OPTIONS --connections string)
@@ -3006,12 +3015,24 @@ if (BUILD_TESTS)
     set(LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE
         librecad/src/test/lc_testsettingsisolation.cpp)
 
+    # Gives each test process a temporary directory of its own (see
+    # librecad/src/test/lc_testtempdirectory.h). It works through a static
+    # object too and needs neither Qt nor the application library, so the
+    # parser-only executables list it among their sources as well. Its test
+    # starts a second process through Qt; besides the complete executable, the
+    # two lanes that CI runs on Linux and Windows list it.
+    set(LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE
+        librecad/src/test/lc_testtempdirectory.cpp)
+    set(LIBRECAD_TEST_TEMP_DIRECTORY_TEST_SOURCE
+        librecad/src/test/lc_testtempdirectorytests.cpp)
+
     # The complete test executable is a milestone/release target. Keep it out
     # of the default build so ordinary incremental application and library
     # builds do not compile every unrelated test translation unit.
     qt_add_executable(librecad_tests
 	EXCLUDE_FROM_ALL
 	${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+	${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
 	# this is needed to allow testing methods used by main()
 	# main() is excluded when BUILD_TEST=ON
 	${MAIN_SOURCES}
@@ -3049,6 +3070,7 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_text_bidi_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/text_bidi_regression_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_text_alignment_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_container_ownership_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_copy_semantics_tests.cpp
@@ -3164,6 +3186,7 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/settings/tests/rs_settings_migration_tests.cpp
         librecad/src/lib/engine/settings/tests/lc_settings_init_tests.cpp
         librecad/src/lib/engine/settings/tests/lc_settings_isolation_tests.cpp
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_TEST_SOURCE}
         librecad/src/lib/engine/document/tests/lc_graphic_unit_tests.cpp
         librecad/src/lib/gui/tests/rs_graphicview_close_tests.cpp
         librecad/src/lib/gui/tests/lc_grid_tests.cpp
@@ -3181,6 +3204,7 @@ if (BUILD_TESTS)
         librecad/src/ui/main/tests/lc_mdiwindow_close_tests.cpp
         librecad/src/ui/main/tests/lc_docklayout_tests.cpp
         librecad/src/ui/components/pen/tests/qg_widgetpen_tests.cpp
+        librecad/src/ui/dialogs/tests/lc_dialog_tests.cpp
         librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreewidget_tests.cpp
         librecad/src/plugins/tests/qc_actiongetselect_tests.cpp
         librecad/src/lib/gui/tests/lc_graphicviewrenderer_tests.cpp
@@ -3202,6 +3226,7 @@ if (BUILD_TESTS)
 
     # Include directories for rs_math.h and other dependencies
     target_include_directories (librecad_tests PRIVATE
+        $<TARGET_PROPERTY:librecad_lib,INCLUDE_DIRECTORIES>
                                 ${SHARED_INCLUDES}
                                 "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include"
                                 # (shapelib include comes via SHARED_INCLUDES)
@@ -3223,6 +3248,35 @@ if (BUILD_TESTS)
     target_compile_features (librecad_tests PRIVATE cxx_std_17)
     # compiling time defines
     target_compile_definitions(librecad_tests PRIVATE BUILD_TESTS=1 DWGSUPPORT _USE_MATH_DEFINES LIBRECAD_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}" LIBRECAD_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/librecad/src/lib/filters/tests/testdata")
+
+    add_executable(librecad_text_bidi_tests EXCLUDE_FROM_ALL
+        librecad/src/main/lc_release_label.cpp
+        librecad/src/lib/engine/document/entities/tests/text_bidi_regression_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/rs_text_bidi_tests.cpp)
+    target_include_directories(librecad_text_bidi_tests PRIVATE
+        ${SHARED_INCLUDES} $<TARGET_PROPERTY:librecad_lib,INCLUDE_DIRECTORIES>)
+    target_link_libraries(librecad_text_bidi_tests PRIVATE
+        librecad_lib Catch2::Catch2WithMain Qt6::Widgets)
+    target_compile_features(librecad_text_bidi_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_bidi_tests PRIVATE
+        DWGSUPPORT _USE_MATH_DEFINES
+        LIBRECAD_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+
+    # Exercise the shared algorithm without a GUI application or font database.
+    add_executable(librecad_text_bidi_headless_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp)
+    target_include_directories(librecad_text_bidi_headless_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_bidi_headless_tests PRIVATE
+        lcqtbidi Catch2::Catch2WithMain Qt6::Core)
+
+    add_executable(librecad_bidi_conformance EXCLUDE_FROM_ALL
+        libraries/qtbidi/tests/unicode_conformance.cpp)
+    target_include_directories(librecad_bidi_conformance PRIVATE libraries/qtbidi)
+    target_link_libraries(librecad_bidi_conformance PRIVATE lcqtbidi Qt6::Core)
 
     # Keep a small structural DWG/DXF lane for the incremental implementation
     # loop. The complete target remains the milestone and release gate; this
@@ -3253,6 +3307,7 @@ if (BUILD_TESTS)
         EXCLUDE_FROM_ALL
         ${MAIN_SOURCES}
         ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         ${LIBRECAD_FAST_TEST_SOURCES}
     )
     target_include_directories(librecad_fast_tests PRIVATE ${SHARED_INCLUDES})
@@ -3300,6 +3355,8 @@ if (BUILD_TESTS)
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
         ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_TEST_SOURCE}
         ${LIBRECAD_DWG_FAST_TEST_SOURCES}
     )
     set_target_properties(librecad_dwg_fast_tests PROPERTIES
@@ -3336,6 +3393,7 @@ if (BUILD_TESTS)
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
         ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         librecad/src/lib/filters/tests/dwg_write_smoke_tests.cpp
     )
     set_target_properties(librecad_dwg_write_fast_tests PROPERTIES
@@ -3379,6 +3437,8 @@ if (BUILD_TESTS)
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
         ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_TEST_SOURCE}
         ${LIBRECAD_DXF_FAST_TEST_SOURCES}
     )
     set_target_properties(librecad_dxf_fast_tests PROPERTIES
@@ -3418,6 +3478,7 @@ if (BUILD_TESTS)
             EXCLUDE_FROM_ALL
             librecad/src/main/lc_release_label.cpp
             ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+            ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
             "${source}"
         )
         set_target_properties(${target} PROPERTIES
@@ -3461,6 +3522,9 @@ if (BUILD_TESTS)
         librecad_draw_fast_tests
         librecad/src/lib/creation/tests/lc_action_draw_fast_tests.cpp)
     add_librecad_filter_micro_test(
+        librecad_snapper_tests
+        librecad/src/lib/actions/tests/lc_snappercatchtests.cpp)
+    add_librecad_filter_micro_test(
         librecad_snake_action_tests
         librecad/src/lib/creation/tests/lc_action_draw_line_snake_tests.cpp)
     target_include_directories(librecad_snake_action_tests PRIVATE
@@ -3489,6 +3553,7 @@ if (BUILD_TESTS)
         EXCLUDE_FROM_ALL
         librecad/src/main/lc_release_label.cpp
         ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         librecad/src/main/console_command_utils.cpp
         librecad/src/main/tests/console_command_utils_tests.cpp
     )
@@ -3628,7 +3693,8 @@ if (BUILD_TESTS)
     target_include_directories(libdxfrw_dwg_writer_test_core PRIVATE ${SHARED_INCLUDES})
 
     function(add_libdxfrw_fast_test target)
-        add_executable(${target} EXCLUDE_FROM_ALL ${ARGN})
+        add_executable(${target} EXCLUDE_FROM_ALL
+            ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE} ${ARGN})
         set_target_properties(${target} PROPERTIES
             AUTOMOC OFF
             AUTOUIC OFF
@@ -3661,6 +3727,7 @@ if (BUILD_TESTS)
                            ${LIBDXFRW_SLOW_DWG_TEST_SOURCES})
 
     add_executable(libdxfrw_dwg_handseed_tests EXCLUDE_FROM_ALL
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp)
     set_target_properties(libdxfrw_dwg_handseed_tests PROPERTIES
         AUTOMOC OFF
@@ -3681,6 +3748,7 @@ if (BUILD_TESTS)
     )
 
     add_executable(libdxfrw_dwg_layout_validation_tests EXCLUDE_FROM_ALL
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         librecad/src/lib/filters/tests/dwg_layout_validation_tests.cpp)
     set_target_properties(libdxfrw_dwg_layout_validation_tests PROPERTIES
         AUTOMOC OFF

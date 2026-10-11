@@ -814,7 +814,7 @@ void LC_ActionFactory::createViewActions(QMap<QString, QAction*>& map, QActionGr
 void LC_ActionFactory::createLayerActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const {
     createActionHandlerActions(map, group, {
         {"LayersDefreezeAll",       RS2::ActionLayersDefreezeAll,       tr("&Show all layers"),          ":/icons/visible_all.lci",          tr("Makes all drawing layers visible.")},
-        {"LayersFreezeAll",         RS2::ActionLayersFreezeAll,         tr("&Hide all layers"),          ":/icons/not_visible_all.lci",      tr("Hides all drawing layers except active layer.")},
+        {"LayersFreezeAll",         RS2::ActionLayersFreezeAll,         tr("&Hide non-active layers"),   ":/icons/not_visible_all.lci",      tr("Hides all drawing layers except active layer.")},
         {"LayersUnlockAll",         RS2::ActionLayersUnlockAll,         tr("&Unlock all"),               ":/icons/unlocked.lci",             tr("Unlocks all drawing layers for editing.")},
         {"LayersLockAll",           RS2::ActionLayersLockAll,           tr("&Lock all"),                 ":/icons/locked.lci",               tr("Locks all drawing layers to prevent accidental modification.")},
         {"LayersAdd",               RS2::ActionLayersAdd,               tr("&Add Layer"),                ":/icons/add.lci",                  tr("Creates a new layer in the drawing.")},
