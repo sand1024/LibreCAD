@@ -31,6 +31,7 @@ namespace CFG_Defaults {
     inline const LC_Setting<QString> o_Unit(&Group, "Unit", "Millimeter");
     inline const LC_Setting<int> o_AutoSaveTime(&Group, "AutoSaveTime", 5);
     inline const LC_Setting<bool> o_AutoBackupDocument(&Group, "AutoBackupDocument", true);
+    inline const LC_Setting<bool> o_MarkBackFilesAsHidden(&Group, "HideBackupFiles", false);
     inline const LC_Setting<QString> o_AutosaveFilePrefix(&Group, "AutosaveFilePrefix", "#");
     inline const LC_Setting<QString> o_BackupFileSuffix(&Group, "BackupFileSuffix", "~");
     inline const LC_Setting<bool> o_UseQtFileOpenDialog(&Group, "UseQtFileOpenDialog", true);

@@ -46,7 +46,7 @@ namespace {
     QString backupFilePath(const QString& path) {
 #ifndef Q_OS_WIN
         const QFileInfo info(path);
-        if (LC_GET_ONE_BOOL("Defaults", "HideBackupFiles", true) && !info.fileName().startsWith('.')) {
+        if (CFG_Defaults::o_MarkBackFilesAsHidden.get() && !info.fileName().startsWith('.')) {
             return info.dir().filePath("." + info.fileName());
         }
 #endif
@@ -55,7 +55,7 @@ namespace {
 
     void hideBackupFile([[maybe_unused]] const QString& path) {
 #ifdef Q_OS_WIN
-        if (!LC_GET_ONE_BOOL("Defaults", "HideBackupFiles", true)) {
+        if (!CFG_Defaults::o_MarkBackFilesAsHidden) {
             return;
         }
         QString nativePath = QDir::toNativeSeparators(QDir::cleanPath(QFileInfo(path).absoluteFilePath()));

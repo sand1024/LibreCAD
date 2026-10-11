@@ -29,18 +29,6 @@
       <string>Auto-Save Drawings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_save">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="cbAutoBackup">
-        <property name="toolTip">
-         <string>Auto Save
-
-When set, LibreCAD will automatically generate a backup of your current drawing.</string>
-        </property>
-        <property name="text">
-         <string>Auto save backup each</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -53,6 +41,16 @@ When set, LibreCAD will automatically generate a backup of your current drawing.
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>The Autosave functionality is a crucial data-protection feature designed to prevent the loss of work caused by unexpected software crashes, system failures, or power outages.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item row="3" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbBackupFileSuffix">
@@ -110,6 +108,52 @@ Suffix of backup file name (added to the name of opened file).</string>
           <string>.lcb</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="cbAutoSaveTime">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Auto Save Duration
+
+Time between automatic saving of the document in minutes.</string>
+        </property>
+        <property name="suffix">
+         <string> minutes</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_38">
+        <property name="text">
+         <string>Auto-save file name prefix:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAutoSaveFileNamePrefix</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbAutoBackup">
+        <property name="toolTip">
+         <string>Auto Save
+
+When set, LibreCAD will automatically generate a backup of your current drawing.</string>
+        </property>
+        <property name="text">
+         <string>Auto save backup each</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -170,47 +214,16 @@ Prefix of created autosave name (added to the name of edited file).</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="cbAutoSaveTime">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="cbHideBackupFiles">
         <property name="toolTip">
-         <string>Auto Save Duration
+         <string>Hide Files
 
-Time between automatic saving of the document in minutes.</string>
+if selected, created backup files will be 
+marked as hidden on file system level.</string>
         </property>
-        <property name="suffix">
-         <string> minutes</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_38">
         <property name="text">
-         <string>Auto-save file name prefix:</string>
-        </property>
-        <property name="buddy">
-         <cstring>cbAutoSaveFileNamePrefix</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>The Autosave functionality is a crucial data-protection feature designed to prevent the loss of work caused by unexpected software crashes, system failures, or power outages.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+         <string>Hide backup and autosave files</string>
         </property>
        </widget>
       </item>
@@ -232,13 +245,13 @@ Time between automatic saving of the document in minutes.</string>
    </item>
   </layout>
  </widget>
-    <customwidgets>
-        <customwidget>
-            <class>LC_ContentAdjustableComboBox</class>
-            <extends>QComboBox</extends>
-            <header location="global">lc_content_adjustable_combo_box.h</header>
-        </customwidget>
-    </customwidgets>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ContentAdjustableComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">lc_content_adjustable_combo_box.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

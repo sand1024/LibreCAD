@@ -46,7 +46,8 @@ void LC_SettingsPageAutosave::setupBindings() {
     using namespace CFG_Defaults;
 
     bindBoolean({
-        { ui->cbAutoBackup, o_AutoBackupDocument }
+        { ui->cbAutoBackup, o_AutoBackupDocument },
+        { ui->cbHideBackupFiles, o_MarkBackFilesAsHidden}
     });
 
     bindInt({
