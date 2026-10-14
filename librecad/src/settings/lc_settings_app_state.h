@@ -35,7 +35,12 @@ namespace CFG_AppState {
     inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
     inline const LC_Setting<QString> o_ActiveWidgetsScheme(&Group, "ActiveWidgetsScheme", DEFAULT_THEME_KEY);
 
+    inline const LC_Setting<QString> o_ActiveDraftingMetricsName(&Group, "ActiveDraftingMetricsName", DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveDraftingThemeName(&Group, "ActiveDraftingThemeName", DEFAULT_THEME_KEY);
+
     inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
+
+
 }
 
 #endif

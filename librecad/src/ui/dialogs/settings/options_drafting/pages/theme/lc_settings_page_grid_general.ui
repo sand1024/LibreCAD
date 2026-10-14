@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageGridGeneral</class>
+ <widget class="QWidget" name="LC_SettingsPageGridGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>649</width>
+    <height>569</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>The Grid is a visual pattern of lines or dots that acts as a digital sheet of graph paper. It provides draftspersons with a sense of scale, distance, and alignment directly in the drawing area. 
+Meta-Grid group the background grid into distinct, readable blocks. It acts exactly like the major divisions on engineering graph paper to provide immediate spatial awareness, allowing to quickly judge large distances and scale without manually measuring.
+When paired with Grid Snap, it locks the cursor to precise increments for fast, accurate drafting.
+</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbGridType">
+     <property name="title">
+      <string>Grid Display Mode</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cbGridType">
+        <property name="toolTip">
+         <string>Grid Type
+
+Choose between drawing points (dots) 
+or continuous lines for the grid.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Orthogonal Points</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Orthogonal Lines</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblGridType">
+        <property name="text">
+         <string>Grid style:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbGridDisplay">
+     <property name="title">
+      <string>Visibility and Isometric Rules</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblMetaMajor">
+        <property name="text">
+         <string>Major grid line every:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="sbGridMetaMajorEvery">
+        <property name="toolTip">
+         <string>Meta-grid Density
+
+Controls the frequency of major grid lines compared to minor grid lines.
+Number of minor grid cells between each major meta-grid subdivision.</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

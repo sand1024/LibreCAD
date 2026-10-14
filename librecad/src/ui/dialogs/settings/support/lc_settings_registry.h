@@ -51,6 +51,7 @@ public:
         QString title = "Settings";
         bool useGlobalTransaction = true;
         bool expandAllCategories = false;
+        bool supportsExpandCollapseCategories = true;
         QString icon = "";
     };
 

@@ -56,11 +56,20 @@ namespace {
 }
 
 
-LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
+LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId, bool supportsCollapseExpandCategories)
     : LC_Dialog(parent, "Settings." + dialogId), ui(std::make_unique<Ui::LC_SettingsDialog>()), m_dialogId(dialogId) {
     ui->setupUi(this);
 
     ui->saSettingsScrollArea->setWidgetResizable(true);
+    ui->saSettingsScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->saSettingsScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+    // Prevent QStackedWidget from imposing the widest page's size on the scroll area
+    ui->swContent->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+
+    // Watch viewport resize events to clamp content width dynamically
+    ui->saSettingsScrollArea->viewport()->installEventFilter(this);
+
     ui->splMain->setChildrenCollapsible(false);
     ui->splMain->setStretchFactor(0, 0);
     ui->splMain->setStretchFactor(1, 3);
@@ -110,6 +119,31 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
     connect(ui->presetBar, &LC_PresetManagementBar::dirtyStateChanged, this, [this](bool) {
         updateGatingState();
     });
+
+    ui->splPreview->setChildrenCollapsible(false);
+    ui->splPreview->setStretchFactor(0, 1);
+    ui->splPreview->setStretchFactor(1, 0);
+
+
+    connect(ui->splPreview, &QSplitter::splitterMoved, this, [this](int, int) {
+         if (ui->wContainerPreview->isVisible()) {
+             const QList<int> sizes = ui->splPreview->sizes();
+             if (sizes.size() >= 2 && sizes[1] > 50) {
+                 m_savedPreviewWidth = sizes[1];
+             }
+         }
+     });
+
+    if (supportsCollapseExpandCategories) {
+        connect(ui->tbCollapseAllCategories, &QToolButton::clicked, [this](bool)-> void{
+             ui->tvCategoriesTree->collapseAll();
+        });
+        connect(ui->tbCategoriesExpandAllCategories, &QToolButton::clicked, [this](bool)-> void{
+          ui->tvCategoriesTree->expandAll();
+     });
+    }
+    ui->tbCategoriesExpandAllCategories->setVisible(supportsCollapseExpandCategories);
+    ui->tbCollapseAllCategories->setVisible(supportsCollapseExpandCategories);
 }
 
 LC_SettingsDialog::~LC_SettingsDialog() = default;
@@ -321,59 +355,118 @@ void LC_SettingsDialog::buildCategoryTree() {
     m_treeModel->clear();
     m_treeItemMapByPageId.clear();
 
-    // Copy raw page pointers and perform stable sort by priority weights
-    std::vector<LC_SettingsPageInterface*> sortedPages;
+    std::vector<LC_SettingsPageInterface*> pending;
     for (const auto& page : m_pages) {
-        sortedPages.push_back(page.get());
+        if (page != nullptr) {
+            pending.push_back(page.get());
+        }
     }
-    std::stable_sort(sortedPages.begin(), sortedPages.end(), [](const LC_SettingsPageInterface* a, const LC_SettingsPageInterface* b) {
-        return a->sortWeight() < b->sortWeight();
-    });
 
-    //  Adjacency List Tree Building:
-    // Resolves parent-child hierarchies dynamically without hardcoded path parsing
-    std::vector<LC_SettingsPageInterface*> pending = sortedPages;
     bool insertedAny = true;
-
     while (!pending.empty() && insertedAny) {
-        // LC_ERR << "Tree Building Pass +++";
         insertedAny = false;
         for (auto it = pending.begin(); it != pending.end();) {
             const LC_SettingsPageInterface* page = *it;
-            QString parentId = page->parentId();
+            const QString parentId = page->parentId();
+            const QString pageId = page->id();
 
-            auto pageId = page->id();
-            // LC_ERR << "Page: " << pageId;
             if (parentId.isEmpty()) {
-                // Root Node Insertion
                 auto* item = new QStandardItem(page->displayName());
                 item->setData(pageId, Qt::UserRole);
                 m_treeModel->appendRow(item);
-
                 m_treeItemMapByPageId[pageId] = item;
                 it = pending.erase(it);
                 insertedAny = true;
             }
             else {
-                // Child Node Insertion: verify parent has been created first
                 auto parentIt = m_treeItemMapByPageId.find(parentId);
                 if (parentIt != m_treeItemMapByPageId.end()) {
                     auto* parentItem = parentIt->second;
                     auto* item = new QStandardItem(page->displayName());
                     item->setData(pageId, Qt::UserRole);
                     parentItem->appendRow(item);
-
                     m_treeItemMapByPageId[pageId] = item;
                     it = pending.erase(it);
                     insertedAny = true;
                 }
                 else {
-                    ++it; // Parent not in tree yet, defer to next pass
+                    ++it;
                 }
             }
         }
     }
-    Q_ASSERT_X(pending.empty(), "LC_SettingsDialog::buildCategoryTree()", "Orphaned not processed settings pages are found");
+
+    // Self-Check Pass: detect and log orphaned or unresolved pages
+    if (!pending.empty()) {
+        for (const auto* orphan : pending) {
+            if (orphan != nullptr) {
+                LC_ERR << "LC_SettingsDialog::buildCategoryTree(): Orphaned page detected!"
+                       << " ID: '" << orphan->id() << "'"
+                       << " parentId: '" << orphan->parentId() << "'"
+                       << " displayName: '" << orphan->displayName() << "'";
+            }
+        }
+        Q_ASSERT_X(pending.empty(), "LC_SettingsDialog::buildCategoryTree()",
+                   "Orphaned or unprocessed settings pages found! Check LC_ERR log for invalid parentId references.");
+    }
+
+    // Sibling Sort Pass: sort children within every parent by sortWeight
+    auto sortChildrenByWeight = [this](auto& self, QStandardItem* parentItem) -> void {
+        if (parentItem == nullptr || parentItem->rowCount() <= 1) {
+            if (parentItem != nullptr && parentItem->rowCount() == 1) {
+                self(self, parentItem->child(0));
+            }
+            return;
+        }
+
+        std::vector<QStandardItem*> children;
+        while (parentItem->rowCount() > 0) {
+            children.push_back(parentItem->takeRow(0).at(0));
+        }
+
+        std::stable_sort(children.begin(), children.end(), [this](QStandardItem* a, QStandardItem* b) {
+            int weightA = 0;
+            int weightB = 0;
+            auto itA = m_pageMapByPageId.find(a->data(Qt::UserRole).toString());
+            if (itA != m_pageMapByPageId.end()) {
+                weightA = itA->second->sortWeight();
+            }
+            auto itB = m_pageMapByPageId.find(b->data(Qt::UserRole).toString());
+            if (itB != m_pageMapByPageId.end()) {
+                weightB = itB->second->sortWeight();
+            }
+            return weightA < weightB;
+        });
+
+        for (auto* child : children) {
+            parentItem->appendRow(child);
+            self(self, child);
+        }
+    };
+
+    // Sort Root rows by sortWeight
+    std::vector<QStandardItem*> rootItems;
+    while (m_treeModel->rowCount() > 0) {
+        rootItems.push_back(m_treeModel->takeRow(0).at(0));
+    }
+    std::stable_sort(rootItems.begin(), rootItems.end(), [this](QStandardItem* a, QStandardItem* b) {
+        int weightA = 0;
+        int weightB = 0;
+        auto itA = m_pageMapByPageId.find(a->data(Qt::UserRole).toString());
+        if (itA != m_pageMapByPageId.end()) {
+            weightA = itA->second->sortWeight();
+        }
+        auto itB = m_pageMapByPageId.find(b->data(Qt::UserRole).toString());
+        if (itB != m_pageMapByPageId.end()) {
+            weightB = itB->second->sortWeight();
+        }
+        return weightA < weightB;
+    });
+
+    for (auto* rootItem : rootItems) {
+        m_treeModel->appendRow(rootItem);
+        sortChildrenByWeight(sortChildrenByWeight, rootItem);
+    }
 }
 
 void LC_SettingsDialog::requestInitialPage(const QString& pageId) {
@@ -417,6 +510,18 @@ bool LC_SettingsDialog::selectPage(const QString& pageId) {
         return true;
     }
     return false;
+}
+
+bool LC_SettingsDialog::eventFilter(QObject* watched, QEvent* event) {
+    if (ui != nullptr && ui->saSettingsScrollArea != nullptr && watched == ui->saSettingsScrollArea->viewport()) {
+        if (event != nullptr && event->type() == QEvent::Resize) {
+            const int viewportWidth = ui->saSettingsScrollArea->viewport()->width();
+            if (viewportWidth > 0 && ui->scrollAreaWidgetContents != nullptr) {
+                ui->scrollAreaWidgetContents->setMaximumWidth(viewportWidth);
+            }
+        }
+    }
+    return LC_Dialog::eventFilter(watched, event);
 }
 
 void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
@@ -642,8 +747,13 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     if (page->getEditingWidget() != nullptr) {
         ui->swContent->setCurrentWidget(page->getEditingWidget());
 
-        // LC_ERR << "LC_SettingsDialog::onCategorySelected: Checking if page is initialized. ID:" << pageId
-        // << " | Already initialized:" << m_initializedPages.contains(pageId);
+        // Ensure newly displayed page immediately conforms to the current viewport width
+        if (ui->saSettingsScrollArea->viewport() != nullptr && ui->scrollAreaWidgetContents != nullptr) {
+            const int viewportWidth = ui->saSettingsScrollArea->viewport()->width();
+            if (viewportWidth > 0) {
+                ui->scrollAreaWidgetContents->setMaximumWidth(viewportWidth);
+            }
+        }
 
         // Scroll Reset: Ensure the viewport starts unscrolled
         if (ui->saSettingsScrollArea->verticalScrollBar() != nullptr) {
@@ -680,13 +790,43 @@ void LC_SettingsDialog::setEmbeddedPreviewVisible(bool visible) {
 
     QWidget* targetPreview = resolvePreviewWidget(m_activePage);
     const bool shouldShow = visible && (targetPreview != nullptr);
+    const bool wasVisible = ui->wContainerPreview->isVisible();
 
-    ui->wContainerPreview->setVisible(shouldShow);
-    applyPreviewSplitterSizes(shouldShow);
+    if (shouldShow == wasVisible) {
+        // State unchanged: if already visible, ensure preview widget is updated smoothly
+        if (shouldShow && targetPreview != nullptr) {
+            targetPreview->show();
+            doUpdatePageLivePreview(m_activePage);
+        }
+        return;
+    }
 
     if (shouldShow) {
-        targetPreview->show();
+        ui->wContainerPreview->setVisible(true);
+        if (targetPreview != nullptr) {
+            targetPreview->show();
+        }
+
+        int previewWidth = m_savedPreviewWidth;
+        if (previewWidth < 150) {
+            previewWidth = 250;
+        }
+
+        const int totalWidth = ui->splPreview->width();
+        const int leftWidth = (totalWidth > previewWidth + 150) ? (totalWidth - previewWidth) : 500;
+        ui->splPreview->setSizes(QList<int>{leftWidth, previewWidth});
+
         doUpdatePageLivePreview(m_activePage);
+    }
+    else {
+        // Save current width before hiding
+        const QList<int> currentSizes = ui->splPreview->sizes();
+        if (currentSizes.size() >= 2 && currentSizes[1] > 50) {
+            m_savedPreviewWidth = currentSizes[1];
+        }
+
+        ui->wContainerPreview->setVisible(false);
+        ui->splPreview->setSizes(QList<int>{ui->splPreview->width(), 0});
     }
 }
 
@@ -995,16 +1135,21 @@ void LC_SettingsDialog::restoreTreeExpandedState() const {
 void LC_SettingsDialog::saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {
     LC_SettingsDlgInnerData CFG_InnerData(&group);
     if (savePositions) {
-        QList<int> currentMainSplitterSizes = ui->splMain->sizes();
+        const QList<int> currentMainSplitterSizes = ui->splMain->sizes();
         if (!currentMainSplitterSizes.isEmpty()) {
             const int width = currentMainSplitterSizes[0];
             CFG_InnerData.o_CategoriesTreeWidth = width;
         }
 
+        if (ui->wContainerPreview->isVisible()) {
         const QList<int> currentPreviewSplitterSizes = ui->splPreview->sizes();
-        if (!currentPreviewSplitterSizes.isEmpty()) {
-            const int width = currentPreviewSplitterSizes[0];
-            CFG_InnerData.o_PreviewWidth = width;
+            if (currentPreviewSplitterSizes.size() >= 2 && currentPreviewSplitterSizes[1] > 50) {
+                const_cast<LC_SettingsDialog*>(this)->m_savedPreviewWidth = currentPreviewSplitterSizes[1];
+            }
+        }
+
+        if (m_savedPreviewWidth > 50) {
+            CFG_InnerData.o_PreviewWidth = m_savedPreviewWidth;
         }
     }
     const QString searchHistory = ui->leSearch->history().join(";");
@@ -1168,27 +1313,6 @@ QWidget* LC_SettingsDialog::resolvePreviewWidget(LC_SettingsPageInterface* page)
     return preview;
 }
 
-void LC_SettingsDialog::applyPreviewSplitterSizes(bool visible) {
-    if (visible) {
-        int previewWidth = m_savedPreviewWidth;
-        if (previewWidth < 150) {
-            previewWidth = 250;
-        }
-        int leftWidth = ui->splPreview->width() - previewWidth;
-        if (leftWidth < 200) {
-            leftWidth = 500;
-            previewWidth = 250;
-        }
-        ui->splPreview->setSizes(QList<int>{leftWidth, previewWidth});
-    }
-    else {
-        const QList<int> currentSizes = ui->splPreview->sizes();
-        if (currentSizes.size() >= 2 && currentSizes[1] > 50) {
-            m_savedPreviewWidth = currentSizes[1];
-        }
-        ui->splPreview->setSizes(QList<int>{ui->splPreview->width(), 0});
-    }
-}
 
 void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) const {
     QWidget* preview = resolvePreviewWidget(page);

@@ -51,6 +51,7 @@
 #include "lc_settings_defaults.h"
 #include "lc_settings_manager_application.h"
 #include "lc_settings_manager_customization.h"
+#include "lc_settings_manager_drafting.h"
 #include "lc_settings_manager_drawing.h"
 #include "lc_settings_manager_styling.h"
 #include "lc_settings_paths.h"
@@ -354,6 +355,7 @@ void LC_ApplicationWindowInitializer::initSettingsDialogs() {
     LC_SettingsManagerApplication::initialize(m_appWin);
     LC_SettingsManagerDrawing::initialize();
     LC_SettingsManagerStyling::initialize(m_appWin);
+    LC_SettingsManagerDrafting::initialize(m_appWin);
     // fixme - review initialization
     LC_SettingsManagerCustomization::initialize(m_appWin);
 }

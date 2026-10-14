@@ -129,6 +129,7 @@
 #include "lc_icons_style_manager.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_commands_promotion.h"
+#include "lc_settings_manager_drafting.h"
 #include "lc_settings_widget.h"
 #include "lc_wait_cursor_guard.h"
 #include "lc_widget_factory.h"
@@ -1820,6 +1821,21 @@ void QC_ApplicationWindow::slotOptionsCustomization() {
 void QC_ApplicationWindow::rebuildMenuIfNecessary() const {
     if (m_navigationControlsCreator != nullptr) {
         m_navigationControlsCreator->applyActiveLayoutScheme();
+    }
+}
+
+
+void QC_ApplicationWindow::slotOptionsDrafting() {
+    const bool accepted = LC_SettingsManagerDrafting::showDraftingSettings(this);
+    if (accepted) {
+        doForEachSubWindowGraphicView([this](QG_GraphicView* gv, const QC_MDIWindow* w) {
+            gv->loadSettings();
+            if (w == m_activeMdiSubWindow) {
+                gv->redraw();
+            }
+        });
+        m_statusbarManager->loadSettings();
+        m_infoCursorSettingsManager->loadFromSettings();
     }
 }
 

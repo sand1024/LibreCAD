@@ -28,10 +28,11 @@
 #include "lc_dlg_checklist_selection.h"
 #include "lc_icons_style_shared.h"
 #include "lc_palette_editor_shared.h"
+#include "lc_repository_drafting_metrics.h"
 
 struct LC_WidgetsConfig;
 class LC_RepositoryWidgets;
-class LC_RepositoryViewportTheme;
+class LC_RepositoryDraftingTheme;
 // Forward declarations
 class QC_ApplicationWindow;
 class LC_RepositoryPalette;
@@ -126,9 +127,14 @@ class LC_UIStyleManager : public QObject {
         return m_metricsRepository.get();
     }
 
-    LC_RepositoryViewportTheme* getViewportStylingRepository() const {
-        return m_graphicViewRepository.get();
+    LC_RepositoryDraftingTheme* getDraftingThemeRepository() const {
+        return m_draftingThemeRepository.get();
     }
+
+    LC_RepositoryDraftingMetrics* getDrafingMetricsRepository() const {
+        return m_draftingMetricsRepository.get();
+    }
+
 
     LC_StylingProfileImportExportHelper* getImportExportHelper() const {
         return m_importExportHelper.get();
@@ -197,7 +203,8 @@ private:
     std::unique_ptr<LC_RepositoryIconsStyle> m_iconStylesRepository;
     std::unique_ptr<LC_RepositoryTypography> m_typographyRepository;
     std::unique_ptr<LC_RepositoryMetrics> m_metricsRepository;
-    std::unique_ptr<LC_RepositoryViewportTheme> m_graphicViewRepository;
+    std::unique_ptr<LC_RepositoryDraftingTheme> m_draftingThemeRepository;
+    std::unique_ptr<LC_RepositoryDraftingMetrics> m_draftingMetricsRepository;
     std::unique_ptr<LC_StylingProfileImportExportHelper> m_importExportHelper;
     QC_ApplicationWindow* m_appWindow {nullptr};
     std::unique_ptr<LC_RepositoryWidgets> m_widgetsRepository;

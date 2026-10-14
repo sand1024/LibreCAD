@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageInfoCursor</class>
+ <widget class="QWidget" name="LC_SettingsPageInfoCursor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>674</width>
+    <height>639</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Informational Cursor Overlay</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbInfoOverlayEnable">
+        <property name="toolTip">
+         <string>Informational Cursor Visibility
+
+If checked, informational cursor will be enabled and shown where applicable.</string>
+        </property>
+        <property name="text">
+         <string>Enable informational cursor</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Informational Cursor is overlay that displays real-time context, tool tips, and snapping details directly next to your mouse pointer inside the drawing window.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_16">
+     <property name="title">
+      <string>Areas to Show</string>
+     </property>
+     <layout class="QVBoxLayout" name="layCoords">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Informational Cursor supports 4 areas that display distance and angle, active command prompt, mouse coordinates and snap/entity information. These areas are customized below.
+Note: for preview area, the position of informational cursor is fixed and it does not follow the mouse.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayAbsolutePosition">
+        <property name="toolTip">
+         <string>Absolute Coordinates
+
+If checked, current absolute coordinates of snap point
+in the active user coordinate system (UCS) will be shown.</string>
+        </property>
+        <property name="text">
+         <string>Show absolute coordinates</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbShowWorldCoordinates">
+        <property name="toolTip">
+         <string>WCS coordinates in UCS
+
+If set and user coordinate system is active, absolute coodinate in
+world coordinate system (WCS) will be also shown.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show World Coordinate System (WCS) coordinates</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayRelative">
+        <property name="toolTip">
+         <string>Distance and Angle
+
+If checked, a distance and angle from 
+relative zero point to snap point will be shown. </string>
+        </property>
+        <property name="text">
+         <string>Show relative distance and angle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayRelativeDeltas">
+        <property name="toolTip">
+         <string>Display delta X and delta Y coordinates relative to the relative zero point.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show relative delta X and delta Y</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayCommandPrompt">
+        <property name="toolTip">
+         <string>Command Prompt
+
+If checked, the prompt of the active command's state
+as well as optional instructions will be shown. </string>
+        </property>
+        <property name="text">
+         <string>Show command prompt</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayCommandName">
+        <property name="toolTip">
+         <string>Command Name in Command Prompt
+
+If checked, name of the currently active tool 
+will be shown before command prompt.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show active action name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlaySnap">
+        <property name="toolTip">
+         <string>Snap Info
+
+If checked, information about the type of snap mode
+(e.g. End, Middle, Intersection, Grid) and restrictions 
+will be shown for snap point (if any) at the cursor.</string>
+        </property>
+        <property name="text">
+         <string>Show snap mode information</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlaySnapEntityInfo">
+        <property name="toolTip">
+         <string>Caught Entity Info
+
+If checked, short overview of geometry information
+of entities caught by the snapping cursor will be shown. </string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show caught entity properties</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_18">
+     <property name="title">
+      <string>Entity Operations Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="layFormatting">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Informational cursor may also display detailed information about entity that will be created or edited by active command (if any).</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayPreviewCreatingEntity">
+        <property name="toolTip">
+         <string>Entity To Create
+
+If selected, dynamic properties (length, radius, angle etc.)  
+of entity that will be created by the current action (if any)
+will be shown.</string>
+        </property>
+        <property name="text">
+         <string>Show properties for entity being created</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbInfoOverlayPreviewEditingEntity">
+        <property name="toolTip">
+         <string>Entity To Modify
+
+If selected, modified properties while 
+dragging or editing entities will be shown.</string>
+        </property>
+        <property name="text">
+         <string>Show properties for entity that is edited by handles</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Coordinates Layout</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbInfoOverlayInOneLine">
+        <property name="toolTip">
+         <string>Single Line Coordinates
+
+If checked, components of coordinate will be drawn in one horizontal line. 
+Otherwise, each component will be on own line using stacked layout.</string>
+        </property>
+        <property name="text">
+         <string>Draw coordinates in one line</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" rowspan="2" colspan="2">
+       <widget class="QCheckBox" name="cbInfoOverlayShowLabels">
+        <property name="toolTip">
+         <string>Coordinate Labels
+
+If checked, text prefix labels (e.g. 'Dist:', 'Angle:', 'X:')
+before values for coordinate components will be shown. 
+Otherwise, coordinates will be displayed in 
+standard numberic-only form. </string>
+        </property>
+        <property name="text">
+         <string>Show coordinate labels</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>The following options defines how Informational Cursor should display coordinates.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

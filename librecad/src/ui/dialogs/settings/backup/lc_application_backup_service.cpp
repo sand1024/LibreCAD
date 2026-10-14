@@ -38,7 +38,7 @@
 #include "lc_repository_graphic_view_context_menus.h"
 #include "lc_repository_menu_bar_and_toolbars.h"
 #include "lc_repository_shortcuts.h"
-#include "lc_repository_viewport_theme.h"
+#include "lc_repository_drafting_theme.h"
 #include "lc_settings_app_state.h"
 #include "lc_shortcuts_manager.h"
 #include "lc_ui_style_manager.h"
@@ -288,7 +288,7 @@ bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
     // 2. Viewport Themes
     if (isChecked("viewport")) {
 
-        LC_RepositoryViewportTheme* vpRepo = m_appWin->getUiStyleManager()->getViewportStylingRepository();
+        LC_RepositoryDraftingTheme* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
         QJsonArray vpArray;
         for (const auto& pair : vpRepo->getPresetChoices()) {
             LC_ViewportThemeConfig cfg;
@@ -400,7 +400,7 @@ bool LC_ApplicationBackupService::importBackup(QWidget* parent) {
 
     // 2. Restore Viewport Themes with Auto-Renaming
     if (isSelected("viewport") && root.contains("viewport_themes")) {
-        LC_RepositoryViewportTheme* vpRepo = m_appWin->getUiStyleManager()->getViewportStylingRepository();
+        LC_RepositoryDraftingTheme* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
         const QJsonArray vpArr = root.value("viewport_themes").toArray();
         for (const auto& item : vpArr) {
             const QJsonObject obj = item.toObject();

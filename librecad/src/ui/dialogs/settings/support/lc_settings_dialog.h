@@ -53,7 +53,7 @@ namespace Ui {
 class LC_SettingsDialog : public LC_Dialog {
     Q_OBJECT
 public:
-    explicit LC_SettingsDialog(QWidget* parent, const QString& dialogId);
+    explicit LC_SettingsDialog(QWidget* parent, const QString& dialogId, bool supportsCollapseExpandCategories = true);
     ~LC_SettingsDialog() override;
     void registerPage(std::unique_ptr<LC_SettingsPageInterface> pageRef);
     void registerPresetManager(const QString& groupPathId, std::unique_ptr<LC_PresetManagerInterface> manager);
@@ -65,7 +65,6 @@ public:
     void forEachPresetManager(const std::function<void(LC_PresetManagerInterface*)>& callback) const;
     void forEachPage(const std::function<void(LC_SettingsPageInterface*)>& callback) const;
     QWidget* resolvePreviewWidget(LC_SettingsPageInterface* page) const;
-    void applyPreviewSplitterSizes(bool visible);
     void accept() override;
     void reject() override;
     LC_SettingsPageInterface* activePage() const { return m_activePage; }
@@ -104,6 +103,8 @@ protected:
     bool isPageInitialized(LC_SettingsPageInterface* page) const {
         return m_initializedPages.contains(page->id());
     }
+
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private slots:
     void onSearchTextChanged(const QString& text);

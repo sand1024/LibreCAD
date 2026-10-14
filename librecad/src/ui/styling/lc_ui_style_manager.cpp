@@ -34,7 +34,7 @@
 #include "lc_repository_metrics.h"
 #include "lc_repository_palette.h"
 #include "lc_repository_typography.h"
-#include "lc_repository_viewport_theme.h"
+#include "lc_repository_drafting_theme.h"
 #include "lc_repository_widgets.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
@@ -52,7 +52,8 @@ LC_UIStyleManager::LC_UIStyleManager(QC_ApplicationWindow* appWindow)
     : m_appWindow(appWindow) {
     m_iconStylesRepository = std::make_unique<LC_RepositoryIconsStyle>("");
     m_typographyRepository = std::make_unique<LC_RepositoryTypography>("");
-    m_graphicViewRepository = std::make_unique<LC_RepositoryViewportTheme>("");
+    m_draftingThemeRepository = std::make_unique<LC_RepositoryDraftingTheme>("");
+    m_draftingMetricsRepository = std::make_unique<LC_RepositoryDraftingMetrics>("");
     m_fusionSkinsRepository = std::make_unique<LC_RepositoryFusionSkin>("");
     m_metricsRepository = std::make_unique<LC_RepositoryMetrics>("");
     m_paletteRepository = std::make_unique<LC_RepositoryPalette>("");
@@ -86,7 +87,8 @@ void LC_UIStyleManager::initRepositories() {
     m_iconStylesRepository->setConfigDir(baseDir + "/icon_styles");
     m_typographyRepository->setConfigDir(baseDir + "/typography");
     m_widgetsRepository->setConfigDir(baseDir + "/widgets");
-    m_graphicViewRepository->setConfigDir(baseDir + "/drafting");
+    m_draftingThemeRepository->setConfigDir(baseDir + "/drafting_themes");
+    m_draftingMetricsRepository->setConfigDir(baseDir + "/drafting_metrics");
     m_fusionSkinsRepository->setConfigDir(baseDir + "/fusion_skins");
     m_metricsRepository->setConfigDir(baseDir + "/fusion_metrics");
     m_paletteRepository->setConfigDir(baseDir + "/fusion_color_palettes");

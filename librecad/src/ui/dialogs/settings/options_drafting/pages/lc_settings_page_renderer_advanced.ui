@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageRendererAdvanced</class>
+ <widget class="QWidget" name="LC_SettingsPageRendererAdvanced">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>732</width>
+    <height>647</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbArcs">
+     <property name="title">
+      <string>Arcs Rendering</string>
+     </property>
+     <layout class="QVBoxLayout" name="layArcs">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Arcs may be rendered by different ways, and the settings below controls that.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbRenderArcQT">
+        <property name="toolTip">
+         <string>Standard Rendering
+
+If this method is selected, arcs are drawn using
+methods of QT library.  On large zooms, arcs may be
+rendered with errors near endpoints.</string>
+        </property>
+        <property name="text">
+         <string>Qt-native drawing method (unexact near endpoints)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbRenderArcInterpolate">
+        <property name="toolTip">
+         <string>Arcs By Lines
+
+If selected, archs are drawn using staight line chord segments
+interpolation. This eliminates drawing artefacts near to 
+endpoints, yet in some cases resulting arcs may be less
+smooth, yet without drawing errors near endpoints on large zooms.
+</string>
+        </property>
+        <property name="text">
+         <string>Interpolate by line segments</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="gbInterpolateMethod">
+        <property name="title">
+         <string>Tessellation Method</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="sbRenderArcMaxSagitta">
+           <property name="toolTip">
+            <string>Max Error
+
+Maximum allowable distance (in pixels)
+between chord and true arc curve that 
+represents maximal interpolation error.</string>
+           </property>
+           <property name="prefix">
+            <string/>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="minimum">
+            <double>0.050000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>20.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.050000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.900000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="sbRenderArcSegmentAngle">
+           <property name="toolTip">
+            <string>Fixed Segment Angle
+
+Value of fixed central angle (in degrees)
+for each interpolation segment.</string>
+           </property>
+           <property name="suffix">
+            <string> °</string>
+           </property>
+           <property name="minimum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>30.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="rbRenderArcMethodSagitta">
+           <property name="toolTip">
+            <string>Maximal Error
+
+If selected, subdivide arcs adaptively so the angle
+of the line interpolation segment is calculated to 
+ensure that resulting sagitta (height of arc segment) that 
+represents a maximal distance between interpolated and 
+true arc is less than specified. </string>
+           </property>
+           <property name="text">
+            <string>Determine segments by max sagitta:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="rbRenderArcMethodFixed">
+           <property name="toolTip">
+            <string>Fixed Segments Amount
+
+If selected, subdivide arcs by a fixed angular segment increments
+with specified fixed angle of line interpolation segment. 
+Smaller angle deliver more smooth arc yet is slower..</string>
+           </property>
+           <property name="text">
+            <string>Use fixed segment angle value (°):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbRenderCirclesAsArcs">
+        <property name="toolTip">
+         <string>Render Cricles
+
+If selected, the same rendering settings
+will be applied also to circles rendering.</string>
+        </property>
+        <property name="text">
+         <string>Render circles in the same way as arcs.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbMinimums">
+     <property name="title">
+      <string>Rendering Minimums</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="5" column="0">
+       <widget class="QLabel" name="lblRenderMinEllipseMajor">
+        <property name="text">
+         <string>Ellipse major radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblRenderMinArcRadius">
+        <property name="text">
+         <string>Arc radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="sbRenderMinLineLen">
+        <property name="toolTip">
+         <string>Minimal Line Length
+
+If screen length of the line in pixels is less than
+given value, the line is drawn as point.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="sbRenderMinArcRadius">
+        <property name="toolTip">
+         <string>Minimal Arc Screen Radius
+
+If screen radius of arc in pixels is less than
+provided value, the arc is drawn as point.
+</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="lblRenderMinEllipseMinor">
+        <property name="text">
+         <string>Ellipse minor radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblRenderMinLineLen">
+        <property name="text">
+         <string>Line length:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblRenderMinCircleRadius">
+        <property name="text">
+         <string>Circle radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QDoubleSpinBox" name="sbRenderMinEllipseMinor">
+        <property name="toolTip">
+         <string>Minimal Ellipse Minor Radius
+
+If screen size for minor ellipse axis is less than
+specified value, the ellipse is drawn as line.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="sbRenderMinCircleRadius">
+        <property name="toolTip">
+         <string>Minimum Circle Screen Radius
+
+If screen radius of circle in pixels is less than provided
+value, the circle is drawn as point.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbTextMinHeight">
+        <property name="toolTip">
+         <string>Minimal Text Height
+
+If screen pixel height of text line on the screen is
+less than specified pixels, placholder line will be 
+drawn instead of text line.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>15</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblTextMinHeight">
+        <property name="text">
+         <string>Renderable text height:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QDoubleSpinBox" name="sbRenderMinEllipseMajor">
+        <property name="toolTip">
+         <string>Minimal Ellipse Major Screen Radius
+
+If screen size in pixels for major ellipse axis is less than
+specified value, the ellipse is drawn as point.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Depending on zoom level, some entities may be too small on the screen and so occupy just several pixels. For such cases, rendering performance may be increased by setting minimal values treshold.
+If size of the entity on the screen is smaller than given value, that entity is drawn just as point (which is much faster).</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

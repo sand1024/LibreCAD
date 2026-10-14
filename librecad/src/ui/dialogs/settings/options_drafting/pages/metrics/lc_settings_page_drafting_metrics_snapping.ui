@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDraftingMetricsSnapping</class>
+ <widget class="QWidget" name="LC_SettingsPageDraftingMetricsSnapping">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>475</width>
+    <height>857</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbSnapIndicators">
+     <property name="title">
+      <string>Snap Indicator</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblIndicatorShapeSize">
+        <property name="text">
+         <string>Shape size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Snap functionality is a precision drawing tool that forces cursor to lock exactly onto specific geometric points (defined automatically by current geometry and enabled snap modes). Position of snapped point may be higlighted by Snap Indicator.&lt;br&gt;Indicator includes lines and indicator shape, and its parameteres may be customized below.&lt;br&gt;
+Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbIndicatorShapeSize">
+        <property name="toolTip">
+         <string>Shape Size
+
+Size in screen pixels for the shape indicator
+drawn around snap point (if any).  </string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbIndicatorLinesLineWidth">
+        <property name="toolTip">
+         <string>Indicator Lines Width
+
+Screen line thickness (line width), in pixels, of snap crosshair lines.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblIndicatorLinesWidth">
+        <property name="text">
+         <string>Line width:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Angle Snap</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblAngleSnapMarkerSize">
+        <property name="text">
+         <string>Radius of marker:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbAngleSnapMarkerSize">
+        <property name="toolTip">
+         <string>Angle Snap Mark
+
+Radius of the Angle Snap mark arc indicator in 
+screen pixels, that is shown around base point 
+of Angle Snap.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Angle Snap (invoked in drafting with SHIFT key pressed) forces points to snap onto lines with predefined angle step instead of arbitrary angles. 
+When Angle Snap is active, an overlay marker around base point is shown. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbVisualSnap">
+     <property name="title">
+      <string>Visual Snap Markers and Guides</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="9" column="1">
+       <widget class="QSpinBox" name="sbVSGuidingLabelOffsetPx">
+        <property name="toolTip">
+         <string>Labels Offset
+
+Distance in pixels from the guiding label to projected snap point.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblVSVertexSize">
+        <property name="text">
+         <string>Guiding point size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbVSProjectedSnapSize">
+        <property name="toolTip">
+         <string>Projected Snap Point
+
+Size of marker for projected snap point (like intersection), in pixels.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="lblVSGuidingLabelFontSize">
+        <property name="text">
+         <string>Guiding entity label font size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QSpinBox" name="sbVSGuidingEntityLabelFontSize">
+        <property name="toolTip">
+         <string>Labels Font Size
+
+Size of font, in points, used for displaying labels for guiding entities
+(such as type text annotations on visual snap guiding rays).</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblVSProjectedSnapSize">
+        <property name="text">
+         <string>Projected snap point size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="lblVSGuidingPointsWidth">
+        <property name="text">
+         <string>Guiding points line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Visual Snap is a way to snap to specific points in a drawing by interpreting the natural geometry of existing elements (lines, points, intersections, and circles), reducing the need for manual calculations and the construction of auxiliary geometry.
+Sizes of Visual Snap elements are customized below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="lblVSGuidingLabelOffset">
+        <property name="text">
+         <string>Guiding entity label base offset:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QSpinBox" name="sbVSGuidingEntitiesLineWidth">
+        <property name="toolTip">
+         <string>Guiding Entities Line Width
+
+Screen width (line thickness) in pixels for guiding lines
+that are part of Visual Snap solution (such as projection
+rays or tangent guide lines).</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="lblVSGuidingLinesWidth">
+        <property name="text">
+         <string>Guiding lines line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="sbVSGuidingPointsLineWidth">
+        <property name="toolTip">
+         <string>Guide Point Line Width
+
+Screen width (line thickness) in pixels for lines that are 
+used to draw guiding point marker.
+</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbVSVertexSize">
+        <property name="toolTip">
+         <string>Guding Point Size
+
+Size of marker for visual snap guiding points, in screen pixels.
+</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblVSHighlightedVertexSize">
+        <property name="text">
+         <string>Highlighted point size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbVSHighlightedVertexSize">
+        <property name="toolTip">
+         <string>Higlighted Guiding Point
+
+Size of the marker used to draw guiding point
+that is added to Visual Snap system.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

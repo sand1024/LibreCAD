@@ -375,6 +375,20 @@ void LC_SettingsPageBase::bindDouble(const std::initializer_list<DoubleEntry>& e
     }
 }
 
+void LC_SettingsPageBase::bindScaledDouble(QDoubleSpinBox* spinBox, const LC_Setting<int>& setting, double scaleFactor, bool reqRestart) {
+    if (spinBox == nullptr) {
+        return;
+    }
+    bindCustom<QDoubleSpinBox, int>(spinBox, setting, reqRestart,
+        &QDoubleSpinBox::valueChanged,
+        [scaleFactor](QDoubleSpinBox* w) {
+            return static_cast<int>(w->value() * scaleFactor);
+        },
+        [scaleFactor](QDoubleSpinBox* w, int v) {
+            w->setValue(static_cast<double>(v) / scaleFactor);
+        });
+}
+
 void LC_SettingsPageBase::bindString(const std::initializer_list<StringEntry>& entries) {
     for (const auto& entry : entries) {
         bind(entry.widget, entry.setting, entry.reqRestart);

@@ -244,7 +244,7 @@ void LC_AppWindowToolBarManager::updateToolbarsTooltips(bool show) {
             continue;
         }
         if (show) {
-            tb->setToolTip(QObject::tr("Toolbar: %1").arg(tb->windowTitle()));
+            tb->setToolTip(QObject::tr("Toolbar  \n\n%1").arg(tb->windowTitle()));
         }
         else {
             tb->setToolTip(QString());

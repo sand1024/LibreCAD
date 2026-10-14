@@ -885,7 +885,8 @@ void LC_ActionFactory::createOptionsActionsUncheckable(QMap<QString, QAction *> 
     });
 
     createMainWindowActions(map, group, {
-        {"OptionsGeneral",      &QC_ApplicationWindow::slotOptionsGeneral,      tr("&Application Preferences"),":/icons/settings.lci",          tr("Configures global application settings, paths, and defaults.")},
+        {"OptionsGeneral",      &QC_ApplicationWindow::slotOptionsGeneral,      tr("&Generic Options"),        ":/icons/settings.lci",          tr("Configures global application settings, paths, and defaults.")},
+        {"OptionsDrafting",     &QC_ApplicationWindow::slotOptionsDrafting,     tr("&Drafting Preferences"),   ":/icons/options_drafting.lci", tr("Customizes visual and other settings that affects drawing area.")},
         {"OptionsCustomization",&QC_ApplicationWindow::slotOptionsCustomization,tr("&Customization"),          ":/icons/options_customize.lci", tr("Customizes keyboard shortcuts, command aliases, menus, and toolbars.")},
         {"OptionsStyling",      &QC_ApplicationWindow::stylingOptionsDialog,    tr("&UI Styling"),             ":/icons/options_styling.lci",   tr("Configures themes, colors, and visual styling for the user interface.")},
         {"ShortcutsOptions",    &QC_ApplicationWindow::slotOptionsShortcuts,    tr("Keyboard Shortcuts"),      ":/icons/shortcuts_settings.lci",tr("Opens keyboard shortcuts customization page.")},

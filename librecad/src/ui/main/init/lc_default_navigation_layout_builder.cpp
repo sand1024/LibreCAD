@@ -242,7 +242,16 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuMinimal(con
         {
             "Menu:Options",
             ":/icons/settings.lci",
-            {"OptionsGeneral", "OptionsCustomization", "OptionsStyling", "ShortcutsOptions", "DeviceOptions", "ReloadStyleSheet", "-", "OptionsDrawing"}
+            {
+                "OptionsGeneral",
+                "OptionsDrafting",
+                "OptionsCustomization",
+                "OptionsStyling",
+                // "ShortcutsOptions",
+                "DeviceOptions",
+                "ReloadStyleSheet",
+                "-",
+                "OptionsDrawing"}
         },
 
         // Edit
@@ -594,6 +603,7 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars(const
 
         makeStandardToolbar(LC_ToolbarNames::OPTIONS, ":/icons/settings.lci", Qt::TopToolBarArea, {
             "OptionsGeneral",
+            "OptionsDrafting",
             "OptionsStyling",
             "OptionsCustomization",
             "OptionsDrawing"

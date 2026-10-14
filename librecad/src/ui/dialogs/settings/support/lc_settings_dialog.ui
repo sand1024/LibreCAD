@@ -55,14 +55,50 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="LC_SearchLineEdit" name="leSearch">
-         <property name="placeholderText">
-          <string>Search settings...</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>false</bool>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="QToolButton" name="tbCategoriesExpandAllCategories">
+           <property name="toolTip">
+            <string>Expand All
+
+Expands all items in the categories tree</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../res/icons/icons.qrc">
+             <normaloff>:/icons/expand_all.lci</normaloff>:/icons/expand_all.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="LC_SearchLineEdit" name="leSearch">
+           <property name="placeholderText">
+            <string>Search settings...</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QToolButton" name="tbCollapseAllCategories">
+           <property name="toolTip">
+            <string>Collapse All
+
+Collapses all items in the categories tree</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../res/icons/icons.qrc">
+             <normaloff>:/icons/collapse_secondary.lci</normaloff>:/icons/collapse_secondary.lci</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="LC_PlaceholderTreeView" name="tvCategoriesTree">
@@ -233,8 +269,8 @@ Navigates forward in the list of previously visited pages</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>787</width>
-             <height>412</height>
+             <width>703</width>
+             <height>402</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaLayout">
@@ -286,13 +322,13 @@ Navigates forward in the list of previously visited pages</string>
          </widget>
         </widget>
        </item>
-          <item>
-              <widget class="LC_SettingsBannerWidget" name="bannerWidget" native="true">
-                  <property name="visible">
-                      <bool>false</bool>
-                  </property>
-              </widget>
-          </item>
+       <item>
+        <widget class="LC_SettingsBannerWidget" name="bannerWidget" native="true">
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QWidget" name="wContainerBottom" native="true">
          <property name="visible">
@@ -347,13 +383,15 @@ Navigates forward in the list of previously visited pages</string>
    <extends>QTreeView</extends>
    <header>lc_placeholder_tree_view.h</header>
   </customwidget>
-     <customwidget>
-         <class>LC_SettingsBannerWidget</class>
-         <extends>QWidget</extends>
-         <header>lc_settings_banner_widget.h</header>
-         <container>1</container>
-     </customwidget>
+  <customwidget>
+   <class>LC_SettingsBannerWidget</class>
+   <extends>QWidget</extends>
+   <header>lc_settings_banner_widget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../../res/icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

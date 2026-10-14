@@ -451,7 +451,7 @@ void LC_NavigationControlsCreator::populateToolbar(QToolBar* tb, const ToolbarDe
 
     if (m_showToolbarTooltips) {
         const QString toolbarTitle = (m_actionGroupManager != nullptr) ? m_actionGroupManager->displayName(tbDef.name, true) : tbDef.name;
-        tb->setToolTip(tr("Toolbar: %1").arg(toolbarTitle));
+        tb->setToolTip(tr("Toolbar  \n\n%1").arg(toolbarTitle));
     }
 
     if (!tbDef.icon.isEmpty()) {
@@ -618,7 +618,7 @@ void LC_NavigationControlsCreator::updateToolbarsTooltips(const bool showTooltip
         }
 
         if (showTooltips) {
-            tb->setToolTip(QObject::tr("Toolbar: %1").arg(tb->windowTitle()));
+            tb->setToolTip(QObject::tr("Toolbar  \n\n%1").arg(tb->windowTitle()));
         }
         else {
             tb->setToolTip(QString());

@@ -30,38 +30,6 @@ class QC_ApplicationWindow;
 namespace LC_SettingsPagesApplication {
     inline const QString DLG_GENERAL_PREFERENCES                    = "general_preferences";
 
-    inline const QString PAGE_DRAW                                  = "draw";
-    inline const QString PAGE_DRAW_GRAPHIC_VIEW                     = "draw.graphic_view";
-    inline const QString PAGE_DRAW_VIEW_BEHAVIOR                    = "draw.view.behavior";
-    inline const QString PAGE_DRAW_VIEW_COLORS                      = "draw.view.colors";
-    inline const QString PAGE_DRAW_VIEW_SELECTION                   = "draw.view.selection";
-    inline const QString PAGE_DRAW_VIEW_HANDLES                     = "draw.view.handles";
-    inline const QString PAGE_DRAW_VIEW_DRAFT_MARKER                = "draw.view.draft_marker";
-    inline const QString PAGE_DRAW_GRID                             = "draw.grid";
-    inline const QString PAGE_DRAW_GRID_POINTS                      = "draw.grid.points";
-    inline const QString PAGE_DRAW_GRID_LINES                       = "draw.grid.lines";
-    inline const QString PAGE_DRAW_PREVIEW                          = "draw.preview";
-    inline const QString PAGE_DRAW_HIGHLIGHT                        = "draw.highlight";
-    inline const QString PAGE_DRAW_SNAP                             = "draw.snap";
-    inline const QString PAGE_DRAW_SNAP_GENERAL                     = "draw.snap.general";
-    inline const QString PAGE_DRAW_SNAP_ANGLE                       = "draw.snap.angle";
-    inline const QString PAGE_DRAW_SNAP_VISUAL                      = "draw.snap.visual";
-    inline const QString PAGE_DRAW_SNAP_VISUAL_APPEARANCE           = "draw.snap.visual.appearance";
-    inline const QString PAGE_DRAW_SNAP_VISUAL_BEHAVIOR             = "draw.snap.visual.behavior";
-    inline const QString PAGE_DRAW_SNAP_VISUAL_TIMING               = "draw.snap.visual.timing";
-    inline const QString PAGE_DRAW_INFO_CURSOR                      = "draw.info_cursor";
-    inline const QString PAGE_DRAW_INPUT_ASSISTANT                  = "draw.input_assistant";
-    inline const QString PAGE_DRAW_COORDINATE_SYSTEM                = "draw.coordinate_system";
-    inline const QString PAGE_DRAW_COORDINATE_SYSTEM_ORIGIN         = "draw.coordinate_system.origin";
-    inline const QString PAGE_DRAW_COORDINATE_SYSTEM_RELATIVE_ZERO  = "draw.coordinate_system.relative_zero";
-    inline const QString PAGE_DRAW_COORDINATE_SYSTEM_AXIS_LINES     = "draw.coordinate_system.axis_lines";
-    inline const QString PAGE_DRAW_COORDINATE_SYSTEM_ANGLES_BASIS   = "draw.coordinate_system.angles_basis";
-    inline const QString PAGE_DRAW_RENDERER                         = "draw.renderer";
-    inline const QString PAGE_DRAW_RENDERER_TEXT_OPS                = "draw.renderer.text_ops";
-    inline const QString PAGE_DRAW_RENDERER_ADVANCED                = "draw.renderer.advanced";
-    inline const QString PAGE_DRAW_RENDERER_MINIMUMS                = "draw.renderer.minimums";
-    inline const QString PAGE_DRAW_RENDERER_ARCS                    = "draw.renderer.arcs";
-
     inline const QString PAGE_APP                                   = "app";
     inline const QString PAGE_APP_PROGRAM_DEFAULTS                  = "app.program_defaults";
     inline const QString PAGE_APP_DEFAULTS                          = "app.defaults";

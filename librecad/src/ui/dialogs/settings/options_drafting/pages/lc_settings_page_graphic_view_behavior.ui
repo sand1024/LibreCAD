@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageGraphicViewBehavior</class>
+ <widget class="QWidget" name="LC_SettingsPageGraphicViewBehavior">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1042</width>
+    <height>827</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbNavigation">
+     <property name="title">
+      <string>Navigation</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="6" column="1">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cb_autopanning">
+        <property name="toolTip">
+         <string>Auto Panning
+
+If selected, drawing will be panned automatically 
+if the mouse is near drawing view boundaries.</string>
+        </property>
+        <property name="text">
+         <string>Auto-panning</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Fine-tune various aspects of the drawing area operations by settings below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="cbScrollBarsDrawingExtentTooltip">
+        <property name="toolTip">
+         <string>Scrollbar Tooltip
+
+Show coordinate tooltips when hovering over scrollbar bands. 
+Tooltip provides information about visible and drawings area.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show scrollbar extent tooltip</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="cbScrollBarsDrawingExtent">
+        <property name="toolTip">
+         <string>Visual Extent
+
+Display visual drawing extent band within scrollbars.
+That extent identifies where drawing area is located. </string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Show drawing extent band in scrollbars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cb_antialiasing">
+        <property name="toolTip">
+         <string>Anti-Aliased Drawing
+
+If checked, objects will be painted smoother due to anti-aliasing.
+</string>
+        </property>
+        <property name="text">
+         <string>Anti-aliasing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="cbShowScrollbars">
+        <property name="toolTip">
+         <string>Scrollbars Visibility
+
+Defines whether  horizontal and vertical scrollbars
+should be shown in graphic view. </string>
+        </property>
+        <property name="text">
+         <string>Show scrollbars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbClassicRendering">
+        <property name="toolTip">
+         <string>Buffered Rendering
+
+If disabled,sequential painting algorithm is 
+used that may deliver better antialiasing results.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px;</string>
+        </property>
+        <property name="text">
+         <string>Use buffered (classic) rendering</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Highlight on Hover</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbHighlightWIthLinewidthInDraft">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Hover in Draft Mode
+
+If selected, entity will be highlighted in &quot;Draft&quot; mode using entity's linewidth instead of 1px.</string>
+        </property>
+        <property name="text">
+         <string>Highlight with screen linewidth in &quot;Draft&quot; mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbVisualizeHovering">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Entity Hover
+
+If selected, visualize the entity under the mouse cursor.</string>
+        </property>
+        <property name="text">
+         <string>Highlight entities on mouse hover</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Entities in drawing may be highlighted on mouse hover. Also, for Draft mode it is possible to use either draft or actual width of the line for hovered entity.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Grid Visibility</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbDrawMetaGrid">
+        <property name="toolTip">
+         <string>Meta-Grid Visibility
+
+                      If checked, metagrid will be drawn as part of grid drawing.</string>
+        </property>
+        <property name="text">
+         <string>Draw meta-grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>The Grid is a visual pattern of lines or dots that acts as a digital sheet of graph paper. It provides draftspersons with a sense of scale, distance, and alignment directly in the drawing area. When paired with Grid Snap, it locks the cursor to precise increments for fast, accurate drafting.It it possible to control visibility of both grid and metagrid indepenently.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbDrawGrid">
+        <property name="toolTip">
+         <string>Grid Visibility
+
+                      If checked, grid wil be drawn</string>
+        </property>
+        <property name="text">
+         <string>Draw grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbDrawVerticalForIsoTop">
+        <property name="toolTip">
+         <string>Isometric Top Grid
+
+                      If unchecked, vertical line will not be drawn for &quot;Top&quot; isometric view</string>
+        </property>
+        <property name="text">
+         <string>Draw vertical lines for isometric top view</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbGridBehavior">
+     <property name="title">
+      <string>Grid Behavior</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblMinSpacing">
+        <property name="text">
+         <string>Minimum grid spacing:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbMinGridSpacing">
+        <property name="toolTip">
+         <string>Grid Rescale Spacing
+
+Minimal screen pixel spacing between grid lines
+before subdivisions collapse and grid rescale.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>50</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbUnitlessGrid">
+        <property name="toolTip">
+         <string>Unitless Grid
+
+If checked, grid will not be adjusted to current units of drawing
+Interpret grid units as generic unitless values.</string>
+        </property>
+        <property name="text">
+         <string>Unitless grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbScaleGrid">
+        <property name="toolTip">
+         <string>Grid Auto Scale
+
+If checked, the grid will be scalled automatically</string>
+        </property>
+        <property name="text">
+         <string>Auto-scale grid on zoom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Grid can automatically adapt to the current zoom level by performing automatic rescale.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

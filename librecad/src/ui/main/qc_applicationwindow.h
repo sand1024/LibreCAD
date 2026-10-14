@@ -378,6 +378,7 @@ public:
     void fillWorkspacesList(QList<QPair<int, QString>>& list) const;
     void applyWorkspaceById(int id) const;
     void rebuildMenuIfNecessary() const;
+    void slotOptionsDrafting();
     void openFile(const QString& fileName); // Assume Unknown type
     /**
  * opens the given file.

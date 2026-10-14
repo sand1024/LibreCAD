@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageInputAssistant</class>
+ <widget class="QWidget" name="LC_SettingsPageInputAssistant">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>335</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbAssistantModes">
+     <property name="title">
+      <string>Relative Position Input Modes</string>
+     </property>
+     <layout class="QVBoxLayout" name="layModes">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>The Relative Point Input Assistant is an interactive, on-screen helper overlay that simplifies the process of placing new coordinates relative to the last active point (Relative Zero) without needing to type syntax blindly into the command line.&lt;br&gt;Relative Point Input Assistant is available in any place where coordinate is requested by the active command and could be invoked by keyboard shortcuts (configured by Keyboard Shortcuts settings).</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbRelativePositionAssistantRememberMode">
+        <property name="toolTip">
+         <string>Use Last Used Mode
+
+If checked, used coordinates entering mode will be saved
+and retained across consecutive point input prompts.
+Otherwise, explicitly specified mode will be used on next invocation.</string>
+        </property>
+        <property name="text">
+         <string>Remember last used coordinates mode</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbRelativePositionAssistantStartInOffsetMode">
+        <property name="toolTip">
+         <string>Relative (Offset) or Absolute Mode
+
+If selected, on invocation the assistant will be in relative coordinates (offset) mode. 
+Otherwise, it will prompt to enter absolute coordinates.</string>
+        </property>
+        <property name="text">
+         <string>Start in offset mode</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

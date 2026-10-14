@@ -202,10 +202,13 @@ protected:
     void bindBoolean(const std::initializer_list<BoolEntry>& entries);
     void bindInt(const std::initializer_list<IntEntry>& entries);
     void bindDouble(const std::initializer_list<DoubleEntry>& entries);
+    void bindScaledDouble(QDoubleSpinBox* spinBox, const LC_Setting<int>& setting,
+                          double scaleFactor = 100.0, bool reqRestart = false);
     void bindString(const std::initializer_list<StringEntry>& entries);
     void bindComboIndex(const std::initializer_list<ComboIndexEntry>& entries);
     void bindComboText(const std::initializer_list<ComboTextEntry>& entries);
     void bindColor(const std::initializer_list<ColorEntry>& entries);
+
 
     template <typename WidgetType, typename ValueType>
     void bindCustom(WidgetType* widget, const LC_Setting<ValueType>& setting, bool reqRestart, std::function<ValueType(WidgetType*)> getter,

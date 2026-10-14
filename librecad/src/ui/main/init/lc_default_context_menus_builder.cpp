@@ -126,8 +126,8 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpace(const LC_ActionFact
         tr("Empty Space (Right-Click)"),
         {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, false, RS2::EntityUnknown},
         {
-            ActionNode("SpecialMenu:RecentActions"),
-            ActionNode("EditKillAllActions"),
+            "SpecialMenu:RecentActions",
+            "EditKillAllActions",
             makeSubMenu(tr("Select"), "select", commonSelectActions(), agm),
             makeSubMenu(tr("Edit"), "edit", commonEditActions(), agm),
             {
@@ -135,34 +135,56 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpace(const LC_ActionFact
                 ":/icons/line_2p.lci",
                 {
                     makeSubMenu(tr("Line"), "line", {
-                                    {"DrawLine"},
-                                    {"DrawLineAngle"},
-                                    {"DrawLineHorizontal"},
-                                    {"DrawLineVertical"},
-                                    {"DrawLineParallel"}
+                                    "DrawLine",
+                                    "DrawLineAngle",
+                                    "DrawLineHorizontal",
+                                    "DrawLineVertical",
+                                    "DrawLineParallel"
                                 }, agm),
                     makeSubMenu(tr("Circle"), "circle", {
-                        {"DrawCircle"},
-                        {"DrawCircle2P"},
-{"DrawCircleCR"},
-{"DrawCircle3P"}
+                        "DrawCircle",
+                        "DrawCircle2P",
+                        "DrawCircleCR",
+                        "DrawCircle3P"
                     }, agm),
-                    makeSubMenu(tr("Arc"), "curve", {{"DrawArc"}, {"DrawArc3P"}, {"DrawArcTangential"}}, agm),
-                    makeSubMenu(tr("Polyline"), "polyline", {{"DrawPolyline"}, {"PolylineAdd"}, {"PolylineAppend"}, {"PolylineTrim"}}, agm),
-                    makeSubMenu(tr("Spline"), "spline", {{"DrawSpline"}, {"DrawSplinePoints"}}, agm),
-                    makeSubMenu(tr("Polygon"), "shape", {{"DrawLineRectangle"}, {"DrawLinePolygonCenCor"}}, agm),
-                    makeSubMenu(tr("Other"), "other", {{"DrawText"}, {"DrawMText"}, {"DrawHatch"}, {"DrawImage"}}, agm)
+                    makeSubMenu(tr("Arc"), "curve", {
+                        "DrawArc",
+                        "DrawArc3P",
+                        "DrawArcTangential"
+                        }, agm),
+                    makeSubMenu(tr("Polyline"), "polyline", {
+                        "DrawPolyline",
+                        "PolylineAdd",
+                        "PolylineAppend",
+                        "PolylineTrim"
+                    }, agm),
+                    makeSubMenu(tr("Spline"), "spline",{
+                        "DrawSpline",
+                        "DrawSplinePoints"
+                    }, agm),
+                    makeSubMenu(tr("Polygon"), "shape", {
+                        "DrawLineRectangle",
+                        "DrawLinePolygonCenCor"
+                    }, agm),
+                    makeSubMenu(tr("Other"), "other", {
+                         "DrawText",
+                         "DrawMText",
+                         "DrawHatch",
+                         "DrawImage"
+                    }, agm)
                 }
             },
             makeSubMenu(tr("Modify"), "modify", commonModifyActions(), agm),
             makeSubMenu(tr("Align"), "align", commonAlignActions(), agm),
             makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
-            makeSubMenu(tr("Layers"), "layer", {{"LayersDefreezeAll"}}, agm),
+            makeSubMenu(tr("Layers"), "layer", {
+                "LayersDefreezeAll"
+            }, agm),
             makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
-            ActionNode("-"),
+            "-",
             makeSubMenu(tr("View"), "view", commonViewActions(), agm),
             makeSubMenu(tr("File"), "file", commonFileActions(), agm),
-            ActionNode("SpecialMenu:WorkspacesRescue"),
+            "SpecialMenu:WorkspacesRescue",
             makeSubMenu(tr("Options"), "options", commonOptionActions(), agm)
         }
     };
@@ -185,8 +207,8 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpaceExtended(const LC_Ac
         tr("Empty Space (Right-Click)"),
         {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, false, RS2::EntityUnknown},
         {
-            ActionNode("SpecialMenu:RecentActions"),
-            ActionNode("EditKillAllActions"),
+            "SpecialMenu:RecentActions",
+            "EditKillAllActions",
             makeSubMenu(tr("Select"), "select", commonSelectActions(), agm),
             makeSubMenu(tr("Edit"), "edit", commonEditActions(), agm),
             {
@@ -210,10 +232,10 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuEmptySpaceExtended(const LC_Ac
             makeSubMenu(tr("Order"), "order", commonOrderActions(), agm),
             makeSubMenu(tr("Layers"), "layer", {{"LayersDefreezeAll"}}, agm),
             makeSubMenu(tr("Info"), "info", commonInfoActions(), agm),
-            ActionNode("-"),
+            "-",
             makeSubMenu(tr("View"), "view", commonViewActions(), agm),
             makeSubMenu(tr("File"), "file", commonFileActions(), agm),
-            ActionNode("SpecialMenu:WorkspacesRescue"),
+            "SpecialMenu:WorkspacesRescue",
             makeSubMenu(tr("Options"), "options", commonOptionActions(), agm)
         }
     };
@@ -227,47 +249,47 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuAnyEntity(const LC_ActionGroup
 ContextMenuDef LC_DefaultContextMenusBuilder::menuArc(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("Arc (Right-Click)"), {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityArc}, {
                                     makeSubMenu(tr("Modify Arc"), "modify", {
-                                                    {"DrawSliceDivideCircle"},
-                                                    {"ModifyBreakDivide"},
-                                                    {"ModifyCut"},
-                                                    {"ModifyTrimAmount"},
-                                                    {"ModifyTrim"},
-                                                    {"ModifyTrim2"},
-                                                    {"ModifyOffset"},
-                                                    {"ModifyRevertDirection"},
-                                                    {"-"},
-                                                    {"ModifyRound"}
+                                                    "DrawSliceDivideCircle",
+                                                    "ModifyBreakDivide",
+                                                    "ModifyCut",
+                                                    "ModifyTrimAmount",
+                                                    "ModifyTrim",
+                                                    "ModifyTrim2",
+                                                    "ModifyOffset",
+                                                    "ModifyRevertDirection",
+                                                    "-",
+                                                    "ModifyRound"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Circle"), "circle", {
-                                                    {"DrawCircleByArc"},
-                                                    {"DrawCircleTan1_2P"},
-                                                    {"DrawCircleTan2"},
-                                                    {"DrawCircleTan2_1P"},
-                                                    {"DrawCircleTan3"}
+                                                    "DrawCircleByArc",
+                                                    "DrawCircleTan1_2P",
+                                                    "DrawCircleTan2",
+                                                    "DrawCircleTan2_1P",
+                                                    "DrawCircleTan3"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Line"), "line", {
-                                                    {"DrawLineOrthTan"},
-                                                    {"DrawLineTangent1"},
-                                                    {"DrawLineTangent2"},
-                                                    {"DrawLineOrthogonal"},
-                                                    {"DrawLineRelAngle"}
+                                                    "DrawLineOrthTan",
+                                                    "DrawLineTangent1",
+                                                    "DrawLineTangent2",
+                                                    "DrawLineOrthogonal",
+                                                    "DrawLineRelAngle"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Other"), "other", {
-                                                    {"DrawArcTangential"},
-                                                    {"DrawCross"},
-                                                    {"DrawCircleParallel"},
-                                                    {"DrawLineParallelThrough"},
-                                                    {"DrawBoundingBox"},
-                                                    {"PolylineSegment"}
+                                                    "DrawArcTangential",
+                                                    "DrawCross",
+                                                    "DrawCircleParallel",
+                                                    "DrawLineParallelThrough",
+                                                    "DrawBoundingBox",
+                                                    "PolylineSegment"
                                                 }, agm),
                                     makeSubMenu(tr("Dimensions"), "dimension", {
-                                                    {"DimRadial"},
-                                                    {"DimDiametric"},
-                                                    {"DimArc"},
-                                                    {"DimLeader"},
-                                                    {"DimOrdinate"},
-                                                    {"-"},
-                                                    {"DimStyles"}
+                                                    "DimRadial",
+                                                    "DimDiametric",
+                                                    "DimArc",
+                                                    "DimLeader",
+                                                    "DimOrdinate",
+                                                    "-",
+                                                    "DimStyles"
                                                 }, agm)
                                 }, agm);
 }
@@ -276,43 +298,43 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuPolyline(const LC_ActionGroupM
     return assembleGeometryMenu(tr("Polyline (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPolyline}, {
                                     makeSubMenu(tr("Modify Polyline"), "modify", {
-                                                    {"PolylineAdd"},
-                                                    {"PolylineAppend"},
-                                                    {"PolylineDel"},
-                                                    {"PolylineDelBetween"},
-                                                    {"PolylineTrim"},
-                                                    {"PolylineSegmentType"},
-                                                    {"PolylineArcToLines"},
-                                                    {"PolylineSegment"},
-                                                    {"PolylineEquidistant"},
-                                                    {"BlocksExplode"},
-                                                    {"ModifyRevertDirection"},
-                                                    {"ModifyOffset"}
+                                                    "PolylineAdd",
+                                                    "PolylineAppend",
+                                                    "PolylineDel",
+                                                    "PolylineDelBetween",
+                                                    "PolylineTrim",
+                                                    "PolylineSegmentType",
+                                                    "PolylineArcToLines",
+                                                    "PolylineSegment",
+                                                    "PolylineEquidistant",
+                                                    "BlocksExplode",
+                                                    "ModifyRevertDirection",
+                                                    "ModifyOffset"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Line"), "line", {
-                                                    {"DrawLineBisector"},
-                                                    {"DrawLineOrthTan"},
-                                                    {"DrawLineTangent1"},
-                                                    {"DrawLineTangent2"},
-                                                    {"DrawLineOrthogonal"},
-                                                    {"DrawLineRelAngle"}
+                                                    "DrawLineBisector",
+                                                    "DrawLineOrthTan",
+                                                    "DrawLineTangent1",
+                                                    "DrawLineTangent2",
+                                                    "DrawLineOrthogonal",
+                                                    "DrawLineRelAngle"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Other"), "other", {
-                                                    {"PolylineEquidistant"},
-                                                    {"DrawLineParallelThrough"},
-                                                    {"DrawSplineFromPolyline"},
-                                                    {"DrawBoundingBox"}
+                                                    "PolylineEquidistant",
+                                                    "DrawLineParallelThrough",
+                                                    "DrawSplineFromPolyline",
+                                                    "DrawBoundingBox"
                                                 }, agm),
                                     makeSubMenu(tr("Dimensions"), "dimension", {
-                                                    {"DimAligned"},
-                                                    {"DimLinear"},
-                                                    {"DimLinearHor"},
-                                                    {"DimLinearVer"},
-                                                    {"DimAngular"},
-                                                    {"DimLeader"},
-                                                    {"DimOrdinate"},
-                                                    {"-"},
-                                                    {"DimStyles"}
+                                                    "DimAligned",
+                                                    "DimLinear",
+                                                    "DimLinearHor",
+                                                    "DimLinearVer",
+                                                    "DimAngular",
+                                                    "DimLeader",
+                                                    "DimOrdinate",
+                                                    "-",
+                                                    "DimStyles"
                                                 }, agm)
                                 }, agm);
 }
@@ -321,13 +343,13 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuSpline(const LC_ActionGroupMan
     return assembleGeometryMenu(tr("Spline (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySpline}, {
                                     makeSubMenu(tr("Modify Spline"), "modify", {
-                                                    {"DrawSplinePointsAdd"},
-                                                    {"DrawSplinePointsAppend"},
-                                                    {"DrawSplinePointsRemove"},
-                                                    {"DrawSplineExplode"},
-                                                    {"DrawSplinePointsDelTwo"},
-                                                    {"BlocksExplode"},
-                                                    {"ModifyRevertDirection"}
+                                                    "DrawSplinePointsAdd",
+                                                    "DrawSplinePointsAppend",
+                                                    "DrawSplinePointsRemove",
+                                                    "DrawSplineExplode",
+                                                    "DrawSplinePointsDelTwo",
+                                                    "BlocksExplode",
+                                                    "ModifyRevertDirection"
                                                 }, agm)
                                 }, agm);
 }
@@ -336,13 +358,13 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuSplinePoints(const LC_ActionGr
     return assembleGeometryMenu(tr("Spline by Points (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntitySplinePoints}, {
                                     makeSubMenu(tr("Modify Spline Points"), "modify", {
-                                                    {"DrawSplinePointsAdd"},
-                                                    {"DrawSplinePointsAppend"},
-                                                    {"DrawSplinePointsRemove"},
-                                                    {"DrawSplineExplode"},
-                                                    {"DrawSplinePointsDelTwo"},
-                                                    {"ModifyCut"},
-                                                    {"ModifyRevertDirection"}
+                                                    "DrawSplinePointsAdd",
+                                                    "DrawSplinePointsAppend",
+                                                    "DrawSplinePointsRemove",
+                                                    "DrawSplineExplode",
+                                                    "DrawSplinePointsDelTwo",
+                                                    "ModifyCut",
+                                                    "ModifyRevertDirection"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Other"), "other", {{"DrawLineTangent1"}, {"DrawBoundingBox"}}, agm)
                                 }, agm);
@@ -351,20 +373,20 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuSplinePoints(const LC_ActionGr
 ContextMenuDef LC_DefaultContextMenusBuilder::menuEllipse(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("Ellipse (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityEllipse}, {
-                                    ActionNode("ModifyCut"),
-                                    ActionNode("ModifyRound"),
+                                    "ModifyCut",
+                                    "ModifyRound",
                                     makeSubMenu(tr("Draw Line"), "line", {
-                                                    {"DrawLineOrthTan"},
-                                                    {"DrawLineOrthogonal"},
-                                                    {"DrawLineTangent1"},
-                                                    {"DrawLineTangent2"},
-                                                    {"DrawLineRelAngle"}
+                                                    "DrawLineOrthTan",
+                                                    "DrawLineOrthogonal",
+                                                    "DrawLineTangent1",
+                                                    "DrawLineTangent2",
+                                                    "DrawLineRelAngle"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Other"), "other", {
-                                                    {"DrawCross"},
-                                                    {"DrawBoundingBox"},
-                                                    {"DrawArcTangential"},
-                                                    {"ModifyRevertDirection"}
+                                                    "DrawCross",
+                                                    "DrawBoundingBox",
+                                                    "DrawArcTangential",
+                                                    "ModifyRevertDirection"
                                                 }, agm)
                                 }, agm);
 }
@@ -372,22 +394,22 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuEllipse(const LC_ActionGroupMa
 ContextMenuDef LC_DefaultContextMenusBuilder::menuPoint(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("Point (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityPoint}, {
-                                    ActionNode("SelectPoints"),
-                                    ActionNode("PasteToPoints"),
-                                    ActionNode("DrawPointsMiddle"),
-                                    ActionNode("DrawLinePoints"),
-                                    ActionNode("DrawPointLattice")
+                                    "SelectPoints",
+                                    "PasteToPoints",
+                                    "DrawPointsMiddle",
+                                    "DrawLinePoints",
+                                    "DrawPointLattice"
                                 }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuParabola(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("Parabola (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityParabola}, {
-                                    ActionNode("DrawLineOrthTan"),
-                                    ActionNode("DrawLineTangent1"),
-                                    ActionNode("DrawLineTangent2"),
-                                    ActionNode("ModifyCut"),
-                                    ActionNode("DrawBoundingBox")
+                                    "DrawLineOrthTan",
+                                    "DrawLineTangent1",
+                                    "DrawLineTangent2",
+                                    "ModifyCut",
+                                    "DrawBoundingBox"
                                 }, agm);
 }
 
@@ -399,18 +421,18 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuText(const LC_ActionGroupManag
 ContextMenuDef LC_DefaultContextMenusBuilder::menuMText(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("MText (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityMText}, {
-                                    ActionNode("ModifyExplodeText"),
-                                    ActionNode("BlocksExplode"),
-                                    ActionNode("DrawBoundingBox")
+                                    "ModifyExplodeText",
+                                    "BlocksExplode",
+                                    "DrawBoundingBox"
                                 }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuInsert(const LC_ActionGroupManager* agm) {
     return assembleGeometryMenu(tr("Block Insert (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityInsert}, {
-                                    ActionNode(LC_ActionNames::ActionEditBlock),
-                                    ActionNode("EntityInfo"),
-                                    ActionNode("BlocksExplode")
+                                    LC_ActionNames::ActionEditBlock,
+                                    "EntityInfo",
+                                    "BlocksExplode"
                                 }, agm);
 }
 
@@ -427,77 +449,77 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuHatch(const LC_ActionGroupMana
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAligned(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Aligned (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimAligned}, {
-                                     {"DimPickApply"},
-                                     {"DimBaseline"},
-                                     {"DimContinue"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimBaseline",
+                                     "DimContinue",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimRadial(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Radial (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimRadial}, {
-                                     {"DimPickApply"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimDiametric(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Diametric (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimDiametric}, {
-                                     {"DimPickApply"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimArc(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Arc (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimArc}, {
-                                     {"DimPickApply"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimOrdinate(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Ordinate (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimOrdinate}, {
-                                     {"DimPickApply"},
-                                     {"DimOrdinateForBase"},
-                                     {"DimOrdinateReBase"},
-                                     {"UCSSetByDimOrdinate"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimOrdinateForBase",
+                                     "DimOrdinateReBase",
+                                     "UCSSetByDimOrdinate",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLeader(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Leader (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLeader}, {
-                                     {"DimPickApply"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
@@ -517,58 +539,58 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuLine(const LC_ActionGroupManag
     return assembleGeometryMenu(tr("Line (Right-Click)"), {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityLine},
                                 {
                                     makeSubMenu(tr("Modify Line"), "modify", {
-                                                    {"DrawSliceDivideLine"},
-                                                    {"ModifyCut"},
-                                                    {"ModifyBreakDivide"},
-                                                    {"ModifyTrimAmount"},
-                                                    {"ModifyLineJoin"},
-                                                    {"ModifyTrim"},
-                                                    {"ModifyTrim2"},
-                                                    {"ModifyLineGap"},
-                                                    {"ModifyOffset"},
-                                                    {"ModifyRevertDirection"},
-                                                    {"-"},
-                                                    {"ModifyRound"},
-                                                    {"ModifyBevel"}
+                                                    "DrawSliceDivideLine",
+                                                    "ModifyCut",
+                                                    "ModifyBreakDivide",
+                                                    "ModifyTrimAmount",
+                                                    "ModifyLineJoin",
+                                                    "ModifyTrim",
+                                                    "ModifyTrim2",
+                                                    "ModifyLineGap",
+                                                    "ModifyOffset",
+                                                    "ModifyRevertDirection",
+                                                    "-",
+                                                    "ModifyRound",
+                                                    "ModifyBevel"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Line"), "line", {
-                                                    {"DrawLineParallelThrough"},
-                                                    {"DrawLineOrthogonalRel"},
-                                                    {"DrawLineOrthogonal"},
-                                                    {"DrawLineParallel"},
-                                                    {"DrawLineRel"},
-                                                    {"DrawLineRelAngle"},
-                                                    {"DrawLineAngleRel"},
-                                                    {"DrawLineOrthTan"},
-                                                    {"DrawLineBisector"},
-                                                    {"DrawLineFree"},
-                                                    {"DrawLineMiddle"},
-                                                    {"DrawLineFromPointToLine"},
-                                                    {"DrawLineRadiant"}
+                                                    "DrawLineParallelThrough",
+                                                    "DrawLineOrthogonalRel",
+                                                    "DrawLineOrthogonal",
+                                                    "DrawLineParallel",
+                                                    "DrawLineRel",
+                                                    "DrawLineRelAngle",
+                                                    "DrawLineAngleRel",
+                                                    "DrawLineOrthTan",
+                                                    "DrawLineBisector",
+                                                    "DrawLineFree",
+                                                    "DrawLineMiddle",
+                                                    "DrawLineFromPointToLine",
+                                                    "DrawLineRadiant"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Circle"), "circle", {
-                                                    {"DrawCircleTan1_2P"},
-                                                    {"DrawCircleTan2"},
-                                                    {"DrawCircleTan2_1P"},
-                                                    {"DrawCircleTan3"},
-                                                    {"DrawCircleInscribe"}
+                                                    "DrawCircleTan1_2P",
+                                                    "DrawCircleTan2",
+                                                    "DrawCircleTan2_1P",
+                                                    "DrawCircleTan3",
+                                                    "DrawCircleInscribe"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Other"), "other", {
-                                                    {"DrawArcTangential"},
-                                                    {"DrawEllipseInscribe"},
-                                                    {"DrawBoundingBox"},
-                                                    {"PolylineSegment"}
+                                                    "DrawArcTangential",
+                                                    "DrawEllipseInscribe",
+                                                    "DrawBoundingBox",
+                                                    "PolylineSegment"
                                                 }, agm),
                                     makeSubMenu(tr("Dimensions"), "dimension", {
-                                                    {"DimAligned"},
-                                                    {"DimLinear"},
-                                                    {"DimLinearHor"},
-                                                    {"DimLinearVer"},
-                                                    {"DimAngular"},
-                                                    {"DimLeader"},
-                                                    {"DimOrdinate"},
-                                                    {"-"},
-                                                    {"DimStyles"}
+                                                    "DimAligned",
+                                                    "DimLinear",
+                                                    "DimLinearHor",
+                                                    "DimLinearVer",
+                                                    "DimAngular",
+                                                    "DimLeader",
+                                                    "DimOrdinate",
+                                                    "-",
+                                                    "DimStyles"
                                                 }, agm)
                                 }, agm);
 }
@@ -577,38 +599,41 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuCircle(const LC_ActionGroupMan
     return assembleGeometryMenu(tr("Circle (Right-Click)"),
                                 {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityCircle}, {
                                     makeSubMenu(tr("Modify Circle"), "modify", {
-                                                    {"DrawSliceDivideCircle"},
-                                                    {"ModifyBreakDivide"},
-                                                    {"ModifyCut"},
-                                                    {"ModifyTrim"},
-                                                    {"ModifyTrim2"},
-                                                    {"ModifyOffset"},
-                                                    {"-"},
-                                                    {"ModifyRound"}
+                                                    "DrawSliceDivideCircle",
+                                                    "ModifyBreakDivide",
+                                                    "ModifyCut",
+                                                    "ModifyTrim",
+                                                    "ModifyTrim2",
+                                                    "ModifyOffset",
+                                                    "-",
+                                                    "ModifyRound"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Circle"), "circle", {
-                                                    {"DrawCircleTan1_2P"},
-                                                    {"DrawCircleTan2"},
-                                                    {"DrawCircleTan2_1P"},
-                                                    {"DrawCircleTan3"},
-                                                    {"DrawCircleParallel"},
-                                                    {"DrawLineParallelThrough"}
+                                                    "DrawCircleTan1_2P",
+                                                    "DrawCircleTan2",
+                                                    "DrawCircleTan2_1P",
+                                                    "DrawCircleTan3",
+                                                    "DrawCircleParallel",
+                                                    "DrawLineParallelThrough"
                                                 }, agm),
                                     makeSubMenu(tr("Draw Line"), "line", {
-                                                    {"DrawLineOrthTan"},
-                                                    {"DrawLineTangent1"},
-                                                    {"DrawLineTangent2"},
-                                                    {"DrawLineRelAngle"},
-                                                    {"DrawLineOrthogonal"}
+                                                    "DrawLineOrthTan",
+                                                    "DrawLineTangent1",
+                                                    "DrawLineTangent2",
+                                                    "DrawLineRelAngle",
+                                                    "DrawLineOrthogonal"
                                                 }, agm),
-                                    makeSubMenu(tr("Draw Other"), "other", {{"DrawCross"}, {"DrawBoundingBox"}}, agm),
+                                    makeSubMenu(tr("Draw Other"), "other", {
+                                                    "DrawCross",
+                                                    "DrawBoundingBox"
+                                                },agm),
                                     makeSubMenu(tr("Dimensions"), "dimension", {
-                                                    {"DimRadial"},
-                                                    {"DimDiametric"},
-                                                    {"DimLeader"},
-                                                    {"DimOrdinate"},
-                                                    {"-"},
-                                                    {"DimStyles"}
+                                                    "DimRadial",
+                                                    "DimDiametric",
+                                                    "DimLeader",
+                                                    "DimOrdinate",
+                                                    "-",
+                                                    "DimStyles"
                                                 }, agm)
                                 }, agm);
 }
@@ -616,28 +641,28 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuCircle(const LC_ActionGroupMan
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLinear(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Linear (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimLinear}, {
-                                     {"DimPickApply"},
-                                     {"DimBaseline"},
-                                     {"DimContinue"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimBaseline",
+                                     "DimContinue",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
 ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAngular(const LC_ActionGroupManager* agm) {
     return assembleDimensionMenu(tr("Dimension Angular (Right-Click)"),
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimAngular}, {
-                                     {"DimPickApply"},
-                                     {"DimBaseline"},
-                                     {"DimContinue"},
-                                     {"DimRegenerate"},
-                                     {"-"},
-                                     {"DimStyles"},
-                                     {"-"},
-                                     {"EntityInfo"}
+                                     "DimPickApply",
+                                     "DimBaseline",
+                                     "DimContinue",
+                                     "DimRegenerate",
+                                     "-",
+                                     "DimStyles",
+                                     "-",
+                                     "EntityInfo"
                                  }, agm);
 }
 
@@ -721,58 +746,58 @@ ContextMenusConfig LC_DefaultContextMenusBuilder::createExtendedConfig(const LC_
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonEditActions() {
     return {
-        {"EditUndo"},
-        {"EditRedo"},
-        {"-"},
-        {"EditCopy"},
-        {"EditCopyQuick"},
-        {"-"},
-        {"EditPaste"},
-        {"EditPasteTransform"},
-        {"PasteToPoints"},
-        {"-"},
-        {"EditCut"},
-        {"EditCutQuick"},
-        {"-"},
-        {"PenPick"},
-        {"PenPickResolved"},
-        {"PenApply"},
-        {"PenCopy"}
+        "EditUndo",
+        "EditRedo",
+        "-",
+        "EditCopy",
+        "EditCopyQuick",
+        "-",
+        "EditPaste",
+        "EditPasteTransform",
+        "PasteToPoints",
+        "-",
+        "EditCut",
+        "EditCutQuick",
+        "-",
+        "PenPick",
+        "PenPickResolved",
+        "PenApply",
+        "PenCopy"
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonSelectActions() {
     return {
-        {"SelectSingle"},
-        {"SelectContour"},
-        {"SelectIntersected"},
-        {"DeselectIntersected"},
-        {"SelectLayer"},
-        {"SelectPoints"},
-        {"SelectWindow"},
-        {"DeselectWindow"},
-        {"SelectAll"},
-        {"DeselectAll"},
-        {"SelectInvert"},
-        {"SelectQuick"},
-        {"SelectionModeToggle"}
+        "SelectSingle",
+        "SelectContour",
+        "SelectIntersected",
+        "DeselectIntersected",
+        "SelectLayer",
+        "SelectPoints",
+        "SelectWindow",
+        "DeselectWindow",
+        "SelectAll",
+        "DeselectAll",
+        "SelectInvert",
+        "SelectQuick",
+        "SelectionModeToggle"
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonModifyActions() {
     return {
-        {"ModifyMove"},
-        {"ModifyCopy"},
-        {"ModifyDuplicate"},
-        {"ModifyRotate"},
-        {"ModifyMirror"},
-        {"ModifyScale"},
-        {"ModifyStretch"},
-        {"ModifyMoveRotate"},
-        {"ModifyRotate2"},
-        {"-"},
-        {"ModifyDelete"},
-        {"EntityInfo"}
+        "ModifyMove",
+        "ModifyCopy",
+        "ModifyDuplicate",
+        "ModifyRotate",
+        "ModifyMirror",
+        "ModifyScale",
+        "ModifyStretch",
+        "ModifyMoveRotate",
+        "ModifyRotate2",
+        "-",
+        "ModifyDelete",
+        "EntityInfo"
     };
 }
 
@@ -781,96 +806,108 @@ QList<ActionNode> LC_DefaultContextMenusBuilder::commonAlignActions() {
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonOrderActions() {
-    return {{"OrderBottom"}, {"OrderLower"}, {"-"}, {"OrderTop"}, {"OrderRaise"}};
+    return {
+        "OrderBottom",
+        "OrderLower",
+        "-",
+        "OrderTop",
+        "OrderRaise"
+    };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonLayerActions() {
     return {
-        {"SpecialAction:EntityLayerActivate"},
-        {"EntityLayerView"},
-        {"EntityLayerLock"},
-        {"EntityLayerPrint"},
-        {"EntityLayerConstruction"},
-        {"EntityLayerHideOthers"},
-        {"LayersDefreezeAll"}
+        "SpecialAction:EntityLayerActivate",
+        "EntityLayerView",
+        "EntityLayerLock",
+        "EntityLayerPrint",
+        "EntityLayerConstruction",
+        "EntityLayerHideOthers",
+        "LayersDefreezeAll"
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonInfoActions() {
     return {
-        {"EntityInfo"},
-        {"InfoPoint"},
-        {"InfoDist2"},
-        {"InfoDist"},
-        {"InfoDist3"},
-        {"InfoAngle"},
-        {"InfoAngle3Points"},
-        {"InfoTotalLength"},
-        {"InfoArea"},
-        {"PickCoordinates"},
-        {"-"},
-        {"EntityDescriptionInfo"}
+        "EntityInfo",
+        "InfoPoint",
+        "InfoDist2",
+        "InfoDist",
+        "InfoDist3",
+        "InfoAngle",
+        "InfoAngle3Points",
+        "InfoTotalLength",
+        "InfoArea",
+        "PickCoordinates",
+        "-",
+        "EntityDescriptionInfo"
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonViewActions() {
     return {
-        {"Fullscreen"},
-        {"ViewGrid"},
-        {"ViewDraft"},
-        {"ViewLinesDraft"},
-        {"ViewAntialiasing"},
-        {"-"},
-        {"ViewGridOrtho"},
-        {"ViewGridIsoLeft"},
-        {"ViewGridIsoTop"},
-        {"ViewGridIsoRight"},
-        {"-"},
-        {"ZoomRedraw"},
-        {"ZoomIn"},
-        {"ZoomOut"},
-        {"ZoomAuto"},
-        {"ZoomPrevious"},
-        {"ZoomWindow"},
-        {"ZoomPan"},
-        {"-"},
-        {"ZoomViewSave"},
+        "Fullscreen",
+        "ViewGrid",
+        "ViewDraft",
+        "ViewLinesDraft",
+        "ViewAntialiasing",
+        "-",
+        "ViewGridOrtho",
+        "ViewGridIsoLeft",
+        "ViewGridIsoTop",
+        "ViewGridIsoRight",
+        "-",
+        "ZoomRedraw",
+        "ZoomIn",
+        "ZoomOut",
+        "ZoomAuto",
+        "ZoomPrevious",
+        "ZoomWindow",
+        "ZoomPan",
+        "-",
+        "ZoomViewSave",
         {
             "Menu:ViewsRestore",
             ":/icons/nview_visible.lci",
             {{"ZoomViewRestore1"}, {"ZoomViewRestore2"}, {"ZoomViewRestore3"}, {"ZoomViewRestore4"}, {"ZoomViewRestore5"}}
         },
-        {"-"},
-        {"UCSCreate"},
-        {"UCSSetWCS"},
-        {"UCSSetByDimOrdinate"},
-        {LC_ActionNames::MenuUCSList}
+        "-",
+        "UCSCreate",
+        "UCSSetWCS",
+        "UCSSetByDimOrdinate",
+        LC_ActionNames::MenuUCSList
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonFileActions() {
     return {
-        {"FileNew"},
-        {"FileNewTemplate"},
-        {"FileOpen"},
-        {"SpecialMenu:RecentFiles"},
-        {"-"},
-        {"FileSave"},
-        {"FileSaveAs"},
-        {"FileSaveAll"},
-        {"-"},
+        "FileNew",
+        "FileNewTemplate",
+        "FileOpen",
+        "SpecialMenu:RecentFiles",
+        "-",
+        "FileSave",
+        "FileSaveAs",
+        "FileSaveAll",
+        "-",
         {"Menu:Import", ":/icons/import.lci", {{"DrawImage"}, {"BlocksImport"}}},
         {"Menu:Export", ":/icons/export.lci", {{"FileExportMakerCam"}, {"FilePrintPDF"}, {"FileExport"}}},
-        {"-"},
-        {"FilePrint"},
-        {"FilePrintPreview"},
-        {"-"},
-        {"FileClose"},
-        {"FileCloseAll"},
-        {"FileQuit"}
+        "-",
+        "FilePrint",
+        "FilePrintPreview",
+        "-",
+        "FileClose",
+        "FileCloseAll",
+        "FileQuit"
     };
 }
 
 QList<ActionNode> LC_DefaultContextMenusBuilder::commonOptionActions() {
-    return {{"OptionsDrawing"}, {"OptionsGeneral"}, {"OptionsStyling"}, {"OptionsCustomization"}};
+    return {
+        "OptionsDrawing",
+        "OptionsGeneral",
+        "OptionsDrafting",
+        "OptionsStyling", 
+        "OptionsCustomization"
+    };
 }

@@ -42,7 +42,7 @@ void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow
     using namespace LC_SettingsPagesCustomization;
 
     auto* reg = LC_SettingsRegistry::instance();
-    reg->configureDialog(DLG_CUSTOMIZATION, {QObject::tr("Application Customization"), true, false, ":/icons/options_customize.lci"});
+    reg->configureDialog(DLG_CUSTOMIZATION, {QObject::tr("Application Customization"), true, false, true, ":/icons/options_customize.lci"});
 
     // 1. Register Shortcuts Preset Manager
     auto groupManager = appWindow->getActionGroupManager();

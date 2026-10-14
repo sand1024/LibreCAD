@@ -33,6 +33,7 @@ void LC_SettingsRegistry::configureDialog(const QString& dialogId, const LC_Sett
     reg.properties.title = props.title;
     reg.properties.useGlobalTransaction = props.useGlobalTransaction;
     reg.properties.expandAllCategories = props.expandAllCategories;
+    reg.properties.supportsExpandCollapseCategories = props.supportsExpandCollapseCategories;
     reg.properties.icon = props.icon;
 }
 
@@ -70,7 +71,7 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
         RS_Settings::instance()->startTransaction();
     }
 
-    const auto dialog = std::make_unique<LC_SettingsDialog>(parent, dialogId);
+    const auto dialog = std::make_unique<LC_SettingsDialog>(parent, dialogId, reg.properties.supportsExpandCollapseCategories);
 
     // Set the configured title
     dialog->setWindowTitle(reg.properties.title);

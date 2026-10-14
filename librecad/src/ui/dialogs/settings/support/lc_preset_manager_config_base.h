@@ -30,13 +30,10 @@
 template <typename TConfig, typename TRepo>
 class LC_PresetManagerConfigBase : public LC_AbstractPresetManager {
 public:
+
     explicit LC_PresetManagerConfigBase(TRepo* repo, const QString& initialKey, QObject* parent = nullptr)
         : LC_AbstractPresetManager(initialKey, parent)
         , m_repository(repo) {
-        if (m_repository != nullptr && !this->isDefaultPreset(this->m_activeKey) && !m_repository->exists(this->m_activeKey)) {
-            this->setActivePresetKeyDefault();
-            this->m_originalActiveKey = this->m_activeKey;
-        }
     }
 
     ~LC_PresetManagerConfigBase() override = default;

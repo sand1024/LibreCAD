@@ -110,7 +110,7 @@ QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy& tbPolicy, 
     tb->setProperty("_group", 3);
     tb->setProperty("_lc_toolbar_name", name);
     if (showToolTip) {
-        tb->setToolTip(tr("Toolbar: %1").arg(title));
+        tb->setToolTip(tr("Toolbar  \n\n %1").arg(title));
     }
     if (usePillChips) {
         tb->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);

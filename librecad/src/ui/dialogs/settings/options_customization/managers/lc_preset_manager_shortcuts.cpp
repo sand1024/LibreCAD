@@ -37,6 +37,7 @@ LC_PresetManagerShortcuts::LC_PresetManagerShortcuts(LC_ActionGroupManager* grou
           CFG_AppState::o_ActiveShortcutsScheme, parent)
     , m_groupManager(groupMgr)
     , m_shortcutsManager(shortcutsManager) {
+    loadPreset(m_activeKey);
 }
 
 void LC_PresetManagerShortcuts::setTreeModel(LC_ShortcutsTreeModel* model) {
