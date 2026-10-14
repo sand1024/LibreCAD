@@ -1,26 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  - *
-  - This file is part of the LibreCAD project, a 2D CAD program
-  -
-  - Copyright (C) 2026 LibreCAD.org
-  - Copyright (C) 2026 sand1024
-  -
-  - This program is free software; you can redistribute it and/or
-  - modify it under the terms of the GNU General Public License
-  - as published by the Free Software Foundation; either version 2
-  - of the License, or (at your option) any later version.
-  -
-  - This program is distributed in the hope that it will be useful,
-  - but WITHOUT ANY WARRANTY; without even the implied warranty of
-  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  - GNU General Public License for more details.
-  -
-  - You should have received a copy of the GNU General Public License
-  - along with this program; if not, write to the Free Software
-  - Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
-
 <ui version="4.0">
  <class>LC_SettingsPageGraphicViewHandles</class>
  <widget class="QWidget" name="LC_SettingsPageGraphicViewHandles">
@@ -73,7 +51,7 @@ Color for start handle of entity</string>
        </widget>
       </item>
       <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="lHandleDesc">
         <property name="text">
          <string>Entity handles are utility markers that are drawn at the start, end and internal reference points of selected (or hovered) entities and allow to identify these points quickly.</string>
         </property>
@@ -268,7 +246,7 @@ Color of non-endpoint handle of entity</string>
        </widget>
       </item>
       <item row="0" column="0" colspan="5">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="lEntityDesc">
         <property name="frameShape">
          <enum>QFrame::Shape::NoFrame</enum>
         </property>
@@ -329,7 +307,7 @@ Color of non-endpoint handle of entity</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_14">
       <item row="2" column="3">
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
         </property>
@@ -573,7 +551,7 @@ Color of non-endpoint handle of entity</string>
        </widget>
       </item>
       <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="lOverlayDesc">
         <property name="text">
          <string>Selection Box Overlay is shown when multiple entities selection is performed by mouse. This overlay highlights selection area. In most cases, the logic of entities selection depends on selection directon (either direct left-to-right or inverted right-to-left) and therefore settings for both modes of displaying the overlay could be customized.</string>
         </property>

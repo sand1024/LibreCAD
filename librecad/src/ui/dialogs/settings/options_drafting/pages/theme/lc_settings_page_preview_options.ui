@@ -1,26 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  - *
-  - This file is part of the LibreCAD project, a 2D CAD program
-  -
-  - Copyright (C) 2026 LibreCAD.org
-  - Copyright (C) 2026 sand1024
-  -
-  - This program is free software; you can redistribute it and/or
-  - modify it under the terms of the GNU General Public License
-  - as published by the Free Software Foundation; either version 2
-  - of the License, or (at your option) any later version.
-  -
-  - This program is distributed in the hope that it will be useful,
-  - but WITHOUT ANY WARRANTY; without even the implied warranty of
-  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  - GNU General Public License for more details.
-  -
-  - You should have received a copy of the GNU General Public License
-  - along with this program; if not, write to the Free Software
-  - Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
-
 <ui version="4.0">
  <class>LC_SettingsPagePreviewOptions</class>
  <widget class="QWidget" name="LC_SettingsPagePreviewOptions">
@@ -29,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>691</height>
+    <height>727</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_main">
@@ -80,7 +58,7 @@ Color of explanatory entity that is currently active according to the command st
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
-          <height>20</height>
+          <height>0</height>
          </size>
         </property>
        </spacer>
@@ -311,6 +289,84 @@ If more entities in preview than specified, rect will be drawn instead of entiti
       <property name="spacing">
        <number>2</number>
       </property>
+      <item row="4" column="0">
+       <widget class="QToolButton" name="bDotCircleSquare">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot_circle_square.lci</normaloff>:/icons/point_dot_circle_square.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QToolButton" name="bCrossCircle">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_cross_circle.lci</normaloff>:/icons/point_cross_circle.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QToolButton" name="bPlusSquare">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_plus_square.lci</normaloff>:/icons/point_plus_square.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2">
        <widget class="QToolButton" name="bPlus">
         <property name="minimumSize">
@@ -337,83 +393,18 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QToolButton" name="bDotCircle">
-        <property name="minimumSize">
+      <item row="2" column="5">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>30</width>
-          <height>30</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_dot_circle.lci</normaloff>:/icons/point_dot_circle.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QToolButton" name="bBlankCircleSquare">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_blank_circle_square.lci</normaloff>:/icons/point_blank_circle_square.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QToolButton" name="bTick">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_tick.lci</normaloff>:/icons/point_tick.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item row="4" column="3">
        <widget class="QToolButton" name="bCrossCircleSquare">
@@ -441,8 +432,8 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QToolButton" name="bDotCircleSquare">
+      <item row="3" column="1">
+       <widget class="QToolButton" name="bBlankSquare">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -451,7 +442,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/point_dot_circle_square.lci</normaloff>:/icons/point_dot_circle_square.lci</iconset>
+          <normaloff>:/icons/point_blank_square.lci</normaloff>:/icons/point_blank_square.lci</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -493,8 +484,8 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="1" column="3">
-       <widget class="QToolButton" name="bCross">
+      <item row="2" column="2">
+       <widget class="QToolButton" name="bPlusCircle">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -503,7 +494,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/point_cross.lci</normaloff>:/icons/point_cross.lci</iconset>
+          <normaloff>:/icons/point_plus_circle.lci</normaloff>:/icons/point_plus_circle.lci</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -519,18 +510,67 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="2" column="5">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+      <item row="0" column="0" colspan="6">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Explanatory reference point may be rendered using different styles. Click on the icon to select style to use.</string>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QToolButton" name="bDotCircle">
+        <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>20</height>
+          <width>30</width>
+          <height>30</height>
          </size>
         </property>
-       </spacer>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot_circle.lci</normaloff>:/icons/point_dot_circle.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="bBlankCircle">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_blank_circle.lci</normaloff>:/icons/point_blank_circle.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QToolButton" name="bDot">
@@ -584,32 +624,6 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="2" column="4">
-       <widget class="QToolButton" name="bTickCircle">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_tick_circle.lci</normaloff>:/icons/point_tick_circle.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QToolButton" name="bDotSquare">
         <property name="minimumSize">
@@ -636,8 +650,8 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QToolButton" name="bPlusSquare">
+      <item row="1" column="3">
+       <widget class="QToolButton" name="bCross">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -646,7 +660,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/point_plus_square.lci</normaloff>:/icons/point_plus_square.lci</iconset>
+          <normaloff>:/icons/point_cross.lci</normaloff>:/icons/point_cross.lci</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -662,8 +676,8 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="4" column="4">
-       <widget class="QToolButton" name="bTickCircleSquare">
+      <item row="4" column="1">
+       <widget class="QToolButton" name="bBlankCircleSquare">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -672,124 +686,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/point_tick_circle_square.lci</normaloff>:/icons/point_tick_circle_square.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QToolButton" name="bBlankCircle">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_blank_circle.lci</normaloff>:/icons/point_blank_circle.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="4" column="2">
-       <widget class="QToolButton" name="bPlusCircleSquare">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_plus_circle_square.lci</normaloff>:/icons/point_plus_circle_square.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QToolButton" name="bPlusCircle">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_plus_circle.lci</normaloff>:/icons/point_plus_circle.lci</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>40</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QToolButton" name="bCrossCircle">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/point_cross_circle.lci</normaloff>:/icons/point_cross_circle.lci</iconset>
+          <normaloff>:/icons/point_blank_circle_square.lci</normaloff>:/icons/point_blank_circle_square.lci</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -831,8 +728,8 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QToolButton" name="bBlankSquare">
+      <item row="4" column="2">
+       <widget class="QToolButton" name="bPlusCircleSquare">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -841,7 +738,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/point_blank_square.lci</normaloff>:/icons/point_blank_square.lci</iconset>
+          <normaloff>:/icons/point_plus_circle_square.lci</normaloff>:/icons/point_plus_circle_square.lci</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -857,12 +754,80 @@ If more entities in preview than specified, rect will be drawn instead of entiti
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="6">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Explanatory reference point may be rendered using different styles. Click on the icon to select style to use.</string>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="bTickCircle">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
         </property>
-        <property name="wordWrap">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick_circle.lci</normaloff>:/icons/point_tick_circle.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="bTick">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick.lci</normaloff>:/icons/point_tick.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QToolButton" name="bTickCircleSquare">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick_circle_square.lci</normaloff>:/icons/point_tick_circle_square.lci</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
          <bool>true</bool>
         </property>
        </widget>
