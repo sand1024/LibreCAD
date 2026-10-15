@@ -44,6 +44,11 @@ add_compile_definitions (LC_VERSION=2.2.2.6-alpha)
 add_compile_definitions (LC_PRERELEASE=true)
 add_compile_definitions (QT_USE_QSTRINGBUILDER)
 
+option (NO_TIMESTAMP "Omit build date from the binary (reproducible builds)" OFF)
+if (NO_TIMESTAMP)
+	add_compile_definitions(NO_TIMESTAMP)
+endif ()
+
 if (MSVC)
     #    add_compile_options(/bigobj)
     #    add_compile_options(/Zi /MT /EHsc /Oy- /Ob0)
@@ -131,7 +136,7 @@ if(NOT Boost_INCLUDE_DIR)
 endif()
 set(Boost_INCLUDE_DIRS "${Boost_INCLUDE_DIR}")
 
-find_package (Freetype)
+include(cmake/LibreCADOpenType.cmake)
 
 # Define all sources (as before)
 file (GLOB_RECURSE AUTO_EXCLUDED_SOURCES
@@ -227,6 +232,7 @@ set (SHARED_INCLUDES
      librecad/src/lib/engine/document/entities/support
      librecad/src/lib/engine/document/fonts
      librecad/src/lib/engine/document/layers
+     librecad/src/lib/engine/document/linetypes
      librecad/src/lib/engine/document/selection
      librecad/src/lib/engine/document/patterns
      librecad/src/lib/engine/document/textstyles
@@ -989,7 +995,25 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/lc_mleader.h
      librecad/src/lib/engine/document/entities/lc_textbidi.cpp
      librecad/src/lib/engine/document/entities/lc_textbidi.h
-     librecad/src/lib/engine/document/entities/rs_line.cpp
+    librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+    librecad/src/lib/engine/document/entities/lc_textdocument.h
+    librecad/src/lib/engine/document/entities/lc_textsourcecodec.cpp
+    librecad/src/lib/engine/document/entities/lc_textsourcecodec.h
+    librecad/src/lib/engine/document/entities/lc_textentitystate.cpp
+    librecad/src/lib/engine/document/entities/lc_textentitystate.h
+    librecad/src/lib/engine/document/entities/lc_textlayout.cpp
+    librecad/src/lib/engine/document/entities/lc_textlayout.h
+    librecad/src/lib/engine/document/entities/lc_textoutline.cpp
+    librecad/src/lib/engine/document/entities/lc_textoutline.h
+    librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+    librecad/src/lib/engine/document/entities/lc_textprofile.h
+    librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+    librecad/src/lib/engine/document/entities/lc_textprofilebinding.h
+    librecad/src/lib/engine/document/entities/lc_textruns.cpp
+    librecad/src/lib/engine/document/entities/lc_textruns.h
+    librecad/src/lib/engine/document/entities/lc_textshaper.cpp
+    librecad/src/lib/engine/document/entities/lc_textshaper.h
+        librecad/src/lib/engine/document/entities/rs_line.cpp
      librecad/src/lib/engine/document/entities/rs_line.h
      librecad/src/lib/engine/document/entities/rs_mtext.cpp
      librecad/src/lib/engine/document/entities/rs_mtext.h
@@ -1034,6 +1058,11 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/fonts/rs_fontchar.h
      librecad/src/lib/engine/document/fonts/rs_fontlist.cpp
      librecad/src/lib/engine/document/fonts/rs_fontlist.h
+     librecad/src/lib/engine/document/fonts/lc_opentypefont.cpp
+     librecad/src/lib/engine/document/fonts/lc_opentypefont.h
+     librecad/src/lib/engine/document/fonts/lc_opentypefont_p.h
+     librecad/src/lib/engine/document/fonts/lc_textfontregistry.cpp
+     librecad/src/lib/engine/document/fonts/lc_textfontregistry.h
      librecad/src/lib/engine/document/layers/rs_layer.cpp
      librecad/src/lib/engine/document/layers/rs_layer.h
      librecad/src/lib/engine/document/layers/rs_layerlist.cpp
@@ -1042,6 +1071,10 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/lc_graphicvariables.cpp
      librecad/src/lib/engine/document/lc_graphicvariables.h
      librecad/src/lib/engine/document/lc_trackedlistener.h
+     librecad/src/lib/engine/document/linetypes/lc_linetype.cpp
+     librecad/src/lib/engine/document/linetypes/lc_linetype.h
+     librecad/src/lib/engine/document/linetypes/lc_linetypelist.cpp
+     librecad/src/lib/engine/document/linetypes/lc_linetypelist.h
      librecad/src/lib/engine/document/patterns/rs_pattern.cpp
      librecad/src/lib/engine/document/patterns/rs_pattern.h
      librecad/src/lib/engine/document/patterns/rs_patternlist.cpp
@@ -1147,6 +1180,10 @@ set (SHARED_SOURCES
      librecad/src/lib/fileio/lc_filenameselectionservice.h
      librecad/src/lib/fileio/rs_fileio.cpp
      librecad/src/lib/fileio/rs_fileio.h
+     librecad/src/lib/filters/lc_embeddedtextxdata.cpp
+     librecad/src/lib/filters/lc_embeddedtextxdata.h
+     librecad/src/lib/filters/lc_embeddedtextmodel.cpp
+     librecad/src/lib/filters/lc_embeddedtextmodel.h
      librecad/src/lib/filters/lc_hyperbolaspline.cpp
      librecad/src/lib/filters/lc_hyperbolaspline.h
      librecad/src/lib/filters/lc_parabolaspline.cpp
@@ -2708,8 +2745,26 @@ set (MUPARSER_SOURCES
 add_subdirectory(libraries/qtbidi)
 set_source_files_properties(
     librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+    librecad/src/lib/engine/document/entities/lc_textlayout.cpp
+    librecad/src/lib/engine/document/entities/tests/lc_textlayout_tests.cpp
     librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp PROPERTIES
     INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/libraries/qtbidi")
+
+if(APPLE)
+    set(LIBRECAD_PLUGIN_INSTALL_DIR "bin/LibreCAD.app/Contents/PlugIns/LibreCAD"
+        CACHE STRING "Plugin destination, relative to CMAKE_INSTALL_PREFIX or absolute")
+else()
+    set(LIBRECAD_PLUGIN_INSTALL_DIR "bin/resources/plugins"
+        CACHE STRING "Plugin destination, relative to CMAKE_INSTALL_PREFIX or absolute")
+endif()
+
+# Let RS_System find plugins wherever they are installed.
+if(IS_ABSOLUTE "${LIBRECAD_PLUGIN_INSTALL_DIR}")
+    set(LC_PLUGIN_INSTALL_DIR "${LIBRECAD_PLUGIN_INSTALL_DIR}")
+else()
+    set(LC_PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/${LIBRECAD_PLUGIN_INSTALL_DIR}")
+endif()
+file(TO_CMAKE_PATH "${LC_PLUGIN_INSTALL_DIR}" LC_PLUGIN_INSTALL_DIR)
 
 qt_add_library (librecad_lib STATIC
                 ${MUPARSER_SOURCES}
@@ -2722,6 +2777,7 @@ qt_add_library (librecad_lib STATIC
 # the target was compiled with both -D's and a -Wmacro-redefined warning.
 target_compile_definitions (librecad_lib PRIVATE
                             DWGSUPPORT
+                            LC_PLUGIN_INSTALL_DIR="${LC_PLUGIN_INSTALL_DIR}"
 )
 target_include_directories (librecad_lib PRIVATE
                             ${SHARED_INCLUDES}
@@ -2729,6 +2785,7 @@ target_include_directories (librecad_lib PRIVATE
 
 target_link_libraries (librecad_lib PRIVATE
                        lcqtbidi
+                       LibreCAD::OpenType
                        Qt6::Core Qt6::Widgets Qt6::Gui Qt6::PrintSupport Qt6::Svg Qt6::Network
 )
 set_property (TARGET librecad_lib PROPERTY AUTOUIC_OPTIONS --connections string)
@@ -2990,6 +3047,8 @@ option (LIBRECAD_REGISTER_FORMAT_TESTS
         "Register separate DWG and DXF parser lanes with CTest" OFF)
 option (LIBRECAD_REGISTER_CROSS_READ_SMOKE
         "Register the cross-reader DWG fixture smoke test with CTest" OFF)
+option (LIBRECAD_REGISTER_TEXT_FOUNDATION_TESTS
+        "Register headless text/source-state foundation tests with CTest" OFF)
 
 if (BUILD_TESTS)
     enable_testing()
@@ -3091,10 +3150,13 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/blocks/tests/lc_blocklist_tests.cpp
         librecad/src/lib/engine/document/ucs/tests/lc_ucslist_tests.cpp
         librecad/src/lib/engine/document/ucs/tests/lc_wcs_tests.cpp
+        librecad/src/lib/engine/document/linetypes/tests/lc_linetypelist_tests.cpp
         librecad/src/lib/engine/document/views/tests/lc_view_tests.cpp
         librecad/src/lib/engine/tests/rs_pen_tests.cpp
         librecad/src/lib/actions/tests/lc_snappercatchtests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_round_tests.cpp
+        librecad/src/actions/drawing/modify/tests/lc_action_modify_trim_tests.cpp
+        librecad/src/actions/drawing/modify/tests/lc_action_modify_move_tests.cpp
         librecad/src/actions/drawing/draw/curve/tests/lc_actiondrawdualtests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_offset_tests.cpp
         librecad/src/actions/drawing/modify/tests/lc_offsetmatrixtests.cpp
@@ -3123,12 +3185,14 @@ if (BUILD_TESTS)
         librecad/src/lib/creation/tests/lc_action_draw_line_parallel_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_fast_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_circle_center_point_tests.cpp
+        librecad/src/lib/creation/tests/lc_action_draw_circle_2points_radius_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_polyline_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_spline_tests.cpp
         librecad/src/lib/creation/tests/lc_closedshapetoolstests.cpp
         librecad/src/cmd/tests/rs_commands_tests.cpp
         librecad/src/lib/engine/undo/tests/rs_undo_tests.cpp
         librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
+        librecad/src/lib/filters/tests/lc_attrib_embedded_mtext_dwg_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_app_vars_tests.cpp
@@ -3183,6 +3247,14 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dxf_layer0_declared_tests.cpp
         librecad/src/lib/filters/tests/dxf_unknown_version_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_r2007_codepage_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_pre2007_codepage_tests.cpp
+        librecad/src/lib/filters/tests/dxf_legacy_name_reference_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_reopen_dwg_export_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_shape_name_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_appid_registration_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_xdata_appid_tests.cpp
+        librecad/src/lib/filters/tests/lc_export_commit_tests.cpp
+        librecad/src/lib/filters/tests/lc_attribute_export_tests.cpp
         librecad/src/lib/filters/tests/dxf_closed_spline_tests.cpp
         librecad/src/lib/filters/tests/jww_import_tests.cpp
         librecad/src/lib/filters/tests/byte_identity_harness.cpp
@@ -3217,6 +3289,7 @@ if (BUILD_TESTS)
         librecad/src/ui/components/pen/tests/qg_widgetpen_tests.cpp
         librecad/src/ui/dialogs/tests/lc_dialog_tests.cpp
         librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreewidget_tests.cpp
+        librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreemodel_tests.cpp
         librecad/src/plugins/tests/qc_actiongetselect_tests.cpp
         librecad/src/lib/gui/tests/lc_graphicviewrenderer_tests.cpp
         librecad/src/lib/gui/tests/lc_scrollmodel_tests.cpp
@@ -3228,12 +3301,15 @@ if (BUILD_TESTS)
         librecad/src/main/tests/console_command_utils_tests.cpp
         librecad/src/main/tests/lc_pdfprintlooptests.cpp
         librecad/src/main/tests/lc_consoleimporttests.cpp
+        librecad/src/main/tests/lc_consolesvgexporttests.cpp
         # Shapelib safety-net tests.  shapelib sources are compiled into
         # librecad_lib (SHARED_SOURCES) since Phase 1b, so the test target
         # only needs the test file itself.
         librecad/src/lib/filters/tests/shp_shapelib_tests.cpp
         librecad/src/lib/filters/tests/shp_import_filter_tests.cpp
     )
+    add_custom_target(librecad_test_translations DEPENDS ${QM_FILES})
+    add_dependencies(librecad_tests librecad_test_translations)
 
     # Include directories for rs_math.h and other dependencies
     target_include_directories (librecad_tests PRIVATE
@@ -3258,9 +3334,11 @@ if (BUILD_TESTS)
     # Enable C++17 for the test target (matching LibreCAD's standard)
     target_compile_features (librecad_tests PRIVATE cxx_std_17)
     # compiling time defines
-    target_compile_definitions(librecad_tests PRIVATE BUILD_TESTS=1 DWGSUPPORT _USE_MATH_DEFINES LIBRECAD_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}" LIBRECAD_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/librecad/src/lib/filters/tests/testdata")
+    target_compile_definitions(librecad_tests PRIVATE BUILD_TESTS=1 DWGSUPPORT _USE_MATH_DEFINES LIBRECAD_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}" LIBRECAD_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/librecad/src/lib/filters/tests/testdata" LIBRECAD_TEST_TRANSLATION_DIR="${CMAKE_CURRENT_BINARY_DIR}")
 
     add_executable(librecad_text_bidi_tests EXCLUDE_FROM_ALL
+        ${LIBRECAD_TEST_SETTINGS_ISOLATION_SOURCE}
+        ${LIBRECAD_TEST_TEMP_DIRECTORY_SOURCE}
         librecad/src/main/lc_release_label.cpp
         librecad/src/lib/engine/document/entities/tests/text_bidi_regression_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
@@ -3284,6 +3362,250 @@ if (BUILD_TESTS)
     target_link_libraries(librecad_text_bidi_headless_tests PRIVATE
         lcqtbidi Catch2::Catch2WithMain Qt6::Core)
 
+    add_executable(librecad_text_document_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textdocument_tests.cpp)
+    target_include_directories(librecad_text_document_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_document_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_document_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_document_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Source convention conversion preserves raw syntax without a font backend.
+    add_executable(librecad_text_source_codec_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+        librecad/src/lib/engine/document/entities/lc_textsourcecodec.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textsourcecodec_tests.cpp)
+    target_include_directories(librecad_text_source_codec_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_source_codec_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_source_codec_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_source_codec_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Owned-stage validation is independent of Qt and the font backend.
+    add_executable(librecad_output_transaction_tests EXCLUDE_FROM_ALL
+        libraries/libdxfrw/src/intern/dwg_dxf_output_transaction.cpp
+        librecad/src/lib/filters/tests/dwg_dxf_output_transaction_tests.cpp)
+    target_include_directories(librecad_output_transaction_tests PRIVATE
+        libraries/libdxfrw/src)
+    target_link_libraries(librecad_output_transaction_tests PRIVATE
+        Catch2::Catch2WithMain)
+    target_compile_features(librecad_output_transaction_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_output_transaction_tests PRIVATE
+        LC_VERIFIED_STAGE_TEST_ROOT="${CMAKE_CURRENT_BINARY_DIR}")
+    set_target_properties(librecad_output_transaction_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Raw embedded metadata retention is independent of Qt and the font backend.
+    add_executable(librecad_embedded_text_xdata_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/filters/lc_embeddedtextxdata.cpp
+        librecad/src/lib/filters/tests/lc_embeddedtextxdata_tests.cpp)
+    target_include_directories(librecad_embedded_text_xdata_tests PRIVATE
+        librecad/src/lib/filters libraries/libdxfrw/src)
+    target_link_libraries(librecad_embedded_text_xdata_tests PRIVATE
+        Catch2::Catch2WithMain)
+    target_compile_features(librecad_embedded_text_xdata_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_embedded_text_xdata_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Full-model metadata remains inert and independent of native wire/activation.
+    add_executable(librecad_embedded_text_model_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/filters/lc_embeddedtextmodel.cpp
+        librecad/src/lib/filters/lc_embeddedtextxdata.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/filters/tests/lc_embeddedtextmodel_tests.cpp)
+    target_include_directories(librecad_embedded_text_model_tests PRIVATE
+        librecad/src/lib/filters librecad/src/lib/engine/document/entities libraries/libdxfrw/src)
+    target_link_libraries(librecad_embedded_text_model_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_embedded_text_model_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_embedded_text_model_tests PRIVATE
+        QT_USE_QSTRINGBUILDER LC_WITH_OPENTYPE=$<BOOL:${LIBRECAD_ENABLE_OPENTYPE}>)
+    set_target_properties(librecad_embedded_text_model_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Profile metadata is inert and must not depend on font/backend availability.
+    add_executable(librecad_text_profile_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textprofile_tests.cpp)
+    target_include_directories(librecad_text_profile_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_profile_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_profile_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_profile_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    add_executable(librecad_text_profile_binding_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textprofilebinding_tests.cpp)
+    target_include_directories(librecad_text_profile_binding_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_profile_binding_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_profile_binding_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_profile_binding_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # STYLE import provenance and edit authority are independent of rendering.
+    add_executable(librecad_text_style_authority_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/rs_flags.cpp
+        librecad/src/lib/engine/document/textstyles/lc_textstyle.cpp
+        librecad/src/lib/engine/document/textstyles/lc_textstylelist.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+        librecad/src/lib/filters/tests/lc_textstyle_authority_tests.cpp)
+    target_include_directories(librecad_text_style_authority_tests PRIVATE
+        librecad/src/lib/engine/document/textstyles
+        librecad/src/lib/engine/document/entities librecad/src/lib/engine)
+    target_link_libraries(librecad_text_style_authority_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_style_authority_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_style_authority_tests PRIVATE
+        QT_USE_QSTRINGBUILDER LC_WITH_OPENTYPE=$<BOOL:${LIBRECAD_ENABLE_OPENTYPE}>)
+    set_target_properties(librecad_text_style_authority_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Isolate the allocation-failure injector from Catch and application code.
+    add_executable(librecad_text_profile_binding_copy_failure_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textprofilebinding_copy_failure_tests.cpp)
+    target_include_directories(librecad_text_profile_binding_copy_failure_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_profile_binding_copy_failure_tests PRIVATE Qt6::Core)
+    target_compile_features(librecad_text_profile_binding_copy_failure_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_profile_binding_copy_failure_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    add_executable(librecad_text_source_state_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+        librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+        librecad/src/lib/engine/document/entities/lc_textentitystate.cpp
+        librecad/src/lib/engine/document/entities/tests/rs_text_source_tests.cpp)
+    target_include_directories(librecad_text_source_state_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_source_state_tests PRIVATE
+        Catch2::Catch2WithMain Qt6::Core)
+    target_compile_definitions(librecad_text_source_state_tests PRIVATE LC_TEXT_STATE_ONLY=1)
+    target_compile_features(librecad_text_source_state_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_source_state_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    add_executable(librecad_text_runs_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+        librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+        librecad/src/lib/engine/document/entities/lc_textruns.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textruns_tests.cpp)
+    target_include_directories(librecad_text_runs_tests PRIVATE
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_runs_tests PRIVATE
+        lcqtbidi Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_runs_tests PRIVATE cxx_std_17)
+    set_target_properties(librecad_text_runs_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    add_executable(librecad_text_runs_shaping_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+        librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+        librecad/src/lib/engine/document/entities/lc_textruns.cpp
+        librecad/src/lib/engine/document/entities/lc_textshaper.cpp
+        librecad/src/lib/engine/document/fonts/lc_opentypefont.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textruns_shaping_tests.cpp)
+    target_include_directories(librecad_text_runs_shaping_tests PRIVATE
+        librecad/src/lib/engine/document/entities
+        librecad/src/lib/engine/document/fonts)
+    target_link_libraries(librecad_text_runs_shaping_tests PRIVATE
+        lcqtbidi LibreCAD::OpenType Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_runs_shaping_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_runs_shaping_tests PRIVATE
+        LC_OPENTYPE_TEST_FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/librecad/support/fonts/opentype/amiri-1.003/Amiri-Regular.ttf")
+    set_target_properties(librecad_text_runs_shaping_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    add_executable(librecad_text_layout_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+        librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+        librecad/src/lib/engine/document/entities/lc_textruns.cpp
+        librecad/src/lib/engine/document/entities/lc_textshaper.cpp
+        librecad/src/lib/engine/document/entities/lc_textlayout.cpp
+        librecad/src/lib/engine/document/fonts/lc_opentypefont.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textlayout_tests.cpp)
+    target_include_directories(librecad_text_layout_tests PRIVATE
+        librecad/src/lib/engine/document/entities
+        librecad/src/lib/engine/document/fonts)
+    target_link_libraries(librecad_text_layout_tests PRIVATE
+        lcqtbidi LibreCAD::OpenType Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_layout_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_layout_tests PRIVATE
+        LC_OPENTYPE_TEST_FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/librecad/support/fonts/opentype/amiri-1.003/Amiri-Regular.ttf")
+    set_target_properties(librecad_text_layout_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    # Native shaping and outline extraction must not require QGuiApplication,
+    # the platform font database, or the full application library.
+    add_executable(librecad_text_shaper_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/fonts/lc_opentypefont.cpp
+        librecad/src/lib/engine/document/entities/lc_textshaper.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textshaper_tests.cpp)
+    target_include_directories(librecad_text_shaper_tests PRIVATE
+        librecad/src/lib/engine/document/fonts
+        librecad/src/lib/engine/document/entities)
+    target_link_libraries(librecad_text_shaper_tests PRIVATE
+        LibreCAD::OpenType Catch2::Catch2WithMain Qt6::Core)
+    target_compile_features(librecad_text_shaper_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_shaper_tests PRIVATE
+        LC_OPENTYPE_TEST_FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/librecad/support/fonts/opentype/amiri-1.003/Amiri-Regular.ttf")
+    set_target_properties(librecad_text_shaper_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    find_package(Threads REQUIRED)
+    add_executable(librecad_text_font_registry_tests EXCLUDE_FROM_ALL
+        librecad/src/lib/engine/document/fonts/lc_opentypefont.cpp
+        librecad/src/lib/engine/document/fonts/lc_textfontregistry.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_textfontregistry_tests.cpp)
+    target_include_directories(librecad_text_font_registry_tests PRIVATE
+        librecad/src/lib/engine/document/fonts)
+    target_link_libraries(librecad_text_font_registry_tests PRIVATE
+        LibreCAD::OpenType Catch2::Catch2WithMain Qt6::Core Threads::Threads)
+    target_compile_features(librecad_text_font_registry_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_text_font_registry_tests PRIVATE
+        LC_OPENTYPE_TEST_FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/librecad/support/fonts/opentype/amiri-1.003/Amiri-Regular.ttf")
+    set_target_properties(librecad_text_font_registry_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+
+    set(LIBRECAD_TEXT_FOUNDATION_TARGETS
+        librecad_text_bidi_headless_tests
+        librecad_text_document_tests
+        librecad_text_source_codec_tests
+        librecad_output_transaction_tests
+        librecad_embedded_text_xdata_tests
+        librecad_embedded_text_model_tests
+        librecad_text_profile_tests
+        librecad_text_profile_binding_tests
+        librecad_text_style_authority_tests
+        librecad_text_profile_binding_copy_failure_tests
+        librecad_text_source_state_tests
+        librecad_text_runs_tests
+        librecad_text_runs_shaping_tests
+        librecad_text_layout_tests
+        librecad_text_shaper_tests
+        librecad_text_font_registry_tests)
+    add_custom_target(librecad_text_foundation_tests
+        DEPENDS ${LIBRECAD_TEXT_FOUNDATION_TARGETS})
+    if(LIBRECAD_REGISTER_TEXT_FOUNDATION_TESTS)
+        foreach(test_target IN LISTS LIBRECAD_TEXT_FOUNDATION_TARGETS)
+            add_test(NAME ${test_target} COMMAND ${test_target})
+            set_tests_properties(${test_target} PROPERTIES
+                LABELS text-foundation TIMEOUT 120)
+        endforeach()
+    endif()
+
     add_executable(librecad_bidi_conformance EXCLUDE_FROM_ALL
         libraries/qtbidi/tests/unicode_conformance.cpp)
     target_include_directories(librecad_bidi_conformance PRIVATE libraries/qtbidi)
@@ -3297,6 +3619,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_decompress18_tests.cpp
         librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
+        librecad/src/lib/filters/tests/lc_attrib_embedded_mtext_dwg_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_app_vars_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp
@@ -3313,6 +3636,9 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/i18n_caret_nfc_tests.cpp
         librecad/src/lib/filters/tests/i18n_codec_tests.cpp
         librecad/src/lib/filters/tests/datastorage_tests.cpp
+        librecad/src/main/tests/lc_consolesvgexporttests.cpp
+        librecad/src/lib/filters/tests/lc_export_commit_tests.cpp
+        librecad/src/lib/filters/tests/lc_attribute_export_tests.cpp
     )
     qt_add_executable(librecad_fast_tests
         EXCLUDE_FROM_ALL
@@ -3353,6 +3679,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_decompress18_tests.cpp
         librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
+        librecad/src/lib/filters/tests/lc_attrib_embedded_mtext_dwg_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_app_vars_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp
@@ -3361,6 +3688,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_safety_tests.cpp
         librecad/src/lib/filters/tests/eed_tests.cpp
         librecad/src/lib/filters/tests/datastorage_tests.cpp
+        librecad/src/lib/filters/tests/lc_export_commit_tests.cpp
     )
     add_executable(librecad_dwg_fast_tests
         EXCLUDE_FROM_ALL
@@ -3441,7 +3769,14 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dxf_roundtrip_tests.cpp
         librecad/src/lib/filters/tests/dxf_string_codec_tests.cpp
         librecad/src/lib/filters/tests/entity_metadata_tests.cpp
+        librecad/src/lib/filters/tests/lc_attribute_export_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_r2007_codepage_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_pre2007_codepage_tests.cpp
+        librecad/src/lib/filters/tests/dxf_legacy_name_reference_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_reopen_dwg_export_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_shape_name_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_appid_registration_tests.cpp
+        librecad/src/lib/filters/tests/lc_dxf_xdata_appid_tests.cpp
         librecad/src/lib/filters/tests/mleader_dxf_context_tests.cpp
     )
     add_executable(librecad_dxf_fast_tests
@@ -3521,8 +3856,65 @@ if (BUILD_TESTS)
         )
     endfunction()
 
+    add_librecad_filter_micro_test(
+        librecad_text_source_tests
+        librecad/src/lib/engine/document/entities/tests/rs_text_source_tests.cpp)
+
+    add_librecad_filter_micro_test(
+        librecad_filter_writer_lifetime_tests
+        librecad/src/lib/filters/tests/lc_filter_writer_lifetime_tests.cpp)
+
+    add_librecad_filter_micro_test(
+        librecad_entity_pen_inheritance_tests
+        librecad/src/lib/engine/document/entities/tests/rs_entity_pen_inheritance_tests.cpp)
+
+    add_librecad_filter_micro_test(
+        librecad_entity_container_replace_tests
+        librecad/src/lib/engine/document/entities/tests/rs_entitycontainer_replace_tests.cpp)
+
+    # This standalone main interposes C++ allocation only in its own process.
+    # Never link these overrides into a Catch2 or application executable.
+    add_executable(librecad_entity_container_replace_failure_tests EXCLUDE_FROM_ALL
+        librecad/src/main/lc_release_label.cpp
+        librecad/src/lib/engine/document/entities/tests/rs_entitycontainer_replace_failure_tests.cpp)
+    set_target_properties(librecad_entity_container_replace_failure_tests PROPERTIES
+        AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+    target_include_directories(librecad_entity_container_replace_failure_tests PRIVATE
+        ${SHARED_INCLUDES})
+    target_link_libraries(librecad_entity_container_replace_failure_tests PRIVATE
+        librecad_lib Qt6::Core Qt6::Gui Qt6::Network Qt6::PrintSupport Qt6::Svg Qt6::Widgets)
+    target_compile_features(librecad_entity_container_replace_failure_tests PRIVATE cxx_std_17)
+    target_compile_definitions(librecad_entity_container_replace_failure_tests PRIVATE
+        BUILD_TESTS=1 DWGSUPPORT _USE_MATH_DEFINES)
+    if(MSVC)
+        target_compile_options(librecad_entity_container_replace_failure_tests PRIVATE /bigobj)
+    endif()
+
     # Keep the large corpus/diagnostic source isolated. It is an explicit
     # phase gate and should not lengthen the ordinary DWG fast lane.
+    add_librecad_filter_micro_test(
+        librecad_text_outline_tests
+        librecad/src/lib/engine/document/entities/tests/lc_textoutline_tests.cpp)
+    target_compile_definitions(librecad_text_outline_tests PRIVATE
+        LC_OPENTYPE_TEST_FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/librecad/support/fonts/opentype/amiri-1.003/Amiri-Regular.ttf")
+    target_link_libraries(librecad_text_outline_tests PRIVATE LibreCAD::OpenType)
+    set(LIBRECAD_TEXT_NATIVE_TARGETS
+        librecad_text_source_tests
+        librecad_filter_writer_lifetime_tests
+        librecad_entity_pen_inheritance_tests
+        librecad_entity_container_replace_tests
+        librecad_entity_container_replace_failure_tests
+        librecad_text_outline_tests)
+    add_custom_target(librecad_text_native_tests
+        DEPENDS ${LIBRECAD_TEXT_NATIVE_TARGETS})
+    if(LIBRECAD_REGISTER_INTEGRATION_TESTS)
+        foreach(test_target IN LISTS LIBRECAD_TEXT_NATIVE_TARGETS)
+            add_test(NAME ${test_target} COMMAND ${test_target})
+            set_tests_properties(${test_target} PROPERTIES
+                LABELS text-native
+                ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+        endforeach()
+    endif()
     add_librecad_filter_micro_test(
         librecad_dwg_smoke_tests
         librecad/src/lib/filters/tests/dwg_smoke_tests.cpp)
@@ -3553,10 +3945,18 @@ if (BUILD_TESTS)
         librecad/src/ui/view/tests/qg_graphicview_draft_lines_tests.cpp)
     # Isolate GUI tests from the text tests' static offscreen bootstraps.
     add_librecad_filter_micro_test(
+        librecad_painter_tests
+        librecad/src/lib/gui/tests/rs_painter_tests.cpp)
+    target_sources(librecad_painter_tests PRIVATE
+        librecad/src/lib/gui/tests/lc_graphicviewrenderer_tests.cpp)
+    add_librecad_filter_micro_test(
         librecad_dock_layout_tests
         librecad/src/ui/main/tests/lc_docklayout_tests.cpp)
     target_sources(librecad_dock_layout_tests PRIVATE ${LIBRECAD_RES})
     set_target_properties(librecad_dock_layout_tests PROPERTIES AUTORCC ON)
+    add_librecad_filter_micro_test(
+        librecad_printing_tests
+        librecad/src/lib/printing/tests/lc_printingtests.cpp)
     add_librecad_filter_micro_test(
         librecad_translation_fallback_tests
         librecad/src/lib/engine/tests/rs_system_translation_tests.cpp)
@@ -3598,6 +3998,12 @@ if (BUILD_TESTS)
         get_filename_component(test_stem "${test_source}" NAME_WE)
         add_librecad_filter_micro_test("librecad_${test_stem}" "${test_source}")
     endforeach()
+    # slotFileExport is defined in console_dxf2png.cpp and the LC_Console
+    # helpers in console_command_utils.cpp (application sources, no main()),
+    # so the SVG export test compiles both translation units directly.
+    target_sources(librecad_lc_consolesvgexporttests PRIVATE
+        librecad/src/main/console_command_utils.cpp
+        librecad/src/main/console_dxf2png.cpp)
 
     # A parser-only lane for the tight implementation loop.  The existing
     # librecad_*_fast_tests targets intentionally exercise the LibreCAD filter,
@@ -3608,6 +4014,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_decompress18_tests.cpp
         librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
+        librecad/src/lib/filters/tests/lc_attrib_embedded_mtext_dwg_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp
         librecad/src/lib/filters/tests/dynblock_tests.cpp
@@ -3734,6 +4141,31 @@ if (BUILD_TESTS)
                            ${LIBDXFRW_FAST_DWG_TEST_SOURCES})
     add_libdxfrw_fast_test(libdxfrw_dxf_fast_tests
                            ${LIBDXFRW_FAST_DXF_TEST_SOURCES})
+    # Canonical embedded-object framing must work without the application.
+    add_libdxfrw_fast_test(libdxfrw_dxf_embedded_scope_tests
+        librecad/src/lib/filters/tests/dxf_embeddedtext_scope_tests.cpp)
+    target_link_libraries(libdxfrw_dxf_embedded_scope_tests PRIVATE Qt6::Core)
+    if(NOT MSVC)
+        target_compile_options(libdxfrw_dxf_embedded_scope_tests PRIVATE
+            -Wall -Wextra -Werror -pedantic)
+    endif()
+    # Explicit per-call verified writes are independent of model/carrier code.
+    add_libdxfrw_fast_test(libdxfrw_verified_write_tests
+        librecad/src/lib/filters/tests/dwg_dxf_verified_write_tests.cpp)
+    target_include_directories(libdxfrw_verified_write_tests PRIVATE
+        libraries/libdxfrw/tests/fuzz)
+    target_compile_definitions(libdxfrw_verified_write_tests PRIVATE
+        LC_VERIFIED_STAGE_TEST_ROOT="${CMAKE_CURRENT_BINARY_DIR}")
+    if(NOT MSVC)
+        target_compile_options(libdxfrw_verified_write_tests PRIVATE
+            -Wall -Wextra -Werror -pedantic)
+    endif()
+    if(LIBRECAD_REGISTER_INTEGRATION_TESTS OR LIBRECAD_REGISTER_FORMAT_TESTS OR LIBRECAD_REGISTER_FULL_TESTS)
+        add_test(NAME libdxfrw_dxf_embedded_scope_tests
+            COMMAND libdxfrw_dxf_embedded_scope_tests)
+        add_test(NAME libdxfrw_verified_write_tests
+            COMMAND libdxfrw_verified_write_tests)
+    endif()
     add_libdxfrw_fast_test(libdxfrw_slow_tests
                            ${LIBDXFRW_SLOW_DWG_TEST_SOURCES})
 
@@ -3815,6 +4247,15 @@ if (BUILD_TESTS)
             ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
     endif()
     if (LIBRECAD_REGISTER_INTEGRATION_TESTS)
+        add_test(NAME librecad_painter_tests
+            COMMAND $<TARGET_FILE:librecad_painter_tests> --reporter compact)
+        set_tests_properties(librecad_painter_tests PROPERTIES
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+        add_test(NAME librecad_console_svg_tests
+            COMMAND $<TARGET_FILE:librecad_lc_consolesvgexporttests>
+                "[console]" --reporter compact)
+        set_tests_properties(librecad_console_svg_tests PROPERTIES
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
         add_test(NAME librecad_dwg_fast_tests
             COMMAND $<TARGET_FILE:librecad_dwg_fast_tests>
                 ${LIBRECAD_FAST_TEST_EXCLUDES}

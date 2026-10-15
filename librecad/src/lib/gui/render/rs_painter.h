@@ -201,7 +201,9 @@ public:
 
     RS_Pen getPen() const;
     void setNativePen(const QPen& pen);
+    enum class DashSpace { Model, Screen };
     void setPen(const RS_Pen& pen);
+    void setPen(const RS_Pen& pen, DashSpace dashSpace);
     void setPen(const RS_Color& color);
     void setPen(int r, int g, int b);
     void disablePen();
@@ -434,7 +436,7 @@ protected:
     bool m_lastDashValid = false;
     RS2::LineType m_lastDashLineType = RS2::SolidLine;
     double m_lastDashScreenWidth = 0.;
-    double m_lastDashDpmm = 0.;
+    double m_lastDashDeviceScale = 0.;
     double m_cachedDpmm = 0.;
     double m_minCircleDrawingRadius = 2.0;
     double m_minArcDrawingRadius = 0.8;

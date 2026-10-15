@@ -16,7 +16,9 @@
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
+#include "qg_layerwidget.h"
 #include "rs_debug.h"
+#include "rs_layer.h"
 #include "rs_system.h"
 #include "qg_blockwidget.h"
 #include "rs_block.h"
@@ -173,6 +175,33 @@ QStringList tabOrder(QC_ApplicationWindow& window, const QString& first, const Q
 }
 }
 
+TEST_CASE("Print does not inherit the print preview checked state", "[.gui][printing][issue3105]") {
+    DockFixture fixture;
+    REQUIRE(fixture.window.getCurrentMDIWindow() == nullptr);
+    QAction* print = fixture.window.getAction("FilePrint");
+    QAction* preview = fixture.window.getAction("FilePrintPreview");
+    REQUIRE(print != nullptr);
+    REQUIRE(preview != nullptr);
+    print->setEnabled(true);
+
+    QObject receiver;
+    int triggered = 0;
+    bool checked = true;
+    QObject::connect(print, &QAction::triggered, &receiver, [&](bool value) {
+        ++triggered;
+        checked = value;
+    });
+    for (const bool active : {false, true, false, true}) {
+        CAPTURE(active);
+        fixture.window.printPreviewChanged(active);
+        CHECK(preview->isChecked() == active);
+        CHECK_FALSE(print->isCheckable());
+        print->trigger();
+        CHECK_FALSE(checked);
+    }
+    CHECK(triggered == 4);
+}
+
 TEST_CASE("Main window fits its available screen", "[.gui][dock-window]") {
     DockFixture fixture;
     auto& window = fixture.window;
@@ -208,6 +237,114 @@ TEST_CASE("Draft toggling preserves the drawing title", "[.gui][draft][3018]") {
         CHECK(mdi->windowTitle() == expectedTitle);
         settle(0);
     }
+}
+
+TEST_CASE("Chinese UI translations preserve default keyboard shortcuts", "[gui][issue3135]") {
+    REQUIRE(lc::test::application() != nullptr);
+    const QVariant oldTranslations = RS_SETTINGS->getSettings()->value("/Paths/Translations");
+    LC_SET_ONE("Paths", "Translations", QStringLiteral(LIBRECAD_TEST_TRANSLATION_DIR));
+
+    const std::pair<const char*, QKeySequence> shortcuts[] = {
+        {"DeselectAll", QKeySequence(Qt::CTRL | Qt::Key_K)},
+        {"ViewGrid", QKeySequence(Qt::CTRL | Qt::Key_G)},
+        {"ViewDraft", QKeySequence(Qt::CTRL | Qt::Key_D)},
+        {"ViewStatusBar", QKeySequence(Qt::CTRL | Qt::Key_I)},
+    };
+    for (const QString& locale : {QStringLiteral("zh_CN"), QStringLiteral("zh_TW")}) {
+        RS_SYSTEM->loadTranslation(locale, "en");
+        DockFixture fixture;
+        for (const auto& [actionName, expected] : shortcuts) {
+            QAction* action = fixture.window.getAction(actionName);
+            CHECK(action != nullptr);
+            if (action != nullptr) {
+                CHECK(action->shortcut() == expected);
+            }
+        }
+    }
+
+    RS_SYSTEM->loadTranslation("en", "en");
+    const auto groupGuard = RS_SETTINGS->beginGroupGuard("Paths");
+    if (oldTranslations.isValid()) {
+        RS_SETTINGS->write("Translations", oldTranslations);
+    }
+    else {
+        RS_SETTINGS->remove("Translations");
+    }
+}
+
+TEST_CASE("Opening a drawing keeps its saved current layer", "[.gui][dock-window][saved-current-layer]") {
+    DockFixture fixture;
+    auto& window = fixture.window;
+    QTemporaryDir directory;
+    REQUIRE(directory.isValid());
+    for (const int flags : {0, 4, 1, 5}) {
+        CAPTURE(flags);
+        const QString fileName = directory.filePath(QString("layer-%1.dxf").arg(flags));
+        QFile file(fileName);
+        REQUIRE(file.open(QIODevice::WriteOnly));
+        const QByteArray dxf =
+            "0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1021\n9\n$CLAYER\n8\nSaved\n"
+            "0\nENDSEC\n0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n2\n"
+            "0\nLAYER\n5\n10\n2\n0\n70\n0\n62\n7\n6\nCONTINUOUS\n"
+            "0\nLAYER\n5\n11\n2\nSaved\n70\n" + QByteArray::number(flags) +
+            "\n62\n1\n6\nCONTINUOUS\n0\nENDTAB\n0\nENDSEC\n"
+            "0\nSECTION\n2\nENTITIES\n0\nLINE\n5\n20\n8\nSaved\n"
+            "10\n0\n20\n0\n11\n10\n21\n0\n0\nENDSEC\n0\nEOF\n";
+        REQUIRE(file.write(dxf) == dxf.size());
+        file.close();
+
+        window.openFile(fileName);
+        settle(0);
+        auto* mdi = window.getCurrentMDIWindow();
+        REQUIRE(mdi != nullptr);
+        auto* graphic = mdi->getGraphic();
+        REQUIRE(graphic != nullptr);
+        const QString expectedName = (flags & 1) ? "0" : "Saved";
+        auto* expected = graphic->findLayer(expectedName);
+        REQUIRE(expected != nullptr);
+        auto* saved = graphic->findLayer("Saved");
+        REQUIRE(saved != nullptr);
+        CHECK(graphic->getActiveLayer() == expected);
+        CHECK(saved->isLocked() == bool(flags & 4));
+        CHECK(saved->isFrozen() == bool(flags & 1));
+        CHECK_FALSE(graphic->getActiveLayer()->isFrozen());
+
+        auto* label = window.findChild<QLabel*>("lActiveLayerName");
+        REQUIRE(label != nullptr);
+        CHECK(label->text() == expectedName);
+        auto* widget = window.findChild<QG_LayerWidget*>();
+        REQUIRE(widget != nullptr);
+        auto* table = widget->findChild<QTableView*>();
+        REQUIRE(table != nullptr);
+        auto* model = dynamic_cast<QG_LayerModel*>(table->model());
+        REQUIRE(model != nullptr);
+        CHECK(model->getActiveLayer() == expected);
+        CHECK(table->currentIndex().row() == model->getIndex(expected).row());
+        CHECK_FALSE(graphic->isModified());
+    }
+}
+
+TEST_CASE("Legacy UTF-8 recovery has a separate File menu action", "[.gui][legacy-utf8-ui]") {
+    DockFixture fixture;
+    auto& window = fixture.window;
+    auto* ordinary = window.getAction("FileOpen");
+    auto* recovery = window.getAction("FileOpenLegacyLibreCadUtf8");
+    REQUIRE(ordinary != nullptr);
+    REQUIRE(recovery != nullptr);
+    CHECK(ordinary != recovery);
+    CHECK(ordinary->shortcuts().contains(QKeySequence(QKeySequence::Open)));
+    CHECK(recovery->shortcuts().isEmpty());
+    CHECK_FALSE(recovery->isCheckable());
+    bool besideOrdinaryOpen = false;
+    for (auto* topLevel : window.menuBar()->actions()) {
+        if (auto* menu = topLevel->menu()) {
+            const auto actions = menu->actions();
+            const int index = actions.indexOf(ordinary);
+            if (index >= 0)
+                besideOrdinaryOpen = actions.value(index + 1) == recovery;
+        }
+    }
+    CHECK(besideOrdinaryOpen);
 }
 
 TEST_CASE("First-run maximization fits the available client area", "[.gui][dock-window]") {
