@@ -39,6 +39,7 @@ class LC_PenPaletteWidget :public LC_GraphicViewAwareWidget, public Ui::LC_PenPa
     Q_OBJECT
 public:
     explicit LC_PenPaletteWidget(const QString& title, QWidget* parent);
+    QLineEdit* getFilterEditor() const;
     ~LC_PenPaletteWidget() override = default ;
     void setGraphicView(RS_GraphicView *gv) override;
     void persist() const;

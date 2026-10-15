@@ -168,6 +168,10 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
     return layFiltering;
 }
 
+QLineEdit* LC_LayerTreeWidget::getFilterEditor() const {
+    return m_leMatchLayerName;
+}
+
 /**
  * UI initialization for actions bar
  * TODO - in general, it's possible to use separate widget for button bar and manage the state there.

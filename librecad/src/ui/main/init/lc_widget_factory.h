@@ -58,7 +58,7 @@ class LC_WidgetFactory : public QObject, public LC_AppWindowAware {
 private:
     LC_ActionGroupManager* m_agm{nullptr};
     LC_ActionFactory* m_actionFactory{nullptr};
-    QDockWidget* createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName, const QString& verticalTitle,
+    LC_DockWidget* createDockWidget(const QString& horizontalTitle, const char* name, const QString& iconName, const QString& verticalTitle,
                                   const char* toggleActionName, const QString& toggleActionDescription) const;
     void setupDockWidget(QDockWidget* dock, LC_GraphicViewAwareWidget* widget);
     QDockWidget* createPenPalletteWidget();

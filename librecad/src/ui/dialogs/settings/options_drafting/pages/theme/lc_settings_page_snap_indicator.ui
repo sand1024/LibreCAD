@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - *
+  - This file is part of the LibreCAD project, a 2D CAD program
+  -
+  - Copyright (C) 2026 LibreCAD.org
+  - Copyright (C) 2026 sand1024
+  -
+  - This program is free software; you can redistribute it and/or
+  - modify it under the terms of the GNU General Public License
+  - as published by the Free Software Foundation; either version 2
+  - of the License, or (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program; if not, write to the Free Software
+  - Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
 <ui version="4.0">
  <class>LC_SettingsPageSnapIndicator</class>
  <widget class="QWidget" name="LC_SettingsPageSnapIndicator">
@@ -67,17 +89,22 @@ markers (box, circle, cross, etc.).</string>
         </property>
         <item>
          <property name="text">
-          <string>Adaptive</string>
+          <string>Circle</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Crosshair</string>
+          <string>Point</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Spiderweb</string>
+          <string>Square</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gap</string>
          </property>
         </item>
        </widget>
@@ -143,22 +170,17 @@ lines (orthogonal vs diagonal).</string>
         </property>
         <item>
          <property name="text">
-          <string>Circle</string>
+          <string>Adaptive</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Point</string>
+          <string>Crosshair</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Square</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Gap</string>
+          <string>Spiderweb</string>
          </property>
         </item>
        </widget>

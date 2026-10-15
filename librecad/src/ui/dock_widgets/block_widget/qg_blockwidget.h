@@ -87,6 +87,7 @@ class QG_BlockWidget: public LC_GraphicViewAwareWidget, public RS_BlockListListe
 public:
     QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandler* ah, QWidget* parent,
                    const char* name=nullptr, Qt::WindowFlags f = {});
+
     void setGraphicView(RS_GraphicView* gv) override;
     RS_BlockList* getBlockList() const {
         return m_blockList;
@@ -109,6 +110,7 @@ public:
     void blockToggled(RS_Block*) override{
         updateWidget();
     }
+    QLineEdit* getFilterEditor() const;
 signals:
     void escape();
 public slots:

@@ -123,14 +123,14 @@ public:
 
         ensureIndexLoaded();
         const QString filenameWithExt = QFileInfo(filepath).fileName();
-        const QString baseKey = QFileInfo(filepath).completeBaseName();
+        const QString cleanKey = extractKeyFromFileName(filenameWithExt);
 
         if (m_cachedIndex.contains(filenameWithExt)) {
             m_cachedIndex.remove(filenameWithExt);
             LC_PresetsIndexHelper::saveIndex(m_indexFilePath, m_cachedIndex);
         }
-        else if (m_cachedIndex.contains(baseKey)) {
-            m_cachedIndex.remove(baseKey);
+        else if (m_cachedIndex.contains(cleanKey)) {
+            m_cachedIndex.remove(cleanKey);
             LC_PresetsIndexHelper::saveIndex(m_indexFilePath, m_cachedIndex);
         }
         return true;
@@ -157,10 +157,7 @@ public:
         ensureIndexLoaded();
         QList<QPair<QString, QString>> choices;
         for (auto it = m_cachedIndex.begin(); it != m_cachedIndex.end(); ++it) {
-            QString cleanKey = it.key();
-            if (cleanKey.endsWith(m_extension, Qt::CaseInsensitive)) {
-                cleanKey.chop(m_extension.length());
-            }
+            const QString cleanKey = extractKeyFromFileName(it.key());
             choices.append(qMakePair(it.value().displayName, cleanKey));
         }
         std::sort(choices.begin(), choices.end(), [](const QPair<QString, QString>& a, const QPair<QString, QString>& b) {
@@ -185,7 +182,7 @@ public:
 
         const QString filepath = getFilePathForName(name);
         const QString filenameWithExt = QFileInfo(filepath).fileName();
-        outKey = QFileInfo(filepath).completeBaseName();
+        outKey = extractKeyFromFileName(filenameWithExt);
 
         ConfigType configCopy = config;
         configCopy.name = name;
@@ -307,6 +304,14 @@ public:
     }
 
 protected:
+    QString extractKeyFromFileName(const QString& fileName) const {
+        QString key = fileName;
+        if (key.endsWith(m_extension, Qt::CaseInsensitive)) {
+            key.chop(m_extension.length());
+        }
+        return key;
+    }
+
     static QString sanitizeFileName(const QString& input) {
         if (input.isEmpty()) {
             return QString("unnamed");
@@ -333,9 +338,18 @@ protected:
         if (key.endsWith(m_extension, Qt::CaseInsensitive)) {
             return m_configDir + "/" + key;
         }
+
+        // Defensive check: handle keys ending with the first part of a multi-dot extension (e.g. ".theme" in ".theme.json")
+        if (m_extension.startsWith('.') && m_extension.count('.') > 1) {
+            const QString firstPart = m_extension.left(m_extension.lastIndexOf('.'));
+            if (key.endsWith(firstPart, Qt::CaseInsensitive)) {
+                const QString remaining = m_extension.mid(m_extension.lastIndexOf('.'));
+                return m_configDir + "/" + key + remaining;
+            }
+        }
+
         return m_configDir + "/" + key + m_extension;
     }
-
     virtual bool readNameFromFile(QFile& file, QString& name) const {
         if (!file.open(QIODevice::ReadOnly)) {
             return false;

@@ -30,6 +30,15 @@
 #include "rs_painter.h"
 #include "rs_units.h"
 
+
+namespace {
+    double getLightness(const RS_Color& color) {
+        // factors are based on specifics of human vision!
+        return (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    }
+}
+
+
 LC_GraphicViewportRenderer::LC_GraphicViewportRenderer(LC_GraphicViewport* v, QPaintDevice* painterDevice):
     m_paintDevice{painterDevice}
     , m_viewport{v}
@@ -205,13 +214,6 @@ void LC_GraphicViewportRenderer::updateEffectiveColors() {
             255 - m_userForeground.green(),
             255 - m_userForeground.blue()
         );
-    }
-}
-
-namespace {
-    double getLightness(const RS_Color& color) {
-        // factors are based on specifics of human vision!
-        return (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
     }
 }
 

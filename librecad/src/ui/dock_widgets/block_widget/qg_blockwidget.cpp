@@ -219,6 +219,10 @@ QG_BlockWidget::QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandle
     updateWidgetSettings();
 }
 
+QLineEdit* QG_BlockWidget::getFilterEditor() const {
+    return m_matchBlockName;
+}
+
 void QG_BlockWidget::addToolbarButton(LC_FlexLayout* layButtons, const RS2::ActionType actionType) {
     QAction* action = m_actionGroupManager->getActionByType(actionType);
     if (action != nullptr) {

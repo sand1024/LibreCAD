@@ -30,6 +30,7 @@
 #include "lc_drafting_preview_bottom_bar.h"
 #include "lc_preset_file_io.h"
 #include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
 #include "lc_settings_relative_position_assistant.h"
@@ -136,7 +137,7 @@ LC_PresetManagerDraftingMetrics::LC_PresetManagerDraftingMetrics(LC_RepositoryDr
                                                                QWidget* previewWidget)
     : LC_PresetManagerConfigBase<LC_DraftingMetricsConfig, LC_RepositoryDraftingMetrics>(
           repository,
-          CFG_AppState::o_ActiveDraftingMetricsName,
+          CFG_AppStyling::o_ActiveDraftingMetricsName,
           parent)
     , m_previewWidget(previewWidget) {
     loadPreset(m_activeKey);
@@ -185,7 +186,7 @@ void LC_PresetManagerDraftingMetrics::prependDefaultPresets(QList<QPair<QString,
 bool LC_PresetManagerDraftingMetrics::resetToDefaults(const QString& key) {
     LC_DraftingMetricsDefaults::applyStandardDefaults();
     setActivePresetKey(key);
-    CFG_AppState::o_ActiveDraftingMetricsName = key;
+    CFG_AppStyling::o_ActiveDraftingMetricsName = key;
 
     if (m_resetCallback != nullptr) {
         m_resetCallback();
@@ -198,7 +199,7 @@ bool LC_PresetManagerDraftingMetrics::resetToDefaults(const QString& key) {
 bool LC_PresetManagerDraftingMetrics::resetToHiDpiDefaults(const QString& key) {
     LC_DraftingMetricsDefaults::applyHiDpiDefaults();
     setActivePresetKey(key);
-    CFG_AppState::o_ActiveDraftingMetricsName = key;
+    CFG_AppStyling::o_ActiveDraftingMetricsName = key;
 
     if (m_resetCallback != nullptr) {
         m_resetCallback();
@@ -219,13 +220,20 @@ bool LC_PresetManagerDraftingMetrics::loadPreset(const QString& key) {
     if (m_repository != nullptr && m_repository->loadByKey(key, m_workingConfig)) {
         applyMetricsJson(m_workingConfig.rootObject);
         setActivePresetKey(key);
-        CFG_AppState::o_ActiveDraftingMetricsName = key;
+        m_originalActiveKey = key;
+        CFG_AppStyling::o_ActiveDraftingMetricsName.set(key);
         setDirtyState(false);
         return true;
     }
 
-    resetToDefaults(CFG_AppState::DEFAULT_THEME_KEY);
-    return false;
+    // Recovery path: file is missing from disk, but values exist in settings!
+    m_workingConfig.name = key;
+    m_workingConfig.rootObject = serializeCurrentSettings();
+    setActivePresetKey(key);
+    m_originalActiveKey = key;
+    CFG_AppStyling::o_ActiveDraftingMetricsName.set(key);
+    setDirtyState(true);
+    return true;
 }
 
 bool LC_PresetManagerDraftingMetrics::isPresetModified() {
@@ -237,11 +245,11 @@ void LC_PresetManagerDraftingMetrics::prepareWorkingConfigForSave() {
 }
 
 void LC_PresetManagerDraftingMetrics::onPostSavePreset(const QString& outKey) {
-    CFG_AppState::o_ActiveDraftingMetricsName = outKey;
+    CFG_AppStyling::o_ActiveDraftingMetricsName = outKey;
 }
 
 void LC_PresetManagerDraftingMetrics::applyActiveConfigToSystem(const QString& activeKey) {
-    CFG_AppState::o_ActiveDraftingMetricsName = activeKey;
+    CFG_AppStyling::o_ActiveDraftingMetricsName = activeKey;
 }
 
 QJsonObject LC_PresetManagerDraftingMetrics::serializeCurrentSettings() const {

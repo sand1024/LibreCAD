@@ -146,6 +146,10 @@ void ColorWizard::addFavorite(const QString& color) const {
     ui->fav_list->addItem(item);
 }
 
+QWidget* ColorWizard::getColorCombo() {
+    return ui->combo;
+}
+
 void ColorWizard::removeFavorite() const {
     delete ui->fav_list->currentItem();
 }

@@ -52,6 +52,9 @@ LC_PenWizard::LC_PenWizard(QWidget* parent)
     updateWidgetSettings();
 }
 
+QWidget* LC_PenWizard::getFocusTarget() const {
+    return m_colorWizard->getColorCombo();
+}
 void LC_PenWizard::setColorForSelected(const QColor color) const {
     const auto graphic = m_graphicView->getGraphic();
     auto pen = graphic->getActivePen();

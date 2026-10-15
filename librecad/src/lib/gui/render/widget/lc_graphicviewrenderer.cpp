@@ -616,12 +616,14 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         }
     }
 
+
     if (overlayPaint) {
         // fixme - sand - ucs - rethink style for overlay entity!!
         if (highlighted) {
             // Glowing effects on mouse hovering: use the "selected" color
             // for glowing effects on mouse hovering, draw solid lines
-            pen.setColor(m_colorSelectedEntity);
+            // pen.setColor(m_colorSelectedEntity);
+            pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(RS2::SolidLine);
         }
         else if (inVisualSnap) {
@@ -629,11 +631,13 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
             pen.setLineType(RS2::SolidLine);
         }
         else {
-            if (pen.getColor().isEqualIgnoringFlags(m_colorBackground)
-                || (pen.getColor().toIntColor() == RS_Color::Black) // fixme - sand - think about Black... is it really necessary there?
-                || (pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
+            const bool colorSameAsBackground = pen.getColor().isEqualIgnoringFlags(m_colorBackground);
+            const int intColor = pen.getColor().toIntColor();
+            bool colorIsBlack = intColor == RS_Color::Black;
+            if (colorSameAsBackground || colorIsBlack || pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance) {
                 pen.setColor(m_colorForeground);
             }
+
             // fixme - sand - merge - this is attempt to use more contrast colors? but it to straightforward
             // fixme - sand - merge - replace varius color by single one. There should be more complicated mapping
             // if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast) || (pen.getColor().toIntColor() == RS_Color::Black)
@@ -652,19 +656,22 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         }
         // this entity is highlighted:
         else if (highlighted) {
-            pen.setColor(m_colorVisualSnapDocumentEntities);
+            pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(RS2::SolidLine);
         }
         else if (inVisualSnap) {
-            pen.setColor(m_colorHighlightedEntity);
+            pen.setColor(m_colorVisualSnapDocumentEntities);
         }
         else if (e->getFlag(RS2::FlagTransparent)) {
             pen.setColor(m_colorBackground);
         }
-        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground)
-                 || (pen.getColor().toIntColor() == RS_Color::Black// fixme - sand - think about Black... is it really necessary there?
-                     && pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
-            pen.setColor(m_colorForeground);
+        else {
+            bool colorSameAsBackground = pen.getColor().isEqualIgnoringFlags(m_colorBackground);
+            const int intColor = pen.getColor().toIntColor();
+            bool colorIsBlack = intColor == RS_Color::Black;
+            if (colorSameAsBackground || colorIsBlack || pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance) {
+                pen.setColor(m_colorForeground);
+            }
         }
         // fixme - sand - merge - another place with attempts to color mapping. Expand later.
         // else if (pen.getColor().isEqualIgnoringFlags(m_colorBackgroundForContrast) || (pen.getColor().toIntColor() == RS_Color::Black
@@ -725,7 +732,8 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
         if (highlighted) {
             // Glowing effects on mouse hovering: use the "selected" color
             // for glowing effects on mouse hovering, draw solid lines
-            pen.setColor(m_colorSelectedEntity);
+            pen.setColor(m_colorHighlightedEntity);
+            // pen.setColor(m_colorSelectedEntity);
             pen.setLineType(RS2::SolidLine);
         }
         else if (inVisualSnap) {

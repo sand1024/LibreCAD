@@ -28,8 +28,8 @@
 // namespace
 
 LC_RepositoryDraftingTheme::LC_RepositoryDraftingTheme(const QString& configDir)
-    : LC_PresetRepositoryBase<LC_ViewportThemeConfig>(configDir,".theme.json", "viewport_theme",
-                                                     "themes_index.json") {
+    : LC_PresetRepositoryBase<LC_ViewportThemeConfig>(configDir,".lcdv", "viewport_theme",
+                                                     "themes_index.lcix") {
 }
 
 QJsonObject LC_RepositoryDraftingTheme::configToJson(const LC_ViewportThemeConfig& config) const {

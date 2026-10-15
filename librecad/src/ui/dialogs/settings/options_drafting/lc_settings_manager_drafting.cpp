@@ -67,10 +67,8 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         true,
         false,
         true,
-        ":/icons/drawing.lci"
+        ":/icons/options_drafting.lci"
     });
-
-
 
     reg->registerPresetManager(targetDialog, GROUP_DRAFTING_THEME, [appWindow]() {
         auto* uiStyleManager = appWindow != nullptr ? appWindow->getUiStyleManager() : nullptr;

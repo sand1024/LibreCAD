@@ -41,6 +41,7 @@ public:
     ~ColorWizard() override;
     QStringList getFavList() const;
     void addFavorite(const QString& color) const;
+    QWidget* getColorCombo();
 private:
     std::unique_ptr<Ui::ColorWizard> ui;
 signals:

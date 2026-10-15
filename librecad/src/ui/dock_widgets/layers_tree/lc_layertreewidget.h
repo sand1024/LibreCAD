@@ -70,6 +70,7 @@ public:
     void onDropEvent(const QModelIndex& dropIndex, DropIndicatorPosition position) const;
     void setGraphicView(RS_GraphicView* gview) override;
     void removeActiveLayer(bool removeWithChildren);
+    QLineEdit* getFilterEditor() const;
 signals :
     void escape();
 public slots :

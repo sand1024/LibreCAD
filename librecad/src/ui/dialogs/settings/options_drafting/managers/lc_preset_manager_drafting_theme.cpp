@@ -137,7 +137,7 @@ LC_PresetManagerDraftingTheme::LC_PresetManagerDraftingTheme(LC_RepositoryDrafti
                                                            QWidget* previewWidget)
     : LC_PresetManagerConfigBase<LC_ViewportThemeConfig, LC_RepositoryDraftingTheme>(
           repository,
-          CFG_AppStyling::o_ActiveDraftingSchemeName.get(),
+          CFG_AppStyling::o_ActiveDraftingThemeName,
           parent)
     , m_previewWidget(previewWidget) {
     loadPreset(m_activeKey);
@@ -163,7 +163,7 @@ LC_PresetManagerUIStrings LC_PresetManagerDraftingTheme::presetStrings() const {
     s.exportDialogTitle = tr("Export Visual Theme");
     s.importDialogTitle = tr("Import Visual Theme");
     s.presetFileFilter = tr("LibreCAD drafting visual theme files (*%1);;All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".theme.json"));
+                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".lcdv"));
 
     s.defaultReadOnlyMessage = tr("The Default visual theme is a read-only template. To customize drawing area colors and styles, duplicate it as a custom theme.");
     s.duplicateActionText = tr("Duplicate Theme...");
@@ -184,7 +184,7 @@ bool LC_PresetManagerDraftingTheme::resetToDefaults(const QString& key) {
     }
 
     setActivePresetKey(key);
-    CFG_AppStyling::o_ActiveDraftingSchemeName.set(key);
+    CFG_AppStyling::o_ActiveDraftingThemeName.set(key);
 
     if (m_resetCallback != nullptr) {
         m_resetCallback();
@@ -202,13 +202,21 @@ bool LC_PresetManagerDraftingTheme::loadPreset(const QString& key) {
     if (m_repository != nullptr && m_repository->loadByKey(key, m_workingConfig)) {
         applyThemeJson(m_workingConfig.rootObject);
         setActivePresetKey(key);
-        CFG_AppStyling::o_ActiveDraftingSchemeName.set(key);
+        m_originalActiveKey = key;
+        CFG_AppStyling::o_ActiveDraftingThemeName.set(key);
         setDirtyState(false);
         return true;
     }
 
-    resetToDefaults(CFG_AppState::DEFAULT_THEME_KEY);
-    return false;
+    // Recovery path: file is missing from disk, but values exist in settings!
+    // Do not erase settings with defaults; reconstruct working config and allow saving.
+    m_workingConfig.name = key;
+    m_workingConfig.rootObject = serializeCurrentSettings();
+    setActivePresetKey(key);
+    m_originalActiveKey = key;
+    CFG_AppStyling::o_ActiveDraftingThemeName.set(key);
+    setDirtyState(true);
+    return true;
 }
 
 bool LC_PresetManagerDraftingTheme::isPresetModified() {
@@ -220,11 +228,11 @@ void LC_PresetManagerDraftingTheme::prepareWorkingConfigForSave() {
 }
 
 void LC_PresetManagerDraftingTheme::onPostSavePreset(const QString& outKey) {
-    CFG_AppStyling::o_ActiveDraftingSchemeName.set(outKey);
+    CFG_AppStyling::o_ActiveDraftingThemeName.set(outKey);
 }
 
 void LC_PresetManagerDraftingTheme::applyActiveConfigToSystem(const QString& activeKey) {
-    CFG_AppStyling::o_ActiveDraftingSchemeName.set(activeKey);
+    CFG_AppStyling::o_ActiveDraftingThemeName.set(activeKey);
 }
 
 QJsonObject LC_PresetManagerDraftingTheme::serializeCurrentSettings() const {

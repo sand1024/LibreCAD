@@ -50,9 +50,10 @@ public:
     QWidget* getSharedPreviewWidget() override;
     void setSharedPreviewWidget(QWidget* widget) {m_previewWidget = widget;}
     QWidget* getSharedBottomWidget()  override;
-    void setSharedBottomWidget(LC_DraftingPreviewBottomBar* bar) { m_bottomBar = bar; }
-    bool isPreviewVisible() const; // fixme - check
+    void setSharedBottomWidget(LC_DraftingPreviewBottomBar* bar) const { m_bottomBar = bar; }
+    bool isPreviewVisible() const;
 protected:
+    bool supportsMissingPresetRecovery() const override {return true;}
     void prepareWorkingConfigForSave() override;
     void onPostSavePreset(const QString& outKey) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;

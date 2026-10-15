@@ -51,6 +51,7 @@ public:
     bool isPreviewVisible() const;
 
 protected:
+    bool supportsMissingPresetRecovery() const override {return true;}
     void prepareWorkingConfigForSave() override;
     void onPostSavePreset(const QString& outKey) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;

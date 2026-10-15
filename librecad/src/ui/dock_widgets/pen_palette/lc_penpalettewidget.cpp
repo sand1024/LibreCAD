@@ -165,6 +165,10 @@ LC_PenPaletteWidget::LC_PenPaletteWidget(const QString& title, QWidget* parent) 
     updateWidgetSettings();
 }
 
+QLineEdit* LC_PenPaletteWidget::getFilterEditor() const {
+    return leFilterMask;
+}
+
 /**
  * Just initialization of button handlers
  */

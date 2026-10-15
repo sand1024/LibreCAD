@@ -32,21 +32,23 @@ namespace CFG_AppStyling {
 
     inline const LC_Setting<bool> o_AllowTheme(&Group, "AllowTheme", false);
     inline const LC_Setting<bool> o_AllowStyle(&Group, "AllowStyle", false);
+    inline const LC_Setting<bool> o_IgnoreIconStylingInPalette(&Group, "IgnoreIconStylingInPalette", false);
     inline const LC_Setting<QString> o_Style(&Group, "Style", "");
     inline const LC_Setting<QString> o_StyleSheet(&Group, "StyleSheet", "");
     inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
 
-    inline const LC_Setting<QString> o_ActiveTypographyName(&Group, "ActiveTypographyName", CFG_AppState::DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveFusionSkinName(&Group, "ActiveFusinSkinName", CFG_AppState::DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveFusionMetricsName(&Group, "ActiveFusionMetricsName", CFG_AppState::DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveFusionPaletteName(&Group, "ActiveFusionPaletteName", CFG_AppState::DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveDraftingSchemeName(&Group, "ActiveDraftingScheme", CFG_AppState::DEFAULT_THEME_KEY);
-    inline const LC_Setting<QString> o_ActiveIconsStyleName(&Group, "ActiveIconsStyleName", CFG_AppState::DEFAULT_THEME_KEY);
-
-    inline const LC_Setting<bool> o_IgnoreIconStylingInPalette(&Group, "IgnoreIconStylingInPalette", false);
-
     inline const LC_Setting<QColor> o_ColorFilteredItem(&Group, "ColorSearchHighlight", QColor("#2a82da")); // Blue
     inline const LC_Setting<QColor> o_ColorConflictingItem(&Group, "ColorConflictingItem", QColor("#d9534f")); // Red
     inline const LC_Setting<QColor> o_ColorSearchResultItem(&Group, "ColorSearchResultItem", QColor("#bd6313")); // Amber
+
+    inline const LC_Setting<QString> o_ActiveTypographyName(&Group, "ActiveTypographyName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionSkinName(&Group, "ActiveFusionSkinName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionMetricsName(&Group, "ActiveFusionMetricsName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveFusionPaletteName(&Group, "ActiveFusionPaletteName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveIconsStyleName(&Group, "ActiveIconsStyleName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveDraftingMetricsName(&Group, "ActiveDraftingMetricsName", CFG_AppState::DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveDraftingThemeName(&Group, "ActiveDraftingThemeName", CFG_AppState::DEFAULT_THEME_KEY);
+
+
 }
 #endif

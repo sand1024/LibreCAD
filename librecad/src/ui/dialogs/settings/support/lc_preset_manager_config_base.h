@@ -48,6 +48,22 @@ public:
         if (m_repository != nullptr) {
             choices.append(m_repository->getPresetChoices());
         }
+
+        // If enabled by the manager, retain active preset in choices when its file is missing on disk
+        if (supportsMissingPresetRecovery() && !this->isDefaultPreset(this->m_activeKey) &&
+            m_repository != nullptr && !m_repository->exists(this->m_activeKey)) {
+            bool alreadyInChoices = false;
+            for (const auto& item : choices) {
+                if (item.second == this->m_activeKey) {
+                    alreadyInChoices = true;
+                    break;
+                }
+            }
+            if (!alreadyInChoices) {
+                choices.append(qMakePair(this->m_activeKey + " " + tr("(Unsaved)"), this->m_activeKey));
+            }
+            }
+
         return choices;
     }
 
@@ -157,6 +173,10 @@ public:
     TConfig& workingConfig() { return m_workingConfig; }
 
 protected:
+
+    virtual bool supportsMissingPresetRecovery() const {
+        return false;
+    }
 
     virtual void prepareWorkingConfigForSave() {}
     virtual void onPostSavePreset([[maybe_unused]] const QString& outKey) {}

@@ -25,13 +25,7 @@
 #include "rs_system.h"
 
 LC_RepositoryDraftingMetrics::LC_RepositoryDraftingMetrics(const QString& configDir)
-    : LC_PresetRepositoryBase<LC_DraftingMetricsConfig>(
-          configDir,
-          ".lcdm",
-          "drafting_metrics",
-          "metrics_index.json") {
-}
-
+    : LC_PresetRepositoryBase<LC_DraftingMetricsConfig>(configDir, ".lcdm", "drafting_metrics", "metrics_index.lcix") {}
 
 QJsonObject LC_RepositoryDraftingMetrics::configToJson(const LC_DraftingMetricsConfig& config) const {
     return config.rootObject;
