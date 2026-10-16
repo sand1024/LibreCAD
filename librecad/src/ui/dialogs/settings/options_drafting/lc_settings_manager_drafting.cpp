@@ -45,14 +45,14 @@
 #include "lc_settings_page_drafting_theme_preview.h"
 #include "lc_settings_page_drafting_theme_selection.h"
 #include "lc_settings_page_drafting_theme_snap_indicator.h"
-#include "lc_settings_page_graphic_view_behavior.h"
-#include "lc_settings_page_info_cursor.h"
-#include "lc_settings_page_input_assistant.h"
+#include "lc_settings_page_drafting_behavior_general.h"
+#include "lc_settings_page_drafting_behavior_info_cursor.h"
+#include "lc_settings_page_drafting_behavior_input_assistant.h"
 #include "lc_settings_page_renderer_advanced.h"
 #include "lc_settings_page_renderer_text_ops.h"
-#include "lc_settings_page_snap_general.h"
-#include "lc_settings_page_snap_visual_behavior.h"
-#include "lc_settings_page_snap_visual_timing.h"
+#include "lc_settings_page_drafting_behavior_snap.h"
+#include "lc_settings_page_drafting_behavior_snap_visual.h"
+#include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
@@ -90,7 +90,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_THEME, "", index(QObject::tr("Visual Theme"),
             QObject::tr("Configure canvas colors, selection overlays, entity handles, and previews.")), 10 },
         { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsDraftingThemeMainColors>(), 10 },
-        { PAGE_DRAFTING_VIEW_HANDLES, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
+        { PAGE_DRAFTING_THEME_SELECTION, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
         { PAGE_DRAFTING_THEME_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemePreview>(), 50 },
 
         // Grid Display
@@ -107,7 +107,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
 
         // Indicators & Cursor Styling
         { PAGE_DRAFTING_THEME_SNAP_INDICATOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSnapIndicator>(), 90 },
-        { PAGE_DRAFTING_THEME_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeInfoCursor>(), 100 },
+        { PAGE_DRAFTING_THEME_INFO_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeInfoCursor>(), 100 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 2: VIEWPORT METRICS (Persistent Sizing Profile Top Bar)
@@ -125,18 +125,18 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
             QObject::tr("Configure canvas navigation, snapping rules, solver parameters, and renderer engine.")), 30 },
 
         // Navigation and Grid (Weight 10)
-        { PAGE_DRAFTING_NAV_GRID, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageGraphicViewBehavior>(), 10 },
+        { PAGE_DRAFTING_BEHAVIOR_NAV_GRID, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorGeneral>(), 10 },
 
         // General Snap (Weight 20)
-        { PAGE_DRAFTING_SNAP_GENERAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageSnapGeneral>(), 20 },
+        { PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnap>(), 20 },
 
         // Visual Snap (Weight 30) with child Advanced (Weight 10)
-        { PAGE_DRAFTING_SNAP_VISUAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageSnapVisualBehavior>(), 30 },
-        { PAGE_DRAFTING_SNAP_VISUAL_TIMING, PAGE_DRAFTING_SNAP_VISUAL, page<LC_SettingsPageSnapVisualTiming>(), 10 },
+        { PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnapVisual>(), 30 },
+        { PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL_TIMING, PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL, page<LC_SettingsPageDraftingBeahaviorSnapVisualTiming>(), 10 },
 
         // Cursor Workflow (Direct children of PAGE_DRAFTING_BEHAVIOR)
-        { PAGE_DRAFTING_INFO_CURSOR, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageInfoCursor>(), 40 },
-        { PAGE_DRAFTING_INPUT_ASSISTANT, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageInputAssistant>(), 50 },
+        { PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInfoCursor>(), 40 },
+        { PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInputAssistant>(), 50 },
 
         // Renderer (Weight 60)
         { PAGE_DRAFTING_RENDERER, PAGE_DRAFTING_BEHAVIOR, index(QObject::tr("Renderer"),
@@ -178,7 +178,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
 
             // Wire shared preview and bottom bar to Informational Cursor page
             dialog->forEachPage([previewWidget, bottomBar](LC_SettingsPageInterface* page) {
-                if (auto* infoCursorPage = dynamic_cast<LC_SettingsPageInfoCursor*>(page)) {
+                if (auto* infoCursorPage = dynamic_cast<LC_SettingsPageDraftingBehaviorInfoCursor*>(page)) {
                     infoCursorPage->setPreviewWidget(previewWidget);
                     infoCursorPage->setBottomWidget(bottomBar);
                 }
@@ -200,7 +200,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
             });
 
             dialog->forEachPage([](LC_SettingsPageInterface* page) {
-                if (auto* infoCursorPage = dynamic_cast<LC_SettingsPageInfoCursor*>(page)) {
+                if (auto* infoCursorPage = dynamic_cast<LC_SettingsPageDraftingBehaviorInfoCursor*>(page)) {
                     infoCursorPage->setPreviewWidget(nullptr);
                     infoCursorPage->setBottomWidget(nullptr);
                 }

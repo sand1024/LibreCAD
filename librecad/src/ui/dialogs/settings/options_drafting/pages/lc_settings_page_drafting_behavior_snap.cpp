@@ -20,32 +20,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_snap_general.h"
+#include "lc_settings_page_drafting_behavior_snap.h"
 
 #include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_snap.h"
-#include "ui_lc_settings_page_snap_general.h"
+#include "ui_lc_settings_page_drafting_behavior_snap.h"
 
-LC_SettingsPageSnapGeneral::LC_SettingsPageSnapGeneral(QObject* parent)
+LC_SettingsPageDraftingBehaviorSnap::LC_SettingsPageDraftingBehaviorSnap(QObject* parent)
     : LC_SettingsPageBase(tr("Snap"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group),
                           parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSnapGeneral>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorSnap>()) {
     setSortWeight(20);
 }
 
-LC_SettingsPageSnapGeneral::~LC_SettingsPageSnapGeneral() = default;
+LC_SettingsPageDraftingBehaviorSnap::~LC_SettingsPageDraftingBehaviorSnap() = default;
 
-void LC_SettingsPageSnapGeneral::setupUi() {
+void LC_SettingsPageDraftingBehaviorSnap::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageSnapGeneral::setupBehavior() {
+void LC_SettingsPageDraftingBehaviorSnap::setupBehavior() {
 }
 
-void LC_SettingsPageSnapGeneral::setupBindings() {
+void LC_SettingsPageDraftingBehaviorSnap::setupBindings() {
     using namespace CFG_Snap;
     using namespace CFG_Appearance;
 

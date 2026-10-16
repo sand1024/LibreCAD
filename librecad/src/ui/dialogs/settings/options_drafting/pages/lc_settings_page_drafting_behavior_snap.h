@@ -25,13 +25,13 @@
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageSnapGeneral; }
+namespace Ui { class LC_SettingsPageDraftingBehaviorSnap; }
 
-class LC_SettingsPageSnapGeneral : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBehaviorSnap : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageSnapGeneral(QObject* parent = nullptr);
-    ~LC_SettingsPageSnapGeneral() override;
+    explicit LC_SettingsPageDraftingBehaviorSnap(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBehaviorSnap() override;
 
 protected:
     void setupUi() override;
@@ -39,7 +39,7 @@ protected:
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageSnapGeneral> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBehaviorSnap> ui;
 };
 
 #endif

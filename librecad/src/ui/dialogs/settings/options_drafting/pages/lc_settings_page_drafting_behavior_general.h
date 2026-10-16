@@ -20,26 +20,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_SNAP_VISUAL_BEHAVIOR_H
-#define LC_SETTINGS_PAGE_SNAP_VISUAL_BEHAVIOR_H
+#ifndef LC_SETTINGS_PAGE_GRAPHIC_VIEW_BEHAVIOR_H
+#define LC_SETTINGS_PAGE_GRAPHIC_VIEW_BEHAVIOR_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageSnapVisualBehavior; }
+namespace Ui { class LC_SettingsPageDraftingBehaviorGeneral; }
 
-class LC_SettingsPageSnapVisualBehavior : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBehaviorGeneral : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageSnapVisualBehavior(QObject* parent = nullptr);
-    ~LC_SettingsPageSnapVisualBehavior() override;
+    explicit LC_SettingsPageDraftingBehaviorGeneral(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBehaviorGeneral() override;
 
 protected:
-    void setupUi() override;
     void setupBehavior() override;
+
+    void setupUi() override;
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageSnapVisualBehavior> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBehaviorGeneral> ui;
 };
 
 #endif

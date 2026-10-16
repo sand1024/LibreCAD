@@ -20,34 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_INFO_CURSOR_H
-#define LC_SETTINGS_PAGE_INFO_CURSOR_H
+#ifndef LC_SETTINGS_PAGE_INPUT_ASSISTANT_H
+#define LC_SETTINGS_PAGE_INPUT_ASSISTANT_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageInfoCursor; }
+namespace Ui { class LC_SettingsPageDraftingBehaviorInputAssistant; }
 
-class LC_SettingsPageInfoCursor : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBehaviorInputAssistant : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageInfoCursor(QObject* parent = nullptr);
-    ~LC_SettingsPageInfoCursor() override;
-
-    QWidget* getPreviewWidget() override { return m_previewWidget; }
-    void setPreviewWidget(QWidget* w) { m_previewWidget = w; }
-
-    QWidget* getBottomWidget() override { return m_bottomBar; }
-    void setBottomWidget(QWidget* b) { m_bottomBar = b; }
+    explicit LC_SettingsPageDraftingBehaviorInputAssistant(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBehaviorInputAssistant() override;
 
 protected:
     void setupUi() override;
-    void setupBehavior() override;
+    void setupBehavior();
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageInfoCursor> ui;
-    QWidget* m_previewWidget = nullptr;
-    QWidget* m_bottomBar = nullptr;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBehaviorInputAssistant> ui;
 };
 
-#endif
+#endif // LC_SETTINGS_PAGE_INPUT_ASSISTANT_H

@@ -20,27 +20,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_GRAPHIC_VIEW_BEHAVIOR_H
-#define LC_SETTINGS_PAGE_GRAPHIC_VIEW_BEHAVIOR_H
+#ifndef LC_SETTINGS_PAGE_INFO_CURSOR_H
+#define LC_SETTINGS_PAGE_INFO_CURSOR_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageGraphicViewBehavior; }
+namespace Ui { class LC_SettingsPageDraftingBehaviorInfoCursor; }
 
-class LC_SettingsPageGraphicViewBehavior : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBehaviorInfoCursor : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageGraphicViewBehavior(QObject* parent = nullptr);
-    ~LC_SettingsPageGraphicViewBehavior() override;
+    explicit LC_SettingsPageDraftingBehaviorInfoCursor(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBehaviorInfoCursor() override;
+
+    QWidget* getPreviewWidget() override { return m_previewWidget; }
+    void setPreviewWidget(QWidget* w) { m_previewWidget = w; }
+
+    QWidget* getBottomWidget() override { return m_bottomBar; }
+    void setBottomWidget(QWidget* b) { m_bottomBar = b; }
 
 protected:
-    void setupBehavior() override;
-
     void setupUi() override;
+    void setupBehavior() override;
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageGraphicViewBehavior> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBehaviorInfoCursor> ui;
+    QWidget* m_previewWidget = nullptr;
+    QWidget* m_bottomBar = nullptr;
 };
 
 #endif

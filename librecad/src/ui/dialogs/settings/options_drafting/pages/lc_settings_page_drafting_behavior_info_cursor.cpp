@@ -20,27 +20,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_info_cursor.h"
+#include "lc_settings_page_drafting_behavior_info_cursor.h"
 
 #include "lc_settings_backend.h"
 #include "lc_settings_info_overlay_cursor.h"
-#include "ui_lc_settings_page_info_cursor.h"
+#include "ui_lc_settings_page_drafting_behavior_info_cursor.h"
 
-LC_SettingsPageInfoCursor::LC_SettingsPageInfoCursor(QObject* parent)
+LC_SettingsPageDraftingBehaviorInfoCursor::LC_SettingsPageDraftingBehaviorInfoCursor(QObject* parent)
     : LC_SettingsPageBase(tr("Informational Cursor"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_InfoOverlayCursor::Group),
                           parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageInfoCursor>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorInfoCursor>()) {
     setSortWeight(40);
 }
 
-LC_SettingsPageInfoCursor::~LC_SettingsPageInfoCursor() = default;
+LC_SettingsPageDraftingBehaviorInfoCursor::~LC_SettingsPageDraftingBehaviorInfoCursor() = default;
 
-void LC_SettingsPageInfoCursor::setupUi() {
+void LC_SettingsPageDraftingBehaviorInfoCursor::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageInfoCursor::setupBehavior() {
+void LC_SettingsPageDraftingBehaviorInfoCursor::setupBehavior() {
     enableWhenChecked(ui->cbInfoOverlayEnable, ui->groupBox_2);
     enableWhenChecked(ui->cbInfoOverlayEnable, ui->groupBox_18);
     enableWhenChecked(ui->cbInfoOverlayEnable, ui->groupBox_16);
@@ -49,7 +49,7 @@ void LC_SettingsPageInfoCursor::setupBehavior() {
     enableWhenChecked(ui->cbInfoOverlayCommandPrompt, ui->cbInfoOverlayCommandName);
 }
 
-void LC_SettingsPageInfoCursor::setupBindings() {
+void LC_SettingsPageDraftingBehaviorInfoCursor::setupBindings() {
     using namespace CFG_InfoOverlayCursor;
 
     bindBoolean({

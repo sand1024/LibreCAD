@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LC_SettingsPageInputAssistant</class>
- <widget class="QWidget" name="LC_SettingsPageInputAssistant">
+ <class>LC_SettingsPageDraftingBehaviorInputAssistant</class>
+ <widget class="QWidget" name="LC_SettingsPageDraftingBehaviorInputAssistant">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -43,12 +43,6 @@ namespace LC_SettingsPagesDrafting {
     const QString PAGE_DRAFTING_THEME_MAIN_COLORS           = "drafting.theme.colors";
     const QString PAGE_DRAFTING_THEME_SELECTION             = "drafting.theme.selection";
     const QString PAGE_DRAFTING_THEME_PREVIEW               = "drafting.theme.preview";
-
-    const QString PAGE_DRAFTING_VIEW_HANDLES                = "drafting.theme.handles";
-    const QString PAGE_DRAFTING_VIEW_DRAFT_MARKER           = "drafting.theme.draft_marker";
-
-    const QString PAGE_DRAFTING_HIGHLIGHT                   = "drafting.theme.highlight";
-
     // Grid Display
     const QString PAGE_DRAFTING_THEME_GRID                  = "drafting.theme.grid";
     const QString PAGE_DRAFTING_THEME_GRID_POINTS           = "drafting.theme.grid.points";
@@ -61,9 +55,8 @@ namespace LC_SettingsPagesDrafting {
     const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ANGLES_BASIS = "drafting.theme.coordinate_system.angles_basis";
 
     // Cursor & Indicator Visuals
-    const QString PAGE_DRAFTING_THEME_SNAP_INDICATOR              = "drafting.theme.indicators.snap";
-    const QString PAGE_DRAFTING_SNAP_VISUAL_APPEARANCE      = "drafting.theme.indicators.visual_snap";
-    const QString PAGE_DRAFTING_THEME_CURSOR                = "drafting.theme.indicators.cursor";
+    const QString PAGE_DRAFTING_THEME_SNAP_INDICATOR            = "drafting.theme.snap_indicator";
+    const QString PAGE_DRAFTING_THEME_INFO_CURSOR               = "drafting.theme.info_cursor";
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 2. SIZING / METRICS DOMAIN (Routing Key: drafting.metrics)
@@ -80,16 +73,16 @@ namespace LC_SettingsPagesDrafting {
     // ─────────────────────────────────────────────────────────────────────────────
     const QString PAGE_DRAFTING_BEHAVIOR                    = "drafting.behavior";
 
-    const QString PAGE_DRAFTING_NAV_GRID                    = "drafting.behavior.navigation";
-    const QString PAGE_DRAFTING_SNAP_GENERAL                = "drafting.behavior.snap";
+    const QString PAGE_DRAFTING_BEHAVIOR_NAV_GRID                    = "drafting.behavior.navigation";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL                = "drafting.behavior.snap";
 
     // Visual Snap Solver
-    const QString PAGE_DRAFTING_SNAP_VISUAL                 = "drafting.behavior.visual_snap";
-    const QString PAGE_DRAFTING_SNAP_VISUAL_TIMING          = "drafting.behavior.visual_snap.timing";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL                 = "drafting.behavior.visual_snap";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL_TIMING          = "drafting.behavior.visual_snap.timing";
 
     // Cursor Workflow
-    const QString PAGE_DRAFTING_INFO_CURSOR                 = "drafting.behavior.cursor.info";
-    const QString PAGE_DRAFTING_INPUT_ASSISTANT             = "drafting.behavior.cursor.assistant";
+    const QString PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR                 = "drafting.behavior.info_cursor";
+    const QString PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT             = "drafting.behavior.input_assistant";
 
     // Renderer Engine
     const QString PAGE_DRAFTING_RENDERER                    = "drafting.behavior.renderer";

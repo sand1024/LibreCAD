@@ -2419,16 +2419,16 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/viewport/lc_repository_drafting_theme.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_points.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_points.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_general.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_general.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_info_cursor.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_info_cursor.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_graphic_view_behavior.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_graphic_view_behavior.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.h
@@ -2439,12 +2439,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_angles_basis.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_axis_lines.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_axis_lines.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_input_assistant.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_input_assistant.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_visual_behavior.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_visual_behavior.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_visual_timing.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_snap_visual_timing.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.cpp

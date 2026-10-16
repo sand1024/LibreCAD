@@ -20,35 +20,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_graphic_view_behavior.h"
+#include "lc_settings_page_drafting_behavior_general.h"
 
 #include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_grid.h"
-#include "ui_lc_settings_page_graphic_view_behavior.h"
+#include "ui_lc_settings_page_drafting_behavior_general.h"
 
-LC_SettingsPageGraphicViewBehavior::LC_SettingsPageGraphicViewBehavior(QObject* parent)
+LC_SettingsPageDraftingBehaviorGeneral::LC_SettingsPageDraftingBehaviorGeneral(QObject* parent)
     : LC_SettingsPageBase(tr("General"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
                           parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageGraphicViewBehavior>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorGeneral>()) {
     setSortWeight(10);
 }
 
-LC_SettingsPageGraphicViewBehavior::~LC_SettingsPageGraphicViewBehavior() = default;
+LC_SettingsPageDraftingBehaviorGeneral::~LC_SettingsPageDraftingBehaviorGeneral() = default;
 
-void LC_SettingsPageGraphicViewBehavior::setupBehavior() {
+void LC_SettingsPageDraftingBehaviorGeneral::setupBehavior() {
     LC_SettingsPageBase::setupBehavior();
     enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtent);
     enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtentTooltip);
 }
 
-void LC_SettingsPageGraphicViewBehavior::setupUi() {
+void LC_SettingsPageDraftingBehaviorGeneral::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageGraphicViewBehavior::setupBindings() {
+void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Grid;
 

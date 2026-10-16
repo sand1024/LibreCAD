@@ -20,28 +20,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_snap_visual_timing.h"
-#include "ui_lc_settings_page_snap_visual_timing.h"
+#include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
+#include "ui_lc_settings_page_drafting_behavior_snap_visual_timing.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_colors.h"
 #include "lc_settings_snap_visual.h"
 
-LC_SettingsPageSnapVisualTiming::LC_SettingsPageSnapVisualTiming(QObject* parent)
+LC_SettingsPageDraftingBeahaviorSnapVisualTiming::LC_SettingsPageDraftingBeahaviorSnapVisualTiming(QObject* parent)
     : LC_SettingsPageBase(tr("Advanced"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSnapVisualTiming>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBeahaviorSnapVisualTiming>()) {
     setSortWeight(20);
 }
 
-LC_SettingsPageSnapVisualTiming::~LC_SettingsPageSnapVisualTiming() = default;
+LC_SettingsPageDraftingBeahaviorSnapVisualTiming::~LC_SettingsPageDraftingBeahaviorSnapVisualTiming() = default;
 
-void LC_SettingsPageSnapVisualTiming::setupUi() {
+void LC_SettingsPageDraftingBeahaviorSnapVisualTiming::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageSnapVisualTiming::setupBehavior() {
+void LC_SettingsPageDraftingBeahaviorSnapVisualTiming::setupBehavior() {
 }
 
-void LC_SettingsPageSnapVisualTiming::setupBindings() {
+void LC_SettingsPageDraftingBeahaviorSnapVisualTiming::setupBindings() {
     using namespace CFG_VisualSnap;
     using namespace CFG_Colors;
 

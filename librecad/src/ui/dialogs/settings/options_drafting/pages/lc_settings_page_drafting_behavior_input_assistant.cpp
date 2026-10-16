@@ -20,31 +20,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_input_assistant.h"
+#include "lc_settings_page_drafting_behavior_input_assistant.h"
 
 #include "lc_settings_backend.h"
 #include "lc_settings_relative_position_assistant.h"
-#include "ui_lc_settings_page_input_assistant.h"
+#include "ui_lc_settings_page_drafting_behavior_input_assistant.h"
 
-LC_SettingsPageInputAssistant::LC_SettingsPageInputAssistant(QObject* parent)
+LC_SettingsPageDraftingBehaviorInputAssistant::LC_SettingsPageDraftingBehaviorInputAssistant(QObject* parent)
     : LC_SettingsPageBase(tr("Relative Point Input Assistant"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_RelativePositionAssistant::Group),
                           parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageInputAssistant>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorInputAssistant>()) {
     setSortWeight(45);
 }
 
-LC_SettingsPageInputAssistant::~LC_SettingsPageInputAssistant() = default;
+LC_SettingsPageDraftingBehaviorInputAssistant::~LC_SettingsPageDraftingBehaviorInputAssistant() = default;
 
-void LC_SettingsPageInputAssistant::setupUi() {
+void LC_SettingsPageDraftingBehaviorInputAssistant::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageInputAssistant::setupBehavior() {
+void LC_SettingsPageDraftingBehaviorInputAssistant::setupBehavior() {
     enableWhenChecked(ui->cbRelativePositionAssistantRememberMode, ui->cbRelativePositionAssistantStartInOffsetMode, true);
 }
 
-void LC_SettingsPageInputAssistant::setupBindings() {
+void LC_SettingsPageDraftingBehaviorInputAssistant::setupBindings() {
     using namespace CFG_RelativePositionAssistant;
 
     bindBoolean({

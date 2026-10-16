@@ -20,29 +20,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_snap_visual_behavior.h"
+#include "lc_settings_page_drafting_behavior_snap_visual.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_colors.h"
 #include "lc_settings_snap_visual.h"
-#include "ui_lc_settings_page_snap_visual_behavior.h"
+#include "ui_lc_settings_page_drafting_behavior_snap_visual.h"
 
-LC_SettingsPageSnapVisualBehavior::LC_SettingsPageSnapVisualBehavior(QObject* parent)
+LC_SettingsPageDraftingBehaviorSnapVisual::LC_SettingsPageDraftingBehaviorSnapVisual(QObject* parent)
     : LC_SettingsPageBase(tr("Visual Snap"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSnapVisualBehavior>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorSnapVisual>()) {
     setSortWeight(20);
 }
 
-LC_SettingsPageSnapVisualBehavior::~LC_SettingsPageSnapVisualBehavior() = default;
+LC_SettingsPageDraftingBehaviorSnapVisual::~LC_SettingsPageDraftingBehaviorSnapVisual() = default;
 
-void LC_SettingsPageSnapVisualBehavior::setupUi() {
+void LC_SettingsPageDraftingBehaviorSnapVisual::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageSnapVisualBehavior::setupBehavior() {
+void LC_SettingsPageDraftingBehaviorSnapVisual::setupBehavior() {
     enableWhenChecked(ui->cbVisualSnapAutoAddSnapPoint, ui->cbVSAutoAddLastSnapOnly);
 }
 
-void LC_SettingsPageSnapVisualBehavior::setupBindings() {
+void LC_SettingsPageDraftingBehaviorSnapVisual::setupBindings() {
     using namespace CFG_VisualSnap;
     using namespace CFG_Colors;
 

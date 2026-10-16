@@ -106,7 +106,7 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
     if (m_currentPageTag == PAGE_DRAFTING_THEME_MAIN_COLORS) {
         m_previewView->getGraphicViewRenderer()->setDraftMode(CFG_Appearance::o_ShowDraftModeMarker);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_VIEW_HANDLES) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_SELECTION) {
         m_overlayBoxOptions->loadSettings();
     }
     else if (m_currentPageTag == PAGE_DRAFTING_THEME_PREVIEW) {
@@ -115,21 +115,21 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
     else if (m_currentPageTag == PAGE_DRAFTING_THEME_SNAP_INDICATOR) {
         previewSnapIndicator(false);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_SNAP_GENERAL) {
+    else if (m_currentPageTag == PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL) {
         // General snap now includes angle snap preview
         previewSnapIndicator(true);
     }
     else if (m_currentPageTag.contains(".visual_snap") || m_currentPageTag.contains(".visual.appearance")) {
         previewSnapVisual();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_INFO_CURSOR) {
+    else if (m_currentPageTag == PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR) {
         previewInfoCursor();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_THEME_CURSOR) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_INFO_CURSOR) {
         previewInfoCursor();
         previewRelativePointInputAssistant();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_INPUT_ASSISTANT) {
+    else if (m_currentPageTag == PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT) {
         previewRelativePointInputAssistant();
     }
     else if (m_currentPageTag == PAGE_DRAFTING_THEME_GRID_POINTS) {
@@ -190,7 +190,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             }
         }
     }
-    else if (tag == PAGE_DRAFTING_VIEW_HANDLES) {
+    else if (tag == PAGE_DRAFTING_THEME_SELECTION) {
         if (clear) {
             m_previewView->clearOverlayDrawables(RS2::OverlayGraphics::OverlayEffects);
             selectAll(document, viewport, false);
@@ -219,7 +219,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             previewSnapIndicator(false);
         }
     }
-    else if (tag == PAGE_DRAFTING_SNAP_GENERAL) {
+    else if (tag == PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL) {
         if (clear) {
             m_previewView->clearOverlayDrawables(RS2::Snapper);
             clearPreview();
@@ -238,7 +238,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             previewSnapVisual();
         }
     }
-    else if (tag == PAGE_DRAFTING_INFO_CURSOR) {
+    else if (tag == PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR) {
         if (clear) {
             m_previewView->clearOverlayDrawables(RS2::InfoCursor);
             m_previewView->clearOverlayDrawables(RS2::Snapper);
@@ -250,7 +250,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             previewInfoCursor();
         }
     }
-    else if (tag == PAGE_DRAFTING_THEME_CURSOR) {
+    else if (tag == PAGE_DRAFTING_THEME_INFO_CURSOR) {
         if (clear) {
             m_previewView->clearOverlayDrawables(RS2::InfoCursor);
             m_previewView->clearOverlayDrawables(RS2::Snapper);
@@ -263,7 +263,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             previewRelativePointInputAssistant();
         }
     }
-    else if (tag == PAGE_DRAFTING_INPUT_ASSISTANT) {
+    else if (tag == PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT) {
         if (clear) {
             m_previewView->hideRelativeInputWidget();
             clearPreview();

@@ -20,26 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_INPUT_ASSISTANT_H
-#define LC_SETTINGS_PAGE_INPUT_ASSISTANT_H
+#ifndef LC_SETTINGS_PAGE_SNAP_VISUAL_TIMING_H
+#define LC_SETTINGS_PAGE_SNAP_VISUAL_TIMING_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageInputAssistant; }
+namespace Ui { class LC_SettingsPageDraftingBeahaviorSnapVisualTiming; }
 
-class LC_SettingsPageInputAssistant : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBeahaviorSnapVisualTiming : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageInputAssistant(QObject* parent = nullptr);
-    ~LC_SettingsPageInputAssistant() override;
+    explicit LC_SettingsPageDraftingBeahaviorSnapVisualTiming(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBeahaviorSnapVisualTiming() override;
 
 protected:
     void setupUi() override;
-    void setupBehavior();
+    void setupBehavior() override;
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageInputAssistant> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBeahaviorSnapVisualTiming> ui;
 };
 
-#endif // LC_SETTINGS_PAGE_INPUT_ASSISTANT_H
+#endif
