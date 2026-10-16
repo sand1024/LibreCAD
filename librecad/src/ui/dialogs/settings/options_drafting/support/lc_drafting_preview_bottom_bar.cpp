@@ -57,7 +57,7 @@ void LC_DraftingPreviewBottomBar::setOnPreviewVisibilityChanged(std::function<vo
     m_visibilityCallback = std::move(callback);
 }
 
-void LC_DraftingPreviewBottomBar::setPreviewChecked(bool checked) {
+void LC_DraftingPreviewBottomBar::setPreviewChecked(bool checked) const {
     if (ui != nullptr && ui->cbShowPreview != nullptr) {
         ui->cbShowPreview->setChecked(checked);
     }

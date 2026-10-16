@@ -81,12 +81,15 @@ namespace {
             o_VSGuidingPointsLineWidth,
             o_VSGuidingEntityLabelFontSize,
             o_VSGuidingLabelOffsetPx,
+            o_VSGuidingEntitiesCatchDistance,
+            o_AdvSnapEntityCatchRange,
 
             // Screen Line Widths & Grid Points
             o_OverlaysScreenLineWidth,
             o_IndicatorScreenLinesLineWidth,
-            o_metaGridPointsLineWidth,
-            o_metaGridLinesLineWidth,
+            o_MinGridSpacing,
+            o_MetaGridPointsLineWidth,
+            o_MetaGridLinesLineWidth,
             o_GridLinesLineWidth,
             o_GridPointsPointSize,
 

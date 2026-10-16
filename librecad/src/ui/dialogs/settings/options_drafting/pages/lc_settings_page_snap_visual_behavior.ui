@@ -109,55 +109,6 @@ and thus may be snapped will be visible.</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label_59">
-          <property name="text">
-           <string>Visual snap catch distance:</string>
-          </property>
-          <property name="buddy">
-           <cstring>sbVSCatchDistance</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="sbVSCatchDistance">
-          <property name="toolTip">
-           <string>Visual Snap Catch Distance
-
-Distance in screen coordinates that is used for
- catching visual snap guiding entities.</string>
-          </property>
-          <property name="suffix">
-           <string> px</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>50</number>
-          </property>
-          <property name="value">
-           <number>24</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
       <item row="1" column="1">
        <spacer name="horizontalSpacer">
         <property name="orientation">

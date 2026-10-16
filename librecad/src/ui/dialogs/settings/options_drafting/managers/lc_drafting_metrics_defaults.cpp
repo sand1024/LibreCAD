@@ -62,8 +62,8 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
         &o_VSGuidingLabelOffsetPx,
         &o_OverlaysScreenLineWidth,
         &o_GridLinesLineWidth,
-        &o_metaGridLinesLineWidth,
-        &o_metaGridPointsLineWidth,
+        &o_MetaGridLinesLineWidth,
+        &o_MetaGridPointsLineWidth,
         &o_GridPointsPointSize,
         &o_FontSize,
         &o_OffsetFromCursor,
@@ -112,8 +112,8 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
         // Screen Line Widths & Grid Points
         { &o_OverlaysScreenLineWidth, 2 },
         { &o_GridLinesLineWidth, 2 },
-        { &o_metaGridLinesLineWidth, 3 },
-        { &o_metaGridPointsLineWidth, 3 },
+        { &o_MetaGridLinesLineWidth, 3 },
+        { &o_MetaGridPointsLineWidth, 3 },
         { &o_GridPointsPointSize, 4 },
 
         // Overlay Fonts & Offsets

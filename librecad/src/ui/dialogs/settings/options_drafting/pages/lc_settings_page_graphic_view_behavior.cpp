@@ -68,8 +68,4 @@ void LC_SettingsPageGraphicViewBehavior::setupBindings() {
         { ui->cbVisualizeHovering, o_VisualizeHovering },
         { ui->cbHighlightWIthLinewidthInDraft, o_IgnoreDraftForHighlight }
     });
-
-    bindInt({
-        { ui->sbMinGridSpacing, o_MinGridSpacing }
-    });
 }

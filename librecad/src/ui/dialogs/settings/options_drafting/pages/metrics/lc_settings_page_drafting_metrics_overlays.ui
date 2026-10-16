@@ -7,61 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>526</width>
-    <height>738</height>
+    <height>748</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox_3">
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="gbScreenLines">
      <property name="title">
-      <string>Points Grid</string>
+      <string>Lines Grid </string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblGridPointsPointSize">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblMetaGridLinesWidth">
         <property name="text">
-         <string>Grid points diameter:</string>
+         <string>Meta-grid lines width:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbGridPointsPointSize">
-        <property name="toolTip">
-         <string>Point Size
-
-Size of individual point of the grid, in pixels.
-If &quot;Auto&quot; is selected - the size will be 1 logical pixel (adjusted for hiDPI)
-</string>
-        </property>
-        <property name="specialValueText">
-         <string>Auto</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbMetaGridPointsLineWidth">
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbMetaGridLinesLineWidth">
         <property name="toolTip">
          <string>Meta-Grid Line Type
 
@@ -74,24 +38,52 @@ Thickness of major meta-grid lines in screen pixels.</string>
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>4</number>
-        </property>
-        <property name="value">
-         <number>1</number>
+         <number>6</number>
         </property>
        </widget>
+      </item>
+      <item row="3" column="2">
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="lblMetaGridPointsWidth">
+       <widget class="QLabel" name="lblGridLinesLineWidth">
         <property name="text">
-         <string>Meta-grid lines width:</string>
+         <string>Grid lines width:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_2">
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbGridLinesLineWidth">
+        <property name="toolTip">
+         <string>Grid Line Width
+
+Thickness of primary grid lines in screen pixels.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QLabel" name="label_1">
         <property name="text">
-         <string>Points Grid is a visual pattern of grid drawn with dots in grid intersection points, and meta-grid drawn as lines. </string>
+         <string>Points Grid is a visual pattern of grid drawn with lines, and meta-grid drawn as lines. </string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -101,18 +93,63 @@ Thickness of major meta-grid lines in screen pixels.</string>
      </layout>
     </widget>
    </item>
-   <item row="7" column="0">
-    <spacer name="spacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Grid General</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblMinSpacing">
+        <property name="text">
+         <string>Minimum grid spacing:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbMinGridSpacing">
+        <property name="toolTip">
+         <string>Grid Rescale Spacing
+
+Minimal screen pixel spacing between grid lines
+before subdivisions collapse and grid rescale.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>50</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>The Grid is a visual pattern of lines or dots that acts as a digital sheet of graph paper. Grid can automatically adapt to the current zoom level by performing automatic rescale.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item row="6" column="0">
     <widget class="QGroupBox" name="groupBox">
@@ -171,6 +208,19 @@ overlay, in points. </string>
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="7" column="0">
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item row="5" column="0">
     <widget class="QGroupBox" name="gbCursorOverlay">
@@ -256,28 +306,21 @@ the crosshair center and areas text labels.</string>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="gbScreenLines">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Lines Grid </string>
+      <string>Points Grid</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_5">
       <item row="2" column="0">
-       <widget class="QLabel" name="lblMetaGridLinesWidth">
+       <widget class="QLabel" name="lblGridPointsPointSize">
         <property name="text">
-         <string>Meta-grid lines width:</string>
+         <string>Grid points diameter:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblGridLinesLineWidth">
-        <property name="text">
-         <string>Grid lines width:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbMetaGridLinesLineWidth">
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbMetaGridPointsLineWidth">
         <property name="toolTip">
          <string>Meta-Grid Line Type
 
@@ -290,30 +333,48 @@ Thickness of major meta-grid lines in screen pixels.</string>
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <number>4</number>
+        </property>
+        <property name="value">
+         <number>1</number>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbGridLinesLineWidth">
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbGridPointsPointSize">
         <property name="toolTip">
-         <string>Grid Line Width
+         <string>Point Size
 
-Thickness of primary grid lines in screen pixels.</string>
+Size of individual point of the grid, in pixels.
+If &quot;Auto&quot; is selected - the size will be 1 logical pixel (adjusted for hiDPI)
+</string>
+        </property>
+        <property name="specialValueText">
+         <string>Auto</string>
         </property>
         <property name="suffix">
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Points Grid is a visual pattern of grid drawn with dots in grid intersection points, and meta-grid drawn as lines. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="2" column="2">
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
         </property>
@@ -325,77 +386,10 @@ Thickness of primary grid lines in screen pixels.</string>
         </property>
        </spacer>
       </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label">
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblMetaGridPointsWidth">
         <property name="text">
-         <string>Points Grid is a visual pattern of grid drawn with lines, and meta-grid drawn as lines. </string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="gbHandles">
-     <property name="title">
-      <string>Entity Handles</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbHandleSize">
-        <property name="toolTip">
-         <string>Entity Handle Size
-
-                                  Size of entities interactive selection handle
-                                  (square that is highlights entities reference points)
-                                  in screen pixels.
-
-                              </string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <number>28</number>
-        </property>
-        <property name="value">
-         <number>8</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblHandleSize">
-        <property name="text">
-         <string>Handle size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Entity handles are utility markers that are drawn at the start, end and internal reference points of selected (or hovered) entities and allow to identify these points quickly.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+         <string>Meta-grid lines width:</string>
         </property>
        </widget>
       </item>

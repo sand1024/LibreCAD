@@ -56,10 +56,6 @@ void LC_SettingsPageSnapGeneral::setupBindings() {
         { ui->cbAngleSnapToLinesIfGrid, o_AngleSnapToLinesIfGrid }
     });
 
-    bindInt({
-        { ui->sbCatchEntitySnapDistance, o_AdvSnapEntityCatchRange }
-    });
-
     bindComboIndex({
         { ui->cbAngleSnapStep, CFG_Defaults::o_AngleSnapStep }
     });

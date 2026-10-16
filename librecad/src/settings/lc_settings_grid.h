@@ -33,9 +33,9 @@ namespace CFG_Grid {
     inline const LC_Setting<RS2::LineType> o_metaGridPointsLineType(&Group, "metaGridPointsLineType", RS2::DotLineTiny);
     inline const LC_Setting<RS2::LineType> o_metaGridLinesLineType(&Group, "metaGridLinesLineType", RS2::SolidLine);
     inline const LC_Setting<RS2::LineType> o_GridLinesLineType(&Group, "GridLinesLineType", RS2::SolidLine);
-    inline const LC_Setting<int> o_metaGridPointsLineWidth(&Group, "metaGridPointsLineWidth", 1);
+    inline const LC_Setting<int> o_MetaGridPointsLineWidth(&Group, "metaGridPointsLineWidth", 1);
     inline const LC_Setting<int> o_GridPointsPointSize(&Group, "GridPointsPointSize", 1);
-    inline const LC_Setting<int> o_metaGridLinesLineWidth(&Group, "metaGridLinesLineWidth", 1);
+    inline const LC_Setting<int> o_MetaGridLinesLineWidth(&Group, "metaGridLinesLineWidth", 1);
     inline const LC_Setting<int> o_GridLinesLineWidth(&Group, "GridLinesLineWidth", 1);
 }
 

@@ -24,6 +24,7 @@
 #define LC_GraphicViewPreviewWidget_H
 
 #include "lc_cursoroverlayinfo.h"
+#include "lc_graphicviewport.h"
 #include "lc_settings_page_interface.h"
 #include "rs_entity.h"
 
@@ -41,19 +42,23 @@ public:
     LC_GraphicViewPreviewWidget(QWidget* parent);
     ~LC_GraphicViewPreviewWidget() override;
     void updateLivePreview() override;
+    void clearPreview();
+    void doUpdatePreviewForContentCategory(const QString& tag, bool clear);
     void updatePreviewForContentCategory(const QString& tag) override;
     void cleanupPreviewForContentCategory(const QString& tag) override;
-    void updateGrid(int forcedType);
 private:
+    void previewSelectionOverlayBoxes();
+    void updateGrid(int forcedType) const;
+    void selectAll(RS_Document* document, LC_GraphicViewport* viewport, bool enable = true);
     void previewSnapIndicator(bool showAngleSnap) const;
-    void preparePreviewPreview();
+    void preparePreviewPreview() const;
     void previewSnapVisual();
-    void addDocumentEntityToVisualSnap(RS_Entity* entity1);
-    void addEntityPointToVisualSnap(RS_Entity* entity1);
+    void addDocumentEntityToVisualSnap(RS_Entity* entity1) const;
+    void addEntityPointToVisualSnap(RS_Entity* entity1) const;
     void prepareVisualSnapSolution();
     void previewInfoCursor();
-    void prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs);
-    void previewRelativePointInputAssistant();
+    void prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs) const;
+    void previewRelativePointInputAssistant() const;
     LC_DimStylePreviewGraphicView* m_previewView = nullptr;
     std::unique_ptr<RS_Preview> m_preview;
     std::unique_ptr<LC_Highlight> m_highlight;

@@ -43,7 +43,7 @@ public:
     bool isPreviewVisible() const override;
     void setOnPreviewVisibilityChanged(std::function<void(bool)> callback) override;
 
-    void setPreviewChecked(bool checked);
+    void setPreviewChecked(bool checked) const;
 
     signals:
         void previewToggled(bool checked);

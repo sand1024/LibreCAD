@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDraftingThemeInfoCursor</class>
+ <widget class="QWidget" name="LC_SettingsPageDraftingThemeInfoCursor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>481</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbInfoCursor">
+     <property name="title">
+      <string>Informational Cursor</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbAbsColor">
+        <property name="toolTip">
+         <string>Absolute Coordinates Color
+
+Color name or hexadecimal code for 
+absolute coordinates text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lblSnapColor">
+        <property name="text">
+         <string>Snap info/restrictions color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblInfoFont">
+        <property name="text">
+         <string>Cursor text font:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="LC_ColorButton" name="pbAbsColor">
+        <property name="toolTip">
+         <string>Absolute Coordinates
+
+Click to choose color for 
+absolute coordinates text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="cbSnapColor">
+        <property name="toolTip">
+         <string>Snap and Entity Info Color
+
+Color name or hexadecimal code for 
+snap type and caught or creating entity
+properties text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="LC_ColorButton" name="pbSnapColor">
+        <property name="toolTip">
+         <string>Snap/Entity Info
+
+Click to choose color for snap identification
+restrictions and entity's information text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="cbRelColor">
+        <property name="toolTip">
+         <string>Relative Coordinates Color
+
+Color name or hexadecimal code for
+relative coordinates text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QFontComboBox" name="fcbInfoFont">
+        <property name="toolTip">
+         <string>Informational Cursor Font
+
+Font family  used for drawing elements of 
+Informational Cursor around to the crosshair.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblAbsColor">
+        <property name="text">
+         <string>Absolute coordinates color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="LC_ColorButton" name="pbPromptColor">
+        <property name="toolTip">
+         <string>Command Prompt
+
+Click to choose color for command 
+prompts and action hints.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="LC_ColorButton" name="pbRelColor">
+        <property name="toolTip">
+         <string>Distance and Angle
+
+Click to choose color for relative
+coordinates (distance and angle) text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblRelColor">
+        <property name="text">
+         <string>Relative coordinates color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="cbPromptColor">
+        <property name="toolTip">
+         <string>Command Prompt Color
+
+Color name or hexadecimal code for 
+command prompts and action hints.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Informational Cursor is overlay that displays real-time context, tool prompt and tips, and snapping details directly next to your mouse pointer inside the drawing window. There are 4 informational areas displayed around snap point.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblPromptColor">
+        <property name="text">
+         <string>Command prompt color:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbAssistant">
+     <property name="title">
+      <string>Relative Position Input Assistant</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="1">
+       <widget class="QFontComboBox" name="fcbAssistantFont">
+        <property name="toolTip">
+         <string>Assistant Font
+
+Font family used by Relative Point Input Assistant popup.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="LC_ColorButton" name="pbAssistantTextColor">
+        <property name="toolTip">
+         <string>Text
+
+Click to choose color for text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblAssistantFont">
+        <property name="text">
+         <string>Assistant font:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>The Relative Point Input Assistant is an interactive, on-screen helper overlay that simplifies the process of placing new coordinates relative to the last active point (Relative Zero) without needing to type syntax blindly into the command line.&lt;br&gt;Relative Point Input Assistant is available in any place where coordinate is requested by the active command and could be invoked by configurable keyboard shortcuts (or just by starting typing number).</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="LC_ColorButton" name="pbAssistantBgColor">
+        <property name="toolTip">
+         <string>Background
+
+Click to choose color for background.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="cbAssistantTextColor">
+        <property name="toolTip">
+         <string>Assistant Text Color
+
+Color name or hexadecimal code for 
+Relative Point Input Assistant text.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblAssistantBgColor">
+        <property name="text">
+         <string>Background color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblAssistantTextColor">
+        <property name="text">
+         <string>Text color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="cbAssistantBgColor">
+        <property name="toolTip">
+         <string>Assistant Overlay Background
+
+Color name or hexadecimal code for 
+Relative Point Input Assistant overlay popup 
+background.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>lc_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -70,14 +70,7 @@ If checked, &quot;Snap To Grid&quot; is ignored if grid is not drawn.</string>
       <string>Snapping Tolerances</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblCatchDistance">
-        <property name="text">
-         <string>Catch entities Snap Distance (catch range):</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="sbMinGridCellSnapFactor">
         <property name="toolTip">
          <string>Grid Cell Factor
@@ -99,32 +92,44 @@ Grid cell factor used for snapping to grid. Lower value means smaller snap range
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbCatchEntitySnapDistance">
-        <property name="toolTip">
-         <string>Catch Entities Distance
-
-Distance in screen coordinates that is used for catching entities as part of snapping</string>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Snap coordinates calculations are based on various distances and ranges. Some of them may be configured below.</string>
         </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblGridCellSnapFactor">
+        <property name="text">
+         <string>Min grid cell snap factor:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="lblFreeSnapSwitchDistance">
         <property name="text">
          <string>Snap on Entity &quot;Free snap&quot; distance switch:</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="sbFreeSnapSwitchDistance">
         <property name="toolTip">
          <string>Free Snap Distance
@@ -147,36 +152,6 @@ Othersize, it will be &quot;Free Snap&quot; mode.</string>
         </property>
         <property name="maximum">
          <double>100.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblGridCellSnapFactor">
-        <property name="text">
-         <string>Min grid cell snap factor:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Snap coordinates calculations are based on various distances and ranges. Some of them may be configured below.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
         </property>
        </widget>
       </item>

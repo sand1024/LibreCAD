@@ -48,6 +48,8 @@ void LC_SettingsPageDraftingMetricsSnapping::setupBindings() {
     using namespace CFG_Appearance;
 
     bindInt({
+        { ui->sbCatchEntitySnapDistance, o_AdvSnapEntityCatchRange },
+        { ui->sbVSCatchDistance, o_VSGuidingEntitiesCatchDistance },
         { ui->sbIndicatorShapeSize, o_IndicatorShapeSize },
         { ui->sbIndicatorLinesLineWidth, o_IndicatorScreenLinesLineWidth },
         { ui->sbVSProjectedSnapSize, o_VSProjectedSnapSize },

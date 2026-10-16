@@ -57,8 +57,4 @@ void LC_SettingsPageSnapVisualBehavior::setupBindings() {
         { ui->cbVisualSnapVertexVertexDistanceCircles, o_VSVertexVertexDistanceCircles },
         { ui->cbVisualSnapVertexVertexDistancesTangential, o_VSVertexVertexDistanceTangents }
     });
-
-    bindInt({
-        { ui->sbVSCatchDistance, o_VSGuidingEntitiesCatchDistance },
-    });
 }

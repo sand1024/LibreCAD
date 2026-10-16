@@ -103,51 +103,51 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
 
     using namespace LC_SettingsPagesDrafting;
 
-    if (m_currentPageTag == PAGE_DRAFTING_VIEW_COLORS) {
+    if (m_currentPageTag == PAGE_DRAFTING_THEME_MAIN_COLORS) {
         m_previewView->getGraphicViewRenderer()->setDraftMode(CFG_Appearance::o_ShowDraftModeMarker);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_VIEW_HANDLES || m_currentPageTag.endsWith(".handles")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_VIEW_HANDLES) {
         m_overlayBoxOptions->loadSettings();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_PREVIEW || m_currentPageTag.endsWith(".preview")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_PREVIEW) {
         preparePreviewPreview();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_SNAP_INDICATOR || m_currentPageTag.endsWith(".indicators.snap")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_SNAP_INDICATOR) {
         previewSnapIndicator(false);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_SNAP_GENERAL || m_currentPageTag.endsWith(".snap")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_SNAP_GENERAL) {
         // General snap now includes angle snap preview
         previewSnapIndicator(true);
     }
     else if (m_currentPageTag.contains(".visual_snap") || m_currentPageTag.contains(".visual.appearance")) {
         previewSnapVisual();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_INFO_CURSOR || m_currentPageTag.endsWith(".info_cursor") || m_currentPageTag.endsWith(".info")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_INFO_CURSOR) {
         previewInfoCursor();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_THEME_CURSOR || m_currentPageTag.endsWith(".cursor")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_CURSOR) {
         previewInfoCursor();
         previewRelativePointInputAssistant();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_INPUT_ASSISTANT || m_currentPageTag.endsWith(".assistant")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_INPUT_ASSISTANT) {
         previewRelativePointInputAssistant();
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_GRID_POINTS || m_currentPageTag.endsWith(".grid.points")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_GRID_POINTS) {
         updateGrid(0);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_GRID_LINES || m_currentPageTag.endsWith(".grid.lines")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_GRID_LINES) {
         updateGrid(1);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_GRID || m_currentPageTag.endsWith(".grid")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_THEME_GRID) {
         updateGrid(CFG_Grid::o_GridType);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_MARKERS || m_currentPageTag.endsWith(".metrics.markers")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_MARKERS) {
         m_previewView->redraw(RS2::RedrawAll, true);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_SNAPPING || m_currentPageTag.endsWith(".metrics.snapping")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_SNAPPING) {
         previewSnapIndicator(true);
     }
-    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_OVERLAYS || m_currentPageTag.endsWith(".metrics.overlays")) {
+    else if (m_currentPageTag == PAGE_DRAFTING_METRICS_OVERLAYS) {
         m_overlayBoxOptions->loadSettings();
         previewInfoCursor();
     }
@@ -155,158 +155,194 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
     m_previewView->redraw(RS2::RedrawAll, true);
 }
 
-void LC_GraphicViewPreviewWidget::cleanupPreviewForContentCategory(const QString& tag) {
-    m_previewView->setUpdatesEnabled(false);
+void LC_GraphicViewPreviewWidget::clearPreview() {
+    m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
+    m_preview->clear();
+}
+
+void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QString& tag, bool clear) {
     auto* renderer = m_previewView->getGraphicViewRenderer();
     auto* document = m_previewView->getDocument();
     auto* viewport = m_previewView->getViewPort();
 
+    m_previewView->setUpdatesEnabled(false);
+
     using namespace LC_SettingsPagesDrafting;
 
-    if (tag == PAGE_DRAFTING_VIEW_COLORS || tag.endsWith(".colors")) {
-        renderer->setDraftMode(false);
-        m_previewView->setHighlightEntitiesOnHover(false);
-        auto* e = document->getNearestEntity(RS_Vector(20, 68));
-        if (e != nullptr) {
-            e->setHighlighted(false);
+    if (tag == PAGE_DRAFTING_THEME_MAIN_COLORS) {
+        if (clear) {
+            renderer->setDraftMode(false);
+            m_previewView->setHighlightEntitiesOnHover(false);
+            auto* e = document->getNearestEntity(RS_Vector(20, 68));
+            if (e != nullptr) {
+                e->setHighlighted(false);
+            }
+        }
+        else {
+            if (CFG_Appearance::o_ShowDraftModeMarker) {
+                renderer->setDraftMode(true);
+            }
+            m_previewView->setHighlightEntitiesOnHover(true);
+            auto* e = document->getNearestEntity(RS_Vector(20, 68));
+            if (e != nullptr) {
+                e->setHighlighted(true);
+                e->setUserDefVar("_fixedHighlight", "fixed");
+            }
+        }
     }
+    else if (tag == PAGE_DRAFTING_VIEW_HANDLES) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::OverlayGraphics::OverlayEffects);
+            selectAll(document, viewport, false);
+        }
+        else {
+            previewSelectionOverlayBoxes();
+            selectAll(document, viewport);
+        }
     }
-    else if (tag == PAGE_DRAFTING_VIEW_HANDLES || tag.endsWith(".handles")) {
-        m_previewView->clearOverlayDrawables(RS2::OverlayGraphics::OverlayEffects);
-        const RS_Selection s(document, viewport);
-        s.selectAll(false);
+    else if (tag == PAGE_DRAFTING_THEME_PREVIEW) {
+        if (clear) {
+            m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
+            m_previewView->clearOverlayDrawables(RS2::ActionPreviewEntity);
+            m_preview->clear();
+        }
+        else {
+            preparePreviewPreview();
+        }
     }
-    else if (tag == PAGE_DRAFTING_PREVIEW || tag.endsWith(".preview")) {
-        m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
-        m_previewView->clearOverlayDrawables(RS2::ActionPreviewEntity);
-        m_preview->clear();
+    else if (tag == PAGE_DRAFTING_THEME_SNAP_INDICATOR) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::Snapper);
+            clearPreview();
+        }
+        else {
+            previewSnapIndicator(false);
+        }
     }
-    else if (tag == PAGE_DRAFTING_SNAP_INDICATOR || tag.endsWith(".indicators.snap") ||
-             tag == PAGE_DRAFTING_SNAP_GENERAL || tag.endsWith(".snap")) {
-        m_previewView->clearOverlayDrawables(RS2::Snapper);
-        m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
-        m_preview->clear();
+    else if (tag == PAGE_DRAFTING_SNAP_GENERAL) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::Snapper);
+            clearPreview();
+        }
+        else {
+            previewSnapIndicator(true);
+        }
     }
     else if (tag.contains(".visual_snap") || tag.contains(".visual.appearance")) {
-        m_previewView->clearOverlayDrawables(RS2::ActionPreviewEntity);
-        m_previewView->clearOverlayDrawables(RS2::PermanentHighlights);
-        m_preview->clear();
-        m_highlight->clear();
+        if (clear) {
+            clearPreview();
+            m_previewView->clearOverlayDrawables(RS2::PermanentHighlights);
+            m_highlight->clear();
+        }
+        else {
+            previewSnapVisual();
+        }
     }
-    else if (tag == PAGE_DRAFTING_INFO_CURSOR || tag.endsWith(".info_cursor") || tag.endsWith(".info") ||
-             tag == PAGE_DRAFTING_THEME_CURSOR || tag.endsWith(".cursor")) {
-        m_previewView->clearOverlayDrawables(RS2::InfoCursor);
-        m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
-        m_previewView->clearOverlayDrawables(RS2::Snapper);
-        m_previewView->hideRelativeInputWidget();
-        m_preview->clear();
+    else if (tag == PAGE_DRAFTING_INFO_CURSOR) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::InfoCursor);
+            m_previewView->clearOverlayDrawables(RS2::Snapper);
+            m_previewView->hideRelativeInputWidget();
+
+            clearPreview();
+        }
+        else {
+            previewInfoCursor();
+        }
     }
-    else if (tag == PAGE_DRAFTING_INPUT_ASSISTANT || tag.endsWith(".assistant")) {
-        m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
-        m_previewView->hideRelativeInputWidget();
-        m_preview->clear();
+    else if (tag == PAGE_DRAFTING_THEME_CURSOR) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::InfoCursor);
+            m_previewView->clearOverlayDrawables(RS2::Snapper);
+            m_previewView->hideRelativeInputWidget();
+
+            clearPreview();
+        }
+        else {
+            previewInfoCursor();
+            previewRelativePointInputAssistant();
+        }
     }
-    else if (tag == PAGE_DRAFTING_GRID_POINTS || tag.endsWith(".grid.points") ||
-             tag == PAGE_DRAFTING_GRID_LINES || tag.endsWith(".grid.lines") ||
-             tag == PAGE_DRAFTING_GRID || tag.endsWith(".grid")) {
-        updateGrid(-1);
+    else if (tag == PAGE_DRAFTING_INPUT_ASSISTANT) {
+        if (clear) {
+            m_previewView->hideRelativeInputWidget();
+            clearPreview();
+        }
+        else {
+            previewRelativePointInputAssistant();
+        }
     }
-    else if (tag == PAGE_DRAFTING_METRICS_MARKERS || tag.endsWith(".metrics.markers")) {
-        const RS_Selection s(document, viewport);
-        s.selectAll(false);
+    else if (tag == PAGE_DRAFTING_THEME_GRID_POINTS) {
+        if (clear) {
+            updateGrid(-1);
+        }
+        else {
+            updateGrid(0);
+        }
     }
-    else if (tag == PAGE_DRAFTING_METRICS_SNAPPING || tag.endsWith(".metrics.snapping")) {
-        m_previewView->clearOverlayDrawables(RS2::Snapper);
-        m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
-        m_preview->clear();
+    else if (tag == PAGE_DRAFTING_THEME_GRID_LINES) {
+        if (clear) {
+            updateGrid(-1);
+        }
+        else {
+            updateGrid(1);
+        }
     }
-    else if (tag == PAGE_DRAFTING_METRICS_OVERLAYS || tag.endsWith(".metrics.overlays")) {
-        m_previewView->clearOverlayDrawables(RS2::OverlayGraphics::OverlayEffects);
-        m_previewView->clearOverlayDrawables(RS2::InfoCursor);
+    else if (tag == PAGE_DRAFTING_THEME_GRID) {
+        if (clear) {
+            updateGrid(-1);
+        }
+        else {
+            updateGrid(CFG_Grid::o_GridType);
+        }
+    }
+    else if (tag == PAGE_DRAFTING_METRICS_MARKERS) {
+        if (clear) {
+            selectAll(document, viewport, false);
+        }
+        else {
+            selectAll(document, viewport);
+        }
+    }
+    else if (tag == PAGE_DRAFTING_METRICS_SNAPPING) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::Snapper);
+            clearPreview();
+        }
+        else {
+            previewSnapIndicator(true);
+        }
+    }
+    else if (tag == PAGE_DRAFTING_METRICS_OVERLAYS) {
+        if (clear) {
+            m_previewView->clearOverlayDrawables(RS2::OverlayGraphics::OverlayEffects);
+            m_previewView->clearOverlayDrawables(RS2::InfoCursor);
+        }
+        else {
+            m_overlayBoxOptions->loadSettings();
+            auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
+            m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
+            previewInfoCursor();
+        }
     }
 
-    m_currentPageTag = "";
+    if (clear) {
+        m_currentPageTag = "";
+    }
+    else {
+        m_currentPageTag = tag;
+    }
     m_previewView->setUpdatesEnabled(true);
+    m_previewView->redraw(RS2::RedrawAll, true);
+    QCoreApplication::processEvents();
 }
 
 void LC_GraphicViewPreviewWidget::updatePreviewForContentCategory(const QString& tag) {
-    auto* renderer = m_previewView->getGraphicViewRenderer();
-    auto* document = m_previewView->getDocument();
-    auto* viewport = m_previewView->getViewPort();
+    doUpdatePreviewForContentCategory(tag, false);
+}
 
-    using namespace LC_SettingsPagesDrafting;
-
-    if (tag == PAGE_DRAFTING_VIEW_COLORS) {
-        if (CFG_Appearance::o_ShowDraftModeMarker) {
-            renderer->setDraftMode(true);
-        }
-        m_previewView->setHighlightEntitiesOnHover(true);
-        auto* e = document->getNearestEntity(RS_Vector(20, 68));
-        if (e != nullptr) {
-            e->setHighlighted(true);
-            e->setUserDefVar("_fixedHighlight", "fixed");
-        }
-    }
-    else if (tag == PAGE_DRAFTING_VIEW_HANDLES || tag.endsWith(".handles")) {
-        m_overlayBoxOptions->loadSettings();
-
-        auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
-        m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
-
-        auto* invertedSelectionOverlay = new RS_OverlayBox({100, 100}, {55, 50}, m_overlayBoxOptions.get());
-        m_previewView->addOverlayDrawable(invertedSelectionOverlay, RS2::OverlayGraphics::OverlayEffects);
-
-        const RS_Selection s(document, viewport);
-        s.selectAll(true);
-    }
-    else if (tag == PAGE_DRAFTING_PREVIEW || tag.endsWith(".preview")) {
-        preparePreviewPreview();
-    }
-    else if (tag == PAGE_DRAFTING_SNAP_INDICATOR || tag.endsWith(".indicators.snap")) {
-        previewSnapIndicator(false);
-    }
-    else if (tag == PAGE_DRAFTING_SNAP_GENERAL || tag.endsWith(".snap")) {
-        previewSnapIndicator(true);
-    }
-    else if (tag.contains(".visual_snap") || tag.contains(".visual.appearance")) {
-        previewSnapVisual();
-    }
-    else if (tag == PAGE_DRAFTING_INFO_CURSOR || tag.endsWith(".info_cursor") || tag.endsWith(".info")) {
-        previewInfoCursor();
-    }
-    else if (tag == PAGE_DRAFTING_THEME_CURSOR || tag.endsWith(".cursor")) {
-        previewInfoCursor();
-        previewRelativePointInputAssistant();
-    }
-    else if (tag == PAGE_DRAFTING_INPUT_ASSISTANT || tag.endsWith(".assistant")) {
-        previewRelativePointInputAssistant();
-    }
-    else if (tag == PAGE_DRAFTING_GRID_POINTS || tag.endsWith(".grid.points")) {
-        updateGrid(0);
-    }
-    else if (tag == PAGE_DRAFTING_GRID_LINES || tag.endsWith(".grid.lines")) {
-        updateGrid(1);
-    }
-    else if (tag == PAGE_DRAFTING_GRID || tag.endsWith(".grid")) {
-        updateGrid(CFG_Grid::o_GridType);
-    }
-    else if (tag == PAGE_DRAFTING_METRICS_MARKERS || tag.endsWith(".metrics.markers")) {
-        const RS_Selection s(document, viewport);
-        s.selectAll(true);
-    }
-    else if (tag == PAGE_DRAFTING_METRICS_SNAPPING || tag.endsWith(".metrics.snapping")) {
-        previewSnapIndicator(true);
-    }
-    else if (tag == PAGE_DRAFTING_METRICS_OVERLAYS || tag.endsWith(".metrics.overlays")) {
-        m_overlayBoxOptions->loadSettings();
-        auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
-        m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
-        previewInfoCursor();
-    }
-
-    m_currentPageTag = tag;
-    m_previewView->redraw(RS2::RedrawAll, true);
-    QCoreApplication::processEvents();
+void LC_GraphicViewPreviewWidget::cleanupPreviewForContentCategory(const QString& tag) {
+    doUpdatePreviewForContentCategory(tag, true);
 }
 
 void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap) const {
@@ -373,7 +409,22 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap) const
     m_preview->addReferenceEntitiesToContainer(container);
 }
 
-void LC_GraphicViewPreviewWidget::updateGrid(int forcedType) {
+void LC_GraphicViewPreviewWidget::selectAll(RS_Document* document, LC_GraphicViewport* viewport, bool enable) {
+    const RS_Selection s(document, viewport);
+    s.selectAll(enable);
+}
+
+void LC_GraphicViewPreviewWidget::previewSelectionOverlayBoxes() {
+    m_overlayBoxOptions->loadSettings();
+
+    auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
+    m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
+
+    auto* invertedSelectionOverlay = new RS_OverlayBox({100, 100}, {55, 50}, m_overlayBoxOptions.get());
+    m_previewView->addOverlayDrawable(invertedSelectionOverlay, RS2::OverlayGraphics::OverlayEffects);
+}
+
+void LC_GraphicViewPreviewWidget::updateGrid(int forcedType) const {
     auto viewport = m_previewView->getViewPort();
     auto rsGrid = viewport->getGrid();
     auto gridOptions = rsGrid->getOptions();
@@ -383,7 +434,7 @@ void LC_GraphicViewPreviewWidget::updateGrid(int forcedType) {
     m_previewView->redraw(RS2::RedrawGrid, true);
 }
 
-void LC_GraphicViewPreviewWidget::preparePreviewPreview() {
+void LC_GraphicViewPreviewWidget::preparePreviewPreview() const {
     m_preview->loadSettings();
     int m_refPointMode = CFG_Appearance::o_RefPointType;
     const QString pdsizeStr = CFG_Appearance::o_RefPointSize;
@@ -537,7 +588,7 @@ namespace {
     };
 }
 
-void LC_GraphicViewPreviewWidget::addDocumentEntityToVisualSnap(RS_Entity* entity1) {
+void LC_GraphicViewPreviewWidget::addDocumentEntityToVisualSnap(RS_Entity* entity1) const {
     const auto docEntity = static_cast<RS_Line*>(entity1);
     const auto start = docEntity->getStartpoint();
     const auto end = docEntity->getEndpoint();
@@ -555,7 +606,7 @@ void LC_GraphicViewPreviewWidget::addDocumentEntityToVisualSnap(RS_Entity* entit
     m_solution->snapData->storeVertexRef(vertexEnd);
 }
 
-void LC_GraphicViewPreviewWidget::addEntityPointToVisualSnap(RS_Entity* entity1) {
+void LC_GraphicViewPreviewWidget::addEntityPointToVisualSnap(RS_Entity* entity1) const {
     auto vertexStart = new LC_VisualSnapVertex(RS2::SnapType::ENDPOINT, entity1->getStartpoint(), entity1);
     m_solution->snapData->storeVertexRef(vertexStart);
 }
@@ -610,7 +661,7 @@ void LC_GraphicViewPreviewWidget::previewInfoCursor() {
     }
 }
 
-void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs) {
+void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs) const {
     QString coordAbs = "";
     QString coordPolar = "";
     if (prefs != nullptr && (prefs->showAbsolutePosition || prefs->showRelativePositionDistAngle || prefs->showRelativePositionDeltas)) {
@@ -705,7 +756,7 @@ void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* p
     m_previewView->addOverlayDrawable(crosshair, RS2::OverlayGraphics::Snapper);
 }
 
-void LC_GraphicViewPreviewWidget::previewRelativePointInputAssistant() {
+void LC_GraphicViewPreviewWidget::previewRelativePointInputAssistant() const {
     m_previewView->showRelativeInputWidget({50, 50}, {20, 10}, true, RS2::REL_POINT_LENGTH, true);
     int m_refPointMode = CFG_Appearance::o_RefPointType;
     const QString pdsizeStr = CFG_Appearance::o_RefPointSize;

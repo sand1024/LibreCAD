@@ -31,26 +31,26 @@
 #include "lc_repository_drafting_metrics.h"
 #include "lc_repository_drafting_theme.h"
 #include "lc_settings_dialog.h"
-#include "lc_settings_page_coordinate_system_angles_basis.h"
-#include "lc_settings_page_coordinate_system_axis_lines.h"
-#include "lc_settings_page_coordinate_system_origin.h"
 #include "lc_settings_page_drafting_metrics_markers.h"
 #include "lc_settings_page_drafting_metrics_overlays.h"
 #include "lc_settings_page_drafting_metrics_snapping.h"
-#include "lc_settings_page_drafting_theme_cursor.h"
+#include "lc_settings_page_drafting_theme_coordinate_system_angles_basis.h"
+#include "lc_settings_page_drafting_theme_coordinate_system_axis_lines.h"
+#include "lc_settings_page_drafting_theme_coordinate_system_origin.h"
+#include "lc_settings_page_drafting_theme_info_cursor.h"
+#include "lc_settings_page_drafting_theme_grid_general.h"
+#include "lc_settings_page_drafting_theme_grid_lines.h"
+#include "lc_settings_page_drafting_theme_grid_points.h"
+#include "lc_settings_page_drafting_theme_main_colors.h"
+#include "lc_settings_page_drafting_theme_preview.h"
+#include "lc_settings_page_drafting_theme_selection.h"
+#include "lc_settings_page_drafting_theme_snap_indicator.h"
 #include "lc_settings_page_graphic_view_behavior.h"
-#include "lc_settings_page_graphic_view_colors.h"
-#include "lc_settings_page_graphic_view_handles.h"
-#include "lc_settings_page_grid_general.h"
-#include "lc_settings_page_grid_lines.h"
-#include "lc_settings_page_grid_points.h"
 #include "lc_settings_page_info_cursor.h"
 #include "lc_settings_page_input_assistant.h"
-#include "lc_settings_page_preview_options.h"
 #include "lc_settings_page_renderer_advanced.h"
 #include "lc_settings_page_renderer_text_ops.h"
 #include "lc_settings_page_snap_general.h"
-#include "lc_settings_page_snap_indicator.h"
 #include "lc_settings_page_snap_visual_behavior.h"
 #include "lc_settings_page_snap_visual_timing.h"
 #include "lc_ui_style_manager.h"
@@ -89,25 +89,25 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_THEME, "", index(QObject::tr("Visual Theme"),
             QObject::tr("Configure canvas colors, selection overlays, entity handles, and previews.")), 10 },
-        { PAGE_DRAFTING_VIEW_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsPageGraphicViewColors>(), 10 },
-        { PAGE_DRAFTING_VIEW_HANDLES, PAGE_DRAFTING_THEME, page<LC_SettingsPageGraphicViewHandles>(), 20 },
-        { PAGE_DRAFTING_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPagePreviewOptions>(), 50 },
+        { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsDraftingThemeMainColors>(), 10 },
+        { PAGE_DRAFTING_VIEW_HANDLES, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
+        { PAGE_DRAFTING_THEME_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemePreview>(), 50 },
 
         // Grid Display
-        { PAGE_DRAFTING_GRID, PAGE_DRAFTING_THEME, page<LC_SettingsPageGridGeneral>(), 70 },
-        { PAGE_DRAFTING_GRID_POINTS, PAGE_DRAFTING_GRID, page<LC_SettingsPageGridPoints>(), 10 },
-        { PAGE_DRAFTING_GRID_LINES, PAGE_DRAFTING_GRID, page<LC_SettingsPageGridLines>(), 20 },
+        { PAGE_DRAFTING_THEME_GRID, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeGridGeneral>(), 70 },
+        { PAGE_DRAFTING_THEME_GRID_POINTS, PAGE_DRAFTING_THEME_GRID, page<LC_SettingsPageDraftingThemeGridPoints>(), 10 },
+        { PAGE_DRAFTING_THEME_GRID_LINES, PAGE_DRAFTING_THEME_GRID, page<LC_SettingsPageDraftingThemeGridLines>(), 20 },
 
         // Coordinate System Markers
-        { PAGE_DRAFTING_COORDINATE_SYSTEM, PAGE_DRAFTING_THEME, index(QObject::tr("Coordinates System"),
+        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, PAGE_DRAFTING_THEME, index(QObject::tr("Coordinates System"),
             QObject::tr("Configure origin markers, relative zero, axis lines, and angles basis.")), 80 },
-        { PAGE_DRAFTING_COORDINATE_SYSTEM_ORIGIN, PAGE_DRAFTING_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemOrigin>(), 10 },
-        { PAGE_DRAFTING_COORDINATE_SYSTEM_AXIS_LINES, PAGE_DRAFTING_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemAxisLines>(), 20 },
-        { PAGE_DRAFTING_COORDINATE_SYSTEM_ANGLES_BASIS, PAGE_DRAFTING_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemAnglesBasis>(), 30 },
+        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ORIGIN, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemOrigin>(), 10 },
+        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_AXIS_LINES, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemAxisLines>(), 20 },
+        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ANGLES_BASIS, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis>(), 30 },
 
         // Indicators & Cursor Styling
-        { PAGE_DRAFTING_SNAP_INDICATOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageSnapIndicator>(), 90 },
-        { PAGE_DRAFTING_THEME_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeCursor>(), 100 },
+        { PAGE_DRAFTING_THEME_SNAP_INDICATOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSnapIndicator>(), 90 },
+        { PAGE_DRAFTING_THEME_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeInfoCursor>(), 100 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 2: VIEWPORT METRICS (Persistent Sizing Profile Top Bar)
@@ -115,8 +115,8 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_METRICS, "", index(QObject::tr("Drafting Metrics (Sizes)"),
             QObject::tr("Configure handle sizes, marker scales, line thicknesses, and text overlay sizes.")), 20 },
         { PAGE_DRAFTING_METRICS_MARKERS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsMarkers>(), 10 },
-        { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 20 },
-        { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 30 },
+        { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 20 },
+        { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 30 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 3: DRAFTING BEHAVIOR (Direct Settings: No Bar, Never Gated)

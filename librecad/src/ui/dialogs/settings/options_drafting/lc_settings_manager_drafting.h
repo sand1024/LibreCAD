@@ -40,26 +40,28 @@ namespace LC_SettingsPagesDrafting {
 
     // Canvas Styling & Colors
     const QString PAGE_DRAFTING_THEME                       = "drafting.theme";
-    const QString PAGE_DRAFTING_VIEW_COLORS                 = "drafting.theme.colors";
-    const QString PAGE_DRAFTING_VIEW_SELECTION              = "drafting.theme.selection";
+    const QString PAGE_DRAFTING_THEME_MAIN_COLORS           = "drafting.theme.colors";
+    const QString PAGE_DRAFTING_THEME_SELECTION             = "drafting.theme.selection";
+    const QString PAGE_DRAFTING_THEME_PREVIEW               = "drafting.theme.preview";
+
     const QString PAGE_DRAFTING_VIEW_HANDLES                = "drafting.theme.handles";
     const QString PAGE_DRAFTING_VIEW_DRAFT_MARKER           = "drafting.theme.draft_marker";
-    const QString PAGE_DRAFTING_PREVIEW                     = "drafting.theme.preview";
+
     const QString PAGE_DRAFTING_HIGHLIGHT                   = "drafting.theme.highlight";
 
     // Grid Display
-    const QString PAGE_DRAFTING_GRID                        = "drafting.theme.grid";
-    const QString PAGE_DRAFTING_GRID_POINTS                 = "drafting.theme.grid.points";
-    const QString PAGE_DRAFTING_GRID_LINES                  = "drafting.theme.grid.lines";
+    const QString PAGE_DRAFTING_THEME_GRID                  = "drafting.theme.grid";
+    const QString PAGE_DRAFTING_THEME_GRID_POINTS           = "drafting.theme.grid.points";
+    const QString PAGE_DRAFTING_THEME_GRID_LINES            = "drafting.theme.grid.lines";
 
     // Coordinate System Markers
-    const QString PAGE_DRAFTING_COORDINATE_SYSTEM           = "drafting.theme.coordinate_system";
-    const QString PAGE_DRAFTING_COORDINATE_SYSTEM_ORIGIN    = "drafting.theme.coordinate_system.origin";
-    const QString PAGE_DRAFTING_COORDINATE_SYSTEM_AXIS_LINES = "drafting.theme.coordinate_system.axis_lines";
-    const QString PAGE_DRAFTING_COORDINATE_SYSTEM_ANGLES_BASIS = "drafting.theme.coordinate_system.angles_basis";
+    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM           = "drafting.theme.coordinate_system";
+    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ORIGIN    = "drafting.theme.coordinate_system.origin";
+    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_AXIS_LINES = "drafting.theme.coordinate_system.axis_lines";
+    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ANGLES_BASIS = "drafting.theme.coordinate_system.angles_basis";
 
     // Cursor & Indicator Visuals
-    const QString PAGE_DRAFTING_SNAP_INDICATOR              = "drafting.theme.indicators.snap";
+    const QString PAGE_DRAFTING_THEME_SNAP_INDICATOR              = "drafting.theme.indicators.snap";
     const QString PAGE_DRAFTING_SNAP_VISUAL_APPEARANCE      = "drafting.theme.indicators.visual_snap";
     const QString PAGE_DRAFTING_THEME_CURSOR                = "drafting.theme.indicators.cursor";
 

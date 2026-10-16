@@ -44,6 +44,7 @@ void LC_SettingsPageDraftingMetricsMarkers::setupBindings() {
     using namespace CFG_Appearance;
 
     bindInt({
+        { ui->sbHandleSize, o_EntityHandleSize },
         { ui->sbOverlaysLineWidth, o_OverlaysScreenLineWidth },
         { ui->sbZeroMarkerSize, o_ZeroMarkerSize },
         { ui->sbZeroMarkerFontSize, o_ZeroMarkerFontSize },

@@ -45,11 +45,11 @@ void LC_GridOptions::loadSettings() {
     gridColorLine = RS_Color(CFG_Colors::o_GridLinesColor);;
     if (linesGrid){
         metaGridLineType =  CFG_Grid::o_metaGridLinesLineType;
-        metaGridLineWidthPx = CFG_Grid::o_metaGridLinesLineWidth;
+        metaGridLineWidthPx = CFG_Grid::o_MetaGridLinesLineWidth;
     }
     else{
         metaGridLineType =  CFG_Grid::o_metaGridPointsLineType;
-        metaGridLineWidthPx =  CFG_Grid::o_metaGridPointsLineWidth;
+        metaGridLineWidthPx =  CFG_Grid::o_MetaGridPointsLineWidth;
     }
     if (linesGrid) {
         metaGridColor= RS_Color(CFG_Colors::o_MetaGridLinesColor);
