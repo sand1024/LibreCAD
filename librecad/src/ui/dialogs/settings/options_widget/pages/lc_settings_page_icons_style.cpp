@@ -33,8 +33,7 @@
 #include "lc_preset_manager_icons_style.h"
 
 LC_SettingsPageIconsStyle::LC_SettingsPageIconsStyle(QObject* parent)
-    : LC_SettingsPageBase(tr("Icons Style"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageIconsStyle>()) {
+    : LC_SettingsPageBase(tr("Icons Style"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageIconsStyle>()) {
     setSortWeight(40);
 }
 
@@ -79,24 +78,24 @@ void LC_SettingsPageIconsStyle::setupComboboxes() {
     };
 
     const QList<QPair<QString, QString>> mainRoles = {
-        { tr("Theme Button Text (ButtonText)"), "ButtonText" },
-        { tr("Theme Window Text (WindowText)"), "WindowText" },
-        { tr("Theme Input Text (Text)"), "Text" }
+        {tr("Theme Button Text (ButtonText)"), "ButtonText"},
+        {tr("Theme Window Text (WindowText)"), "WindowText"},
+        {tr("Theme Input Text (Text)"), "Text"}
     };
     configureRoleCombo(ui->cbMainPaletteRole, mainRoles);
 
     const QList<QPair<QString, QString>> accentRoles = {
-        { tr("Active Highlight (Highlight)"), "Highlight" },
-        { tr("Interactive Link (Link)"), "Link" }
+        {tr("Active Highlight (Highlight)"), "Highlight"},
+        {tr("Interactive Link (Link)"), "Link"}
     };
     configureRoleCombo(ui->cbAccentPaletteRole, accentRoles);
     configureRoleCombo(ui->cbAccentAltPaletteRole, accentRoles);
 
     const QList<QPair<QString, QString>> backRoles = {
-        { tr("Fully Transparent (None)"), "transparent" },
-        { tr("Theme Button Background (Button)"), "Button" },
-        { tr("Theme Window Background (Window)"), "Window" },
-        { tr("Theme Input Background (Base)"), "Base" }
+        {tr("Fully Transparent (None)"), "transparent"},
+        {tr("Theme Button Background (Button)"), "Button"},
+        {tr("Theme Window Background (Window)"), "Window"},
+        {tr("Theme Input Background (Base)"), "Base"}
     };
     configureRoleCombo(ui->cbBackPaletteRole, backRoles);
 }
@@ -305,9 +304,8 @@ void LC_SettingsPageIconsStyle::onHarmonizeSeedsPressed() {
     }
 
     const bool isDark = ui->rbDarkMode->isChecked();
-    LC_IconsColorUtils::harmonizeSeeds(accentColor, isDark, bgWindow, mode,
-                                       AccentHarmonizationPolicy::LuminosityBoost,
-                                       mainColor, harmonizedAccentColor, accentAltColor, backColor);
+    LC_IconsColorUtils::harmonizeSeeds(accentColor, isDark, bgWindow, mode, AccentHarmonizationPolicy::LuminosityBoost, mainColor,
+                                       harmonizedAccentColor, accentAltColor, backColor);
 
     m_blockSignals = true;
 
@@ -377,7 +375,8 @@ void LC_SettingsPageIconsStyle::onAutoGenerateOppositeSchemePressed() {
 
     const QString targetName = targetDark ? tr("Dark Mode") : tr("Light Mode");
     QMessageBox::information(m_widget, tr("Auto-Generation Complete"),
-                             tr("Opposite scheme successfully generated and stored in %1 configuration. Switch mode tabs to view or edit.").arg(targetName));
+                             tr("Opposite scheme successfully generated and stored in %1 configuration. Switch mode tabs to view or edit.").
+                             arg(targetName));
 
     m_presetManager->notifyWorkingConfigChanged();
 }
@@ -467,7 +466,9 @@ void LC_SettingsPageIconsStyle::syncUiToWorkingConfig() {
         }
         if (btnAccent) {
             options.setColor(mode, state, LC_SVGIconEngineAPI::Accent,
-                             (btnAccent->color().isValid() && btnAccent->color().alpha() > 0) ? btnAccent->color().name(QColor::HexRgb) : "");
+                             (btnAccent->color().isValid() && btnAccent->color().alpha() > 0)
+                                 ? btnAccent->color().name(QColor::HexRgb)
+                                 : "");
         }
         if (btnBack) {
             options.setColor(mode, state, LC_SVGIconEngineAPI::Background,
@@ -480,10 +481,15 @@ void LC_SettingsPageIconsStyle::calculateAndApplyAutoStates() {
     m_blockSignals = true;
 
     const bool isDark = ui->rbDarkMode->isChecked();
-    QColor mainSeed = QColor(LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkMainPalette, ui->btnMainColor, ui->cbMainPaletteRole)));
-    QColor accentSeed = QColor(LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkAccentPalette, ui->btnAccentColor, ui->cbAccentPaletteRole)));
-    QColor accentAltSeed = QColor(LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkAccentAltPalette, ui->btnAccentAltColor, ui->cbAccentAltPaletteRole)));
-    QColor backSeed = QColor(LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkBackPalette, ui->btnBackColor, ui->cbBackPaletteRole)));
+    QColor mainSeed = QColor(
+        LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkMainPalette, ui->btnMainColor, ui->cbMainPaletteRole)));
+    QColor accentSeed = QColor(
+        LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkAccentPalette, ui->btnAccentColor, ui->cbAccentPaletteRole)));
+    QColor accentAltSeed = QColor(
+        LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkAccentAltPalette, ui->btnAccentAltColor,
+                                                                   ui->cbAccentAltPaletteRole)));
+    QColor backSeed = QColor(
+        LC_IconsStyleManager::resolveColorValue(getSeedValueFromUi(ui->chkBackPalette, ui->btnBackColor, ui->cbBackPaletteRole)));
 
     if (!mainSeed.isValid()) {
         mainSeed = isDark ? QColor("#e6e6e6") : QColor("#000000");
@@ -509,15 +515,21 @@ void LC_SettingsPageIconsStyle::calculateAndApplyAutoStates() {
         auto* btnBack = qobject_cast<LC_ColorButton*>(ui->tableStates->cellWidget(row, 3));
 
         if (btnMain) {
-            btnMain->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Main, mainSeed, accentSeed, accentAltSeed, backSeed, highlightColor, highlightedTextColor, windowColor));
+            btnMain->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Main, mainSeed, accentSeed,
+                                                                      accentAltSeed, backSeed, highlightColor, highlightedTextColor,
+                                                                      windowColor));
             btnMain->setLocked(true);
         }
         if (btnAccent) {
-            btnAccent->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Accent, mainSeed, accentSeed, accentAltSeed, backSeed, highlightColor, highlightedTextColor, windowColor));
+            btnAccent->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Accent, mainSeed, accentSeed,
+                                                                        accentAltSeed, backSeed, highlightColor, highlightedTextColor,
+                                                                        windowColor));
             btnAccent->setLocked(true);
         }
         if (btnBack) {
-            btnBack->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Background, mainSeed, accentSeed, accentAltSeed, backSeed, highlightColor, highlightedTextColor, windowColor));
+            btnBack->setColor(LC_IconsColorUtils::calculateStateColor(mode, state, LC_SVGIconEngineAPI::Background, mainSeed, accentSeed,
+                                                                      accentAltSeed, backSeed, highlightColor, highlightedTextColor,
+                                                                      windowColor));
             btnBack->setLocked(true);
         }
     }

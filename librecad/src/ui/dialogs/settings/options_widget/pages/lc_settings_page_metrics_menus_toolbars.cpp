@@ -78,8 +78,9 @@ bool LC_SettingsPageMetricsMenusToolbars::isModified() const {
 }
 
 void LC_SettingsPageMetricsMenusToolbars::onControlChanged() {
-    if (m_blockSignals)
+    if (m_blockSignals) {
         return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();

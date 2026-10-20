@@ -28,8 +28,7 @@
 #include <QSpinBox>
 
 LC_SettingsPageTypography::LC_SettingsPageTypography(QObject* parent)
-    : LC_SettingsPageBase(tr("Typography"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageTypography>()) {
+    : LC_SettingsPageBase(tr("Typography"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageTypography>()) {
     setSortWeight(30);
 }
 
@@ -194,82 +193,82 @@ void LC_SettingsPageTypography::syncUiToWorkingConfig() {
     FontConfig& config = m_presetManager->workingConfig();
 
     config.mainFamily = ui->fcMainFont->currentFont().family();
-    config.mainSize   = ui->sbMainSize->value();
+    config.mainSize = ui->sbMainSize->value();
 
     config.headings.sizeOffset = ui->sbHeadingOffset->value();
-    config.headings.bold       = ui->chkHeadingBold->isChecked();
-    config.headings.italic     = ui->chkHeadingItalic->isChecked();
+    config.headings.bold = ui->chkHeadingBold->isChecked();
+    config.headings.italic = ui->chkHeadingItalic->isChecked();
 
     config.menuBar.sizeOffset = ui->sbMenuBarOffset->value();
-    config.menuBar.bold       = ui->chkMenuBarBold->isChecked();
-    config.menuBar.italic     = ui->chkMenuBarItalic->isChecked();
+    config.menuBar.bold = ui->chkMenuBarBold->isChecked();
+    config.menuBar.italic = ui->chkMenuBarItalic->isChecked();
 
     config.menus.sizeOffset = ui->sbMenuOffset->value();
-    config.menus.bold       = ui->chkMenuBold->isChecked();
-    config.menus.italic     = ui->chkMenuItalic->isChecked();
+    config.menus.bold = ui->chkMenuBold->isChecked();
+    config.menus.italic = ui->chkMenuItalic->isChecked();
 
     config.buttons.sizeOffset = ui->sbButtonOffset->value();
-    config.buttons.bold       = ui->chkButtonBold->isChecked();
-    config.buttons.italic     = ui->chkButtonItalic->isChecked();
+    config.buttons.bold = ui->chkButtonBold->isChecked();
+    config.buttons.italic = ui->chkButtonItalic->isChecked();
 
     config.inputs.sizeOffset = ui->sbInputOffset->value();
-    config.inputs.bold       = ui->chkInputBold->isChecked();
-    config.inputs.italic     = ui->chkInputItalic->isChecked();
+    config.inputs.bold = ui->chkInputBold->isChecked();
+    config.inputs.italic = ui->chkInputItalic->isChecked();
 
     config.genericDockTitle.sizeOffset = ui->sbGenericDockOffset->value();
-    config.genericDockTitle.bold       = ui->chkGenericDockBold->isChecked();
-    config.genericDockTitle.italic     = ui->chkGenericDockItalic->isChecked();
+    config.genericDockTitle.bold = ui->chkGenericDockBold->isChecked();
+    config.genericDockTitle.italic = ui->chkGenericDockItalic->isChecked();
 
     config.specialDockTitle.sizeOffset = ui->sbSpecialDockOffset->value();
-    config.specialDockTitle.bold       = ui->chkSpecialDockBold->isChecked();
-    config.specialDockTitle.italic     = ui->chkSpecialDockItalic->isChecked();
+    config.specialDockTitle.bold = ui->chkSpecialDockBold->isChecked();
+    config.specialDockTitle.italic = ui->chkSpecialDockItalic->isChecked();
 
-    config.propertiesWidget.sizeOffset  = ui->cbPropertiesDock->value();
+    config.propertiesWidget.sizeOffset = ui->cbPropertiesDock->value();
     config.propertiesWidget.bold = ui->chkPropertiesDockBold->isChecked();
-    config.propertiesWidget.italic= ui->chkPropertiesDockItalic->isChecked();
+    config.propertiesWidget.italic = ui->chkPropertiesDockItalic->isChecked();
 
-    config.techFamily            = ui->fcTechnicalFont->currentFont().family();
-    config.technical.sizeOffset  = ui->sbTechnicalOffset->value();
-    config.technical.bold        = ui->chkTechnicalBold->isChecked();
-    config.technical.italic      = ui->chkTechnicalItalic->isChecked();
+    config.techFamily = ui->fcTechnicalFont->currentFont().family();
+    config.technical.sizeOffset = ui->sbTechnicalOffset->value();
+    config.technical.bold = ui->chkTechnicalBold->isChecked();
+    config.technical.italic = ui->chkTechnicalItalic->isChecked();
 
     config.headings.sizeOffset = ui->sbHeadingOffset->value();
-    config.headings.bold       = ui->chkHeadingBold->isChecked();
-    config.headings.italic     = ui->chkHeadingItalic->isChecked();
+    config.headings.bold = ui->chkHeadingBold->isChecked();
+    config.headings.italic = ui->chkHeadingItalic->isChecked();
 
-    config.tabBars.sizeOffset  = ui->sbTabBarOffset->value();
-    config.tabBars.bold        = ui->chkTabBarBold->isChecked();
-    config.tabBars.italic      = ui->chkTabBarItalic->isChecked();
+    config.tabBars.sizeOffset = ui->sbTabBarOffset->value();
+    config.tabBars.bold = ui->chkTabBarBold->isChecked();
+    config.tabBars.italic = ui->chkTabBarItalic->isChecked();
 
     config.menuBar.sizeOffset = ui->sbMenuBarOffset->value();
-    config.menuBar.bold       = ui->chkMenuBarBold->isChecked();
-    config.menuBar.italic     = ui->chkMenuBarItalic->isChecked();
+    config.menuBar.bold = ui->chkMenuBarBold->isChecked();
+    config.menuBar.italic = ui->chkMenuBarItalic->isChecked();
 
     config.menus.sizeOffset = ui->sbMenuOffset->value();
-    config.menus.bold       = ui->chkMenuBold->isChecked();
-    config.menus.italic     = ui->chkMenuItalic->isChecked();
+    config.menus.bold = ui->chkMenuBold->isChecked();
+    config.menus.italic = ui->chkMenuItalic->isChecked();
 
     config.buttons.sizeOffset = ui->sbButtonOffset->value();
-    config.buttons.bold       = ui->chkButtonBold->isChecked();
-    config.buttons.italic     = ui->chkButtonItalic->isChecked();
+    config.buttons.bold = ui->chkButtonBold->isChecked();
+    config.buttons.italic = ui->chkButtonItalic->isChecked();
 
     config.inputs.sizeOffset = ui->sbInputOffset->value();
-    config.inputs.bold       = ui->chkInputBold->isChecked();
-    config.inputs.italic     = ui->chkInputItalic->isChecked();
+    config.inputs.bold = ui->chkInputBold->isChecked();
+    config.inputs.italic = ui->chkInputItalic->isChecked();
 
     config.groupBoxes.sizeOffset = ui->sbGroupBoxOffset->value();
-    config.groupBoxes.bold       = ui->chkGroupBoxBold->isChecked();
-    config.groupBoxes.italic     = ui->chkGroupBoxItalic->isChecked();
+    config.groupBoxes.bold = ui->chkGroupBoxBold->isChecked();
+    config.groupBoxes.italic = ui->chkGroupBoxItalic->isChecked();
 
     config.itemViews.sizeOffset = ui->sbItemViewsOffset->value();
-    config.itemViews.bold       = ui->chkItemViewsBold->isChecked();
-    config.itemViews.italic     = ui->chkItemViewsItalic->isChecked();
+    config.itemViews.bold = ui->chkItemViewsBold->isChecked();
+    config.itemViews.italic = ui->chkItemViewsItalic->isChecked();
 
     config.statusBar.sizeOffset = ui->sbStatusBarOffset->value();
-    config.statusBar.bold       = ui->chkStatusBarBold->isChecked();
-    config.statusBar.italic     = ui->chkStatusBarItalic->isChecked();
+    config.statusBar.bold = ui->chkStatusBarBold->isChecked();
+    config.statusBar.italic = ui->chkStatusBarItalic->isChecked();
 
     config.genericDockTitle.sizeOffset = ui->sbGenericDockOffset->value();
-    config.genericDockTitle.bold       = ui->chkGenericDockBold->isChecked();
-    config.genericDockTitle.italic     = ui->chkGenericDockItalic->isChecked();
+    config.genericDockTitle.bold = ui->chkGenericDockBold->isChecked();
+    config.genericDockTitle.italic = ui->chkGenericDockItalic->isChecked();
 }

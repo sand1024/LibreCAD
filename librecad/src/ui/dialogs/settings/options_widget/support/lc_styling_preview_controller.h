@@ -94,6 +94,4 @@ private:
     QPointer<LC_StylingPreviewBottomBar> m_bottomBar;
     LC_PreviewCompositeState m_state;
 };
-;
-
 #endif

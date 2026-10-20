@@ -70,8 +70,6 @@ void LC_SettingsPageGeneralStyling::setupBehavior() {
     LC_SemanticColorsUiHelper::connectChanged(ui->tableSemantic, this, [this]() {
         onControlChanged();
     });
-
-
 }
 
 void LC_SettingsPageGeneralStyling::setupBindings() {

@@ -57,7 +57,7 @@ void LC_MetricsDensityHeaderBar::setDensityPreset(const QString& presetKey) {
 
 void LC_MetricsDensityHeaderBar::setDensityToCustom() {
     m_blockSignals = true;
-    int idx = ui->cbWorkspaceDensity->findData("custom");
+    const int idx = ui->cbWorkspaceDensity->findData("custom");
     if (idx >= 0) {
         ui->cbWorkspaceDensity->setCurrentIndex(idx);
     }

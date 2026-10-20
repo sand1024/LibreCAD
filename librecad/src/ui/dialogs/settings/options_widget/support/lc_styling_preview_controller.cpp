@@ -53,8 +53,7 @@ namespace {
 }
 
 LC_StylingPreviewController::LC_StylingPreviewController(QWidget* dialogParent, QObject* parent)
-    : QObject(parent)
-    , m_dialogParent(dialogParent) {
+    : QObject(parent), m_dialogParent(dialogParent) {
     LC_PaletteColorUtils::initializeDefaultPalette(m_state.palette);
     LC_PaletteColorUtils::initializeDefaultControlStyle(m_state.skin);
     LC_StyleMetricsUtils::initializeDefault(m_state.metrics);
@@ -76,26 +75,26 @@ void LC_StylingPreviewController::initFromStyleManager(LC_UIStyleManager* styleM
     }
 
     const QString activePaletteKey = styleManager->getActivePalette();
-    if (styleManager->getFusionColorPaletteRepository() == nullptr ||
-        !styleManager->getFusionColorPaletteRepository()->loadByKey(activePaletteKey, m_state.palette)) {
+    if (styleManager->getFusionColorPaletteRepository() == nullptr || !styleManager->getFusionColorPaletteRepository()->loadByKey(
+        activePaletteKey, m_state.palette)) {
         LC_PaletteColorUtils::initializeDefaultPalette(m_state.palette);
     }
 
     const QString activeSkinKey = styleManager->getActiveSkin();
-    if (styleManager->getFusionSkinsRepository() == nullptr ||
-        !styleManager->getFusionSkinsRepository()->loadByKey(activeSkinKey, m_state.skin)) {
+    if (styleManager->getFusionSkinsRepository() == nullptr || !styleManager->getFusionSkinsRepository()->loadByKey(
+        activeSkinKey, m_state.skin)) {
         LC_PaletteColorUtils::initializeDefaultControlStyle(m_state.skin);
     }
 
     const QString activeMetricsKey = styleManager->getActiveMetrics();
-    if (styleManager->getFusionMetricsRepository() == nullptr ||
-        !styleManager->getFusionMetricsRepository()->loadByKey(activeMetricsKey, m_state.metrics)) {
+    if (styleManager->getFusionMetricsRepository() == nullptr || !styleManager->getFusionMetricsRepository()->loadByKey(
+        activeMetricsKey, m_state.metrics)) {
         LC_StyleMetricsUtils::initializeDefault(m_state.metrics);
     }
 
     const QString activeTypoKey = styleManager->getActiveTypography();
-    if (styleManager->getTypographyRepository() == nullptr ||
-        !styleManager->getTypographyRepository()->loadByKey(activeTypoKey, m_state.font)) {
+    if (styleManager->getTypographyRepository() == nullptr || !styleManager->getTypographyRepository()->loadByKey(
+        activeTypoKey, m_state.font)) {
         LC_TypographyUtils::initializeDefaultConfig(m_state.font);
     }
 
@@ -126,24 +125,24 @@ void LC_StylingPreviewController::ensurePreviewWindow() {
 
 QWidget* LC_StylingPreviewController::createBottomWidget(bool includePreview, bool includeCvd, QWidget* parent) {
     if (m_bottomBar == nullptr) {
-    m_bottomBar = new LC_StylingPreviewBottomBar(parent);
+        m_bottomBar = new LC_StylingPreviewBottomBar(parent);
 
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::previewToggled, this, [this](bool checked) {
-        o_ShowLivePreviewWindow = checked;
-        setPreviewVisible(checked);
-    });
+        connect(m_bottomBar, &LC_StylingPreviewBottomBar::previewToggled, this, [this](bool checked) {
+            o_ShowLivePreviewWindow = checked;
+            setPreviewVisible(checked);
+        });
 
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::disabledStateToggled, this, [this](bool disabled) {
-        m_state.isSimulatedDisabled = disabled;
-        applyCompositePreview();
-        emit disabledStateChanged(disabled);
-    });
+        connect(m_bottomBar, &LC_StylingPreviewBottomBar::disabledStateToggled, this, [this](bool disabled) {
+            m_state.isSimulatedDisabled = disabled;
+            applyCompositePreview();
+            emit disabledStateChanged(disabled);
+        });
 
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::cvdChanged, this, [this](LC_PaletteColorUtils::CVDType cvd) {
-        m_state.cvd = cvd;
-        applyCompositePreview();
-        emit cvdChanged(cvd);
-    });
+        connect(m_bottomBar, &LC_StylingPreviewBottomBar::cvdChanged, this, [this](LC_PaletteColorUtils::CVDType cvd) {
+            m_state.cvd = cvd;
+            applyCompositePreview();
+            emit cvdChanged(cvd);
+        });
     }
     else if (parent != nullptr && m_bottomBar->parentWidget() != parent) {
         m_bottomBar->setParent(parent);
@@ -249,14 +248,14 @@ void LC_StylingPreviewController::updatePreviewToolbarsAndDocks() {
         m_previewWindow->applyToolbarsAndDocksConfig();
     }
 }
+
 void LC_StylingPreviewController::applyCompositePreview() {
     if (m_previewWindow == nullptr) {
         return;
     }
 
     const ColorSchemeData& scheme = m_state.isDarkMode ? m_state.palette.dark : m_state.palette.light;
-    const QPalette previewPalette = LC_PaletteColorUtils::createPaletteFromScheme(
-        scheme, m_state.skin.styleArchetype, m_state.cvd);
+    const QPalette previewPalette = LC_PaletteColorUtils::createPaletteFromScheme(scheme, m_state.skin.styleArchetype, m_state.cvd);
 
     m_previewWindow->setPalette(previewPalette);
 
@@ -273,12 +272,12 @@ void LC_StylingPreviewController::applyCompositePreview() {
 
     m_previewWindow->setStyleSheet(scheme.qss);
 
-
     m_previewWindow->applyToolbarsAndDocksConfig();
 
     // Resolve in-progress semantic colors from the active preview state
     const QColor searchColor = scheme.semanticColors.value(SEMANTIC_COLOR_KEY_FILTERED_ITEM, QColor("#2a82da"));
-    const QColor conflictColor = scheme.semanticColors.value(SEMANTIC_COLOR_KEY_CONFLICTING_ITEM, m_state.isDarkMode ? QColor("#e06c77") : QColor("#d9534f"));
+    const QColor conflictColor = scheme.semanticColors.value(SEMANTIC_COLOR_KEY_CONFLICTING_ITEM,
+                                                             m_state.isDarkMode ? QColor("#e06c77") : QColor("#d9534f"));
     m_previewWindow->updateSemanticViews(searchColor, conflictColor);
 
     for (QWidget* child : m_previewWindow->findChildren<QWidget*>()) {
@@ -315,19 +314,19 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
 
     // 1. Resolve role fonts
     const QFont baseFont(font.mainFamily, font.mainSize);
-    const QFont headingsFont   = makeFont(font.headings);
-    const QFont tabBarsFont    = makeFont(font.tabBars);
-    const QFont menuBarFont    = makeFont(font.menuBar);
-    const QFont menusFont      = makeFont(font.menus);
-    const QFont buttonsFont    = makeFont(font.buttons);
-    const QFont inputsFont     = makeFont(font.inputs);
+    const QFont headingsFont = makeFont(font.headings);
+    const QFont tabBarsFont = makeFont(font.tabBars);
+    const QFont menuBarFont = makeFont(font.menuBar);
+    const QFont menusFont = makeFont(font.menus);
+    const QFont buttonsFont = makeFont(font.buttons);
+    const QFont inputsFont = makeFont(font.inputs);
     const QFont groupBoxesFont = makeFont(font.groupBoxes);
-    const QFont itemViewsFont  = makeFont(font.itemViews);
-    const QFont technicalFont  = makeFont(font.technical, font.techFamily);
-    const QFont statusBarFont  = makeFont(font.statusBar);
+    const QFont itemViewsFont = makeFont(font.itemViews);
+    const QFont technicalFont = makeFont(font.technical, font.techFamily);
+    const QFont statusBarFont = makeFont(font.statusBar);
     const QFont genericDockFont = makeFont(font.genericDockTitle);
     const QFont specialDockFont = makeFont(font.specialDockTitle);
-    const QFont propertiesFont  = makeFont(font.propertiesWidget);
+    const QFont propertiesFont = makeFont(font.propertiesWidget);
 
     // 2. Base container font
     m_previewWindow->setFont(baseFont);
@@ -388,19 +387,19 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
             gb->setProperty("_lc_custom_title_font", groupBoxesFont);
             gb->update();
         }
-        }
+    }
 
     // 9. Status Bar & Status Pill Toolbars
     for (auto* sb : m_previewWindow->findChildren<QStatusBar*>()) {
         if (sb != nullptr) {
             sb->setFont(statusBarFont);
         }
-        }
+    }
     for (auto* tb : m_previewWindow->findChildren<QToolBar*>()) {
         if (tb != nullptr && tb->property("_group").toInt() == 3) {
             tb->setFont(statusBarFont);
         }
-        }
+    }
 
     // 10. Technical / Monospace Areas
     for (auto* te : m_previewWindow->findChildren<QPlainTextEdit*>()) {
@@ -412,7 +411,7 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
         if (te != nullptr) {
             te->setFont(technicalFont);
         }
-}
+    }
 
     m_previewWindow->update();
 }

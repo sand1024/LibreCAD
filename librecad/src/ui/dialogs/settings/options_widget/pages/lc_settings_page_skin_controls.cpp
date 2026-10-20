@@ -1,3 +1,25 @@
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
+
 #include "lc_settings_page_skin_controls.h"
 #include "ui_lc_settings_page_skin_controls.h"
 #include <QCheckBox>
@@ -5,9 +27,7 @@
 #include "lc_preset_manager_fusion_skin.h"
 
 LC_SettingsPageSkinControls::LC_SettingsPageSkinControls(QObject* parent)
-    : LC_SettingsPageBase(tr("Views and Controls"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSkinControls>()) {
-}
+    : LC_SettingsPageBase(tr("Views and Controls"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageSkinControls>()) {}
 
 LC_SettingsPageSkinControls::~LC_SettingsPageSkinControls() = default;
 
@@ -61,7 +81,9 @@ bool LC_SettingsPageSkinControls::isModified() const {
 }
 
 void LC_SettingsPageSkinControls::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -97,7 +119,9 @@ void LC_SettingsPageSkinControls::populateUiFromWorkingConfig() {
 }
 
 void LC_SettingsPageSkinControls::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.showActiveRowSpotlight = ui->chkActiveRowSpotlight->isChecked();

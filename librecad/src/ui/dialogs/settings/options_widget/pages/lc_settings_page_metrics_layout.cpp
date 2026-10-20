@@ -26,9 +26,7 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsLayout::LC_SettingsPageMetricsLayout(QObject* parent)
-    : LC_SettingsPageBase(tr("Layout & Spacing"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageMetricsLayout>()) {
-}
+    : LC_SettingsPageBase(tr("Layout & Spacing"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMetricsLayout>()) {}
 
 LC_SettingsPageMetricsLayout::~LC_SettingsPageMetricsLayout() = default;
 
@@ -76,7 +74,9 @@ bool LC_SettingsPageMetricsLayout::isModified() const {
 }
 
 void LC_SettingsPageMetricsLayout::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -84,7 +84,9 @@ void LC_SettingsPageMetricsLayout::onControlChanged() {
 }
 
 void LC_SettingsPageMetricsLayout::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
@@ -103,7 +105,9 @@ void LC_SettingsPageMetricsLayout::populateUiFromWorkingConfig() {
 }
 
 void LC_SettingsPageMetricsLayout::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.layoutMargin = ui->sbLayoutMargin->value();

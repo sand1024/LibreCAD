@@ -26,10 +26,8 @@
 
 LC_PresetManagerTypography::LC_PresetManagerTypography(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<FontConfig, LC_RepositoryTypography>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getTypographyRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActiveTypography() : QString(),
-          nullptr) {
+        styleManager, styleManager != nullptr ? styleManager->getTypographyRepository() : nullptr,
+        styleManager != nullptr ? styleManager->getActiveTypography() : QString(), nullptr) {
     loadPreset(m_activeKey);
 }
 
@@ -48,8 +46,8 @@ LC_PresetManagerUIStrings LC_PresetManagerTypography::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Typography");
     s.deleteConfirmTitle = tr("Delete Typography Preset");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the typography preset '%1'?");
-    s.presetFileFilter = tr("LibreCAD Typography Files (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
+    s.presetFileFilter = tr("LibreCAD Typography Files (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default typography preset is a read-only template. To customize font settings, duplicate it as a custom preset.");

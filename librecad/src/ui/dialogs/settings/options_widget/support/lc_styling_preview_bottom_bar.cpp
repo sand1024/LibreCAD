@@ -75,7 +75,7 @@ bool LC_StylingPreviewBottomBar::isDisabledStateChecked() const {
 }
 
 LC_PaletteColorUtils::CVDType LC_StylingPreviewBottomBar::activeCvdType() const {
-    int idx = ui->cbCvdSimulator->currentIndex();
+    const int idx = ui->cbCvdSimulator->currentIndex();
     if (idx >= 0) {
         return static_cast<LC_PaletteColorUtils::CVDType>(ui->cbCvdSimulator->itemData(idx).toInt());
     }

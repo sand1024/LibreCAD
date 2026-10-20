@@ -127,7 +127,7 @@ void LC_SemanticColorsUiHelper::connectChanged(QTableWidget* table, QObject* rec
     }
 
     for (int row = 0; row < table->rowCount(); ++row) {
-        auto* btn = qobject_cast<LC_ColorButton*>(table->cellWidget(row, 1));
+        const auto* btn = qobject_cast<LC_ColorButton*>(table->cellWidget(row, 1));
         if (btn != nullptr) {
             connect(btn, &LC_ColorButton::colorChanged, receiver, [callback]() {
                 callback();

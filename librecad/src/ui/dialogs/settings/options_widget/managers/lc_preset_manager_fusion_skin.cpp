@@ -26,10 +26,8 @@
 
 LC_PresetManagerFusionSkin::LC_PresetManagerFusionSkin(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<ControlStyleConfig, LC_RepositoryFusionSkin>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getFusionSkinsRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActiveSkin() : QString(),
-          nullptr) {
+        styleManager, styleManager != nullptr ? styleManager->getFusionSkinsRepository() : nullptr,
+        styleManager != nullptr ? styleManager->getActiveSkin() : QString(), nullptr) {
     m_headerBar = std::make_unique<LC_SkinArchetypeHeaderBar>();
     auto* bar = m_headerBar.get();
     connect(bar, &LC_SkinArchetypeHeaderBar::archetypeChanged, this, &LC_PresetManagerFusionSkin::onArchetypeChanged);
@@ -53,8 +51,8 @@ LC_PresetManagerUIStrings LC_PresetManagerFusionSkin::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Controls Style");
     s.deleteConfirmTitle = tr("Delete Controls Style Preset");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the controls style preset '%1'?");
-    s.presetFileFilter = tr("LibreCAD Fusion Theme configuration (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
+    s.presetFileFilter = tr("LibreCAD Fusion Theme configuration (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default controls style is a read-only template. To customize widget decorators and styling, duplicate it as a custom preset.");
@@ -79,7 +77,8 @@ QString LC_PresetManagerFusionSkin::fusionGatingSubject() const {
 
 QString LC_PresetManagerFusionSkin::gatedMessage() const {
     if (isClassicFusion()) {
-        return tr("The Classic Fusion archetype uses native Qt widget drawing. Sub-controls for custom grips, outlines, and item view hover are not applicable.");
+        return tr(
+            "The Classic Fusion archetype uses native Qt widget drawing. Sub-controls for custom grips, outlines, and item view hover are not applicable.");
     }
     return LC_PresetManagerStylingBase::gatedMessage();
 }

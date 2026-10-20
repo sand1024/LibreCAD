@@ -26,13 +26,11 @@
 
 LC_PresetManagerFusionMetrics::LC_PresetManagerFusionMetrics(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<StyleMetricsConfig, LC_RepositoryFusionMetrics>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getFusionMetricsRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActiveMetrics() : QString(),
-          nullptr) {
+        styleManager, styleManager != nullptr ? styleManager->getFusionMetricsRepository() : nullptr,
+        styleManager != nullptr ? styleManager->getActiveMetrics() : QString(), nullptr) {
     m_headerBar = std::make_unique<LC_MetricsDensityHeaderBar>();
-    connect(m_headerBar.get(), &LC_MetricsDensityHeaderBar::densityPresetSelected,
-            this, &LC_PresetManagerFusionMetrics::onDensityPresetSelected);
+    connect(m_headerBar.get(), &LC_MetricsDensityHeaderBar::densityPresetSelected, this,
+            &LC_PresetManagerFusionMetrics::onDensityPresetSelected);
 
     loadPreset(m_activeKey);
 }
@@ -52,8 +50,8 @@ LC_PresetManagerUIStrings LC_PresetManagerFusionMetrics::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Metrics");
     s.deleteConfirmTitle = tr("Delete Metrics Preset");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the metrics preset '%1'?");
-    s.presetFileFilter = tr("LibreCAD Fusion Theme Metrics Files (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
+    s.presetFileFilter = tr("LibreCAD Fusion Theme Metrics Files (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default metrics preset is a read-only template. To customize layout metrics, duplicate it as a custom preset.");

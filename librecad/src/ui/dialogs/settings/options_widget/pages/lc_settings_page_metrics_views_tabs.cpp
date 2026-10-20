@@ -26,9 +26,7 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsViewsTabs::LC_SettingsPageMetricsViewsTabs(QObject* parent)
-    : LC_SettingsPageBase(tr("Views"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageMetricsViewsTabs>()) {
-}
+    : LC_SettingsPageBase(tr("Views"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMetricsViewsTabs>()) {}
 
 LC_SettingsPageMetricsViewsTabs::~LC_SettingsPageMetricsViewsTabs() = default;
 
@@ -81,7 +79,9 @@ bool LC_SettingsPageMetricsViewsTabs::isModified() const {
 }
 
 void LC_SettingsPageMetricsViewsTabs::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -128,8 +128,7 @@ void LC_SettingsPageMetricsViewsTabs::syncUiToWorkingConfig() {
     config.tabCloseIndicatorSize = ui->sbTabCloseSize->value();
     config.tabBarTabBaseOverlap = ui->sbTabOverlap->value();
     config.tabBarScrollButtonWidth = ui->sbTabBarScrollButtonWidth->value();
-    config.tabBarCloseButtonPosition = static_cast<TabBarCloseButtonPosition>(
-        ui->cbTabBarClosePosition->currentData().toInt());
+    config.tabBarCloseButtonPosition = static_cast<TabBarCloseButtonPosition>(ui->cbTabBarClosePosition->currentData().toInt());
 
     config.headerDefaultHeight = ui->sbHeaderDefaultHeight->value();
     config.itemViewRowPadding = ui->sbRowPadding->value();

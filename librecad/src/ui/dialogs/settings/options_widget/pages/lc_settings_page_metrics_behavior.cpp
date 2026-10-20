@@ -27,9 +27,7 @@
 #include <QComboBox>
 
 LC_SettingsPageMetricsBehavior::LC_SettingsPageMetricsBehavior(QObject* parent)
-    : LC_SettingsPageBase(tr("Behavior"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageMetricsBehavior>()) {
-}
+    : LC_SettingsPageBase(tr("Behavior"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMetricsBehavior>()) {}
 
 LC_SettingsPageMetricsBehavior::~LC_SettingsPageMetricsBehavior() = default;
 
@@ -80,7 +78,9 @@ bool LC_SettingsPageMetricsBehavior::isModified() const {
 }
 
 void LC_SettingsPageMetricsBehavior::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -88,14 +88,18 @@ void LC_SettingsPageMetricsBehavior::onControlChanged() {
 }
 
 void LC_SettingsPageMetricsBehavior::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
 
     ui->chkHideShortcuts->setChecked(config.hideShortcutUnderlines);
     const int mnemonicIdx = ui->cbMnemonicUnderlineMode->findData(static_cast<int>(config.mnemonicUnderlineMode));
-    if (mnemonicIdx >= 0) ui->cbMnemonicUnderlineMode->setCurrentIndex(mnemonicIdx);
+    if (mnemonicIdx >= 0) {
+        ui->cbMnemonicUnderlineMode->setCurrentIndex(mnemonicIdx);
+    }
 
     ui->chkFlatDisabledText->setChecked(config.flatDisabledText);
     ui->chkMenuIcons->setChecked(config.menuSupportsIcons);
@@ -108,7 +112,9 @@ void LC_SettingsPageMetricsBehavior::populateUiFromWorkingConfig() {
 }
 
 void LC_SettingsPageMetricsBehavior::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.hideShortcutUnderlines = ui->chkHideShortcuts->isChecked();

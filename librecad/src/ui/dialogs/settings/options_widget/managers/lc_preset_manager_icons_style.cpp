@@ -27,11 +27,9 @@
 
 LC_PresetManagerIconsStyle::LC_PresetManagerIconsStyle(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<IconStyleConfig, LC_RepositoryIconsStyle>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getIconsStyleRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActiveIconStyle() : QString(),
-          nullptr)
-    , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
+          styleManager, styleManager != nullptr ? styleManager->getIconsStyleRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getActiveIconStyle() : QString(), nullptr),
+      m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
     loadPreset(m_activeKey);
 }
 
@@ -50,8 +48,8 @@ LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Icons Style");
     s.deleteConfirmTitle = tr("Delete Icon Style");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the icon style '%1'?");
-    s.presetFileFilter = tr("LibreCAD Icon Style Files (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
+    s.presetFileFilter = tr("LibreCAD Icon Style Files (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default icon style is a read-only template. To customize icon colors, duplicate it as a custom preset.");
@@ -125,9 +123,7 @@ void LC_PresetManagerIconsStyle::applyTransientStyle() {
     m_iconColorsOptions.exportStyleConfig(m_workingConfig, m_currentVariantDark);
     tempOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
 
-    const auto cvdType = (m_previewController != nullptr)
-                             ? m_previewController->activeCvdType()
-                             : LC_PaletteColorUtils::CVDType::Normal;
+    const auto cvdType = (m_previewController != nullptr) ? m_previewController->activeCvdType() : LC_PaletteColorUtils::CVDType::Normal;
 
     auto* appWindow = QC_ApplicationWindow::getAppWindow();
     if (appWindow != nullptr) {

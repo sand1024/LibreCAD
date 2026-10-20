@@ -1,3 +1,25 @@
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
+
 #include "lc_settings_page_skin_containers.h"
 #include "ui_lc_settings_page_skin_containers.h"
 #include <QCheckBox>
@@ -5,9 +27,7 @@
 #include "lc_preset_manager_fusion_skin.h"
 
 LC_SettingsPageSkinContainers::LC_SettingsPageSkinContainers(QObject* parent)
-    : LC_SettingsPageBase(tr("Containers"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSkinContainers>()) {
-}
+    : LC_SettingsPageBase(tr("Containers"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageSkinContainers>()) {}
 
 LC_SettingsPageSkinContainers::~LC_SettingsPageSkinContainers() = default;
 
@@ -65,7 +85,8 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
         updateGroupBoxUiState();
         onControlChanged();
     });
-    connect(ui->cbGroupBoxBoundaryStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
+    connect(ui->cbGroupBoxBoundaryStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkGroupBoxUseAccent, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
 
     // Call on Dock Title Bar toggle
@@ -74,7 +95,8 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
         updateCloseButtonUiState();
         onControlChanged();
     });
-    connect(ui->cbDockTitleStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
+    connect(ui->cbDockTitleStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkPersistentDockSplitter, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkShowGenericDockIcons, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkShowSpecialDockIcons, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
@@ -89,7 +111,8 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
         updateSplitterUiState();
         onControlChanged();
     });
-    connect(ui->cbSplitterGripStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
+    connect(ui->cbSplitterGripStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkHighlightSplitterOnDrag, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkShowGripBackgroundWell, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkAccentGrips, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
@@ -97,9 +120,10 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
     // Call on Floating Dock Panels toggle
     connect(ui->chkUseFloatingHUDDocks, &QCheckBox::toggled, this, [this](bool) {
         updateCloseButtonUiState();
-       onControlChanged();
-   });
-    connect(ui->cbCloseColorPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
+        onControlChanged();
+    });
+    connect(ui->cbCloseColorPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinContainers::onControlChanged);
 }
 
 void LC_SettingsPageSkinContainers::updateCloseButtonUiState() const {
@@ -115,9 +139,8 @@ void LC_SettingsPageSkinContainers::updateCloseButtonUiState() const {
     }
 
     // Enabled if ANY custom titlebar feature with a close button is active
-    const bool hasActiveTitleBar = ui->chkCustomDockTitle->isChecked() ||
-                                   ui->chkCustomDialogTitleBar->isChecked() ||
-                                   ui->chkUseFloatingHUDDocks->isChecked();
+    const bool hasActiveTitleBar = ui->chkCustomDockTitle->isChecked() || ui->chkCustomDialogTitleBar->isChecked() || ui->
+        chkUseFloatingHUDDocks->isChecked();
 
     ui->lblCloseColor->setEnabled(hasActiveTitleBar);
     ui->cbCloseColorPolicy->setEnabled(hasActiveTitleBar);
@@ -137,7 +160,9 @@ bool LC_SettingsPageSkinContainers::isModified() const {
 }
 
 void LC_SettingsPageSkinContainers::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -184,8 +209,8 @@ void LC_SettingsPageSkinContainers::updateGroupBoxUiState() {
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Box Outline Frame (All sides)"), static_cast<int>(GroupBoxBoundaryStyle::Full));
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Active Left Sidebar (IDE Style)"), static_cast<int>(GroupBoxBoundaryStyle::LeftStripe));
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Top Line Only"), static_cast<int>(GroupBoxBoundaryStyle::TopLine));
-    const int idx = ui->cbGroupBoxBoundaryStyle->findData(static_cast<int>(prevBoundary));
-    ui->cbGroupBoxBoundaryStyle->setCurrentIndex(idx >= 0 ? idx : 0);
+        const int idx = ui->cbGroupBoxBoundaryStyle->findData(static_cast<int>(prevBoundary));
+        ui->cbGroupBoxBoundaryStyle->setCurrentIndex(idx >= 0 ? idx : 0);
     }
     m_blockSignals = false;
 }

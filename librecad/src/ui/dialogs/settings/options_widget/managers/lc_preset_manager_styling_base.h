@@ -32,10 +32,9 @@ template <typename TConfig, typename TRepo>
 class LC_PresetManagerStylingBase : public LC_PresetManagerConfigBase<TConfig, TRepo>, public LC_StylingPreviewAware {
 public:
     explicit LC_PresetManagerStylingBase(LC_UIStyleManager* styleManager, TRepo* repo, const QString& initialKey, QObject* parent = nullptr)
-        : LC_PresetManagerConfigBase<TConfig, TRepo>(repo, initialKey, parent)
-        , m_styleManager(styleManager) {
-        if (this->m_originalActiveKey.isEmpty() ||
-            (this->m_repository != nullptr && !this->m_repository->exists(this->m_originalActiveKey))) {
+        : LC_PresetManagerConfigBase<TConfig, TRepo>(repo, initialKey, parent), m_styleManager(styleManager) {
+        if (this->m_originalActiveKey.isEmpty() || (this->m_repository != nullptr && !this->m_repository->
+                                                                                            exists(this->m_originalActiveKey))) {
             this->m_originalActiveKey = CFG_AppState::DEFAULT_THEME_KEY;
         }
         this->setActivePresetKey(this->m_originalActiveKey);
@@ -43,15 +42,22 @@ public:
 
     ~LC_PresetManagerStylingBase() override = default;
 
-    bool supportsPreviewWindow() const override { return true; }
-    bool supportsAccessibilityCheck() const override { return false; }
-    bool supportsImportExport() const override { return false; }
+    bool supportsPreviewWindow() const override {
+        return true;
+    }
+
+    bool supportsAccessibilityCheck() const override {
+        return false;
+    }
+
+    bool supportsImportExport() const override {
+        return false;
+    }
 
     bool loadPreset(const QString& key) override {
         using namespace CFG_AppState;
         bool success = false;
-        const bool isDefault = this->isDefaultPreset(key) ||
-            (this->m_repository != nullptr && !this->m_repository->exists(key));
+        const bool isDefault = this->isDefaultPreset(key) || (this->m_repository != nullptr && !this->m_repository->exists(key));
 
         if (isDefault) {
             resetToDefaults(this->m_workingConfig);
@@ -65,9 +71,9 @@ public:
         }
         else {
             // Fallback: loadByKey failed or repository unavailable
-                resetToDefaults(this->m_workingConfig);
-                this->m_workingConfig.name = this->defaultPresetDisplayName();
-                this->setActivePresetKeyDefault();
+            resetToDefaults(this->m_workingConfig);
+            this->m_workingConfig.name = this->defaultPresetDisplayName();
+            this->setActivePresetKeyDefault();
             success = false;
         }
 
@@ -149,7 +155,10 @@ protected:
     virtual void resetToDefaults(TConfig& config) = 0;
     virtual void onPostLoadPreset() {}
     virtual void emitConfigLoaded() {}
-    virtual QString fusionGatingSubject() const { return QString(); }
+
+    virtual QString fusionGatingSubject() const {
+        return QString();
+    }
 
     void onPostApplyPreset() override {
         if (m_styleManager != nullptr) {

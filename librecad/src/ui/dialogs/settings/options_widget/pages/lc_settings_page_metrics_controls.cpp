@@ -26,9 +26,7 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsControls::LC_SettingsPageMetricsControls(QObject* parent)
-    : LC_SettingsPageBase(tr("Controls"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageMetricsControls>()) {
-}
+    : LC_SettingsPageBase(tr("Controls"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMetricsControls>()) {}
 
 LC_SettingsPageMetricsControls::~LC_SettingsPageMetricsControls() = default;
 
@@ -76,7 +74,9 @@ bool LC_SettingsPageMetricsControls::isModified() const {
 }
 
 void LC_SettingsPageMetricsControls::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();

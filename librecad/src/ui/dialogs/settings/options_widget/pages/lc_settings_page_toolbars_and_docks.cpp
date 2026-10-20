@@ -31,8 +31,7 @@
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageToolbarsAndDocks::LC_SettingsPageToolbarsAndDocks(QObject* parent)
-    : LC_SettingsPageBase(tr("Toolbars and Docking"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
+    : LC_SettingsPageBase(tr("Toolbars and Docking"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageToolbarsAndDocks>()) {
     m_styleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
 }
 
@@ -167,7 +166,6 @@ void LC_SettingsPageToolbarsAndDocks::syncUiToWorkingConfig() {
     config.allowStatusbarFontSize = ui->cbAllowStatusbarFontSize->isChecked();
     config.statusbarFontSize = ui->sbStatusbarFontSize->value();
 }
-
 
 void LC_SettingsPageToolbarsAndDocks::doLoadSettings() {
     populateUiFromConfig();

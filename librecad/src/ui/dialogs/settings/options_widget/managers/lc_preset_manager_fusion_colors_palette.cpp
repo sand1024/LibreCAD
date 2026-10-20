@@ -23,11 +23,9 @@
 
 LC_PresetManagerFusionColorsPalette::LC_PresetManagerFusionColorsPalette(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryFusionColorsPalette>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getFusionColorPaletteRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActivePalette() : QString(),
-          nullptr)
-    , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
+          styleManager, styleManager != nullptr ? styleManager->getFusionColorPaletteRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getActivePalette() : QString(), nullptr),
+      m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
     loadPreset(m_activeKey);
 }
 
@@ -46,10 +44,11 @@ LC_PresetManagerUIStrings LC_PresetManagerFusionColorsPalette::presetStrings() c
     s.defaultNewPresetName = tr("Custom Palette");
     s.deleteConfirmTitle = tr("Delete Color Palette");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the color palette '%1'?");
-    s.presetFileFilter = tr("LibreCAD Fusion Theme Color Palette Files (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
+    s.presetFileFilter = tr("LibreCAD Fusion Theme Color Palette Files (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".json"));
 
-    s.defaultReadOnlyMessage = tr("The Default color palette is a read-only template. To customize palette colors, duplicate it as a custom preset.");
+    s.defaultReadOnlyMessage = tr(
+        "The Default color palette is a read-only template. To customize palette colors, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Palette...");
     return s;
 }

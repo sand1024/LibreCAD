@@ -31,10 +31,8 @@
 
 LC_PresetManagerWidgets::LC_PresetManagerWidgets(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<LC_WidgetsConfig, LC_RepositoryWidgets>(
-          styleManager,
-          styleManager != nullptr ? styleManager->getWidgetsRepository() : nullptr,
-          styleManager != nullptr ? styleManager->getActiveWidgetsScheme() : QString(),
-          nullptr) {
+        styleManager, styleManager != nullptr ? styleManager->getWidgetsRepository() : nullptr,
+        styleManager != nullptr ? styleManager->getActiveWidgetsScheme() : QString(), nullptr) {
     loadPreset(m_activeKey);
 }
 
@@ -53,8 +51,8 @@ LC_PresetManagerUIStrings LC_PresetManagerWidgets::presetStrings() const {
     s.defaultNewPresetName = tr("Custom Layout");
     s.deleteConfirmTitle = tr("Delete Toolbars & Docking Preset");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the preset '%1'?");
-    s.presetFileFilter = tr("LibreCAD Widgets Config Files (*%1);All Files (*.*)")
-                             .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".lcwc"));
+    s.presetFileFilter = tr("LibreCAD Widgets Config Files (*%1);All Files (*.*)").arg(
+        m_repository != nullptr ? m_repository->getFileExtension() : QString(".lcwc"));
 
     s.defaultReadOnlyMessage = tr(
         "The Default layout preset is a read-only template. To customize widget sizes and styles, duplicate it as a custom preset.");
@@ -121,8 +119,7 @@ void LC_PresetManagerWidgets::applyActiveConfigToSystem(const QString& activeKey
     // Apply live updates to main window widgets
     auto* appWindow = QC_ApplicationWindow::getAppWindow();
     if (appWindow != nullptr) {
-        appWindow->updateToolbarsIconSize(m_workingConfig.toolbarAllowIconSize,
-                                          m_workingConfig.toolbarIconSize);
+        appWindow->updateToolbarsIconSize(m_workingConfig.toolbarAllowIconSize, m_workingConfig.toolbarIconSize);
 
         if (m_workingConfig.allowStatusbarFontSize) {
             QFont font;
@@ -133,14 +130,11 @@ void LC_PresetManagerWidgets::applyActiveConfigToSystem(const QString& activeKey
             appWindow->statusBar()->setMinimumHeight(m_workingConfig.statusbarHeight);
         }
 
-        LC_WidgetFactory::updateDockOptions(appWindow,
-                                            m_workingConfig.dockAllowNested,
-                                            m_workingConfig.cadDockVerticalTabs,
+        LC_WidgetFactory::updateDockOptions(appWindow, m_workingConfig.dockAllowNested, m_workingConfig.cadDockVerticalTabs,
                                             m_workingConfig.dockTabVertical);
 
-        LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow,
-                                                       m_workingConfig.cadDockTitleBarVertical,
-                                                       m_workingConfig.dockTitleBarVertical);
+        LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow, m_workingConfig.cadDockTitleBarVertical,
+                                                        m_workingConfig.dockTitleBarVertical);
 
         appWindow->fireWidgetSettingsChanged();
     }

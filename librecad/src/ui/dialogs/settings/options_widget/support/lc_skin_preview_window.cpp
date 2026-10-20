@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  *
  * This file is part of the LibreCAD project, a 2D CAD program
@@ -22,7 +21,6 @@
  ******************************************************************************/
 
 #include "lc_skin_preview_window.h"
-
 
 #include <QAction>
 #include <QCloseEvent>
@@ -56,14 +54,13 @@ void LC_SkinPreviewWindow::hideSliderAndDialControls() const {
     ui->dial_3->setVisible(false);
 }
 
-LC_SkinPreviewWindow::LC_SkinPreviewWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::LC_SkinPreviewWindow) {
+LC_SkinPreviewWindow::LC_SkinPreviewWindow(QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::LC_SkinPreviewWindow) {
     ui->setupUi(this);
 
     // Create a persistent, local-only custom proxy style
-    QStyle *baseStyle = QStyleFactory::create("Fusion");
-    auto *localStyle = new LC_ProxyStyle(baseStyle);
+    QStyle* baseStyle = QStyleFactory::create("Fusion");
+    auto* localStyle = new LC_ProxyStyle(baseStyle);
     this->setStyle(localStyle);
 
     // Force background repainting with the palette
@@ -81,10 +78,9 @@ LC_SkinPreviewWindow::LC_SkinPreviewWindow(QWidget *parent)
     setupTabPreviews();
     setupStatusPillToolbars();
 
-
     // Force the custom local style pointer explicitly onto all child widgets ONCE
     const QList<QWidget*> children = findChildren<QWidget*>();
-    for (QWidget *child : children) {
+    for (QWidget* child : children) {
         child->setStyle(localStyle);
     }
 
@@ -186,7 +182,8 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
             QDockWidget::DockWidgetFeatures features = dock->features();
             if (verticalTitleBar) {
                 features |= QDockWidget::DockWidgetVerticalTitleBar;
-            } else {
+            }
+            else {
                 features &= ~QDockWidget::DockWidgetVerticalTitleBar;
             }
             dock->setFeatures(features);
@@ -226,44 +223,44 @@ void LC_SkinPreviewWindow::setupScrollArea() const {
 }
 
 void LC_SkinPreviewWindow::setupMenuBar() {
-    auto *previewMenuBar = new QMenuBar(this);
+    auto* previewMenuBar = new QMenuBar(this);
 
-    QMenu *fileMenu = previewMenuBar->addMenu(tr("&File"));
+    QMenu* fileMenu = previewMenuBar->addMenu(tr("&File"));
     fileMenu->QWidget::addAction(QIcon::fromTheme("document-new"), tr("&New Drawing"));
     fileMenu->QWidget::addAction(QIcon::fromTheme("document-open"), tr("&Open Project..."));
 
-    QAction *actClose = fileMenu->QWidget::addAction(tr("&Close File"));
+    QAction* actClose = fileMenu->QWidget::addAction(tr("&Close File"));
     actClose->setEnabled(false);
 
     fileMenu->addSeparator();
     fileMenu->setTearOffEnabled(true);
 
-    QMenu *exportSubMenu = fileMenu->addMenu(tr("&Export"));
+    QMenu* exportSubMenu = fileMenu->addMenu(tr("&Export"));
     exportSubMenu->QWidget::addAction(tr("Export to &PDF"));
-    QAction *actDwg = exportSubMenu->QWidget::addAction(tr("Export to &DWG"));
+    QAction* actDwg = exportSubMenu->QWidget::addAction(tr("Export to &DWG"));
     actDwg->setEnabled(false);
 
     fileMenu->addSeparator();
     fileMenu->QWidget::addAction(QIcon::fromTheme("application-exit"), tr("&Exit"));
 
-    QMenu *editMenu = previewMenuBar->addMenu(tr("&Edit"));
+    QMenu* editMenu = previewMenuBar->addMenu(tr("&Edit"));
     editMenu->QWidget::addAction(QIcon::fromTheme("edit-undo"), tr("&Undo"));
     editMenu->QWidget::addAction(QIcon::fromTheme("edit-redo"), tr("&Redo"));
 
     editMenu->addSeparator();
-    QAction *actPrefs = editMenu->QWidget::addAction(tr("&Preferences"));
+    QAction* actPrefs = editMenu->QWidget::addAction(tr("&Preferences"));
     actPrefs->setEnabled(false);
 
     editMenu->setTearOffEnabled(true);
 
-    QMenu *cmdMenu = previewMenuBar->addMenu(tr("&Command line support"));
+    QMenu* cmdMenu = previewMenuBar->addMenu(tr("&Command line support"));
     cmdMenu->setTearOffEnabled(true);
 
-    auto line = cmdMenu->QWidget::addAction(QIcon(":/icons/line_2p.lci"), tr("&Line 2 points"));
+    const auto line = cmdMenu->QWidget::addAction(QIcon(":/icons/line_2p.lci"), tr("&Line 2 points"));
     line->setProperty("cmdLine", "line2p");
     line->setShortcut(QKeySequence("CTRL+L"));
 
-    auto circle = cmdMenu->QWidget::addAction(QIcon(":/icons/circle_2_points.lci"), tr("&Circle 2 points"));
+    const auto circle = cmdMenu->QWidget::addAction(QIcon(":/icons/circle_2_points.lci"), tr("&Circle 2 points"));
     circle->setProperty("cmdLine", "c2p");
     circle->setShortcut(QKeySequence("CTRL+SHIFT+C"));
 
@@ -273,21 +270,22 @@ void LC_SkinPreviewWindow::setupMenuBar() {
 }
 
 void LC_SkinPreviewWindow::setupToolbars() {
-    auto *toolbar1 = new QToolBar(this);
+    auto* toolbar1 = new QToolBar(this);
     toolbar1->setMovable(true);
 
     toolbar1->addAction(QIcon(":/icons/copy.lci"), "Copy\n\nThis is example of rich tooltip");
     toolbar1->addAction(QIcon(":/icons/paste.lci"), "This is one line tooltip");
-    auto draft = toolbar1->addAction(QIcon(":/icons/draft.lci"), "Draft\n\nTooltip that contains both caption and text.\nWe test \n\n multiline");
+    const auto draft = toolbar1->addAction(QIcon(":/icons/draft.lci"),
+                                           "Draft\n\nTooltip that contains both caption and text.\nWe test \n\n multiline");
     draft->setCheckable(true);
     draft->setChecked(true);
 
     toolbar1->addSeparator();
     toolbar1->addAction(QIcon(":/icons/circle_center_radius.lci"), "");
-    auto grid = toolbar1->addAction(QIcon(":/icons/grid.lci"), "");
+    const auto grid = toolbar1->addAction(QIcon(":/icons/grid.lci"), "");
     grid->setCheckable(true);
     grid->setChecked(true);
-    auto line = toolbar1->addAction(QIcon(":/icons/line_2p.lci"), "");
+    const auto line = toolbar1->addAction(QIcon(":/icons/line_2p.lci"), "");
     line->setCheckable(true);
     line->setChecked(true);
     toolbar1->addAction(QIcon(":/icons/zoom_auto.lci"), "");
@@ -296,21 +294,22 @@ void LC_SkinPreviewWindow::setupToolbars() {
     addToolBar(Qt::TopToolBarArea, toolbar1);
     m_mainToolBars.append(toolbar1);
 
-    auto *toolbar2 = new QToolBar(this);
+    auto* toolbar2 = new QToolBar(this);
     toolbar1->setMovable(true);
 
     toolbar2->addAction(QIcon(":/icons/copy.lci"), "Copy\n\nThis is example of rich tooltip");
     toolbar2->addAction(QIcon(":/icons/paste.lci"), "This is one line tooltip");
-    auto draft1 = toolbar2->addAction(QIcon(":/icons/draft.lci"), "Draft\n\nTooltip that contains both caption and text.\nWe test \n\n multiline");
+    const auto draft1 = toolbar2->addAction(QIcon(":/icons/draft.lci"),
+                                            "Draft\n\nTooltip that contains both caption and text.\nWe test \n\n multiline");
     draft1->setCheckable(true);
     draft1->setChecked(true);
 
     toolbar2->addSeparator();
     toolbar2->addAction(QIcon(":/icons/circle_center_radius.lci"), "");
-    auto grid1 = toolbar2->addAction(QIcon(":/icons/grid.lci"), "");
+    const auto grid1 = toolbar2->addAction(QIcon(":/icons/grid.lci"), "");
     grid1->setCheckable(true);
     grid1->setChecked(true);
-    auto line1 = toolbar1->addAction(QIcon(":/icons/line_2p.lci"), "");
+    const auto line1 = toolbar1->addAction(QIcon(":/icons/line_2p.lci"), "");
     line1->setCheckable(true);
     line1->setChecked(true);
     toolbar2->addAction(QIcon(":/icons/zoom_auto.lci"), "");
@@ -320,7 +319,7 @@ void LC_SkinPreviewWindow::setupToolbars() {
     m_mainToolBars.append(toolbar2);
 
     // 4. Programmatic Toolbar 2 Setup
-    auto *toolbar3 = new QToolBar(this);
+    auto* toolbar3 = new QToolBar(this);
     toolbar3->setMovable(true);
 
     toolbar3->QWidget::addAction(tr("Cut"));
@@ -329,13 +328,13 @@ void LC_SkinPreviewWindow::setupToolbars() {
     toolbar3->addSeparator();
 
     toolbar3->addWidget(new QLabel(tr(" Zoom: "), toolbar2));
-    auto *zoomCombo = new QComboBox(toolbar2);
+    auto* zoomCombo = new QComboBox(toolbar2);
     zoomCombo->addItems({"100%", "150%", "200%", "Fit to Screen"});
     toolbar3->addWidget(zoomCombo);
 
     toolbar3->addSeparator();
 
-    auto *gridSnap = new QSpinBox(toolbar2);
+    auto* gridSnap = new QSpinBox(toolbar2);
     gridSnap->setValue(10);
     toolbar3->addWidget(new QLabel(tr(" Snap: "), toolbar2));
     toolbar3->addWidget(gridSnap);
@@ -368,10 +367,10 @@ QWidget* LC_SkinPreviewWindow::setupDockContent(LC_DockWidget* propertiesDock, b
         miniToolbar->setSpacing(2);
 
         const QList<QPair<QString, QString>> miniActions = {
-            { ":/icons/add.lci", tr("Add Item") },
-            { ":/icons/visible.lci", tr("Toggle Visibility") },
-            { ":/icons/draft.lci", tr("Lock Layer") },
-            { ":/icons/close_all.lci", tr("Remove Item") }
+            {":/icons/add.lci", tr("Add Item")},
+            {":/icons/visible.lci", tr("Toggle Visibility")},
+            {":/icons/draft.lci", tr("Lock Layer")},
+            {":/icons/close_all.lci", tr("Remove Item")}
         };
 
         for (const auto& act : miniActions) {
@@ -408,13 +407,26 @@ QWidget* LC_SkinPreviewWindow::setupCadToolsMatrixContent(LC_DockWidget* matrixD
     m_matrixGridLayout->setSpacing(2);
 
     const QStringList matrixIcons = {
-        ":/icons/line_2p.lci", ":/icons/circle_2_points.lci", ":/icons/circle_center_radius.lci",
-        ":/icons/move_copy.lci", ":/icons/copy.lci", ":/icons/paste.lci",
-        ":/icons/visible.lci", ":/icons/draft.lci", ":/icons/grid.lci",
-        ":/icons/interactive_pick_angle.lci", ":/icons/spline_explode.lci", ":/icons/add.lci",
-        ":/icons/close_all.lci", ":/icons/save.lci", ":/icons/fileopen.lci",
-        ":/icons/zoom_auto.lci", ":/icons/create_toolbar.lci", ":/icons/halign_middle.lci",
-        ":/icons/new.lci", ":/icons/undo.lci"
+        ":/icons/line_2p.lci",
+        ":/icons/circle_2_points.lci",
+        ":/icons/circle_center_radius.lci",
+        ":/icons/move_copy.lci",
+        ":/icons/copy.lci",
+        ":/icons/paste.lci",
+        ":/icons/visible.lci",
+        ":/icons/draft.lci",
+        ":/icons/grid.lci",
+        ":/icons/interactive_pick_angle.lci",
+        ":/icons/spline_explode.lci",
+        ":/icons/add.lci",
+        ":/icons/close_all.lci",
+        ":/icons/save.lci",
+        ":/icons/fileopen.lci",
+        ":/icons/zoom_auto.lci",
+        ":/icons/create_toolbar.lci",
+        ":/icons/halign_middle.lci",
+        ":/icons/new.lci",
+        ":/icons/undo.lci"
     };
 
     m_matrixToolButtons.clear();
@@ -558,7 +570,6 @@ void LC_SkinPreviewWindow::setupAdvancedViewsWidgets() const {
 }
 
 void LC_SkinPreviewWindow::updateSemanticViews(const QColor& searchHighlightColor, const QColor& conflictingItemColor) {
-    
     // 1. Update Table Item Foregrounds
     if (m_tableSearchItem != nullptr) {
         m_tableSearchItem->setForeground(QBrush(searchHighlightColor));
@@ -604,9 +615,11 @@ void LC_SkinPreviewWindow::activateTab(const QString& tag) {
 
 void LC_SkinPreviewWindow::setupEditors() const {
     // 9. Reset QTextEdit plain-text to ignore inline HTML layout styles
-    ui->textEdit_2->setPlainText(tr("Multiline text editor content demonstrating paragraph rendering, monospace alignments, and scrolling inside a frame."));
+    ui->textEdit_2->setPlainText(
+        tr("Multiline text editor content demonstrating paragraph rendering, monospace alignments, and scrolling inside a frame."));
     ui->teSelection_2->setPlainText(tr("Multiline text editor content demonstrating selected text rendering."));
-    ui->textEdit_3->setPlainText(tr("Multiline text editor content demonstrating paragraph rendering, monospace alignments, and scrolling inside a frame."));
+    ui->textEdit_3->setPlainText(
+        tr("Multiline text editor content demonstrating paragraph rendering, monospace alignments, and scrolling inside a frame."));
     ui->teSelection_3->setPlainText(tr("Multiline text editor content demonstrating selected text rendering."));
 
     // 10. Highlight default characters
@@ -629,7 +642,7 @@ void LC_SkinPreviewWindow::setupToolButtonMenu() const {
     generateMenu_2->QWidget::addAction(QIcon(":/icons/palette_hi_contrast.lci"), tr("Another popup option"));
 
     ui->tbOptions_2->setMenu(generateMenu_2);
-    
+
     ui->tbOptions_3->setPopupMode(QToolButton::MenuButtonPopup);
     // ui->tbOptions_3->setArrowType(Qt::RightArrow);
     const auto generateMenu_3 = new QMenu(ui->tbOptions_3);
@@ -642,16 +655,16 @@ void LC_SkinPreviewWindow::setupToolButtonMenu() const {
 }
 
 void LC_SkinPreviewWindow::setupTabPreviews() {
-    auto *previewTabsContainer = new QWidget(this);
-    auto *containerLayout = new QVBoxLayout(previewTabsContainer);
+    auto* previewTabsContainer = new QWidget(this);
+    auto* containerLayout = new QVBoxLayout(previewTabsContainer);
     containerLayout->setContentsMargins(0, 0, 0, 0);
 
-    auto *scrollArea = new QScrollArea(previewTabsContainer);
+    auto* scrollArea = new QScrollArea(previewTabsContainer);
     scrollArea->setWidgetResizable(true);
     scrollArea->setFrameShape(QFrame::NoFrame);
 
-    auto *scrollWidget = new QWidget(scrollArea);
-    auto *vertLayout = new QVBoxLayout(scrollWidget);
+    auto* scrollWidget = new QWidget(scrollArea);
+    auto* vertLayout = new QVBoxLayout(scrollWidget);
     vertLayout->setContentsMargins(10, 10, 10, 10);
     vertLayout->setSpacing(16);
 
@@ -660,16 +673,16 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
     // ================= 1. ROUNDED HORIZONTAL PREVIEWS =================
     {
-        auto *roundedGroup = new QGroupBox(tr("Rounded Horizontal Previews"), scrollWidget);
-        auto *groupLayout = new QVBoxLayout(roundedGroup);
+        auto* roundedGroup = new QGroupBox(tr("Rounded Horizontal Previews"), scrollWidget);
+        auto* groupLayout = new QVBoxLayout(roundedGroup);
         groupLayout->setContentsMargins(8, 8, 8, 8);
         groupLayout->setSpacing(12);
 
         // North (Top Tabs — Mixed Modes)
         {
-            auto *vBox = new QVBoxLayout();
+            auto* vBox = new QVBoxLayout();
             vBox->addWidget(new QLabel(tr("North (Top Tabs — Mixed Modes)"), roundedGroup));
-            auto *bar = new QTabBar(roundedGroup);
+            auto* bar = new QTabBar(roundedGroup);
             bar->setShape(QTabBar::RoundedNorth);
             bar->setTabsClosable(true);
             bar->setAttribute(Qt::WA_Hover, true);
@@ -689,26 +702,26 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // North (Top Tabs — Scrollable with Icons)
         {
-            auto *vBox = new QVBoxLayout();
+            auto* vBox = new QVBoxLayout();
             vBox->addWidget(new QLabel(tr("North (Top Tabs — Scrollable with Icons)"), roundedGroup));
-            auto *bar = new QTabBar(roundedGroup);
+            auto* bar = new QTabBar(roundedGroup);
             bar->setShape(QTabBar::RoundedNorth);
             bar->setTabsClosable(true);
             bar->setUsesScrollButtons(true);
             bar->setAttribute(Qt::WA_Hover, true);
 
             const QList<QPair<QString, QString>> iconTabs = {
-                { ":/icons/fileopen.lci", tr("Floorplan") },
-                { ":/icons/line_2p.lci", tr("Elevation (Active)") },
-                { ":/icons/circle_center_radius.lci", tr("Section A-A") },
-                { ":/icons/grid.lci", tr("Grid Detail") },
-                { ":/icons/draft.lci", tr("Draft Overlay") },
-                { ":/icons/save.lci", tr("Sheet 1") },
-                { ":/icons/copy.lci", tr("Sheet 2") },
-                { ":/icons/paste.lci", tr("Sheet 3") }
+                {":/icons/fileopen.lci", tr("Floorplan")},
+                {":/icons/line_2p.lci", tr("Elevation (Active)")},
+                {":/icons/circle_center_radius.lci", tr("Section A-A")},
+                {":/icons/grid.lci", tr("Grid Detail")},
+                {":/icons/draft.lci", tr("Draft Overlay")},
+                {":/icons/save.lci", tr("Sheet 1")},
+                {":/icons/copy.lci", tr("Sheet 2")},
+                {":/icons/paste.lci", tr("Sheet 3")}
             };
 
-            for (const auto &entry : iconTabs) {
+            for (const auto& entry : iconTabs) {
                 bar->addTab(QIcon(entry.first), entry.second);
             }
             bar->setCurrentIndex(1);
@@ -718,9 +731,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // South (Bottom Tabs — Icon + Text)
         {
-            auto *vBox = new QVBoxLayout();
+            auto* vBox = new QVBoxLayout();
             vBox->addWidget(new QLabel(tr("South (Bottom Tabs — Icon + Text)"), roundedGroup));
-            auto *bar = new QTabBar(roundedGroup);
+            auto* bar = new QTabBar(roundedGroup);
             bar->setShape(QTabBar::RoundedSouth);
             bar->setTabsClosable(true);
             bar->setAttribute(Qt::WA_Hover, true);
@@ -738,16 +751,16 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
     // ================= 2. BEVELED HORIZONTAL PREVIEWS =================
     {
-        auto *beveledGroup = new QGroupBox(tr("Beveled Horizontal Previews"), scrollWidget);
-        auto *groupLayout = new QVBoxLayout(beveledGroup);
+        auto* beveledGroup = new QGroupBox(tr("Beveled Horizontal Previews"), scrollWidget);
+        auto* groupLayout = new QVBoxLayout(beveledGroup);
         groupLayout->setContentsMargins(8, 8, 8, 8);
         groupLayout->setSpacing(12);
 
         // Beveled North
         {
-            auto *vBox = new QVBoxLayout();
+            auto* vBox = new QVBoxLayout();
             vBox->addWidget(new QLabel(tr("Beveled North (Top Tabs — Mixed Modes)"), beveledGroup));
-            auto *bar = new QTabBar(beveledGroup);
+            auto* bar = new QTabBar(beveledGroup);
             bar->setShape(QTabBar::TriangularNorth);
             bar->setTabsClosable(true);
             bar->setAttribute(Qt::WA_Hover, true);
@@ -765,9 +778,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // Beveled South (Scrollable with Icons)
         {
-            auto *vBox = new QVBoxLayout();
+            auto* vBox = new QVBoxLayout();
             vBox->addWidget(new QLabel(tr("Beveled South (Bottom Tabs — Scrollable with Icons)"), beveledGroup));
-            auto *bar = new QTabBar(beveledGroup);
+            auto* bar = new QTabBar(beveledGroup);
             bar->setShape(QTabBar::TriangularSouth);
             bar->setTabsClosable(true);
             bar->setUsesScrollButtons(true);
@@ -787,16 +800,16 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
     // ================= 3. ROUNDED VERTICAL PREVIEWS =================
     {
-        auto *roundedVertGroup = new QGroupBox(tr("Rounded Vertical Previews"), scrollWidget);
-        auto *pairLayout = new QHBoxLayout(roundedVertGroup);
+        auto* roundedVertGroup = new QGroupBox(tr("Rounded Vertical Previews"), scrollWidget);
+        auto* pairLayout = new QHBoxLayout(roundedVertGroup);
         pairLayout->setContentsMargins(8, 8, 8, 8);
         pairLayout->setSpacing(12);
 
         // West
         {
-            auto *westVBox = new QVBoxLayout();
+            auto* westVBox = new QVBoxLayout();
             westVBox->addWidget(new QLabel(tr("West (Left)"), roundedVertGroup));
-            auto *westBar = new QTabBar(roundedVertGroup);
+            auto* westBar = new QTabBar(roundedVertGroup);
             westBar->setShape(QTabBar::RoundedWest);
             westBar->setTabsClosable(true);
             westBar->setAttribute(Qt::WA_Hover, true);
@@ -817,9 +830,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // East
         {
-            auto *eastVBox = new QVBoxLayout();
+            auto* eastVBox = new QVBoxLayout();
             eastVBox->addWidget(new QLabel(tr("East (Right)"), roundedVertGroup));
-            auto *eastBar = new QTabBar(roundedVertGroup);
+            auto* eastBar = new QTabBar(roundedVertGroup);
             eastBar->setShape(QTabBar::RoundedEast);
             eastBar->setTabsClosable(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
@@ -837,9 +850,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // West Scrollable
         {
-            auto *westScrollVBox = new QVBoxLayout();
+            auto* westScrollVBox = new QVBoxLayout();
             westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), roundedVertGroup));
-            auto *westBar = new QTabBar(roundedVertGroup);
+            auto* westBar = new QTabBar(roundedVertGroup);
             westBar->setShape(QTabBar::RoundedWest);
             westBar->setTabsClosable(true);
             westBar->setUsesScrollButtons(true);
@@ -859,9 +872,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // East Scrollable
         {
-            auto *eastScrollVBox = new QVBoxLayout();
+            auto* eastScrollVBox = new QVBoxLayout();
             eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), roundedVertGroup));
-            auto *eastBar = new QTabBar(roundedVertGroup);
+            auto* eastBar = new QTabBar(roundedVertGroup);
             eastBar->setShape(QTabBar::RoundedEast);
             eastBar->setTabsClosable(true);
             eastBar->setUsesScrollButtons(true);
@@ -884,16 +897,16 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
     // ================= 4. BEVELED VERTICAL PREVIEWS =================
     {
-        auto *beveledVertGroup = new QGroupBox(tr("Beveled Vertical Previews (Scrollable)"), scrollWidget);
-        auto *pairLayout = new QHBoxLayout(beveledVertGroup);
+        auto* beveledVertGroup = new QGroupBox(tr("Beveled Vertical Previews (Scrollable)"), scrollWidget);
+        auto* pairLayout = new QHBoxLayout(beveledVertGroup);
         pairLayout->setContentsMargins(8, 8, 8, 8);
         pairLayout->setSpacing(12);
 
         // Triangular West
         {
-            auto *westVBox = new QVBoxLayout();
+            auto* westVBox = new QVBoxLayout();
             westVBox->addWidget(new QLabel(tr("West (Left)"), beveledVertGroup));
-            auto *westBar = new QTabBar(beveledVertGroup);
+            auto* westBar = new QTabBar(beveledVertGroup);
             westBar->setShape(QTabBar::TriangularWest);
             westBar->setTabsClosable(true);
             westBar->setAttribute(Qt::WA_Hover, true);
@@ -909,9 +922,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // Triangular East
         {
-            auto *eastVBox = new QVBoxLayout();
+            auto* eastVBox = new QVBoxLayout();
             eastVBox->addWidget(new QLabel(tr("East (Right)"), beveledVertGroup));
-            auto *eastBar = new QTabBar(beveledVertGroup);
+            auto* eastBar = new QTabBar(beveledVertGroup);
             eastBar->setShape(QTabBar::TriangularEast);
             eastBar->setTabsClosable(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
@@ -927,9 +940,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // Triangular West Scrollable
         {
-            auto *westScrollVBox = new QVBoxLayout();
+            auto* westScrollVBox = new QVBoxLayout();
             westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), beveledVertGroup));
-            auto *westBar = new QTabBar(beveledVertGroup);
+            auto* westBar = new QTabBar(beveledVertGroup);
             westBar->setShape(QTabBar::TriangularWest);
             westBar->setTabsClosable(true);
             westBar->setUsesScrollButtons(true);
@@ -949,9 +962,9 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 
         // Triangular East Scrollable
         {
-            auto *eastScrollVBox = new QVBoxLayout();
+            auto* eastScrollVBox = new QVBoxLayout();
             eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), beveledVertGroup));
-            auto *eastBar = new QTabBar(beveledVertGroup);
+            auto* eastBar = new QTabBar(beveledVertGroup);
             eastBar->setShape(QTabBar::TriangularEast);
             eastBar->setTabsClosable(true);
             eastBar->setUsesScrollButtons(true);
@@ -980,8 +993,8 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
 }
 
 void LC_SkinPreviewWindow::setupStatusPillToolbars() {
-    auto *statusToolbarCoords = new QToolBar(this);
-    auto *statusToolbarSnap = new QToolBar(this);
+    auto* statusToolbarCoords = new QToolBar(this);
+    auto* statusToolbarSnap = new QToolBar(this);
 
     // 1. Assign visual property toggles via centralized constants
     statusToolbarCoords->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);
@@ -993,22 +1006,21 @@ void LC_SkinPreviewWindow::setupStatusPillToolbars() {
     statusToolbarSnap->setProperty(PROP_ACTIVE, true);
 
     // 3. Populate Coordinates (Demonstrates low-contrast recess/idle state)
-    auto *lblX = new QLabel(tr(" <b>X:</b> 150.32 "), this);
-    auto *lblY = new QLabel(tr(" <b>Y:</b> -85.74 "), this);
-
+    auto* lblX = new QLabel(tr(" <b>X:</b> 150.32 "), this);
+    auto* lblY = new QLabel(tr(" <b>Y:</b> -85.74 "), this);
 
     statusToolbarCoords->addWidget(lblX);
     statusToolbarCoords->addSeparator();
     statusToolbarCoords->addWidget(lblY);
 
     // 4. Populate Snap Status (Demonstrates active highlighted state with standard grips)
-    auto *btnSnapGrid = new QToolButton(this);
+    auto* btnSnapGrid = new QToolButton(this);
     btnSnapGrid->setIcon(QIcon(":/icons/grid.lci"));
     btnSnapGrid->setCheckable(true);
     btnSnapGrid->setChecked(true);
     btnSnapGrid->setToolTip(tr("Grid Snapping: Enabled"));
 
-    auto *btnSnapEnd = new QToolButton(this);
+    auto* btnSnapEnd = new QToolButton(this);
     btnSnapEnd->setIcon(QIcon(":/icons/line_2p.lci"));
     btnSnapEnd->setCheckable(true);
     btnSnapEnd->setToolTip(tr("Endpoint Snapping: Disabled"));
@@ -1016,7 +1028,7 @@ void LC_SkinPreviewWindow::setupStatusPillToolbars() {
     statusToolbarSnap->addWidget(btnSnapGrid);
     statusToolbarSnap->addWidget(btnSnapEnd);
 
-    QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    const QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     statusToolbarCoords->setSizePolicy(tbPolicy);
     statusToolbarSnap->setSizePolicy(tbPolicy);
@@ -1024,7 +1036,8 @@ void LC_SkinPreviewWindow::setupStatusPillToolbars() {
     addToolBar(Qt::BottomToolBarArea, statusToolbarCoords);
     addToolBar(Qt::BottomToolBarArea, statusToolbarSnap);
 }
-void LC_SkinPreviewWindow::closeEvent(QCloseEvent *event) {
+
+void LC_SkinPreviewWindow::closeEvent(QCloseEvent* event) {
     emit windowClosed();
     QMainWindow::closeEvent(event);
 }
