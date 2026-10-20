@@ -30,19 +30,31 @@
 namespace {
     QJsonObject serializeMenuNode(const ActionNode& node) {
         QJsonObject obj;
-        obj["type"] = static_cast<int>(node.type);
-
-        if (node.type == ActionNodeType::Action) {
-            obj["action"] = node.actionName;
-        } else if (node.type == ActionNodeType::Group) {
-            obj["title"] = node.groupTitle;
-            obj["icon"] = node.groupIcon;
-
-            QJsonArray childrenArr;
-            for (const auto& child : node.children) {
-                childrenArr.append(serializeMenuNode(child));
+        auto nodeType = node.type;
+        switch (nodeType) {
+            case ActionNodeType::Action: {
+                obj["action"] = node.actionName;
+                break;
             }
-            obj["children"] = childrenArr;
+            case ActionNodeType::Separator: {
+                obj["type"] = static_cast<int>(nodeType);
+                break;
+            }
+            case ActionNodeType::Group: {
+                obj["type"] = static_cast<int>(nodeType);
+                obj["title"] = node.groupTitle;
+                obj["icon"] = node.groupIcon;
+
+                QJsonArray childrenArr;
+                for (const auto& child : node.children) {
+                    childrenArr.append(serializeMenuNode(child));
+                }
+                obj["children"] = childrenArr;
+                break;
+            }
+
+            default:
+                break;
         }
         return obj;
     }

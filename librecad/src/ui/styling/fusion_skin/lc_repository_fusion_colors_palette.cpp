@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_repository_palette.h"
+#include "lc_repository_fusion_colors_palette.h"
 
 namespace {
     QJsonObject serializeScheme(const ColorSchemeData& scheme) {
@@ -73,7 +73,7 @@ namespace {
     }
 }
 
-QJsonObject LC_RepositoryPalette::configToJson(const PaletteConfig& config) const {
+QJsonObject LC_RepositoryFusionColorsPalette::configToJson(const PaletteConfig& config) const {
     QJsonObject root;
     root["name"] = config.name;
     root["linked_icon_style"] = config.linkedIconStyleName;
@@ -83,7 +83,7 @@ QJsonObject LC_RepositoryPalette::configToJson(const PaletteConfig& config) cons
     return root;
 }
 
-bool LC_RepositoryPalette::configFromJson(const QJsonObject& json, PaletteConfig& config) const {
+bool LC_RepositoryFusionColorsPalette::configFromJson(const QJsonObject& json, PaletteConfig& config) const {
     config.name = json["name"].toString();
     config.linkedIconStyleName = json["linked_icon_style"].toString("Default");
     config.useThemeDefaultIcons = json["use_theme_default_icons"].toBool(false);

@@ -83,7 +83,7 @@ relative coordinates text.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QFontComboBox" name="fcbInfoFont">
+       <widget class="LC_LazyFontComboBox" name="fcbInfoFont">
         <property name="toolTip">
          <string>Informational Cursor Font
 
@@ -152,7 +152,7 @@ command prompts and action hints.</string>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Informational Cursor is overlay that displays real-time context, tool prompt and tips, and snapping details directly next to your mouse pointer inside the drawing window. There are 4 informational areas displayed around snap point.</string>
+         <string>Informational Cursor is an overlay that displays real-time context, tool prompt and tips, and snapping details directly next to your mouse pointer inside the drawing window. There are 4 informational areas displayed around snap point.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -176,7 +176,7 @@ command prompts and action hints.</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="2" column="1">
-       <widget class="QFontComboBox" name="fcbAssistantFont">
+       <widget class="LC_LazyFontComboBox" name="fcbAssistantFont">
         <property name="toolTip">
          <string>Assistant Font
 
@@ -291,6 +291,11 @@ background.</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+     <customwidget>
+         <class>LC_LazyFontComboBox</class>
+         <extends>QFontComboBox</extends>
+         <header>lc_lazy_font_combo_box.h</header>
+     </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

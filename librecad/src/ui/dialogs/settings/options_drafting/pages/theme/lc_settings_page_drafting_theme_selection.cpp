@@ -47,10 +47,6 @@ void LC_SettingsPageDraftingThemeSelection::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Colors;
 
-    bindBoolean({
-        { ui->cbShowRefPointsOnHovering, o_VisualizeHoveringRefPoints }
-    });
-
 
     bindInt({{ui->sbOverlayBoxTransparency, o_OverlayBoxTransparency}});
 

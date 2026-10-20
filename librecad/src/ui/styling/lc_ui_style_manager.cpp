@@ -31,8 +31,8 @@
 #include "lc_proxy_style.h"
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
-#include "lc_repository_metrics.h"
-#include "lc_repository_palette.h"
+#include "fusion_skin/lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_colors_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_repository_drafting_theme.h"
 #include "lc_repository_widgets.h"
@@ -40,7 +40,7 @@
 #include "lc_settings_paths.h"
 #include "lc_settings_types.h"
 #include "lc_settings_widget.h"
-#include "lc_style_metrics_utils.h"
+#include "fusion_skin/lc_style_metrics_utils.h"
 #include "lc_styling_profile_import_export_helper.h"
 #include "lc_typography_utils.h"
 #include "lc_widget_factory.h"
@@ -55,8 +55,8 @@ LC_UIStyleManager::LC_UIStyleManager(QC_ApplicationWindow* appWindow)
     m_draftingThemeRepository = std::make_unique<LC_RepositoryDraftingTheme>("");
     m_draftingMetricsRepository = std::make_unique<LC_RepositoryDraftingMetrics>("");
     m_fusionSkinsRepository = std::make_unique<LC_RepositoryFusionSkin>("");
-    m_metricsRepository = std::make_unique<LC_RepositoryMetrics>("");
-    m_paletteRepository = std::make_unique<LC_RepositoryPalette>("");
+    m_metricsRepository = std::make_unique<LC_RepositoryFusionMetrics>("");
+    m_paletteRepository = std::make_unique<LC_RepositoryFusionColorsPalette>("");
     m_widgetsRepository = std::make_unique<LC_RepositoryWidgets>("");
 }
 
@@ -122,11 +122,11 @@ void LC_UIStyleManager::setStyleAllowed(bool allowed) {
 }
 
 void LC_UIStyleManager::setActiveStyle(const QString& style) {
-    CFG_AppStyling::o_Style = style;
+    CFG_AppStyling::o_ActiveStyleEngine = style;
 }
 
 QString LC_UIStyleManager::getActiveStyle() const {
-    return CFG_AppStyling::o_Style;
+    return CFG_AppStyling::o_ActiveStyleEngine;
 }
 
 ThemeModeOverride LC_UIStyleManager::getThemeModeOverride() const {

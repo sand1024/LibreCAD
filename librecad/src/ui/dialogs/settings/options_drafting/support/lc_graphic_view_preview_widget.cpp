@@ -47,6 +47,91 @@
 #include "rs_preview.h"
 #include "rs_selection.h"
 
+namespace {
+    class PreviewSnapConfigProvider : public LC_CurrentSnapConfigProviderInterface {
+    public:
+        PreviewSnapConfigProvider() {
+            m_snapMode.snapCenter = true;
+            m_snapMode.snapIntersection = true;
+            m_snapMode.snapEndpoint = true;
+            m_snapMode.snapDistance = true;
+            m_snapMode.snapMiddle = true;
+            m_snapMode.snapOnEntity = true;
+            m_snapMode.snapGrid = true;
+            m_snapMode.snapVisual = true;
+        };
+
+        ~PreviewSnapConfigProvider() override = default;
+
+        double getAngleStep() override {
+            const int stepType = CFG_Defaults::o_AngleSnapStep;
+            double snapStepDegrees;
+            switch (stepType) {
+                case 0:
+                    snapStepDegrees = 1.0;
+                    break;
+                case 1:
+                    snapStepDegrees = 3.0;
+                    break;
+                case 2:
+                    snapStepDegrees = 5.0;
+                    break;
+                case 3:
+                    snapStepDegrees = 10.0;
+                    break;
+                case 4:
+                    snapStepDegrees = 15.0;
+                    break;
+                case 5:
+                    snapStepDegrees = 18.0;
+                    break;
+                case 6:
+                    snapStepDegrees = 22.5;
+                    break;
+                case 7:
+                    snapStepDegrees = 30.0;
+                    break;
+                case 8:
+                    snapStepDegrees = 45.0;
+                    break;
+                case 9:
+                    snapStepDegrees = 90.0;
+                    break;
+                default:
+                    snapStepDegrees = 15.0;
+                    break;
+            }
+            double result = RS_Math::deg2rad(snapStepDegrees);
+            return result;
+        }
+
+        RS_SnapMode* getSnapMode() override {
+            return &m_snapMode;
+        }
+
+        double getSnapDistance() override {
+            return 10.0;
+        };
+
+        int getSnapMiddlePoints() override {
+            return 1;
+        };
+
+        RS_Vector getRelativeZero() override {
+            return RS_Vector(20, 10);
+        };
+
+    private:
+        RS_SnapMode m_snapMode;
+    };
+
+    class PreviewVisualSnapSolutionSolver : public LC_VisualSnapSolutionSolverBase {
+    public:
+        PreviewVisualSnapSolutionSolver(PreviewSnapConfigProvider* configProvider, LC_VisualSnapOptions* options) :
+            LC_VisualSnapSolutionSolverBase(configProvider, options) {}
+    };
+}
+
 LC_GraphicViewPreviewWidget::LC_GraphicViewPreviewWidget(QWidget* parent) : QWidget(parent),
                                                                             m_overlayBoxOptions{std::make_unique<LC_OverlayBoxOptions>()},
                                                                             m_visualSnapOptions{std::make_unique<LC_VisualSnapOptions>()},
@@ -142,7 +227,7 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
         updateGrid(CFG_Grid::o_GridType);
     }
     else if (m_currentPageTag == PAGE_DRAFTING_METRICS_MARKERS) {
-        m_previewView->redraw(RS2::RedrawAll, true);
+
     }
     else if (m_currentPageTag == PAGE_DRAFTING_METRICS_SNAPPING) {
         previewSnapIndicator(true);
@@ -334,7 +419,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
     }
     m_previewView->setUpdatesEnabled(true);
     m_previewView->redraw(RS2::RedrawAll, true);
-    QCoreApplication::processEvents();
+    // QCoreApplication::processEvents();
 }
 
 void LC_GraphicViewPreviewWidget::updatePreviewForContentCategory(const QString& tag) {
@@ -466,13 +551,13 @@ void LC_GraphicViewPreviewWidget::preparePreviewPreview() const {
 
     if (CFG_Appearance::o_VisualizePreviewRefPoints) {
         auto* point = new LC_RefPoint(this->m_preview.get(), RS_Vector(50, 30), m_refPointSize, m_refPointMode);
+        point->setHighlighted(true);
         m_preview->addEntity(point);
 
         auto* refLine = new LC_RefLine(this->m_preview.get(), RS_Vector(20, 10), RS_Vector(50, 30));
         m_preview->addEntity(refLine);
 
         auto* pointSelected = new LC_RefPoint(this->m_preview.get(), RS_Vector(20, 10), m_refPointSize, m_refPointMode);
-        pointSelected->setHighlighted(true);
         m_preview->addEntity(pointSelected);
     }
 
@@ -503,90 +588,7 @@ void LC_GraphicViewPreviewWidget::previewSnapVisual() {
     m_preview->addReferenceEntitiesToContainer(container);
 }
 
-namespace {
-    class PreviewSnapConfigProvider : public LC_CurrentSnapConfigProviderInterface {
-    public:
-        PreviewSnapConfigProvider() {
-            m_snapMode.snapCenter = true;
-            m_snapMode.snapIntersection = true;
-            m_snapMode.snapEndpoint = true;
-            m_snapMode.snapDistance = true;
-            m_snapMode.snapMiddle = true;
-            m_snapMode.snapOnEntity = true;
-            m_snapMode.snapGrid = true;
-            m_snapMode.snapVisual = true;
-        };
 
-        ~PreviewSnapConfigProvider() override = default;
-
-        double getAngleStep() override {
-            const int stepType = CFG_Defaults::o_AngleSnapStep;
-            double snapStepDegrees;
-            switch (stepType) {
-                case 0:
-                    snapStepDegrees = 1.0;
-                    break;
-                case 1:
-                    snapStepDegrees = 3.0;
-                    break;
-                case 2:
-                    snapStepDegrees = 5.0;
-                    break;
-                case 3:
-                    snapStepDegrees = 10.0;
-                    break;
-                case 4:
-                    snapStepDegrees = 15.0;
-                    break;
-                case 5:
-                    snapStepDegrees = 18.0;
-                    break;
-                case 6:
-                    snapStepDegrees = 22.5;
-                    break;
-                case 7:
-                    snapStepDegrees = 30.0;
-                    break;
-                case 8:
-                    snapStepDegrees = 45.0;
-                    break;
-                case 9:
-                    snapStepDegrees = 90.0;
-                    break;
-                default:
-                    snapStepDegrees = 15.0;
-                    break;
-            }
-            double result = RS_Math::deg2rad(snapStepDegrees);
-            return result;
-        }
-
-        RS_SnapMode* getSnapMode() override {
-            return &m_snapMode;
-        }
-
-        double getSnapDistance() override {
-            return 10.0;
-        };
-
-        int getSnapMiddlePoints() override {
-            return 1;
-        };
-
-        RS_Vector getRelativeZero() override {
-            return RS_Vector(20, 10);
-        };
-
-    private:
-        RS_SnapMode m_snapMode;
-    };
-
-    class PreviewVisualSnapSolutionSolver : public LC_VisualSnapSolutionSolverBase {
-    public:
-        PreviewVisualSnapSolutionSolver(PreviewSnapConfigProvider* configProvider, LC_VisualSnapOptions* options) :
-            LC_VisualSnapSolutionSolverBase(configProvider, options) {}
-    };
-}
 
 void LC_GraphicViewPreviewWidget::addDocumentEntityToVisualSnap(RS_Entity* entity1) const {
     const auto docEntity = static_cast<RS_Line*>(entity1);

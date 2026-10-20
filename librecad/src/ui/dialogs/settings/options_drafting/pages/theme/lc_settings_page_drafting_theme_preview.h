@@ -35,6 +35,7 @@ public:
 
 protected:
     void setupUi() override;
+    void setupBehavior() override;
     void setupBindings() override;
 
 private:

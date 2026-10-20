@@ -1053,10 +1053,10 @@ namespace InnerFactory{
                 return new RS_ActionOptionsDrawing(ctx);
             }
             case RS2::ActionOptionsDrawingGrid: {
-                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::Grid);
+                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::PAGE_GRID);
             }
             case RS2::ActionOptionsDrawingUnits: {
-                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::Units);
+                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::PAGE_UNITS);
             }
             case RS2::ActionUCSCreate: {
                 return new LC_ActionUCSCreate(ctx);

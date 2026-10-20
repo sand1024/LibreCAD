@@ -42,6 +42,9 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBehavior() {
     LC_SettingsPageBase::setupBehavior();
     enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtent);
     enableWhenChecked(ui->cbShowScrollbars, ui->cbScrollBarsDrawingExtentTooltip);
+
+    enableWhenChecked(ui->cbVisualizeHovering, ui->cbHighlightWIthLinewidthInDraft);
+    enableWhenChecked(ui->cbVisualizeHovering, ui->cbShowRefPointsOnHovering);
 }
 
 void LC_SettingsPageDraftingBehaviorGeneral::setupUi() {
@@ -66,6 +69,19 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
         {ui->cbScaleGrid, o_ScaleGrid},
         {ui->cbUnitlessGrid, o_UnitlessGrid},
         { ui->cbVisualizeHovering, o_VisualizeHovering },
-        { ui->cbHighlightWIthLinewidthInDraft, o_IgnoreDraftForHighlight }
+        { ui->cbHighlightWIthLinewidthInDraft, o_IgnoreDraftForHighlight },
+        { ui->cbShowDraftModeMarker, o_ShowDraftModeMarker },
+        { ui->cbDisplayRefPoints, o_VisualizePreviewRefPoints} ,
+        { ui->cbShowRefPointsOnHovering, o_VisualizeHoveringRefPoints},
+        { ui->cbShowUCSZeroMarker, o_ShowUCSZeroMarker },
+        { ui->cbShowWCSZeroMarker, o_ShowWCSZeroMarker },
+        { ui->cbHideRelativeZero, o_HideRelativeZero},
+        { ui->cbAnglesMarkVisible, o_AnglesBasisMarkEnabled }
     });
+
+    bindComboIndex({
+        { ui->cbAnglesBaseShowPolicy, o_AnglesBasisMarkPolicy }
+    });
+
+
 }

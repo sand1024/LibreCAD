@@ -32,7 +32,7 @@ void LC_CustomStyleHelper::loadFromSettings() {
 
     const bool allowStyle = o_AllowStyle;
     if (allowStyle) {
-        const QString style = o_Style;
+        const QString style = o_ActiveStyleEngine;
         QApplication::setStyle(QStyleFactory::create(style));
     }
 

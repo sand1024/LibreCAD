@@ -69,13 +69,17 @@ void LC_SettingsPageDraftingThemePreview::setupUi() {
     m_buttonGroup->addButton(ui->bTickCircleSquare, DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentreTick));
 }
 
+void LC_SettingsPageDraftingThemePreview::setupBehavior() {
+    connect(ui->rbRelSize, &QRadioButton::toggled, this, [this](bool) {
+      if (ui->lePointSize != nullptr) {
+          emit ui->lePointSize->textChanged(ui->lePointSize->text());
+      }
+  });
+}
+
 void LC_SettingsPageDraftingThemePreview::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Colors;
-
-    bindBoolean({
-        { ui->cbDisplayRefPoints, o_VisualizePreviewRefPoints }
-    });
 
     bind(ui->sbMaxPreview, o_MaxPreview, false);
 
@@ -85,26 +89,38 @@ void LC_SettingsPageDraftingThemePreview::setupBindings() {
         { ui->cbPreviewRefHighlightColor, ui->pb_previewRefHighlightColor, o_PreviewReferencesHighlightColor, tr("Select Active Explanatory Entity Color") }
     });
 
-    bindCustom<QWidget, QString>(m_widget, o_RefPointSize, false,
-       [this](QWidget*) {
-           bool ok;
-           double val = ui->lePointSize->text().toDouble(&ok);
-           if (!ok) { val = 2.0; }
-           if (ui->rbRelSize->isChecked()) {
-               val = -std::abs(val);
-           } else {
-               val = std::abs(val);
-           }
-           return QString::number(val);
-       },
-       [this](QWidget*, const QString& v) {
-           bool ok;
-           double val = v.toDouble(&ok);
-           if (!ok) { val = 2.0; }
-           ui->rbRelSize->setChecked(val <= 0.0);
-           ui->rbAbsSize->setChecked(val > 0.0);
-           ui->lePointSize->setText(QString::number(std::abs(val), 'g', 6));
-       });
+    bindCustom<QLineEdit, QString>(ui->lePointSize, o_RefPointSize, false,
+        &QLineEdit::textChanged,
+        [this](QLineEdit* w) {
+            bool ok = false;
+            double val = (w != nullptr) ? w->text().toDouble(&ok) : 2.0;
+            if (!ok) {
+                val = 2.0;
+            }
+            if (ui->rbRelSize != nullptr && ui->rbRelSize->isChecked()) {
+                val = -std::abs(val);
+            }
+            else {
+                val = std::abs(val);
+            }
+            return QString::number(val);
+        },
+        [this](QLineEdit* w, const QString& v) {
+            bool ok = false;
+            double val = v.toDouble(&ok);
+            if (!ok) {
+                val = 2.0;
+            }
+            if (ui->rbRelSize != nullptr) {
+                ui->rbRelSize->setChecked(val <= 0.0);
+            }
+            if (ui->rbAbsSize != nullptr) {
+                ui->rbAbsSize->setChecked(val > 0.0);
+            }
+            if (w != nullptr) {
+                w->setText(QString::number(std::abs(val), 'g', 6));
+            }
+        });
 
     bindCustom<QButtonGroup, int>(m_buttonGroup, o_RefPointType, false,
         &QButtonGroup::buttonToggled,

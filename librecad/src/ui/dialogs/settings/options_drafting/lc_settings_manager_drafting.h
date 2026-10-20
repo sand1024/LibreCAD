@@ -31,7 +31,7 @@
 class QC_ApplicationWindow;
 
 namespace LC_SettingsPagesDrafting {
-    const QString DLG_DRAFTING_PREFERENCES = "DraftingPreferences";
+    const QString DLG_DRAFTING_PREFERENCES = "DlgDraftingPreferences";
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 1. VISUAL THEME DOMAIN (Routing Key: drafting.theme)
@@ -50,12 +50,10 @@ namespace LC_SettingsPagesDrafting {
 
     // Coordinate System Markers
     const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM           = "drafting.theme.coordinate_system";
-    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ORIGIN    = "drafting.theme.coordinate_system.origin";
-    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_AXIS_LINES = "drafting.theme.coordinate_system.axis_lines";
-    const QString PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ANGLES_BASIS = "drafting.theme.coordinate_system.angles_basis";
 
     // Cursor & Indicator Visuals
     const QString PAGE_DRAFTING_THEME_SNAP_INDICATOR            = "drafting.theme.snap_indicator";
+    const QString PAGE_DRAFTING_THEME_SNAP_VISUAL               = "drafting.theme.snap_visual";
     const QString PAGE_DRAFTING_THEME_INFO_CURSOR               = "drafting.theme.info_cursor";
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -67,27 +65,29 @@ namespace LC_SettingsPagesDrafting {
     const QString PAGE_DRAFTING_METRICS_MARKERS             = "drafting.metrics.markers";
     const QString PAGE_DRAFTING_METRICS_SNAPPING            = "drafting.metrics.snapping";
     const QString PAGE_DRAFTING_METRICS_OVERLAYS            = "drafting.metrics.overlays";
+    const QString PAGE_DRAFTING_METRICS_RENDERER            = "drafting.metrics.renderer";
 
     // ─────────────────────────────────────────────────────────────────────────────
     // 3. DRAFTING BEHAVIOR (Direct Settings: No Bar, No Preview)
     // ─────────────────────────────────────────────────────────────────────────────
     const QString PAGE_DRAFTING_BEHAVIOR                    = "drafting.behavior";
 
-    const QString PAGE_DRAFTING_BEHAVIOR_NAV_GRID                    = "drafting.behavior.navigation";
-    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL                = "drafting.behavior.snap";
+    const QString PAGE_DRAFTING_BEHAVIOR_NAV_GRID           = "drafting.behavior.navigation";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL       = "drafting.behavior.snap";
 
     // Visual Snap Solver
-    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL                 = "drafting.behavior.visual_snap";
-    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL_TIMING          = "drafting.behavior.visual_snap.timing";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL         = "drafting.behavior.visual_snap";
+    const QString PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL_TIMING  = "drafting.behavior.visual_snap.timing";
 
     // Cursor Workflow
-    const QString PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR                 = "drafting.behavior.info_cursor";
-    const QString PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT             = "drafting.behavior.input_assistant";
+    const QString PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR         = "drafting.behavior.info_cursor";
+    const QString PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT     = "drafting.behavior.input_assistant";
 
     // Renderer Engine
-    const QString PAGE_DRAFTING_RENDERER                    = "drafting.behavior.renderer";
-    const QString PAGE_DRAFTING_RENDERER_TEXT_OPS           = "drafting.behavior.renderer.text_ops";
-    const QString PAGE_DRAFTING_RENDERER_ADVANCED           = "drafting.behavior.renderer.advanced";
+    const QString PAGE_DRAFTING_RENDERER_TEXT_OPS             = "drafting.behavior.renderer";
+
+    const QString PAGE_DRAFTING_PROFILES = "drafting.profiles";
+
 }
 
 class LC_SettingsManagerDrafting : public LC_SettingsManagerBase {

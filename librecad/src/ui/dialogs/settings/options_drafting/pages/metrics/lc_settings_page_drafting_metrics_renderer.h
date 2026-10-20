@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,21 +20,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_METRICS_REPOSITORY_H
-#define LC_METRICS_REPOSITORY_H
+#ifndef LC_SETTINGS_PAGE_RENDERER_ADVANCED_H
+#define LC_SETTINGS_PAGE_RENDERER_ADVANCED_H
 
-#include "lc_preset_repository_base.h"
+#include <memory>
+#include "lc_settings_page_base.h"
 
-inline const QString METRICS_EXTENSION = ".lcms";
-inline const QString METRICS_FILE_IDENTIFIER = "LibreCAD Config: Metrics";
+namespace Ui {
+    class LC_SettingsPageDraftingMetricsRenderer;
+}
 
-class LC_RepositoryMetrics : public LC_PresetRepositoryBase<StyleMetricsConfig> {
+class LC_SettingsPageDraftingMetricsRenderer : public LC_SettingsPageBase {
+    Q_OBJECT
 public:
-    explicit LC_RepositoryMetrics(const QString& configDir)
-        : LC_PresetRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {
-    }
+    explicit LC_SettingsPageDraftingMetricsRenderer(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingMetricsRenderer() override;
 
-    QJsonObject configToJson(const StyleMetricsConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const override;
+protected:
+    void setupUi() override;
+    void setupBehavior() override;
+    void setupBindings() override;
+
+private:
+    std::unique_ptr<Ui::LC_SettingsPageDraftingMetricsRenderer> ui;
 };
+
 #endif

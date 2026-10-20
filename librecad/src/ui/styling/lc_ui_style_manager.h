@@ -35,11 +35,11 @@ class LC_RepositoryWidgets;
 class LC_RepositoryDraftingTheme;
 // Forward declarations
 class QC_ApplicationWindow;
-class LC_RepositoryPalette;
+class LC_RepositoryFusionColorsPalette;
 class LC_RepositoryFusionSkin;
 class LC_RepositoryIconsStyle;
 class LC_RepositoryTypography;
-class LC_RepositoryMetrics;
+class LC_RepositoryFusionMetrics;
 class LC_StylingProfileImportExportHelper;
 class LC_CustomStyleHelper;
 class LC_IconColorsOptions;
@@ -107,11 +107,11 @@ class LC_UIStyleManager : public QObject {
     void saveIconColorsOptions(LC_IconColorsOptions& options) const;
 
     // --- Repository & Helper Accessors ---
-    LC_RepositoryPalette* getPaletteRepository() const {
+    LC_RepositoryFusionColorsPalette* getFusionColorPaletteRepository() const {
         return m_paletteRepository.get();
     }
 
-    LC_RepositoryFusionSkin* getSkinsRepository() const {
+    LC_RepositoryFusionSkin* getFusionSkinsRepository() const {
         return m_fusionSkinsRepository.get();
     }
 
@@ -123,7 +123,7 @@ class LC_UIStyleManager : public QObject {
         return m_typographyRepository.get();
     }
 
-    LC_RepositoryMetrics* getMetricsRepository() const {
+    LC_RepositoryFusionMetrics* getFusionMetricsRepository() const {
         return m_metricsRepository.get();
     }
 
@@ -131,10 +131,9 @@ class LC_UIStyleManager : public QObject {
         return m_draftingThemeRepository.get();
     }
 
-    LC_RepositoryDraftingMetrics* getDrafingMetricsRepository() const {
+    LC_RepositoryDraftingMetrics* getDraftingMetricsRepository() const {
         return m_draftingMetricsRepository.get();
     }
-
 
     LC_StylingProfileImportExportHelper* getImportExportHelper() const {
         return m_importExportHelper.get();
@@ -198,11 +197,11 @@ private:
     QPalette m_nativeSystemPalette;
 
     std::unique_ptr<LC_CustomStyleHelper> m_customStyleHelper;
-    std::unique_ptr<LC_RepositoryPalette> m_paletteRepository;
+    std::unique_ptr<LC_RepositoryFusionColorsPalette> m_paletteRepository;
     std::unique_ptr<LC_RepositoryFusionSkin> m_fusionSkinsRepository;
     std::unique_ptr<LC_RepositoryIconsStyle> m_iconStylesRepository;
     std::unique_ptr<LC_RepositoryTypography> m_typographyRepository;
-    std::unique_ptr<LC_RepositoryMetrics> m_metricsRepository;
+    std::unique_ptr<LC_RepositoryFusionMetrics> m_metricsRepository;
     std::unique_ptr<LC_RepositoryDraftingTheme> m_draftingThemeRepository;
     std::unique_ptr<LC_RepositoryDraftingMetrics> m_draftingMetricsRepository;
     std::unique_ptr<LC_StylingProfileImportExportHelper> m_importExportHelper;

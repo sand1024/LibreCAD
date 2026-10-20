@@ -27,7 +27,7 @@
 LC_PresetManagerFusionSkin::LC_PresetManagerFusionSkin(LC_UIStyleManager* styleManager)
     : LC_PresetManagerStylingBase<ControlStyleConfig, LC_RepositoryFusionSkin>(
           styleManager,
-          styleManager != nullptr ? styleManager->getSkinsRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getFusionSkinsRepository() : nullptr,
           styleManager != nullptr ? styleManager->getActiveSkin() : QString(),
           nullptr) {
     m_headerBar = std::make_unique<LC_SkinArchetypeHeaderBar>();

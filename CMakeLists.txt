@@ -995,25 +995,25 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/lc_mleader.h
      librecad/src/lib/engine/document/entities/lc_textbidi.cpp
      librecad/src/lib/engine/document/entities/lc_textbidi.h
-    librecad/src/lib/engine/document/entities/lc_textdocument.cpp
-    librecad/src/lib/engine/document/entities/lc_textdocument.h
-    librecad/src/lib/engine/document/entities/lc_textsourcecodec.cpp
-    librecad/src/lib/engine/document/entities/lc_textsourcecodec.h
-    librecad/src/lib/engine/document/entities/lc_textentitystate.cpp
-    librecad/src/lib/engine/document/entities/lc_textentitystate.h
-    librecad/src/lib/engine/document/entities/lc_textlayout.cpp
-    librecad/src/lib/engine/document/entities/lc_textlayout.h
-    librecad/src/lib/engine/document/entities/lc_textoutline.cpp
-    librecad/src/lib/engine/document/entities/lc_textoutline.h
-    librecad/src/lib/engine/document/entities/lc_textprofile.cpp
-    librecad/src/lib/engine/document/entities/lc_textprofile.h
-    librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
-    librecad/src/lib/engine/document/entities/lc_textprofilebinding.h
-    librecad/src/lib/engine/document/entities/lc_textruns.cpp
-    librecad/src/lib/engine/document/entities/lc_textruns.h
-    librecad/src/lib/engine/document/entities/lc_textshaper.cpp
-    librecad/src/lib/engine/document/entities/lc_textshaper.h
-        librecad/src/lib/engine/document/entities/rs_line.cpp
+     librecad/src/lib/engine/document/entities/lc_textdocument.cpp
+     librecad/src/lib/engine/document/entities/lc_textdocument.h
+     librecad/src/lib/engine/document/entities/lc_textsourcecodec.cpp
+     librecad/src/lib/engine/document/entities/lc_textsourcecodec.h
+     librecad/src/lib/engine/document/entities/lc_textentitystate.cpp
+     librecad/src/lib/engine/document/entities/lc_textentitystate.h
+     librecad/src/lib/engine/document/entities/lc_textlayout.cpp
+     librecad/src/lib/engine/document/entities/lc_textlayout.h
+     librecad/src/lib/engine/document/entities/lc_textoutline.cpp
+     librecad/src/lib/engine/document/entities/lc_textoutline.h
+     librecad/src/lib/engine/document/entities/lc_textprofile.cpp
+     librecad/src/lib/engine/document/entities/lc_textprofile.h
+     librecad/src/lib/engine/document/entities/lc_textprofilebinding.cpp
+     librecad/src/lib/engine/document/entities/lc_textprofilebinding.h
+     librecad/src/lib/engine/document/entities/lc_textruns.cpp
+     librecad/src/lib/engine/document/entities/lc_textruns.h
+     librecad/src/lib/engine/document/entities/lc_textshaper.cpp
+     librecad/src/lib/engine/document/entities/lc_textshaper.h
+     librecad/src/lib/engine/document/entities/rs_line.cpp
      librecad/src/lib/engine/document/entities/rs_line.h
      librecad/src/lib/engine/document/entities/rs_mtext.cpp
      librecad/src/lib/engine/document/entities/rs_mtext.h
@@ -2307,14 +2307,14 @@ set (SHARED_SOURCES
      librecad/src/lib/presets/lc_presets_index_helper.cpp
      librecad/src/lib/presets/lc_presets_index_helper.h
      librecad/src/lib/presets/lc_preset_repository_base.h
-     librecad/src/ui/styling/metrics/lc_repository_metrics.cpp
-     librecad/src/ui/styling/metrics/lc_repository_metrics.h
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_metrics.cpp
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_metrics.h
      librecad/src/ui/styling/typography/lc_repository_typography.cpp
      librecad/src/ui/styling/typography/lc_repository_typography.h
      librecad/src/ui/styling/typography/lc_typography_utils.cpp
      librecad/src/ui/styling/typography/lc_typography_utils.h
-     librecad/src/ui/styling/metrics/lc_style_metrics_utils.cpp
-     librecad/src/ui/styling/metrics/lc_style_metrics_utils.h
+     librecad/src/ui/styling/fusion_skin/lc_style_metrics_utils.cpp
+     librecad/src/ui/styling/fusion_skin/lc_style_metrics_utils.h
      librecad/src/ui/styling/support/lc_styling_profile_import_export_helper.cpp
      librecad/src/ui/styling/support/lc_styling_profile_import_export_helper.h
      #     librecad/src/ui/not_used/lc_style_editor_interface.h
@@ -2435,10 +2435,6 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_preview.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_preview.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_angles_basis.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_angles_basis.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_axis_lines.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_axis_lines.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.h
@@ -2449,6 +2445,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_visual.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_visual.cpp
      librecad/src/lib/engine/settings/lc_setting.h
      librecad/src/settings/lc_settings_app_styling.h
      librecad/src/settings/lc_settings_startup.h
@@ -2565,8 +2563,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.cpp
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.h
      librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.h
-     librecad/src/ui/styling/fusion_skin/lc_repository_palette.cpp
-     librecad/src/ui/styling/fusion_skin/lc_repository_palette.h
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_colors_palette.cpp
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_colors_palette.h
      librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.cpp
      librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.h
      librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.cpp
@@ -2712,10 +2710,16 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_info_cursor.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_indicator.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_indicator.h
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_advanced.cpp
-     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_advanced.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_renderer.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_renderer.h
      librecad/src/ui/dialogs/settings/options_drafting/managers/lc_drafting_metrics_defaults.cpp
      librecad/src/ui/dialogs/settings/options_drafting/managers/lc_drafting_metrics_defaults.h
+     librecad/src/ui/components/comboboxes/lc_lazy_font_combo_box.cpp
+     librecad/src/ui/components/comboboxes/lc_lazy_font_combo_box.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.h
+     librecad/src/ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.h
 )
 
 set (MUPARSER_SOURCES

@@ -28,7 +28,7 @@
 #include "ui_lc_settings_page_drafting_theme_coordinate_system_origin.h"
 
 LC_SettingsPageDraftingThemeCoordinateSystemOrigin::LC_SettingsPageDraftingThemeCoordinateSystemOrigin(QObject* parent)
-    : LC_SettingsPageBase(tr("Origin"),
+    : LC_SettingsPageBase(tr("Coordinates System"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeCoordinateSystemOrigin>()) {
@@ -41,21 +41,37 @@ void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupUi() {
     ui->setupUi(m_widget);
 }
 
+
+void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupBehavior() {
+    connect(ui->cbGridExtendAxisLines, &QCheckBox::toggled, this, [this](bool checked) {
+        ui->cbXAxisAreas->setEnabled(checked);
+        ui->cbYAxisAreas->setEnabled(checked);
+    });
+}
+
 void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Colors;
 
-    bindBoolean({
-        { ui->cbShowUCSZeroMarker, o_ShowUCSZeroMarker },
-        { ui->cbShowWCSZeroMarker, o_ShowWCSZeroMarker },
-        { ui->cbHideRelativeZero, o_HideRelativeZero }
-    });
 
     bindComboText({
         { ui->fcbUCSFont, o_ZeroMarkerFontName }
     });
 
+    bindBoolean({
+        { ui->cbGridExtendAxisLines, o_ExtendAxisLines }
+    });
+
+    bindComboIndex({
+        { ui->cbXAxisAreas, o_ExtendModeXAxis },
+        { ui->cbYAxisAreas, o_ExtendModeYAxis }
+    });
+
     bindColor({
+        { ui->cbAxisXColor, ui->pb_axis_X, o_XAxisColor, tr("Select X-Axis Color") },
+        { ui->cbAxisYColor, ui->pb_axis_Y, o_YAxisColor, tr("Select Y-Axis Color") },
+        { ui->cbAnglesMarkColorDirection, ui->pbAnglesMarkDirection, o_AnglesBasisDirectionIndicatorColor, tr("Select Arrow Direction Color") },
+        { ui->cbAnglesMarkColorAngleRay, ui->pbAnglesMarkAngleRay, o_AnglesBasisAngleRayColor, tr("Select Base Angle Ray Color") },
         { ui->cbRelativeZeroColor, ui->pb_relativeZeroColor, o_RelativeZeroColor, tr("Select Relative Zero Color") }
     });
 }

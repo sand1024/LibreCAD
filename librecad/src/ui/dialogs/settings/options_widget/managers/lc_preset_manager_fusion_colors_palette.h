@@ -25,9 +25,9 @@
 #include "lc_palette_color_utils.h"
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_manager_styling_base.h"
-#include "lc_repository_palette.h"
+#include "lc_repository_fusion_colors_palette.h"
 
-class LC_PresetManagerFusionColorsPalette : public LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryPalette> {
+class LC_PresetManagerFusionColorsPalette : public LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryFusionColorsPalette> {
     Q_OBJECT
 public:
     explicit LC_PresetManagerFusionColorsPalette(LC_UIStyleManager* styleManager);

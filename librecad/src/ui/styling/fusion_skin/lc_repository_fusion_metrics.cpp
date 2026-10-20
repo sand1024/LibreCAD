@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,9 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_repository_metrics.h"
+#include "lc_repository_fusion_metrics.h"
 
-QJsonObject LC_RepositoryMetrics::configToJson(const StyleMetricsConfig& config) const {
+QJsonObject LC_RepositoryFusionMetrics::configToJson(const StyleMetricsConfig& config) const {
     QJsonObject root;
 
     root["scroll_bar_width"] = config.scrollBarWidth;
@@ -89,7 +90,7 @@ QJsonObject LC_RepositoryMetrics::configToJson(const StyleMetricsConfig& config)
     return root;
 }
 
-bool LC_RepositoryMetrics::configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const {
+bool LC_RepositoryFusionMetrics::configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const {
     config.scrollBarWidth = json["scroll_bar_width"].toInt(12);
     config.treeIndentation = json["tree_indentation"].toInt(12);
     config.buttonPadding = json["button_padding"].toInt(5);

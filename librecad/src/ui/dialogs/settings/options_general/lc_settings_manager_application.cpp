@@ -58,6 +58,7 @@ void LC_SettingsManagerApplication::initialize(QC_ApplicationWindow* appWindow) 
         { PAGE_APP, "", index(QObject::tr("Application"),
             QObject::tr("Configure general application settings, defaults, workspace "
                         "profiles, paths, and update preferences.")) },
+        { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>() },
         { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageProgramDefaults>() },
         { PAGE_APP_DEFAULTS, PAGE_APP, page<LC_SettingsPageDrawingDefaults>() },
         { PAGE_APP_AUTOSAVE, PAGE_APP, page<LC_SettingsPageAutosave>() },
@@ -67,7 +68,6 @@ void LC_SettingsManagerApplication::initialize(QC_ApplicationWindow* appWindow) 
         { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>() },
         { PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>() },
         { PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>() },
-        { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>() },
         { PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>() }
     };
 

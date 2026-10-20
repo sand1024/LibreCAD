@@ -172,7 +172,7 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
 
 
 bool LC_SettingsManagerStyling::isFusionGated() {
-    return !(CFG_AppStyling::o_AllowStyle.get() && CFG_AppStyling::o_Style.get() == "Fusion");
+    return !(CFG_AppStyling::o_AllowStyle.get() && CFG_AppStyling::o_ActiveStyleEngine.get() == "Fusion");
 }
 
 QString LC_SettingsManagerStyling::fusionGatedIcon()  {
@@ -187,9 +187,9 @@ QString LC_SettingsManagerStyling::fusionGatedMessage(const QString& domainName)
                        domainName);
     }
     return domainName.isEmpty()
-               ? QObject::tr("Fusion customization requires the 'Fusion' style (currently '%1').").arg(CFG_AppStyling::o_Style.get())
+               ? QObject::tr("Fusion customization requires the 'Fusion' style (currently '%1').").arg(CFG_AppStyling::o_ActiveStyleEngine.get())
                : QObject::tr("%1 customization requires the 'Fusion' style (currently '%2').").arg(
-                   domainName, CFG_AppStyling::o_Style.get());
+                   domainName, CFG_AppStyling::o_ActiveStyleEngine.get());
 }
 
 QString LC_SettingsManagerStyling::fusionGatedActionText() {
@@ -198,7 +198,7 @@ QString LC_SettingsManagerStyling::fusionGatedActionText() {
 
 void LC_SettingsManagerStyling::enableFusionStyling(LC_UIStyleManager* styleMgr) {
     CFG_AppStyling::o_AllowStyle.set(true);
-    CFG_AppStyling::o_Style.set("Fusion");
+    CFG_AppStyling::o_ActiveStyleEngine.set("Fusion");
 
     auto* mgr = styleMgr
                     ? styleMgr

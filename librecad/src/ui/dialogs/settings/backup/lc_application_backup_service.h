@@ -47,8 +47,8 @@ public:
 
 private:
     static QString makeUniquePresetName(const QString& baseName, const QStringList& existingNames);
-    static QJsonObject exportPortableSettings();
-    static void importPortableSettings(const QJsonObject& groupsObj);
+    static QJsonObject exportPortableSettings(const QStringList& groups);
+    static void importPortableSettings(const QJsonObject& groupsObj, const QStringList& allowedGroups);
 
     QC_ApplicationWindow* m_appWin{nullptr};
 };

@@ -32,18 +32,17 @@
 #include <QGroupBox>
 #include <QStatusBar>
 
-#include "lc_caddockwidget.h"
 #include "lc_preset_manager_icons_style.h"
 #include "lc_proxy_style.h"
 #include "lc_repository_fusion_skin.h"
-#include "lc_repository_metrics.h"
-#include "lc_repository_palette.h"
+#include "../../../../styling/fusion_skin/lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_colors_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_setting.h"
 #include "lc_settings_colors_semantics.h"
 #include "lc_settings_page_interface.h"
 #include "lc_skin_preview_window.h"
-#include "lc_style_metrics_utils.h"
+#include "../../../../styling/fusion_skin/lc_style_metrics_utils.h"
 #include "lc_styling_preview_bottom_bar.h"
 #include "lc_typography_utils.h"
 #include "lc_ui_style_manager.h"
@@ -77,20 +76,20 @@ void LC_StylingPreviewController::initFromStyleManager(LC_UIStyleManager* styleM
     }
 
     const QString activePaletteKey = styleManager->getActivePalette();
-    if (styleManager->getPaletteRepository() == nullptr ||
-        !styleManager->getPaletteRepository()->loadByKey(activePaletteKey, m_state.palette)) {
+    if (styleManager->getFusionColorPaletteRepository() == nullptr ||
+        !styleManager->getFusionColorPaletteRepository()->loadByKey(activePaletteKey, m_state.palette)) {
         LC_PaletteColorUtils::initializeDefaultPalette(m_state.palette);
     }
 
     const QString activeSkinKey = styleManager->getActiveSkin();
-    if (styleManager->getSkinsRepository() == nullptr ||
-        !styleManager->getSkinsRepository()->loadByKey(activeSkinKey, m_state.skin)) {
+    if (styleManager->getFusionSkinsRepository() == nullptr ||
+        !styleManager->getFusionSkinsRepository()->loadByKey(activeSkinKey, m_state.skin)) {
         LC_PaletteColorUtils::initializeDefaultControlStyle(m_state.skin);
     }
 
     const QString activeMetricsKey = styleManager->getActiveMetrics();
-    if (styleManager->getMetricsRepository() == nullptr ||
-        !styleManager->getMetricsRepository()->loadByKey(activeMetricsKey, m_state.metrics)) {
+    if (styleManager->getFusionMetricsRepository() == nullptr ||
+        !styleManager->getFusionMetricsRepository()->loadByKey(activeMetricsKey, m_state.metrics)) {
         LC_StyleMetricsUtils::initializeDefault(m_state.metrics);
     }
 

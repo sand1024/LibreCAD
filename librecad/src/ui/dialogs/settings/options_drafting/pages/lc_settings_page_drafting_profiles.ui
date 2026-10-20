@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDraftingProfiles</class>
+ <widget class="QWidget" name="LC_SettingsPageDraftingProfiles">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>280</width>
+    <height>218</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbActiveCard">
+     <property name="title">
+      <string>Active Drafting Profile</string>
+     </property>
+     <layout class="QFormLayout" name="formActiveCard">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblThemeTitle">
+        <property name="text">
+         <string>Active Visual Theme:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblActiveTheme">
+        <property name="styleSheet">
+         <string notr="true">font-weight: bold;</string>
+        </property>
+        <property name="text">
+         <string>Default Theme</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblMetricsTitle">
+        <property name="text">
+         <string>Active Sizing Profile:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lblActiveMetrics">
+        <property name="styleSheet">
+         <string notr="true">font-weight: bold;</string>
+        </property>
+        <property name="text">
+         <string>Standard (96–120 DPI)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbExchange">
+     <property name="title">
+      <string>Consolidated Drafting Profiles (.lcdp)</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pbImportProfile">
+        <property name="toolTip">
+         <string>Import and activate a drafting profile package.</string>
+        </property>
+        <property name="text">
+         <string>Import Profile...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/save.lci</normaloff>:/icons/save.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pbExportProfile">
+        <property name="toolTip">
+         <string>Export active visual theme and viewport sizing metrics into a shareable package.</string>
+        </property>
+        <property name="text">
+         <string>Export Profile...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="lblExchangeDesc">
+        <property name="text">
+         <string>A Drafting Profile (.lcdp) bundles active visual themes and viewport sizing metrics into a single shareable package.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

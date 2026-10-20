@@ -20,29 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_RENDERER_ADVANCED_H
-#define LC_SETTINGS_PAGE_RENDERER_ADVANCED_H
+//
+// Created by sand1 on 20/10/2026.
+//
 
-#include <memory>
-#include "lc_settings_page_base.h"
-
-namespace Ui {
-    class LC_SettingsPageRendererAdvanced;
-}
-
-class LC_SettingsPageRendererAdvanced : public LC_SettingsPageBase {
-    Q_OBJECT
-public:
-    explicit LC_SettingsPageRendererAdvanced(QObject* parent = nullptr);
-    ~LC_SettingsPageRendererAdvanced() override;
-
-protected:
-    void setupUi() override;
-    void setupBehavior() override;
-    void setupBindings() override;
-
-private:
-    std::unique_ptr<Ui::LC_SettingsPageRendererAdvanced> ui;
-};
-
-#endif
+#include "lc_lazy_font_combo_box.h"

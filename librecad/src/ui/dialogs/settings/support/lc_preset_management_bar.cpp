@@ -30,6 +30,7 @@
 #include "lc_inputtextdialog.h"
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_manager_interface.h"
+#include "rs_debug.h"
 #include "ui_lc_preset_management_bar.h"
 
 LC_PresetManagementBar::LC_PresetManagementBar(QWidget* parent)
@@ -64,7 +65,17 @@ bool LC_PresetManagementBar::obtainFileName(QString& fileName, const bool forRea
         strings.exportDialogTitle, strings.presetFileFilter);
 }
 
+#define DEBUG_TIMING
+
 void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
+#    ifdef DEBUG_TIMING
+    QElapsedTimer barTimer;
+    barTimer.start();
+
+    QElapsedTimer stepTimer;
+    stepTimer.start();
+#endif
+
     m_manager = manager;
     if (m_manager == nullptr) {
         setVisible(false);
@@ -86,7 +97,11 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
     ui->btnApply->setVisible(m_manager->supportsApply());
     ui->btnImport->setVisible(m_manager->supportsImportExport());
     ui->btnExport->setVisible(m_manager->supportsImportExport());
+#    ifdef DEBUG_TIMING
+    const qint64 t_tooltips = stepTimer.restart();
+#endif
 
+    // 2. Disconnect & Reconnect
     disconnect(ui->btnSave, nullptr, nullptr, nullptr);
     disconnect(ui->btnSaveAs, nullptr, nullptr, nullptr);
     disconnect(ui->btnDelete, nullptr, nullptr, nullptr);
@@ -165,11 +180,25 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
            bindToManager(m_manager);   // Refresh list and button states
        }
    });
+#    ifdef DEBUG_TIMING
+    const qint64 t_connections = stepTimer.restart();
+#endif
 
+    // 3. Query Presets (Repository)
     const QList<QPair<QString, QString>> presets = m_manager->getAvailablePresets();
     const QString selectedKey = m_manager->getActivePresetKey();
     const QString appliedKey = m_manager->getAppliedPresetKey();
+
+#    ifdef DEBUG_TIMING
+    const qint64 t_getPresets = stepTimer.restart();
+#endif
+
+    // 4. Populate ComboBox & Font Styling
     populatePresets(presets, selectedKey, appliedKey);
+
+#    ifdef DEBUG_TIMING
+    const qint64 t_populate = stepTimer.restart();
+#    endif
 
      // 5. Setup dirty-state tracking callback
      m_manager->setChangedCallback([this](bool isDirty) {
@@ -177,7 +206,24 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
      });
 
     updateButtons();
+#    ifdef DEBUG_TIMING
+    const qint64 t_updateButtons = stepTimer.restart();
+#endif
+
     setVisible(true);
+
+#    ifdef DEBUG_TIMING
+    const qint64 t_setVisible = stepTimer.restart();
+
+    LC_ERR << "[PRESET BAR BIND DETAIL]"
+           << " Tooltips:" << t_tooltips << "ms"
+           << " | Connect:" << t_connections << "ms"
+           << " | GetPresets(Repo):" << t_getPresets << "ms"
+           << " | PopulateCombo:" << t_populate << "ms"
+           << " | UpdateButtons:" << t_updateButtons << "ms"
+           << " | SetVisible:" << t_setVisible << "ms"
+           << " | TOTAL:" << barTimer.elapsed() << "ms";
+#    endif
 }
 
 

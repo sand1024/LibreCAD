@@ -25,16 +25,16 @@
 #include "lc_dlg_checklist_selection.h"
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
-#include "lc_repository_metrics.h"
-#include "lc_repository_palette.h"
+#include "../fusion_skin/lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_colors_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_repository_widgets.h"
 
-LC_StylingProfileImportExportHelper::LC_StylingProfileImportExportHelper(LC_RepositoryPalette* paletteRepo,
+LC_StylingProfileImportExportHelper::LC_StylingProfileImportExportHelper(LC_RepositoryFusionColorsPalette* paletteRepo,
                                                                          LC_RepositoryFusionSkin* skinRepo,
                                                                          LC_RepositoryIconsStyle* iconRepo,
                                                                          LC_RepositoryTypography* typographyRepo,
-                                                                         LC_RepositoryMetrics* metricsRepo,
+                                                                         LC_RepositoryFusionMetrics* metricsRepo,
                                                                          LC_RepositoryWidgets* widgetsRepo)
     : LC_ProfileExchangeHelperBase(PROFILE_FILE_IDENTIFIER), m_paletteRepo(paletteRepo), m_skinRepo(skinRepo), m_iconRepo(iconRepo),
       m_typographyRepo(typographyRepo), m_metricsRepo(metricsRepo), m_widgetsRepo(widgetsRepo) {

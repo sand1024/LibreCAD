@@ -76,24 +76,6 @@ Color for start handle of entity</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="3">
-       <widget class="QCheckBox" name="cbShowRefPointsOnHovering">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Handle Visibility
-
-If enabled, entity handles are highlighted on hover (requires &quot;highlight entities on hover&quot; to be enabled)</string>
-        </property>
-        <property name="text">
-         <string>Show entity handles on mouse hover</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbEndHandleColor">
         <property name="sizePolicy">

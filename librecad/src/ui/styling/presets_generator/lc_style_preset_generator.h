@@ -24,11 +24,11 @@
 #include <QString>
 #include <memory>
 
-class LC_RepositoryPalette;
+class LC_RepositoryFusionColorsPalette;
 class LC_RepositoryFusionSkin;
 class LC_RepositoryIconsStyle;
 class LC_RepositoryTypography;
-class LC_RepositoryMetrics;
+class LC_RepositoryFusionMetrics;
 class LC_UIStyleManager;
 
 class LC_StylePresetGenerator {
@@ -49,11 +49,11 @@ public:
     int generateMetrics(int count);
 
 private:
-    std::unique_ptr<LC_RepositoryPalette>     m_paletteRepo;
+    std::unique_ptr<LC_RepositoryFusionColorsPalette>     m_paletteRepo;
     std::unique_ptr<LC_RepositoryFusionSkin> m_skinsRepo;
     std::unique_ptr<LC_RepositoryIconsStyle>  m_iconsRepo;
     std::unique_ptr<LC_RepositoryTypography>  m_typographyRepo;
-    std::unique_ptr<LC_RepositoryMetrics>     m_metricsRepo;
+    std::unique_ptr<LC_RepositoryFusionMetrics>     m_metricsRepo;
 };
 
 #endif

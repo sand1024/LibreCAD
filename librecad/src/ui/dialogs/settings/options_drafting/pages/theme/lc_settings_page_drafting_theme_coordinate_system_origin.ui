@@ -6,36 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
-    <height>327</height>
+    <width>515</width>
+    <height>695</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
     <widget class="QGroupBox" name="gbOriginMarkers">
      <property name="title">
-      <string>Coordinate System Zero Markers (UCS &amp; WCS)</string>
+      <string>Coordinate System Zero Markers (UCS and WCS)</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="3" column="1">
-       <widget class="QFontComboBox" name="fcbUCSFont">
+       <widget class="LC_LazyFontComboBox" name="fcbUCSFont">
         <property name="toolTip">
          <string>Origin Marker Font
 
 Font family used for the origin marker labels.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbShowUCSZeroMarker">
-        <property name="toolTip">
-         <string>UCS Marker Visibility
-
-If selected, marker for the User Coordinate System (UCS)
-will be shown in zero point of current UCS.</string>
-        </property>
-        <property name="text">
-         <string>Show UCS zero marker</string>
         </property>
        </widget>
       </item>
@@ -46,22 +33,6 @@ will be shown in zero point of current UCS.</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbShowWCSZeroMarker">
-        <property name="toolTip">
-         <string>WCS Marker Visibility
-
-If selected and ther there is custom
-User Coordinate System applied,
-the marker for World Coodinate 
-System (WCS) will be shown in zero 
-point of WCS.</string>
-        </property>
-        <property name="text">
-         <string>Show WCS zero marker</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="2">
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
@@ -69,8 +40,8 @@ point of WCS.</string>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </spacer>
@@ -117,20 +88,6 @@ Relative Zero marker.</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="3">
-       <widget class="QCheckBox" name="cbHideRelativeZero">
-        <property name="toolTip">
-         <string>Relative Point Marker Visibility
-
-If checked, relative zero crosshair marker will not be drawn. 
-Otherwise, one will be visible. Visibility of the marker does not 
-affect relative zero related operations. </string>
-        </property>
-        <property name="text">
-         <string>Hide relative zero</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="cbRelativeZeroColor">
         <property name="toolTip">
@@ -163,6 +120,300 @@ If coordinates or distances are entered as relative ones, resulting absolute coo
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_20">
+     <property name="title">
+      <string>Angles Basis Marker</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="4" column="2">
+       <widget class="LC_ColorButton" name="pbAnglesMarkAngleRay">
+        <property name="toolTip">
+         <string>Base Angle Ray Color
+
+Click to choose color for the
+base angle ray.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="LC_ColorButton" name="pbAnglesMarkDirection">
+        <property name="toolTip">
+         <string>Direction Circle
+
+Click to choose color for the 
+ angles direction circle.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorAngleRay">
+        <property name="toolTip">
+         <string>Base Angle Ray Color
+
+Color name or hexadecimal code for
+ for Base Angle baseline ray</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Angles Basis Maker is an overlay that could be drawn in zero point of the coordinate system and which displays current direction of angles (clockwise or counterclockwise), and location of Base Angle. The Base Angle (also known as the angle 0 direction) is the baseline or starting direction from which all other angles are measured and calculated.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_28">
+        <property name="text">
+         <string>Marker color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAnglesMarkColorDirection</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorDirection">
+        <property name="toolTip">
+         <string>Angles Basis Direction Color
+
+Color name or hexadecimal code for
+ the angles basis marker</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_29">
+        <property name="text">
+         <string>Base angle ray color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAnglesMarkColorAngleRay</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>By default, the base angle to point due East (horizontally to the right) and angle values increases is counter-clockwise.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_9">
+     <property name="title">
+      <string>Axis Lines</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_ax">
+      <item row="2" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbXAxisAreas">
+        <property name="toolTip">
+         <string>X-Axis Extension Mode
+
+Defines how to draw extended X axis</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Whole Area</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Positive Values Area</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Axis Lines could be drawn in the origin point of the current coordinate system and highlights X and Y axis. Both short (with fixed size) and extended (infinite size) axis lines are supported.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbYAxisAreas">
+        <property name="toolTip">
+         <string>Y-Axis Extension Mode
+
+Defines how to draw extended Y axis</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Whole Area</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Positive Values Area</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="LC_ColorButton" name="pb_axis_Y">
+        <property name="toolTip">
+         <string>Y-Axis Color
+
+Click to choose color for the 
+Y axis line.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lAxisYColor">
+        <property name="text">
+         <string>Y-axis color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAxisYColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAxisYColor">
+        <property name="toolTip">
+         <string>Y-Axis Color
+
+Color name or hexadecimal code for
+ Y axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#404040</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAxisXColor">
+        <property name="toolTip">
+         <string>X-Axis Color
+
+Color name or hexadecimal code for
+ X axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#736F6E</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lYAxisAreas">
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>Y-axis extension</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbYAxisAreas</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="LC_ColorButton" name="pb_axis_X">
+        <property name="toolTip">
+         <string>X-Axis Color
+
+Click to choose color for the
+ X axis line.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbGridExtendAxisLines">
+        <property name="toolTip">
+         <string>Extend Axis Lines
+
+If checked, axises will be inifinite lines.</string>
+        </property>
+        <property name="text">
+         <string>Extend axis lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lAxisXColor">
+        <property name="text">
+         <string>X-axis color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAxisXColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lXAxisAreas">
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>X-axis extension</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbXAxisAreas</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -182,6 +433,16 @@ If coordinates or distances are entered as relative ones, resulting absolute coo
    <class>LC_ColorButton</class>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_ContentAdjustableComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">lc_content_adjustable_combo_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_LazyFontComboBox</class>
+   <extends>QFontComboBox</extends>
+   <header>lc_lazy_font_combo_box.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

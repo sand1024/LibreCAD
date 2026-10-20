@@ -175,4 +175,14 @@ void LC_SettingsPageCustomizationProfiles::activateImportedProfile() {
         CFG_AppState::o_ActiveContextMenusScheme = m_pendingMenusKey;
         m_contextMenuProvider->loadActiveScheme();
     }
+
+    updateSummaryCard();
+}
+
+void LC_SettingsPageCustomizationProfiles::doLoadSettings() {
+    updateSummaryCard();
+}
+
+void LC_SettingsPageCustomizationProfiles::updateSummaryCard() const {
+
 }

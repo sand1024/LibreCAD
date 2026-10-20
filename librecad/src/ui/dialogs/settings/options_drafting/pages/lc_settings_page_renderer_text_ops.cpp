@@ -26,7 +26,7 @@
 #include "lc_settings_render.h"
 
 LC_SettingsPageRendererTextOps::LC_SettingsPageRendererTextOps(QObject* parent)
-    : LC_SettingsPageBase(tr("General"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Render::Group), parent)
+    : LC_SettingsPageBase(tr("Renderer"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Render::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageRendererTextOps>()) {
     setSortWeight(110);
 }

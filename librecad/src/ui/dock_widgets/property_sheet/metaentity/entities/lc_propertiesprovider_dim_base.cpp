@@ -123,7 +123,7 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
 
     if (isShowLinks()) {
         auto clickHandler = []([[maybe_unused]] RS_Dimension* entity, [[maybe_unused]]const int linkIndex) {
-            QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(LC_SettingsPagesDrawing::Dimensions);
+            QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(LC_SettingsPagesDrawing::PAGE_DIMENSIONS);
         };
         LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles.."),
                                                                        tr("Manage Styles\n\nInvokes dimension styles management UI"), "",

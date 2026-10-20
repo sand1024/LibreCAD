@@ -48,6 +48,7 @@ public:
     bool acceptsSharedPreview() override { return false; }
 
 protected:
+    void updateSummaryCard() const;
     void setupUi() override;
     QString profileFileFilter() const override;
     QString profileDefaultName() const override;
@@ -68,6 +69,7 @@ protected:
                        QString& outProfileName) override;
 
     void activateImportedProfile() override;
+    void doLoadSettings();
 
     QString profileExtension() const override { return ".lccp"; }
 

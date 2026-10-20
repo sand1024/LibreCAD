@@ -33,7 +33,7 @@ namespace CFG_AppStyling {
     inline const LC_Setting<bool> o_AllowTheme(&Group, "AllowTheme", false);
     inline const LC_Setting<bool> o_AllowStyle(&Group, "AllowStyle", false);
     inline const LC_Setting<bool> o_IgnoreIconStylingInPalette(&Group, "IgnoreIconStylingInPalette", false);
-    inline const LC_Setting<QString> o_Style(&Group, "Style", "");
+    inline const LC_Setting<QString> o_ActiveStyleEngine(&Group, "Style", "");
     inline const LC_Setting<QString> o_StyleSheet(&Group, "StyleSheet", "");
     inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
 

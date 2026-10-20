@@ -85,6 +85,7 @@ signals:
    void categoryChanged(const QString& pageId);
    void livePreviewRequested(const QString& pageId);
 protected:
+    void updateActivePageGeometry();
     void closeEvent(QCloseEvent* event) override;
     void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
     void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) override;
@@ -153,6 +154,10 @@ private:
     int m_customResultCode = 0;
     int m_savedPreviewWidth = 250;
     QString m_pendingPageIdToOpen;
+
+    LC_PresetManagerInterface* m_currentBoundPresetManager = nullptr;
+
+    bool m_isSwitchingCategory = false;
 
 };
 #endif

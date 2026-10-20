@@ -1009,7 +1009,7 @@ void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> 
                                                     tr("Opens dimension formatting and styles configuration editor."));
 
     connect(dimSettingsAction, &QAction::triggered, this, [this](bool){
-        m_appWin->changeDrawingOptions(LC_SettingsPagesDrawing::Dimensions);
+        m_appWin->changeDrawingOptions(LC_SettingsPagesDrawing::PAGE_DIMENSIONS);
     });
 }
 

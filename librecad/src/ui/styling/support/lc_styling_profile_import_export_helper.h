@@ -33,19 +33,19 @@
 
 struct LC_WidgetsConfig;
 class LC_RepositoryWidgets;
-class LC_RepositoryPalette;
+class LC_RepositoryFusionColorsPalette;
 class LC_RepositoryFusionSkin;
 class LC_RepositoryIconsStyle;
 class LC_RepositoryTypography;
-class LC_RepositoryMetrics;
+class LC_RepositoryFusionMetrics;
 
 class LC_StylingProfileImportExportHelper: public LC_ProfileExchangeHelperBase {
     public:
-    LC_StylingProfileImportExportHelper(LC_RepositoryPalette* paletteRepo,
+    LC_StylingProfileImportExportHelper(LC_RepositoryFusionColorsPalette* paletteRepo,
                                           LC_RepositoryFusionSkin* skinRepo,
                                           LC_RepositoryIconsStyle* iconRepo,
                                           LC_RepositoryTypography* typographyRepo,
-                                          LC_RepositoryMetrics* metricsRepo,
+                                          LC_RepositoryFusionMetrics* metricsRepo,
                                           LC_RepositoryWidgets* widgetsRepo);
 
     bool exportProfile(const QString& exportFilePath,
@@ -69,11 +69,11 @@ class LC_StylingProfileImportExportHelper: public LC_ProfileExchangeHelperBase {
 
 
 private:
-    LC_RepositoryPalette*     m_paletteRepo;
+    LC_RepositoryFusionColorsPalette*     m_paletteRepo;
     LC_RepositoryFusionSkin* m_skinRepo;
     LC_RepositoryIconsStyle*  m_iconRepo;
     LC_RepositoryTypography*  m_typographyRepo;
-    LC_RepositoryMetrics*      m_metricsRepo;
+    LC_RepositoryFusionMetrics*      m_metricsRepo;
     LC_RepositoryWidgets* m_widgetsRepo{nullptr};
 };
 

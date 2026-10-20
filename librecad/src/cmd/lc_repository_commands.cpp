@@ -50,17 +50,23 @@ QJsonObject LC_RepositoryCommands::configToJson(const CommandsConfig& config) co
     QJsonArray cmdArray;
     for (const auto& cmd : config.commands) {
         QJsonObject obj;
-        obj["action"] = cmd.actionName;
+        bool notEmptyCommand = false;
         if (!cmd.customCommand.isEmpty()) {
             obj["command"] = cmd.customCommand;
+            notEmptyCommand = true;
         }
         if (!cmd.customKeycode.isEmpty()) {
             obj["keycode"] = cmd.customKeycode;
+            notEmptyCommand = true;
         }
         if (!cmd.customAliases.isEmpty()) {
             obj["aliases"] = QJsonArray::fromStringList(cmd.customAliases);
+            notEmptyCommand = true;
         }
-        cmdArray.append(obj);
+        if (notEmptyCommand) {
+            obj["action"] = cmd.actionName;
+            cmdArray.append(obj);
+        }
     }
     root["commands"] = cmdArray;
 
@@ -68,15 +74,20 @@ QJsonObject LC_RepositoryCommands::configToJson(const CommandsConfig& config) co
     QJsonArray kwArray;
     for (const auto& kw : config.keywords) {
         QJsonObject obj;
-        obj["key"] = kw.key;
+        bool nonEmptyKey = false;
         if (!kw.customKeyword.isEmpty()) {
             obj["keyword"] = kw.customKeyword;
+            nonEmptyKey = true;
         }
 
         if (!kw.customAlias.isEmpty()) {
             obj["alias"] = kw.customAlias;
+            nonEmptyKey = true;
         }
-        kwArray.append(obj);
+        if (nonEmptyKey) {
+            obj["key"] = kw.key;
+            kwArray.append(obj);
+        }
     }
     root["keywords"] = kwArray;
 

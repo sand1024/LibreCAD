@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>393</width>
-    <height>445</height>
+    <width>353</width>
+    <height>432</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -116,8 +116,8 @@ and thus may be snapped will be visible.</string>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </spacer>

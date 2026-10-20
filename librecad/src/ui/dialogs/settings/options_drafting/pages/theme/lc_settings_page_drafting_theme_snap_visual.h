@@ -20,18 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_COORDINATE_SYSTEM_ANGLES_BASIS_H
-#define LC_SETTINGS_PAGE_COORDINATE_SYSTEM_ANGLES_BASIS_H
+#ifndef LC_SETTINGS_PAGE_SNAP_VISUAL_APPEARANCE_H
+#define LC_SETTINGS_PAGE_SNAP_VISUAL_APPEARANCE_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis; }
+namespace Ui { class LC_SettingsPageDraftingThemeSnapVisual; }
 
-class LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingThemeSnapVisual : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis(QObject* parent = nullptr);
-    ~LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis() override;
+    explicit LC_SettingsPageDraftingThemeSnapVisual(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingThemeSnapVisual() override;
 
 protected:
     void setupUi() override;
@@ -39,7 +39,7 @@ protected:
     void setupBindings() override;
 
 private:
-    std::unique_ptr<Ui::LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingThemeSnapVisual> ui;
 };
 
 #endif

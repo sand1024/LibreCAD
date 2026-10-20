@@ -46,14 +46,12 @@
 #include "rs_settings.h"
 
 namespace {
-namespace {
-    const QStringList PORTABLE_SETTINGS_GROUPS = {
-        "Grid", "Snap", "VisualSnap", "Render", "Colors",
-        "Appearance", "Defaults", "CADPreferences", "WindowOptions", "CommandsPromotion"
-    };
+    const QStringList PORTABLE_DRAFTING_GROUPS = {"Grid", "Snap", "VisualSnap", "Render", "Colors", "Appearance"};
+
+    const QStringList PORTABLE_APP_GROUPS = {"Defaults", "CADPreferences", "WindowOptions", "CommandsPromotion"};
 
     const QString G_STRING_LIST_START = "SL$";
-    const QString G_STRING_LIST_SEP   = "|";
+    const QString G_STRING_LIST_SEP = "|";
 
     template <typename RepoType, typename ConfigType>
     void exportRepoHelper(RepoType* repo, const QString& activeKey, const QString& inlinedKey, QJsonObject& targetObj, bool isFullScope) {
@@ -84,7 +82,8 @@ namespace {
     }
 
     template <typename RepoType, typename ConfigType>
-    void importRepoHelper(RepoType* repo, const QJsonValue& val, const std::function<QString(const QString&, const QStringList&)>& nameResolver) {
+    void importRepoHelper(RepoType* repo, const QJsonValue& val,
+                          const std::function<QString(const QString&, const QStringList&)>& nameResolver) {
         if (repo == nullptr) {
             return;
         }
@@ -109,12 +108,9 @@ namespace {
         }
     }
 }
-}
 
 LC_ApplicationBackupService::LC_ApplicationBackupService(QC_ApplicationWindow* appWin)
-    : LC_ProfileExchangeHelperBase(APPLICATION_BACKUP_FILE_IDENTIFIER)
-    , m_appWin(appWin) {
-}
+    : LC_ProfileExchangeHelperBase(APPLICATION_BACKUP_FILE_IDENTIFIER), m_appWin(appWin) {}
 
 QString LC_ApplicationBackupService::makeUniquePresetName(const QString& baseName, const QStringList& existingNames) {
     if (!existingNames.contains(baseName, Qt::CaseInsensitive)) {
@@ -131,14 +127,14 @@ QString LC_ApplicationBackupService::makeUniquePresetName(const QString& baseNam
     return candidate + "_" + QString::number(counter);
 }
 
-QJsonObject LC_ApplicationBackupService::exportPortableSettings() {
+QJsonObject LC_ApplicationBackupService::exportPortableSettings(const QStringList& groups) {
     QJsonObject groupsObj;
     QSettings* settings = RS_SETTINGS->getSettings();
     if (settings == nullptr) {
         return groupsObj;
     }
 
-    for (const QString& group : PORTABLE_SETTINGS_GROUPS) {
+    for (const QString& group : groups) {
         settings->beginGroup(group);
         QJsonObject valuesObj;
         for (const QString& key : settings->childKeys()) {
@@ -162,9 +158,9 @@ QJsonObject LC_ApplicationBackupService::exportPortableSettings() {
     return groupsObj;
 }
 
-void LC_ApplicationBackupService::importPortableSettings(const QJsonObject& groupsObj) {
+void LC_ApplicationBackupService::importPortableSettings(const QJsonObject& groupsObj, const QStringList& allowedGroups) {
     for (const QString& group : groupsObj.keys()) {
-        if (!PORTABLE_SETTINGS_GROUPS.contains(group)) {
+        if (!allowedGroups.contains(group)) {
             continue;
         }
 
@@ -174,7 +170,7 @@ void LC_ApplicationBackupService::importPortableSettings(const QJsonObject& grou
             for (const QString& key : valuesObj.keys()) {
                 const QString strVal = valuesObj.value(key).toString();
                 if (strVal.startsWith(G_STRING_LIST_START)) {
-                    QStringList parts = strVal.split(G_STRING_LIST_SEP, Qt::KeepEmptyParts);
+                    const QStringList parts = strVal.split(G_STRING_LIST_SEP, Qt::KeepEmptyParts);
                     QStringList items;
                     for (int i = 1; i < parts.size(); ++i) {
                         items.append(parts.at(i));
@@ -190,32 +186,33 @@ void LC_ApplicationBackupService::importPortableSettings(const QJsonObject& grou
     }
 }
 
+
 bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
     if (m_appWin == nullptr) {
         return false;
     }
 
     QList<LC_ChecklistChoice> choices = {
-        {"customization", tr("User Customization"),     tr("Shortcuts, aliases, toolbars, and context menus"), true, true},
-        {"viewport",      tr("Drawing Area Themes"),    tr("Visual styles and viewport color schemes"),        true, true},
-        {"styling",       tr("Application Styling"),    tr("Palettes, widget skins, icons, and typography"),    true, true},
-        {"preferences",   tr("Application Preferences"),tr("Portable snapping, grid, and rendering settings"),  true, true}
+        { "customization", tr("User Customization"),     tr("Shortcuts, aliases, navigation toolbars, and context menus"), true, true },
+        { "drafting",      tr("Drafting Environment"),   tr("Visual themes, sizing metrics, canvas grid, and snapping behavior"), true, true },
+        {"styling", tr("Application Styling"), tr("Palettes, widget skins, icons, and typography"), true, true},
+        { "preferences",   tr("Application Preferences"),tr("Program defaults, autosave, CAD preferences, and paths"), true, true }
     };
 
     QString archiveName;
     bool isFullScope = true;
-    const bool accepted = LC_DlgChecklistSelection::selectChoicesWithInputAndScope(
-        parent,
-        tr("Export Configuration"),
-        tr("Configure options and select components to package:"),
-        tr("Archive Name:"),
-        tr("LibreCAD Configuration %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd")),
-        tr("Package Scope:"),
-        tr("Full Library (All custom saved presets across repositories)"),
-        tr("Active Setup Only (Only currently active configurations)"),
-        isFullScope,
-        archiveName,
-        choices);
+    const bool accepted = LC_DlgChecklistSelection::selectChoicesWithInputAndScope(parent, tr("Export Configuration"),
+                                                                                   tr(
+                                                                                       "Configure options and select components to package:"),
+                                                                                   tr("Archive Name:"),
+                                                                                   tr("LibreCAD Configuration %1").
+                                                                                   arg(QDateTime::currentDateTime().toString("yyyy-MM-dd")),
+                                                                                   tr("Package Scope:"),
+                                                                                   tr(
+                                                                                       "Full Library (All custom saved presets across repositories)"),
+                                                                                   tr(
+                                                                                       "Active Setup Only (Only currently active configurations)"),
+                                                                                   isFullScope, archiveName, choices);
 
     if (!accepted || archiveName.trimmed().isEmpty()) {
         return false;
@@ -227,8 +224,8 @@ bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
     safeFilename.remove(QRegularExpression(R"([^a-z0-9_\-\.])"));
     safeFilename += ".lccfg";
 
-    const QString filePath = QFileDialog::getSaveFileName(
-        parent, tr("Export Configuration"), safeFilename, tr("LibreCAD Configuration (*.lccfg);;All Files (*.*)"));
+    const QString filePath = QFileDialog::getSaveFileName(parent, tr("Export Configuration"), safeFilename,
+                                                          tr("LibreCAD Configuration (*.lccfg);;All Files (*.*)"));
     if (filePath.isEmpty()) {
         return false;
     }
@@ -243,24 +240,24 @@ bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
     };
 
     QJsonObject root;
-    root["lc_file_format"]     = m_fileFormatIdentifier;
-    root["lc_file_format_version"]  = "1.0";
-    root["archive_name"]     = archiveName;
-    root["created"]          = QDateTime::currentDateTime().toString(Qt::ISODate);
-    root["scope_full"]       = isFullScope;
+    root["lc_file_format"] = m_fileFormatIdentifier;
+    root["lc_file_format_version"] = "1.0";
+    root["archive_name"] = archiveName;
+    root["created"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+    root["scope_full"] = isFullScope;
 
     QJsonObject activePointersObj;
-    activePointersObj["shortcuts"]        = CFG_AppState::o_ActiveShortcutsScheme.get();
-    activePointersObj["commands"]         = CFG_AppState::o_ActiveCommandsScheme.get();
-    activePointersObj["navigation"]       = CFG_AppState::o_ActiveNavigationLayoutScheme.get();
-    activePointersObj["context_menus"]    = CFG_AppState::o_ActiveContextMenusScheme.get();
+    activePointersObj["shortcuts"] = CFG_AppState::o_ActiveShortcutsScheme.get();
+    activePointersObj["commands"] = CFG_AppState::o_ActiveCommandsScheme.get();
+    activePointersObj["navigation"] = CFG_AppState::o_ActiveNavigationLayoutScheme.get();
+    activePointersObj["context_menus"] = CFG_AppState::o_ActiveContextMenusScheme.get();
     root["active_pointers"] = activePointersObj;
 
     // 1. Customization Repositories
     if (isChecked("customization")) {
         QJsonObject custObj;
-        auto shortcutsManager = m_appWin->getShortcutsManager();
-        auto* shortcutsRepo = shortcutsManager->getRepository();
+        auto* shortcutsManager = m_appWin->getShortcutsManager();
+        auto* shortcutsRepo = (shortcutsManager != nullptr) ? shortcutsManager->getRepository() : nullptr;
 
         auto* cmdMgr = m_appWin->getCommandManager();
         auto* cmdRepo = (cmdMgr != nullptr) ? cmdMgr->getRepository() : nullptr;
@@ -271,45 +268,71 @@ bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
         auto* ctxProvider = m_appWin->getContextMenuProvider();
         auto* menusRepo = (ctxProvider != nullptr) ? ctxProvider->getMenusRepository() : nullptr;
 
-        exportRepoHelper<LC_RepositoryKeymaps, ShortcutsConfig>(
-            shortcutsRepo, CFG_AppState::o_ActiveShortcutsScheme, "shortcuts", custObj, isFullScope);
+        exportRepoHelper<LC_RepositoryKeymaps, ShortcutsConfig>(shortcutsRepo, CFG_AppState::o_ActiveShortcutsScheme, "shortcuts", custObj,
+                                                                isFullScope);
 
-        exportRepoHelper<LC_RepositoryCommands, CommandsConfig>(
-            cmdRepo, CFG_AppState::o_ActiveCommandsScheme, "commands", custObj, isFullScope);
+        exportRepoHelper<LC_RepositoryCommands, CommandsConfig>(cmdRepo, CFG_AppState::o_ActiveCommandsScheme, "commands", custObj,
+                                                                isFullScope);
 
-        exportRepoHelper<LC_RepositoryMenuBarAndToolbars, NavigationLayoutConfig>(
-            navRepo, CFG_AppState::o_ActiveNavigationLayoutScheme, "navigation", custObj, isFullScope);
+        exportRepoHelper<LC_RepositoryMenuBarAndToolbars, NavigationLayoutConfig>(navRepo, CFG_AppState::o_ActiveNavigationLayoutScheme,
+                                                                                  "navigation", custObj, isFullScope);
 
-        exportRepoHelper<LC_RepositoryGraphicViewContextMenus, ContextMenusConfig>(
-            menusRepo, CFG_AppState::o_ActiveContextMenusScheme, "context_menus", custObj, isFullScope);
+        exportRepoHelper<LC_RepositoryGraphicViewContextMenus, ContextMenusConfig>(menusRepo, CFG_AppState::o_ActiveContextMenusScheme,
+                                                                                   "context_menus", custObj, isFullScope);
 
         root["customization"] = custObj;
     }
-    // 2. Viewport Themes
-    if (isChecked("viewport")) {
 
-        LC_RepositoryDraftingTheme* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
-        QJsonArray vpArray;
-        for (const auto& pair : vpRepo->getPresetChoices()) {
-            LC_ViewportThemeConfig cfg;
-            if (vpRepo->loadByKey(pair.second, cfg)) {
-                QJsonObject o = vpRepo->configToJson(cfg);
-                o["name"] = cfg.name;
-                vpArray.append(o);
+    // 2. Drafting Environment (Themes, Metrics, and Drafting Canvas Settings)
+    if (isChecked("drafting")) {
+        QJsonObject draftingObj;
+
+        auto uiStyleManager = m_appWin->getUiStyleManager();
+        // Visual Themes
+        auto* vpRepo = uiStyleManager->getDraftingThemeRepository();
+        if (vpRepo != nullptr) {
+            QJsonArray vpArray;
+            for (const auto& pair : vpRepo->getPresetChoices()) {
+                LC_ViewportThemeConfig cfg;
+                if (vpRepo->loadByKey(pair.second, cfg)) {
+                    QJsonObject o = vpRepo->configToJson(cfg);
+                    o["name"] = cfg.name;
+                    vpArray.append(o);
+                }
             }
+            draftingObj.insert("themes", vpArray);
         }
-        root["viewport_themes"] = vpArray;
+
+        // Viewport Metrics
+        auto* metricsRepo = uiStyleManager->getDraftingMetricsRepository();
+        if (metricsRepo != nullptr) {
+            QJsonArray metricsArray;
+            for (const auto& pair : metricsRepo->getPresetChoices()) {
+                LC_DraftingMetricsConfig cfg;
+                if (metricsRepo->loadByKey(pair.second, cfg)) {
+                    QJsonObject o = metricsRepo->configToJson(cfg);
+                    o["name"] = cfg.name;
+                    metricsArray.append(o);
+                }
+            }
+            draftingObj.insert("metrics", metricsArray);
+        }
+
+        // Drafting Behavior & Canvas Settings
+        draftingObj.insert("settings", exportPortableSettings(PORTABLE_DRAFTING_GROUPS));
+
+        root["drafting_environment"] = draftingObj;
     }
 
-    // 3. Portable Preferences
+    // 3. Application Preferences
     if (isChecked("preferences")) {
-        root["portable_preferences"] = exportPortableSettings();
+        root["application_preferences"] = exportPortableSettings(PORTABLE_APP_GROUPS);
     }
 
-    bool compressedFile = false; // fixme - sand - decide later whether it will be binary or not.
-    bool success = compressedFile ? writeJsonFileCompressed(filePath, root, 5) : writeJsonFile(filePath, root);
+    const bool compressedFile = false; // fixme - sand - decide later
+    const bool success = compressedFile ? writeJsonFileCompressed(filePath, root, 5) : writeJsonFile(filePath, root);
     if (success) {
-        QMessageBox::information(parent, tr("Congifuration Exported"),
+        QMessageBox::information(parent, tr("Configuration Exported"),
                                  tr("Application configuration '%1' has been successfully created.").arg(archiveName));
     }
     else {
@@ -339,16 +362,16 @@ bool LC_ApplicationBackupService::importBackup(QWidget* parent) {
     QList<LC_ChecklistChoice> availableChoices;
 
     if (root.contains("customization")) {
-        availableChoices.append({"customization", tr("User Customization"),
-                                 tr("Restore keymaps, aliases, toolbars, and context menus"), true, true});
+        availableChoices.append({ "customization", tr("User Customization"),
+                                 tr("Restore keymaps, aliases, navigation toolbars, and context menus"), true, true });
     }
-    if (root.contains("viewport_themes")) {
-        availableChoices.append({"viewport", tr("Drawing Area Themes"),
-                                 tr("Restore visual themes and viewport schemes"), true, true});
+    if (root.contains("drafting_environment") || root.contains("viewport_themes") || root.contains("drafting_metrics")) {
+        availableChoices.append({ "drafting", tr("Drafting Environment"),
+                                 tr("Restore visual themes, sizing metrics, and canvas behavior"), true, true });
     }
-    if (root.contains("portable_preferences")) {
-        availableChoices.append({"preferences", tr("Application Preferences"),
-                                 tr("Restore general snapping, grid, and rendering settings"), true, true});
+    if (root.contains("application_preferences") || root.contains("portable_preferences")) {
+        availableChoices.append({ "preferences", tr("Application Preferences"),
+                                 tr("Restore application defaults, autosave, and CAD preferences"), true, true });
     }
 
     const QString promptMsg = tr("Backup archive '%1' contains the following categories. Select which to restore:").arg(archiveName);
@@ -365,12 +388,16 @@ bool LC_ApplicationBackupService::importBackup(QWidget* parent) {
         return false;
     };
 
-    // 1. Restore Customization Repositories with Auto-Renaming
+    auto nameResolver = [](const QString& baseName, const QStringList& existingNames) {
+        return makeUniquePresetName(baseName, existingNames);
+    };
+
+    // 1. Restore Customization Repositories
     if (isSelected("customization") && root.contains("customization")) {
         const QJsonObject custObj = root.value("customization").toObject();
 
-        auto shortcutsManager = m_appWin->getShortcutsManager();
-        auto* shortcutsRepo = shortcutsManager->getRepository();
+        auto* shortcutsManager = m_appWin->getShortcutsManager();
+        auto* shortcutsRepo = (shortcutsManager != nullptr) ? shortcutsManager->getRepository() : nullptr;
 
         auto* cmdMgr = m_appWin->getCommandManager();
         auto* cmdRepo = (cmdMgr != nullptr) ? cmdMgr->getRepository() : nullptr;
@@ -380,10 +407,6 @@ bool LC_ApplicationBackupService::importBackup(QWidget* parent) {
 
         auto* ctxProvider = m_appWin->getContextMenuProvider();
         auto* menusRepo = (ctxProvider != nullptr) ? ctxProvider->getMenusRepository() : nullptr;
-
-        auto nameResolver = [](const QString& baseName, const QStringList& existingNames) {
-            return makeUniquePresetName(baseName, existingNames);
-        };
 
         importRepoHelper<LC_RepositoryKeymaps, ShortcutsConfig>(
             shortcutsRepo, custObj.value("shortcuts"), nameResolver);
@@ -398,24 +421,78 @@ bool LC_ApplicationBackupService::importBackup(QWidget* parent) {
             menusRepo, custObj.value("context_menus"), nameResolver);
     }
 
-    // 2. Restore Viewport Themes with Auto-Renaming
-    if (isSelected("viewport") && root.contains("viewport_themes")) {
-        LC_RepositoryDraftingTheme* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
-        const QJsonArray vpArr = root.value("viewport_themes").toArray();
-        for (const auto& item : vpArr) {
-            const QJsonObject obj = item.toObject();
-            LC_ViewportThemeConfig cfg;
-            if (vpRepo->configFromJson(obj, cfg)) {
-                cfg.name = makeUniquePresetName(cfg.name, vpRepo->getAvailableNames());
-                QString outKey;
-                vpRepo->save(cfg.name, cfg, outKey);
+    // 2. Restore Drafting Environment (Themes, Metrics, Settings)
+    if (isSelected("drafting")) {
+        // Modern bundle format
+        if (root.contains("drafting_environment")) {
+            const QJsonObject draftingObj = root.value("drafting_environment").toObject();
+
+            // Themes
+            if (draftingObj.contains("themes")) {
+                auto* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
+                if (vpRepo != nullptr) {
+                    for (const auto& item : draftingObj.value("themes").toArray()) {
+                        LC_ViewportThemeConfig cfg;
+                        if (vpRepo->configFromJson(item.toObject(), cfg)) {
+                            cfg.name = makeUniquePresetName(cfg.name, vpRepo->getAvailableNames());
+                            QString outKey;
+                            vpRepo->save(cfg.name, cfg, outKey);
+                        }
+                    }
+                }
+            }
+
+            // Metrics
+            if (draftingObj.contains("metrics")) {
+                auto* metricsRepo = m_appWin->getUiStyleManager()->getDraftingMetricsRepository();
+                if (metricsRepo != nullptr) {
+                    for (const auto& item : draftingObj.value("metrics").toArray()) {
+                        LC_DraftingMetricsConfig cfg;
+                        if (metricsRepo->configFromJson(item.toObject(), cfg)) {
+                            cfg.name = makeUniquePresetName(cfg.name, metricsRepo->getAvailableNames());
+                            QString outKey;
+                            metricsRepo->save(cfg.name, cfg, outKey);
+                        }
+                    }
+                }
+            }
+
+            // Drafting Canvas Settings
+            if (draftingObj.contains("settings")) {
+                importPortableSettings(draftingObj.value("settings").toObject(), PORTABLE_DRAFTING_GROUPS);
             }
         }
+        else {
+            // Legacy archive compatibility
+            if (root.contains("viewport_themes")) {
+                auto* vpRepo = m_appWin->getUiStyleManager()->getDraftingThemeRepository();
+                if (vpRepo != nullptr) {
+                    for (const auto& item : root.value("viewport_themes").toArray()) {
+                        LC_ViewportThemeConfig cfg;
+                        if (vpRepo->configFromJson(item.toObject(), cfg)) {
+                            cfg.name = makeUniquePresetName(cfg.name, vpRepo->getAvailableNames());
+                            QString outKey;
+                            vpRepo->save(cfg.name, cfg, outKey);
+                        }
+                    }
+                }
+            }
+            if (root.contains("portable_preferences")) {
+                importPortableSettings(root.value("portable_preferences").toObject(), PORTABLE_DRAFTING_GROUPS);
+            }
+        }
+
+        RS_SETTINGS->emitOptionsChanged();
     }
 
-    // 3. Restore Portable Preferences
-    if (isSelected("preferences") && root.contains("portable_preferences")) {
-        importPortableSettings(root.value("portable_preferences").toObject());
+    // 3. Restore Application Preferences
+    if (isSelected("preferences")) {
+        if (root.contains("application_preferences")) {
+            importPortableSettings(root.value("application_preferences").toObject(), PORTABLE_APP_GROUPS);
+        }
+        else if (root.contains("portable_preferences")) {
+            importPortableSettings(root.value("portable_preferences").toObject(), PORTABLE_APP_GROUPS);
+        }
         RS_SETTINGS->emitOptionsChanged();
     }
 

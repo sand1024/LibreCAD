@@ -28,13 +28,13 @@
 inline const QString PALETTE_EXTENSION = ".lcpl";
 inline const QString PALETTE_FILE_IDENTIFIER = "LibreCAD Config: Colors Palette";
 
-class LC_RepositoryPalette : public LC_PresetRepositoryBase<PaletteConfig> {
+class LC_RepositoryFusionColorsPalette : public LC_PresetRepositoryBase<PaletteConfig> {
 public:
-    explicit LC_RepositoryPalette(const QString& configDir)
+    explicit LC_RepositoryFusionColorsPalette(const QString& configDir)
         : LC_PresetRepositoryBase<PaletteConfig>(configDir, PALETTE_EXTENSION, PALETTE_FILE_IDENTIFIER, "palettes_index.lcix") {
     }
 
-    ~LC_RepositoryPalette() override = default;
+    ~LC_RepositoryFusionColorsPalette() override = default;
 
     QJsonObject configToJson(const PaletteConfig& config) const override;
     bool configFromJson(const QJsonObject& json, PaletteConfig& config) const override;

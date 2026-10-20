@@ -42,18 +42,11 @@ void LC_SettingsDraftingThemeMainColors::setupUi() {
 }
 
 void LC_SettingsDraftingThemeMainColors::setupBehavior() {
-    enableWhenChecked(ui->cbShowDraftModeMarker, ui->cbDraftModeMarkerColor);
-    enableWhenChecked(ui->cbShowDraftModeMarker, ui->pbDraftModeColor);
-    enableWhenChecked(ui->cbShowDraftModeMarker, ui->fcbDraftModeFont);
 }
 
 void LC_SettingsDraftingThemeMainColors::setupBindings() {
     using namespace CFG_Colors;
     using namespace CFG_Appearance;
-
-    bindBoolean({
-        { ui->cbShowDraftModeMarker, o_ShowDraftModeMarker }
-    });
 
     bindComboText({
         { ui->fcbDraftModeFont, o_DraftMarkerFontName }

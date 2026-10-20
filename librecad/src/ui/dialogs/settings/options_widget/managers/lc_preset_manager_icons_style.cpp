@@ -37,7 +37,7 @@ LC_PresetManagerIconsStyle::LC_PresetManagerIconsStyle(LC_UIStyleManager* styleM
 
 LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
     LC_PresetManagerUIStrings s;
-    s.defaultPresetName = tr("Default (Classic)");
+    s.defaultPresetName = tr("Default Classic");
     s.labelText = tr("Icons style preset:");
     s.selectToolTip = tr("Select a saved custom icon color style or load system defaults.");
     s.saveToolTip = tr("Save changes directly to active icon style preset.");

@@ -105,7 +105,10 @@ LC_DlgChecklistSelection::LC_DlgChecklistSelection(QWidget* parent,
     btnRowLayout->addWidget(btnSelectAll);
     btnRowLayout->addWidget(btnDeselectAll);
     btnRowLayout->addStretch();
+
     mainLayout->addLayout(btnRowLayout);
+
+    mainLayout->addStretch();
 
     m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

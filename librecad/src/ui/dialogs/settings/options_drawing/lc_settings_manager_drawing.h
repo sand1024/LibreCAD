@@ -25,23 +25,26 @@
 
 #include "lc_settings_registry.h"
 #include "lc_document_settings_backend.h"
+#include "lc_settings_manager_base.h"
 
 // Forward declarations of pages
 class RS_Graphic;
 
 namespace LC_SettingsPagesDrawing {
-    inline const QString Paper      = "drawing.paper";
-    inline const QString Units      = "drawing.units";
-    inline const QString Grid       = "drawing.grid";
-    inline const QString Dimensions = "drawing.dimensions";
-    inline const QString Points     = "drawing.points";
-    inline const QString Splines    = "drawing.splines";
-    inline const QString Meta       = "drawing.meta";
-    inline const QString UserData   = "drawing.user_data";
-    inline const QString Variables  = "drawing.variables";
+    inline const QString DLG_DOCUMENT_PREFERENCES = "DlgDocumentPreferences";
+
+    inline const QString PAGE_PAPER      = "drawing.paper";
+    inline const QString PAGE_UNITS      = "drawing.units";
+    inline const QString PAGE_GRID       = "drawing.grid";
+    inline const QString PAGE_DIMENSIONS = "drawing.dimensions";
+    inline const QString PAGE_POINTS     = "drawing.points";
+    inline const QString PAGE_SPLINES    = "drawing.splines";
+    inline const QString PAGE_META       = "drawing.meta";
+    inline const QString PAGE_USER_DATA  = "drawing.user_data";
+    inline const QString PAGE_VARIABLES  = "drawing.variables";
 }
 
-class LC_SettingsManagerDrawing {
+class LC_SettingsManagerDrawing: public LC_SettingsManagerBase {
 public:
     static void initialize();
     static bool show(RS_Graphic* graphic, QWidget* parent, const QString& initialPage = "");

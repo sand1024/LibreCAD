@@ -65,6 +65,8 @@ protected:
 
 private slots:
     void onLaunchGeneratorClicked();
+    void doLoadSettings();
+    void updateSummaryCard() const;
 
 private:
     std::unique_ptr<Ui::LC_SettingsPageStylingProfiles> ui;

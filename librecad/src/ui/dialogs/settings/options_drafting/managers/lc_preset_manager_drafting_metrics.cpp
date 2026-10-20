@@ -34,6 +34,7 @@
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
 #include "lc_settings_relative_position_assistant.h"
+#include "lc_settings_render.h"
 #include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
 #include "rs_settings.h"
@@ -60,6 +61,7 @@ namespace {
         using namespace CFG_VisualSnap;
         using namespace CFG_InfoOverlayCursor;
         using namespace CFG_RelativePositionAssistant;
+        using namespace CFG_Render;
 
         mapMetrics({
             // Interactive Handles & Markers
@@ -96,7 +98,20 @@ namespace {
             // Overlay Fonts & Offsets
             o_FontSize,
             o_OffsetFromCursor,
-            o_AssistantFontSize
+            o_AssistantFontSize,
+
+             // renderer
+            o_CircleRenderAsArcs,
+            o_ArcRenderInterpolate,
+            o_ArcRenderInterpolateSegmentFixed,
+            o_ArcRenderInterpolateSegmentAngle,
+            o_ArcRenderInterpolateSegmentSagitta,
+            o_MinRenderableTextHeightPx,
+            o_MinLineLen,
+            o_MinArcRadius,
+            o_MinCircleRadius,
+            o_MinEllipseMajor,
+            o_MinEllipseMinor
         });
     }
 

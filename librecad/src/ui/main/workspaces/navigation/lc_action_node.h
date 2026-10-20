@@ -29,9 +29,9 @@
 #include "lc_menu_activator.h"
 
 enum class ActionNodeType {
-    Action,    // Clickable action
-    Separator, // Visual divider line
-    Group      // Flyout group in toolbars or sub-menu in menus
+    Action    = 0,    // Clickable action
+    Separator = 1,    // Visual divider line
+    Group     = 2     // Flyout group in toolbars or sub-menu in menus
 };
 
 enum class ToolButtonPopupMode {

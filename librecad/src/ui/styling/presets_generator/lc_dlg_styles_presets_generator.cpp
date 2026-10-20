@@ -26,7 +26,7 @@
 
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
-#include "lc_repository_palette.h"
+#include "lc_repository_fusion_colors_palette.h"
 #include "lc_style_preset_generator.h"
 #include "lc_ui_style_manager.h"
 
@@ -52,7 +52,7 @@ LC_DlgStylesPresetsGenerator::LC_DlgStylesPresetsGenerator(QWidget* parent, LC_U
    });
 
     ui->leStylesDir->setText(m_styleManager->getIconsStyleRepository()->getConfigDir());
-    ui->leSkinsDir->setText(m_styleManager->getSkinsRepository()->getConfigDir());
+    ui->leSkinsDir->setText(m_styleManager->getFusionSkinsRepository()->getConfigDir());
 
     connect(ui->pbGenerateSkins, &QPushButton::clicked, this, &LC_DlgStylesPresetsGenerator::generateSkins);
     connect(ui->pbGenerateStyles, &QPushButton::clicked, this, &LC_DlgStylesPresetsGenerator::generateIconStyles);
@@ -104,11 +104,11 @@ void LC_DlgStylesPresetsGenerator::generateSkins(bool checked) {
             .arg(generatedPalettes),
         QMessageBox::Ok);
 
-    if (m_styleManager->getPaletteRepository() != nullptr) {
-        m_styleManager->getPaletteRepository()->initializeIndex();
+    if (m_styleManager->getFusionColorPaletteRepository() != nullptr) {
+        m_styleManager->getFusionColorPaletteRepository()->initializeIndex();
     }
-    if (m_styleManager->getSkinsRepository() != nullptr) {
-        m_styleManager->getSkinsRepository()->initializeIndex();
+    if (m_styleManager->getFusionSkinsRepository() != nullptr) {
+        m_styleManager->getFusionSkinsRepository()->initializeIndex();
     }
 }
 

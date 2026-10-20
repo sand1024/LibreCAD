@@ -27,10 +27,11 @@
 #include "lc_dlg_styles_presets_generator.h"
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
-#include "lc_repository_metrics.h"
-#include "lc_repository_palette.h"
+#include "lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_colors_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_repository_widgets.h"
+#include "lc_settings_app_styling.h"
 #include "lc_styling_profile_import_export_helper.h"
 #include "lc_ui_style_manager.h"
 #include "lc_widgets_config.h"
@@ -137,12 +138,12 @@ bool LC_SettingsPageStylingProfiles::executeExport(const QString& filePath,
     };
 
     PaletteConfig palette;
-    const bool hasPalette = isChecked("palette") && m_styleManager->getPaletteRepository() &&
-                            m_styleManager->getPaletteRepository()->loadByKey(m_styleManager->getActivePalette(), palette);
+    const bool hasPalette = isChecked("palette") && m_styleManager->getFusionColorPaletteRepository() &&
+                            m_styleManager->getFusionColorPaletteRepository()->loadByKey(m_styleManager->getActivePalette(), palette);
 
     ControlStyleConfig skin;
-    const bool hasSkin = isChecked("skin") && m_styleManager->getSkinsRepository() &&
-                         m_styleManager->getSkinsRepository()->loadByKey(m_styleManager->getActiveSkin(), skin);
+    const bool hasSkin = isChecked("skin") && m_styleManager->getFusionSkinsRepository() &&
+                         m_styleManager->getFusionSkinsRepository()->loadByKey(m_styleManager->getActiveSkin(), skin);
 
     IconStyleConfig icon;
     const bool hasIcon = isChecked("icon") && m_styleManager->getIconsStyleRepository() &&
@@ -153,8 +154,8 @@ bool LC_SettingsPageStylingProfiles::executeExport(const QString& filePath,
                          m_styleManager->getTypographyRepository()->loadByKey(m_styleManager->getActiveTypography(), font);
 
     StyleMetricsConfig metrics;
-    const bool hasMetrics = isChecked("metrics") && m_styleManager->getMetricsRepository() &&
-                            m_styleManager->getMetricsRepository()->loadByKey(m_styleManager->getActiveMetrics(), metrics);
+    const bool hasMetrics = isChecked("metrics") && m_styleManager->getFusionMetricsRepository() &&
+                            m_styleManager->getFusionMetricsRepository()->loadByKey(m_styleManager->getActiveMetrics(), metrics);
 
     LC_WidgetsConfig widgets;
     const bool hasWidgets = isChecked("widgets") && m_styleManager->getWidgetsRepository() &&
@@ -219,8 +220,8 @@ void LC_SettingsPageStylingProfiles::activateImportedProfile() {
         m_styleManager->setActiveWidgetsScheme(m_pendingWidgetsName);
     }
 
-
     m_styleManager->applyActiveStyleAndTheme();
+    updateSummaryCard();
 }
 
 void LC_SettingsPageStylingProfiles::onLaunchGeneratorClicked() {
@@ -229,4 +230,89 @@ void LC_SettingsPageStylingProfiles::onLaunchGeneratorClicked() {
     }
     LC_DlgStylesPresetsGenerator dlg(getEditingWidget(), m_styleManager);
     dlg.exec();
+}
+
+
+void LC_SettingsPageStylingProfiles::doLoadSettings() {
+    updateSummaryCard();
+}
+
+void LC_SettingsPageStylingProfiles::updateSummaryCard() const {
+   using namespace CFG_AppStyling;
+   const bool styleAllowed = o_AllowStyle;
+   ui->lStylingAllowed->setText(styleAllowed ? tr("YES") : tr("NO"));
+   ui->lActiveStyleEngine->setText(o_ActiveStyleEngine);
+
+    // fixme - sand - code duplications with preset managers, eliminate via constant!
+
+    auto activeWidgetsKey = CFG_AppState::o_ActiveWidgetsScheme;
+    QString widgetsPresetName = activeWidgetsKey;
+    if (activeWidgetsKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        widgetsPresetName = tr("Default Layout");
+    }
+    else {
+        auto* repo = m_styleManager->getWidgetsRepository();
+        widgetsPresetName = repo->getDisplayName(activeWidgetsKey);
+    }
+    ui->lActiveDockingPreset->setText(widgetsPresetName);
+
+    auto activeTypographyKey = o_ActiveTypographyName;
+    QString typographyPresetName = activeTypographyKey;
+    if (activeTypographyKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        typographyPresetName = tr("Default Typography");
+    }
+    else {
+        auto* repo = m_styleManager->getTypographyRepository();
+        typographyPresetName = repo->getDisplayName(activeTypographyKey);
+    }
+    ui->lActiveTypographyPreset->setText(typographyPresetName);
+
+
+    auto activeIconsStyleKey = o_ActiveIconsStyleName;
+    QString iconStyleName = activeIconsStyleKey;
+    if (activeIconsStyleKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        iconStyleName = tr("Default Classical");
+    }
+    else {
+        auto* repo = m_styleManager->getIconsStyleRepository();
+        iconStyleName = repo->getDisplayName(activeIconsStyleKey);
+    }
+    ui->lActiveIconStyle->setText(iconStyleName);
+
+    ui->gbFusionPresets->setEnabled(styleAllowed);
+
+    auto paletteKey = o_ActiveFusionPaletteName;
+    QString paletteName = paletteKey;
+    if (paletteKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        paletteName = tr("Default Layout");
+    }
+    else {
+        auto* repo = m_styleManager->getFusionColorPaletteRepository();
+        paletteName = repo->getDisplayName(paletteKey);
+    }
+    ui->lActiveFusionColorsPattern->setText(paletteName);
+
+    auto skinKey = o_ActiveFusionSkinName;
+    QString skinName = skinKey;
+    if (skinKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        skinName = tr("Default Colors Palette");
+    }
+    else {
+        auto* repo = m_styleManager->getFusionSkinsRepository();
+        skinName = repo->getDisplayName(skinKey);
+
+    }
+    ui->lActiveFusionTheme->setText(skinName);
+
+
+    auto metricKey = o_ActiveFusionMetricsName;
+    QString metricName = skinKey;
+    if (metricKey == CFG_AppState::DEFAULT_THEME_KEY) {
+        metricName = tr("Default Fusion Metrics");
+    }
+    else {
+        auto* repo = m_styleManager->getFusionMetricsRepository();
+        metricName = repo->getDisplayName(metricKey);
+    }
+    ui->lActiveFusionMetrics->setText(skinName);
 }

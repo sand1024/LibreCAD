@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -20,26 +19,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_COORDINATE_SYSTEM_AXIS_LINES_H
-#define LC_SETTINGS_PAGE_COORDINATE_SYSTEM_AXIS_LINES_H
+#ifndef LC_METRICS_REPOSITORY_H
+#define LC_METRICS_REPOSITORY_H
 
-#include "lc_settings_page_base.h"
+#include "lc_preset_repository_base.h"
 
-namespace Ui { class LC_SettingsPageDraftingThemeCoordinateSystemAxisLines; }
+inline const QString METRICS_EXTENSION = ".lcms";
+inline const QString METRICS_FILE_IDENTIFIER = "LibreCAD Config: Metrics";
 
-class LC_SettingsPageDraftingThemeCoordinateSystemAxisLines : public LC_SettingsPageBase {
-    Q_OBJECT
+class LC_RepositoryFusionMetrics : public LC_PresetRepositoryBase<StyleMetricsConfig> {
 public:
-    explicit LC_SettingsPageDraftingThemeCoordinateSystemAxisLines(QObject* parent = nullptr);
-    ~LC_SettingsPageDraftingThemeCoordinateSystemAxisLines() override;
+    explicit LC_RepositoryFusionMetrics(const QString& configDir)
+        : LC_PresetRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {
+    }
 
-protected:
-    void setupUi() override;
-    void setupBehavior() override;
-    void setupBindings() override;
-
-private:
-    std::unique_ptr<Ui::LC_SettingsPageDraftingThemeCoordinateSystemAxisLines> ui;
+    QJsonObject configToJson(const StyleMetricsConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const override;
 };
-
 #endif

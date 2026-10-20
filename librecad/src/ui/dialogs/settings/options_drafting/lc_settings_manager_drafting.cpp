@@ -34,8 +34,7 @@
 #include "lc_settings_page_drafting_metrics_markers.h"
 #include "lc_settings_page_drafting_metrics_overlays.h"
 #include "lc_settings_page_drafting_metrics_snapping.h"
-#include "lc_settings_page_drafting_theme_coordinate_system_angles_basis.h"
-#include "lc_settings_page_drafting_theme_coordinate_system_axis_lines.h"
+#include "lc_settings_page_drafting_metrics_renderer.h"
 #include "lc_settings_page_drafting_theme_coordinate_system_origin.h"
 #include "lc_settings_page_drafting_theme_info_cursor.h"
 #include "lc_settings_page_drafting_theme_grid_general.h"
@@ -48,11 +47,12 @@
 #include "lc_settings_page_drafting_behavior_general.h"
 #include "lc_settings_page_drafting_behavior_info_cursor.h"
 #include "lc_settings_page_drafting_behavior_input_assistant.h"
-#include "lc_settings_page_renderer_advanced.h"
 #include "lc_settings_page_renderer_text_ops.h"
 #include "lc_settings_page_drafting_behavior_snap.h"
 #include "lc_settings_page_drafting_behavior_snap_visual.h"
 #include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
+#include "lc_settings_page_drafting_profiles.h"
+#include "lc_settings_page_drafting_theme_snap_visual.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
@@ -78,7 +78,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
 
     reg->registerPresetManager(targetDialog, GROUP_DRAFTING_METRICS, [appWindow]() {
      auto* uiStyleManager = appWindow != nullptr ? appWindow->getUiStyleManager() : nullptr;
-     auto* repository = uiStyleManager != nullptr ? uiStyleManager->getDrafingMetricsRepository() : nullptr;
+     auto* repository = uiStyleManager != nullptr ? uiStyleManager->getDraftingMetricsRepository() : nullptr;
      return std::make_unique<LC_PresetManagerDraftingMetrics>(repository);
  });
 
@@ -88,35 +88,34 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         // TOP-LEVEL 1: DRAFTING THEME (Persistent Top Bar + Live CAD Preview)
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_THEME, "", index(QObject::tr("Visual Theme"),
-            QObject::tr("Configure canvas colors, selection overlays, entity handles, and previews.")), 10 },
+            QObject::tr("Visual Theme includes settings that define how drawing area will look like.\n\nUse it to specify colors for the drawing area and related overlays (like handles, selection, coordinate system and so on).")), 10 },
         { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsDraftingThemeMainColors>(), 10 },
         { PAGE_DRAFTING_THEME_SELECTION, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
-        { PAGE_DRAFTING_THEME_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemePreview>(), 50 },
+        { PAGE_DRAFTING_THEME_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemePreview>(), 30 },
 
         // Grid Display
-        { PAGE_DRAFTING_THEME_GRID, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeGridGeneral>(), 70 },
+        { PAGE_DRAFTING_THEME_GRID, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeGridGeneral>(), 40 },
         { PAGE_DRAFTING_THEME_GRID_POINTS, PAGE_DRAFTING_THEME_GRID, page<LC_SettingsPageDraftingThemeGridPoints>(), 10 },
         { PAGE_DRAFTING_THEME_GRID_LINES, PAGE_DRAFTING_THEME_GRID, page<LC_SettingsPageDraftingThemeGridLines>(), 20 },
 
         // Coordinate System Markers
-        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, PAGE_DRAFTING_THEME, index(QObject::tr("Coordinates System"),
-            QObject::tr("Configure origin markers, relative zero, axis lines, and angles basis.")), 80 },
-        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ORIGIN, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemOrigin>(), 10 },
-        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_AXIS_LINES, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemAxisLines>(), 20 },
-        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM_ANGLES_BASIS, PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, page<LC_SettingsPageDraftingThemeCoordinateSystemAnglesBasis>(), 30 },
+
+        { PAGE_DRAFTING_THEME_COORDINATE_SYSTEM, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeCoordinateSystemOrigin>(), 50 },
 
         // Indicators & Cursor Styling
-        { PAGE_DRAFTING_THEME_SNAP_INDICATOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSnapIndicator>(), 90 },
-        { PAGE_DRAFTING_THEME_INFO_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeInfoCursor>(), 100 },
+        { PAGE_DRAFTING_THEME_SNAP_INDICATOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSnapIndicator>(), 60 },
+        { PAGE_DRAFTING_THEME_SNAP_VISUAL, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSnapVisual>(), 70 },
+        { PAGE_DRAFTING_THEME_INFO_CURSOR, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeInfoCursor>(), 80 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 2: VIEWPORT METRICS (Persistent Sizing Profile Top Bar)
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_METRICS, "", index(QObject::tr("Drafting Metrics (Sizes)"),
-            QObject::tr("Configure handle sizes, marker scales, line thicknesses, and text overlay sizes.")), 20 },
+            QObject::tr("Metrics preset specifies sizes for various elements of drawing area and related overlays.\n\nUse it to configure handle sizes, marker scales, line thicknesses, and text overlay sizes and so on.")), 20 },
         { PAGE_DRAFTING_METRICS_MARKERS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsMarkers>(), 10 },
         { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 20 },
         { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 30 },
+        { PAGE_DRAFTING_METRICS_RENDERER, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsRenderer>(), 40 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 3: DRAFTING BEHAVIOR (Direct Settings: No Bar, Never Gated)
@@ -139,18 +138,28 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInputAssistant>(), 50 },
 
         // Renderer (Weight 60)
-        { PAGE_DRAFTING_RENDERER, PAGE_DRAFTING_BEHAVIOR, index(QObject::tr("Renderer"),
-        QObject::tr("Configure text rendering, curve segment interpolation, and limits.")), 60 },
-        { PAGE_DRAFTING_RENDERER_TEXT_OPS, PAGE_DRAFTING_RENDERER, page<LC_SettingsPageRendererTextOps>(), 10 },
-        { PAGE_DRAFTING_RENDERER_ADVANCED, PAGE_DRAFTING_RENDERER, page<LC_SettingsPageRendererAdvanced>(), 20 }
+        { PAGE_DRAFTING_RENDERER_TEXT_OPS, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageRendererTextOps>(), 60 },
+
+        // drafting profile
+        { PAGE_DRAFTING_PROFILES, "", [appWindow]{return std::make_unique<LC_SettingsPageDraftingProfiles>(appWindow);}, 70 },
     };
 
     reg->registerPages(targetDialog, pages);
 }
 
 bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QString& initialPageId) {
+    QElapsedTimer totalTimer;
+    totalTimer.start();
+
+    QElapsedTimer stepTimer;
+    stepTimer.start();
+
     QWidget* previewWidget =  new LC_GraphicViewPreviewWidget(nullptr);
+    LC_ERR << "[PERF] createGraphicViewPreview took:" << stepTimer.restart() << "ms";
+
     auto* bottomBar = new LC_DraftingPreviewBottomBar(nullptr);
+    LC_ERR << "[PERF] bottomBar creation took:" << stepTimer.restart() << "ms";
+
 
     // Keep hidden until mounted into their respective dialog layouts
     if (previewWidget != nullptr) {
@@ -164,6 +173,9 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
     QPointer<QWidget> bottomBarGuard(bottomBar);
 
    auto preExecHook = [previewWidget, bottomBar](LC_SettingsDialog* dialog) {
+       QElapsedTimer hookTimer;
+       hookTimer.start();
+
         if (dialog != nullptr) {
             dialog->forEachPresetManager([previewWidget, bottomBar](LC_PresetManagerInterface* manager) {
                 if (auto* themeMgr = dynamic_cast<LC_PresetManagerDraftingTheme*>(manager)) {
@@ -184,6 +196,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
                 }
             });
         }
+       LC_ERR << "[PERF] preExecHook took:" << hookTimer.elapsed() << "ms";
     };
 
     auto postExecHook = [](LC_SettingsDialog* dialog, bool /*accepted*/) {
@@ -208,9 +221,16 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
         }
     };
 
+    QString startPage = initialPageId;
+
+    if (initialPageId.isEmpty()) {
+        startPage = LC_SettingsPagesDrafting::PAGE_DRAFTING_THEME;
+    }
+
+    LC_ERR << "[PERF] Time before showDialog():" << totalTimer.elapsed() << "ms";
     const bool accepted = LC_SettingsRegistry::instance()->showDialog(
         LC_SettingsPagesDrafting::DLG_DRAFTING_PREFERENCES,
-        initialPageId,
+        startPage,
         parent,
         preExecHook,
         postExecHook);

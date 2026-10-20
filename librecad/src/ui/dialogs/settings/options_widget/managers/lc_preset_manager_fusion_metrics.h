@@ -26,9 +26,9 @@
 #include <memory>
 #include "lc_metrics_density_header_bar.h"
 #include "lc_preset_manager_styling_base.h"
-#include "lc_repository_metrics.h"
+#include "../../../../styling/fusion_skin/lc_repository_fusion_metrics.h"
 
-class LC_PresetManagerFusionMetrics : public LC_PresetManagerStylingBase<StyleMetricsConfig, LC_RepositoryMetrics> {
+class LC_PresetManagerFusionMetrics : public LC_PresetManagerStylingBase<StyleMetricsConfig, LC_RepositoryFusionMetrics> {
     Q_OBJECT
 public:
     explicit LC_PresetManagerFusionMetrics(LC_UIStyleManager* styleManager);

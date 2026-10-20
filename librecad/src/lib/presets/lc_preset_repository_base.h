@@ -153,6 +153,15 @@ public:
         return names;
     }
 
+    QString getDisplayName(const QString& key) const {
+        for (const auto& pair : getPresetChoices()) {
+            if (pair.second == key) {
+                return pair.first;
+            }
+        }
+        return QString();
+    }
+
     QList<QPair<QString, QString>> getPresetChoices() const override {
         ensureIndexLoaded();
         QList<QPair<QString, QString>> choices;

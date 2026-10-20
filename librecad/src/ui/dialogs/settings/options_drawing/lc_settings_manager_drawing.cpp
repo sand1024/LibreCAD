@@ -40,12 +40,22 @@ namespace {
     static RS_Graphic* g_contextGraphic = nullptr;
 }
 
+template<class T>
+    static LC_SettingsRegistry::PageCreator pageWithContext() {
+    return [] {return std::make_unique<T>(g_contextGraphic);};
+}
+
+
 void LC_SettingsManagerDrawing::initialize() {
     auto* reg = LC_SettingsRegistry::instance();
     static bool isInitialized = false;
-    if (isInitialized) return;
+    if (isInitialized) {
+        return;
+    }
 
-    const QString dlgId = "drawing_preferences"; // fixme - to namespace
+    using namespace LC_SettingsPagesDrawing;
+
+    const QString dlgId = DLG_DOCUMENT_PREFERENCES;
 
     reg->configureDialog(dlgId, {QObject::tr("Drawing Preferences"), false, false,false, ":/icons/drawing_settings.lci"});
 
@@ -53,16 +63,16 @@ void LC_SettingsManagerDrawing::initialize() {
         reg->registerPage(dlgId, id, "", creator);
     };
 
-    using namespace LC_SettingsPagesDrawing;
-    addPage(Units,      [] { return std::make_unique<LC_SettingsPageDrawingUnits>(g_contextGraphic); });
-    addPage(Paper,      [] { return std::make_unique<LC_SettingsPageDrawingPaper>(g_contextGraphic); });
-    addPage(Grid,       [] { return std::make_unique<LC_SettingsPageDrawingGrid>(g_contextGraphic); });
-    addPage(Dimensions, [] { return std::make_unique<LC_SettingsPageDrawingDimensions>(g_contextGraphic); });
-    addPage(Points,     [] { return std::make_unique<LC_SettingsPageDrawingPoints>(g_contextGraphic); });
-    addPage(Splines,    [] { return std::make_unique<LC_SettingsPageDrawingSplines>(g_contextGraphic); });
-    addPage(Meta,       [] { return std::make_unique<LC_SettingsPageDrawingMeta>(g_contextGraphic); });
-    addPage(UserData,   [] { return std::make_unique<LC_SettingsPageDrawingUserData>(g_contextGraphic); });
-    addPage(Variables,  [] { return std::make_unique<LC_SettingsPageDrawingVariables>(g_contextGraphic); });
+
+    addPage(PAGE_UNITS,      pageWithContext<LC_SettingsPageDrawingUnits>());
+    addPage(PAGE_PAPER,      pageWithContext<LC_SettingsPageDrawingPaper>());
+    addPage(PAGE_GRID,       pageWithContext<LC_SettingsPageDrawingGrid>());
+    addPage(PAGE_DIMENSIONS, pageWithContext<LC_SettingsPageDrawingDimensions>());
+    addPage(PAGE_POINTS,     pageWithContext<LC_SettingsPageDrawingPoints>());
+    addPage(PAGE_SPLINES,    pageWithContext<LC_SettingsPageDrawingSplines>());
+    addPage(PAGE_META,       pageWithContext<LC_SettingsPageDrawingMeta>());
+    addPage(PAGE_USER_DATA,  pageWithContext<LC_SettingsPageDrawingUserData>());
+    addPage(PAGE_VARIABLES,  pageWithContext<LC_SettingsPageDrawingVariables>());
 
     isInitialized = true;
 }
@@ -74,11 +84,9 @@ bool LC_SettingsManagerDrawing::show(RS_Graphic* graphic, QWidget* parent, const
 
     g_contextGraphic = graphic;
 
-    bool accepted = LC_SettingsRegistry::instance()->showDialog(
-        "drawing_preferences",
-        initialPageId.isEmpty() ? "draw_doc.paper" : initialPageId,
-        parent
-    );
+    using namespace LC_SettingsPagesDrawing;
+    bool accepted = LC_SettingsRegistry::instance()->showDialog(DLG_DOCUMENT_PREFERENCES,
+                                                                initialPageId.isEmpty() ? PAGE_UNITS : initialPageId, parent);
 
     g_contextGraphic = nullptr;
     return accepted;

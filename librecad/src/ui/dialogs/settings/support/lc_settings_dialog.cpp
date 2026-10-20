@@ -64,8 +64,12 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId, b
     ui->saSettingsScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->saSettingsScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
+    ui->presetBar->setVisible(false);
+
     // Prevent QStackedWidget from imposing the widest page's size on the scroll area
     ui->swContent->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+
+    ui->scrollAreaLayout->addStretch(1);
 
     // Watch viewport resize events to clamp content width dynamically
     ui->saSettingsScrollArea->viewport()->installEventFilter(this);
@@ -327,10 +331,8 @@ void LC_SettingsDialog::finalizeInitialization() {
         }
     }
 
-    // Fully automate search caching indexing for all widgets on leaf pages
+    // Collect keywords directly from already-indexed targets (avoids walking the widget tree a second time)
     for (const auto& [id, page] : m_pageMapByPageId) {
-        page->autoIndexLabels();
-
         QStringList keywords;
         for (const auto& target : page->searchTargets()) {
             if (!target.originalText.isEmpty()) {
@@ -341,14 +343,6 @@ void LC_SettingsDialog::finalizeInitialization() {
     }
 
     restoreTreeExpandedState();
-
-    // if (m_treeModel->rowCount() > 0) {
-    //     if (m_pendingPageIdToOpen.isEmpty()) {
-    //         const QModelIndex firstIdx = m_filterModel->index(0, 0);
-    //         ui->tvCategoriesTree->setCurrentIndex(firstIdx);
-    //         onCategorySelected(firstIdx);
-    //     }
-    // }
 }
 
 void LC_SettingsDialog::buildCategoryTree() {
@@ -477,7 +471,10 @@ bool LC_SettingsDialog::selectPage(const QString& pageId) {
     if (pageId.isEmpty()) {
             const QModelIndex firstIdx = m_filterModel->index(0, 0);
             ui->tvCategoriesTree->setCurrentIndex(firstIdx);
+        // Only invoke manually if setCurrentIndex didn't trigger currentChanged
+        if (m_activePage == nullptr || m_activePage->id() != firstIdx.data(Qt::UserRole).toString()) {
             onCategorySelected(firstIdx);
+        }
             return true;
     }
     const auto itPage = m_pageMapByPageId.find(pageId);
@@ -506,19 +503,20 @@ bool LC_SettingsDialog::selectPage(const QString& pageId) {
         }
         ui->tvCategoriesTree->setCurrentIndex(proxyIndex);
         ui->tvCategoriesTree->scrollTo(proxyIndex);
-        onCategorySelected(proxyIndex);
+
+        // Only invoke manually if setCurrentIndex didn't already activate the page
+        if (m_activePage == nullptr || m_activePage->id() != pageId) {
+            onCategorySelected(proxyIndex);
+        }
         return true;
     }
     return false;
 }
 
 bool LC_SettingsDialog::eventFilter(QObject* watched, QEvent* event) {
-    if (ui != nullptr && ui->saSettingsScrollArea != nullptr && watched == ui->saSettingsScrollArea->viewport()) {
+    if (!m_isSwitchingCategory && ui != nullptr && ui->saSettingsScrollArea != nullptr && watched == ui->saSettingsScrollArea->viewport()) {
         if (event != nullptr && event->type() == QEvent::Resize) {
-            const int viewportWidth = ui->saSettingsScrollArea->viewport()->width();
-            if (viewportWidth > 0 && ui->scrollAreaWidgetContents != nullptr) {
-                ui->scrollAreaWidgetContents->setMaximumWidth(viewportWidth);
-            }
+            updateActivePageGeometry();
         }
     }
     return LC_Dialog::eventFilter(watched, event);
@@ -576,6 +574,8 @@ QModelIndex LC_SettingsDialog::findFirstVisibleIndex(const QModelIndex& parent) 
     return findFirstVisibleIndex(m_filterModel->index(0, 0, parent));
 }
 
+#define DEBUG_CATEGORY_SWITCH_TIMERS_
+
 void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     if (!index.isValid()) {
         return;
@@ -588,27 +588,106 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     }
 
     LC_SettingsPageInterface* page = it->second;
-
     LC_PresetManagerInterface* manager = getPresetManagerForPage(pageId);
 
-    // 1. Capture previous page and trigger onAboutToHide()
+    // If this category is already active and initialized, avoid redundant re-activation
+    if (m_activePage == page && m_initializedPages.contains(pageId)) {
+        return;
+    }
+
+    m_isSwitchingCategory = true;
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    QElapsedTimer totalTimer;
+    totalTimer.start();
+
+    QElapsedTimer stepTimer;
+    stepTimer.start();
+# endif
+
+    setUpdatesEnabled(false);
+
+    // 1. Previous Page Cleanup
     LC_SettingsPageInterface* previousPage = m_activePage;
     if (previousPage != nullptr && previousPage != page) {
         previousPage->onAboutToHide();
     }
     m_activePage = page;
 
-    // 2. Preset Management Bar Binding & Scope Dirty State
-    if (manager != nullptr) {
-        ui->presetBar->bindToManager(manager);
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_prevHide = stepTimer.restart();
+#endif
+
+    // 2. Page Content Switch & Initialization
+    qint64 t_setCurrentWidget = 0;
+    qint64 t_loadSettings = 0;
+    qint64 t_onAboutToShow = 0;
+    qint64 t_geometry = 0;
+
+    if (page->getEditingWidget() != nullptr) {
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        QElapsedTimer subTimer;
+        subTimer.start();
+#endif
+
+        ui->swContent->setCurrentWidget(page->getEditingWidget());
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_setCurrentWidget = subTimer.restart();
+#endif
+        if (!m_initializedPages.contains(pageId)) {
+            m_initializedPages.insert(pageId);
+            page->loadSettings();
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+            t_loadSettings = subTimer.restart();
+# endif
+        }
+
+        page->onAboutToShow();
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_onAboutToShow = subTimer.restart();
+# endif
+        updateActivePageGeometry();
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_geometry = subTimer.restart();
+# endif
+        if (ui->saSettingsScrollArea->verticalScrollBar() != nullptr) {
+            ui->saSettingsScrollArea->verticalScrollBar()->setValue(0);
+        }
+
+        updateBreadcrumbs(index);
+
+        if (ui->leSearch != nullptr && !ui->leSearch->text().trimmed().isEmpty()) {
+            highlightPageContent(page, ui->leSearch->text());
+        }
+    }
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_pageSection = stepTimer.restart();
+# endif
+    // Suspend rightLayout recalculations so PresetBar, Header, Bottom, and Preview batch into ONE layout pass
+    QLayout* rightLayout = (ui->wContainerRight != nullptr) ? ui->wContainerRight->layout() : nullptr;
+    if (rightLayout != nullptr) {
+        rightLayout->setEnabled(false);
+    }
+
+    // 3. Preset Bar
+    const bool hasManager = (manager != nullptr);
+    ui->presetBar->setVisible(hasManager);
+
+    if (hasManager) {
+        if (manager != m_currentBoundPresetManager) {
+            m_currentBoundPresetManager = manager;
+            ui->presetBar->bindToManager(manager);
+        }
         const bool isDirty = isPresetManagerScopeDirty(manager);
         ui->presetBar->setDirty(isDirty);
     }
-    else {
-        ui->presetBar->bindToManager(nullptr);
-    }
-
-    // 2. Dynamic Shared Header Mounting (e.g. Workspace Density bar)
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_presetBar = stepTimer.restart();
+# endif
+    // 4. Header Mounting
     auto* headerLayout = ui->wContainerPresetHeader->layout();
     const QWidget* currentHeader = (headerLayout->count() > 0) ? headerLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetHeader = (manager != nullptr) ? manager->getSharedHeaderWidget() : nullptr;
@@ -632,60 +711,84 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             ui->wContainerPresetHeader->setVisible(false);
         }
     }
+    else if (targetHeader != nullptr) {
+        ui->wContainerPresetHeader->setVisible(true);
+    }
+    else {
+        ui->wContainerPresetHeader->setVisible(false);
+    }
 
-    // Resolve preview widget early so both bottom bar and preview layout can reference it
-    QWidget* targetPreview = resolvePreviewWidget(page);
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_header = stepTimer.restart();
 
-    // 3. Dynamic Shared Bottom Mounting (e.g. Preview Controls Bar)
+    // 5. Bottom Bar Mounting
+    QElapsedTimer bottomSubTimer;
+    bottomSubTimer.start();
+# endif
+
     auto* bottomLayout = ui->wContainerBottom->layout();
-    const QWidget* currentBottom = (bottomLayout->count() > 0) ? bottomLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetBottom = page->getBottomWidget();
 
-    // Mount shared bottom bar only if the page belongs to the manager AND participates in preview
     if (targetBottom == nullptr && manager != nullptr && page->acceptsSharedPreview()) {
         targetBottom = manager->getSharedBottomWidget();
     }
 
-    if (targetBottom != currentBottom) {
-        if (bottomLayout->count() > 0) {
-            const QLayoutItem* item = bottomLayout->takeAt(0);
-            if (item->widget() != nullptr) {
-                if (auto* prevController = dynamic_cast<LC_PreviewVisibilityController*>(item->widget())) {
-                    prevController->setOnPreviewVisibilityChanged(nullptr);
-                }
-                item->widget()->hide();
-                bottomLayout->removeWidget(item->widget());
-            }
-            delete item;
-        }
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_bottomResolve = bottomSubTimer.restart();
+#endif
 
-        if (targetBottom != nullptr) {
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    qint64 t_bottomLayoutChange = 0;
+    qint64 t_bottomSetVisible = 0;
+# endif
+
+    if (targetBottom != nullptr) {
+        if (bottomLayout->count() == 0 || bottomLayout->itemAt(0)->widget() != targetBottom) {
+            while (bottomLayout->count() > 0) {
+                const QLayoutItem* item = bottomLayout->takeAt(0);
+                if (item->widget() != nullptr) {
+                    item->widget()->hide();
+                    bottomLayout->removeWidget(item->widget());
+                }
+                delete item;
+            }
             bottomLayout->addWidget(targetBottom);
-            targetBottom->show();
-            ui->wContainerBottom->setVisible(true);
         }
-        else {
-            ui->wContainerBottom->setVisible(false);
-        }
-    }
-    else if (targetBottom != nullptr) {
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_bottomLayoutChange = bottomSubTimer.restart();
+# endif
         targetBottom->show();
         ui->wContainerBottom->setVisible(true);
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_bottomSetVisible = bottomSubTimer.restart();
+# endif
+        if (auto* previewController = dynamic_cast<LC_PreviewVisibilityController*>(targetBottom)) {
+            previewController->setOnPreviewVisibilityChanged([this](bool visible) {
+                setEmbeddedPreviewVisible(visible);
+            });
+        }
     }
     else {
         ui->wContainerBottom->setVisible(false);
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_bottomSetVisible = bottomSubTimer.restart();
+#endif
     }
 
-    // Connect embedded preview controller if the bottom bar supports it
-    auto* previewController = dynamic_cast<LC_PreviewVisibilityController*>(targetBottom);
-    if (previewController != nullptr) {
-        previewController->setOnPreviewVisibilityChanged([this](bool visible) {
-            setEmbeddedPreviewVisible(visible);
-        });
-    }
-    // 5. Embedded Preview Layout Handling & Symmetrical Category Cleanup
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+
+    const qint64 t_bottom = stepTimer.restart();
+
+    LC_ERR << "[BOTTOM MOUNT DETAIL]"
+           << " Resolve:" << t_bottomResolve << "ms"
+           << " | LayoutChange:" << t_bottomLayoutChange << "ms"
+           << " | SetVisible:" << t_bottomSetVisible << "ms"
+           << " | TOTAL:" << t_bottom << "ms";
+# endif
+    // 6. Preview Widget Resolution & Layout
     auto* previewLayout = ui->wContainerPreview->layout();
     QWidget* currentPreview = (previewLayout->count() > 0) ? previewLayout->itemAt(0)->widget() : nullptr;
+    QWidget* targetPreview = resolvePreviewWidget(page);
 
     if (currentPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(currentPreview);
@@ -708,25 +811,67 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             previewLayout->addWidget(targetPreview);
         }
     }
-
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_previewLayout = stepTimer.restart();
+# endif
+    // 7. Preview Visibility & CAD Rendering
     bool shouldShowPreview = (targetPreview != nullptr);
-    if (shouldShowPreview && previewController != nullptr) {
-        shouldShowPreview = previewController->isPreviewVisible();
+    if (shouldShowPreview && targetBottom != nullptr) {
+        if (const auto* controller = dynamic_cast<const LC_PreviewVisibilityController*>(targetBottom)) {
+            shouldShowPreview = controller->isPreviewVisible();
+        }
     }
 
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    QElapsedTimer previewSubTimer;
+    previewSubTimer.start();
+# endif
+
+    // Set container visibility and splitter dimensions
     setEmbeddedPreviewVisible(shouldShowPreview);
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_previewVisToggle = previewSubTimer.restart();
+    qint64 t_cadRender = 0;
+# endif
+    // Configure category entities on the preview BEFORE the layout activates
 
     if (shouldShowPreview && targetPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(targetPreview);
         if (livePreview != nullptr) {
             livePreview->updatePreviewForContentCategory(pageId);
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+            t_cadRender = previewSubTimer.elapsed();
+# endif
         }
     }
 
-    // 6. Centralized Gating Resolution Pass
+    // Re-enable rightLayout and execute a single combined layout calculation
+    qint64 t_rightLayoutActivate = 0;
+    if (rightLayout != nullptr) {
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        QElapsedTimer actTimer;
+        actTimer.start();
+# endif
+        rightLayout->setEnabled(true);
+        rightLayout->activate();
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+        t_rightLayoutActivate = actTimer.elapsed();
+# endif
+    }
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_previewSection = stepTimer.restart();
+# endif
+    // 8. Gating & History
     updateGatingState();
 
-    // 7. History Tracking
+
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_gating = stepTimer.restart();
+# endif
+
     if (!m_isNavigatingHistory) {
         bool isDuplicate = false;
         if (m_historyIndex >= 0 && m_historyIndex < static_cast<int>(m_history.size())) {
@@ -743,43 +888,43 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateHistoryButtons();
     }
 
-    // 8. Stacked Widget Switch, Scroll Reset & Lazy Loading
-    if (page->getEditingWidget() != nullptr) {
-        ui->swContent->setCurrentWidget(page->getEditingWidget());
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_history = stepTimer.restart();
+# endif
+    // 9. Finish Frame & Flush Window Repaint
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    QElapsedTimer paintTimer;
+    paintTimer.start();
+# endif
+    setUpdatesEnabled(true);
+    m_isSwitchingCategory = false;
 
-        // Ensure newly displayed page immediately conforms to the current viewport width
-        if (ui->saSettingsScrollArea->viewport() != nullptr && ui->scrollAreaWidgetContents != nullptr) {
-            const int viewportWidth = ui->saSettingsScrollArea->viewport()->width();
-            if (viewportWidth > 0) {
-                ui->scrollAreaWidgetContents->setMaximumWidth(viewportWidth);
-            }
-        }
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
+    const qint64 t_paintFlush = paintTimer.elapsed();
+# endif
 
-        // Scroll Reset: Ensure the viewport starts unscrolled
-        if (ui->saSettingsScrollArea->verticalScrollBar() != nullptr) {
-            ui->saSettingsScrollArea->verticalScrollBar()->setValue(0);
-        }
-        if (ui->saSettingsScrollArea->horizontalScrollBar() != nullptr) {
-            ui->saSettingsScrollArea->horizontalScrollBar()->setValue(0);
-        }
+# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
 
-        if (!m_initializedPages.contains(pageId)) {
-            m_initializedPages.insert(pageId);
-            // LC_ERR << "LC_SettingsDialog::onCategorySelected: Executing lazy loadSettings() for ID:" << pageId;
-            page->loadSettings();
-        }
+    const qint64 t_total = totalTimer.elapsed();
 
-        page->onAboutToShow();
-
-        updateBreadcrumbs(index);
-        highlightPageContent(page, ui->leSearch->text());
-    }
-
-    // 9. Search History Commit on Successful Navigation
-    if (!ui->leSearch->text().trimmed().isEmpty() && !ui->leSearch->isErrorState()) {
-        ui->leSearch->addCurrentTextToHistory();
-    }
-
+    LC_ERR << "[PAGE SWITCH DETAILS]" << pageId
+           << "\n  ├─ PrevHide:            " << t_prevHide << "ms"
+           << "\n  ├─ SetCurrentWidget:    " << t_setCurrentWidget << "ms"
+           << "\n  ├─ LoadSettings:        " << t_loadSettings << "ms"
+           << "\n  ├─ OnAboutToShow:       " << t_onAboutToShow << "ms"
+           << "\n  ├─ Geometry/HFW:        " << t_geometry << "ms"
+           << "\n  ├─ PresetBar:           " << t_presetBar << "ms"
+           << "\n  ├─ HeaderMount:         " << t_header << "ms"
+           << "\n  ├─ BottomMount:         " << t_bottom << "ms"
+           << "\n  ├─ PreviewLayout:       " << t_previewLayout << "ms"
+           << "\n  ├─ PreviewVisToggle:    " << t_previewVisToggle << "ms"
+           << "\n  ├─ CADRender:           " << t_cadRender << "ms"
+           << "\n  ├─ RightLayoutActivate: " << t_rightLayoutActivate << "ms"
+           << "\n  ├─ GatingState:         " << t_gating << "ms"
+           << "\n  ├─ History:             " << t_history << "ms"
+           << "\n  ├─ PaintFlush:          " << t_paintFlush << "ms"
+           << "\n  └─ TOTAL TIME:          " << t_total << "ms";
+# endif
     emit categoryChanged(pageId);
 }
 
@@ -793,19 +938,18 @@ void LC_SettingsDialog::setEmbeddedPreviewVisible(bool visible) {
     const bool wasVisible = ui->wContainerPreview->isVisible();
 
     if (shouldShow == wasVisible) {
-        // State unchanged: if already visible, ensure preview widget is updated smoothly
         if (shouldShow && targetPreview != nullptr) {
             targetPreview->show();
-            doUpdatePageLivePreview(m_activePage);
         }
         return;
     }
 
     if (shouldShow) {
-        ui->wContainerPreview->setVisible(true);
         if (targetPreview != nullptr) {
-            targetPreview->show();
+            targetPreview->setUpdatesEnabled(false);
         }
+
+        ui->wContainerPreview->setVisible(true);
 
         int previewWidth = m_savedPreviewWidth;
         if (previewWidth < 150) {
@@ -816,17 +960,18 @@ void LC_SettingsDialog::setEmbeddedPreviewVisible(bool visible) {
         const int leftWidth = (totalWidth > previewWidth + 150) ? (totalWidth - previewWidth) : 500;
         ui->splPreview->setSizes(QList<int>{leftWidth, previewWidth});
 
-        doUpdatePageLivePreview(m_activePage);
+        if (targetPreview != nullptr) {
+            targetPreview->setUpdatesEnabled(true);
+            targetPreview->show();
+        }
     }
     else {
-        // Save current width before hiding
         const QList<int> currentSizes = ui->splPreview->sizes();
         if (currentSizes.size() >= 2 && currentSizes[1] > 50) {
             m_savedPreviewWidth = currentSizes[1];
         }
-
+        // setVisible(false) automatically collapses the pane in QSplitter; no redundant setSizes() needed
         ui->wContainerPreview->setVisible(false);
-        ui->splPreview->setSizes(QList<int>{ui->splPreview->width(), 0});
     }
 }
 
@@ -1066,10 +1211,15 @@ void LC_SettingsDialog::closeEvent(QCloseEvent* event) {
 }
 
 void LC_SettingsDialog::highlightPageContent(LC_SettingsPageInterface* page, const QString& filterText) const {
-    page->highlightSearchPattern(filterText);
-    if (filterText.isEmpty()) {
+      if (page == nullptr) {
         return;
     }
+    if (filterText.isEmpty()) {
+        page->clearSearchHighlight();
+        return;
+    }
+
+    page->highlightSearchPattern(filterText);
 
     for (const auto& target : page->searchTargets()) {
         if (target.targetWidget != nullptr && target.originalText.contains(filterText, Qt::CaseInsensitive)) {
@@ -1323,6 +1473,52 @@ void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) 
         }
         else {
             preview->update();
+        }
+    }
+}
+
+void LC_SettingsDialog::updateActivePageGeometry() {
+    if (m_activePage == nullptr || ui == nullptr || ui->saSettingsScrollArea == nullptr) {
+        return;
+    }
+
+    // fixme - sand - tmp !!!
+    return;
+
+    auto* vp = ui->saSettingsScrollArea->viewport();
+    if (vp == nullptr) {
+        return;
+    }
+
+    const int viewportWidth = vp->width();
+    if (viewportWidth <= 0) {
+        return;
+    }
+
+    if (ui->scrollAreaWidgetContents != nullptr) {
+        ui->scrollAreaWidgetContents->setFixedWidth(viewportWidth);
+    }
+
+    QWidget* pageWidget = m_activePage->getEditingWidget();
+    if (pageWidget != nullptr) {
+        if (pageWidget->layout() != nullptr) {
+            pageWidget->layout()->invalidate();
+            pageWidget->layout()->activate();
+        }
+
+        int requiredHeight = 0;
+        if (pageWidget->hasHeightForWidth()) {
+            requiredHeight = pageWidget->heightForWidth(viewportWidth);
+        }
+        if (requiredHeight <= 0) {
+            requiredHeight = pageWidget->sizeHint().height();
+        }
+
+        if (requiredHeight > 0) {
+            ui->swContent->setFixedHeight(requiredHeight);
+        }
+        else {
+            ui->swContent->setMaximumHeight(QWIDGETSIZE_MAX);
         }
     }
 }

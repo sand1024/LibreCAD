@@ -28,21 +28,27 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-
-
 QJsonArray LC_RepositoryMenuBarAndToolbars::serializeNodes(const QList<ActionNode>& nodes) {
     QJsonArray arr;
     for (const auto& node : nodes) {
         QJsonObject obj;
-        obj["type"] = static_cast<int>(node.type);
-        if (node.type == ActionNodeType::Action) {
-            obj["action"] = node.actionName;
-        }
-        else if (node.type == ActionNodeType::Group) {
-            obj["title"] = node.groupTitle;
-            obj["icon"] = node.groupIcon;
-            obj["popup_mode"] = static_cast<int>(node.popupMode);
-            obj["children"] = serializeNodes(node.children);
+        auto nodeType = node.type;
+        switch (nodeType) {
+            case ActionNodeType::Action: {
+                obj["action"] = node.actionName;
+                break;
+            }
+            case ActionNodeType::Separator: {
+                obj["type"] = static_cast<int>(nodeType);
+                break;
+            }
+            case ActionNodeType::Group: {
+                obj["type"] = static_cast<int>(nodeType);
+                obj["title"] = node.groupTitle;
+                obj["icon"] = node.groupIcon;
+                obj["popup_mode"] = static_cast<int>(node.popupMode);
+                obj["children"] = serializeNodes(node.children);
+            }
         }
         arr.append(obj);
     }
@@ -57,7 +63,7 @@ QList<ActionNode> LC_RepositoryMenuBarAndToolbars::deserializeNodes(const QJsonA
         }
         QJsonObject obj = val.toObject();
         ActionNode node;
-        node.type = static_cast<ActionNodeType>(obj.value("type").toInt());
+        node.type = static_cast<ActionNodeType>(obj.value("type").toInt( static_cast<int>(ActionNodeType::Action)));
         if (node.type == ActionNodeType::Action) {
             node.actionName = obj.value("action").toString();
         }

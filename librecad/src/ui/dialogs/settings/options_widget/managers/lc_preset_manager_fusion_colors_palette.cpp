@@ -22,9 +22,9 @@
 #include "lc_preset_manager_fusion_colors_palette.h"
 
 LC_PresetManagerFusionColorsPalette::LC_PresetManagerFusionColorsPalette(LC_UIStyleManager* styleManager)
-    : LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryPalette>(
+    : LC_PresetManagerStylingBase<PaletteConfig, LC_RepositoryFusionColorsPalette>(
           styleManager,
-          styleManager != nullptr ? styleManager->getPaletteRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getFusionColorPaletteRepository() : nullptr,
           styleManager != nullptr ? styleManager->getActivePalette() : QString(),
           nullptr)
     , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
@@ -33,7 +33,7 @@ LC_PresetManagerFusionColorsPalette::LC_PresetManagerFusionColorsPalette(LC_UISt
 
 LC_PresetManagerUIStrings LC_PresetManagerFusionColorsPalette::presetStrings() const {
     LC_PresetManagerUIStrings s;
-    s.defaultPresetName = tr("Default Palette");
+    s.defaultPresetName = tr("Default Colors Palette");
     s.labelText = tr("Color palette preset:");
     s.selectToolTip = tr("Select a saved color palette configuration or load standard defaults.");
     s.saveToolTip = tr("Save changes directly to active color palette preset.");

@@ -22,12 +22,12 @@
 
 #include "lc_preset_manager_fusion_metrics.h"
 
-#include "lc_style_metrics_utils.h"
+#include "../../../../styling/fusion_skin/lc_style_metrics_utils.h"
 
 LC_PresetManagerFusionMetrics::LC_PresetManagerFusionMetrics(LC_UIStyleManager* styleManager)
-    : LC_PresetManagerStylingBase<StyleMetricsConfig, LC_RepositoryMetrics>(
+    : LC_PresetManagerStylingBase<StyleMetricsConfig, LC_RepositoryFusionMetrics>(
           styleManager,
-          styleManager != nullptr ? styleManager->getMetricsRepository() : nullptr,
+          styleManager != nullptr ? styleManager->getFusionMetricsRepository() : nullptr,
           styleManager != nullptr ? styleManager->getActiveMetrics() : QString(),
           nullptr) {
     m_headerBar = std::make_unique<LC_MetricsDensityHeaderBar>();

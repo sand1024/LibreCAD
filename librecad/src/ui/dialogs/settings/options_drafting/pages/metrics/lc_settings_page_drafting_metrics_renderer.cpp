@@ -20,32 +20,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_renderer_advanced.h"
+#include "lc_settings_page_drafting_metrics_renderer.h"
 
 #include "lc_settings_backend.h"
 #include "lc_settings_render.h"
-#include "ui_lc_settings_page_renderer_advanced.h"
+#include "ui_lc_settings_page_drafting_metrics_renderer.h"
 
-LC_SettingsPageRendererAdvanced::LC_SettingsPageRendererAdvanced(QObject* parent)
-    : LC_SettingsPageBase(tr("Advanced"),
+LC_SettingsPageDraftingMetricsRenderer::LC_SettingsPageDraftingMetricsRenderer(QObject* parent)
+    : LC_SettingsPageBase(tr("Renderer"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Render::Group),
                           parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageRendererAdvanced>()) {
+    , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsRenderer>()) {
     setSortWeight(20);
 }
 
-LC_SettingsPageRendererAdvanced::~LC_SettingsPageRendererAdvanced() = default;
+LC_SettingsPageDraftingMetricsRenderer::~LC_SettingsPageDraftingMetricsRenderer() = default;
 
-void LC_SettingsPageRendererAdvanced::setupUi() {
+void LC_SettingsPageDraftingMetricsRenderer::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageRendererAdvanced::setupBehavior() {
+void LC_SettingsPageDraftingMetricsRenderer::setupBehavior() {
     enableWhenChecked(ui->rbRenderArcInterpolate, ui->gbInterpolateMethod);
     enableWhenChecked(ui->rbRenderArcInterpolate, ui->cbRenderCirclesAsArcs);
 }
 
-void LC_SettingsPageRendererAdvanced::setupBindings() {
+void LC_SettingsPageDraftingMetricsRenderer::setupBindings() {
     using namespace CFG_Render;
 
     // Circles as Arcs

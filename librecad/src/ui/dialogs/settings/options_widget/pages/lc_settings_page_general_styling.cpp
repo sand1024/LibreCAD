@@ -86,7 +86,7 @@ void LC_SettingsPageGeneralStyling::setupBindings() {
     });
 
     bindCustom<QComboBox, QString>(
-        ui->cbStyle, o_Style, false,
+        ui->cbStyle, o_ActiveStyleEngine, false,
         &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentText(); },
         [](QComboBox* w, const QString& val) {
@@ -134,7 +134,7 @@ void LC_SettingsPageGeneralStyling::applyTransientStyle() {
     const QString stylesheetPath = ui->leStylesheet->text().trimmed();
 
     CFG_AppStyling::o_AllowStyle.set(allowStyle);
-    CFG_AppStyling::o_Style.set(styleName);
+    CFG_AppStyling::o_ActiveStyleEngine.set(styleName);
     CFG_AppStyling::o_StyleSheet.set(stylesheetPath);
 
     const QString paletteKey = m_styleManager->getActivePalette();
