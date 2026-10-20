@@ -42,7 +42,7 @@ public:
 private slots:
     void onLengthFormatChanged();
     void onAngleFormatChanged();
-    void updateUnitsPreview();
+    void updateUnitsPreview() const;
     void setupUi() override;
     void setupBehavior() override;
 private:

@@ -1482,9 +1482,6 @@ void LC_SettingsDialog::updateActivePageGeometry() {
         return;
     }
 
-    // fixme - sand - tmp !!!
-    return;
-
     auto* vp = ui->saSettingsScrollArea->viewport();
     if (vp == nullptr) {
         return;

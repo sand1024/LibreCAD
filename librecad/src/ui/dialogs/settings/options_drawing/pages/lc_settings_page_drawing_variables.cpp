@@ -29,7 +29,6 @@
 LC_SettingsPageDrawingVariables::LC_SettingsPageDrawingVariables(RS_Graphic* graphic, QObject* parent)
     : LC_SettingsPageBase(tr("Variables"), std::make_unique<LC_DocumentSettingsBackend>(graphic), parent)
     , m_graphic(graphic) {
-    setSortWeight(100); // Usually the last page
 }
 
 LC_SettingsPageDrawingVariables::~LC_SettingsPageDrawingVariables() = default;
@@ -38,7 +37,7 @@ void LC_SettingsPageDrawingVariables::setupUi() {
     ui = std::make_unique<Ui::LC_SettingsPageDrawingVariables>();
     ui->setupUi(m_widget);
 
-    QStringList headers = { tr("Name"), tr("Code"), tr("Type"), tr("Value") };
+    const QStringList headers = { tr("Name"), tr("Code"), tr("Type"), tr("Value") };
     ui->tabVariables->setColumnCount(headers.size());
     ui->tabVariables->setHorizontalHeaderLabels(headers);
 
@@ -47,9 +46,10 @@ void LC_SettingsPageDrawingVariables::setupUi() {
     ui->tabVariables->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-
 void LC_SettingsPageDrawingVariables::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
 
     ui->tabVariables->setSortingEnabled(false); // Disable while loading
     ui->tabVariables->setRowCount(0);
@@ -61,7 +61,9 @@ void LC_SettingsPageDrawingVariables::loadSettings() {
         ui->tabVariables->insertRow(row);
 
         QString name = it.key();
-        if (name.startsWith("$")) name = name.mid(1);
+        if (name.startsWith("$")) {
+            name = name.mid(1);
+        }
 
         // 1. Name
         ui->tabVariables->setItem(row, 0, new QTableWidgetItem(name));
@@ -88,7 +90,7 @@ void LC_SettingsPageDrawingVariables::loadSettings() {
                 break;
             case RS2::VariableVector: {
                 typeStr = tr("VECTOR");
-                RS_Vector v = it.value().getVector();
+                const RS_Vector v = it.value().getVector();
                 if (RS_FilterDXFRW::isVariableTwoDimensional(it.key()))
                     valueStr = QString("%1 / %2").arg(v.x).arg(v.y);
                 else

@@ -64,17 +64,23 @@ void LC_SettingsPageDrawingPaper::setupBehavior() {
 }
 
 void LC_SettingsPageDrawingPaper::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
     const LC_PlotSettings* ps = m_graphic->getPlotSettings();
 
     bool landscape = false;
-    RS2::PaperFormat format = ps->getPaperFormat(&landscape);
+    const RS2::PaperFormat format = ps->getPaperFormat(&landscape);
 
     ui->cbPaperFormat->setCurrentIndex(format);
-    if (landscape) ui->rbLandscape->setChecked(true);
-    else ui->rbPortrait->setChecked(true);
+    if (landscape) {
+        ui->rbLandscape->setChecked(true);
+    }
+    else {
+        ui->rbPortrait->setChecked(true);
+    }
 
-    RS_Vector size = ps->getPaperSize();
+    const RS_Vector size = ps->getPaperSize();
     ui->lePaperWidth->setText(QString::number(size.x, 'g', 5));
     ui->lePaperHeight->setText(QString::number(size.y, 'g', 5));
 
@@ -90,7 +96,9 @@ void LC_SettingsPageDrawingPaper::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingPaper::saveSettings() {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
     LC_PlotSettings* ps = m_graphic->getPlotSettings();
 
     ps->setPaperFormat(static_cast<RS2::PaperFormat>(ui->cbPaperFormat->currentIndex()),
@@ -111,12 +119,14 @@ bool LC_SettingsPageDrawingPaper::saveSettings() {
 }
 
 bool LC_SettingsPageDrawingPaper::isModified() const {
-    if (!m_graphic) return false;
+    if (!m_graphic) {
+        return false;
+    }
     const LC_PlotSettings* ps = m_graphic->getPlotSettings();
 
     // 1. Compare Paper Format & Landscape Orientation
     bool docLandscape = false;
-    RS2::PaperFormat docFormat = ps->getPaperFormat(&docLandscape);
+    const RS2::PaperFormat docFormat = ps->getPaperFormat(&docLandscape);
 
     if (static_cast<RS2::PaperFormat>(ui->cbPaperFormat->currentIndex()) != docFormat) {
         return true;
@@ -127,19 +137,19 @@ bool LC_SettingsPageDrawingPaper::isModified() const {
 
     // 2. Compare Custom Dimensions (only if custom is currently evaluated)
     if (docFormat == RS2::Custom) {
-        double uiW = RS_Math::eval(ui->lePaperWidth->text());
-        double uiH = RS_Math::eval(ui->lePaperHeight->text());
-        RS_Vector docSize = ps->getPaperSize();
+        const double uiW = RS_Math::eval(ui->lePaperWidth->text());
+        const double uiH = RS_Math::eval(ui->lePaperHeight->text());
+        const RS_Vector docSize = ps->getPaperSize();
         if (std::abs(uiW - docSize.x) > 1e-9 || std::abs(uiH - docSize.y) > 1e-9) {
             return true;
         }
     }
 
     // 3. Compare Margins with floating-point tolerance
-    double uiLeft = RS_Math::eval(ui->leMarginLeft->text());
-    double uiTop = RS_Math::eval(ui->leMarginTop->text());
-    double uiRight = RS_Math::eval(ui->leMarginRight->text());
-    double uiBottom = RS_Math::eval(ui->leMarginBottom->text());
+    const double uiLeft = RS_Math::eval(ui->leMarginLeft->text());
+    const double uiTop = RS_Math::eval(ui->leMarginTop->text());
+    const double uiRight = RS_Math::eval(ui->leMarginRight->text());
+    const double uiBottom = RS_Math::eval(ui->leMarginBottom->text());
 
     if (std::abs(uiLeft - ps->getMarginLeftInUnits()) > 1e-9 ||
         std::abs(uiTop - ps->getMarginTopInUnits()) > 1e-9 ||
@@ -168,6 +178,8 @@ void LC_SettingsPageDrawingPaper::onDialogShown() {
     onAboutToShow();
 }
 
+
+// fixme - sand - review and check
 void LC_SettingsPageDrawingPaper::onAboutToShow() {
     if (isSettingsDialogVisible()) {
         m_widget->adjustSize();
@@ -201,7 +213,7 @@ void LC_SettingsPageDrawingPaper::onFormatChanged(int index) {
         const RS2::Unit unit = m_graphic->getUnit();
         RS_Vector s = RS_Units::convert(RS_Units::paperFormatToSize(static_cast<RS2::PaperFormat>(index)),
                                         RS2::Millimeter, unit);
-        bool currentLandscape = ui->rbLandscape->isChecked();
+        const bool currentLandscape = ui->rbLandscape->isChecked();
         if (currentLandscape != (s.x > s.y)) {
             std::swap(s.x, s.y);
         }
@@ -216,7 +228,7 @@ void LC_SettingsPageDrawingPaper::updatePreview() {
     doUpdatePreview(true);
 }
 
-void LC_SettingsPageDrawingPaper::doUpdatePreview(bool calcOrientation) {
+void LC_SettingsPageDrawingPaper::doUpdatePreview(bool calcOrientation) const {
 
     const auto paperWidthText = ui->lePaperWidth->text();
     const auto paperHeightText = ui->lePaperHeight->text();
@@ -241,14 +253,14 @@ void LC_SettingsPageDrawingPaper::doUpdatePreview(bool calcOrientation) {
         ui->lePaperWidth->blockSignals(true);
         if (paperW > paperH) {
              if (ui->rbPortrait->isChecked()) {
-                 QString tmp = ui->lePaperHeight->text();
+                 const QString tmp = ui->lePaperHeight->text();
                  ui->lePaperHeight->setText(ui->lePaperWidth->text());
                  ui->lePaperWidth->setText(tmp);
              }
         }
         else {
              if (ui->rbLandscape->isChecked()) {
-                 QString tmp = ui->lePaperHeight->text();
+                 const QString tmp = ui->lePaperHeight->text();
                  ui->lePaperHeight->setText(ui->lePaperWidth->text());
                  ui->lePaperWidth->setText(tmp);
              }

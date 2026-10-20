@@ -29,7 +29,6 @@ LC_SettingsPageCadPreferences::LC_SettingsPageCadPreferences(QObject* parent)
     : LC_SettingsPageBase(tr("CAD Preferences"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_CADPreferences::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageCadPreferences>()) {
-    setSortWeight(40);
 }
 
 LC_SettingsPageCadPreferences::~LC_SettingsPageCadPreferences() = default;

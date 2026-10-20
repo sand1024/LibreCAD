@@ -18,13 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-
-/*******************************************************************************
- * This file is part of the LibreCAD project, a 2D CAD program
- *
- * Copyright (C) 2026 LibreCAD.org
- ******************************************************************************/
-
 #ifndef LC_DOCUMENT_SETTINGS_BACKEND_H
 #define LC_DOCUMENT_SETTINGS_BACKEND_H
 
@@ -47,7 +40,9 @@ public:
      * @brief Reads a value from the graphic or the local transactional cache.
      */
     QVariant value(const QString& key, const QVariant& defaultValue) const override {
-        if (!m_graphic) return defaultValue;
+        if (m_graphic == nullptr) {
+            return defaultValue;
+        }
 
         // 1. Check the local cache first (uncommitted changes)
         if (m_cache.contains(key)) {
@@ -83,7 +78,7 @@ public:
      * @brief Commits all cached changes back to the actual RS_Graphic variables.
      */
     bool sync() override {
-        if (!m_graphic) {
+        if (m_graphic == nullptr) {
             return false;
         }
         if (m_cache.isEmpty()) {
@@ -121,36 +116,72 @@ private:
      */
     static QString mapToDxf(const QString& key) {
         // Units Tab
-        if (key == "Units/Main")            return "$INSUNITS";
-        if (key == "Units/LinearFormat")    return "$LUNITS";
-        if (key == "Units/LinearPrec")      return "$LUPREC";
-        if (key == "Units/AngleFormat")     return "$AUNITS";
-        if (key == "Units/AnglePrec")       return "$AUPREC";
+        if (key == "Units/Main") {
+            return "$INSUNITS";
+        }
+        if (key == "Units/LinearFormat") {
+            return "$LUNITS";
+        }
+        if (key == "Units/LinearPrec") {
+            return "$LUPREC";
+        }
+        if (key == "Units/AngleFormat") {
+            return "$AUNITS";
+        }
+        if (key == "Units/AnglePrec") {
+            return "$AUPREC";
+        }
 
         // Metadata Tab
-        if (key == "Meta/Title")            return "$TITLE";
-        if (key == "Meta/Subject")          return "$SUBJECT";
-        if (key == "Meta/Author")           return "$AUTHOR";
-        if (key == "Meta/Keywords")         return "$KEYWORDS";
-        if (key == "Meta/Comments")         return "$COMMENTS";
+        if (key == "Meta/Title") {
+            return "$TITLE";
+        }
+        if (key == "Meta/Subject") {
+            return "$SUBJECT";
+        }
+        if (key == "Meta/Author") {
+            return "$AUTHOR";
+        }
+        if (key == "Meta/Keywords") {
+            return "$KEYWORDS";
+        }
+        if (key == "Meta/Comments") {
+            return "$COMMENTS";
+        }
 
         // Geometry / Points / Splines
-        if (key == "Geometry/PointMode")    return "$PDMODE";
-        if (key == "Geometry/PointSize")    return "$PDSIZE";
-        if (key == "Geometry/SplineSegs")   return "$SPLINESEGS";
+        if (key == "Geometry/PointMode") {
+            return "$PDMODE";
+        }
+        if (key == "Geometry/PointSize") {
+            return "$PDSIZE";
+        }
+        if (key == "Geometry/SplineSegs") {
+            return "$SPLINESEGS";
+        }
 
         // Lines
-        if (key == "Geometry/LineCaps")     return "$ENDCAPS";
-        if (key == "Geometry/LineJoin")     return "$JOINSTYLE";
+        if (key == "Geometry/LineCaps") {
+            return "$ENDCAPS";
+        }
+        if (key == "Geometry/LineJoin") {
+            return "$JOINSTYLE";
+        }
 
-        if (key.startsWith("$USER")) return key;
+        if (key.startsWith("$USER")) {
+            return key;
+        }
 
         // Fallback: If key already starts with $, assume it's a direct DXF variable
-        if (key.startsWith('$')) return key;
+        if (key.startsWith('$')) {
+            return key;
+        }
 
         // Auto-convert logical paths "Group/Key" to "$GROUP_KEY"
         QString fallback = key.toUpper().replace("/", "_");
-        if (!fallback.startsWith('$')) fallback.prepend('$');
+        if (!fallback.startsWith('$')) {
+            fallback.prepend('$');
+        }
         return fallback;
     }
 

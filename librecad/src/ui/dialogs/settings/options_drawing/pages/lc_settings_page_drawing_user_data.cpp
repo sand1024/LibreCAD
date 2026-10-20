@@ -29,8 +29,7 @@
 
 LC_SettingsPageDrawingUserData::LC_SettingsPageDrawingUserData(RS_Graphic* graphic, QObject* parent)
     : LC_SettingsPageBase(tr("User Data"), nullptr, parent) // FIX: Pass nullptr safely
-    , m_graphic(graphic) {
-}
+    , m_graphic(graphic) {}
 
 LC_SettingsPageDrawingUserData::~LC_SettingsPageDrawingUserData() = default;
 
@@ -48,13 +47,15 @@ void LC_SettingsPageDrawingUserData::setupBehavior() {
     connect(ui->pbCustomVarAdd, &QPushButton::clicked, this, &LC_SettingsPageDrawingUserData::onAddCustomProperty);
     connect(ui->pbCustomVarDelete, &QPushButton::clicked, this, &LC_SettingsPageDrawingUserData::onDeleteCustomProperty);
 
-    connect(ui->twCustomVars, &QTableWidget::itemSelectionChanged, this, [this](){
+    connect(ui->twCustomVars, &QTableWidget::itemSelectionChanged, this, [this]() {
         ui->pbCustomVarDelete->setEnabled(ui->twCustomVars->currentRow() >= 0);
     });
 }
 
 void LC_SettingsPageDrawingUserData::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
 
     // 1. Load Fixed Integer Variables $USERI1 - $USERI5
     ui->sbUserI1->setValue(m_graphic->getVariableInt("$USERI1", 0));
@@ -65,7 +66,7 @@ void LC_SettingsPageDrawingUserData::loadSettings() {
 
     // 2. Load Fixed Real Variables $USERR1 - $USERR5
     auto setReal = [this](QLineEdit* le, const QString& key) {
-        double v = m_graphic->getVariableDouble(key, 0.0);
+        const double v = m_graphic->getVariableDouble(key, 0.0);
         le->setText(QString::number(v, 'g', 12));
     };
     setReal(ui->leUserR1, "$USERR1");
@@ -92,7 +93,9 @@ void LC_SettingsPageDrawingUserData::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingUserData::saveSettings() {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
     // Save Integer variables $USERI1 - $USERI5
     m_graphic->addVariable("$USERI1", ui->sbUserI1->value(), 70);
@@ -111,8 +114,8 @@ bool LC_SettingsPageDrawingUserData::saveSettings() {
     // Save Custom Variables Table manually
     QHash<QString, QString> newCustomVars;
     for (int i = 0; i < ui->twCustomVars->rowCount(); ++i) {
-        auto* nameItem = ui->twCustomVars->item(i, 0);
-        auto* valueItem = ui->twCustomVars->item(i, 1);
+        const auto* nameItem = ui->twCustomVars->item(i, 0);
+        const auto* valueItem = ui->twCustomVars->item(i, 1);
 
         // Defensive Null-Pointer Guard
         if (nameItem && valueItem) {
@@ -124,14 +127,14 @@ bool LC_SettingsPageDrawingUserData::saveSettings() {
 }
 
 bool LC_SettingsPageDrawingUserData::isModified() const {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
     // 1. Compare Integer variables $USERI1 - $USERI5
-    if (ui->sbUserI1->value() != m_graphic->getVariableInt("$USERI1", 0) ||
-        ui->sbUserI2->value() != m_graphic->getVariableInt("$USERI2", 0) ||
-        ui->sbUserI3->value() != m_graphic->getVariableInt("$USERI3", 0) ||
-        ui->sbUserI4->value() != m_graphic->getVariableInt("$USERI4", 0) ||
-        ui->sbUserI5->value() != m_graphic->getVariableInt("$USERI5", 0)) {
+    if (ui->sbUserI1->value() != m_graphic->getVariableInt("$USERI1", 0) || ui->sbUserI2->value() != m_graphic->getVariableInt("$USERI2", 0)
+        || ui->sbUserI3->value() != m_graphic->getVariableInt("$USERI3", 0) || ui->sbUserI4->value() != m_graphic->
+        getVariableInt("$USERI4", 0) || ui->sbUserI5->value() != m_graphic->getVariableInt("$USERI5", 0)) {
         return true;
     }
 
@@ -141,9 +144,9 @@ bool LC_SettingsPageDrawingUserData::isModified() const {
     };
     if (doubleDiff(RS_Math::eval(ui->leUserR1->text()), m_graphic->getVariableDouble("$USERR1", 0.0)) ||
         doubleDiff(RS_Math::eval(ui->leUserR2->text()), m_graphic->getVariableDouble("$USERR2", 0.0)) ||
-        doubleDiff(RS_Math::eval(ui->leUserR3->text()), m_graphic->getVariableDouble("$USERR3", 0.0)) ||
-        doubleDiff(RS_Math::eval(ui->leUserR4->text()), m_graphic->getVariableDouble("$USERR4", 0.0)) ||
-        doubleDiff(RS_Math::eval(ui->leUserR5->text()), m_graphic->getVariableDouble("$USERR5", 0.0))) {
+        doubleDiff(RS_Math::eval(ui->leUserR3->text()), m_graphic->getVariableDouble("$USERR3", 0.0)) || doubleDiff(
+            RS_Math::eval(ui->leUserR4->text()), m_graphic->getVariableDouble("$USERR4", 0.0)) || doubleDiff(
+            RS_Math::eval(ui->leUserR5->text()), m_graphic->getVariableDouble("$USERR5", 0.0))) {
         return true;
     }
 
@@ -154,8 +157,8 @@ bool LC_SettingsPageDrawingUserData::isModified() const {
     }
 
     for (int i = 0; i < ui->twCustomVars->rowCount(); ++i) {
-        auto* nameItem = ui->twCustomVars->item(i, 0);
-        auto* valueItem = ui->twCustomVars->item(i, 1);
+        const auto* nameItem = ui->twCustomVars->item(i, 0);
+        const auto* valueItem = ui->twCustomVars->item(i, 1);
 
         // Defensive Null-Pointer Guard
         if (!nameItem || !valueItem) {
@@ -173,23 +176,27 @@ bool LC_SettingsPageDrawingUserData::isModified() const {
     return false;
 }
 
-void LC_SettingsPageDrawingUserData::onAddCustomProperty() {
+void LC_SettingsPageDrawingUserData::onAddCustomProperty() const {
     LC_DlgNewCustomVariable dlg(m_widget);
     QStringList existing;
     for (int i = 0; i < ui->twCustomVars->rowCount(); ++i) {
-        auto* item = ui->twCustomVars->item(i, 0);
-        if (item) existing << item->text();
+        const auto* item = ui->twCustomVars->item(i, 0);
+        if (item) {
+            existing << item->text();
+        }
     }
     dlg.setPropertyNames(&existing);
 
     if (dlg.exec() == QDialog::Accepted) {
-        QString propName = dlg.getPropertyName().trimmed();
-        if (propName.isEmpty()) return;
+        const QString propName = dlg.getPropertyName().trimmed();
+        if (propName.isEmpty()) {
+            return;
+        }
 
-        int row = ui->twCustomVars->rowCount();
+        const int row = ui->twCustomVars->rowCount();
         ui->twCustomVars->insertRow(row);
 
-        // FIX: Ensure newly added key is read-only (un-editable) just like loaded ones
+        // Ensure newly added key is read-only (un-editable) just like loaded ones
         auto* nameItem = new QTableWidgetItem(propName);
         nameItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         ui->twCustomVars->setItem(row, 0, nameItem);
@@ -198,16 +205,15 @@ void LC_SettingsPageDrawingUserData::onAddCustomProperty() {
     }
 }
 
+void LC_SettingsPageDrawingUserData::onDeleteCustomProperty() const {
+    const int row = ui->twCustomVars->currentRow();
+    if (row < 0) {
+        return;
+    }
 
-void LC_SettingsPageDrawingUserData::onDeleteCustomProperty() {
-    int row = ui->twCustomVars->currentRow();
-    if (row < 0) return;
-
-    QString propName = ui->twCustomVars->item(row, 0)->text();
-    if (QMessageBox::warning(m_widget, tr("Delete Custom Property"),
-        tr("Are you sure you want to delete property [%1]?").arg(propName),
-        QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
-    {
+    const QString propName = ui->twCustomVars->item(row, 0)->text();
+    if (QMessageBox::warning(m_widget, tr("Delete Custom Property"), tr("Are you sure you want to delete property [%1]?").arg(propName),
+                             QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
         ui->twCustomVars->removeRow(row);
     }
 }

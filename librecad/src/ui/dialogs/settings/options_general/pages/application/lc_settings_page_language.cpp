@@ -29,17 +29,13 @@ LC_SettingsPageLanguage::LC_SettingsPageLanguage(QObject* parent)
     : LC_SettingsPageBase(tr("Language"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
                            parent) , ui(std::make_unique<Ui::LC_SettingsPageLanguage>()){
-    // Priority 40 inside the Startup sub-parent index node
-    setSortWeight(40);
 }
 
 LC_SettingsPageLanguage::~LC_SettingsPageLanguage() = default;
 
 void LC_SettingsPageLanguage::setupUi() {
     ui->setupUi(m_widget);
-
     populateLanguages();
-
     m_initialLanguageGUIIdx = ui->cbLanguage->currentIndex();
 }
 
@@ -67,7 +63,7 @@ void LC_SettingsPageLanguage::setupBindings() {
          &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentData().toString(); },
         [](QComboBox* w, const QString& v) {
-            int idx = w->findData(v);
+            const int idx = w->findData(v);
             if (idx >= 0) w->setCurrentIndex(idx);
         });
 
@@ -75,7 +71,7 @@ void LC_SettingsPageLanguage::setupBindings() {
     &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentData().toString(); },
         [](QComboBox* w, const QString& v) {
-            int idx = w->findData(v);
+            const int idx = w->findData(v);
             if (idx >= 0) w->setCurrentIndex(idx);
         });
 }

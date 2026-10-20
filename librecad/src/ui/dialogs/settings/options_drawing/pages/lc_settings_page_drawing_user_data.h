@@ -38,8 +38,8 @@ public:
     bool isModified() const override;
 
 private slots:
-    void onAddCustomProperty();
-    void onDeleteCustomProperty();
+    void onAddCustomProperty() const;
+    void onDeleteCustomProperty() const;
 protected:
     void setupUi() override;
     void setupBehavior() override;

@@ -48,10 +48,6 @@ template<class T>
 
 void LC_SettingsManagerDrawing::initialize() {
     auto* reg = LC_SettingsRegistry::instance();
-    static bool isInitialized = false;
-    if (isInitialized) {
-        return;
-    }
 
     using namespace LC_SettingsPagesDrawing;
 
@@ -74,13 +70,12 @@ void LC_SettingsManagerDrawing::initialize() {
     addPage(PAGE_USER_DATA,  pageWithContext<LC_SettingsPageDrawingUserData>());
     addPage(PAGE_VARIABLES,  pageWithContext<LC_SettingsPageDrawingVariables>());
 
-    isInitialized = true;
 }
 
 bool LC_SettingsManagerDrawing::show(RS_Graphic* graphic, QWidget* parent, const QString& initialPageId) {
-    if (!graphic) return false;
-
-    initialize();
+    if (graphic == nullptr) {
+        return false;
+    }
 
     g_contextGraphic = graphic;
 

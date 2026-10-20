@@ -29,15 +29,14 @@ LC_SettingsPageCommandLine::LC_SettingsPageCommandLine(QObject* parent)
     : LC_SettingsPageBase(tr("Command Line Informer"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_CommandsPromotion::Group),
                            parent) , ui(std::make_unique<Ui::LC_SettingsPageCommandLine>())  {
-    setSortWeight(60);
 }
 
 LC_SettingsPageCommandLine::~LC_SettingsPageCommandLine() = default;
 
 void LC_SettingsPageCommandLine::setupUi() {
     ui->setupUi(m_widget);
-    auto uiStyleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
-    bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
+    const auto uiStyleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
+    const bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
     ui->cbShowCommandInMenu->setEnabled(currentThemeIsFusion);
 }
 

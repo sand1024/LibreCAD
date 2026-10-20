@@ -48,7 +48,7 @@ private slots:
     void onFormatChanged(int index);
     void onOrientationChanged();
     void updatePreview();
-    void doUpdatePreview(bool calcOrientation);
+    void doUpdatePreview(bool calcOrientation) const;
 private:
     std::unique_ptr<Ui::LC_SettingsPageDrawingPaper> ui;
     RS_Graphic* m_graphic;

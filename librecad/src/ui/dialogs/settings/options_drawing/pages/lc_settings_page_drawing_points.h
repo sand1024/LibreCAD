@@ -41,7 +41,7 @@ protected:
     void setupUi() override;
     void setupBehavior() override;
 private:
-    void updatePointSizeUnitsLabel();
+    void updatePointSizeUnitsLabel() const;
     std::unique_ptr<Ui::LC_SettingsPageDrawingPoints> ui;
     QButtonGroup* m_ptGroup = nullptr;
     RS_Graphic* m_graphic;

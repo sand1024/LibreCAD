@@ -28,7 +28,6 @@ LC_SettingsPageAutosave::LC_SettingsPageAutosave(QObject* parent)
     : LC_SettingsPageBase(tr("Auto-save & Backup"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageAutosave>()){
-    setSortWeight(30);
 }
 
 LC_SettingsPageAutosave::~LC_SettingsPageAutosave() = default;
@@ -40,7 +39,6 @@ void LC_SettingsPageAutosave::setupUi() {
 void LC_SettingsPageAutosave::setupBehavior() {
     enableWhenChecked(ui->cbAutoBackup, ui->cbAutoSaveTime);
 }
-
 
 void LC_SettingsPageAutosave::setupBindings() {
     using namespace CFG_Defaults;

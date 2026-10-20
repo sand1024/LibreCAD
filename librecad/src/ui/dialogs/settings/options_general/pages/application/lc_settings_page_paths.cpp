@@ -29,8 +29,6 @@ LC_SettingsPagePaths::LC_SettingsPagePaths(QObject* parent)
     : LC_SettingsPageBase(tr("Paths"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Paths::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPagePaths>()){
-
-    setSortWeight(70);
 }
 
 LC_SettingsPagePaths::~LC_SettingsPagePaths() = default;
@@ -49,7 +47,7 @@ void LC_SettingsPagePaths::setupBindings() {
         { ui->leTemplate, o_Template },
         { ui->variablefile_field, o_VariableFile },
         { ui->leOtherSettingsDirectory, o_OtherSettingsDir, true },
-        { ui->lePathLibrary, o_Library, true /*requiresRestart*/ },
+        { ui->lePathLibrary, o_Library, true},
         {ui->leIconsOverrideDirectory, CFG_Paths::o_IconOverridesDir}
     });
 
@@ -63,7 +61,7 @@ void LC_SettingsPagePaths::setupBindings() {
 }
 
 bool LC_SettingsPagePaths::saveSettings() {
-    QString currentLib = ui->lePathLibrary->text().trimmed();
+    const QString currentLib = ui->lePathLibrary->text().trimmed();
     if (m_originalLibraryPath != currentLib) {
         setRestartRequired(true);
     }

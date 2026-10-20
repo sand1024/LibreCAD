@@ -44,7 +44,7 @@ protected:
     void setupBehavior() override;
 
 private slots:
-    void updateSpacingEnabledState();
+    void updateSpacingEnabledState() const;
 
 public:
     void onAboutToHide() override;

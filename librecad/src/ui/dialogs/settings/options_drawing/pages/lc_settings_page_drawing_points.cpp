@@ -74,7 +74,7 @@ void LC_SettingsPageDrawingPoints::setupBehavior() {
 }
 
 void LC_SettingsPageDrawingPoints::loadSettings() {
-    if (!m_graphic) {
+    if (m_graphic == nullptr) {
         return;
     }
 
@@ -92,7 +92,7 @@ void LC_SettingsPageDrawingPoints::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingPoints::saveSettings() {
-    if (!m_graphic) {
+    if (m_graphic == nullptr) {
         return false;
     }
 
@@ -116,7 +116,7 @@ bool LC_SettingsPageDrawingPoints::saveSettings() {
 }
 
 bool LC_SettingsPageDrawingPoints::isModified() const {
-    if (!m_graphic) {
+    if (m_graphic == nullptr) {
         return false;
     }
 
@@ -140,13 +140,13 @@ bool LC_SettingsPageDrawingPoints::isModified() const {
     const double docSize = m_graphic->getVariableDouble("$PDSIZE", LC_DEFAULTS_PDSize);
 
     // Float comparison using a reliable precision threshold
-    if (std::abs(uiSize - docSize) > 1e-9) {
+    if (LC_LineMath::isSameValue(uiSize,docSize)) {
         return true;
     }
 
     return false;
 }
 
-void LC_SettingsPageDrawingPoints::updatePointSizeUnitsLabel() {
+void LC_SettingsPageDrawingPoints::updatePointSizeUnitsLabel() const {
     ui->lPtSzUnits->setText(ui->rbRelSize->isChecked() ? tr("Screen %") : tr("Dwg Units"));
 }

@@ -37,7 +37,9 @@ void LC_SettingsPageDrawingMeta::setupUi() {
 }
 
 void LC_SettingsPageDrawingMeta::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
     ui->leMetaTitle->setText(m_graphic->getVariableString("$TITLE", ""));
     ui->leMetaSubject->setText(m_graphic->getVariableString("$SUBJECT", ""));
     ui->leMetaAuthor->setText(m_graphic->getVariableString("$AUTHOR", ""));
@@ -46,9 +48,10 @@ void LC_SettingsPageDrawingMeta::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingMeta::saveSettings() {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
-    // LC_ERR << "Meta::saveSettings() executed. Saving Title: '" << ui->leMetaTitle->text() << "'";
     m_graphic->addVariable("$TITLE", ui->leMetaTitle->text(), 1);
     m_graphic->addVariable("$SUBJECT", ui->leMetaSubject->text(), 1);
     m_graphic->addVariable("$AUTHOR", ui->leMetaAuthor->text(), 1);
@@ -58,12 +61,12 @@ bool LC_SettingsPageDrawingMeta::saveSettings() {
 }
 
 bool LC_SettingsPageDrawingMeta::isModified() const {
-    if (!m_graphic) {
+    if (m_graphic == nullptr) {
         return false;
     }
 
-    auto title = ui->leMetaTitle->text();
-    auto titleDxf = m_graphic->getVariableString("$TITLE", "");
+    const auto title = ui->leMetaTitle->text();
+    const auto titleDxf = m_graphic->getVariableString("$TITLE", "");
     const bool titleDifferent = title != titleDxf;
     const bool subjDifferent = ui->leMetaSubject->text() != m_graphic->getVariableString("$SUBJECT", "");
     const bool authorDifferent = ui->leMetaAuthor->text() != m_graphic->getVariableString("$AUTHOR", "");
@@ -71,9 +74,5 @@ bool LC_SettingsPageDrawingMeta::isModified() const {
     const bool commentsDifferent = ui->teMetaComments->toPlainText() != m_graphic->getVariableString("$COMMENTS", "");
     const bool modified = titleDifferent || subjDifferent || authorDifferent || keywordDifferent || commentsDifferent;
 
-    // LC_ERR << "Meta::isModified() called. "
-    //        << "Widget Title: '" << ui->leMetaTitle->text() << "' "
-    //        << " | Doc Title: '" << m_graphic->getVariableString("$TITLE", "") << "' "
-    //        << " | Result: " << (modified ? "MODIFIED" : "CLEAN");
     return modified;
 }

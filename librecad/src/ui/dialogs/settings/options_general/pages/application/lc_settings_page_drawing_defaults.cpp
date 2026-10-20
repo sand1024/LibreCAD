@@ -28,7 +28,6 @@
 LC_SettingsPageDrawingDefaults::LC_SettingsPageDrawingDefaults(QObject* parent)
     : LC_SettingsPageBase(tr("New Drawing Defaults"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDrawingDefaults>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDrawingDefaults::~LC_SettingsPageDrawingDefaults() = default;

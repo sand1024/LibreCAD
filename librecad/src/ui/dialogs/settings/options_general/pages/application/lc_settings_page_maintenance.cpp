@@ -33,7 +33,6 @@ LC_SettingsPageMaintenance::LC_SettingsPageMaintenance(QObject* parent)
     : LC_SettingsPageBase(tr("Maintenance"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
                            parent), ui(std::make_unique<Ui::LC_SettingsPageMaintenance>()) {
-    setSortWeight(90);
 }
 
 LC_SettingsPageMaintenance::~LC_SettingsPageMaintenance() = default;

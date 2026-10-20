@@ -30,8 +30,6 @@ LC_SettingsPageProgramDefaults::LC_SettingsPageProgramDefaults(QObject* parent)
     : LC_SettingsPageBase(tr("User Interface"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
                            parent), ui(std::make_unique<Ui::LC_SettingsPageProgramDefaults>()) {
-    // Dynamic Sorting: positions the page first inside the Application tree block
-    setSortWeight(10);
 }
 
 LC_SettingsPageProgramDefaults::~LC_SettingsPageProgramDefaults() = default;

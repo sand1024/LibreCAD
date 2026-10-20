@@ -64,28 +64,32 @@ void LC_SettingsPageDrawingUnits::loadSettings() {
     if (!m_graphic) return;
 
     // Load Main Unit
-    int insunits = m_graphic->getVariableInt("$INSUNITS", 0);
+    const int insunits = m_graphic->getVariableInt("$INSUNITS", 0);
     ui->cbUnit->setCurrentIndex(ui->cbUnit->findText(RS_Units::unitToString(RS_FilterDXFRW::numberToUnit(insunits))));
 
     // Load Length Format (Direct DXF matching)
-    int lunits = m_graphic->getVariableInt("$LUNITS", 2);
+    const int lunits = m_graphic->getVariableInt("$LUNITS", 2);
     ui->cbLengthFormat->setCurrentIndex(ui->cbLengthFormat->findData(lunits));
     onLengthFormatChanged(); // Populate precision list and apply constraint rules
     ui->cbLengthPrecision->setCurrentIndex(m_graphic->getVariableInt("$LUPREC", 4));
 
     // Load Angle Format (Using index directly to avoid QVariant(0) ambiguity)
-    int aunits = m_graphic->getAngleFormat();
+    const int aunits = m_graphic->getAngleFormat();
     ui->cbAngleFormat->setCurrentIndex(aunits);
     onAngleFormatChanged(); // Populate precision list
     ui->cbAnglePrecision->setCurrentIndex(m_graphic->getVariableInt("$AUPREC", 2));
 
     // Load Basis
-    double baseAngle = m_graphic->getAnglesBase();
+    const double baseAngle = m_graphic->getAnglesBase();
     ui->leAngleBaseZero->setText(QString::number(RS_Math::rad2deg(baseAngle)));
 
-    bool ccw = m_graphic->areAnglesCounterClockWise();
-    if (ccw) ui->rbAngleBasePositive->setChecked(true);
-    else ui->rbAngleBaseNegative->setChecked(true);
+    const bool ccw = m_graphic->areAnglesCounterClockWise();
+    if (ccw) {
+        ui->rbAngleBasePositive->setChecked(true);
+    }
+    else {
+        ui->rbAngleBaseNegative->setChecked(true);
+    }
 
     updateUnitsPreview();
 }
@@ -94,8 +98,8 @@ bool LC_SettingsPageDrawingUnits::saveSettings() {
     if (!m_graphic) return false;
 
     // Constraint Validation
-    int fVal = ui->cbLengthFormat->currentData().toInt();
-    RS2::Unit u = static_cast<RS2::Unit>(ui->cbUnit->currentIndex());
+    const int fVal = ui->cbLengthFormat->currentData().toInt();
+    const RS2::Unit u = static_cast<RS2::Unit>(ui->cbUnit->currentIndex());
 
     // engineering = 3, architectural = 4 in DXF
     if ((fVal == 3 || fVal == 4) && u != RS2::Inch) {
@@ -117,15 +121,19 @@ bool LC_SettingsPageDrawingUnits::saveSettings() {
     m_graphic->addVariable("$AUPREC", ui->cbAnglePrecision->currentIndex(), 70);
 
     bool ok;
-    double baseDeg = RS_Math::eval(ui->leAngleBaseZero->text(), &ok);
-    if (ok) m_graphic->setAnglesBase(RS_Math::deg2rad(baseDeg));
+    const double baseDeg = RS_Math::eval(ui->leAngleBaseZero->text(), &ok);
+    if (ok) {
+        m_graphic->setAnglesBase(RS_Math::deg2rad(baseDeg));
+    }
     m_graphic->setAnglesCounterClockwise(ui->rbAngleBasePositive->isChecked());
 
     return true;
 }
 
 bool LC_SettingsPageDrawingUnits::isModified() const {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
     // Compare Main Unit
     if (static_cast<RS2::Unit>(ui->cbUnit->currentIndex()) != m_graphic->getUnit()) {
@@ -154,7 +162,7 @@ bool LC_SettingsPageDrawingUnits::isModified() const {
 
     // Compare Angle Base Zero
     bool ok;
-    double currentBaseAngle = RS_Math::deg2rad(RS_Math::eval(ui->leAngleBaseZero->text(), &ok));
+    const double currentBaseAngle = RS_Math::deg2rad(RS_Math::eval(ui->leAngleBaseZero->text(), &ok));
     if (ok) {
         if (std::abs(currentBaseAngle - m_graphic->getAnglesBase()) > 1e-9) {
             return true;
@@ -180,8 +188,8 @@ void LC_SettingsPageDrawingUnits::setupBehavior() {
 }
 
 void LC_SettingsPageDrawingUnits::onLengthFormatChanged() {
-    int oldIndex = ui->cbLengthPrecision->currentIndex(); // FIX: Preserve active index
-    int dxfFormatVal = ui->cbLengthFormat->currentData().toInt();
+    const int oldIndex = ui->cbLengthPrecision->currentIndex(); // FIX: Preserve active index
+    const int dxfFormatVal = ui->cbLengthFormat->currentData().toInt();
 
     ui->cbLengthPrecision->clear();
 
@@ -201,7 +209,7 @@ void LC_SettingsPageDrawingUnits::onLengthFormatChanged() {
 
     // LEGACY CONSTRAINTS: Map DXF value to RS2 enum for automatic unit selection
     // RS2::Engineering = 2, RS2::Architectural = 3, RS2::ArchitecturalMetric = 5
-    RS2::LinearFormat format = static_cast<RS2::LinearFormat>(dxfFormatVal - 1);
+    const RS2::LinearFormat format = static_cast<RS2::LinearFormat>(dxfFormatVal - 1);
     switch (format) {
         case RS2::Engineering:
         case RS2::Architectural: {
@@ -228,12 +236,12 @@ void LC_SettingsPageDrawingUnits::onLengthFormatChanged() {
 }
 
 void LC_SettingsPageDrawingUnits::onAngleFormatChanged() {
-    int oldIndex = ui->cbAnglePrecision->currentIndex(); // FIX: Preserve active index
+    const int oldIndex = ui->cbAnglePrecision->currentIndex(); // FIX: Preserve active index
     int dxfAngleVal = ui->cbAngleFormat->currentIndex(); // Safely reading index directly
 
     ui->cbAnglePrecision->clear();
 
-    RS2::AngleFormat format = static_cast<RS2::AngleFormat>(dxfAngleVal);
+    const RS2::AngleFormat format = static_cast<RS2::AngleFormat>(dxfAngleVal);
     switch(format) {
         case RS2::DegreesDecimal:
             for (int i = 0; i <= 8; i++) ui->cbAnglePrecision->addItem(QString("%1").arg(0.0, 0, 'f', i));
@@ -261,7 +269,7 @@ void LC_SettingsPageDrawingUnits::onAngleFormatChanged() {
             break;
     }
 
-    // FIX: Safely restore active precision index, otherwise fallback to standard default (index 2)
+    // Safely restore active precision index, otherwise fallback to standard default (index 2)
     if (oldIndex >= 0 && oldIndex < ui->cbAnglePrecision->count()) {
         ui->cbAnglePrecision->setCurrentIndex(oldIndex);
     } else {
@@ -271,16 +279,16 @@ void LC_SettingsPageDrawingUnits::onAngleFormatChanged() {
     updateUnitsPreview();
 }
 
-void LC_SettingsPageDrawingUnits::updateUnitsPreview() {
-    int dxfFormatVal = ui->cbLengthFormat->currentData().toInt();
-    QString lin = RS_Units::formatLinear(14.43112351,
+void LC_SettingsPageDrawingUnits::updateUnitsPreview() const {
+    const int dxfFormatVal = ui->cbLengthFormat->currentData().toInt();
+    const QString lin = RS_Units::formatLinear(14.43112351,
                                         static_cast<RS2::Unit>(ui->cbUnit->currentIndex()),
                                         static_cast<RS2::LinearFormat>(dxfFormatVal - 1),
                                         ui->cbLengthPrecision->currentIndex());
     ui->lLinear->setText(lin);
 
     int dxfAngleVal = ui->cbAngleFormat->currentIndex();
-    QString ang = RS_Units::formatAngle(0.5327714,
+    const QString ang = RS_Units::formatAngle(0.5327714,
                                        static_cast<RS2::AngleFormat>(dxfAngleVal),
                                        ui->cbAnglePrecision->currentIndex());
     ui->lAngular->setText(ang);

@@ -38,7 +38,9 @@ void LC_SettingsPageDrawingSplines::setupUi() {
 }
 
 void LC_SettingsPageDrawingSplines::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
 
     ui->cbSplineSegs->setEditText(QString::number(m_graphic->getVariableInt("$SPLINESEGS", 8)));
     ui->cbLineCap->setCurrentIndex(m_graphic->getGraphicVariableInt("$ENDCAPS", 1));
@@ -46,7 +48,9 @@ void LC_SettingsPageDrawingSplines::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingSplines::saveSettings() {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
     m_graphic->addVariable("$SPLINESEGS", ui->cbSplineSegs->currentText().toInt(), 70);
     m_graphic->addVariable("$ENDCAPS", ui->cbLineCap->currentIndex(), 70);

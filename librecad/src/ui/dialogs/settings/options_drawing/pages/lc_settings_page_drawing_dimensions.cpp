@@ -49,7 +49,7 @@ void LC_SettingsPageDrawingDimensions::setupUi() {
     ui = std::make_unique<Ui::LC_SettingsPageDrawingDimensions>();
     ui->setupUi(m_widget);
 
-    // 1. Setup the CAD Preview inside the page
+    // Setup the CAD Preview inside the page
     m_previewView = LC_DimStylePreviewGraphicView::init(m_widget, m_graphic, RS2::EntityUnknown);
     auto* previewLayout = new QVBoxLayout(ui->gbPreview);
     previewLayout->setContentsMargins(0, 0, 0, 0);
@@ -60,8 +60,7 @@ void LC_SettingsPageDrawingDimensions::setupUi() {
     previewLayout->addWidget(toolbar);
     previewLayout->addWidget(m_previewView, 10);
 
-    // 2. Symmetrical Visibility & Styling configurations
-    // ui->dbDimEmbeddArrowBlocks->setVisible(false);
+    // Visibility & Styling configurations
     ui->lvDimStyles->setContextMenuPolicy(Qt::CustomContextMenu);
 
     const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatButtons;
@@ -75,9 +74,11 @@ void LC_SettingsPageDrawingDimensions::setupUi() {
 }
 
 void LC_SettingsPageDrawingDimensions::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic== nullptr) {
+        return;
+    }
 
-    // 1. Symmetrical usage resolution including substyles
+    // Symmetrical usage resolution including substyles
     QMap<QString, int> usages;
     collectStylesUsage(usages);
 
@@ -94,15 +95,15 @@ void LC_SettingsPageDrawingDimensions::loadSettings() {
     ui->lvDimStyles->setModel(model);
     ui->lvDimStyles->expandAll();
 
-    // 3. Connect Selection & Double Click
+    // Connect Selection & Double Click
     connect(ui->lvDimStyles->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &LC_SettingsPageDrawingDimensions::onCurrentStyleChanged);
     connect(ui->lvDimStyles, &QTreeView::doubleClicked, this, &LC_SettingsPageDrawingDimensions::onStyleDoubleClick);
 
-    // 4. Select first style and refresh preview safely
-    QModelIndex first = model->index(0, 0, QModelIndex());
+    // Select first style and refresh preview safely
+    const QModelIndex first = model->index(0, 0, QModelIndex());
     ui->lvDimStyles->setCurrentIndex(first);
-    if (auto* item = model->getItemForIndex(first)) {
+    if (const auto* item = model->getItemForIndex(first)) {
         updatePreview(item->dimStyle());
         updateActiveStyleLabel(model);
     }
@@ -119,14 +120,13 @@ bool LC_SettingsPageDrawingDimensions::saveSettings() {
 
     QList<LC_DimStyle*> newStyles;
     QString activeName;
-    for (auto* item : items) {
+    for (const auto* item : items) {
         newStyles.push_back(item->dimStyle()->getCopy());
         if (item->isActive()) activeName = item->dimStyle()->getName();
     }
 
     m_graphic->replaceDimStylesList(activeName, newStyles);
 
-    // CRITICAL: Memory cleanup from legacy code
     model->cleanup(false);
 
     m_graphic->updateDimensions(false);
@@ -145,8 +145,10 @@ void LC_SettingsPageDrawingDimensions::setupBehavior() {
     connect(ui->lvDimStyles, &QTreeView::customContextMenuRequested, this, &LC_SettingsPageDrawingDimensions::onContextMenu);
 }
 
-void LC_SettingsPageDrawingDimensions::updateActiveStyleLabel(LC_DimStyleTreeModel* model) {
-    if (!model) return;
+void LC_SettingsPageDrawingDimensions::updateActiveStyleLabel(LC_DimStyleTreeModel* model) const {
+    if (model== nullptr) {
+        return;
+    }
     const auto* activeStyleItem = model->getActiveStyleItem();
     ui->lblActiveStyle->setText(activeStyleItem ? activeStyleItem->baseName() : QString());
 }
@@ -168,29 +170,34 @@ void LC_SettingsPageDrawingDimensions::collectStylesUsage(QMap<QString, int>& ma
 }
 
 void LC_SettingsPageDrawingDimensions::onCurrentStyleChanged(const QModelIndex& current, const QModelIndex&) {
-    if (!current.isValid()) return;
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
-    auto* item = model->getItemForIndex(current);
+    if (!current.isValid()) {
+        return;
+    }
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+    const auto* item = model->getItemForIndex(current);
     refreshActionButtons(item);
     updatePreview(item->dimStyle());
 }
 
-void LC_SettingsPageDrawingDimensions::updatePreview(LC_DimStyle* style) {
+void LC_SettingsPageDrawingDimensions::updatePreview(LC_DimStyle* style) const {
     m_previewView->setDimStyle(style);
     auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     QList<LC_DimStyleItem*> family;
     model->collectAllItemsForStyle(style, &family);
-    for (auto* f : family) {
-        if (f->dimStyle()->getName() != style->getName())
+    for (const auto* f : family) {
+        if (f->dimStyle()->getName() != style->getName()) {
             m_previewView->addDimStyle(f->dimStyle());
+        }
     }
     m_previewView->updateDims();
     m_previewView->refresh();
 }
 
-void LC_SettingsPageDrawingDimensions::refreshActionButtons(const LC_DimStyleItem* item) {
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
-    if (!item || !model) return;
+void LC_SettingsPageDrawingDimensions::refreshActionButtons(const LC_DimStyleItem* item) const {
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+    if (item == nullptr || !model) {
+        return;
+    }
 
     const int itemsCount = model->itemsCount();
     ui->tbDimDefault->setEnabled(!item->isActive() && item->isBaseStyle());
@@ -213,7 +220,7 @@ void LC_SettingsPageDrawingDimensions::onStyleNew() {
     dlg.setup(defaultItem, allItems);
 
     if (dlg.exec() == QDialog::Accepted) {
-        QString newName = dlg.getStyleName();
+        const QString newName = dlg.getStyleName();
         const auto* baseItem = dlg.getBaseDimStyle();
         const RS2::EntityType dimType = dlg.getDimensionType();
 
@@ -235,10 +242,12 @@ void LC_SettingsPageDrawingDimensions::onStyleNew() {
 
 void LC_SettingsPageDrawingDimensions::onStyleEdit() {
     const QModelIndex idx = ui->lvDimStyles->selectionModel()->currentIndex();
-    if (!idx.isValid()) return;
+    if (!idx.isValid()) {
+        return;
+    }
 
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
-    LC_DimStyleItem* item = model->getItemForIndex(idx);
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+    const LC_DimStyleItem* item = model->getItemForIndex(idx);
     LC_DimStyle* styleToEdit = item->dimStyle()->getCopy();
 
     LC_DlgDimStyleManager manager(m_widget, styleToEdit, m_graphic, item->forDimensionType());
@@ -256,10 +265,12 @@ void LC_SettingsPageDrawingDimensions::onStyleRename() {
 
     auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     LC_DimStyleItem* item = model->getItemForIndex(idx);
-    if (!item->isBaseStyle() || !item->isNotUsedInDrawing()) return;
+    if (!item->isBaseStyle() || !item->isNotUsedInDrawing()) {
+        return;
+    }
 
-    QString oldName = item->dimStyle()->getName();
-    QString newName = getUniqueName(tr("Rename Style"), tr("Enter new unique name:"), oldName);
+    const QString oldName = item->dimStyle()->getName();
+    const QString newName = getUniqueName(tr("Rename Style"), tr("Enter new unique name:"), oldName);
 
     if (!newName.isEmpty()) {
         item->setNewBaseName(newName);
@@ -270,7 +281,9 @@ void LC_SettingsPageDrawingDimensions::onStyleRename() {
 
 void LC_SettingsPageDrawingDimensions::onStyleRemove() {
     const QModelIndex idx = ui->lvDimStyles->selectionModel()->currentIndex();
-    if (!idx.isValid()) return;
+    if (!idx.isValid()) {
+        return;
+    }
 
     auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     LC_DimStyleItem* item = model->getItemForIndex(idx);
@@ -294,7 +307,9 @@ void LC_SettingsPageDrawingDimensions::onStyleRemove() {
 
 void LC_SettingsPageDrawingDimensions::onStyleSetDefault() {
     const QModelIndex idx = ui->lvDimStyles->selectionModel()->currentIndex();
-    if (!idx.isValid()) return;
+    if (!idx.isValid()) {
+        return;
+    }
 
     auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     model->setActiveStyleItem(idx);
@@ -304,9 +319,9 @@ void LC_SettingsPageDrawingDimensions::onStyleSetDefault() {
     m_manualModified = true;
 }
 
-void LC_SettingsPageDrawingDimensions::onStyleExport() {
+void LC_SettingsPageDrawingDimensions::onStyleExport(){
     LC_DimStylesExporter exporter;
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     QList<LC_DimStyleItem*> items;
     model->collectAllStyleItems(items);
     exporter.exportStyles(m_widget, items, m_graphic->getFilename());
@@ -327,9 +342,9 @@ void LC_SettingsPageDrawingDimensions::onStyleDoubleClick(const QModelIndex&) {
 }
 
 void LC_SettingsPageDrawingDimensions::onContextMenu(const QPoint& pos) {
-    QModelIndex idx = ui->lvDimStyles->indexAt(pos);
+    const QModelIndex idx = ui->lvDimStyles->indexAt(pos);
     QMenu menu(m_widget);
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
 
     using ActionMemberFunc = void (LC_SettingsPageDrawingDimensions::*)();
     auto addAction = [this, &menu](const QString& icon, const QString& text, ActionMemberFunc func, bool enabled = true) {
@@ -364,8 +379,8 @@ void LC_SettingsPageDrawingDimensions::onContextMenu(const QPoint& pos) {
     menu.exec(ui->lvDimStyles->viewport()->mapToGlobal(pos));
 }
 
-QString LC_SettingsPageDrawingDimensions::getUniqueName(const QString& title, const QString& label, const QString& base) {
-    auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
+QString LC_SettingsPageDrawingDimensions::getUniqueName(const QString& title, const QString& label, const QString& base) const {
+    const auto* model = static_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
     bool ok;
     QString name = base;
     int i = 1;
@@ -395,6 +410,7 @@ bool LC_SettingsPageDrawingDimensions::isModified() const {
 }
 
 
+// fixme - sand - check and review this
 namespace CFG_PageDimensionStyles{
     inline const LC_SettingsGroupBase Group("SettingsPage.DimensionStyles");
     inline const LC_Setting<double> o_ContentRatio(&Group, "ContentRatio", 0.3);

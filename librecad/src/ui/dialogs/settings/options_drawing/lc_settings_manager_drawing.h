@@ -23,11 +23,9 @@
 #ifndef LC_SETTINGS_MANAGER_DRAWING_H
 #define LC_SETTINGS_MANAGER_DRAWING_H
 
-#include "lc_settings_registry.h"
 #include "lc_document_settings_backend.h"
 #include "lc_settings_manager_base.h"
 
-// Forward declarations of pages
 class RS_Graphic;
 
 namespace LC_SettingsPagesDrawing {

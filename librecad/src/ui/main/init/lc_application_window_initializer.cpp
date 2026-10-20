@@ -351,7 +351,7 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
     m_appWin->m_actionContext->setCommandManager(m_appWin->m_commandManager.get());
 }
 
-void LC_ApplicationWindowInitializer::initSettingsDialogs() {
+void LC_ApplicationWindowInitializer::initSettingsDialogs() const {
     LC_SettingsManagerApplication::initialize(m_appWin);
     LC_SettingsManagerDrawing::initialize();
     LC_SettingsManagerStyling::initialize(m_appWin);

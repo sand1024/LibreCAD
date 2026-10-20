@@ -26,8 +26,6 @@
 #include "lc_settings_appearance.h"
 #include "rs_graphic.h"
 
-
-
 LC_SettingsPageDrawingGrid::LC_SettingsPageDrawingGrid(RS_Graphic* graphic, QObject* parent)
     : LC_SettingsPageBase(tr("Grid"), nullptr, parent) // Pass nullptr to base safely
     , m_graphic(graphic) {
@@ -41,7 +39,9 @@ void LC_SettingsPageDrawingGrid::setupUi() {
 }
 
 void LC_SettingsPageDrawingGrid::loadSettings() {
-    if (!m_graphic) return;
+    if (m_graphic == nullptr) {
+        return;
+    }
 
     ui->cbGridOn->setChecked(m_graphic->isGridOn());
 
@@ -58,7 +58,7 @@ void LC_SettingsPageDrawingGrid::loadSettings() {
         ui->rbOrthogonalGrid->setChecked(true);
     }
 
-    RS_Vector spacing = m_graphic->getUserGridSpacing();
+    const RS_Vector spacing = m_graphic->getUserGridSpacing();
     ui->cbXSpacing->setEditText(spacing.x == 0.0 ? tr("auto") : QString::number(spacing.x));
     ui->cbYSpacing->setEditText(spacing.y == 0.0 ? tr("auto") : QString::number(spacing.y));
 
@@ -74,7 +74,9 @@ void LC_SettingsPageDrawingGrid::loadSettings() {
 }
 
 bool LC_SettingsPageDrawingGrid::saveSettings() {
-    if (!m_graphic) return false;
+    if (m_graphic == nullptr) {
+        return false;
+    }
 
     m_graphic->setGridOn(ui->cbGridOn->isChecked());
 
@@ -90,7 +92,7 @@ bool LC_SettingsPageDrawingGrid::saveSettings() {
     const double xVal = (ui->cbXSpacing->currentText() == tr("auto") || ui->cbXSpacing->currentText().isEmpty()) ? 0.0 : ui->cbXSpacing->currentText().toDouble();
     const double yVal = (ui->cbYSpacing->currentText() == tr("auto") || ui->cbYSpacing->currentText().isEmpty()) ? 0.0 : ui->cbYSpacing->currentText().toDouble();
 
-    RS_Vector spacing(xVal, yVal);
+    const RS_Vector spacing(xVal, yVal);
     m_graphic->setUserGridSpacing(spacing);
 
     return true;
@@ -99,18 +101,18 @@ bool LC_SettingsPageDrawingGrid::saveSettings() {
 bool LC_SettingsPageDrawingGrid::isModified() const {
     if (!m_graphic) return false;
 
-    // 1. Compare Grid Visibility State
+    // Compare Grid Visibility State
     if (ui->cbGridOn->isChecked() != m_graphic->isGridOn()) {
         return true;
     }
 
-    // 2. Compare Orthogonal vs Isometric Toggles
+    // Compare Orthogonal vs Isometric Toggles
     const bool uiIsometric = ui->rbIsometricGrid->isChecked();
     if (uiIsometric != m_graphic->isIsometricGrid()) {
         return true;
     }
 
-    // 3. If Isometric is checked, compare current View Type
+    // If Isometric is checked, compare current View Type
     if (uiIsometric) {
         RS2::IsoGridViewType uiIsoView = RS2::IsoTop;
         if (ui->rbIsoLeft->isChecked()) uiIsoView = RS2::IsoLeft;
@@ -121,11 +123,11 @@ bool LC_SettingsPageDrawingGrid::isModified() const {
         }
     }
 
-    // 4. Compare Custom Grid Spacing (Handling "auto" as 0.0 with epsilon float safety)
-    double uiX = (ui->cbXSpacing->currentText() == tr("auto") || ui->cbXSpacing->currentText().isEmpty()) ? 0.0 : ui->cbXSpacing->currentText().toDouble();
-    double uiY = (ui->cbYSpacing->currentText() == tr("auto") || ui->cbYSpacing->currentText().isEmpty()) ? 0.0 : ui->cbYSpacing->currentText().toDouble();
+    // Compare Custom Grid Spacing (Handling "auto" as 0.0 with epsilon float safety)
+    const double uiX = (ui->cbXSpacing->currentText() == tr("auto") || ui->cbXSpacing->currentText().isEmpty()) ? 0.0 : ui->cbXSpacing->currentText().toDouble();
+    const double uiY = (ui->cbYSpacing->currentText() == tr("auto") || ui->cbYSpacing->currentText().isEmpty()) ? 0.0 : ui->cbYSpacing->currentText().toDouble();
 
-    RS_Vector docSpacing = m_graphic->getUserGridSpacing();
+    const RS_Vector docSpacing = m_graphic->getUserGridSpacing();
 
     if (std::abs(uiX - docSpacing.x) > 1e-9 || std::abs(uiY - docSpacing.y) > 1e-9) {
         return true;
@@ -140,7 +142,7 @@ void LC_SettingsPageDrawingGrid::setupBehavior() {
     connect(ui->rbIsometricGrid, &QRadioButton::toggled, this, &LC_SettingsPageDrawingGrid::updateSpacingEnabledState);
 }
 
-void LC_SettingsPageDrawingGrid::updateSpacingEnabledState() {
+void LC_SettingsPageDrawingGrid::updateSpacingEnabledState() const {
     const bool gridOn = ui->cbGridOn->isChecked();
     const bool ortho = ui->rbOrthogonalGrid->isChecked();
 

@@ -58,13 +58,13 @@ private slots:
     void onContextMenu(const QPoint& pos);
 protected:
     void setupUi() override;
-    void updateActiveStyleLabel(LC_DimStyleTreeModel* model);
+    void updateActiveStyleLabel(LC_DimStyleTreeModel* model) const;
     void collectStylesUsage(QMap<QString, int>& map) const;
     void setupBehavior() override;
 private:
-    void updatePreview(LC_DimStyle* style);
-    void refreshActionButtons(const LC_DimStyleItem* item);
-    QString getUniqueName(const QString& title, const QString& label, const QString& base);
+    void updatePreview(LC_DimStyle* style) const;
+    void refreshActionButtons(const LC_DimStyleItem* item) const;
+    QString getUniqueName(const QString& title, const QString& label, const QString& base) const;
 
 
 
