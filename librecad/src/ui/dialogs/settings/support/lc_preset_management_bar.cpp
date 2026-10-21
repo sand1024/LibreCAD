@@ -65,7 +65,7 @@ bool LC_PresetManagementBar::obtainFileName(QString& fileName, const bool forRea
         strings.exportDialogTitle, strings.presetFileFilter);
 }
 
-#define DEBUG_TIMING
+#define DEBUG_TIMING_
 
 void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
 #    ifdef DEBUG_TIMING

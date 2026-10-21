@@ -804,3 +804,15 @@ void LC_SettingsPageCommands::onTreeContextMenuRequested(const QPoint& pos) {
 
     menu.exec(ui->tvCommandsTree->viewport()->mapToGlobal(pos));
 }
+
+LC_SettingsPageInterface::LC_PageDialogAction LC_SettingsPageCommands::onDialogShown(const QVariant& actionParam) {
+    LC_SettingsPageBase::onDialogShown(actionParam);
+    if (actionParam.isValid()) {
+        QString val = actionParam.toString();
+        if (val == "cheatsheet") {
+            onExportCheatsheetClicked();
+            return LC_PageDialogAction::CloseAccept;
+        }
+    }
+    return LC_PageDialogAction::KeepOpen;
+}

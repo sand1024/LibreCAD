@@ -56,7 +56,11 @@ Output PDF file path</string>
            <string>Browse for output PDF path</string>
           </property>
           <property name="text">
-           <string>...</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
           </property>
          </widget>
         </item>
@@ -177,6 +181,19 @@ and so just plaing list of them will be generated.</string>
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
@@ -202,6 +219,19 @@ and so just plaing list of them will be generated.</string>
          <string>Landscape</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -231,6 +261,8 @@ and so just plaing list of them will be generated.</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../../../../res/icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

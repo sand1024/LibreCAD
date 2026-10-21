@@ -28,16 +28,12 @@
 #include "lc_shortcut_info.h"
 
 LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QAction* action, LC_ShortcutInfo* shortcutInfo)
-    : LC_ActionMappingItemBase(parent,
-                               action != nullptr ? action->text().remove('&') : QString(),
-                               action != nullptr ? action->icon() : QIcon(),
-                               false)
-    , m_description(action != nullptr ? action->toolTip() : QString())
-    , m_shortcutInfo(shortcutInfo)
-    , m_action(action){
+    : LC_ActionMappingItemBase(parent, action != nullptr ? action->text().remove('&') : QString(),
+                               action != nullptr ? action->icon() : QIcon(), false),
+      m_description(action != nullptr ? action->toolTip() : QString()), m_shortcutInfo(shortcutInfo), m_action(action) {
     if (action != nullptr) {
         const auto* lcAct = dynamic_cast<const LC_Action*>(action);
-        if (lcAct != nullptr){
+        if (lcAct != nullptr) {
             if (!lcAct->description().isEmpty()) {
                 m_description = lcAct->description();
             }
@@ -52,10 +48,7 @@ LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QAct
 }
 
 LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem* parent, const QIcon& ic, const QString& name, const QString& desc)
-    : LC_ActionMappingItemBase(parent, name, ic, true)
-    , m_description(desc)
-    , m_shortcutInfo(nullptr) {
-}
+    : LC_ActionMappingItemBase(parent, name, ic, true), m_description(desc), m_shortcutInfo(nullptr) {}
 
 void LC_ShortcutTreeItem::clearShortcut() const {
     if (m_shortcutInfo != nullptr) {
@@ -82,7 +75,6 @@ LC_ShortcutTreeItem* LC_ShortcutTreeItem::addChild(const QAction* action, LC_Sho
 QString LC_ShortcutTreeItem::identifier() const {
     return (m_shortcutInfo != nullptr) ? m_shortcutInfo->getName() : QString();
 }
-
 
 QString LC_ShortcutTreeItem::getShortcutViewString() const {
     if (m_action != nullptr) {

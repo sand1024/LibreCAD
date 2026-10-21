@@ -197,7 +197,7 @@ void LC_ActionsDualListWidget::updateChosenToolbarButtons() {
     ui->tbDelete->setEnabled(hasItem);
 
     if (hasItem) {
-        auto* parent = item->parent();
+        const auto* parent = item->parent();
         const int row = (parent != nullptr)
                             ? parent->indexOfChild(const_cast<QTreeWidgetItem*>(item))
                             : ui->twChosen->indexOfTopLevelItem(const_cast<QTreeWidgetItem*>(item));
@@ -270,8 +270,8 @@ void LC_ActionsDualListWidget::populateTreeRecursive(QTreeWidgetItem* parentItem
         }
         else if (node.type == ActionNodeType::Group) {
             const QString cleanTitle = (m_actionGroupManager != nullptr)
-                ? m_actionGroupManager->displayName(node.groupTitle, /*stripAmpersand=*/true)
-                : node.groupTitle;
+                                           ? m_actionGroupManager->displayName(node.groupTitle, /*stripAmpersand=*/true)
+                                           : node.groupTitle;
 
             item->setText(0, cleanTitle);
             item->setData(0, ROLE_GROUP_RAW_TITLE, node.groupTitle);
@@ -379,8 +379,8 @@ void LC_ActionsDualListWidget::addGroupToChosen(const QString& title, const QStr
     groupItem->setData(0, ROLE_POPUP_MODE, static_cast<int>(ToolButtonPopupMode::InstantPopup));
 
     const QString cleanTitle = (m_actionGroupManager != nullptr)
-        ? m_actionGroupManager->displayName(title, /*stripAmpersand=*/true)
-        : title;
+                                   ? m_actionGroupManager->displayName(title, /*stripAmpersand=*/true)
+                                   : title;
 
     groupItem->setText(0, cleanTitle);
     if (!finalIconPath.isEmpty()) {
@@ -389,7 +389,7 @@ void LC_ActionsDualListWidget::addGroupToChosen(const QString& title, const QStr
     groupItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
     // Populate child actions
-    for (auto* action : actions) {
+    for (const auto* action : actions) {
         if (action == nullptr) {
             continue;
         }
@@ -539,7 +539,7 @@ void LC_ActionsDualListWidget::onChosenContextMenu(const QPoint& pos) {
         auto* actDown = menu.addAction(QIcon(":/icons/down.lci"), tr("Move Down"), this, &LC_ActionsDualListWidget::onMoveDownClicked);
         actDown->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Down));
 
-        auto* parent = item->parent();
+        const auto* parent = item->parent();
         const int row = (parent != nullptr) ? parent->indexOfChild(item) : ui->twChosen->indexOfTopLevelItem(item);
         const int maxRow = (parent != nullptr) ? parent->childCount() - 1 : ui->twChosen->topLevelItemCount() - 1;
         actUp->setEnabled(row > 0);
@@ -679,7 +679,7 @@ void LC_ActionsDualListWidget::onAddGroupClicked() {
 }
 
 void LC_ActionsDualListWidget::onRemoveClicked() {
-    auto* item = ui->twChosen->currentItem();
+    const auto* item = ui->twChosen->currentItem();
     if (item == nullptr)
         return;
 

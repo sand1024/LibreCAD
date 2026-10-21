@@ -90,6 +90,17 @@ void LC_SettingsPageShortcuts::loadSettings() {
     validateCollisions();
 }
 
+LC_SettingsPageInterface::LC_PageDialogAction LC_SettingsPageShortcuts::onDialogShown(const QVariant& actionParam) {
+    LC_SettingsPageBase::onDialogShown(actionParam);
+    if (actionParam.isValid()) {
+        QString val = actionParam.toString();
+        if (val == "cheatsheet") {
+            onExportCheatsheetClicked();
+            return LC_PageDialogAction::CloseAccept;
+        }
+    }
+    return LC_PageDialogAction::KeepOpen;
+}
 
 void LC_SettingsPageShortcuts::setupUi() {
     ui->setupUi(m_widget);
@@ -316,7 +327,7 @@ void LC_SettingsPageShortcuts::selectItem(LC_ShortcutTreeItem* item, int row, in
     ui->leKeySequence->setText(item->getShortcutViewString());
 
     // Display Category Name and Icon
-    auto* parentItem = item->parent();
+    auto* parentItem = item->parentItem();
     if (parentItem != nullptr) {
         ui->lblGroupName->setText(parentItem->name());
         if (!parentItem->icon().isNull()) {

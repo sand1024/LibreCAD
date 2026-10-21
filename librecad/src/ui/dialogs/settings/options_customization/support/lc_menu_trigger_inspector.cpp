@@ -26,9 +26,7 @@
 #include <QMouseEvent>
 
 LC_MenuTriggerInspector::LC_MenuTriggerInspector(QWidget* parent)
-    : QWidget(parent)
-    , ui(std::make_unique<Ui::LC_MenuTriggerInspector>())
-    , m_currentActivator(std::make_unique<LC_MenuActivator>()) {
+    : QWidget(parent), ui(std::make_unique<Ui::LC_MenuTriggerInspector>()), m_currentActivator(std::make_unique<LC_MenuActivator>()) {
     ui->setupUi(this);
 
     initEntityCombobox();
@@ -49,8 +47,8 @@ LC_MenuTriggerInspector::LC_MenuTriggerInspector(QWidget* parent)
     connect(ui->rbClick, &QRadioButton::toggled, this, &LC_MenuTriggerInspector::onManualControlToggled);
     connect(ui->rbDblClick, &QRadioButton::toggled, this, &LC_MenuTriggerInspector::onManualControlToggled);
 
-    connect(ui->cbEntityContext, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &LC_MenuTriggerInspector::onEntityContextChanged);
+    connect(ui->cbEntityContext, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_MenuTriggerInspector::onEntityContextChanged);
     connect(ui->pbUnassign, &QPushButton::clicked, this, &LC_MenuTriggerInspector::onUnassignClicked);
 }
 
@@ -124,7 +122,8 @@ void LC_MenuTriggerInspector::setActivator(const QString& menuName, const QStrin
     if (shortcutCode.isEmpty()) {
         m_currentActivator = std::make_unique<LC_MenuActivator>();
         m_currentActivator->setMenuName(menuName);
-    } else {
+    }
+    else {
         auto* parsed = LC_MenuActivator::fromShortcut(shortcutCode);
         if (parsed != nullptr) {
             m_currentActivator.reset(parsed);
@@ -145,7 +144,7 @@ QString LC_MenuTriggerInspector::getActivatorCode() const {
     return m_currentActivator->getShortcut();
 }
 
-void LC_MenuTriggerInspector::syncUiFromActivator() {
+void LC_MenuTriggerInspector::syncUiFromActivator() const {
     bool ctrl = false;
     bool alt = false;
     bool shift = false;
@@ -156,18 +155,33 @@ void LC_MenuTriggerInspector::syncUiFromActivator() {
     ui->cbShift->setChecked(shift);
 
     switch (m_currentActivator->getButtonType()) {
-        case LC_MenuActivator::LEFT:    ui->rbLeft->setChecked(true); break;
-        case LC_MenuActivator::MIDDLE:  ui->rbMiddle->setChecked(true); break;
-        case LC_MenuActivator::RIGHT:   ui->rbRight->setChecked(true); break;
-        case LC_MenuActivator::BACK:    ui->rbBack->setChecked(true); break;
-        case LC_MenuActivator::FORWARD: ui->rbForward->setChecked(true); break;
-        case LC_MenuActivator::TASK:    ui->rbTask->setChecked(true); break;
-        default: ui->rbRight->setChecked(true); break;
+        case LC_MenuActivator::LEFT:
+            ui->rbLeft->setChecked(true);
+            break;
+        case LC_MenuActivator::MIDDLE:
+            ui->rbMiddle->setChecked(true);
+            break;
+        case LC_MenuActivator::RIGHT:
+            ui->rbRight->setChecked(true);
+            break;
+        case LC_MenuActivator::BACK:
+            ui->rbBack->setChecked(true);
+            break;
+        case LC_MenuActivator::FORWARD:
+            ui->rbForward->setChecked(true);
+            break;
+        case LC_MenuActivator::TASK:
+            ui->rbTask->setChecked(true);
+            break;
+        default:
+            ui->rbRight->setChecked(true);
+            break;
     }
 
     if (m_currentActivator->getEventType() == LC_MenuActivator::DBL_CLICK) {
         ui->rbDblClick->setChecked(true);
-    } else {
+    }
+    else {
         ui->rbClick->setChecked(true);
     }
 
@@ -179,7 +193,8 @@ void LC_MenuTriggerInspector::syncUiFromActivator() {
     m_currentActivator->update();
     if (m_currentActivator->getShortcut().isEmpty()) {
         ui->lblTriggerBadge->setText(tr("NOT ASSIGNED"));
-    } else {
+    }
+    else {
         ui->lblTriggerBadge->setText(m_currentActivator->getShortcutView());
     }
 }
@@ -190,15 +205,20 @@ void LC_MenuTriggerInspector::updateActivatorFromUi() {
     LC_MenuActivator::Button btn = LC_MenuActivator::RIGHT;
     if (ui->rbLeft->isChecked()) {
         btn = LC_MenuActivator::LEFT;
-    } else if (ui->rbMiddle->isChecked()) {
+    }
+    else if (ui->rbMiddle->isChecked()) {
         btn = LC_MenuActivator::MIDDLE;
-    } else if (ui->rbRight->isChecked()) {
+    }
+    else if (ui->rbRight->isChecked()) {
         btn = LC_MenuActivator::RIGHT;
-    } else if (ui->rbBack->isChecked()) {
+    }
+    else if (ui->rbBack->isChecked()) {
         btn = LC_MenuActivator::BACK;
-    } else if (ui->rbForward->isChecked()) {
+    }
+    else if (ui->rbForward->isChecked()) {
         btn = LC_MenuActivator::FORWARD;
-    } else if (ui->rbTask->isChecked()) {
+    }
+    else if (ui->rbTask->isChecked()) {
         btn = LC_MenuActivator::TASK;
     }
     m_currentActivator->setButtonType(btn);
@@ -230,7 +250,8 @@ bool LC_MenuTriggerInspector::eventFilter(QObject* obj, QEvent* event) {
                 mouseEvent = static_cast<QMouseEvent*>(event);
                 ui->rbClick->setChecked(true);
             }
-        } else if (event->type() == QEvent::MouseButtonDblClick) {
+        }
+        else if (event->type() == QEvent::MouseButtonDblClick) {
             mouseEvent = static_cast<QMouseEvent*>(event);
             ui->rbDblClick->setChecked(true);
             m_clickTimer.start();
@@ -238,13 +259,26 @@ bool LC_MenuTriggerInspector::eventFilter(QObject* obj, QEvent* event) {
 
         if (mouseEvent != nullptr) {
             switch (mouseEvent->button()) {
-                case Qt::LeftButton:    ui->rbLeft->setChecked(true); break;
-                case Qt::MiddleButton:  ui->rbMiddle->setChecked(true); break;
-                case Qt::RightButton:   ui->rbRight->setChecked(true); break;
-                case Qt::BackButton:    ui->rbBack->setChecked(true); break;
-                case Qt::ForwardButton: ui->rbForward->setChecked(true); break;
-                case Qt::TaskButton:    ui->rbTask->setChecked(true); break;
-                default: break;
+                case Qt::LeftButton:
+                    ui->rbLeft->setChecked(true);
+                    break;
+                case Qt::MiddleButton:
+                    ui->rbMiddle->setChecked(true);
+                    break;
+                case Qt::RightButton:
+                    ui->rbRight->setChecked(true);
+                    break;
+                case Qt::BackButton:
+                    ui->rbBack->setChecked(true);
+                    break;
+                case Qt::ForwardButton:
+                    ui->rbForward->setChecked(true);
+                    break;
+                case Qt::TaskButton:
+                    ui->rbTask->setChecked(true);
+                    break;
+                default:
+                    break;
             }
 
             const auto mods = mouseEvent->modifiers();
@@ -261,26 +295,32 @@ bool LC_MenuTriggerInspector::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void LC_MenuTriggerInspector::onManualControlToggled() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     updateActivatorFromUi();
     emit triggerChanged();
 }
 
 void LC_MenuTriggerInspector::onEntityContextChanged(int) {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     updateActivatorFromUi();
     emit triggerChanged();
 }
 
 void LC_MenuTriggerInspector::onUnassignClicked() {
     ui->lblTriggerBadge->setText(tr("NOT ASSIGNED"));
-    ui->bannerStatus->setMessage(tr("No trigger assigned. Menu will not appear on mouse clicks."), LC_SettingsBannerWidget::BannerType::Info);
+    ui->bannerStatus->setMessage(tr("No trigger assigned. Menu will not appear on mouse clicks."),
+                                 LC_SettingsBannerWidget::BannerType::Info);
     emit triggerChanged();
 }
 
 void LC_MenuTriggerInspector::validateTrigger() {
     if (ui->lblTriggerBadge->text() == tr("NOT ASSIGNED")) {
-        ui->bannerStatus->setMessage(tr("No trigger assigned. Menu will not appear on mouse clicks."), LC_SettingsBannerWidget::BannerType::Info);
+        ui->bannerStatus->setMessage(tr("No trigger assigned. Menu will not appear on mouse clicks."),
+                                     LC_SettingsBannerWidget::BannerType::Info);
         return;
     }
 
@@ -295,13 +335,17 @@ void LC_MenuTriggerInspector::validateTrigger() {
 
     if (btn == LC_MenuActivator::LEFT && noKeys && dbl) {
         warn = tr("Warning: Reserved for 'Entity Properties'.");
-    } else if (btn == LC_MenuActivator::LEFT && noKeys && click) {
+    }
+    else if (btn == LC_MenuActivator::LEFT && noKeys && click) {
         warn = tr("Warning: Reserved for 'Entity Selection'.");
-    } else if (btn == LC_MenuActivator::LEFT && ctrl && click) {
+    }
+    else if (btn == LC_MenuActivator::LEFT && ctrl && click) {
         warn = tr("Warning: Reserved for 'Viewport Pan'.");
-    } else if (btn == LC_MenuActivator::MIDDLE && noKeys && click) {
+    }
+    else if (btn == LC_MenuActivator::MIDDLE && noKeys && click) {
         warn = tr("Warning: Reserved for 'Viewport Pan'.");
-    } else if (btn == LC_MenuActivator::RIGHT && noKeys && click) {
+    }
+    else if (btn == LC_MenuActivator::RIGHT && noKeys && click) {
         warn = tr("Notice: Overrides default context menu.");
     }
 
@@ -319,7 +363,8 @@ void LC_MenuTriggerInspector::validateTrigger() {
 
     if (!warn.isEmpty()) {
         ui->bannerStatus->setMessage(warn, LC_SettingsBannerWidget::BannerType::Warning);
-    } else {
+    }
+    else {
         ui->bannerStatus->setMessage(tr("Shortcut is valid to use."), LC_SettingsBannerWidget::BannerType::Info);
     }
 }

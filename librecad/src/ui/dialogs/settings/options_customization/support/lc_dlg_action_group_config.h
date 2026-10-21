@@ -55,7 +55,7 @@ private slots:
     void validateAndAccept();
 
 private:
-    void populateSystemCategories();
+    void populateSystemCategories() const;
 
     std::unique_ptr<Ui::LC_DlgActionGroupConfig> ui;
     bool m_isToolbarMode{true};

@@ -58,17 +58,17 @@ void LC_SettingsManagerApplication::initialize(QC_ApplicationWindow* appWindow) 
         { PAGE_APP, "", index(QObject::tr("Application"),
             QObject::tr("Configure general application settings, defaults, workspace "
                         "profiles, paths, and update preferences.")) },
-        { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>() },
-        { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageProgramDefaults>() },
-        { PAGE_APP_DEFAULTS, PAGE_APP, page<LC_SettingsPageDrawingDefaults>() },
-        { PAGE_APP_AUTOSAVE, PAGE_APP, page<LC_SettingsPageAutosave>() },
-        { PAGE_APP_CAD_PREFERENCES, PAGE_APP, page<LC_SettingsPageCadPreferences>() },
-        { PAGE_APP_KEYBOARD, PAGE_APP, page<LC_SettingsPageKeyboard>() },
-        { PAGE_APP_COMMAND_LINE, PAGE_APP, page<LC_SettingsPageCommandLine>() },
-        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>() },
-        { PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>() },
-        { PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>() },
-        { PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>() }
+        { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>(), 10},
+        { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageProgramDefaults>(),20},
+        { PAGE_APP_DEFAULTS, PAGE_APP, page<LC_SettingsPageDrawingDefaults>(),30},
+        { PAGE_APP_AUTOSAVE, PAGE_APP, page<LC_SettingsPageAutosave>(),40},
+        { PAGE_APP_CAD_PREFERENCES, PAGE_APP, page<LC_SettingsPageCadPreferences>(),50},
+        { PAGE_APP_KEYBOARD, PAGE_APP, page<LC_SettingsPageKeyboard>(),60},
+        { PAGE_APP_COMMAND_LINE, PAGE_APP, page<LC_SettingsPageCommandLine>(),70},
+        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>(),80},
+        { PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>(),90},
+        { PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>(),100},
+        { PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>(),110}
     };
 
     reg->registerPages(targetDialog, pages);

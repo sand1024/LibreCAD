@@ -22,6 +22,8 @@
 #ifndef LC_SETTINGS_MANAGER_GENERIC_OPTIONS_H
 #define LC_SETTINGS_MANAGER_GENERIC_OPTIONS_H
 
+#include <QApplication>
+
 #include "lc_settings_manager_base.h"
 #include "lc_settings_registry.h"
 
@@ -51,8 +53,9 @@ public:
     static void initialize(QC_ApplicationWindow* applicationWindow);
 
     static bool showOptionsApplication(QWidget* parent, int* exitCode) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         const auto settingsRegistry = LC_SettingsRegistry::instance();
-        const bool accepted = settingsRegistry->showDialog(LC_SettingsPagesApplication::DLG_GENERAL_PREFERENCES, "",
+        const bool accepted = settingsRegistry->showDialog(LC_SettingsPagesApplication::DLG_GENERAL_PREFERENCES, "", QVariant(),
                                                            parent, nullptr, nullptr, exitCode);
 
         if (accepted) {

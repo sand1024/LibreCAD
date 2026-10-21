@@ -22,6 +22,8 @@
 
 #include "lc_settings_manager_customization.h"
 
+#include <QApplication>
+
 #include "lc_action_group_manager.h"
 #include "lc_navigation_creator.h"
 #include "lc_preset_manager_commands.h"
@@ -38,6 +40,13 @@
 #include "lc_settings_registry.h"
 #include "qc_applicationwindow.h"
 
+namespace {
+    template<class T>
+    LC_SettingsRegistry::PageCreator pageWithActionGroupManager(LC_ActionGroupManager* groupManager) {
+        return [groupManager] {return std::make_unique<T>(groupManager);};
+    }
+}
+
 void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow) {
     using namespace LC_SettingsPagesCustomization;
 
@@ -51,7 +60,6 @@ void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow
     reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_SHORTCUTS, [groupManager, shortcutsManager]() {
         return std::make_unique<LC_PresetManagerShortcuts>(groupManager, shortcutsManager);
     });
-
 
     auto commandManager = appWindow->getCommandManager();
     reg->registerPresetManager(DLG_CUSTOMIZATION, PAGE_COMMANDS, [groupManager,commandManager]() {
@@ -71,44 +79,14 @@ void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow
     });
 
     const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
-        {
-            PAGE_SHORTCUTS,
-            "",
-            [groupManager]() {
-                return std::make_unique<LC_SettingsPageShortcuts>(groupManager);
-            },
-            10
-        },
-        {
-            PAGE_COMMANDS,
-            "",
-            [groupManager]() {
-                return std::make_unique<LC_SettingsPageCommands>(groupManager);
-            },
-            20
-        },
-        {
-            PAGE_MENU_AND_TOOLBARS,
-            "",
-            [groupManager]() {
-                return std::make_unique<LC_SettingsPageMenusToolbars>(groupManager);
-            },
-            30
-        },
-        {
-            PAGE_CONTEXT_MENUS,
-            "",
-            [groupManager]() {
-                return std::make_unique<LC_SettingsPageCustomMenus>(groupManager);
-            },
-            40
-        },
-        {
-            PAGE_PROFILE_EXCHANGE,
-            "",
+        {PAGE_SHORTCUTS, "", pageWithActionGroupManager<LC_SettingsPageShortcuts>(groupManager), 10},
+           {PAGE_COMMANDS, "", pageWithActionGroupManager<LC_SettingsPageCommands>(groupManager), 20},
+           {PAGE_MENU_AND_TOOLBARS, "", pageWithActionGroupManager<LC_SettingsPageMenusToolbars>(groupManager), 30},
+           {PAGE_CONTEXT_MENUS, "", pageWithActionGroupManager<LC_SettingsPageCustomMenus>(groupManager), 40},
+           {PAGE_PROFILE_EXCHANGE, "",
             [groupManager, shortcutsManager, commandManager, navigatorControlsCreator, contextMenuProvider]() {
-                return std::make_unique<LC_SettingsPageCustomizationProfiles>(groupManager, shortcutsManager, commandManager, navigatorControlsCreator,
-                                                                              contextMenuProvider);
+                return std::make_unique<LC_SettingsPageCustomizationProfiles>(groupManager, shortcutsManager, commandManager,
+                                                                              navigatorControlsCreator, contextMenuProvider);
             },
             50
         }
@@ -117,7 +95,8 @@ void LC_SettingsManagerCustomization::initialize(QC_ApplicationWindow* appWindow
     reg->registerPages(DLG_CUSTOMIZATION, pages);
 }
 
-bool LC_SettingsManagerCustomization::showCustomizationDialog(QWidget* parent, const QString& initialPageId) {
+bool LC_SettingsManagerCustomization::showCustomizationDialog(QWidget* parent, const QString& initialPageId, const QVariant& initialParam) {
     using namespace LC_SettingsPagesCustomization;
-    return LC_SettingsRegistry::instance()->showDialog(DLG_CUSTOMIZATION, initialPageId.isEmpty() ? PAGE_SHORTCUTS : initialPageId, parent);
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    return LC_SettingsRegistry::instance()->showDialog(DLG_CUSTOMIZATION, initialPageId.isEmpty() ? PAGE_SHORTCUTS : initialPageId, initialParam, parent);
 }

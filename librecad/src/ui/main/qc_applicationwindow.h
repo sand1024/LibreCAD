@@ -275,6 +275,8 @@ public slots:
     void tryShowRelativeInput(RS2::RelativePointParam paramType) const;
     void slotBackupExport();
     void slotBackupRestore();
+    void slotHelpCommands();
+    void slotHelpShortcuts();
 signals:
     void gridChanged(bool on);
     void draftChanged(bool on);
@@ -513,6 +515,7 @@ protected:
 
     std::unique_ptr<LC_CustomizationManager> m_customizationManager;
     std::unique_ptr<LC_ShortcutsManager> m_shortcutsManager;
+
 
     /** Pointer to the application window (this). */
     static QC_ApplicationWindow* m_appWindow;

@@ -31,9 +31,9 @@
 
 class LC_ActionTreeItem {
 public:
-    LC_ActionTreeItem(LC_ActionTreeItem* parent, const QString& text, const QIcon& icon,
-                         QAction* action = nullptr, const QString& canonicalToken = QString())
-           : m_parent(parent), m_text(text), m_icon(icon), m_action(action), m_canonicalToken(canonicalToken) {}
+    LC_ActionTreeItem(LC_ActionTreeItem* parent, const QString& text, const QIcon& icon, QAction* action = nullptr,
+                      const QString& canonicalToken = QString())
+        : m_parent(parent), m_text(text), m_icon(icon), m_action(action), m_canonicalToken(canonicalToken) {}
 
     ~LC_ActionTreeItem() {
         qDeleteAll(m_children);
@@ -47,17 +47,38 @@ public:
         return (row >= 0 && row < m_children.size()) ? m_children.at(row) : nullptr;
     }
 
-    int childCount() const { return m_children.size(); }
-    LC_ActionTreeItem* parent() const { return m_parent; }
+    int childCount() const {
+        return m_children.size();
+    }
+
+    LC_ActionTreeItem* parent() const {
+        return m_parent;
+    }
+
     int row() const {
         return (m_parent != nullptr) ? m_parent->m_children.indexOf(const_cast<LC_ActionTreeItem*>(this)) : 0;
     }
 
-    QString text() const { return m_text; }
-    QIcon icon() const { return m_icon; }
-    QAction* action() const { return m_action; }
-    bool isGroup() const { return m_action == nullptr; }
-    QString canonicalToken() const { return m_canonicalToken; }
+    QString text() const {
+        return m_text;
+    }
+
+    QIcon icon() const {
+        return m_icon;
+    }
+
+    QAction* action() const {
+        return m_action;
+    }
+
+    bool isGroup() const {
+        return m_action == nullptr;
+    }
+
+    QString canonicalToken() const {
+        return m_canonicalToken;
+    }
+
 private:
     LC_ActionTreeItem* m_parent = nullptr;
     QList<LC_ActionTreeItem*> m_children;
@@ -68,8 +89,7 @@ private:
 };
 
 LC_ActionsTreeModel::LC_ActionsTreeModel(QObject* parent)
-    : QAbstractItemModel(parent)
-    , m_rootItem(new LC_ActionTreeItem(nullptr, "", QIcon())) {}
+    : QAbstractItemModel(parent), m_rootItem(new LC_ActionTreeItem(nullptr, "", QIcon())) {}
 
 LC_ActionsTreeModel::~LC_ActionsTreeModel() {
     delete m_rootItem;
@@ -110,7 +130,6 @@ void LC_ActionsTreeModel::rebuildTree() {
             groupTitle.remove('&');
             auto* groupItem = new LC_ActionTreeItem(m_rootItem, groupTitle, group->getIcon(), nullptr, canonicalToken);
 
-
             for (const auto* action : group->actions()) {
                 if (action == nullptr) {
                     continue;
@@ -119,9 +138,8 @@ void LC_ActionsTreeModel::rebuildTree() {
                 const QString name = action->objectName();
 
                 if (m_filterMode == ActionsFilterMode::CadToolsOnly) {
-                    if (name.startsWith(LC_ActionNames::PrefixWidget) ||
-                        name.startsWith(LC_ActionNames::PrefixSpecialMenu) ||
-                        name.startsWith(LC_ActionNames::PrefixSpecialAction)) {
+                    if (name.startsWith(LC_ActionNames::PrefixWidget) || name.startsWith(LC_ActionNames::PrefixSpecialMenu) || name.
+                        startsWith(LC_ActionNames::PrefixSpecialAction)) {
                         continue;
                     }
                 }
@@ -138,9 +156,8 @@ void LC_ActionsTreeModel::rebuildTree() {
 
                 QString cleanText = action->text();
                 cleanText.remove('&');
-                const bool matches = m_filterText.isEmpty() ||
-                                     cleanText.contains(m_filterText, Qt::CaseInsensitive) ||
-                                     action->toolTip().contains(m_filterText, Qt::CaseInsensitive);
+                const bool matches = m_filterText.isEmpty() || cleanText.contains(m_filterText, Qt::CaseInsensitive) || action->toolTip().
+                    contains(m_filterText, Qt::CaseInsensitive);
 
                 if (matches) {
                     groupItem->appendChild(new LC_ActionTreeItem(groupItem, cleanText, action->icon(), const_cast<QAction*>(action)));
@@ -160,30 +177,32 @@ void LC_ActionsTreeModel::rebuildTree() {
 }
 
 bool LC_ActionsTreeModel::isAction(const QModelIndex& index) const {
-    if (!index.isValid()) return false;
+    if (!index.isValid())
+        return false;
     const auto* item = static_cast<const LC_ActionTreeItem*>(index.internalPointer());
     return item != nullptr && !item->isGroup();
 }
 
 QAction* LC_ActionsTreeModel::getAction(const QModelIndex& index) const {
-    if (!index.isValid()) return nullptr;
+    if (!index.isValid())
+        return nullptr;
     const auto* item = static_cast<const LC_ActionTreeItem*>(index.internalPointer());
     return item != nullptr ? item->action() : nullptr;
 }
 
 QModelIndex LC_ActionsTreeModel::index(int row, int column, const QModelIndex& parent) const {
-    if (!hasIndex(row, column, parent)) return QModelIndex();
+    if (!hasIndex(row, column, parent))
+        return QModelIndex();
 
-    const LC_ActionTreeItem* parentItem = parent.isValid()
-        ? static_cast<const LC_ActionTreeItem*>(parent.internalPointer())
-        : m_rootItem;
+    const LC_ActionTreeItem* parentItem = parent.isValid() ? static_cast<const LC_ActionTreeItem*>(parent.internalPointer()) : m_rootItem;
 
     const LC_ActionTreeItem* childItem = parentItem->child(row);
     return childItem != nullptr ? createIndex(row, column, const_cast<LC_ActionTreeItem*>(childItem)) : QModelIndex();
 }
 
 QModelIndex LC_ActionsTreeModel::parent(const QModelIndex& child) const {
-    if (!child.isValid()) return QModelIndex();
+    if (!child.isValid())
+        return QModelIndex();
 
     const auto* childItem = static_cast<const LC_ActionTreeItem*>(child.internalPointer());
     const LC_ActionTreeItem* parentItem = childItem != nullptr ? childItem->parent() : nullptr;
@@ -195,9 +214,7 @@ QModelIndex LC_ActionsTreeModel::parent(const QModelIndex& child) const {
 }
 
 int LC_ActionsTreeModel::rowCount(const QModelIndex& parent) const {
-    const LC_ActionTreeItem* parentItem = parent.isValid()
-        ? static_cast<const LC_ActionTreeItem*>(parent.internalPointer())
-        : m_rootItem;
+    const LC_ActionTreeItem* parentItem = parent.isValid() ? static_cast<const LC_ActionTreeItem*>(parent.internalPointer()) : m_rootItem;
     return parentItem != nullptr ? parentItem->childCount() : 0;
 }
 
@@ -206,16 +223,20 @@ int LC_ActionsTreeModel::columnCount(const QModelIndex&) const {
 }
 
 QVariant LC_ActionsTreeModel::data(const QModelIndex& index, int role) const {
-    if (!index.isValid()) return QVariant();
+    if (!index.isValid())
+        return QVariant();
 
     const auto* item = static_cast<const LC_ActionTreeItem*>(index.internalPointer());
-    if (item == nullptr) return QVariant();
+    if (item == nullptr)
+        return QVariant();
 
     if (role == Qt::DisplayRole) {
         return item->text();
-    } else if (role == Qt::DecorationRole) {
+    }
+    else if (role == Qt::DecorationRole) {
         return item->icon();
-    } else if (role == Qt::ToolTipRole && item->action() != nullptr) {
+    }
+    else if (role == Qt::ToolTipRole && item->action() != nullptr) {
         return item->action()->toolTip();
     }
     return QVariant();
@@ -253,7 +274,7 @@ QList<QAction*> LC_ActionsTreeModel::getGroupActions(const QModelIndex& index) c
     const auto* item = static_cast<const LC_ActionTreeItem*>(index.internalPointer());
     if (item != nullptr && item->isGroup()) {
         for (int i = 0; i < item->childCount(); ++i) {
-            auto* child = item->child(i);
+            const auto* child = item->child(i);
             if (child != nullptr && child->action() != nullptr) {
                 list.append(child->action());
             }

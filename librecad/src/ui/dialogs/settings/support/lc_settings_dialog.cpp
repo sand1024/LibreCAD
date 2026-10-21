@@ -26,6 +26,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QSplitter>
+#include <QTimer>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -142,8 +143,25 @@ LC_SettingsDialog::~LC_SettingsDialog() = default;
 
 void LC_SettingsDialog::showEvent(QShowEvent* event) {
     LC_Dialog::showEvent(event);
+    QApplication::restoreOverrideCursor();
     if (m_activePage != nullptr) {
-        m_activePage->onDialogShown();
+        QVariant param;
+        if (m_pendingPageIdToOpen.isEmpty() || m_activePage->id() == m_pendingPageIdToOpen) {
+            param = m_pendingPageActionParam;
+        }
+        m_pendingPageActionParam.clear();
+        m_pendingPageIdToOpen.clear();
+        const auto action = m_activePage->onDialogShown(param);
+        if (action == LC_SettingsPageInterface::LC_PageDialogAction::CloseAccept) {
+            QTimer::singleShot(0, this, [this]() {
+                accept();
+            });
+        }
+        else if (action ==  LC_SettingsPageInterface::LC_PageDialogAction::CloseReject) {
+            QTimer::singleShot(0, this, [this]() {
+                reject();
+            });
+        }
     }
 }
 
@@ -466,8 +484,9 @@ void LC_SettingsDialog::buildCategoryTree() {
     }
 }
 
-void LC_SettingsDialog::requestInitialPage(const QString& pageId) {
+void LC_SettingsDialog::requestInitialPage(const QString& pageId, const QVariant& param) {
     m_pendingPageIdToOpen = pageId;
+    m_pendingPageActionParam = param;
 }
 
 bool LC_SettingsDialog::selectPage(const QString& pageId) {
@@ -518,26 +537,28 @@ bool LC_SettingsDialog::selectPage(const QString& pageId) {
 
 void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
     m_filterModel->setFilterText(text);
-    if (!text.isEmpty()) {
-        ui->tvCategoriesTree->expandAll(); // Show all deep matches dynamically
+    const bool hasFilterText = !text.trimmed().isEmpty();
 
-        // If the filter returned 0 visible rows, tell the SearchLineEdit
-        // to highlight its background in warning red.
+    if (hasFilterText) {
+        ui->tvCategoriesTree->expandAll();
+
         const bool hasMatches = m_filterModel->rowCount() > 0;
         ui->leSearch->setErrorState(!hasMatches);
+
+        if (m_activePage != nullptr) {
+            highlightPageContent(m_activePage, text);
+        }
     }
     else {
-        restoreTreeExpandedState(); // Revert back to clean root-only state
-        ui->leSearch->setErrorState(false); // Reset background
-    }
-    if (const auto* currWidget = ui->swContent->currentWidget()) {
-        for (const auto& [id, stackedWidget] : m_pageStackedWidgets) {
-            if (stackedWidget == currWidget) {
-                auto itPage = m_pageMapByPageId.find(id);
-                if (itPage != m_pageMapByPageId.end() && itPage->second != nullptr) {
-                    highlightPageContent(itPage->second, text);
-                }
-                break;
+        restoreTreeExpandedState();
+        ui->leSearch->setErrorState(false);
+
+        // Filter cleared: clear highlights across all registered pages
+        LC_ERR << "[SEARCH_CLEAR] Filter cleared. Resetting highlights across all pages.";
+        for (const auto& page : m_pages) {
+            if (page != nullptr) {
+                LC_ERR << "[SEARCH_CLEAR] Clearing page:" << page->id();
+                page->clearSearchHighlight();
             }
         }
     }
@@ -653,6 +674,9 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
 
         if (ui->leSearch != nullptr && !ui->leSearch->text().trimmed().isEmpty()) {
             highlightPageContent(page, ui->leSearch->text());
+        }
+        else {
+            page->clearSearchHighlight();
         }
     }
 # ifdef DEBUG_CATEGORY_SWITCH_TIMERS

@@ -52,9 +52,9 @@ void LC_SettingsRegistry::registerPresetManager(const QString& dialogId, const Q
     m_registrations[dialogId].presetCreators[groupPathId] = creator;
 }
 
-
 bool LC_SettingsRegistry::showDialog(const QString& dialogId,
                                      const QString& initialPageId,
+                                     const QVariant& initialPageParam,
                                      QWidget* parent,
                                      const std::function<void(LC_SettingsDialog*)>& preExecHook,
                                      const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook,
@@ -103,7 +103,7 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
     }
 
     dialog->finalizeInitialization();
-    dialog->requestInitialPage(initialPageId);
+    dialog->requestInitialPage(initialPageId, initialPageParam);
     int execResult = dialog->exec();
     const bool accepted = (execResult == QDialog::Accepted);
 

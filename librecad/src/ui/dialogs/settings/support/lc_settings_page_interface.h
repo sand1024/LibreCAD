@@ -40,6 +40,12 @@ public:
 
 class LC_SettingsPageInterface {
 public:
+    enum class LC_PageDialogAction {
+        KeepOpen,
+        CloseAccept,
+        CloseReject
+    };
+
     virtual ~LC_SettingsPageInterface() = default;
 
     // --- Dynamic Routing Setters (Injected by Dialog/Registry) ---
@@ -62,6 +68,10 @@ public:
     virtual void updateLivePreview() {}
     virtual void onPageResized() {}
     virtual void onDialogShown() {}
+    virtual LC_PageDialogAction onDialogShown([[maybe_unused]]const QVariant& actionParam) {
+        onDialogShown();
+        return LC_PageDialogAction::KeepOpen;
+    }
 
     virtual void loadSettings() = 0;
     virtual bool saveSettings() = 0;

@@ -32,8 +32,7 @@ namespace {
 
 const QStringList& LC_DlgIconPicker::availableIcons() {
     if (s_cachedIconPaths.isEmpty()) {
-        QDirIterator it(":/icons", QStringList() << "*.lci" << "*.svg" << "*.png",
-                        QDir::Files, QDirIterator::Subdirectories);
+        QDirIterator it(":/icons", QStringList() << "*.lci" << "*.svg" << "*.png", QDir::Files, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             s_cachedIconPaths.append(it.next());
         }
@@ -43,9 +42,7 @@ const QStringList& LC_DlgIconPicker::availableIcons() {
 }
 
 LC_DlgIconPicker::LC_DlgIconPicker(QWidget* parent, const QString& currentIcon)
-    : QDialog(parent)
-    , ui(std::make_unique<Ui::LC_DlgIconPicker>())
-    , m_selectedIcon(currentIcon) {
+    : QDialog(parent), ui(std::make_unique<Ui::LC_DlgIconPicker>()), m_selectedIcon(currentIcon) {
     ui->setupUi(this);
 
     ui->lwIcons->setResizeMode(QListView::Adjust);
@@ -128,7 +125,7 @@ QString LC_DlgIconPicker::getIcon(QWidget* parent, const QString& currentIcon) {
 void LC_DlgIconPicker::showEvent(QShowEvent* event) {
     QDialog::showEvent(event);
 
-    auto* item = ui->lwIcons->currentItem();
+    const auto* item = ui->lwIcons->currentItem();
     if (item != nullptr) {
         ui->lwIcons->scrollToItem(item, QAbstractItemView::PositionAtCenter);
     }

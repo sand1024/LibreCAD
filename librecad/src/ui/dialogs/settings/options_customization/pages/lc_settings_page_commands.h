@@ -67,6 +67,7 @@ private slots:
     void onSuppressAlias2Clicked();
     void onResetAlias2Clicked();
     void onTreeContextMenuRequested(const QPoint& pos);
+    LC_SettingsPageInterface::LC_PageDialogAction onDialogShown(const QVariant& actionParam);
     void onResetItemToDefaults();
     void onSuppressItemAliases();
     void onExportCheatsheetClicked();

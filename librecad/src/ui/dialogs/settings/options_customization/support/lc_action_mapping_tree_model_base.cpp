@@ -48,7 +48,7 @@ QModelIndex LC_ActionMappingTreeModelBase::index(int row, int column, const QMod
         return QModelIndex();
     }
 
-    auto* childItem = static_cast<LC_ActionMappingItemBase*>(parentItem->child(row));
+    const auto* childItem = static_cast<LC_ActionMappingItemBase*>(parentItem->child(row));
     if (childItem != nullptr) {
         return createIndex(row, column, childItem);
     }
@@ -61,7 +61,7 @@ QModelIndex LC_ActionMappingTreeModelBase::parent(const QModelIndex& child) cons
     }
 
     const auto* childItem = static_cast<const LC_ActionMappingItemBase*>(child.internalPointer());
-    auto* parentItem = (childItem != nullptr) ? static_cast<LC_ActionMappingItemBase*>(childItem->parent()) : nullptr;
+    const auto* parentItem = (childItem != nullptr) ? static_cast<LC_ActionMappingItemBase*>(childItem->parent()) : nullptr;
 
     if (parentItem == nullptr || parentItem == m_rootItem.get()) {
         return QModelIndex();
@@ -89,7 +89,7 @@ QVariant LC_ActionMappingTreeModelBase::data(const QModelIndex& index, int role)
         return QVariant();
     }
 
-    auto* item = getItemForIndex(index);
+    const auto* item = getItemForIndex(index);
     if (item == nullptr) {
         return QVariant();
     }

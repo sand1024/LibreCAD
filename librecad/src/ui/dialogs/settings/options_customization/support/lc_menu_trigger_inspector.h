@@ -57,7 +57,7 @@ private slots:
 
 private:
     void initEntityCombobox();
-    void syncUiFromActivator();
+    void syncUiFromActivator() const;
     void updateActivatorFromUi();
     void validateTrigger();
 

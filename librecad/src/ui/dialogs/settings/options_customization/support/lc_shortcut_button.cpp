@@ -28,9 +28,8 @@
 
 #include "lc_shortcut_info.h"
 
-LC_ShortcutButton::LC_ShortcutButton(QWidget *parent)
-    : QPushButton(parent)
-    , m_key({{0, 0, 0, 0}}){
+LC_ShortcutButton::LC_ShortcutButton(QWidget* parent)
+    : QPushButton(parent), m_key({{0, 0, 0, 0}}) {
     // Using ShortcutButton::tr() as workaround for QTBUG-34128
     setToolTip(tr("Click and type the new key sequence."));
     setCheckable(true);
@@ -41,9 +40,10 @@ LC_ShortcutButton::LC_ShortcutButton(QWidget *parent)
 }
 
 QSize LC_ShortcutButton::sizeHint() const {
-    if (m_preferredWidth < 0) { // initialize size hint
+    if (m_preferredWidth < 0) {
+        // initialize size hint
         const QString originalText = text();
-        auto *that = const_cast<LC_ShortcutButton *>(this);
+        auto* that = const_cast<LC_ShortcutButton*>(this);
         that->setText(m_checkedText);
         m_preferredWidth = QPushButton::sizeHint().width();
         that->setText(m_uncheckedText);
@@ -56,14 +56,13 @@ QSize LC_ShortcutButton::sizeHint() const {
     return QSize(m_preferredWidth, QPushButton::sizeHint().height());
 }
 
-bool LC_ShortcutButton::eventFilter(QObject *obj, QEvent *evt) {
+bool LC_ShortcutButton::eventFilter(QObject* obj, QEvent* evt) {
     if (evt->type() == QEvent::ShortcutOverride) {
         evt->accept();
         return true;
     }
-    if (evt->type() == QEvent::KeyRelease
-        || evt->type() == QEvent::Shortcut
-        || evt->type() == QEvent::Close/*Escape tries to close dialog*/) {
+    if (evt->type() == QEvent::KeyRelease || evt->type() == QEvent::Shortcut || evt->type() == QEvent::Close
+        /*Escape tries to close dialog*/) {
         return true;
     }
     if (evt->type() == QEvent::MouseButtonPress && isChecked()) {
@@ -71,13 +70,9 @@ bool LC_ShortcutButton::eventFilter(QObject *obj, QEvent *evt) {
         return true;
     }
     if (evt->type() == QEvent::KeyPress) {
-        auto *k = static_cast<QKeyEvent *>(evt);
+        auto* k = static_cast<QKeyEvent*>(evt);
         int nextKey = k->key();
-        if (m_keyNum > 3
-            || nextKey == Qt::Key_Control
-            || nextKey == Qt::Key_Shift
-            || nextKey == Qt::Key_Meta
-            || nextKey == Qt::Key_Alt) {
+        if (m_keyNum > 3 || nextKey == Qt::Key_Control || nextKey == Qt::Key_Shift || nextKey == Qt::Key_Meta || nextKey == Qt::Key_Alt) {
             return false;
         }
 
@@ -118,12 +113,13 @@ void LC_ShortcutButton::handleToggleChange(const bool toggleState) {
     m_key.fill(0);
     m_keyNum = 0;
     if (toggleState) {
-        auto *focusWidget = QApplication::focusWidget();
+        auto* focusWidget = QApplication::focusWidget();
         if (focusWidget != nullptr) {
             focusWidget->clearFocus();
         } // funny things happen otherwise
         qApp->installEventFilter(this);
-    } else {
+    }
+    else {
         qApp->removeEventFilter(this);
     }
 }

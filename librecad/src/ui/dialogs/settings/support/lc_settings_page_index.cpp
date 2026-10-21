@@ -24,6 +24,7 @@
 #include "lc_highlight_overlay.h"
 #include "lc_settings_banner_widget.h"
 #include "lc_settings_list_widget.h"
+#include "rs_debug.h"
 
 LC_SettingsPageIndex::LC_SettingsPageIndex(const QString& displayName,
                                            const QString& description,
@@ -106,24 +107,15 @@ void LC_SettingsPageIndex::highlightSearchPattern(const QString& pattern) {
 }
 
 void LC_SettingsPageIndex::clearSearchHighlight() {
-    if (m_descLabel != nullptr) {
-        const auto childrenList = m_descLabel->children();
-        for (QObject* child : childrenList) {
-            if (auto* o = dynamic_cast<LC_HighlightOverlay*>(child)) {
-                o->deleteLater();
-            }
-        }
+    if (m_mainWidget == nullptr) {
+        return;
     }
 
-    if (m_linksWidget != nullptr) {
-        auto buttons = m_linksWidget->findChildren<LC_HyperlinkButton*>();
-        for (const auto* btn : buttons) {
-            const auto childrenList = btn->children();
-            for (QObject* child : childrenList) {
-                if (auto* o = dynamic_cast<LC_HighlightOverlay*>(child)) {
-                    o->deleteLater();
-                }
-            }
+    const auto childWidgets = m_mainWidget->findChildren<QWidget*>();
+    for (auto* widget : childWidgets) {
+        if (auto* overlay = dynamic_cast<LC_HighlightOverlay*>(widget)) {
+            overlay->hide();
+            overlay->deleteLater();
         }
     }
 }

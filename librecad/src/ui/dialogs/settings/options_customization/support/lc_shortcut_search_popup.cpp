@@ -47,7 +47,8 @@ LC_ShortcutSearchPopup::LC_ShortcutSearchPopup(QWidget* parent)
 
     m_lblSequence = new QLabel(tr("<None>"), this);
     m_lblSequence->setAlignment(Qt::AlignCenter);
-    m_lblSequence->setStyleSheet("border: 1px solid palette(mid); border-radius: 3px; padding: 6px; font-size: 13px; background: palette(base);");
+    m_lblSequence->setStyleSheet(
+        "border: 1px solid palette(mid); border-radius: 3px; padding: 6px; font-size: 13px; background: palette(base);");
     mainLayout->addWidget(m_lblSequence);
 
     auto* btnLayout = new QHBoxLayout();
@@ -109,8 +110,7 @@ void LC_ShortcutSearchPopup::processKeyEvent(QKeyEvent* event) {
     }
 
     // Ignore lone modifier presses
-    if (key == Qt::Key_Control || key == Qt::Key_Shift ||
-        key == Qt::Key_Meta    || key == Qt::Key_Alt) {
+    if (key == Qt::Key_Control || key == Qt::Key_Shift || key == Qt::Key_Meta || key == Qt::Key_Alt) {
         event->accept();
         return;
     }

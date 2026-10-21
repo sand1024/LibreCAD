@@ -36,12 +36,8 @@
 #include "qg_widthbox.h"
 #include "rs.h"
 
-LC_SettingsPageBase::LC_SettingsPageBase(const QString& displayName,
-                                         std::unique_ptr<LC_SettingsBackend> backend,
-                                         QObject* parent)
-    : QObject(parent), m_displayName(displayName)
-    , m_backend(std::move(backend)), m_binder(m_backend.get(), this) {}
-
+LC_SettingsPageBase::LC_SettingsPageBase(const QString& displayName, std::unique_ptr<LC_SettingsBackend> backend, QObject* parent)
+    : QObject(parent), m_displayName(displayName), m_backend(std::move(backend)), m_binder(m_backend.get(), this) {}
 
 void LC_SettingsPageBase::registerSearchTarget(QWidget* target, const QString& text) {
     if (target) {
@@ -65,19 +61,21 @@ void LC_SettingsPageBase::bind(QLineEdit* le, const LC_Setting<QString>& setting
     m_binder.bind(le, setting.fullKey(), setting.defaultValue(), reqRestart);
 }
 
-void LC_SettingsPageBase::bindLineType(QG_LineTypeBox* lineTypeCombo, const LC_Setting<RS2::LineType>& setting, bool reqRestart){
-    bindCustom<QG_LineTypeBox, RS2::LineType>(lineTypeCombo, setting, reqRestart,
-           &QG_LineTypeBox::lineTypeChanged,
-           [](QG_LineTypeBox* w) { return w->getLineType(); },
-           [](QG_LineTypeBox* w, RS2::LineType v) { w->setLineType(v); });
-  }
+void LC_SettingsPageBase::bindLineType(QG_LineTypeBox* lineTypeCombo, const LC_Setting<RS2::LineType>& setting, bool reqRestart) {
+    bindCustom<QG_LineTypeBox, RS2::LineType>(lineTypeCombo, setting, reqRestart, &QG_LineTypeBox::lineTypeChanged, [](QG_LineTypeBox* w) {
+                                                  return w->getLineType();
+                                              }, [](QG_LineTypeBox* w, RS2::LineType v) {
+                                                  w->setLineType(v);
+                                              });
+}
 
-void LC_SettingsPageBase::bindLineWidth(QG_WidthBox* lineWidthCombo, const LC_Setting<RS2::LineWidth>& setting, bool reqRestart){
-    bindCustom<QG_WidthBox, RS2::LineWidth>(lineWidthCombo, setting, reqRestart,
-           &QG_WidthBox::widthChanged,
-           [](QG_WidthBox* w) { return w->getWidth(); },
-           [](QG_WidthBox* w, RS2::LineWidth v) { w->setWidth(v); });
-  }
+void LC_SettingsPageBase::bindLineWidth(QG_WidthBox* lineWidthCombo, const LC_Setting<RS2::LineWidth>& setting, bool reqRestart) {
+    bindCustom<QG_WidthBox, RS2::LineWidth>(lineWidthCombo, setting, reqRestart, &QG_WidthBox::widthChanged, [](QG_WidthBox* w) {
+                                                return w->getWidth();
+                                            }, [](QG_WidthBox* w, RS2::LineWidth v) {
+                                                w->setWidth(v);
+                                            });
+}
 
 void LC_SettingsPageBase::bindColor(QComboBox* comboBox, LC_ColorButton* button, const LC_Setting<QColor>& setting,
                                     const QString& dialogTitle, bool reqRestart) {
@@ -102,7 +100,8 @@ void LC_SettingsPageBase::bindColor(QComboBox* comboBox, LC_ColorButton* button,
         const int idx = comboBox->findText(hexName);
         if (idx >= 0) {
             comboBox->setCurrentIndex(idx);
-        } else {
+        }
+        else {
             comboBox->insertItem(0, hexName);
             comboBox->setCurrentIndex(0);
         }
@@ -128,7 +127,6 @@ void LC_SettingsPageBase::enableWhenChecked(QRadioButton* source, QWidget* targe
         target->setEnabled(invert ? !checked : checked);
     };
     connect(source, &QRadioButton::toggled, this, updateState);
-    // updateState(source->isChecked());
     m_widgetsToEnable.push_back({source, target, invert});
 }
 
@@ -140,12 +138,11 @@ void LC_SettingsPageBase::showWhenChecked(QCheckBox* source, QWidget* target, bo
         target->setVisible(invert ? !checked : checked);
     };
     connect(source, &QCheckBox::toggled, this, updateState);
-    // updateState(source->isChecked());
     m_widgetsToShow.push_back({source, target});
 }
 
 void LC_SettingsPageBase::updateEnabledState() {
-    for (auto p: m_widgetsToEnable) {
+    for (auto p : m_widgetsToEnable) {
         auto source = p.source;
         auto target = p.target;
         bool checked = source->isChecked();
@@ -154,7 +151,7 @@ void LC_SettingsPageBase::updateEnabledState() {
 }
 
 void LC_SettingsPageBase::updateVisibleState() {
-    for (auto p: m_widgetsToShow) {
+    for (auto p : m_widgetsToShow) {
         auto source = p.source;
         auto target = p.target;
         bool checked = source->isChecked();
@@ -209,8 +206,9 @@ bool LC_SettingsPageBase::isSettingsDialogVisible() const {
     const auto* parentDialog = qobject_cast<QDialog*>(topWindow);
 
     if (parentDialog != nullptr && parentDialog->isVisible()) {
-       return true;
-    } else {
+        return true;
+    }
+    else {
         return false;
     }
 }
@@ -246,6 +244,7 @@ void LC_SettingsPageBase::autoIndexActionGroupManager(LC_ActionGroupManager* agm
         }
     }
 }
+
 void LC_SettingsPageBase::trackSplitter(QSplitter* splitter, int defaultLeftWidth) {
     m_trackedSplitter = splitter;
     m_trackedSplitterDefaultWidth = defaultLeftWidth;
@@ -282,7 +281,6 @@ void LC_SettingsPageBase::saveDialogData(LC_SettingsGroupDialog& group, bool sav
         }
     }
 }
-
 
 void LC_SettingsPageBase::autoIndexLabels() {
     if (getEditingWidget() == nullptr) {
@@ -324,7 +322,6 @@ void LC_SettingsPageBase::autoIndexLabels() {
     }
 }
 
-
 void LC_SettingsPageBase::highlightSearchPattern(const QString& pattern) {
     clearSearchHighlight();
     if (pattern.isEmpty()) {
@@ -342,17 +339,15 @@ void LC_SettingsPageBase::highlightSearchPattern(const QString& pattern) {
 }
 
 void LC_SettingsPageBase::clearSearchHighlight() {
-    for (const auto& target : m_searchTargets) {
-        if (target.targetWidget == nullptr) {
-            continue;
-        }
+    if (m_widget == nullptr) {
+        return;
+    }
 
-        // Symmetrical RTTI lookup: queries children list and filters using dynamic_cast
-        const auto childrenList = target.targetWidget->children();
-        for (QObject* child : childrenList) {
-            if (auto* overlay = dynamic_cast<LC_HighlightOverlay*>(child)) {
-                overlay->deleteLater();
-            }
+    const auto childWidgets = m_widget->findChildren<QWidget*>();
+    for (auto* widget : childWidgets) {
+        if (auto* overlay = dynamic_cast<LC_HighlightOverlay*>(widget)) {
+            overlay->hide();
+            overlay->deleteLater();
         }
     }
 }
@@ -379,14 +374,11 @@ void LC_SettingsPageBase::bindScaledDouble(QDoubleSpinBox* spinBox, const LC_Set
     if (spinBox == nullptr) {
         return;
     }
-    bindCustom<QDoubleSpinBox, int>(spinBox, setting, reqRestart,
-        &QDoubleSpinBox::valueChanged,
-        [scaleFactor](QDoubleSpinBox* w) {
-            return static_cast<int>(w->value() * scaleFactor);
-        },
-        [scaleFactor](QDoubleSpinBox* w, int v) {
-            w->setValue(static_cast<double>(v) / scaleFactor);
-        });
+    bindCustom<QDoubleSpinBox, int>(spinBox, setting, reqRestart, &QDoubleSpinBox::valueChanged, [scaleFactor](QDoubleSpinBox* w) {
+                                        return static_cast<int>(w->value() * scaleFactor);
+                                    }, [scaleFactor](QDoubleSpinBox* w, int v) {
+                                        w->setValue(static_cast<double>(v) / scaleFactor);
+                                    });
 }
 
 void LC_SettingsPageBase::bindString(const std::initializer_list<StringEntry>& entries) {
@@ -417,9 +409,9 @@ QWidget* LC_SettingsPageBase::getEditingWidget() {
     if (!m_widget) {
         m_widget = new QWidget();
 
-        setupUi();         // Compile layout
-        setupBehavior();   // Wire UI interactivity
-        setupBindings();   // Declare settings binders
+        setupUi(); // Compile layout
+        setupBehavior(); // Wire UI interactivity
+        setupBindings(); // Declare settings binders
         autoIndexLabels(); // Automatically index all search strings
     }
     return m_widget;

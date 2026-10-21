@@ -387,11 +387,13 @@ QList<ActionNode> LC_DefaultNavigationLayoutBuilder::buildDefaultMenuMinimal(con
                     {
                         "HelpWiki",
                         "HelpManual",
-                        "HelpCommands",
                         "HelpStyleSheets",
                         "HelpWidgets"
                     }
                 },
+                "-",
+                "HelpCommands",
+                "HelpShortcuts",
                 "-",
                 "HelpForum",
                 "HelpZulip",

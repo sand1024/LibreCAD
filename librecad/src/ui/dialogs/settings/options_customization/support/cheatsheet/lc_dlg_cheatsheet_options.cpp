@@ -51,6 +51,13 @@ LC_DlgCheatsheetOptions::LC_DlgCheatsheetOptions(QWidget* parent, LC_CheatsheetO
     , m_options(options) {
     ui->setupUi(this);
 
+    if (options.type == CheatsheetType::Keymap) {
+        setWindowTitle(tr("Export Keymap Sheet"));
+    }
+    else {
+        setWindowTitle(tr("Export Command Aliases Sheet"));
+    }
+
     const QString defaultDocs = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
     const QString defaultFileName = getDefaultFileName();

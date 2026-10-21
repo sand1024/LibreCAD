@@ -22,6 +22,7 @@
 
 #include "lc_settings_manager_drafting.h"
 
+#include <QApplication>
 #include <QObject>
 
 #include "lc_drafting_preview_bottom_bar.h"
@@ -148,6 +149,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
 }
 
 bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QString& initialPageId) {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QElapsedTimer totalTimer;
     totalTimer.start();
 
@@ -231,6 +233,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
     const bool accepted = LC_SettingsRegistry::instance()->showDialog(
         LC_SettingsPagesDrafting::DLG_DRAFTING_PREFERENCES,
         startPage,
+        QVariant(),
         parent,
         preExecHook,
         postExecHook);

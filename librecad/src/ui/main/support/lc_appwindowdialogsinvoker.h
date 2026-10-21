@@ -45,7 +45,9 @@ public:
     void showDeviceOptions();
     bool showStylingOptionsDialog(const QString& pageId = "") const;
     bool showGeneralOptionsDialog(int* exitCode) const;
-    bool showCustomizationOptionsDialog(const QString& pageId = "");
+    bool showCustomizationOptionsDialog(const QString& initialPageId = QString());
+    bool showCustomizationOptionsDialogCommands(bool cheatSheet) const;
+    bool showCustomizationOptionsDialogShortcuts(bool cheatSheet) const;
     int showCloseDialog(const QC_MDIWindow *w, bool showSaveAll) const;
     QPair<QString, QString> showExportFileSelectionDialog(const QString& drawingFileName) const;
     QPair<QString, RS2::FormatType> requestDrawingFileName(RS2::FormatType format = RS2::FormatDXFRW) const;

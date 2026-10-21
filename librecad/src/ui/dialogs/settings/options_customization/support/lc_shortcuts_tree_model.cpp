@@ -30,11 +30,8 @@
 #include "lc_action_group_manager.h"
 #include "lc_shortcut_tree_item.h"
 
-
-
 LC_ShortcutsTreeModel::LC_ShortcutsTreeModel(QObject* parent, QColor filteredItemColor, QColor conflictItemColor)
-    : LC_ActionMappingTreeModelBase(parent, filteredItemColor, conflictItemColor) {
-}
+    : LC_ActionMappingTreeModelBase(parent, filteredItemColor, conflictItemColor) {}
 
 LC_ShortcutsTreeModel::~LC_ShortcutsTreeModel() {
     qDeleteAll(m_shortcuts);
@@ -53,7 +50,7 @@ QVariant LC_ShortcutsTreeModel::data(const QModelIndex& index, const int role) c
         return QVariant();
     }
 
-    auto* item = getItemForIndex(index);
+    const auto* item = getItemForIndex(index);
     if (item == nullptr) {
         return QVariant();
     }
@@ -112,8 +109,7 @@ void LC_ShortcutsTreeModel::rebuildModel(LC_ActionGroupManager* pManager) {
             if (shortcutInfo == nullptr) {
                 shortcutInfo = new LC_ShortcutInfo(actionName, action->shortcut());
 
-                const bool isSystem = LC_ActionKeys::isReadOnlyAction(action)
-                              || (group->getName() == "builtin_system");
+                const bool isSystem = LC_ActionKeys::isReadOnlyAction(action) || (group->getName() == "builtin_system");
                 shortcutInfo->setSystemAction(isSystem);
                 m_shortcuts[actionName] = shortcutInfo;
             }
@@ -129,8 +125,8 @@ void LC_ShortcutsTreeModel::rebuildModel(LC_ActionGroupManager* pManager) {
 
                 if (!m_highlightOnly) {
                     if (!hasRegexpMatch) {
-                    continue;
-                }
+                        continue;
+                    }
                     hasRegexpMatch = false; // Filter-only mode: do not highlight matched row
                 }
             }
@@ -210,8 +206,8 @@ bool LC_ShortcutsTreeModel::checkForCollisions(LC_ShortcutInfo* shortcutInfo, QS
                 const QString firstAction = firstIt.value()->getName();
                 ++firstIt;
                 const QString secondAction = firstIt.value()->getName();
-                *outFirstConflict = tr("Key sequence '%1' is assigned to both '%2' and '%3'")
-                    .arg(key.toString(QKeySequence::NativeText), firstAction, secondAction);
+                *outFirstConflict = tr("Key sequence '%1' is assigned to both '%2' and '%3'").arg(
+                    key.toString(QKeySequence::NativeText), firstAction, secondAction);
             }
 
             it = rangeIt;
@@ -223,7 +219,7 @@ bool LC_ShortcutsTreeModel::checkForCollisions(LC_ShortcutInfo* shortcutInfo, QS
 
     if (m_rootItem != nullptr) {
         for (int g = 0; g < m_rootItem->childCount(); ++g) {
-            auto* groupItem = m_rootItem->child(g);
+            const auto* groupItem = m_rootItem->child(g);
             if (groupItem == nullptr) {
                 continue;
             }

@@ -646,8 +646,8 @@ void LC_CheatsheetGenerator::showCompletionConfirmation(QWidget* parent, const L
         msgBox.setText(tr("Cheatsheet PDF generated successfully."));
         msgBox.setInformativeText(nativePath);
 
-        auto* btnOpenFolder = msgBox.addButton(tr("Open Folder"), QMessageBox::ActionRole);
-        auto* btnOpenFile = msgBox.addButton(tr("Open PDF"), QMessageBox::ActionRole);
+        const auto* btnOpenFolder = msgBox.addButton(tr("Open Folder"), QMessageBox::ActionRole);
+        const auto* btnOpenFile = msgBox.addButton(tr("Open PDF"), QMessageBox::ActionRole);
         msgBox.addButton(QMessageBox::Close);
 
         msgBox.exec();

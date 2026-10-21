@@ -53,6 +53,7 @@ public:
     void clearSearchHighlight() override;
     void bindToPresetManager(LC_PresetManagerInterface* manager) override;
     bool requiresScrollArea() const override {return false;}
+    LC_PageDialogAction onDialogShown(const QVariant& actionParam) override;
 protected:
     void setupUi() override;
     void setupBehavior() override;

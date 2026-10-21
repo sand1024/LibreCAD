@@ -116,9 +116,10 @@ void LC_SettingsManagerStyling::initialize(QC_ApplicationWindow* appWindow) {
 }
 
 bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QString& initialPageId) {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     auto previewController = std::make_unique<LC_StylingPreviewController>();
 
-      auto* styleMgr = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
+    auto* styleMgr = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
 
     if (styleMgr != nullptr) {
         previewController->initFromStyleManager(styleMgr);
@@ -156,8 +157,8 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
         previewController->closePreview();
     };
 
-    const bool accepted = LC_SettingsRegistry::instance()->showDialog(LC_SettingsPagesStyling::DLG_STYLING_PREFERENCES, initialPageId, parent, preExecHook,
-                                                                      postExecHook);
+    const bool accepted = LC_SettingsRegistry::instance()->showDialog(LC_SettingsPagesStyling::DLG_STYLING_PREFERENCES, initialPageId,
+                                                                      QVariant(), parent, preExecHook, postExecHook);
 
     // Re-apply style and theme once to reflect either committed changes (OK) or rolled-back baseline (Cancel)
     if (styleMgr != nullptr) {

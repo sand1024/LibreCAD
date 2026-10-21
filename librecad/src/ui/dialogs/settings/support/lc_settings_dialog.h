@@ -79,7 +79,7 @@ public:
     bool shouldCommitTransaction() const {
         return (!m_wasDirectlyAccepted || m_saveModifiedPages);
     }
-    void requestInitialPage(const QString& pageId);
+    void requestInitialPage(const QString& pageId, const QVariant& param = QVariant());
 signals:
    void restartRequired();
    void categoryChanged(const QString& pageId);
@@ -154,6 +154,7 @@ private:
     int m_customResultCode = 0;
     int m_savedPreviewWidth = 250;
     QString m_pendingPageIdToOpen;
+    QVariant m_pendingPageActionParam;
 
     LC_PresetManagerInterface* m_currentBoundPresetManager = nullptr;
 

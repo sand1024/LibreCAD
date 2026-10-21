@@ -61,6 +61,7 @@ public:
     void registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator);
     bool showDialog(const QString& dialogId,
                 const QString& initialPageId = QString(),
+                const QVariant& initialPageParam = QVariant(),
                 QWidget* parent = nullptr,
                 const std::function<void(LC_SettingsDialog*)>& preExecHook = nullptr,
                 const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook = nullptr,

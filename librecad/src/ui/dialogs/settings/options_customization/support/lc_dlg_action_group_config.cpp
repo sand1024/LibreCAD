@@ -29,10 +29,7 @@
 #include "lc_dlg_icon_picker.h"
 
 LC_DlgActionGroupConfig::LC_DlgActionGroupConfig(QWidget* parent, bool isToolbarMode, const LC_ActionGroupManager* groupManager)
-    : QDialog(parent)
-    , ui(std::make_unique<Ui::LC_DlgActionGroupConfig>())
-    , m_isToolbarMode(isToolbarMode)
-    , m_groupManager(groupManager) {
+    : QDialog(parent), ui(std::make_unique<Ui::LC_DlgActionGroupConfig>()), m_isToolbarMode(isToolbarMode), m_groupManager(groupManager) {
     ui->setupUi(this);
 
     ui->gbBehavior->setVisible(m_isToolbarMode);
@@ -41,7 +38,8 @@ LC_DlgActionGroupConfig::LC_DlgActionGroupConfig(QWidget* parent, bool isToolbar
 
     connect(ui->rbPredefinedCategory, &QRadioButton::toggled, this, &LC_DlgActionGroupConfig::onGroupTypeToggled);
     connect(ui->rbCustomGroup, &QRadioButton::toggled, this, &LC_DlgActionGroupConfig::onGroupTypeToggled);
-    connect(ui->cbSystemCategory, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_DlgActionGroupConfig::onSystemCategoryChanged);
+    connect(ui->cbSystemCategory, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_DlgActionGroupConfig::onSystemCategoryChanged);
 
     connect(ui->pbChooseIcon, &QPushButton::clicked, this, &LC_DlgActionGroupConfig::onChooseIconClicked);
     connect(ui->rbSplit, &QRadioButton::toggled, this, &LC_DlgActionGroupConfig::onSplitToggled);
@@ -56,7 +54,7 @@ LC_DlgActionGroupConfig::LC_DlgActionGroupConfig(QWidget* parent, bool isToolbar
 
 LC_DlgActionGroupConfig::~LC_DlgActionGroupConfig() = default;
 
-void LC_DlgActionGroupConfig::populateSystemCategories() {
+void LC_DlgActionGroupConfig::populateSystemCategories() const {
     ui->cbSystemCategory->clear();
     if (m_groupManager == nullptr) {
         return;
@@ -100,7 +98,8 @@ void LC_DlgActionGroupConfig::setInitialValues(const QString& rawTitle, const QS
             m_iconPath = m_groupManager->iconPath(rawTitle);
         }
         ui->leTitle->setText(ui->cbSystemCategory->currentText());
-    } else {
+    }
+    else {
         ui->rbPredefinedCategory->setChecked(false);
         ui->rbCustomGroup->setChecked(true);
         ui->leTitle->setText(rawTitle);
@@ -108,7 +107,8 @@ void LC_DlgActionGroupConfig::setInitialValues(const QString& rawTitle, const QS
 
     if (!m_iconPath.isEmpty()) {
         ui->tbIconPreview->setIcon(QIcon(m_iconPath));
-    } else {
+    }
+    else {
         ui->tbIconPreview->setIcon(QIcon());
     }
 
@@ -117,7 +117,8 @@ void LC_DlgActionGroupConfig::setInitialValues(const QString& rawTitle, const QS
             ui->rbInstant->setChecked(true);
             ui->cbSticky->setChecked(false);
             ui->cbSticky->setEnabled(false);
-        } else {
+        }
+        else {
             ui->rbSplit->setChecked(true);
             ui->cbSticky->setEnabled(true);
             ui->cbSticky->setChecked(mode == ToolButtonPopupMode::SplitLastUsedAction);
@@ -148,7 +149,8 @@ void LC_DlgActionGroupConfig::onGroupTypeToggled() {
         m_iconPath = m_groupManager->iconPath(token);
         if (!m_iconPath.isEmpty()) {
             ui->tbIconPreview->setIcon(QIcon(m_iconPath));
-        } else {
+        }
+        else {
             ui->tbIconPreview->setIcon(QIcon());
         }
     }
@@ -162,7 +164,6 @@ void LC_DlgActionGroupConfig::onSystemCategoryChanged(int) {
         ui->tbIconPreview->setIcon(QIcon(m_iconPath));
     }
 }
-
 
 void LC_DlgActionGroupConfig::onChooseIconClicked() {
     const QString picked = LC_DlgIconPicker::getIcon(this, m_iconPath);
@@ -205,6 +206,5 @@ ToolButtonPopupMode LC_DlgActionGroupConfig::popupMode() const {
     if (!m_isToolbarMode || ui->rbInstant->isChecked()) {
         return ToolButtonPopupMode::InstantPopup;
     }
-    return ui->cbSticky->isChecked() ? ToolButtonPopupMode::SplitLastUsedAction
-                                     : ToolButtonPopupMode::SplitFirstAction;
+    return ui->cbSticky->isChecked() ? ToolButtonPopupMode::SplitLastUsedAction : ToolButtonPopupMode::SplitFirstAction;
 }

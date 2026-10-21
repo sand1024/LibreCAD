@@ -45,11 +45,11 @@ public:
 
     LC_ShortcutTreeItem* addChild(const QAction* action, LC_ShortcutInfo* shortcutInfo);
 
-    LC_ShortcutTreeItem* child(int row) const {
-        return static_cast<LC_ShortcutTreeItem*>(LC_AbstractTreeItem::child(row));
+    LC_ShortcutTreeItem* childItem(int row) const {
+        return static_cast<LC_ShortcutTreeItem*>(child(row));
     }
-    LC_ShortcutTreeItem* parent() const {
-        return static_cast<LC_ShortcutTreeItem*>(LC_AbstractTreeItem::parent());
+    LC_ShortcutTreeItem* parentItem() const {
+        return static_cast<LC_ShortcutTreeItem*>(parent());
     }
 
     QString identifier() const;

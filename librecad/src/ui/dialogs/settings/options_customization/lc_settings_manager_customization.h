@@ -24,6 +24,7 @@
 #define LC_SETTINGS_MANAGER_CUSTOMIZATION_H
 
 #include <QString>
+#include <QVariant>
 
 class QC_ApplicationWindow;
 class LC_CommandManager;
@@ -48,7 +49,7 @@ class LC_SettingsManagerCustomization {
 public:
     static void initialize(QC_ApplicationWindow* appWindow);
 
-    static bool showCustomizationDialog(QWidget* parent = nullptr, const QString& initialPageId = "");
+    static bool showCustomizationDialog(QWidget* parent = nullptr, const QString& initialPageId = "", const QVariant& initialParam = QVariant());
 };
 
 #endif

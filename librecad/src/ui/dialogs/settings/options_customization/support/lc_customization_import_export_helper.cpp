@@ -25,28 +25,21 @@
 #include <QCoreApplication>
 #include <QJsonObject>
 
-LC_CustomizationImportExportHelper::LC_CustomizationImportExportHelper(
-    LC_RepositoryKeymaps* shortcutsRepo,
-    LC_RepositoryCommands* commandsRepo,
-    LC_RepositoryMenuBarAndToolbars* navRepo,
-    LC_RepositoryGraphicViewContextMenus* menusRepo)
-    : LC_ProfileExchangeHelperBase(CUSTOMIZATION_PROFILE_FILE_IDENTIFIER)
-    , m_shortcutsRepo(shortcutsRepo)
-    , m_commandsRepo(commandsRepo)
-    , m_navRepo(navRepo)
-    , m_menusRepo(menusRepo) {
-}
+LC_CustomizationImportExportHelper::LC_CustomizationImportExportHelper(LC_RepositoryKeymaps* shortcutsRepo,
+                                                                       LC_RepositoryCommands* commandsRepo,
+                                                                       LC_RepositoryMenuBarAndToolbars* navRepo,
+                                                                       LC_RepositoryGraphicViewContextMenus* menusRepo)
+    : LC_ProfileExchangeHelperBase(CUSTOMIZATION_PROFILE_FILE_IDENTIFIER), m_shortcutsRepo(shortcutsRepo), m_commandsRepo(commandsRepo),
+      m_navRepo(navRepo), m_menusRepo(menusRepo) {}
 
-bool LC_CustomizationImportExportHelper::exportProfile(const QString& exportFilePath,
-                                                       const QString& profileName,
-                                                       const ShortcutsConfig* shortcuts,
-                                                       const CommandsConfig* commands,
+bool LC_CustomizationImportExportHelper::exportProfile(const QString& exportFilePath, const QString& profileName,
+                                                       const ShortcutsConfig* shortcuts, const CommandsConfig* commands,
                                                        const NavigationLayoutConfig* navigation,
                                                        const ContextMenusConfig* contextMenus) const {
     QJsonObject root;
-    root["lc_file_format"]    = m_fileFormatIdentifier;
+    root["lc_file_format"] = m_fileFormatIdentifier;
     root["lc_file_format_version"] = "1.0";
-    root["profile_name"]    = profileName;
+    root["profile_name"] = profileName;
 
     if (shortcuts != nullptr && m_shortcutsRepo != nullptr) {
         QJsonObject obj = m_shortcutsRepo->configToJson(*shortcuts);
@@ -72,8 +65,7 @@ bool LC_CustomizationImportExportHelper::exportProfile(const QString& exportFile
     return writeJsonFile(exportFilePath, root);
 }
 
-bool LC_CustomizationImportExportHelper::inspectProfile(const QString& importFilePath,
-                                                        QString& outProfileName,
+bool LC_CustomizationImportExportHelper::inspectProfile(const QString& importFilePath, QString& outProfileName,
                                                         QList<LC_ChecklistChoice>& outChoices) const {
     QJsonObject root;
     if (!readJsonFile(importFilePath, root)) {
@@ -84,32 +76,48 @@ bool LC_CustomizationImportExportHelper::inspectProfile(const QString& importFil
     outChoices.clear();
 
     if (root.contains("inlined_shortcuts")) {
-        outChoices.append({"shortcuts", QCoreApplication::translate("LC_CustomizationProfile", "Keyboard Shortcuts"),
-                           QCoreApplication::translate("LC_CustomizationProfile", "Keymap scheme bindings"), true, true});
+        outChoices.append({
+            "shortcuts",
+            QCoreApplication::translate("LC_CustomizationProfile", "Keyboard Shortcuts"),
+            QCoreApplication::translate("LC_CustomizationProfile", "Keymap scheme bindings"),
+            true,
+            true
+        });
     }
     if (root.contains("inlined_commands")) {
-        outChoices.append({"commands", QCoreApplication::translate("LC_CustomizationProfile", "Command Aliases"),
-                           QCoreApplication::translate("LC_CustomizationProfile", "Command-line aliases and keycodes"), true, true});
+        outChoices.append({
+            "commands",
+            QCoreApplication::translate("LC_CustomizationProfile", "Command Aliases"),
+            QCoreApplication::translate("LC_CustomizationProfile", "Command-line aliases and keycodes"),
+            true,
+            true
+        });
     }
     if (root.contains("inlined_navigation")) {
-        outChoices.append({"navigation", QCoreApplication::translate("LC_CustomizationProfile", "Menus & Toolbars"),
-                           QCoreApplication::translate("LC_CustomizationProfile", "Main menu bar and toolbar arrangements"), true, true});
+        outChoices.append({
+            "navigation",
+            QCoreApplication::translate("LC_CustomizationProfile", "Menus & Toolbars"),
+            QCoreApplication::translate("LC_CustomizationProfile", "Main menu bar and toolbar arrangements"),
+            true,
+            true
+        });
     }
     if (root.contains("inlined_context_menus")) {
-        outChoices.append({"context_menus", QCoreApplication::translate("LC_CustomizationProfile", "Context Menus"),
-                           QCoreApplication::translate("LC_CustomizationProfile", "Drawing area popup context menus"), true, true});
+        outChoices.append({
+            "context_menus",
+            QCoreApplication::translate("LC_CustomizationProfile", "Context Menus"),
+            QCoreApplication::translate("LC_CustomizationProfile", "Drawing area popup context menus"),
+            true,
+            true
+        });
     }
 
     return !outChoices.isEmpty();
 }
 
-bool LC_CustomizationImportExportHelper::importProfile(const QString& importFilePath,
-                                                       const QList<LC_ChecklistChoice>& selectedChoices,
-                                                       QString& outProfileName,
-                                                       QString& outShortcutsKey,
-                                                       QString& outCommandsKey,
-                                                       QString& outNavigationKey,
-                                                       QString& outMenusKey) const {
+bool LC_CustomizationImportExportHelper::importProfile(const QString& importFilePath, const QList<LC_ChecklistChoice>& selectedChoices,
+                                                       QString& outProfileName, QString& outShortcutsKey, QString& outCommandsKey,
+                                                       QString& outNavigationKey, QString& outMenusKey) const {
     QJsonObject root;
     if (!readJsonFile(importFilePath, root)) {
         return false;

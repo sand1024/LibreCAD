@@ -1858,12 +1858,20 @@ void QC_ApplicationWindow::updateGridViewActions(const bool isometric, const RS2
     m_gridViewInvoker->updateGridViewActions(isometric, type);
 }
 
+void QC_ApplicationWindow::slotHelpCommands() {
+    m_dlgHelpr->showCustomizationOptionsDialogCommands(true);
+}
+
+void QC_ApplicationWindow::slotHelpShortcuts() {
+    m_dlgHelpr->showCustomizationOptionsDialogShortcuts(true);
+}
+
 void QC_ApplicationWindow::slotOptionsShortcuts() {
-    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_SHORTCUTS);
+    m_dlgHelpr->showCustomizationOptionsDialogShortcuts(false);
 }
 
 void QC_ApplicationWindow::slotOptionsCustomization() {
-    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_SHORTCUTS);
+    m_dlgHelpr->showCustomizationOptionsDialog();
 }
 
 void QC_ApplicationWindow::rebuildMenuIfNecessary() const {

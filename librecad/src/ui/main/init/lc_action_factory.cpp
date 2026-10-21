@@ -877,6 +877,11 @@ void LC_ActionFactory::createHelpActionsUncheckable(QMap<QString, QAction*>& map
     addUrlAction("HelpDonate",        tr("&Donate"),         "",                           "https://librecad.org/donate.html",              tr("Opens the donation page to support LibreCAD development."));
     addUrlAction("HelpGitHub",        tr("&GitHub Page"),    ":/icons/github.lci",         "https://github.com/LibreCAD/LibreCAD",          tr("Opens the LibreCAD source code repository on GitHub."));
     addUrlAction("HelpHome",          tr("librecad.org"),    "",                           "https://librecad.org",                          tr("Opens the official LibreCAD homepage."));
+
+    createMainWindowActions(map, group, {
+        {"HelpCommands",   &QC_ApplicationWindow::slotHelpCommands,      tr("Command-line Commands"),":/icons/command_line.lci",          tr("Generates and open the command-line tools reference guide.")},
+        {"HelpShortcuts",  &QC_ApplicationWindow::slotHelpShortcuts,     tr("Keyboard Shortcuts"),   ":/icons/shortcuts_settings.lci",   tr("Generates and open the keyboard shortcuts tools reference guide.")}
+    });
 }
 
 void LC_ActionFactory::createOptionsActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group){

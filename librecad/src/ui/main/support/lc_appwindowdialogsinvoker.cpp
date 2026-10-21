@@ -42,8 +42,7 @@
 #include "textfileviewer.h"
 
 LC_AppWindowDialogsInvoker::LC_AppWindowDialogsInvoker(QC_ApplicationWindow* appWin)
-    : LC_AppWindowAware(appWin) {
-}
+    : LC_AppWindowAware(appWin) {}
 
 void LC_AppWindowDialogsInvoker::showAboutWindow() const {
     LC_DlgAbout dlg(m_appWin);
@@ -104,15 +103,14 @@ void LC_AppWindowDialogsInvoker::showDeviceOptions() {
     dlg.showModal();
 }
 
-
 bool LC_AppWindowDialogsInvoker::showStylingOptionsDialog(const QString& pageId) const {
-   const bool accepted  =  LC_SettingsManagerStyling::showStylingSettings(m_appWin,pageId);
-   return accepted;
+    const bool accepted = LC_SettingsManagerStyling::showStylingSettings(m_appWin, pageId);
+    return accepted;
 }
 
 bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog(int* exitCode) const {
-  bool accepted = LC_SettingsManagerApplication::showOptionsApplication(m_appWin, exitCode);
-  return accepted;
+    bool accepted = LC_SettingsManagerApplication::showOptionsApplication(m_appWin, exitCode);
+    return accepted;
 }
 
 bool LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const {
@@ -120,8 +118,20 @@ bool LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic
     return accepted;
 }
 
-bool LC_AppWindowDialogsInvoker::showCustomizationOptionsDialog(const QString& pageId) {
-    const bool accepted = LC_SettingsManagerCustomization::showCustomizationDialog(m_appWin, pageId);
+bool LC_AppWindowDialogsInvoker::showCustomizationOptionsDialogCommands(bool cheatSheet) const {
+    const bool accepted = LC_SettingsManagerCustomization::showCustomizationDialog(m_appWin, LC_SettingsPagesCustomization::PAGE_COMMANDS,
+                                                                                   cheatSheet ? "cheatsheet" : QVariant());
+    return accepted;
+}
+
+bool LC_AppWindowDialogsInvoker::showCustomizationOptionsDialogShortcuts(bool cheatSheet) const {
+    const bool accepted = LC_SettingsManagerCustomization::showCustomizationDialog(m_appWin, LC_SettingsPagesCustomization::PAGE_SHORTCUTS,
+                                                                                   cheatSheet ? "cheatsheet" : QVariant());
+    return accepted;
+}
+
+bool LC_AppWindowDialogsInvoker::showCustomizationOptionsDialog(const QString& initialPageId) {
+    const bool accepted = LC_SettingsManagerCustomization::showCustomizationDialog(m_appWin, initialPageId);
     return accepted;
 }
 

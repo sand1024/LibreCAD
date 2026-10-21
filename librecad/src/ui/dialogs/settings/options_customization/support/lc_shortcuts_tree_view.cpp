@@ -28,31 +28,32 @@
 #include "lc_shortcuts_tree_model.h"
 #include "lc_shortcut_tree_item.h"
 
-class LC_ShortcutsTreeGridDelegate:public QStyledItemDelegate {
+class LC_ShortcutsTreeGridDelegate : public QStyledItemDelegate {
 public:
-    explicit LC_ShortcutsTreeGridDelegate(LC_ShortcutsTreeView *parent = nullptr, LC_ShortcutsTreeModel* treeModel = nullptr):QStyledItemDelegate(parent){
-        if (parent != nullptr){
+    explicit LC_ShortcutsTreeGridDelegate(LC_ShortcutsTreeView* parent = nullptr,
+                                          LC_ShortcutsTreeModel* treeModel = nullptr) : QStyledItemDelegate(parent) {
+        if (parent != nullptr) {
             this->m_treeModel = treeModel;
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override{
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
         QStyledItemDelegate::paint(painter, option, index);
         const int col = index.column();
 
-        if (col > 0){
+        if (col > 0) {
             bool draw = true;
 
-            const LC_ShortcutTreeItem *shortcutItem = m_treeModel->getItemForIndex(index);
-            if (shortcutItem != nullptr){
-                if (shortcutItem->isGroup()){
+            const LC_ShortcutTreeItem* shortcutItem = m_treeModel->getItemForIndex(index);
+            if (shortcutItem != nullptr) {
+                if (shortcutItem->isGroup()) {
                     draw = false;
                 }
                 else if (index.column() != LC_ShortcutsTreeModel::SHORTCUT) {
                     draw = false;
                 }
             }
-            if (draw){
+            if (draw) {
                 // const auto color = option.palette.color(QPalette::Mid);
                 const auto color = option.palette.color(QPalette::Window);
                 painter->save();
@@ -67,17 +68,16 @@ private:
     LC_ShortcutsTreeModel* m_treeModel{nullptr};
 };
 
-LC_ShortcutsTreeView::LC_ShortcutsTreeView(QWidget *parent):QTreeView(parent) {}
+LC_ShortcutsTreeView::LC_ShortcutsTreeView(QWidget* parent) : QTreeView(parent) {}
 
-void LC_ShortcutsTreeView::setup(LC_ShortcutsTreeModel *treeModel) {
+void LC_ShortcutsTreeView::setup(LC_ShortcutsTreeModel* treeModel) {
     setModel(treeModel);
     auto* delegate = new LC_ShortcutsTreeGridDelegate(this, treeModel);
     setItemDelegate(delegate);
 }
 
-
-LC_ShortcutsTreeModel *LC_ShortcutsTreeView::getTreeModel() const{
-    auto* result = static_cast<LC_ShortcutsTreeModel *>(model());
+LC_ShortcutsTreeModel* LC_ShortcutsTreeView::getTreeModel() const {
+    auto* result = static_cast<LC_ShortcutsTreeModel*>(model());
     return result;
 }
 
@@ -85,15 +85,15 @@ LC_ShortcutsTreeModel *LC_ShortcutsTreeView::getTreeModel() const{
  * @brief LC_LayerTreeWidget::expandChildren
  * @param index
  */
-void LC_ShortcutsTreeView::expandChildren(const QModelIndex &index){
-    if (!index.isValid()){
+void LC_ShortcutsTreeView::expandChildren(const QModelIndex& index) {
+    if (!index.isValid()) {
         return;
     }
     expand(index);
 
     const int childCount = index.model()->rowCount(index);
     for (int i = 0; i < childCount; i++) {
-        const QModelIndex &child = model()->index(i, 0, index);
+        const QModelIndex& child = model()->index(i, 0, index);
         // Recursively call the function for each child node.
         expandChildren(child);
     }

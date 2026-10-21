@@ -48,9 +48,7 @@ namespace {
         QString conflictMessage;
     };
 
-
-
-  DomainCheckResult checkDomainCollisions(const QList<TriggerOccurrence>& occurrences) {
+    DomainCheckResult checkDomainCollisions(const QList<TriggerOccurrence>& occurrences) {
         DomainCheckResult result;
 
         // 1. Check for Exact Hard Collisions (Identical case)
@@ -72,12 +70,12 @@ namespace {
                     const TriggerOccurrence secondOcc = firstIt.value();
 
                     if (firstOcc.ownerId == secondOcc.ownerId) {
-                        result.conflictMessage = QObject::tr("Trigger '%1' is duplicated between %2 and %3 in '%4'")
-                            .arg(trigger, firstOcc.slotTitle, secondOcc.slotTitle, firstOcc.displayName);
+                        result.conflictMessage = QObject::tr("Trigger '%1' is duplicated between %2 and %3 in '%4'").arg(
+                            trigger, firstOcc.slotTitle, secondOcc.slotTitle, firstOcc.displayName);
                     }
                     else {
-                        result.conflictMessage = QObject::tr("Trigger '%1' is assigned to both '%2' (%3) and '%4' (%5)")
-                            .arg(trigger, firstOcc.displayName, firstOcc.slotTitle, secondOcc.displayName, secondOcc.slotTitle);
+                        result.conflictMessage = QObject::tr("Trigger '%1' is assigned to both '%2' (%3) and '%4' (%5)").arg(
+                            trigger, firstOcc.displayName, firstOcc.slotTitle, secondOcc.displayName, secondOcc.slotTitle);
                     }
                 }
                 it += count;
@@ -110,8 +108,9 @@ namespace {
                 if (firstOcc.ownerId != secondOcc.ownerId) {
                     result.hasAmbiguity = true;
                     if (result.conflictMessage.isEmpty()) {
-                        result.conflictMessage = QObject::tr("Triggers '%1' and '%2' differ only by letter case ('%3' and '%4'). Exact case is required in the command line.")
-                            .arg(firstOcc.trigger, secondOcc.trigger, firstOcc.displayName, secondOcc.displayName);
+                        result.conflictMessage = QObject::tr(
+                                "Triggers '%1' and '%2' differ only by letter case ('%3' and '%4'). Exact case is required in the command line.")
+                           .arg(firstOcc.trigger, secondOcc.trigger, firstOcc.displayName, secondOcc.displayName);
                     }
                 }
                 it += count;
@@ -124,40 +123,38 @@ namespace {
         return result;
     }
 
-
     QString formatSlotDisplay(const QStringList& overrideVals, const QStringList& defaults) {
-      const bool suppressDefaults = overrideVals.contains("-");
-      QStringList list;
-      for (const QString& val : overrideVals) {
-          const QString trimmed = val.trimmed();
-          if (!trimmed.isEmpty() && trimmed != "-" && !list.contains(trimmed, Qt::CaseInsensitive)) {
-              list.append(trimmed);
-          }
-      }
+        const bool suppressDefaults = overrideVals.contains("-");
+        QStringList list;
+        for (const QString& val : overrideVals) {
+            const QString trimmed = val.trimmed();
+            if (!trimmed.isEmpty() && trimmed != "-" && !list.contains(trimmed, Qt::CaseInsensitive)) {
+                list.append(trimmed);
+            }
+        }
 
-      if (!suppressDefaults) {
-          for (const QString& def : defaults) {
-              const QString lower = def.trimmed().toLower();
-              if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
-                  list.append(lower);
-              }
-          }
-      }
+        if (!suppressDefaults) {
+            for (const QString& def : defaults) {
+                const QString lower = def.trimmed().toLower();
+                if (!lower.isEmpty() && !list.contains(lower, Qt::CaseInsensitive)) {
+                    list.append(lower);
+                }
+            }
+        }
 
-      if (list.isEmpty()) {
+        if (list.isEmpty()) {
             return QString();
-      }
+        }
         return list.join(QStringLiteral(", "));
-  }
+    }
 
-  QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
-      return formatSlotDisplay(overrideVal.isEmpty() ? QStringList{} : QStringList{overrideVal}, defaults);
-  }
+    QString formatSlotDisplay(const QString& overrideVal, const QStringList& defaults) {
+        return formatSlotDisplay(overrideVal.isEmpty() ? QStringList{} : QStringList{overrideVal}, defaults);
+    }
 }
 
 LC_CommandsTreeModel::LC_CommandsTreeModel(QObject* parent, const QColor& filterColor, const QColor& conflictColor)
-    : LC_ActionMappingTreeModelBase(parent, filterColor, conflictColor) {
-}
+    : LC_ActionMappingTreeModelBase(parent, filterColor, conflictColor) {}
 
 int LC_CommandsTreeModel::columnCount(const QModelIndex&) const {
     return LAST;
@@ -180,6 +177,7 @@ QVariant LC_CommandsTreeModel::headerData(int section, Qt::Orientation orientati
     }
     return QVariant();
 }
+
 LC_CommandsTreeItem* LC_CommandsTreeModel::getItemForIndex(const QModelIndex& index) const {
     return static_cast<LC_CommandsTreeItem*>(LC_ActionMappingTreeModelBase::getItemForIndex(index));
 }
@@ -189,7 +187,7 @@ QVariant LC_CommandsTreeModel::data(const QModelIndex& index, int role) const {
         return QVariant();
     }
 
-    auto* item = getItemForIndex(index);
+    const auto* item = getItemForIndex(index);
     if (item == nullptr) {
         return QVariant();
     }
@@ -221,12 +219,7 @@ QVariant LC_CommandsTreeModel::data(const QModelIndex& index, int role) const {
     return LC_ActionMappingTreeModelBase::data(index, role);
 }
 
-
-
-
-bool LC_CommandsTreeModel::checkForCollisions(const CommandsConfig& config,
-                                              LC_ActionGroupManager* agm,
-                                              const LC_ActionTypeMapper* mapper,
+bool LC_CommandsTreeModel::checkForCollisions(const CommandsConfig& config, LC_ActionGroupManager* agm, const LC_ActionTypeMapper* mapper,
                                               QString* outFirstConflict) {
     if (agm == nullptr || mapper == nullptr) {
         return false;
@@ -275,8 +268,7 @@ bool LC_CommandsTreeModel::checkForCollisions(const CommandsConfig& config,
             if (seen.contains(trg)) {
                 hasKeywordCollision = true;
                 if (outFirstConflict != nullptr && outFirstConflict->isEmpty()) {
-                    *outFirstConflict = tr("Keyword '%1' has duplicate trigger '%2' assigned to itself.")
-                        .arg(kwDef.key, trg);
+                    *outFirstConflict = tr("Keyword '%1' has duplicate trigger '%2' assigned to itself.").arg(kwDef.key, trg);
                 }
                 break;
             }
@@ -305,8 +297,7 @@ bool LC_CommandsTreeModel::checkForCollisions(const CommandsConfig& config,
     return false;
 }
 
-bool LC_CommandsTreeModel::evaluateActionCollision(LC_CommandsTreeItem* item,
-                                                   const CommandDefinition& cmdDef,
+bool LC_CommandsTreeModel::evaluateActionCollision(LC_CommandsTreeItem* item, const CommandDefinition& cmdDef,
                                                    const LC_ActionTypeMapper* mapper,
                                                    const QMultiMap<QString, QString>& actionTriggers) const {
     if (item == nullptr || mapper == nullptr) {
@@ -317,14 +308,14 @@ bool LC_CommandsTreeModel::evaluateActionCollision(LC_CommandsTreeItem* item,
     const QStringList effTrg = computeActionEffectiveTriggers(actionType, cmdDef);
     item->setEffectiveTriggers(effTrg);
 
-    // 1. Exact-case duplicate check in global actions domain
+    // Exact-case duplicate check in global actions domain
     for (const QString& trg : effTrg) {
         if (actionTriggers.count(trg) > 1) {
             return true;
         }
     }
 
-    // 2. Intra-action slot collision check
+    // Intra-action slot collision check
     const QString c = cmdDef.customCommand.trimmed();
     const QString k = cmdDef.customKeycode.trimmed();
     if (!c.isEmpty() && c != "-") {
@@ -352,8 +343,7 @@ bool LC_CommandsTreeModel::evaluateActionCollision(LC_CommandsTreeItem* item,
     return false;
 }
 
-bool LC_CommandsTreeModel::evaluateKeywordCollision(LC_CommandsTreeItem* item,
-                                                    const KeywordDefinition& kwDef) const {
+bool LC_CommandsTreeModel::evaluateKeywordCollision(LC_CommandsTreeItem* item, const KeywordDefinition& kwDef) const {
     if (item == nullptr) {
         return false;
     }
@@ -372,11 +362,9 @@ bool LC_CommandsTreeModel::evaluateKeywordCollision(LC_CommandsTreeItem* item,
     return false;
 }
 
-void LC_CommandsTreeModel::recalculateGroupCollisions(LC_CommandsTreeItem* groupItem,
-                                                      int groupRow,
+void LC_CommandsTreeModel::recalculateGroupCollisions(LC_CommandsTreeItem* groupItem, int groupRow,
                                                       const QMap<QString, CommandDefinition>& cmdMap,
-                                                      const QMap<QString, KeywordDefinition>& kwMap,
-                                                      const LC_ActionTypeMapper* mapper,
+                                                      const QMap<QString, KeywordDefinition>& kwMap, const LC_ActionTypeMapper* mapper,
                                                       const QMultiMap<QString, QString>& actionTriggers) {
     if (groupItem == nullptr) {
         return;
@@ -391,8 +379,8 @@ void LC_CommandsTreeModel::recalculateGroupCollisions(LC_CommandsTreeItem* group
         }
 
         const bool itemCollides = !item->isKeyword()
-            ? evaluateActionCollision(item, cmdMap.value(item->identifier()), mapper, actionTriggers)
-            : evaluateKeywordCollision(item, kwMap.value(item->identifier()));
+                                      ? evaluateActionCollision(item, cmdMap.value(item->identifier()), mapper, actionTriggers)
+                                      : evaluateKeywordCollision(item, kwMap.value(item->identifier()));
 
         if (item->hasCollision() != itemCollides) {
             item->setCollision(itemCollides);
@@ -403,9 +391,8 @@ void LC_CommandsTreeModel::recalculateGroupCollisions(LC_CommandsTreeItem* group
     }
 }
 
-void LC_CommandsTreeModel::recalculateCollisions(const CommandsConfig& config,
-                                                LC_ActionGroupManager* agm,
-                                                const LC_ActionTypeMapper* mapper) {
+void LC_CommandsTreeModel::recalculateCollisions(const CommandsConfig& config, LC_ActionGroupManager* agm,
+                                                 const LC_ActionTypeMapper* mapper) {
     if (agm == nullptr || mapper == nullptr || m_rootItem == nullptr) {
         return;
     }
@@ -434,8 +421,7 @@ void LC_CommandsTreeModel::recalculateCollisions(const CommandsConfig& config,
     }
 }
 
-void LC_CommandsTreeModel::updateItemTriggers(LC_CommandsTreeItem* item, const QString& mainCmd,
-                                              const QString& a1, const QString& a2,
+void LC_CommandsTreeModel::updateItemTriggers(LC_CommandsTreeItem* item, const QString& mainCmd, const QString& a1, const QString& a2,
                                               const QStringList& effectiveTriggers, bool isModified) {
     if (item == nullptr) {
         return;
@@ -448,28 +434,24 @@ void LC_CommandsTreeModel::updateItemTriggers(LC_CommandsTreeItem* item, const Q
     item->setModified(isModified);
 
     if (m_hasFilter && m_highlightOnly) {
-        const bool matches = item->name().contains(m_filterRegex) ||
-                             mainCmd.contains(m_filterRegex) ||
-                             a1.contains(m_filterRegex) ||
-                             a2.contains(m_filterRegex);
+        const bool matches = item->name().contains(m_filterRegex) || mainCmd.contains(m_filterRegex) || a1.contains(m_filterRegex) || a2.
+            contains(m_filterRegex);
         item->setMatched(matches);
     }
     else {
         item->setMatched(false);
     }
 
-    auto* parentItem = item->parent();
+    const auto* parentItem = item->parent();
     QModelIndex parentIdx;
     if (parentItem != nullptr && parentItem != m_rootItem.get()) {
         parentIdx = createIndex(parentItem->row(), 0, parentItem);
     }
 
     const QModelIndex startIdx = index(item->row(), KEYCODE, parentIdx);
-    const QModelIndex endIdx   = index(item->row(), ALIAS, parentIdx);
+    const QModelIndex endIdx = index(item->row(), ALIAS, parentIdx);
     emit dataChanged(startIdx, endIdx);
 }
-
-
 
 QStringList LC_CommandsTreeModel::computeActionEffectiveTriggers(RS2::ActionType actionType, const CommandDefinition& def) {
     QStringList triggers;
@@ -569,9 +551,7 @@ QStringList LC_CommandsTreeModel::computeKeywordEffectiveTriggers(const QString&
     return triggers;
 }
 
-void LC_CommandsTreeModel::rebuildModel(const CommandsConfig& config,
-                                        LC_ActionGroupManager* agm,
-                                        LC_ActionTypeMapper* mapper) {
+void LC_CommandsTreeModel::rebuildModel(const CommandsConfig& config, LC_ActionGroupManager* agm, LC_ActionTypeMapper* mapper) {
     beginResetModel();
     m_rootItem = std::make_unique<LC_CommandsTreeItem>(nullptr, QString(), QIcon());
 
@@ -596,10 +576,8 @@ void LC_CommandsTreeModel::rebuildModel(const CommandsConfig& config,
     endResetModel();
 }
 
-void LC_CommandsTreeModel::buildGlobalTriggerMaps(const CommandsConfig& config,
-                                                  LC_ActionGroupManager* agm,
-                                                  const LC_ActionTypeMapper* mapper,
-                                                  const QMap<QString, CommandDefinition>& cmdMap,
+void LC_CommandsTreeModel::buildGlobalTriggerMaps(const CommandsConfig& config, LC_ActionGroupManager* agm,
+                                                  const LC_ActionTypeMapper* mapper, const QMap<QString, CommandDefinition>& cmdMap,
                                                   QMultiMap<QString, QString>& outActionTriggerMap,
                                                   QMultiMap<QString, QString>& outKeywordTriggerMap) const {
     for (const auto* group : agm->allGroupsList()) {
@@ -643,10 +621,8 @@ bool LC_CommandsTreeModel::matchesSearchFilter(const QStringList& searchableStri
     return false;
 }
 
-LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeItem* parentGroup,
-                                                                const QAction* action,
-                                                                const CommandDefinition& cmdDef,
-                                                                const LC_ActionTypeMapper* mapper,
+LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeItem* parentGroup, const QAction* action,
+                                                                const CommandDefinition& cmdDef, const LC_ActionTypeMapper* mapper,
                                                                 const QMultiMap<QString, QString>& actionTriggerMap) {
     if (action == nullptr || mapper == nullptr) {
         return nullptr;
@@ -689,8 +665,8 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
     }
     if (!k.isEmpty() && k != "-") {
         if (cmdDef.customAliases.contains(k, Qt::CaseInsensitive)) {
-        itemHasCollision = true;
-    }
+            itemHasCollision = true;
+        }
     }
 
     QSet<QString> seenAliases;
@@ -698,7 +674,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
         const QString alTrimmed = alias.trimmed();
         if (!alTrimmed.isEmpty() && alTrimmed != "-") {
             if (seenAliases.contains(alTrimmed)) {
-        itemHasCollision = true;
+                itemHasCollision = true;
                 break;
             }
             seenAliases.insert(alTrimmed);
@@ -733,14 +709,11 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createActionTreeItem(LC_CommandsTreeI
                                 : action->text().remove('&').trimmed();
     childItem->setDescription(actDesc);
 
-
     return childItem;
 }
 
-void LC_CommandsTreeModel::buildActionGroups(const QMap<QString, CommandDefinition>& cmdMap,
-                                             LC_ActionGroupManager* agm,
-                                             const LC_ActionTypeMapper* mapper,
-                                             const QMultiMap<QString, QString>& actionTriggerMap,
+void LC_CommandsTreeModel::buildActionGroups(const QMap<QString, CommandDefinition>& cmdMap, LC_ActionGroupManager* agm,
+                                             const LC_ActionTypeMapper* mapper, const QMultiMap<QString, QString>& actionTriggerMap,
                                              LC_CommandsTreeItem* rootItem) {
     for (const auto* group : agm->allGroupsList()) {
         if (group == nullptr || !group->isActionMappingsMayBeConfigured()) {
@@ -772,8 +745,7 @@ void LC_CommandsTreeModel::buildActionGroups(const QMap<QString, CommandDefiniti
     }
 }
 
-LC_CommandsTreeItem* LC_CommandsTreeModel::createKeywordTreeItem(LC_CommandsTreeItem* parentGroup,
-                                                                 const KeywordDefinition& kwDef,
+LC_CommandsTreeItem* LC_CommandsTreeModel::createKeywordTreeItem(LC_CommandsTreeItem* parentGroup, const KeywordDefinition& kwDef,
                                                                  const QMultiMap<QString, QString>& keywordTriggerMap) {
     Q_UNUSED(keywordTriggerMap);
 
@@ -781,7 +753,7 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createKeywordTreeItem(LC_CommandsTree
     QStringList defAliases;
     LC_CommandManager::collectKeywordDefaults(kwDef.key, defKw, defAliases);
 
-    const QString colKw  = formatSlotDisplay(kwDef.customKeyword, QStringList{defKw, kwDef.key});
+    const QString colKw = formatSlotDisplay(kwDef.customKeyword, QStringList{defKw, kwDef.key});
     const QString colKey = QString(); // In-prompt keywords do not participate in keycode mode
     const QString colAls = formatSlotDisplay(kwDef.customAlias, defAliases);
 
@@ -820,16 +792,13 @@ LC_CommandsTreeItem* LC_CommandsTreeModel::createKeywordTreeItem(LC_CommandsTree
     return kwItem;
 }
 
-void LC_CommandsTreeModel::buildKeywordsGroup(const CommandsConfig& config,
-                                              const QMultiMap<QString, QString>& keywordTriggerMap,
+void LC_CommandsTreeModel::buildKeywordsGroup(const CommandsConfig& config, const QMultiMap<QString, QString>& keywordTriggerMap,
                                               LC_CommandsTreeItem* rootItem) {
     if (config.keywords.isEmpty() || rootItem == nullptr) {
         return;
     }
 
-    auto* kwGroupItem = new LC_CommandsTreeItem(rootItem,
-                                               tr("In-Prompt Keywords (Sub-Commands)"),
-                                               QIcon(":/icons/text.lci"));
+    auto* kwGroupItem = new LC_CommandsTreeItem(rootItem, tr("In-Prompt Keywords (Sub-Commands)"), QIcon(":/icons/text.lci"));
 
     for (const auto& kwDef : config.keywords) {
         auto* kwItem = createKeywordTreeItem(kwGroupItem, kwDef, keywordTriggerMap);

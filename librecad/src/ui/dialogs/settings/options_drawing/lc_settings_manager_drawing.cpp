@@ -25,6 +25,8 @@
 #include "rs_graphic.h"
 
 // Pages
+#include <QApplication>
+
 #include "lc_settings_page_drawing_paper.h"
 #include "lc_settings_page_drawing_units.h"
 #include "lc_settings_page_drawing_grid.h"
@@ -77,11 +79,13 @@ bool LC_SettingsManagerDrawing::show(RS_Graphic* graphic, QWidget* parent, const
         return false;
     }
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     g_contextGraphic = graphic;
 
     using namespace LC_SettingsPagesDrawing;
     bool accepted = LC_SettingsRegistry::instance()->showDialog(DLG_DOCUMENT_PREFERENCES,
-                                                                initialPageId.isEmpty() ? PAGE_UNITS : initialPageId, parent);
+                                                                initialPageId.isEmpty() ? PAGE_UNITS : initialPageId, QVariant(), parent);
 
     g_contextGraphic = nullptr;
     return accepted;
