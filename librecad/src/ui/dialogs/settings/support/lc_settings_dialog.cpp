@@ -59,20 +59,7 @@ namespace {
 LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId, bool supportsCollapseExpandCategories)
     : LC_Dialog(parent, "Settings." + dialogId), ui(std::make_unique<Ui::LC_SettingsDialog>()), m_dialogId(dialogId) {
     ui->setupUi(this);
-
-    ui->saSettingsScrollArea->setWidgetResizable(true);
-    ui->saSettingsScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->saSettingsScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
     ui->presetBar->setVisible(false);
-
-    // Prevent QStackedWidget from imposing the widest page's size on the scroll area
-    ui->swContent->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-
-    ui->scrollAreaLayout->addStretch(1);
-
-    // Watch viewport resize events to clamp content width dynamically
-    ui->saSettingsScrollArea->viewport()->installEventFilter(this);
 
     ui->splMain->setChildrenCollapsible(false);
     ui->splMain->setStretchFactor(0, 0);
@@ -217,8 +204,24 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
         connect(indexPage, &LC_SettingsPageIndex::navigateToPage, this, &LC_SettingsDialog::selectPage);
     }
 
-    if (page->getEditingWidget()) {
-        ui->swContent->addWidget(page->getEditingWidget());
+    if (page->getEditingWidget() != nullptr) {
+        QWidget* contentWidget = page->getEditingWidget();
+        QWidget* widgetToStack = contentWidget;
+
+        if (page->requiresScrollArea()) {
+            auto* scrollArea = new QScrollArea(ui->swContent);
+            scrollArea->setWidgetResizable(true);
+            scrollArea->setFrameShape(QFrame::NoFrame);
+            scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scrollArea->setWidget(contentWidget);
+
+            m_pageScrollAreas[pageId] = scrollArea;
+            widgetToStack = scrollArea;
+        }
+
+        m_pageStackedWidgets[pageId] = widgetToStack;
+        ui->swContent->addWidget(widgetToStack);
     }
 }
 
@@ -513,15 +516,6 @@ bool LC_SettingsDialog::selectPage(const QString& pageId) {
     return false;
 }
 
-bool LC_SettingsDialog::eventFilter(QObject* watched, QEvent* event) {
-    if (!m_isSwitchingCategory && ui != nullptr && ui->saSettingsScrollArea != nullptr && watched == ui->saSettingsScrollArea->viewport()) {
-        if (event != nullptr && event->type() == QEvent::Resize) {
-            updateActivePageGeometry();
-        }
-    }
-    return LC_Dialog::eventFilter(watched, event);
-}
-
 void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
     m_filterModel->setFilterText(text);
     if (!text.isEmpty()) {
@@ -537,9 +531,12 @@ void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
         ui->leSearch->setErrorState(false); // Reset background
     }
     if (const auto* currWidget = ui->swContent->currentWidget()) {
-        for (const auto& [id, page] : m_pageMapByPageId) {
-            if (page->getEditingWidget() == currWidget) {
-                highlightPageContent(page, text);
+        for (const auto& [id, stackedWidget] : m_pageStackedWidgets) {
+            if (stackedWidget == currWidget) {
+                auto itPage = m_pageMapByPageId.find(id);
+                if (itPage != m_pageMapByPageId.end() && itPage->second != nullptr) {
+                    highlightPageContent(itPage->second, text);
+                }
                 break;
             }
         }
@@ -622,7 +619,6 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     qint64 t_setCurrentWidget = 0;
     qint64 t_loadSettings = 0;
     qint64 t_onAboutToShow = 0;
-    qint64 t_geometry = 0;
 
     if (page->getEditingWidget() != nullptr) {
 
@@ -631,7 +627,10 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         subTimer.start();
 #endif
 
-        ui->swContent->setCurrentWidget(page->getEditingWidget());
+        auto itWidget = m_pageStackedWidgets.find(pageId);
+        if (itWidget != m_pageStackedWidgets.end() && itWidget->second != nullptr) {
+            ui->swContent->setCurrentWidget(itWidget->second);
+        }
 
 # ifdef DEBUG_CATEGORY_SWITCH_TIMERS
         t_setCurrentWidget = subTimer.restart();
@@ -649,13 +648,6 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
 # ifdef DEBUG_CATEGORY_SWITCH_TIMERS
         t_onAboutToShow = subTimer.restart();
 # endif
-        updateActivePageGeometry();
-# ifdef DEBUG_CATEGORY_SWITCH_TIMERS
-        t_geometry = subTimer.restart();
-# endif
-        if (ui->saSettingsScrollArea->verticalScrollBar() != nullptr) {
-            ui->saSettingsScrollArea->verticalScrollBar()->setValue(0);
-        }
 
         updateBreadcrumbs(index);
 
@@ -912,7 +904,6 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
            << "\n  ├─ SetCurrentWidget:    " << t_setCurrentWidget << "ms"
            << "\n  ├─ LoadSettings:        " << t_loadSettings << "ms"
            << "\n  ├─ OnAboutToShow:       " << t_onAboutToShow << "ms"
-           << "\n  ├─ Geometry/HFW:        " << t_geometry << "ms"
            << "\n  ├─ PresetBar:           " << t_presetBar << "ms"
            << "\n  ├─ HeaderMount:         " << t_header << "ms"
            << "\n  ├─ BottomMount:         " << t_bottom << "ms"
@@ -1211,7 +1202,7 @@ void LC_SettingsDialog::closeEvent(QCloseEvent* event) {
 }
 
 void LC_SettingsDialog::highlightPageContent(LC_SettingsPageInterface* page, const QString& filterText) const {
-      if (page == nullptr) {
+    if (page == nullptr) {
         return;
     }
     if (filterText.isEmpty()) {
@@ -1223,7 +1214,10 @@ void LC_SettingsDialog::highlightPageContent(LC_SettingsPageInterface* page, con
 
     for (const auto& target : page->searchTargets()) {
         if (target.targetWidget != nullptr && target.originalText.contains(filterText, Qt::CaseInsensitive)) {
-            ui->saSettingsScrollArea->ensureWidgetVisible(target.targetWidget);
+            auto it = m_pageScrollAreas.find(page->id());
+            if (it != m_pageScrollAreas.end() && it->second != nullptr) {
+                it->second->ensureWidgetVisible(target.targetWidget);
+            }
             break;
         }
     }
@@ -1473,49 +1467,6 @@ void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) 
         }
         else {
             preview->update();
-        }
-    }
-}
-
-void LC_SettingsDialog::updateActivePageGeometry() {
-    if (m_activePage == nullptr || ui == nullptr || ui->saSettingsScrollArea == nullptr) {
-        return;
-    }
-
-    auto* vp = ui->saSettingsScrollArea->viewport();
-    if (vp == nullptr) {
-        return;
-    }
-
-    const int viewportWidth = vp->width();
-    if (viewportWidth <= 0) {
-        return;
-    }
-
-    if (ui->scrollAreaWidgetContents != nullptr) {
-        ui->scrollAreaWidgetContents->setFixedWidth(viewportWidth);
-    }
-
-    QWidget* pageWidget = m_activePage->getEditingWidget();
-    if (pageWidget != nullptr) {
-        if (pageWidget->layout() != nullptr) {
-            pageWidget->layout()->invalidate();
-            pageWidget->layout()->activate();
-        }
-
-        int requiredHeight = 0;
-        if (pageWidget->hasHeightForWidth()) {
-            requiredHeight = pageWidget->heightForWidth(viewportWidth);
-        }
-        if (requiredHeight <= 0) {
-            requiredHeight = pageWidget->sizeHint().height();
-        }
-
-        if (requiredHeight > 0) {
-            ui->swContent->setFixedHeight(requiredHeight);
-        }
-        else {
-            ui->swContent->setMaximumHeight(QWIDGETSIZE_MAX);
         }
     }
 }

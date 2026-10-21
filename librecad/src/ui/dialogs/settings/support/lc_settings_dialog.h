@@ -85,7 +85,6 @@ signals:
    void categoryChanged(const QString& pageId);
    void livePreviewRequested(const QString& pageId);
 protected:
-    void updateActivePageGeometry();
     void closeEvent(QCloseEvent* event) override;
     void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
     void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) override;
@@ -104,8 +103,6 @@ protected:
     bool isPageInitialized(LC_SettingsPageInterface* page) const {
         return m_initializedPages.contains(page->id());
     }
-
-    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private slots:
     void onSearchTextChanged(const QString& text);
@@ -129,6 +126,9 @@ private:
 
     QStandardItemModel* m_treeModel = nullptr;
     LC_SettingsFilterModel* m_filterModel = nullptr;
+
+    std::map<QString, QWidget*> m_pageStackedWidgets;
+    std::map<QString, QScrollArea*> m_pageScrollAreas;
 
     std::vector<std::unique_ptr<LC_SettingsPageInterface>> m_pages;
     std::map<QString, LC_SettingsPageInterface*> m_pageMapByPageId;

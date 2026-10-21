@@ -47,8 +47,8 @@ public:
     bool saveSettings() override;
     bool isModified() const override;
     bool acceptsSharedPreview() override { return false; }
-
     void bindToPresetManager(LC_PresetManagerInterface* manager) override;
+    bool requiresScrollArea() const override {return false;}
 protected:
     void setupUi() override;
     void setupBehavior() override;

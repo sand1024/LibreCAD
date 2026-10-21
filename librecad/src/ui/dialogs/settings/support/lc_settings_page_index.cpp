@@ -145,3 +145,7 @@ bool LC_SettingsPageIndex::isPageGated() const {
 QString LC_SettingsPageIndex::gatedMessage() const {
     return m_gatedMessageFunc ? m_gatedMessageFunc() : QString();
 }
+
+bool LC_SettingsPageIndex::requiresScrollArea() const {
+    return false;
+}

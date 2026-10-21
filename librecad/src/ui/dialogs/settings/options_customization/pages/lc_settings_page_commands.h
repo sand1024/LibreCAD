@@ -54,7 +54,7 @@ public:
     void autoIndexLabels() override;
     void highlightSearchPattern(const QString& pattern) override;
     void clearSearchHighlight() override;
-
+    bool requiresScrollArea() const override {return false;}
 private slots:
     void onTreeSelectionChanged();
     void onFilterChanged();

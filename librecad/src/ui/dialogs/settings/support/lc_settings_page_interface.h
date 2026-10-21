@@ -81,6 +81,7 @@ public:
     virtual void clearSearchHighlight() = 0;
     virtual void autoIndexLabels() {}
     virtual bool acceptsSharedPreview(){return true;}
+    virtual bool requiresScrollArea() const { return true; }
 
     virtual void setChildPages([[maybe_unused]]const QList<LC_SettingsPageInterface*>& children) {}
 
