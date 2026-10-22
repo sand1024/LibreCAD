@@ -56,6 +56,7 @@ struct LC_CheatsheetOptions {
     bool onlyFilteredItems{true};
     bool groupByCategory{true};
     bool sortByName{true};
+    QString commandsLanguageName;
 };
 
 #endif

@@ -36,16 +36,15 @@ namespace Ui {
 class LC_DlgCheatsheetOptions : public LC_Dialog {
     Q_OBJECT
 public:
-    const QString getDefaultFileName();
     explicit LC_DlgCheatsheetOptions(QWidget* parent, LC_CheatsheetOptions& options);
     ~LC_DlgCheatsheetOptions() override;
-
 private slots:
     void onDestinationChanged();
     void onBrowsePdfClicked();
     void validateAndAccept();
 
 private:
+    const QString getDefaultFileName(const LC_CheatsheetOptions& options);
     std::unique_ptr<Ui::LC_DlgCheatsheetOptions> ui;
     LC_CheatsheetOptions& m_options;
 };

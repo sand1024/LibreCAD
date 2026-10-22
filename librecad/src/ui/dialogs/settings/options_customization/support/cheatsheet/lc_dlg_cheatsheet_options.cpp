@@ -31,17 +31,21 @@
 
 #include "lc_filenameselectionservice.h"
 
-const QString LC_DlgCheatsheetOptions::getDefaultFileName() {
+const QString LC_DlgCheatsheetOptions::getDefaultFileName(const LC_CheatsheetOptions& options) {
     // Clean scheme name of any filesystem-illegal characters (\ / : * ? " < > |)
     QString cleanScheme = !m_options.schemeName.isEmpty() ? m_options.schemeName : tr("Default");
     cleanScheme.replace(QRegularExpression(R"([\\/:*?"<>|])"), " ");
     cleanScheme = cleanScheme.simplified();
 
-    const QString typeStr = (m_options.type == CheatsheetType::Keymap)
-                                ? tr("Keymap")
-                                : tr("Commands");
+    QString typeStr;
+    if (options.type == CheatsheetType::Keymap) {
+        typeStr = tr("Keymap");
+    }
+    else {
+        typeStr = tr("Commands (%1)").arg(options.commandsLanguageName);
+    }
 
-    const QString defaultFileName = tr("LibreCAD Cheatsheet - %1 (%2).pdf").arg(typeStr, cleanScheme);
+    const QString defaultFileName = tr("LibreCAD - %1 Cheatsheet - %2.pdf").arg(typeStr, cleanScheme);
     return defaultFileName;
 }
 
@@ -60,7 +64,7 @@ LC_DlgCheatsheetOptions::LC_DlgCheatsheetOptions(QWidget* parent, LC_CheatsheetO
 
     const QString defaultDocs = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
-    const QString defaultFileName = getDefaultFileName();
+    const QString defaultFileName = getDefaultFileName(options);
     ui->lePdfPath->setText(defaultDocs + "/" + defaultFileName);
 
     ui->cbOnlyAssigned->setVisible(m_options.type == CheatsheetType::Keymap);
@@ -110,7 +114,7 @@ void LC_DlgCheatsheetOptions::onBrowsePdfClicked() {
     const QString filter = tr("PDF Documents (*.pdf);;All Files (*.*)");
 
     QString path = ui->lePdfPath->text();
-    LC_FileNameSelectionService::doObtainFileName(this, path, false, "pdf", getDefaultFileName(), "",
+    LC_FileNameSelectionService::doObtainFileName(this, path, false, "pdf", getDefaultFileName(m_options), "",
                                                         tr("Save Cheatsheet PDF"), filter);
     // const QString path = QFileDialog::getSaveFileName(this, tr("Save Cheatsheet PDF"), , filter);
     if (!path.isEmpty()) {

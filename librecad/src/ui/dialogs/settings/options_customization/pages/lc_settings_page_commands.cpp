@@ -44,6 +44,7 @@
 #include "lc_preset_manager_commands.h"
 #include "lc_settings_colors_semantics.h"
 #include "lc_shortcuts_manager.h"
+#include "rs_system.h"
 
 namespace {
     QString resolveEffectiveTrigger(const QString& overrideText, const QString& activeDefault) {
@@ -81,7 +82,6 @@ namespace {
 LC_SettingsPageCommands::LC_SettingsPageCommands(LC_ActionGroupManager* groupManager, QObject* parent)
     : LC_SettingsPageBase(tr("Command Aliases"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageCommands>()),
       m_actionGroupManager(groupManager) {
-    setSortWeight(15);
 }
 
 LC_SettingsPageCommands::~LC_SettingsPageCommands() {
@@ -134,8 +134,11 @@ void LC_SettingsPageCommands::setupUi() {
     ui->leAlias1Override->setValidator(new LC_CommandTriggerValidator(LC_CommandTriggerValidator::SingleTrigger, 2, this));
     ui->leAlias2Override->setValidator(new LC_CommandTriggerValidator(LC_CommandTriggerValidator::CommaSeparatedAliases, -1, this));
 
-
     ui->swDetails->setCurrentWidget(ui->pageEmpty);
+
+    QString commandsLanguageCode = CFG_Appearance::o_LanguageCmd;
+    QString commandsLanguageName = RS_SYSTEM->symbolToLanguage(commandsLanguageCode);
+    ui->lCurrentCommandsLanguage->setText(commandsLanguageName);
 }
 
 void LC_SettingsPageCommands::setupBehavior() {
@@ -688,6 +691,11 @@ void LC_SettingsPageCommands::onExportCheatsheetClicked() {
     options.isModelFiltered = (m_commandsTreeModel != nullptr) && m_commandsTreeModel->isFiltered();
     options.onlyFilteredItems = options.isModelFiltered;
 
+    QString commandsLanguageCode = CFG_Appearance::o_LanguageCmd;
+    QString languageName = RS_SYSTEM->symbolToLanguage(commandsLanguageCode);
+    if (!languageName.isEmpty()) {
+        options.commandsLanguageName = languageName;
+    }
     auto parent = getEditingWidget();
     LC_DlgCheatsheetOptions dlg(parent, options);
     if (dlg.exec() == QDialog::Accepted) {

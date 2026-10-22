@@ -27,14 +27,14 @@
 #include <QCoreApplication>
 #include "lc_cheatsheet_options.h"
 
+class QPrinter;
+class QPainter;
 class QAbstractItemModel;
 class QWidget;
 
 class LC_CheatsheetGenerator {
     Q_DECLARE_TR_FUNCTIONS(LC_CheatsheetGenerator)
 public:
-    static void showCompletionConfirmation(QWidget* parent, const LC_CheatsheetOptions& options);
     static bool generate(QWidget* parent, const LC_CheatsheetOptions& options, const QAbstractItemModel* model);
 };
-
 #endif

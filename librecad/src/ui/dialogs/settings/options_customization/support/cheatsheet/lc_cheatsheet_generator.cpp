@@ -42,13 +42,15 @@
 #include "lc_action.h"
 #include "lc_commands_tree_item.h"
 #include "lc_commands_tree_model.h"
+#include "lc_settings_appearance.h"
 #include "lc_shortcut_tree_item.h"
 #include "lc_shortcuts_tree_model.h"
 #include "lc_wait_cursor_guard.h"
 #include "main.h"
 
+
 namespace {
-       QString getActionDescription(const QAction* action) {
+    QString getActionDescription(const QAction* action) {
         if (action == nullptr) {
             return QString();
         }
@@ -241,8 +243,7 @@ namespace {
 
     struct LC_PageData {
         QVector<LC_ColumnData> m_columns;
-        explicit LC_PageData(int cols) : m_columns(cols) {
-        }
+        explicit LC_PageData(int cols) : m_columns(cols) {}
     };
 
     QString getBaseCss() {
@@ -560,14 +561,18 @@ namespace {
         return pages;
     }
 
-    void renderCheatsheetPages(QPainter& painter, QPrinter& printer, const QList<LC_PageData>& pages,
+void renderCheatsheetPages(QPainter& painter, QPrinter& printer, const QList<LC_PageData>& pages,
                                const QMap<QUrl, QPixmap>& docResources, const LC_CheatsheetOptions& options, qreal contentWidth,
                                qreal maxColHeight, qreal headerHeight, qreal footerHeight, const QRectF& pageRect, int numCols) {
         const int totalPages = pages.size();
         const QPixmap logoPix(":/images/librecad.png");
-        const QString docTitle = (options.type == CheatsheetType::Keymap)
-                                     ? QObject::tr("LibreCAD Keyboard Shortcuts")
-                                     : QObject::tr("LibreCAD Command Aliases");
+        QString docTitle;
+        if (options.type == CheatsheetType::CommandAliases) {
+            docTitle = LC_CheatsheetGenerator::tr("LibreCAD Command Aliases");
+        }
+        else {
+            docTitle = LC_CheatsheetGenerator::tr("LibreCAD Keyboard Shortcuts");
+        }
 
         const QString dateStr = QLocale().toString(QDate::currentDate(), QLocale::LongFormat);
         const QString versionStr = QString("LibreCAD %1").arg(XSTR(LC_VERSION));
@@ -597,8 +602,15 @@ namespace {
 
             painter.setFont(subFont);
             painter.setPen(QColor("#4b5563"));
-            const QString schemeSubtitle = QObject::tr("Scheme: %1").arg(
-                !options.schemeName.isEmpty() ? options.schemeName : QObject::tr("Default"));
+            auto schemeName = !options.schemeName.isEmpty() ? options.schemeName : LC_CheatsheetGenerator::tr("Default");
+            if (options.type == CheatsheetType::CommandAliases) {
+                QString languageName = options.commandsLanguageName;
+                if (!languageName.isEmpty()) {
+                    schemeName = schemeName + " ("+languageName + ")";
+                }
+            }
+            const QString schemeSubtitle = LC_CheatsheetGenerator::tr("Scheme: %1").arg(
+                schemeName);
             painter.drawText(QRectF(28, 16, contentWidth - 210, 14), Qt::AlignLeft | Qt::AlignVCenter, schemeSubtitle);
 
             painter.drawText(QRectF(contentWidth - 180, 0, 180, 16), Qt::AlignRight | Qt::AlignVCenter, dateStr);
@@ -628,41 +640,43 @@ namespace {
             painter.setFont(subFont);
             painter.setPen(QColor("#6b7280"));
             painter.drawText(QRectF(0, footerY + 3, contentWidth / 2, 14), Qt::AlignLeft | Qt::AlignVCenter,
-                             QObject::tr("LibreCAD Cheatsheet"));
+                             LC_CheatsheetGenerator::tr("LibreCAD Cheatsheet"));
 
-            const QString pageStr = QObject::tr("Page %1 of %2").arg(currentPage + 1).arg(totalPages);
+            const QString pageStr = LC_CheatsheetGenerator::tr("Page %1 of %2").arg(currentPage + 1).arg(totalPages);
             painter.drawText(QRectF(contentWidth / 2, footerY + 3, contentWidth / 2, 14), Qt::AlignRight | Qt::AlignVCenter, pageStr);
         }
     }
-}
 
-void LC_CheatsheetGenerator::showCompletionConfirmation(QWidget* parent, const LC_CheatsheetOptions& options) {
-    if (options.destination == CheatsheetDestination::PdfFile) {
-        const QFileInfo fileInfo(options.pdfFilePath);
-        const QString nativePath = QDir::toNativeSeparators(fileInfo.absoluteFilePath());
-        QMessageBox msgBox(parent);
-        msgBox.setWindowTitle(tr("Export Complete"));
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText(tr("Cheatsheet PDF generated successfully."));
-        msgBox.setInformativeText(nativePath);
+    void showCompletionConfirmation(QWidget* parent, const LC_CheatsheetOptions& options) {
+        if (options.destination == CheatsheetDestination::PdfFile) {
+            const QFileInfo fileInfo(options.pdfFilePath);
+            const QString nativePath = QDir::toNativeSeparators(fileInfo.absoluteFilePath());
+            QMessageBox msgBox(parent);
+            msgBox.setWindowTitle(LC_CheatsheetGenerator::tr("Export Complete"));
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setText(LC_CheatsheetGenerator::tr("Cheatsheet PDF generated successfully."));
+            msgBox.setInformativeText(nativePath);
 
-        const auto* btnOpenFolder = msgBox.addButton(tr("Open Folder"), QMessageBox::ActionRole);
-        const auto* btnOpenFile = msgBox.addButton(tr("Open PDF"), QMessageBox::ActionRole);
-        msgBox.addButton(QMessageBox::Close);
+            const auto* btnOpenFolder = msgBox.addButton(LC_CheatsheetGenerator::tr("Open Folder"), QMessageBox::ActionRole);
+            const auto* btnOpenFile = msgBox.addButton(LC_CheatsheetGenerator::tr("Open PDF"), QMessageBox::ActionRole);
+            msgBox.addButton(QMessageBox::Close);
 
-        msgBox.exec();
+            msgBox.exec();
 
-        if (msgBox.clickedButton() == btnOpenFolder) {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absolutePath()));
+            if (msgBox.clickedButton() == btnOpenFolder) {
+                QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absolutePath()));
+            }
+            else if (msgBox.clickedButton() == btnOpenFile) {
+                QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+            }
         }
-        else if (msgBox.clickedButton() == btnOpenFile) {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+        else {
+            QMessageBox::information(parent, LC_CheatsheetGenerator::tr("Print Complete"), LC_CheatsheetGenerator::tr("Cheatsheet was sent to the printer successfully."));
         }
     }
-    else {
-        QMessageBox::information(parent, tr("Print Complete"), tr("Cheatsheet was sent to the printer successfully."));
-    }
+
 }
+
 
 bool LC_CheatsheetGenerator::generate(QWidget* parent, const LC_CheatsheetOptions& options, const QAbstractItemModel* model) {
     if (model == nullptr) {
@@ -691,7 +705,6 @@ bool LC_CheatsheetGenerator::generate(QWidget* parent, const LC_CheatsheetOption
             return false;
         }
     }
-
     {
         const LC_WaitCursorGuard cursorGuard;
 
