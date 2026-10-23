@@ -99,8 +99,7 @@ void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns, con
   m_frame->setLineWidth(2);
 }
 
-void LC_CADDockWidget::doSetupGridLayout(QGridLayout* newGridLayout) {
-
+void LC_CADDockWidget::doSetupGridLayout([[maybe_unused]] QGridLayout* newGridLayout) {
 }
 
 void LC_CADDockWidget::doUpdateWidgetSettings(int columnsCount, const int iconSize, const bool flatIcons) {

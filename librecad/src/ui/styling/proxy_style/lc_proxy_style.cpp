@@ -3690,7 +3690,7 @@ void LC_ProxyStyle::paintTabBackground(QPainter* painter, const QRectF& rect, co
 }
 
 void LC_ProxyStyle::paintTabBorders(QPainter* painter, const QStyleOptionTab* option, const SkinColors& desc, const TabPaths& paths,
-                                    bool selected) const {
+                                    [[maybe_unused]] bool selected) const {
     Q_UNUSED(option);
 
     if (m_isFlatModern) {
@@ -4100,7 +4100,8 @@ void LC_ProxyStyle::drawGroupBoxBoundary(QPainter* painter, const QStyleOptionGr
 }
 
 void LC_ProxyStyle::drawGroupBoxHeader(QPainter* painter, const QStyleOptionGroupBox* option, const SkinColors& desc,
-                                       const GroupBoxLayout& layout, const QRect& textRect, const QRect& checkBoxRect) const {
+                                       [[maybe_unused]] const GroupBoxLayout& layout, const QRect& textRect,
+                                       [[maybe_unused]] const QRect& checkBoxRect) const {
     const QRect rect = option->rect;
 
     if (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::HeaderBanner) {

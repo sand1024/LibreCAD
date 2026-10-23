@@ -25,7 +25,7 @@
 #include "lc_graphicviewport.h"
 #include "rs_painter.h"
 
-LC_Crosshair::LC_Crosshair(const RS_Vector& coord, SnapIndicatorOptions& options)
+LC_Crosshair::LC_Crosshair(const RS_Vector& coord, SnapIndicatorOptions& options, RS2::SnapType snapType)
      :m_wcsPos(coord){
      m_indicatorShape = options.shape_Type;
      m_linesShape = options.lines_Type;
@@ -33,6 +33,8 @@ LC_Crosshair::LC_Crosshair(const RS_Vector& coord, SnapIndicatorOptions& options
      m_pointSize = options.pointSize;
      m_pointType = options.pointType;
      m_shapeSize = options.shapeSize;
+     m_crossHairLinesPersent = options.crossHairLinesPercent;
+     m_snapType = snapType;
 }
 
 double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
@@ -60,6 +62,10 @@ double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) 
               painter->drawLineUISimple(p4,p1);
               break;
           }
+          case BySnapType: {
+              drawSnapModeAdaptiveIndicator(painter, uiPos);
+              break;
+          }
           case Gap:{
               break;
           }
@@ -67,6 +73,51 @@ double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) 
               break;
     }
     return offset;
+}
+
+/**
+ * Here we mimic markers used by AutoCAD AutoSnap and draw square for endpoint, triangle for midpoint,
+ * circle for center, X for intersection, hourglass for nearest, diamond for distance.
+ * Returns false when there is no marker for the snap (free / grid snapping).
+ */
+bool LC_Crosshair::drawSnapModeAdaptiveIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
+    const auto line = [&uiPos, &painter](const double x1, const double y1, const double x2, const double y2) {
+        painter->drawLineUISimple(uiPos.x + x1, uiPos.y + y1, uiPos.x+x2, uiPos.y + y2);
+    };
+    switch (m_snapType) {
+        case RS2::SnapType::ENDPOINT:
+            line(-m_shapeSize, -m_shapeSize, m_shapeSize, -m_shapeSize);
+            line(m_shapeSize, -m_shapeSize, m_shapeSize, m_shapeSize);
+            line(m_shapeSize, m_shapeSize, -m_shapeSize, m_shapeSize);
+            line(-m_shapeSize, m_shapeSize, -m_shapeSize, -m_shapeSize);
+            return true;
+        case RS2::SnapType::MIDDLE:
+            line(0, -m_shapeSize - 1, m_shapeSize + 1, m_shapeSize);
+            line(m_shapeSize + 1, m_shapeSize, -m_shapeSize - 1, m_shapeSize);
+            line(-m_shapeSize - 1, m_shapeSize, 0, -m_shapeSize - 1);
+            return true;
+        case RS2::SnapType::CENTER:
+            painter->drawCircleUIDirect(uiPos, m_shapeSize + 1);
+            return true;
+        case RS2::SnapType::INTERSECTION:
+            line(-m_shapeSize, -m_shapeSize, m_shapeSize, m_shapeSize);
+            line(-m_shapeSize, m_shapeSize, m_shapeSize, -m_shapeSize);
+            return true;
+        case RS2::SnapType::ENTITY:
+            line(-m_shapeSize, -m_shapeSize,m_shapeSize, -m_shapeSize);
+            line(m_shapeSize, -m_shapeSize, -m_shapeSize, m_shapeSize);
+            line(-m_shapeSize, m_shapeSize, m_shapeSize, m_shapeSize);
+            line(m_shapeSize, m_shapeSize, -m_shapeSize, -m_shapeSize);
+            return true;
+        case RS2::SnapType::DISTANCE:
+            line(0, -m_shapeSize - 1, m_shapeSize + 1, 0);
+            line(m_shapeSize + 1, 0, 0, m_shapeSize + 1);
+            line(0, m_shapeSize + 1, -m_shapeSize - 1, 0);
+            line(-m_shapeSize - 1, 0, 0, -m_shapeSize - 1);
+            return true;
+        default:
+            return false;
+    }
 }
 
 void LC_Crosshair::draw(RS_Painter *painter) {
@@ -99,7 +150,10 @@ void LC_Crosshair::draw(RS_Painter *painter) {
                 const RS2::IsoGridViewType chType= viewport->getIsoViewType();
                 RS_Vector direction1;
                 RS_Vector direction2(0.,1.);
-                const double l=width+height;
+                const double halfWidth = m_crossHairLinesPersent >= 100 ? 1e6 : width * m_crossHairLinesPersent / 200.0;
+                const double halfHeight = m_crossHairLinesPersent >= 100 ? 1e6 : height * m_crossHairLinesPersent / 200.0;
+                // const double l=width+height;
+                const double l=halfWidth;
                 switch(chType){
                 case RS2::IsoRight:
                     direction1=RS_Vector(M_PI*5./6.)*l;
@@ -124,10 +178,12 @@ void LC_Crosshair::draw(RS_Painter *painter) {
             [[fallthrough]];
         }
         case Crosshair:{
-            const RS_Vector p1(0, uiCoord.y);
-            const RS_Vector p2(uiCoord.x, 0);
-            const RS_Vector p3(uiCoord.x, height);
-            const RS_Vector p4(width, uiCoord.y);
+            const double halfWidth = m_crossHairLinesPersent >= 100 ? 1e6 : width * m_crossHairLinesPersent / 200.0;
+            const RS_Vector p1(std::max(0.0, uiCoord.x - halfWidth), uiCoord.y);
+            const RS_Vector p2(uiCoord.x, std::max(0.0, uiCoord.y - halfWidth));
+            const RS_Vector p3(uiCoord.x, std::min<double>(height, uiCoord.y + halfWidth));
+            const RS_Vector p4(std::min<double>(width, uiCoord.x + halfWidth), uiCoord.y);
+
             drawCrosshairLines(painter, uiCoord, offset, p1, p2, p3, p4);
             break;
         }

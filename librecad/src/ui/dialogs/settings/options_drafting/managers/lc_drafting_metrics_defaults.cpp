@@ -52,6 +52,7 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
         &o_DraftMarkerFontSize,
         &o_IndicatorShapeSize,
         &o_IndicatorScreenLinesLineWidth,
+        &o_IndicatorCrosshairLinesSizePercents,
         &o_RefPointSize,
         &o_VSProjectedSnapSize,
         &o_VSHighlightedVertexSize,
@@ -100,6 +101,7 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
         // Snap & Visual Snap Indicators
         { &o_IndicatorShapeSize, 18 },
         { &o_IndicatorScreenLinesLineWidth, 2 },
+        { &o_IndicatorCrosshairLinesSizePercents, 100},
         { &o_RefPointSize, "4.0" },
         { &o_VSProjectedSnapSize, 14 },
         { &o_VSHighlightedVertexSize, 14 },

@@ -1184,7 +1184,12 @@ void RS_Snapper::drawSnapper() {
     bool showSnapIndicator = showSnapIndicator = isSnapExpected(); // LibreCAD#2520
     if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
         if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
-            auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get());
+            RS2::SnapType snapType = m_impData->snapType;
+            if (snapType == RS2::SnapType::VISUAL_SNAP && m_impData->restrictedSnapType != RS2::SnapType::NO_SNAP) {
+                snapType = m_impData->restrictedSnapType;
+            }
+            // fixme - sand - should we pass any other snap data there?
+            auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get(), snapType);
             crosshair->setShapesPen(m_snapIndicator->shape_Pen);
             snapperOverlay->add(crosshair);
         }

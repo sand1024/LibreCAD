@@ -154,8 +154,8 @@ QString LC_PropertyContainerBuilder::formatDouble(const double length) const {
 }
 
 QString LC_PropertyContainerBuilder::formatInt(const int length) const {
-    const LC_Formatter* formatter = getFormatter();
-    return formatter->formatInt(length);
+     const LC_Formatter* formatter = getFormatter();
+     return formatter->formatInt(length);
 }
 
 QString LC_PropertyContainerBuilder::formatInt(const double length) const {
@@ -164,11 +164,11 @@ QString LC_PropertyContainerBuilder::formatInt(const double length) const {
     return formatter->formatInt(len);
 }
 
-QString LC_PropertyContainerBuilder::formatInt(const qsizetype length) const {
-    const LC_Formatter* formatter = getFormatter();
-    const int len = static_cast<int>(length);
-    return formatter->formatInt(len);
-}
+// QString LC_PropertyContainerBuilder::formatInt(const qsizetype length) const {
+    // const LC_Formatter* formatter = getFormatter();
+    // const int len = static_cast<int>(length);
+    // return formatter->formatInt(len);
+// }
 
 QString LC_PropertyContainerBuilder::formatWCSAngleDegrees(const double wcsAngle) const {
     const LC_Formatter* formatter = getFormatter();

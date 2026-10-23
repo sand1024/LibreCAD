@@ -52,6 +52,7 @@ void LC_SettingsPageDraftingMetricsSnapping::setupBindings() {
         { ui->sbVSCatchDistance, o_VSGuidingEntitiesCatchDistance },
         { ui->sbIndicatorShapeSize, o_IndicatorShapeSize },
         { ui->sbIndicatorLinesLineWidth, o_IndicatorScreenLinesLineWidth },
+        { ui->sbIndicatorCrosshairLinesSizePercents, o_IndicatorCrosshairLinesSizePercents },
         { ui->sbVSProjectedSnapSize, o_VSProjectedSnapSize },
         { ui->sbVSHighlightedVertexSize, o_VSHighlightedVertexSize },
         { ui->sbVSVertexSize, o_VSVertexSize },

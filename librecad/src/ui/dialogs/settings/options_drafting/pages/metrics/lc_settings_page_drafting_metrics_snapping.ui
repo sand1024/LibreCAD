@@ -74,43 +74,6 @@ Distance in screen coordinates that is used for catching entities as part of sna
       <string>Snap Indicator</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblIndicatorShapeSize">
-        <property name="text">
-         <string>Shape size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Position of snapped point may be higlighted by Snap Indicator.&lt;br&gt;Indicator includes lines and indicator shape, and its parameteres may be customized below.&lt;br&gt;
-Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbIndicatorShapeSize">
-        <property name="toolTip">
-         <string>Shape Size
-
-Size in screen pixels for the shape indicator
-drawn around snap point (if any).  </string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <number>30</number>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QSpinBox" name="sbIndicatorLinesLineWidth">
         <property name="toolTip">
@@ -142,10 +105,78 @@ Screen line thickness (line width), in pixels, of snap crosshair lines.</string>
         </property>
        </spacer>
       </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbIndicatorShapeSize">
+        <property name="toolTip">
+         <string>Shape Size
+
+Size in screen pixels for the shape indicator
+drawn around snap point (if any).  </string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Position of snapped point may be higlighted by Snap Indicator.&lt;br&gt;Indicator includes lines and indicator shape, and its parameteres may be customized below.&lt;br&gt;
+Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblIndicatorShapeSize">
+        <property name="text">
+         <string>Shape size:</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="lblIndicatorLinesWidth">
         <property name="text">
          <string>Line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Crosshair lines size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbIndicatorCrosshairLinesSizePercents">
+        <property name="toolTip">
+         <string>Snap Crosshair Size
+
+Size of crosshair and adapive lines in percents
+of drawing area width. 
+100% means lines are drawn from snap point
+to edges of the drawing area.</string>
+        </property>
+        <property name="suffix">
+         <string> %</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
         </property>
        </widget>
       </item>

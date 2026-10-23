@@ -75,6 +75,7 @@ namespace {
 
             // Snap & Visual Snap Indicators
             o_IndicatorShapeSize,
+            o_IndicatorCrosshairLinesSizePercents,
             o_IndicatorScreenLinesLineWidth,
             o_VSProjectedSnapSize,
             o_VSHighlightedVertexSize,
@@ -88,7 +89,6 @@ namespace {
 
             // Screen Line Widths & Grid Points
             o_OverlaysScreenLineWidth,
-            o_IndicatorScreenLinesLineWidth,
             o_MinGridSpacing,
             o_MetaGridPointsLineWidth,
             o_MetaGridLinesLineWidth,

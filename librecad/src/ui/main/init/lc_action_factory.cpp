@@ -1222,7 +1222,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
      });
 }
 
-void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const LC_ActionGroupManager* agm) {
+void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, [[maybe_unused]] const LC_ActionGroupManager* agm) {
     QList<QKeySequence> commandLineShortcuts;
     commandLineShortcuts << QKeySequence(Qt::CTRL | Qt::Key_M) << QKeySequence(Qt::Key_Colon);
     if (CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
@@ -1317,7 +1317,7 @@ void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QActi
     });
 }
 
-void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
+void LC_ActionFactory::fillActionLists([[maybe_unused]] const QMap<QString, QAction*>& map) {
     file_Actions = {"FileNew", "FileNewTemplate", "FileOpen", "FileSave", "FileSaveAs", "FileSaveAll"};
 
     shapeActions = {

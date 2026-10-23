@@ -134,7 +134,7 @@ namespace {
         return makeCadDockWidget(groupName, agm, actionNodes, visible);
     }
 
-    ToolbarDef makeCadMatrix(const QString& name, const QString& icon, const QList<ActionNode>& groups) {
+    ToolbarDef makeCadMatrix([[maybe_unused]] const QString& name, const QString& icon, const QList<ActionNode>& groups) {
         ToolbarDef tb;
         tb.name = LC_DockNames::cadDockName(LC_DockNames::CAD_MEGA);
         tb.icon = icon;

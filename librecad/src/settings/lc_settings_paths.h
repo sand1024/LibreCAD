@@ -44,8 +44,7 @@ namespace CFG_Paths {
     inline const LC_Setting<QString> o_SaveDrawingFilter(&Group, "SaveDrawingFilter",  "Drawing Exchange DXF 2007 (*.dxf)");
     inline const LC_Setting<QString> o_Open(&Group, "Open", QDir::toNativeSeparators(QDir::homePath()));
 
-    inline void updateDefaultPathValues(const QString& appDir, const QString& appDataDir){
-
+    inline void updateDefaultPathValues([[maybe_unused]] const QString& appDir, [[maybe_unused]] const QString& appDataDir) {
     }
 }
 

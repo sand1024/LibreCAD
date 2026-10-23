@@ -90,7 +90,7 @@ public:
     QString formatDouble(double length) const;
     QString formatInt(int length) const;
     QString formatInt(double length) const;
-    QString formatInt(qsizetype length) const;
+    // QString formatInt(qsizetype length) const;
     QString formatWCSAngleDegrees(double wcsAngle) const;
     QString formatRawAngle(double length) const;
     QString formatRawAngle(double length, RS2::AngleFormat format) const;

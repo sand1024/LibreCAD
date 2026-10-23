@@ -34,7 +34,7 @@
 struct LC_VisualSnapOptions;
 class RS_Vector;
 struct LC_VisualSnapPointHolder;
-struct LC_VisualSnapSolution;
+class LC_VisualSnapSolution;
 
 class LC_CurrentSnapConfigProviderInterface {
 public:

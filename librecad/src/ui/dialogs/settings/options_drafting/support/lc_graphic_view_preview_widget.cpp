@@ -169,9 +169,8 @@ LC_GraphicViewPreviewWidget::LC_GraphicViewPreviewWidget(QWidget* parent) : QWid
 
     m_previewView->getGraphic(true)->setAnglesBase(RS_Math::deg2rad(-30));
     connect(m_previewView, &RS_GraphicView::onSwitchToDefaultAction,
-            [this](bool actionIsDefault, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti)-> void {
-                updateLivePreview();
-            });
+            [this](bool actionIsDefault, [[maybe_unused]] RS2::ActionType actionRtti,
+                   [[maybe_unused]] RS2::ActionType prevActionRtti) -> void { updateLivePreview(); });
 
     connect(m_previewView, &RS_GraphicView::currentActionChanged, [this](RS2::ActionType actionRtti)-> void {
         if (actionRtti == RS2::ActionNone || actionRtti == RS2::ActionZoomPan) {
@@ -437,7 +436,7 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap) const
     m_snapIndicator.loadSettings();
 
     if (m_snapIndicator.drawLines || m_snapIndicator.drawShape) {
-        auto* crosshair = new LC_Crosshair({50, 50}, m_snapIndicator);
+        auto* crosshair = new LC_Crosshair({50, 50}, m_snapIndicator, RS2::SnapType::INTERSECTION);
         crosshair->setShapesPen(m_snapIndicator.shape_Pen);
 
         m_previewView->addOverlayDrawable(crosshair, RS2::OverlayGraphics::Snapper);
@@ -753,7 +752,7 @@ void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* p
     m_snapIndicator.drawLines = false;
     m_snapIndicator.drawShape = true;
 
-    auto* crosshair = new LC_Crosshair({30, 100}, m_snapIndicator);
+    auto* crosshair = new LC_Crosshair({30, 100}, m_snapIndicator, RS2::SnapType::MIDDLE);
     crosshair->setShapesPen(m_snapIndicator.shape_Pen);
     m_previewView->addOverlayDrawable(crosshair, RS2::OverlayGraphics::Snapper);
 }

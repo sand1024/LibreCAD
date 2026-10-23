@@ -185,7 +185,8 @@ SkinColors LC_SkinColorsResolver::getDescriptor(const QPalette& palette, QPalett
     return desc;
 }
 
-QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const {
+QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption* option,
+                                             [[maybe_unused]] const QWidget* widget) const {
     if (m_skin.customVectorIconsInButtons) {
         const bool isClose = (standardIcon == QStyle::SP_TitleBarCloseButton || standardIcon == QStyle::SP_DockWidgetCloseButton);
         const bool isFloat = (standardIcon == QStyle::SP_TitleBarNormalButton);

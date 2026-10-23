@@ -45,7 +45,7 @@ QWidget* LC_SettingsManagerApplication::createGraphicViewPreview(QWidget* parent
     return result;
 }
 
-void LC_SettingsManagerApplication::initialize(QC_ApplicationWindow* appWindow) {
+void LC_SettingsManagerApplication::initialize([[maybe_unused]] QC_ApplicationWindow* appWindow) {
     using namespace LC_SettingsPagesApplication;
 
     auto* reg = LC_SettingsRegistry::instance();

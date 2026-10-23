@@ -35,11 +35,12 @@ struct SnapIndicatorOptions;
 class LC_Crosshair:public LC_OverlayDrawable{
 public:
     enum IndicatorShape{
+        NoShape,
         Circle,
         Point,
         Square,
         Gap,
-        NoShape
+        BySnapType,
     };
 
     enum LinesShape{
@@ -49,7 +50,7 @@ public:
         NoLines
     };
 
-    LC_Crosshair(const RS_Vector &coord, SnapIndicatorOptions& options);
+    LC_Crosshair(const RS_Vector &coord, SnapIndicatorOptions& options, RS2::SnapType snapType);
     void draw(RS_Painter *painter) override;
     void setLinesPen(const RS_Pen &pen);
     void setPointType(int type);
@@ -64,8 +65,11 @@ protected:
     int m_shapeSize;
     int m_pointSize;
     RS_Vector m_wcsPos;
+    RS2::SnapType m_snapType = RS2::NO_SNAP;
+    int m_crossHairLinesPersent = 100;
 
     double drawIndicator(RS_Painter *painter, const RS_Vector& uiPos) const;
+    bool drawSnapModeAdaptiveIndicator(RS_Painter* painter, const RS_Vector& uiPos) const;
 
     void drawCrosshairLines(
         RS_Painter *painter, const RS_Vector &guiCoord, double offset, const RS_Vector &p1, const RS_Vector &p2, const RS_Vector &p3,
@@ -76,6 +80,7 @@ protected:
 struct SnapIndicatorOptions {
     bool drawLines = false;
     int lines_Type = 0;
+    int crossHairLinesPercent = 100;
     RS_Pen lines_Pen;
 
     bool drawShape = false;
@@ -103,7 +108,7 @@ struct SnapIndicatorOptions {
 
         drawShape = o_IndicatorDrawShape;
         if (drawShape) {
-            shape_Type = o_IndicatorShapeType;
+            shape_Type = o_IndicatorShapeType + 1; // in UI, NO Shape is not shown in combobox
             const QColor snapColor = CFG_Colors::o_SnapIndicator;
             shape_Pen = RS_Pen(RS_Color(snapColor), RS2::Width00, RS2::SolidLine);
             shape_Pen.setScreenWidth(snapIndicatorLineWidth);
@@ -111,6 +116,7 @@ struct SnapIndicatorOptions {
         else {
             shape_Type = LC_Crosshair::NoShape;
         }
+        crossHairLinesPercent = o_IndicatorCrosshairLinesSizePercents;
         shapeSize = o_IndicatorShapeSize;
     }
 };

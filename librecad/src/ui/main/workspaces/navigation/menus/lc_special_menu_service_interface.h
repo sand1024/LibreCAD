@@ -31,10 +31,10 @@ class LC_SpecialMenuServiceInterface {
 public:
     virtual ~LC_SpecialMenuServiceInterface() = default;
     virtual bool bindMenu(const QString& specialMenuName, QMenu* menu) = 0;
-    virtual bool embedToolbarControl(const QString& widgetToken, QToolBar* targetToolbar) {
+    virtual bool embedToolbarControl([[maybe_unused]] const QString& widgetToken, [[maybe_unused]] QToolBar* targetToolbar) {
         return false;
     }
-    virtual QAction* getSpecialAction(const QString& actionToken) const {
+    virtual QAction* getSpecialAction([[maybe_unused]] const QString& actionToken) const {
         return nullptr;
     }
 };
