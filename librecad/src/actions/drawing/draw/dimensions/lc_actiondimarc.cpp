@@ -202,6 +202,18 @@ void LC_ActionDimArc::updateActionPrompt(){
     }
 }
 
+RS2::CursorType LC_ActionDimArc::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetEntity:
+            return RS2::SelectCursor;
+        case SetPos:
+            return RS2::CadCursor;
+        default:
+            return RS2::CadCursor;
+    }
+}
+
+
 void LC_ActionDimArc::setRadius(const RS_Vector &selectedPosition){
     constexpr double minimumDimArcGap = 0.0;
     m_dimArcData.radius = selectedPosition.distanceTo(m_dimArcData.centre);

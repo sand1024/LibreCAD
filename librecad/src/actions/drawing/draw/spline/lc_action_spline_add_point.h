@@ -31,6 +31,7 @@ public:
     explicit LC_ActionSplineAddPoint(LC_ActionContext *actionContext);
     ~LC_ActionSplineAddPoint() override = default;
 protected:
+    RS2::CursorType doGetMouseCursor(int status) override;
     bool m_endpointIsSelected = false;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool adjustPosition) override;
     void updateActionPrompt() override;

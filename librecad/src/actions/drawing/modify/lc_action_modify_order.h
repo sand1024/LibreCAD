@@ -37,7 +37,6 @@ class LC_ActionOrder : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
     LC_ActionOrder(LC_ActionContext *actionContext, RS2::ActionType type);
-    void drawSnapper() override;
 protected:
     RS_Entity* m_targetEntity = nullptr;
     void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;

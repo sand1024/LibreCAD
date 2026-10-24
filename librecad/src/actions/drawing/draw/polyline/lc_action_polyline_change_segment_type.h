@@ -43,6 +43,7 @@ protected:
     RS_Polyline* m_polyline {nullptr};
     RS_Entity* m_polylineSegment  {nullptr};
     RS_Vector m_arcPoint;
+
     void doInitialInit() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& pos) override;
     RS2::CursorType doGetMouseCursor(int status) override;

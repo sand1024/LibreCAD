@@ -105,9 +105,7 @@ void RS_ActionDrawEllipseInscribe::doTriggerCompletion([[maybe_unused]] bool suc
     setStatus(SetLine1);
 }
 
-void RS_ActionDrawEllipseInscribe::drawSnapper() {
-    // disable snapper
-}
+
 
 void RS_ActionDrawEllipseInscribe::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     for (RS_AtomicEntity* const pc : m_actionData->lines) {

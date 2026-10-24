@@ -61,8 +61,9 @@ void RS_ActionDimension::init(const int status){
     RS_PreviewActionInterface::init(status);
 //reset();
 }
+
 RS2::CursorType RS_ActionDimension::doGetMouseCursor([[maybe_unused]] int status){
-    return RS2::SelectCursor;
+    return RS2::CadCursor;
 }
 
 bool RS_ActionDimension::isDimensionAction(const RS2::ActionType type){

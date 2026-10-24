@@ -44,9 +44,7 @@ void LC_ActionPolylineDeleteNode::doInitWithContextEntity(RS_Entity* contextEnti
     setPolylineToModify(contextEntity);
 }
 
-void LC_ActionPolylineDeleteNode::drawSnapper() {
-    // completely disable snapper for action
-}
+
 
 bool LC_ActionPolylineDeleteNode::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     const auto createdPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, m_vertexToDelete, ctx);

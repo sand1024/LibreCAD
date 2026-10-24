@@ -239,6 +239,15 @@ void LC_ActionSplineExplode::updateActionPrompt() {
     }
 }
 
+RS2::CursorType LC_ActionSplineExplode::doGetMouseCursor(int status) {
+    switch (getStatus()){
+        case SetEntity:
+            return RS2::SelectCursor;
+        default:
+            return RS2::SelectCursor;
+    }
+}
+
 LC_ActionOptionsWidget *LC_ActionSplineExplode::createOptionsWidget() {
     return new LC_SplineExplodeOptionsWidget();
 }

@@ -29,7 +29,7 @@
 #include "ui_lc_settings_page_drafting_behavior_snap.h"
 
 LC_SettingsPageDraftingBehaviorSnap::LC_SettingsPageDraftingBehaviorSnap(QObject* parent)
-    : LC_SettingsPageBase(tr("Snap"),
+    : LC_SettingsPageBase(tr("Snap and Selection"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorSnap>()) {
@@ -53,7 +53,9 @@ void LC_SettingsPageDraftingBehaviorSnap::setupBindings() {
         { ui->cursor_hiding_checkbox, o_CursorHidingWhenSnapping },
         { ui->cbShowSnapOptionsInSnapBar, o_showSnapOptionsInSnapToolbar },
         { ui->cbDontSnapToInvisibleGrid, o_SnapGridIgnoreIfNoGrid },
-        { ui->cbAngleSnapToLinesIfGrid, o_AngleSnapToLinesIfGrid }
+        { ui->cbAngleSnapToLinesIfGrid, o_AngleSnapToLinesIfGrid },
+        { ui->cbHideMouseCursorWhenSelecting, o_SelectionPickboxInsteadOfCursor }
+
     });
 
     bindComboIndex({

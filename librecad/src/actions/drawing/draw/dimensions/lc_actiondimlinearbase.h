@@ -73,5 +73,6 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void updateActionPrompt() override;
     RS_Entity* doTriggerCreateEntity() override;
+    RS2::CursorType doGetMouseCursor(int status) override;
 };
 #endif

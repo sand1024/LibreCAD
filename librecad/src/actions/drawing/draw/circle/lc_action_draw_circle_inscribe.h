@@ -41,8 +41,6 @@ public:
     ~LC_ActionDrawCircleInscribe() override;
     void init(int status) override;
     void finish() override;
-    void drawSnapper() override;
-
 protected:
     /**
  * Action States.

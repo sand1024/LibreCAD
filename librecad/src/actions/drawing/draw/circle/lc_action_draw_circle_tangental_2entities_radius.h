@@ -44,7 +44,6 @@ public:
     void finish() override;
     void setRadius(double);
     double getRadius() const;
-    void drawSnapper() override;
 
 protected:
     /**

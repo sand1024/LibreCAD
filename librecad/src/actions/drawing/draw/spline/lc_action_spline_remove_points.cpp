@@ -212,3 +212,16 @@ void LC_ActionRemoveSplinePoints::setStatus(int status) {
     }
     RS_ActionInterface::setStatus(status);
 }
+
+RS2::CursorType LC_ActionRemoveSplinePoints::doGetMouseCursor(int status) {
+    switch (getStatus()){
+        case SetEntity:{
+            return RS2::SelectCursor;
+        }
+        case SetControlPoint: {
+            return RS2::SelectCursor;
+        }
+        default:
+            return RS2::SelectCursor;
+    }
+}

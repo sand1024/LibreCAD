@@ -460,5 +460,12 @@ LC_ActionOptionsPropertiesFiller* LC_ActionDrawLineFromPointToLine::createOption
 }
 
 RS2::CursorType LC_ActionDrawLineFromPointToLine::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::SelectCursor;
+    switch (getStatus()) {
+        case SetPoint:
+            return RS2::CadCursor;
+        case SelectLine:
+            return RS2::SelectCursor;
+        default:
+            return RS2::CadCursor;
+    }
 }

@@ -137,7 +137,7 @@ bool LC_ActionInfoProperties::showEntityInfo( RS_Entity* entity, const RS_Vector
     if (isPointOnEntity){
         if (allowMouseOverGlowing(entity)) {
             highlightHover(entity);
-            prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+            prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
         }
         if (shouldShowQuickInfoWidget){
             updateQuickInfoWidget(entity);

@@ -45,9 +45,6 @@ LC_ActionPolylineFromSegment::LC_ActionPolylineFromSegment(LC_ActionContext* act
     m_initWithTarget = true;
 }
 
-void LC_ActionPolylineFromSegment::drawSnapper() {
-    // disable snapper for this action
-}
 
 void LC_ActionPolylineFromSegment::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
     m_targetEntity = contextEntity;

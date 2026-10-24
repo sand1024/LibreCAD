@@ -200,7 +200,6 @@ void LC_ActionModifyAlign::previewRefLines(const bool drawVertical, [[maybe_unus
     }
 }
 
-
 void LC_ActionModifyAlign::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     bool mayTrigger = true;
@@ -278,7 +277,7 @@ void LC_ActionModifyAlign::updateActionPromptForSelection() {
 }
 
 RS2::CursorType LC_ActionModifyAlign::doGetMouseCursorSelected([[maybe_unused]]int status) {
-    return RS2::CadCursor;
+    return RS2::SelectCursor;
 }
 
 bool LC_ActionModifyAlign::isAllowTriggerOnEmptySelection() {

@@ -96,6 +96,16 @@ bool LC_ActionDrawDimBaseline::isBaseline() const {
     return m_actionType == RS2::ActionDimBaseline;
 }
 
+RS2::CursorType LC_ActionDrawDimBaseline::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetExtPoint1:
+            return RS2::SelectCursor;
+        default:
+            return RS2::CadCursor;
+    }
+}
+
+
 void LC_ActionDrawDimBaseline::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint; // snap on entity?
     switch (status){

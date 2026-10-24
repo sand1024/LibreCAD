@@ -31,6 +31,7 @@ public:
     explicit LC_ActionSplineRemoveBetween(LC_ActionContext *actionContext);
     ~LC_ActionSplineRemoveBetween() override = default;
 protected:
+    RS2::CursorType doGetMouseCursor(int status) override;
     bool m_splineIsClosed = false;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;

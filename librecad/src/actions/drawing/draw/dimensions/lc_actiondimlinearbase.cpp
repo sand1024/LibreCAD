@@ -30,6 +30,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_polyline.h"
 #include "rs_preview.h"
 
+namespace {
+    //list of entity types supported by current action - line, arc, circle
+    const auto DIM_ENTITY_TYPES = EntityTypeList{RS2::EntityDimLinear, RS2::EntityDimAligned};
+}
+
+
 LC_ActionDimLinearBase::LC_ActionDimLinearBase(const char *name, LC_ActionContext *actionContext, const RS2::EntityType dimType, const RS2::ActionType actionType):
    RS_ActionDimension(name, actionContext, dimType, actionType){
 }
@@ -37,11 +43,6 @@ LC_ActionDimLinearBase::LC_ActionDimLinearBase(const char *name, LC_ActionContex
 LC_ActionDimLinearBase::~LC_ActionDimLinearBase() = default;
 
 #define DEBUG_DIM_SNAP_NO
-
-namespace {
-    //list of entity types supported by current action - line, arc, circle
-    const auto DIM_ENTITY_TYPES = EntityTypeList{RS2::EntityDimLinear, RS2::EntityDimAligned};
-}
 
 RS_Entity* LC_ActionDimLinearBase::doTriggerCreateEntity() {
     preparePreview(m_alternateDimDirection);
@@ -79,12 +80,14 @@ void LC_ActionDimLinearBase::onMouseMoveEvent(const int status, const LC_MouseEv
     switch (status) {
         case SetExtPoint1: {
             if (ctrlPressed) {
+                doSetMouseCursor(RS2::CursorType::SelectCursor);
                 const auto entity = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAll);
                 if (isLine(entity)) {
                     highlightHover(entity);
                 }
             }
             else {
+                doSetMouseCursor(RS2::CursorType::CadCursor);
                 trySnapToRelZeroCoordinateEvent(e);
             }
             break;
@@ -334,4 +337,8 @@ void LC_ActionDimLinearBase::updateActionPrompt(){
             updatePrompt();
             break;
     }
+}
+
+RS2::CursorType LC_ActionDimLinearBase::doGetMouseCursor(int status) {
+    return RS2::CadCursor;
 }

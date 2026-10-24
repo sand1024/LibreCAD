@@ -34,9 +34,6 @@ RS_ActionInfoTotalLength::RS_ActionInfoTotalLength(LC_ActionContext *actionConte
         :LC_ActionPreSelectionAwareBase("Info Total Length",actionContext, RS2::ActionInfoTotalLength){
 }
 
-void RS_ActionInfoTotalLength::drawSnapper() {
-    // disable snapper;
-}
 
 bool RS_ActionInfoTotalLength::isAllowTriggerOnEmptySelection() {
     return false;

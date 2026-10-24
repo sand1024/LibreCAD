@@ -23,26 +23,14 @@
 #define LC_SETTINGS_SNAP_STATE_H
 
 #include "lc_setting.h"
-#include "rs.h"
 
 namespace CFG_SnapState {
     inline const LC_SettingsGroupBase Group("SnapState");
 
-    inline const LC_Setting<int> o_SnapMode(&Group, "SnapMode", 0);
+    // RS_SnapMode::SnapEndpoint | RS_SnapMode::SnapMiddle  | RS_SnapMode::SnapCenter | RS_SnapMode::SnapIntersection
+    inline const LC_Setting<int> o_SnapMode(&Group, "SnapMode",  (1 << 5) | (1 << 4)  | (1 << 2) | (1 << 0));
     inline const LC_Setting<int> o_MiddlePoints(&Group, "MiddlePoints", 1);
     inline const LC_Setting<QString> o_Distance(&Group, "Distance", "1.0");
-    /*inline const LC_Setting<int> o_AdvSnapEntityCatchRange(&Group, "AdvSnapEntityCatchRange", 32);
-    inline const LC_Setting<int> o_AdvSnapGridCellSnapFactor(&Group, "AdvSnapGridCellSnapFactor", 25);
-    inline const LC_Setting<bool> o_AngleSnapToLinesIfGrid(&Group, "AngleSnapToLinesIfGrid", true);
-
-    // Dynamic Symmetrical Cross-Group Override: Maps snap indicator lines back to "Appearance" group on disk
-    inline const LC_Setting<bool> o_IndicatorDrawLines(&Group, "indicator_lines_state", true);
-    inline const LC_Setting<int> o_IndicatorLinesType(&Group, "indicator_lines_type", 0);
-    inline const LC_Setting<bool> o_IndicatorDrawShape(&Group, "indicator_shape_state", true);
-    inline const LC_Setting<int> o_IndicatorShapeType(&Group, "indicator_shape_type", 0);
-    inline const LC_Setting<int> o_IndicatorShapeSize(&Group, "indicator_shape_size", 4);
-    inline const LC_Setting<RS2::LineType> o_IndicatorLinesLineType(&Group, "indicator_lines_line_type", RS2::DashLine);
-    inline const LC_Setting<int> o_IndicatorScreenLinesLineWidth(&Group, "indicator_lines_line_width", 1);*/
 }
 
 

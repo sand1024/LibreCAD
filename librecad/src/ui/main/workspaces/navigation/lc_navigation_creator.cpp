@@ -168,7 +168,7 @@ void LC_NavigationControlsCreator::applyActiveLayoutScheme() {
 
     if (m_repository->isDefaultKey(activeKey) || activeKey.isEmpty() || m_repository == nullptr || !m_repository->loadByKey(
         activeKey, config)) {
-        auto* actionFactory = (m_appWindow != nullptr) ? m_appWindow->getActionFactory() : nullptr;
+        const auto* actionFactory = (m_appWindow != nullptr) ? m_appWindow->getActionFactory() : nullptr;
         config = LC_DefaultNavigationLayoutBuilder::createDefaultConfig(actionFactory, m_actionGroupManager);
     }
 
@@ -458,7 +458,7 @@ void LC_NavigationControlsCreator::populateToolbar(QToolBar* tb, const ToolbarDe
         tb->toggleViewAction()->setIcon(QIcon(tbDef.icon));
     }
     else if (!tbDef.nodes.isEmpty()) {
-        auto* firstAct = getAction(tbDef.nodes.first().actionName);
+        const auto* firstAct = getAction(tbDef.nodes.first().actionName);
         if (firstAct != nullptr) {
             tb->toggleViewAction()->setIcon(firstAct->icon());
         }

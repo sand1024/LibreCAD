@@ -79,3 +79,7 @@ bool LC_ActionSelectDimOrdinateSameOrigin::doCheckMaySelectEntity(RS_Entity* e) 
 QString LC_ActionSelectDimOrdinateSameOrigin::doGetMouseButtonHint() {
     return tr("Select reference ordinate dimension");
 }
+
+RS2::CursorType LC_ActionSelectDimOrdinateSameOrigin::doGetMouseCursor([[maybe_unused]]int status) {
+    return RS2::SelectCursor;
+}

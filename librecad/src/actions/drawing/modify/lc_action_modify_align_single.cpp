@@ -262,7 +262,26 @@ void LC_ActionModifyAlignSingle::previewAlignRefPoint(const RS_Vector& min, cons
 }
 
 RS2::CursorType LC_ActionModifyAlignSingle::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::CadCursor;
+    switch (getStatus()) {
+        case SetRefPoint: {
+            switch (m_alignType) {
+                case LC_Align::ENTITY:
+                    return RS2::SelectCursor;
+                case LC_Align::POSITION:
+                    return RS2::CadCursor;
+                case LC_Align::DRAWING:
+                    return RS2::SelectCursor;
+                default:
+                    return RS2::SelectCursor;
+            }
+        }
+        case SelectEntity: {
+            return RS2::SelectCursor;
+        }
+        default:
+            return RS2::SelectCursor;
+    }
+
 }
 
 void LC_ActionModifyAlignSingle::updateActionPrompt() {

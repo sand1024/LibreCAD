@@ -100,7 +100,7 @@ QString LC_QuickInfoEntityData::prepareGenericEntityDescription(RS_Entity* e, co
             result = tr("To be created: ").append(entityTypeName);
             return result;
         }
-        case RS2::EntityDescriptionLevel::DescriptionCatched: {
+        case RS2::EntityDescriptionLevel::DescriptionCaught: {
             result = tr("Captured: ").append(entityTypeName);
             break;
         }
@@ -597,7 +597,7 @@ QString LC_QuickInfoEntityData::prepareLineDescription(RS_Line* line, const RS2:
     appendWCSAngle(result, tr("Angle2"), angle2);
     appendWCSAbsolute(result, tr("From"), start);
     appendWCSAbsolute(result, tr("To"), end);
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendWCSAbsolute(result, tr("Middle"), line->getMiddlePoint());
         const RS_Vector delta = end - start;
         appendWCSAbsoluteDelta(result, tr("Delta"), delta);
@@ -632,7 +632,7 @@ QString LC_QuickInfoEntityData::prepareCircleDescription(RS_Circle* circle, cons
 
     appendWCSAbsolute(result, tr("Center"), center);
     appendLinear(result, tr("Radius"), radius);
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         const double circumference = circle->getLength();
         const double area = circle->areaLineIntegral();
         const double diameter = radius * 2;
@@ -690,7 +690,7 @@ QString LC_QuickInfoEntityData::prepareArcDescription(RS_Arc* arc, const RS2::En
     appendRawAngle(result, tr("Angle Length"), angleLength);
     appendValue(result, tr("Reversed"), arc->isReversed() ? tr("Yes") : tr("No"));
 
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         const double circumference = arc->getLength();
         const double diameter = radius * 2;
         const double startAngle = arc->getAngle1();
@@ -771,7 +771,7 @@ QString LC_QuickInfoEntityData::prepareEllipseDescription(RS_Ellipse* ellipse, c
         appendRawAngle(result, tr("Angle Length"), angleLength);
     }
 
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         const double ratio = ellipse->getRatio();
         const double circumference = ellipse->getLength();
 
@@ -946,7 +946,7 @@ QString LC_QuickInfoEntityData::prepareInsertDescription(RS_Insert* insert, cons
     appendValue(result, tr("Name"), data.name);
     appendWCSAbsolute(result, tr("Insertion Point"), data.insertionPoint);
     appendWCSAngle(result, tr("Angle"), data.angle);
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendDouble(result, tr("Scale X"), data.scaleFactor.x);
         appendDouble(result, tr("Scale Y"), data.scaleFactor.y);
         appendInt(result, tr("Cols"), data.cols);
@@ -986,7 +986,7 @@ QString LC_QuickInfoEntityData::prepareTextDescription(RS_Text* text, const RS2:
     appendValue(result, tr("Style"), data.style);
     appendDouble(result, tr("Height"), data.height);
 
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         const RS_TextData::HAlign halign = data.halign;
         const RS_TextData::VAlign valign = data.valign;
 
@@ -1133,7 +1133,7 @@ QString LC_QuickInfoEntityData::prepareMTextDescription(RS_MText* pText, const R
     appendValue(result, tr("Style"), data.style);
     appendDouble(result, tr("Height"), data.height); // todo - is linear format more suitable there?
 
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendDouble(result, tr("Width"), data.width);
         appendInt(result, tr("Lines"), pText->getNumberOfLines());
         const RS_MTextData::HAlign halign = data.halign;
@@ -1231,7 +1231,7 @@ QString LC_QuickInfoEntityData::prepareImageDescription(RS_Image* image, const R
     appendDouble(result, tr("Scale"), scale);
     appendWCSAngle(result, tr("Angle"), data.uVector.angle());
 
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendLinear(result, tr("Size (X) px"), data.size.x);
         appendLinear(result, tr("Size (Y) px"), data.size.y);
         appendLinear(result, tr("Width"), image->getImageWidth());
@@ -1267,7 +1267,7 @@ QString LC_QuickInfoEntityData::prepareSplineDescription(RS_Spline* spline, cons
     appendInt(result, tr("Degree"), data.degree);
     appendInt(result, tr("Control Points"), data.controlPoints.size());
     appendValue(result, tr("Closed"), data.isClosed() ? tr("Yes") : tr("No"));
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendLinear(result, tr("Length"), spline->getLength());
     }
     return result;
@@ -1303,7 +1303,7 @@ QString LC_QuickInfoEntityData::prepareSplinePointsDescription(LC_SplinePoints* 
         appendInt(result, tr("Spline Points"), data.splinePoints.size());
     }
     appendValue(result, tr("Closed"), data.closed ? tr("Yes") : tr("No"));
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendLinear(result, tr("Length"), spline->getLength());
     }
 
@@ -1339,7 +1339,7 @@ QString LC_QuickInfoEntityData::prepareParabolaDescription(LC_Parabola* parabola
     appendWCSAbsolute(result, tr("Focus"), data.m_focus);
     appendWCSAbsolute(result, tr("Vertex"), data.m_vertex);
     appendWCSAngle(result, tr("Axis Angle"), data.m_axis.angle());
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendLinear(result, tr("Length"), parabola->getLength());
     }
     return result;
@@ -1370,7 +1370,7 @@ QString LC_QuickInfoEntityData::prepareHatchDescription(RS_Hatch* hatch, const R
     appendValue(result, tr("Pattern"), hatch->getPattern());
     appendDouble(result, tr("Scale"), hatch->getScale());
     appendWCSAngle(result, tr("Angle"), hatch->getAngle()); // fixme - sand - or raw angle value should be there? Check!
-    if (level != RS2::EntityDescriptionLevel::DescriptionCatched) {
+    if (level != RS2::EntityDescriptionLevel::DescriptionCaught) {
         appendArea(result, tr("Area"), hatch->getTotalArea());
     }
     return result;

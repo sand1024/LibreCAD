@@ -58,10 +58,6 @@ void LC_ActionDrawCircleInscribe::clearLines(const bool checkStatus) const {
     }
 }
 
-void LC_ActionDrawCircleInscribe::drawSnapper() {
-    // disable snapper
-}
-
 void LC_ActionDrawCircleInscribe::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(entity)) {

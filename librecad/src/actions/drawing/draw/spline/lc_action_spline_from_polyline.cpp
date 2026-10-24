@@ -168,7 +168,7 @@ void LC_ActionSplineFromPolyline::updateActionPrompt() {
 }
 
 RS2::CursorType LC_ActionSplineFromPolyline::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::CadCursor;
+    return RS2::SelectCursor;
 }
 
 LC_ActionOptionsWidget* LC_ActionSplineFromPolyline::createOptionsWidget() {

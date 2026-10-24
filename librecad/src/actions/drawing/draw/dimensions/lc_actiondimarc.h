@@ -57,6 +57,7 @@ protected:
    void setArcEntity(RS_Entity* entity);
    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
    RS_Entity* doTriggerCreateEntity() override;
+   RS2::CursorType doGetMouseCursor(int status) override;
    void doTriggerCompletion(bool success) override;
 };
 #endif

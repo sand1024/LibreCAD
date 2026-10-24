@@ -375,6 +375,13 @@ void RS_ActionInterface::trigger() {
 void RS_ActionInterface::updateActionPrompt() {
 }
 
+void RS_ActionInterface::doSetMouseCursor(const RS2::CursorType cursor) {
+    m_inSelectionMode = cursor == RS2::SelectCursor;
+    if (cursor != RS2::NoCursorChange) {
+        setMouseCursor(cursor);
+    }
+}
+
 /**
  * Should be overwritten to set the mouse cursor for this action.
  * Default implementation for the base method. Simply ask appropriate method for cursor and sets it.
@@ -382,9 +389,7 @@ void RS_ActionInterface::updateActionPrompt() {
 void RS_ActionInterface::updateMouseCursor() {
     const int status = getStatus();
     const RS2::CursorType cursor = doGetMouseCursor(status);
-    if (cursor != RS2::NoCursorChange) {
-        setMouseCursor(cursor);
-    }
+    doSetMouseCursor(cursor);
 }
 
 /**
@@ -592,7 +597,7 @@ int RS_ActionInterface::getGraphicVariableInt(const QString& key, const int def)
     return (m_graphic != nullptr) ? m_graphic->getGraphicVariableInt(key, def) : def;
 }
 
-void RS_ActionInterface::setMouseCursor(const RS2::CursorType cursor) const {
+void RS_ActionInterface::setMouseCursor(const RS2::CursorType cursor){
     if (m_graphicView != nullptr) {
         m_graphicView->setMouseCursor(cursor);
     }

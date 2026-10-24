@@ -118,7 +118,7 @@ bool LC_RepositoryGraphicViewContextMenus::configFromJson(const QJsonObject& jso
         m.isBuiltIn = mObj["builtIn"].toBool(false);
 
         const QString actStr = mObj["activator"].toString();
-        auto* parsedAct = LC_MenuActivator::fromShortcut(actStr);
+        const auto* parsedAct = LC_MenuActivator::fromShortcut(actStr);
         if (parsedAct != nullptr) {
             m.activator = *parsedAct;
             delete parsedAct;

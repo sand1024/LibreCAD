@@ -59,10 +59,6 @@ LC_ActionDrawCircleTangental3Entities::LC_ActionDrawCircleTangental3Entities(LC_
 
 LC_ActionDrawCircleTangental3Entities::~LC_ActionDrawCircleTangental3Entities() = default;
 
-void LC_ActionDrawCircleTangental3Entities::drawSnapper() {
-    // disable snapper
-}
-
 void LC_ActionDrawCircleTangental3Entities::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
     if (status >= 0) {

@@ -316,7 +316,14 @@ LC_ActionOptionsPropertiesFiller* LC_ActionModifyDuplicate::createOptionsFiller(
 }
 
 RS2::CursorType LC_ActionModifyDuplicate::doGetMouseCursor([[maybe_unused]]int status){
-    return RS2::SelectCursor;
+    switch (getStatus()){
+        case SelectEntity:
+            return RS2::SelectCursor;
+        case SetOffsetDirection:
+            return RS2::CadCursor;
+        default:
+            return RS2::SelectCursor;
+    }
 }
 
 RS_Vector LC_ActionModifyDuplicate::doGetMouseSnapPoint(const LC_MouseEvent* e){

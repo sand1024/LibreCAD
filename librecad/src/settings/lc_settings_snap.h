@@ -43,6 +43,9 @@ namespace CFG_Snap {
     inline const LC_Setting<int> o_IndicatorScreenLinesLineWidth(&Group, "indicator_lines_line_width", 1);
     inline const LC_Setting<int> o_IndicatorCrosshairLinesSizePercents(&Group, "indicator_cross_hair_lines_size", 100);
 
+    inline const LC_Setting<bool> o_SelectionPickboxInsteadOfCursor(&Group, "SelectionPickBoxShow", true);
+    inline const LC_Setting<int>  o_SelectionPickBoxLinesType(&Group, "SelectionPickBoxLinesType", 0);
+
 }
 
 

@@ -200,6 +200,23 @@ void LC_ActionSplineAddPoint::onCoordinateEvent(const int status, [[maybe_unused
     }
 }
 
+RS2::CursorType LC_ActionSplineAddPoint::doGetMouseCursor(int status) {
+    switch (getStatus()){
+        case SetEntity:{
+            return RS2::SelectCursor;
+        }
+        case SetBeforeControlPoint: {
+            return RS2::CadCursor;
+        }
+        case SetControlPoint: {
+            return RS2::CadCursor;
+        }
+        default:
+            return RS2::CadCursor;
+    }
+}
+
+
 void LC_ActionSplineAddPoint::updateActionPrompt() {
     switch (getStatus()){
         case SetEntity:{

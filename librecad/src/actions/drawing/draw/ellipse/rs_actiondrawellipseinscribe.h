@@ -38,9 +38,6 @@ public:
     void init(int status) override;
     QStringList getAvailableCommands() override;
     void finish() override;
-
-    void drawSnapper() override;
-
 protected:
     /**
      * Action States.

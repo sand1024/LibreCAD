@@ -57,6 +57,11 @@
 #include "rs_units.h"
 #include "rs_entity.h"
 
+namespace {
+    //list of entity types supported by current action
+    const EntityTypeList g_visualSnapEntities = {RS2::EntityLine, RS2::EntityArc, RS2::EntityCircle};
+}
+
 
 // fixme - sand - consider more generic support of overlays and containers,
 // with them working with preview etc might be more generic.. currently, preview handles both preview and reference points..
@@ -660,7 +665,7 @@ RS_Entity* RS_PreviewActionInterface::catchModifiableEntity(const RS_Vector& coo
 RS_Entity* RS_PreviewActionInterface::catchModifiableAndDescribe(const LC_MouseEvent* e, const RS2::EntityType enType) const {
     RS_Entity* en = catchModifiableEntity(e, enType);
     if (en != nullptr) {
-        prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return en;
 }
@@ -668,7 +673,7 @@ RS_Entity* RS_PreviewActionInterface::catchModifiableAndDescribe(const LC_MouseE
 RS_Entity* RS_PreviewActionInterface::catchModifiableAndDescribe(const LC_MouseEvent* e, const EntityTypeList& enTypeList) const {
     RS_Entity* en = catchModifiableEntity(e, enTypeList);
     if (en != nullptr) {
-        prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return en;
 }
@@ -690,7 +695,7 @@ LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msgStart() const {
 RS_Entity* RS_PreviewActionInterface::catchAndDescribe(const RS_Vector& pos, const RS2::ResolveLevel level) const {
     const auto entity = catchEntity(pos, level);
     if (entity != nullptr) {
-        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return entity;
 }
@@ -699,7 +704,7 @@ RS_Entity* RS_PreviewActionInterface::catchAndDescribe(const LC_MouseEvent* e, c
                                                        const RS2::ResolveLevel level) const {
     const auto entity = catchEntityByEvent(e, enType, level);
     if (entity != nullptr) {
-        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return entity;
 }
@@ -708,7 +713,7 @@ RS_Entity* RS_PreviewActionInterface::catchAndDescribe(const LC_MouseEvent* e, c
                                                        const RS2::ResolveLevel level) const {
     const auto entity = catchEntityByEvent(e, enTypeList, level);
     if (entity != nullptr) {
-        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return entity;
 }
@@ -716,14 +721,14 @@ RS_Entity* RS_PreviewActionInterface::catchAndDescribe(const LC_MouseEvent* e, c
 RS_Entity* RS_PreviewActionInterface::catchAndDescribe(const LC_MouseEvent* e, const RS2::ResolveLevel level) const {
     const auto entity = catchEntityByEvent(e, level);
     if (entity != nullptr) {
-        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
     return entity;
 }
 
 void RS_PreviewActionInterface::prepareEntityDescription(RS_Entity* entity, const RS2::EntityDescriptionLevel level) const {
     if (m_infoCursorOverlayPrefs->enabled) {
-        if ((m_infoCursorOverlayPrefs->showEntityInfoOnCatch && level == RS2::EntityDescriptionLevel::DescriptionCatched) || (
+        if ((m_infoCursorOverlayPrefs->showEntityInfoOnCatch && level == RS2::EntityDescriptionLevel::DescriptionCaught) || (
             m_infoCursorOverlayPrefs->showEntityInfoOnCreation && level == RS2::EntityDescriptionLevel::DescriptionCreating) || (
             m_infoCursorOverlayPrefs->showEntityInfoOnModification && level == RS2::EntityDescriptionLevel::DescriptionModifying)) {
             const QString entityInfoStr = obtainEntityDescriptionForInfoCursor(entity, level);
@@ -845,10 +850,6 @@ bool RS_PreviewActionInterface::isVisualSnapApplicable() {
     return RS_Snapper::isVisualSnapApplicable() && isInVisualSnapStatus(getStatus());
 }
 
-namespace {
-    //list of entity types supported by current action
-    const EntityTypeList g_visualSnapEntities = {RS2::EntityLine, RS2::EntityArc, RS2::EntityCircle};
-}
 
 void RS_PreviewActionInterface::onVisualSnapSolutionRefresh() {
     deletePreview();

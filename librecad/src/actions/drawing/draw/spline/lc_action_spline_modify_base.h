@@ -29,7 +29,6 @@
 class LC_ActionSplineModifyBase:public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
-    void drawSnapper() override;
     void finish() override;
 protected:
     enum State{

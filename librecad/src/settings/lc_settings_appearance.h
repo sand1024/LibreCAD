@@ -111,7 +111,8 @@ namespace CFG_Appearance {
     inline const LC_Setting<QString> o_LanguageCmd(&Group, "LanguageCmd", "en");
 
     // --- Snapping Indicators ---
-    inline const LC_Setting<bool> o_CursorHidingWhenSnapping(&Group, "cursor_hiding", false);
+    inline const LC_Setting<bool> o_CursorHidingWhenSnapping(&Group, "CursorHideOnSnap", false);
+    inline const LC_Setting<bool> o_CursorHidingWhenSelection(&Group, "CursorHideOnSelect", false);
     inline const LC_Setting<bool> o_showSnapOptionsInSnapToolbar(&Group, "showSnapOptionsInSnapToolbar", false);
 
     // --- Coordinate Origin Zero Markers ---
@@ -144,6 +145,8 @@ namespace CFG_Appearance {
     inline const LC_Setting<int> o_UCSApplyPolicy(&Group, "UCSApplyPolicy", 0);
     inline const LC_Setting<int> o_UCSHighlightBlinkCount(&Group, "UCSHighlightBlinkCount", 10);
     inline const LC_Setting<int> o_UCSHighlightBlinkDelay(&Group, "UCSHighlightBlinkDelay", 250);
+
+    inline const LC_Setting<int> o_SelectionPickBoxLinesSizeType(&Group, "SelectionPickBoxLinesType", 1);
 
 }
 

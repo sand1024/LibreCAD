@@ -1051,7 +1051,7 @@ namespace RS2 {
     };
 
     enum EntityDescriptionLevel {
-        DescriptionCatched,
+        DescriptionCaught,
         DescriptionLong,
         DescriptionCreating,
         DescriptionModifying

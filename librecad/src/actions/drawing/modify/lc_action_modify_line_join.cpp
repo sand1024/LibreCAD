@@ -81,10 +81,6 @@ RS_Line *LC_ActionModifyLineJoin::catchLine(const LC_MouseEvent *e, const bool f
     return snappedLine;
 }
 
-void LC_ActionModifyLineJoin::drawSnapper() {
-    // disable snapper
-}
-
 void LC_ActionModifyLineJoin::doPreparePreviewEntities(const LC_MouseEvent* e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, const int status){
     const RS_Line *snappedLine = catchLine(e, true);
     switch (status) {

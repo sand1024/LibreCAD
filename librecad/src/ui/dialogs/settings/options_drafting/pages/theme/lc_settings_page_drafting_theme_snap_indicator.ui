@@ -153,17 +153,22 @@ lines (orthogonal vs diagonal).</string>
         </property>
         <item>
          <property name="text">
-          <string>Adaptive</string>
+          <string>Adaptive Crosshair</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Crosshair</string>
+          <string>Orthogonal Crosshair</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>Spiderweb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Adaptive Short Crosshair</string>
          </property>
         </item>
        </widget>

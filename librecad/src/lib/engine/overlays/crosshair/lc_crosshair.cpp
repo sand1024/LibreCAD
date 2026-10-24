@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_crosshair.h"
+#include "lc_crosshair.h"
 
 #include "lc_graphicviewport.h"
 #include "rs_painter.h"
@@ -37,7 +38,35 @@ LC_Crosshair::LC_Crosshair(const RS_Vector& coord, SnapIndicatorOptions& options
      m_snapType = snapType;
 }
 
-double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
+LC_Crosshair::LC_Crosshair(const RS_Vector& coord, const RS_Pen& linesPen, const RS_Pen& shapePen, int shapeSize, int showLinesMode, int snapIndicatorLinesType, int linesPercent)
+     :m_wcsPos(coord){
+    m_indicatorShape = IndicatorShape::Square;
+    switch (showLinesMode) {
+        case PickBoxLines::NoBoxLines: {
+            m_linesShape = LinesShape::NoLines;
+            break;
+        }
+        case PickBoxLines::ShortLines: {
+            m_linesShape = LinesShape::AdaptiveShort;
+            break;
+        }
+        case PickBoxLines::AsForSnapIndicator: {
+            m_linesShape = snapIndicatorLinesType;
+            m_crossHairLinesPersent = linesPercent;
+            break;
+        }
+        default:
+            m_linesShape = LinesShape::NoLines;
+    }
+    m_linesPen = linesPen;
+    m_shapePen = shapePen;
+    m_pointSize = -1;
+    m_pointType = -1;
+    m_shapeSize = shapeSize;
+    m_snapType = RS2::SnapType::NO_SNAP;
+}
+
+double LC_Crosshair::drawShape(RS_Painter* painter, const RS_Vector& uiPos) const {
     double offset = m_shapeSize;
       switch (m_indicatorShape) {
           case Circle: {
@@ -63,7 +92,7 @@ double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) 
               break;
           }
           case BySnapType: {
-              drawSnapModeAdaptiveIndicator(painter, uiPos);
+              drawSnapModeAdaptiveShape(painter, uiPos);
               break;
           }
           case Gap:{
@@ -80,7 +109,7 @@ double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) 
  * circle for center, X for intersection, hourglass for nearest, diamond for distance.
  * Returns false when there is no marker for the snap (free / grid snapping).
  */
-bool LC_Crosshair::drawSnapModeAdaptiveIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
+void LC_Crosshair::drawSnapModeAdaptiveShape(RS_Painter* painter, const RS_Vector& uiPos) const {
     const auto line = [&uiPos, &painter](const double x1, const double y1, const double x2, const double y2) {
         painter->drawLineUISimple(uiPos.x + x1, uiPos.y + y1, uiPos.x+x2, uiPos.y + y2);
     };
@@ -90,51 +119,51 @@ bool LC_Crosshair::drawSnapModeAdaptiveIndicator(RS_Painter* painter, const RS_V
             line(m_shapeSize, -m_shapeSize, m_shapeSize, m_shapeSize);
             line(m_shapeSize, m_shapeSize, -m_shapeSize, m_shapeSize);
             line(-m_shapeSize, m_shapeSize, -m_shapeSize, -m_shapeSize);
-            return true;
+            break;
         case RS2::SnapType::MIDDLE:
             line(0, -m_shapeSize - 1, m_shapeSize + 1, m_shapeSize);
             line(m_shapeSize + 1, m_shapeSize, -m_shapeSize - 1, m_shapeSize);
             line(-m_shapeSize - 1, m_shapeSize, 0, -m_shapeSize - 1);
-            return true;
+            break;
         case RS2::SnapType::CENTER:
             painter->drawCircleUIDirect(uiPos, m_shapeSize + 1);
-            return true;
+            break;
         case RS2::SnapType::INTERSECTION:
             line(-m_shapeSize, -m_shapeSize, m_shapeSize, m_shapeSize);
             line(-m_shapeSize, m_shapeSize, m_shapeSize, -m_shapeSize);
-            return true;
+            break;
         case RS2::SnapType::ENTITY:
             line(-m_shapeSize, -m_shapeSize,m_shapeSize, -m_shapeSize);
             line(m_shapeSize, -m_shapeSize, -m_shapeSize, m_shapeSize);
             line(-m_shapeSize, m_shapeSize, m_shapeSize, m_shapeSize);
             line(m_shapeSize, m_shapeSize, -m_shapeSize, -m_shapeSize);
-            return true;
+            break;
         case RS2::SnapType::DISTANCE:
             line(0, -m_shapeSize - 1, m_shapeSize + 1, 0);
             line(m_shapeSize + 1, 0, 0, m_shapeSize + 1);
             line(0, m_shapeSize + 1, -m_shapeSize - 1, 0);
             line(-m_shapeSize - 1, 0, 0, -m_shapeSize - 1);
-            return true;
-        default:
-            return false;
+            break;
+        default: {
+            painter->drawCircleUIDirect(uiPos, m_shapeSize/2);
+        }
     }
 }
 
-void LC_Crosshair::draw(RS_Painter *painter) {
-    const RS_Vector uiCoord = painter->toGui(m_wcsPos);
+void LC_Crosshair::drawLines(RS_Painter* painter, const RS_Vector uiCoord, const double offset, const int width, const int height, const double halfWidth) {
+    const RS_Vector p1(std::max(0.0, uiCoord.x - halfWidth), uiCoord.y);
+    const RS_Vector p2(uiCoord.x, std::max(0.0, uiCoord.y - halfWidth));
+    const RS_Vector p3(uiCoord.x, std::min<double>(height, uiCoord.y + halfWidth));
+    const RS_Vector p4(std::min<double>(width, uiCoord.x + halfWidth), uiCoord.y);
 
-    if (m_indicatorShape != NoShape) {
-        painter->setPen(m_shapePen);
-    }
+    drawCrosshairLines(painter, uiCoord, offset, p1, p2, p3, p4);
+}
 
-    const double offset = drawIndicator(painter, uiCoord);
-
+void LC_Crosshair::drawLines(RS_Painter* painter, const RS_Vector uiCoord, const double offset) {
     const LC_GraphicViewport* viewport = painter->getViewPort();
 
     const int width = viewport->getWidth();
     const int height = viewport->getHeight();
-
-    painter->setPen(m_linesPen);
 
     switch (m_linesShape){
         case Spiderweb:{
@@ -155,17 +184,17 @@ void LC_Crosshair::draw(RS_Painter *painter) {
                 // const double l=width+height;
                 const double l=halfWidth;
                 switch(chType){
-                case RS2::IsoRight:
-                    direction1=RS_Vector(M_PI*5./6.)*l;
-                    direction2*=l;
-                    break;
-                case RS2::IsoLeft:
-                    direction1=RS_Vector(M_PI*1./6.)*l;
-                    direction2*=l;
-                    break;
-                default:
-                    direction1=RS_Vector(M_PI*1./6.)*l;
-                    direction2=RS_Vector(M_PI*5./6.)*l;
+                    case RS2::IsoRight:
+                        direction1=RS_Vector(M_PI*5./6.)*l;
+                        direction2*=l;
+                        break;
+                    case RS2::IsoLeft:
+                        direction1=RS_Vector(M_PI*1./6.)*l;
+                        direction2*=l;
+                        break;
+                    default:
+                        direction1=RS_Vector(M_PI*1./6.)*l;
+                        direction2=RS_Vector(M_PI*5./6.)*l;
                 }
                 const RS_Vector p1 = uiCoord - direction1;
                 const RS_Vector p2 = uiCoord + direction1;
@@ -179,17 +208,32 @@ void LC_Crosshair::draw(RS_Painter *painter) {
         }
         case Crosshair:{
             const double halfWidth = m_crossHairLinesPersent >= 100 ? 1e6 : width * m_crossHairLinesPersent / 200.0;
-            const RS_Vector p1(std::max(0.0, uiCoord.x - halfWidth), uiCoord.y);
-            const RS_Vector p2(uiCoord.x, std::max(0.0, uiCoord.y - halfWidth));
-            const RS_Vector p3(uiCoord.x, std::min<double>(height, uiCoord.y + halfWidth));
-            const RS_Vector p4(std::min<double>(width, uiCoord.x + halfWidth), uiCoord.y);
-
-            drawCrosshairLines(painter, uiCoord, offset, p1, p2, p3, p4);
+            drawLines(painter, uiCoord, offset, width, height, halfWidth);
+            break;
+        }
+        case AdaptiveShort: {
+            drawLines(painter, uiCoord, m_shapeSize, width, height, m_shapeSize*2);
             break;
         }
         default:
             break;
     }
+}
+
+void LC_Crosshair::draw(RS_Painter *painter) {
+    const RS_Vector uiCoord = painter->toGui(m_wcsPos);
+
+    double offset = m_shapeSize;
+    if (m_indicatorShape != NoShape) {
+        painter->setPen(m_shapePen);
+        offset = drawShape(painter, uiCoord);
+    }
+
+    if (m_indicatorShape != NoShape) {
+        painter->setPen(m_linesPen);
+        drawLines(painter, uiCoord, offset);
+    }
+
 }
 
 void LC_Crosshair::setLinesPen(const RS_Pen &pen) {

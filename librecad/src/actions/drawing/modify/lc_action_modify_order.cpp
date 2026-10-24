@@ -39,9 +39,6 @@ LC_ActionOrder::LC_ActionOrder(LC_ActionContext *actionContext, const RS2::Actio
     // RS2::ActionOrderTop
 }
 
-void LC_ActionOrder::drawSnapper() {
-    // delete snapper
-}
 
 void LC_ActionOrder::onSelectionCompleted([[maybe_unused]]bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);

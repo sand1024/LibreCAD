@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>451</height>
+    <height>798</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
@@ -264,6 +264,42 @@ Otherwirse, angle step will be 90 degrees.</string>
         </property>
         <property name="text">
          <string>Angle snap to lines if grid active</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Selecting Entities</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbHideMouseCursorWhenSelecting">
+        <property name="toolTip">
+         <string>Use PickBox
+
+If checked, in entities selection mode the 
+pickbox overlay will be shown instead of 
+built-in cursor. 
+The size of pickbox will be the catch entites'
+snap distance (snap range).
+Otherwise, a standard CAD cursor will be shown. </string>
+        </property>
+        <property name="text">
+         <string>Show pickbox for entities selection instead of mouse cursor</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>When selecting entities, the pick box overlay could be shown instead of standard cursor. The size of pick box corresponds to the Catch entities Snap Distance (catch range), that is part of drafting metrics.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

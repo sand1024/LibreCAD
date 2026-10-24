@@ -60,7 +60,6 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void doInitialInit() override;
 
-    void drawSnapper() override;
     bool preparePreview() const;
     RS_Entity* catchCircle(const LC_MouseEvent* e, bool forPreview) const;
     void setCircle(RS_Entity* en, int status);

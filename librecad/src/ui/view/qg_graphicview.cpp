@@ -1587,16 +1587,7 @@ void QG_GraphicView::loadSettings() {
     {
         using namespace CFG_Appearance;
         m_cursorHiding = o_CursorHidingWhenSnapping;
-        bool showSnapIndicatorLines = CFG_Snap::o_IndicatorDrawLines;
-        bool showSnapIndicatorShape = CFG_Snap::o_IndicatorDrawShape;
-        if (HIDE_SELECT_CURSOR) {
-            // potentially, select cursor may be also hidden and so snapper will be used instead of cursor.
-            // however, this will require review and modifications of significant amount of actions, so
-            // probably I'll return to this later. In such case, the code within this "if" will be handy for such support
-            m_selectCursorHiding = m_cursorHiding && (showSnapIndicatorLines || showSnapIndicatorShape);
-        }
-        m_selectCursorHiding = false;
-
+        m_selectCursorHiding = CFG_Snap::o_SelectionPickboxInsteadOfCursor;
         m_ucsHighlightData->maxBlinkNumber = o_UCSHighlightBlinkCount * 2;
         // one blink includes both for visible and invisible phase
         m_ucsHighlightData->timerInterval = o_UCSHighlightBlinkDelay;
@@ -1610,7 +1601,6 @@ void QG_GraphicView::loadSettings() {
             m_vScrollBar->setVisible(m_scrollbars);
             m_hScrollBar->setVisible(m_scrollbars);
         }
-
 
         setScrollBarToolTips(o_ScrollBarsContentToolTip);
     }
@@ -1712,7 +1702,7 @@ bool QG_GraphicView::hasScrollbars() const {
     return m_scrollbars;
 }
 
-void QG_GraphicView::setCursorHiding(const bool state) {
+void QG_GraphicView::setCursorHidingWhenSnapping(const bool state) {
     m_cursorHiding = state;
 }
 

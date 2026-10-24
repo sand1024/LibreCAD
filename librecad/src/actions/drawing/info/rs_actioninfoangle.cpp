@@ -56,10 +56,6 @@ void RS_ActionInfoAngle::init(const int status) {
     RS_PreviewActionInterface::init(status);
 }
 
-void RS_ActionInfoAngle::drawSnapper() {
-    // disable snapper
-}
-
 void RS_ActionInfoAngle::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(entity)) {

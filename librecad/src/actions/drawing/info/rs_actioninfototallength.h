@@ -38,7 +38,6 @@ class RS_ActionInfoTotalLength : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
     explicit RS_ActionInfoTotalLength(LC_ActionContext *actionContext);
-    void drawSnapper() override;
 protected:
     /**
      * Action States.

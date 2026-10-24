@@ -52,7 +52,6 @@ public:
     double getLength2() const;
     void setTrim(bool t) const;
     bool isTrimOn() const;
-    void drawSnapper() override;
 protected:
     /**
      * Action States.

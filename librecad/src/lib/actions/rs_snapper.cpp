@@ -302,6 +302,8 @@ void RS_Snapper::initFromSettings() {
         m_catchEntityGuiRange = o_AdvSnapEntityCatchRange;
         m_minGridCellSnapFactor = o_AdvSnapGridCellSnapFactor / 100.0;
         m_angleSnapSnapToGridLinesIfGrid = o_AngleSnapToLinesIfGrid;
+
+        m_showPickBoxForSelection = o_SelectionPickboxInsteadOfCursor;
     }
 
     m_visualSnapManager->updateOptions();
@@ -681,6 +683,8 @@ RS_Vector RS_Snapper::snapPoint(const QMouseEvent* e) {
     }
 
     const RS_Vector mouseCoord = toGraph(e);
+    m_impData->graphPoint = mouseCoord;
+
     double ds2Min = RS_MAXDOUBLE * RS_MAXDOUBLE;
 
     RS_Entity* restrictingEntity{nullptr};
@@ -1162,7 +1166,7 @@ void RS_Snapper::hideSnapOptions() const {
  * Deletes the snapper from the screen.
  */
 void RS_Snapper::deleteSnapper() const {
-    if (m_graphicView != nullptr && !m_graphicView->isCleanUp()) {
+    if (m_graphicView != nullptr && !m_graphicView->isCleanUp() && (!m_inSelectionMode || m_finished)) {
         m_viewport->clearOverlayDrawablesContainer(RS2::Snapper);
         m_graphicView->redraw(RS2::RedrawOverlay); // redraw will happen in the mouse movement event
     }
@@ -1181,17 +1185,32 @@ void RS_Snapper::deleteInfoCursor() const {
 void RS_Snapper::drawSnapper() {
     LC_OverlayDrawablesContainer* snapperOverlay = m_viewport->getOverlaysDrawablesContainer(RS2::Snapper);
     snapperOverlay->clear();
-    bool showSnapIndicator = showSnapIndicator = isSnapExpected(); // LibreCAD#2520
-    if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
-        if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
-            RS2::SnapType snapType = m_impData->snapType;
-            if (snapType == RS2::SnapType::VISUAL_SNAP && m_impData->restrictedSnapType != RS2::SnapType::NO_SNAP) {
-                snapType = m_impData->restrictedSnapType;
+    bool snapExpected = isSnapExpected() && !m_inSelectionMode;
+    if (snapExpected) {
+        bool showSnapIndicator = showSnapIndicator = snapExpected; // LibreCAD#2520
+        if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
+            if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
+                RS2::SnapType snapType = m_impData->snapType;
+                if (snapType == RS2::SnapType::VISUAL_SNAP && m_impData->restrictedSnapType != RS2::SnapType::NO_SNAP) {
+                    snapType = m_impData->restrictedSnapType;
+                }
+                // fixme - sand - should we pass any other snap data there?
+                auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get(), snapType);
+                crosshair->setShapesPen(m_snapIndicator->shape_Pen);
+                snapperOverlay->add(crosshair);
             }
-            // fixme - sand - should we pass any other snap data there?
-            auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get(), snapType);
-            crosshair->setShapesPen(m_snapIndicator->shape_Pen);
-            snapperOverlay->add(crosshair);
+        }
+    }
+    else {
+        if (m_inSelectionMode) {
+            if (m_showPickBoxForSelection) {
+                const auto snapIndicatorOptions = *m_snapIndicator.get();
+                auto* crosshair = new LC_Crosshair(m_impData->graphPoint, snapIndicatorOptions.lines_Pen, snapIndicatorOptions.pickBox_Pen,
+                                                   m_catchEntityGuiRange / 2, snapIndicatorOptions.pickBoxLinesSize,
+                                                   snapIndicatorOptions.lines_Type,
+                                                   snapIndicatorOptions.crossHairLinesPercent);
+                snapperOverlay->add(crosshair);
+            }
         }
     }
     m_graphicView->redraw(RS2::RedrawOverlay); // redraw will happen in the mouse movement event

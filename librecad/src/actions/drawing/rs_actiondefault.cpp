@@ -1068,7 +1068,7 @@ RS2::CursorType RS_ActionDefault::doGetMouseCursor(const int status){
             return RS2::ArrowCursor;
         case Moving:
         case MovingRef:
-            return RS2::SelectCursor;
+            return RS2::CadCursor;
         case Panning:
             return RS2::ClosedHandCursor;
         default:

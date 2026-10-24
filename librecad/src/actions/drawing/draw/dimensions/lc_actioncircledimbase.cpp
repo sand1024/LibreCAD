@@ -26,6 +26,11 @@
 #include "rs_dimension.h"
 #include "rs_preview.h"
 
+namespace {
+    //list of entity types supported by current action - only lines so far
+    const auto g_enTypeList = EntityTypeList{RS2::EntityArc, RS2::EntityCircle};
+}
+
 LC_ActionCircleDimBase::LC_ActionCircleDimBase(const char* name, LC_ActionContext *actionContext, const RS2::EntityType dimType, const RS2::ActionType actionType)
   : RS_ActionDimension(name, actionContext, dimType, actionType), m_position(std::make_unique<RS_Vector>()){
 }
@@ -64,9 +69,8 @@ void LC_ActionCircleDimBase::onMouseMoveEvent(const int status, const LC_MouseEv
     RS_Vector snap = e->snapPoint;
     switch (status) {
         case SetEntity: {
-            RS_Entity *en = catchEntityByEvent(e, RS2::ResolveAll);
+            RS_Entity *en = catchAndDescribe(e,g_enTypeList, RS2::ResolveAll);
             if (en != nullptr) {
-                if (isArc(en) || isCircle(en)) {
                     highlightHover(en);
                     moveRelativeZero(en->getCenter());
                     if (m_previewShowsFullDimension) {
@@ -76,7 +80,6 @@ void LC_ActionCircleDimBase::onMouseMoveEvent(const int status, const LC_MouseEv
                         previewEntity(d);
                         previewRefSelectablePoint(pointOnCircle);
                     }
-                }
             }
             break;
         }
@@ -216,6 +219,19 @@ QStringList LC_ActionCircleDimBase::getAvailableCommands() {
             break;
     }
     return cmd;
+}
+
+RS2::CursorType LC_ActionCircleDimBase::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetEntity:
+            return RS2::SelectCursor;
+        case SetPos:
+            return RS2::CadCursor;
+        case SetText:
+            return RS2::CadCursor;
+        default:
+            return RS2::CadCursor;
+    }
 }
 
 void LC_ActionCircleDimBase::updateActionPrompt() {

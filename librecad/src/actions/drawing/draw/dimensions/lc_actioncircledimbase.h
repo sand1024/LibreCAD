@@ -71,6 +71,7 @@ protected:
     virtual RS_Dimension* createDim(RS_EntityContainer *parent) const = 0;
     RS_Entity* doTriggerCreateEntity() override;
     void doTriggerCompletion(bool success) override;
+    RS2::CursorType doGetMouseCursor(int status) override;
 };
 
 #endif

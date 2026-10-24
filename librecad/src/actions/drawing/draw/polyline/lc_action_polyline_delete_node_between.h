@@ -40,7 +40,6 @@ class LC_ActionPolylineDeleteNodeBetween:public LC_ActionPolylineDeleteBase {
 public:
     explicit LC_ActionPolylineDeleteNodeBetween(LC_ActionContext *actionContext);
     ~LC_ActionPolylineDeleteNodeBetween() override;
-    void drawSnapper() override;
 protected:
     RS_Vector m_vertexToDelete2 = RS_Vector(false);
     void doInitialInit() override;

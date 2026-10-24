@@ -161,11 +161,12 @@ protected:
 
     virtual RS2::CursorType doGetMouseCursor(int status);
     void updateMouseCursor();
-    void setMouseCursor(RS2::CursorType cursor) const;
+    void setMouseCursor(RS2::CursorType cursor);
 
     virtual void updateActionPrompt();
+void doSetMouseCursor(RS2::CursorType cursor);
 
-    // simplified mouse widget and command message operations
+// simplified mouse widget and command message operations
     void updatePromptTRBack(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
     void updatePromptTRCancel(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
     void updatePrompt(const QString& = QString(),const QString& = QString(), const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;

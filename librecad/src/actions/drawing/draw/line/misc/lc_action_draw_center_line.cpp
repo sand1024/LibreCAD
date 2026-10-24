@@ -309,8 +309,17 @@ void LC_ActionDrawCenterLine::updateActionPrompt() {
     }
 }
 
-RS2::CursorType LC_ActionDrawCenterLine::doGetMouseCursor([[maybe_unused]]int status) {
-    return RS2::CadCursor;
+RS2::CursorType LC_ActionDrawCenterLine::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetEntity1:{
+            return RS2::SelectCursor;
+        }
+        case SetEntity2:{
+            return RS2::SelectCursor;
+        }
+        default:
+            return RS2::CadCursor;
+    }
 }
 
 double LC_ActionDrawCenterLine::getOffset() const {

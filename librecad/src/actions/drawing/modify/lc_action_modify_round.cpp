@@ -134,9 +134,6 @@ bool LC_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool isPolyline) 
     return true;
 }
 
-void LC_ActionModifyRound::drawSnapper() {
-    // disable snapper for action
-}
 
 bool LC_ActionModifyRound::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     const auto roundResult = m_actionData->roundResult;

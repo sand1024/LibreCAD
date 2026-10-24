@@ -228,6 +228,7 @@ void LC_ActionPreSelectionAwareBase::onMouseMoveEvent(const int status, const LC
         else {
             selectionMouseMove(e);
             finishMouseMoveOnSelection(e);
+            RS_Snapper::drawSnapper();
         }
     }
 }
@@ -271,6 +272,7 @@ void LC_ActionPreSelectionAwareBase::proceedSelectionComplete(const bool allowEm
     const bool proceed = selectedCount > 0 || allowEmptySelection;
     if (proceed) {
         m_selectionComplete = true;
+        updateMouseCursor();
         updateActionPromptForSelected(getStatus());
     }
     else{

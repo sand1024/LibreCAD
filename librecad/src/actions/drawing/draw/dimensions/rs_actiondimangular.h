@@ -74,5 +74,6 @@ protected:
     void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
+    RS2::CursorType doGetMouseCursor(int status) override;
 };
 #endif

@@ -123,10 +123,6 @@ bool LC_ActionModifyBevel::doUpdateDistanceByInteractiveInput(const QString& tag
     return false;
 }
 
-void LC_ActionModifyBevel::drawSnapper() {
-    // disable snapper
-}
-
 void LC_ActionModifyBevel::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->graphPoint;
     // it seems that bevel works properly with lines only... it relies on trimEndpoint/moveEndpoint methods, which

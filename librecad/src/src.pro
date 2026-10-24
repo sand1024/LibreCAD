@@ -163,67 +163,19 @@ LIBS += -L../../generated/lib  \
     -llcqtbidi
 
 INCLUDEPATH += \
+    ../../libraries/jwwlib/src \
     ../../libraries/lciconengine \
     ../../libraries/libdxfrw/src \
     ../../libraries/libdxfrw/src/intern \
-    ../../libraries/jwwlib/src \
-    ../../libraries/shapelib/src \
+    ../../libraries/muparser/include \
     ../../libraries/qtbidi \
-    cmd \
-    lib/actions \
-    lib/actions/visual_snap \
-    lib/actions/options \
-    lib/creation \
-    lib/debug \
-    lib/engine \
-    lib/engine/document \
-    lib/engine/document/blocks \
-    lib/engine/document/container \
-    lib/engine/document/dimstyles \
-    lib/engine/document/entities \
-    lib/engine/document/entities/support \
-    lib/engine/document/fonts \
-    lib/engine/document/io \
-    lib/engine/document/layers \
-    lib/engine/document/linetypes \
-    lib/engine/document/patterns \
-    lib/engine/document/selection \
-    lib/engine/document/textstyles \
-    lib/engine/document/ucs \
-    lib/engine/document/variables \
-    lib/engine/document/views \
-    lib/engine/clipboard \
-    lib/engine/overlays \
-    lib/engine/overlays/angles_base \
-    lib/engine/overlays/highlight \
-    lib/engine/overlays/preview \
-    lib/engine/overlays/references \
-    lib/engine/overlays/crosshair \
-    lib/engine/overlays/info_cursor \
-    lib/engine/overlays/overlay_box \
-    lib/engine/overlays/ucs_mark \
-    lib/engine/undo \
-    lib/engine/utils \
-    lib/engine/settings \
-    lib/fileio \
-    lib/filters \
-    lib/generators \
-    lib/generators/makercamsvg \
-    lib/generators/layers \
-    lib/generators/image \
-    lib/gui \
-    lib/gui/grid \
-    lib/gui/render \
-    lib/gui/render/headless \
-    lib/gui/render/widget \
-    lib/information \
-    lib/math \
-    lib/modification \
-    lib/selection \
-    lib/selection/metaentity \
-    lib/selection/metaentity/entities \
-    lib/printing \
-    lib/properties \
+    ../../libraries/shapelib/src \
+    ../res/arrows \
+    ../res/controls \
+    ../res/dxf \
+    ../res/gdt \
+    ../res/icons \
+    ../res/images \
     actions \
     actions/dock_widgets \
     actions/dock_widgets/block \
@@ -236,27 +188,23 @@ INCLUDEPATH += \
     actions/drawing/draw/arc \
     actions/drawing/draw/circle \
     actions/drawing/draw/curve \
-    actions/drawing/draw/spline \
     actions/drawing/draw/dimensions \
     actions/drawing/draw/ellipse \
     actions/drawing/draw/hatch \
     actions/drawing/draw/image \
     actions/drawing/draw/line \
-    actions/drawing/draw/point \
-    actions/drawing/draw/rect \
-    actions/drawing/draw/polygon \
-    actions/drawing/draw/misc \
-    actions/drawing/draw/line/shapes \
     actions/drawing/draw/line/misc \
-    actions/drawing/draw/line/shapes/rect \
-    actions/drawing/draw/line/shapes/polygon \
+    actions/drawing/draw/point \
+    actions/drawing/draw/polygon \
     actions/drawing/draw/polyline \
+    actions/drawing/draw/rect \
+    actions/drawing/draw/spline \
     actions/drawing/draw/text \
     actions/drawing/edit \
     actions/drawing/info \
-    actions/drawing/pick \
     actions/drawing/modify \
     actions/drawing/pen \
+    actions/drawing/pick \
     actions/drawing/rel_zero \
     actions/drawing/selection \
     actions/drawing/snap \
@@ -264,64 +212,148 @@ INCLUDEPATH += \
     actions/file \
     actions/options \
     actions/print_preview \
+    cmd \
+    lib/actions \
+    lib/actions/options \
+    lib/actions/visual_snap \
+    lib/creation \
+    lib/debug \
+    lib/engine \
+    lib/engine/clipboard \
+    lib/engine/document \
+    lib/engine/document/blocks \
+    lib/engine/document/container \
+    lib/engine/document/dimstyles \
+    lib/engine/document/dimstyles/builder \
+    lib/engine/document/entities \
+    lib/engine/document/entities/support \
+    lib/engine/document/fonts \
+    lib/engine/document/layers \
+    lib/engine/document/linetypes \
+    lib/engine/document/patterns \
+    lib/engine/document/selection \
+    lib/engine/document/textstyles \
+    lib/engine/document/ucs \
+    lib/engine/document/variables \
+    lib/engine/document/views \
+    lib/engine/overlays \
+    lib/engine/overlays/angles_base \
+    lib/engine/overlays/crosshair \
+    lib/engine/overlays/highlight \
+    lib/engine/overlays/info_cursor \
+    lib/engine/overlays/overlay_box \
+    lib/engine/overlays/preview \
+    lib/engine/overlays/references \
+    lib/engine/overlays/ucs_mark \
+    lib/engine/settings \
+    lib/engine/undo \
+    lib/engine/utils \
+    lib/fileio \
+    lib/filters \
+    lib/generators \
+    lib/generators/image \
+    lib/generators/layers \
+    lib/generators/makercamsvg \
+    lib/gui \
+    lib/gui/grid \
+    lib/gui/render \
+    lib/gui/render/headless \
+    lib/gui/render/widget \
+    lib/information \
+    lib/math \
+    lib/modification \
+    lib/presets \
+    lib/printing \
+    lib/properties \
+    lib/scripting \
+    lib/selection \
+    lib/selection/metaentity \
+    lib/selection/metaentity/entities \
+    main \
+    main/console_dxf2pdf \
+    plugins \
+    plugins/intern \
+    settings \
+    test \
     ui \
     ui/action_options \
     ui/action_options/circle \
     ui/action_options/curve \
-    ui/action_options/spline \
     ui/action_options/dimensions \
     ui/action_options/edit \
+    ui/action_options/ellipse \
     ui/action_options/image \
     ui/action_options/info \
     ui/action_options/insert \
     ui/action_options/line \
-    ui/action_options/rect \
-    ui/action_options/polygon \
     ui/action_options/misc \
     ui/action_options/modify \
-    ui/action_options/ellipse \
     ui/action_options/other \
-    ui/action_options/polyline \
     ui/action_options/point \
+    ui/action_options/polygon \
+    ui/action_options/polyline \
     ui/action_options/print_preview \
+    ui/action_options/rect \
     ui/action_options/selection \
     ui/action_options/snap \
+    ui/action_options/spline \
     ui/action_options/text \
     ui/actions \
+    ui/actions/shortcuts \
     ui/components \
-    ui/components/relative_position_assistant \
+    ui/components/buttons \
     ui/components/comboboxes \
     ui/components/containers \
     ui/components/creators \
+    ui/components/edits \
     ui/components/layouts \
     ui/components/pen \
+    ui/components/relative_position_assistant \
     ui/components/status_bar \
     ui/components/toolbars \
+    ui/components/treeviews \
     ui/components/utils \
     ui/dialogs \
     ui/dialogs/actions \
-    ui/dialogs/actions/modify \
     ui/dialogs/actions/quick_selection \
-    ui/dialogs/modify \
     ui/dialogs/entity \
-    ui/dialogs/creators \
     ui/dialogs/file \
     ui/dialogs/file/export \
-    ui/dialogs/file/export/layers \
     ui/dialogs/file/export/image \
+    ui/dialogs/file/export/layers \
     ui/dialogs/file/export/makercam \
     ui/dialogs/main \
     ui/dialogs/settings \
+    ui/dialogs/settings/backup \
     ui/dialogs/settings/dimstyles \
     ui/dialogs/settings/dimstyles/dimstyle_manager \
     ui/dialogs/settings/dimstyles/dimstyle_manager/support \
+    ui/dialogs/settings/options_customization \
+    ui/dialogs/settings/options_customization/managers \
+    ui/dialogs/settings/options_customization/pages \
+    ui/dialogs/settings/options_customization/support \
+    ui/dialogs/settings/options_customization/support/cheatsheet \
     ui/dialogs/settings/options_device \
+    ui/dialogs/settings/options_drafting \
+    ui/dialogs/settings/options_drafting/managers \
+    ui/dialogs/settings/options_drafting/pages \
+    ui/dialogs/settings/options_drafting/pages/metrics \
+    ui/dialogs/settings/options_drafting/pages/theme \
+    ui/dialogs/settings/options_drafting/support \
     ui/dialogs/settings/options_drawing \
+    ui/dialogs/settings/options_drawing/pages \
+    ui/dialogs/settings/options_drawing/support \
     ui/dialogs/settings/options_general \
+    ui/dialogs/settings/options_general/pages \
+    ui/dialogs/settings/options_general/pages/application \
     ui/dialogs/settings/options_widget \
-    ui/dialogs/settings/shortcuts \
+    ui/dialogs/settings/options_widget/managers \
+    ui/dialogs/settings/options_widget/pages \
+    ui/dialogs/settings/options_widget/support \
+    ui/dialogs/settings/support \
     ui/dock_widgets \
     ui/dock_widgets/block_widget \
+    ui/dock_widgets/cad \
     ui/dock_widgets/command_line \
     ui/dock_widgets/entity_info \
     ui/dock_widgets/layer_widget \
@@ -331,7 +363,6 @@ INCLUDEPATH += \
     ui/dock_widgets/pen_wizard \
     ui/dock_widgets/property_sheet \
     ui/dock_widgets/property_sheet/lib \
-    ui/dock_widgets/property_sheet/lib/properties \
     ui/dock_widgets/property_sheet/lib/view \
     ui/dock_widgets/property_sheet/lib/view/edit \
     ui/dock_widgets/property_sheet/lib/widgets \
@@ -352,30 +383,32 @@ INCLUDEPATH += \
     ui/dock_widgets/property_sheet/properties/rect \
     ui/dock_widgets/property_sheet/properties/rsvector \
     ui/dock_widgets/property_sheet/properties/string \
-    ui/dock_widgets/views_list \
     ui/dock_widgets/ucs_list \
+    ui/dock_widgets/views_list \
     ui/dock_widgets/workspaces \
-    ui/dock_widgets/cad \
     ui/main \
+    ui/main/customization \
+    ui/main/fontviewer \
     ui/main/init \
     ui/main/persistence \
     ui/main/release_check \
     ui/main/support \
-    ui/main/fontviewer \
     ui/main/workspaces \
-    ui/view \
-    main \
-    main/console_dxf2pdf \
-    test \
-    plugins \
-    ../res  \
-    ../res/arrows \
-    ../res/controls \
-    ../res/dxf \
-    ../res/gdt \
-    ../res/icons \
-    ../res/images \
-
+    ui/main/workspaces/navigation \
+    ui/main/workspaces/navigation/menus \
+    ui/main/workspaces/navigation/repository \
+    ui/styling \
+    ui/styling/fusion_skin \
+    ui/styling/icons_styling \
+    ui/styling/metrics \
+    ui/styling/presets_generator \
+    ui/styling/proxy_style \
+    ui/styling/proxy_style/events \
+    ui/styling/support \
+    ui/styling/typography \
+    ui/styling/viewport \
+    ui/styling/widgets \
+    ui/view
 
 RESOURCES += ../res/arrows/arrows.qrc
 RESOURCES += ../res/controls/controls.qrc
@@ -387,11 +420,34 @@ RESOURCES += ../../licenses/licenses.qrc
 
 
 # ################################################################################
-# Library
+
+# ##############################################################################
+# Headers
 HEADERS += \
+    actions/dock_widgets/block/lc_action_block_insert.h \
+    actions/dock_widgets/block/rs_actionblocksadd.h \
+    actions/dock_widgets/block/rs_actionblocksattributes.h \
+    actions/dock_widgets/block/rs_actionblockscreate.h \
+    actions/dock_widgets/block/rs_actionblocksedit.h \
+    actions/dock_widgets/block/rs_actionblocksfreezeall.h \
+    actions/dock_widgets/block/rs_actionblocksremove.h \
+    actions/dock_widgets/block/rs_actionblockssave.h \
+    actions/dock_widgets/block/rs_actionblockstoggleview.h \
+    actions/dock_widgets/entity_info/lc_actioninfopickcoordinates.h \
     actions/dock_widgets/layer/lc_actionentitylayerbase.h \
     actions/dock_widgets/layer/lc_actionentitylayertoggle.h \
     actions/dock_widgets/layer/lc_actionlayerscmd.h \
+    actions/dock_widgets/layer/lc_actionlayersexport.h \
+    actions/dock_widgets/layer/lc_actionlayerstoggleconstruction.h \
+    actions/dock_widgets/layer/rs_actionlayersadd.h \
+    actions/dock_widgets/layer/rs_actionlayersedit.h \
+    actions/dock_widgets/layer/rs_actionlayersfreezeall.h \
+    actions/dock_widgets/layer/rs_actionlayerslockall.h \
+    actions/dock_widgets/layer/rs_actionlayersremove.h \
+    actions/dock_widgets/layer/rs_actionlayerstogglelock.h \
+    actions/dock_widgets/layer/rs_actionlayerstoggleprint.h \
+    actions/dock_widgets/layer/rs_actionlayerstoggleview.h \
+    actions/dock_widgets/library/lc_action_block_library_insert.h \
     actions/dock_widgets/ucs_list/lc_actionucsbydimordinate.h \
     actions/dock_widgets/ucs_list/lc_actionucscreate.h \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_angle.h \
@@ -399,55 +455,256 @@ HEADERS += \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_height.h \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_length.h \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_radius.h \
+    actions/drawing/draw/arc/lc_action_draw_arc_3points.h \
+    actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.h \
+    actions/drawing/draw/arc/lc_action_draw_arc_tangential.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_2points.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_3points.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_base.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_by_arc.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_center_point.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_center_radius.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_inscribe.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.h \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.h \
+    actions/drawing/draw/curve/lc_action_draw_line_freehand.h \
+    actions/drawing/draw/curve/lc_actiondrawdual.h \
     actions/drawing/draw/curve/lc_actiondrawhyperbolafp.h \
+    actions/drawing/draw/curve/lc_actiondrawparabola4points.h \
+    actions/drawing/draw/curve/lc_actiondrawparabolaFD.h \
+    actions/drawing/draw/dimensions/lc_actioncircledimbase.h \
+    actions/drawing/draw/dimensions/lc_actiondimarc.h \
+    actions/drawing/draw/dimensions/lc_actiondimlinearbase.h \
     actions/drawing/draw/dimensions/lc_actiondimordinate.h \
     actions/drawing/draw/dimensions/lc_actiondimordinaterebase.h \
     actions/drawing/draw/dimensions/lc_actiondimstyleapply.h \
-    actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.h \
-    actions/drawing/draw/dimensions/lc_actiondrawgdtfeaturecontrolframe.h \
-    actions/drawing/draw/line/misc/lc_action_draw_center_line.h \
-    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.h \
-    actions/drawing/draw/line/misc/lc_action_draw_bounding_box.h \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.h \
-    actions/drawing/draw/spline/lc_action_spline_remove_points.h \
-    actions/drawing/draw/spline/lc_action_spline_add_point.h \
-    actions/drawing/draw/spline/lc_action_spline_append_point.h \
-    actions/drawing/draw/spline/lc_action_spline_modify_explode.h \
-    actions/drawing/draw/spline/lc_action_spline_from_polyline.h \
-    actions/drawing/draw/spline/lc_action_spline_modify_base.h \
-    actions/drawing/draw/spline/lc_action_spline_remove_between.h \
-    actions/drawing/draw/dimensions/lc_actioncircledimbase.h \
     actions/drawing/draw/dimensions/lc_actiondrawdimbaseline.h \
+    actions/drawing/draw/dimensions/lc_actiondrawgdtfeaturecontrolframe.h \
+    actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.h \
+    actions/drawing/draw/dimensions/rs_actiondimaligned.h \
+    actions/drawing/draw/dimensions/rs_actiondimangular.h \
+    actions/drawing/draw/dimensions/rs_actiondimdiametric.h \
+    actions/drawing/draw/dimensions/rs_actiondimension.h \
+    actions/drawing/draw/dimensions/rs_actiondimleader.h \
+    actions/drawing/draw/dimensions/rs_actiondimlinear.h \
+    actions/drawing/draw/dimensions/rs_actiondimradial.h \
+    actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.h \
     actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.h \
+    actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.h \
+    actions/drawing/draw/ellipse/rs_actiondrawellipse4points.h \
+    actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.h \
+    actions/drawing/draw/ellipse/rs_actiondrawellipsefocipoint.h \
+    actions/drawing/draw/ellipse/rs_actiondrawellipseinscribe.h \
+    actions/drawing/draw/hatch/rs_actiondrawhatch.h \
+    actions/drawing/draw/image/lc_action_draw_image.h \
+    actions/drawing/draw/line/lc_abstractactiondrawline.h \
+    actions/drawing/draw/line/lc_action_draw_line.h \
+    actions/drawing/draw/line/lc_action_draw_line_angle.h \
+    actions/drawing/draw/line/lc_action_draw_line_angle_rel.h \
+    actions/drawing/draw/line/lc_action_draw_line_bisector.h \
+    actions/drawing/draw/line/lc_action_draw_line_from_point_to_line.h \
+    actions/drawing/draw/line/lc_action_draw_line_parallel.h \
+    actions/drawing/draw/line/lc_action_draw_line_parallel_through.h \
+    actions/drawing/draw/line/lc_action_draw_line_rel_angle.h \
+    actions/drawing/draw/line/lc_action_draw_line_snake.h \
+    actions/drawing/draw/line/lc_action_draw_slice_divide.h \
+    actions/drawing/draw/line/lc_actiondrawlinedirect.h \
+    actions/drawing/draw/line/misc/lc_action_draw_bounding_box.h \
+    actions/drawing/draw/line/misc/lc_action_draw_center_line.h \
+    actions/drawing/draw/line/misc/lc_action_draw_center_mark.h \
+    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.h \
+    actions/drawing/draw/line/rs_actiondrawlinehorvert.h \
+    actions/drawing/draw/line/rs_actiondrawlineorthtan.h \
+    actions/drawing/draw/line/rs_actiondrawlinetangent1.h \
+    actions/drawing/draw/line/rs_actiondrawlinetangent2.h \
+    actions/drawing/draw/point/lc_action_draw_point.h \
     actions/drawing/draw/point/lc_action_draw_points_lattice.h \
-    actions/drawing/edit/lc_action_edit_paste_to_points.h \
-    actions/drawing/selection/lc_action_select_points.h \
+    actions/drawing/draw/point/lc_action_draw_points_line.h \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_base.h \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.h \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.h \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.h \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.h \
+    actions/drawing/draw/polygon/lc_action_draw_star.h \
+    actions/drawing/draw/polyline/lc_action_draw_polyline.h \
+    actions/drawing/draw/polyline/lc_action_polyline_add.h \
+    actions/drawing/draw/polyline/lc_action_polyline_append.h \
     actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.h \
     actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.h \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_base.h \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_node.h \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.h \
+    actions/drawing/draw/polyline/lc_action_polyline_equidistant.h \
+    actions/drawing/draw/polyline/lc_action_polyline_from_segment.h \
+    actions/drawing/draw/polyline/lc_action_polyline_trim.h \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_1point.h \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_2points.h \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_3points.h \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.h \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_simple.h \
+    actions/drawing/draw/spline/lc_action_draw_spline.h \
+    actions/drawing/draw/spline/lc_action_draw_spline_points.h \
+    actions/drawing/draw/spline/lc_action_spline_add_point.h \
+    actions/drawing/draw/spline/lc_action_spline_append_point.h \
+    actions/drawing/draw/spline/lc_action_spline_from_polyline.h \
+    actions/drawing/draw/spline/lc_action_spline_modify_base.h \
+    actions/drawing/draw/spline/lc_action_spline_modify_explode.h \
+    actions/drawing/draw/spline/lc_action_spline_remove_between.h \
+    actions/drawing/draw/spline/lc_action_spline_remove_points.h \
+    actions/drawing/draw/text/lc_action_draw_mtext.h \
+    actions/drawing/draw/text/lc_action_draw_text.h \
+    actions/drawing/edit/lc_action_edit_copy_cut.h \
+    actions/drawing/edit/lc_action_edit_paste_to_points.h \
+    actions/drawing/edit/lc_action_edit_paste_transform.h \
+    actions/drawing/edit/lc_action_edit_undo_redo.h \
+    actions/drawing/info/lc_action_info_dist_point_to_entity.h \
+    actions/drawing/info/lc_actioninfo3pointsangle.h \
     actions/drawing/info/lc_actioninfopoint.h \
+    actions/drawing/info/lc_actioninfoproperties.h \
+    actions/drawing/info/rs_actioninfoangle.h \
+    actions/drawing/info/rs_actioninfoarea.h \
+    actions/drawing/info/rs_actioninfodist.h \
+    actions/drawing/info/rs_actioninfoinside.h \
+    actions/drawing/info/rs_actioninfototallength.h \
+    actions/drawing/lc_abstractactionwithpreview.h \
+    actions/drawing/modify/lc_action_block_explode.h \
     actions/drawing/modify/lc_action_modify_align.h \
     actions/drawing/modify/lc_action_modify_align_ref.h \
     actions/drawing/modify/lc_action_modify_align_single.h \
+    actions/drawing/modify/lc_action_modify_attributes.h \
+    actions/drawing/modify/lc_action_modify_base.h \
+    actions/drawing/modify/lc_action_modify_bevel.h \
+    actions/drawing/modify/lc_action_modify_break_divide.h \
+    actions/drawing/modify/lc_action_modify_cut.h \
+    actions/drawing/modify/lc_action_modify_delete.h \
+    actions/drawing/modify/lc_action_modify_delete_free.h \
+    actions/drawing/modify/lc_action_modify_duplicate.h \
+    actions/drawing/modify/lc_action_modify_entity.h \
+    actions/drawing/modify/lc_action_modify_explode_text.h \
+    actions/drawing/modify/lc_action_modify_line_gap.h \
+    actions/drawing/modify/lc_action_modify_line_join.h \
+    actions/drawing/modify/lc_action_modify_mirror.h \
+    actions/drawing/modify/lc_action_modify_move.h \
     actions/drawing/modify/lc_action_modify_move_adjust.h \
+    actions/drawing/modify/lc_action_modify_move_rotate.h \
+    actions/drawing/modify/lc_action_modify_offset.h \
+    actions/drawing/modify/lc_action_modify_order.h \
+    actions/drawing/modify/lc_action_modify_revert_direction.h \
+    actions/drawing/modify/lc_action_modify_rotate.h \
+    actions/drawing/modify/lc_action_modify_rotate_twice.h \
+    actions/drawing/modify/lc_action_modify_round.h \
+    actions/drawing/modify/lc_action_modify_scale.h \
+    actions/drawing/modify/lc_action_modify_stretch.h \
+    actions/drawing/modify/lc_action_modify_trim.h \
+    actions/drawing/modify/lc_action_modify_trim_amount.h \
+    actions/drawing/pen/lc_actionpenapply.h \
+    actions/drawing/pen/lc_actionpenpick.h \
+    actions/drawing/pen/lc_actionpensyncactivebylayer.h \
     actions/drawing/pick/lc_actioninteractivepickangle.h \
     actions/drawing/pick/lc_actioninteractivepickbase.h \
     actions/drawing/pick/lc_actioninteractivepickdistance.h \
     actions/drawing/pick/lc_actioninteractivepickposition.h \
-    actions/drawing/selection/lc_action_select_quick.h \
-    actions/drawing/selection/lc_action_select_single_entity_base.h \
+    actions/drawing/rel_zero/rs_actionlockrelativezero.h \
+    actions/drawing/rel_zero/rs_actionsetrelativezero.h \
+    actions/drawing/rs_actiondefault.h \
+    actions/drawing/selection/lc_action_select_all.h \
+    actions/drawing/selection/lc_action_select_contour.h \
     actions/drawing/selection/lc_action_select_generic.h \
+    actions/drawing/selection/lc_action_select_intersected.h \
+    actions/drawing/selection/lc_action_select_invert.h \
+    actions/drawing/selection/lc_action_select_layer.h \
+    actions/drawing/selection/lc_action_select_mode_toggle.h \
+    actions/drawing/selection/lc_action_select_points.h \
+    actions/drawing/selection/lc_action_select_quick.h \
+    actions/drawing/selection/lc_action_select_single.h \
+    actions/drawing/selection/lc_action_select_single_entity_base.h \
+    actions/drawing/selection/lc_action_select_window.h \
+    actions/drawing/snap/lc_actionsnapmiddlemanual.h \
+    actions/drawing/snap/rs_actionsnapintersectionmanual.h \
+    actions/drawing/zoom/rs_actionzoomauto.h \
+    actions/drawing/zoom/rs_actionzoomin.h \
+    actions/drawing/zoom/rs_actionzoompan.h \
+    actions/drawing/zoom/rs_actionzoomprevious.h \
+    actions/drawing/zoom/rs_actionzoomredraw.h \
+    actions/drawing/zoom/rs_actionzoomscroll.h \
+    actions/drawing/zoom/rs_actionzoomwindow.h \
+    actions/file/lc_actionfileexportmakercam.h \
+    actions/file/lc_settings_export_makercam.h \
+    actions/options/rs_actionoptionsdrawing.h \
+    actions/print_preview/rs_actionprintpreview.h \
+    cmd/lc_action_command_updater.h \
+    cmd/lc_action_type_mapper.h \
+    cmd/lc_command_manager.h \
+    cmd/lc_command_types.h \
+    cmd/lc_default_command_aliases.h \
+    cmd/lc_default_commands_builder.h \
+    cmd/lc_repository_commands.h \
+    cmd/rs_commands.h \
+    lib/actions/lc_actioncontext.h \
     lib/actions/lc_actioninfomessagebuilder.h \
+    lib/actions/lc_actionpreselectionawarebase.h \
+    lib/actions/lc_interactive_input_info.h \
+    lib/actions/lc_modifiersinfo.h \
     lib/actions/lc_overlayboxaction.h \
-    lib/engine/document/container/lc_pathbuilder.h \
     lib/actions/lc_undoabledocumentmodificationaction.h \
+    lib/actions/options/lc_action_options_base.h \
+    lib/actions/options/lc_action_options_editor.h \
+    lib/actions/options/lc_action_options_editor_typed.h \
+    lib/actions/options/lc_action_options_properties_filler.h \
+    lib/actions/options/lc_action_options_support.h \
+    lib/actions/options/lc_action_options_widget.h \
+    lib/actions/options/lc_property_sheet_interface.h \
+    lib/actions/options/lc_tool_options_properties_container_provider.h \
+    lib/actions/rs_actioninterface.h \
+    lib/actions/rs_actionselectbase.h \
+    lib/actions/rs_previewactioninterface.h \
+    lib/actions/rs_snapper.h \
+    lib/actions/visual_snap/lc_visual_snap_data.h \
+    lib/actions/visual_snap/lc_visual_snap_manager.h \
+    lib/actions/visual_snap/lc_visual_snap_options.h \
+    lib/actions/visual_snap/lc_visual_snap_solution.h \
+    lib/actions/visual_snap/lc_visual_snap_solution_solver.h \
+    lib/actions/visual_snap/lc_visual_snap_solution_visualizer.h \
+    lib/creation/lc_creation_arc.h \
+    lib/creation/lc_creation_circle.h \
+    lib/creation/lc_creation_ellipse.h \
+    lib/creation/rs_creation.h \
+    lib/debug/rs_debug.h \
+    lib/engine/clipboard/rs_clipboard.h \
+    lib/engine/document/blocks/rs_block.h \
+    lib/engine/document/blocks/rs_blocklist.h \
+    lib/engine/document/blocks/rs_blocklistlistener.h \
+    lib/engine/document/container/lc_containertraverser.h \
+    lib/engine/document/container/lc_looputils.h \
+    lib/engine/document/container/lc_pathbuilder.h \
+    lib/engine/document/container/rs_entitycontainer.h \
+    lib/engine/document/dimstyles/lc_dimarrowregistry.h \
     lib/engine/document/dimstyles/lc_dimstyle.h \
     lib/engine/document/dimstyles/lc_dimstyleslist.h \
-    lib/engine/document/dimstyles/lc_dimarrowregistry.h \
     lib/engine/document/dimstyles/lc_dimstyletovariablesmapper.h \
+    lib/engine/document/dxf_format.h \
+    lib/engine/document/entities/lc_cachedlengthentity.h \
+    lib/engine/document/entities/lc_curvejet.h \
+    lib/engine/document/entities/lc_curveoffset.h \
+    lib/engine/document/entities/lc_dimarc.h \
+    lib/engine/document/entities/lc_dimordinate.h \
     lib/engine/document/entities/lc_extentitydata.h \
+    lib/engine/document/entities/lc_hyperbola.h \
+    lib/engine/document/entities/lc_insert_transform.h \
+    lib/engine/document/entities/lc_mleader.h \
+    lib/engine/document/entities/lc_offsetoutputbudget.h \
+    lib/engine/document/entities/lc_offsetresultcheck.h \
+    lib/engine/document/entities/lc_parabola.h \
+    lib/engine/document/entities/lc_parametriccurveintersection.h \
+    lib/engine/document/entities/lc_rect.h \
+    lib/engine/document/entities/lc_secondmoment.h \
+    lib/engine/document/entities/lc_splinehelper.h \
+    lib/engine/document/entities/lc_splinepoints.h \
     lib/engine/document/entities/lc_textbidi.h \
     lib/engine/document/entities/lc_textdocument.h \
-    lib/engine/document/entities/lc_textsourcecodec.h \
     lib/engine/document/entities/lc_textentitystate.h \
     lib/engine/document/entities/lc_textlayout.h \
     lib/engine/document/entities/lc_textoutline.h \
@@ -455,15 +712,32 @@ HEADERS += \
     lib/engine/document/entities/lc_textprofilebinding.h \
     lib/engine/document/entities/lc_textruns.h \
     lib/engine/document/entities/lc_textshaper.h \
-    lib/engine/document/container/lc_containertraverser.h \
-    lib/engine/document/entities/lc_mleader.h \
-    lib/engine/document/entities/lc_curvejet.h \
-    lib/engine/document/entities/lc_curveoffset.h \
-    lib/engine/document/entities/lc_parametriccurveintersection.h \
-    lib/engine/document/entities/lc_offsetoutputbudget.h \
-    lib/engine/document/entities/lc_offsetresultcheck.h \
-    lib/engine/document/entities/lc_splinehelper.h \
+    lib/engine/document/entities/lc_textsourcecodec.h \
     lib/engine/document/entities/lc_tolerance.h \
+    lib/engine/document/entities/lc_wipeout.h \
+    lib/engine/document/entities/rs_arc.h \
+    lib/engine/document/entities/rs_atomicentity.h \
+    lib/engine/document/entities/rs_circle.h \
+    lib/engine/document/entities/rs_constructionline.h \
+    lib/engine/document/entities/rs_dimaligned.h \
+    lib/engine/document/entities/rs_dimangular.h \
+    lib/engine/document/entities/rs_dimdiametric.h \
+    lib/engine/document/entities/rs_dimension.h \
+    lib/engine/document/entities/rs_dimlinear.h \
+    lib/engine/document/entities/rs_dimradial.h \
+    lib/engine/document/entities/rs_ellipse.h \
+    lib/engine/document/entities/rs_entity.h \
+    lib/engine/document/entities/rs_hatch.h \
+    lib/engine/document/entities/rs_image.h \
+    lib/engine/document/entities/rs_insert.h \
+    lib/engine/document/entities/rs_leader.h \
+    lib/engine/document/entities/rs_line.h \
+    lib/engine/document/entities/rs_mtext.h \
+    lib/engine/document/entities/rs_point.h \
+    lib/engine/document/entities/rs_polyline.h \
+    lib/engine/document/entities/rs_solid.h \
+    lib/engine/document/entities/rs_spline.h \
+    lib/engine/document/entities/rs_text.h \
     lib/engine/document/entities/support/lc_arrow_box.h \
     lib/engine/document/entities/support/lc_arrow_circle.h \
     lib/engine/document/entities/support/lc_arrow_datum.h \
@@ -477,170 +751,149 @@ HEADERS += \
     lib/engine/document/entities/support/lc_arrow_tick.h \
     lib/engine/document/entities/support/lc_dimarrowblock.h \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.h \
+    lib/engine/document/fonts/lc_opentypefont.h \
+    lib/engine/document/fonts/lc_opentypefont_p.h \
+    lib/engine/document/fonts/lc_textfontregistry.h \
+    lib/engine/document/fonts/rs_font.h \
+    lib/engine/document/fonts/rs_fontchar.h \
+    lib/engine/document/fonts/rs_fontlist.h \
+    lib/engine/document/layers/rs_layer.h \
+    lib/engine/document/layers/rs_layerlist.h \
+    lib/engine/document/layers/rs_layerlistlistener.h \
     lib/engine/document/lc_graphicvariables.h \
+    lib/engine/document/lc_plot_settings.h \
     lib/engine/document/lc_trackedlistener.h \
+    lib/engine/document/linetypes/lc_linetype.h \
+    lib/engine/document/linetypes/lc_linetypelist.h \
+    lib/engine/document/patterns/rs_pattern.h \
+    lib/engine/document/patterns/rs_patternlist.h \
+    lib/engine/document/rs_document.h \
+    lib/engine/document/rs_graphic.h \
     lib/engine/document/selection/lc_selectedset.h \
     lib/engine/document/selection/lc_selectedsetlistener.h \
     lib/engine/document/textstyles/lc_textstyle.h \
     lib/engine/document/textstyles/lc_textstylelist.h \
+    lib/engine/document/ucs/lc_ucs.h \
     lib/engine/document/ucs/lc_ucslist.h \
-    lib/engine/document/lc_plot_settings.h \
+    lib/engine/document/variables/rs_variable.h \
+    lib/engine/document/variables/rs_variabledict.h \
+    lib/engine/document/views/lc_view.h \
+    lib/engine/document/views/lc_viewslist.h \
+    lib/engine/lc_colornumbers.h \
+    lib/engine/lc_defaults.h \
+    lib/engine/lc_drawable.h \
+    lib/engine/lc_linetypenames.h \
     lib/engine/overlays/angles_base/lc_overlayanglesbasemark.h \
+    lib/engine/overlays/crosshair/lc_crosshair.h \
     lib/engine/overlays/highlight/lc_highlight.h \
-    lib/actions/lc_modifiersinfo.h \
-    lib/actions/rs_actioninterface.h \
     lib/engine/overlays/info_cursor/lc_cursoroverlayinfo.h \
     lib/engine/overlays/lc_overlayentitiescontainer.h \
     lib/engine/overlays/lc_overlayentity.h \
     lib/engine/overlays/lc_overlaysmanager.h \
+    lib/engine/overlays/overlay_box/rs_overlaybox.h \
     lib/engine/overlays/preview/rs_preview.h \
-    lib/actions/rs_previewactioninterface.h \
-    lib/actions/rs_snapper.h \
-    lib/actions/visual_snap/lc_visual_snap_data.h \
-    lib/actions/visual_snap/lc_visual_snap_solution.h \
-    lib/actions/visual_snap/lc_visual_snap_options.h \
-    lib/actions/visual_snap/lc_visual_snap_solution_solver.h \
-    lib/actions/visual_snap/lc_visual_snap_solution_visualizer.h \
-    lib/actions/visual_snap/lc_visual_snap_manager.h \
-    lib/actions/options/lc_property_sheet_interface.h \
-    lib/actions/options/lc_action_options_widget.h \
-    lib/actions/options/lc_action_options_editor.h \
-    lib/actions/options/lc_action_options_editor_typed.h \
-    lib/actions/options/lc_action_options_properties_filler.h \
-    lib/actions/options/lc_action_options_support.h \
-    lib/actions/options/lc_property_sheet_interface.h \
-    lib/actions/options/lc_tool_options_properties_container_provider.h \
-    lib/actions/options/lc_action_options_base.h \
-    lib/creation/rs_creation.h \
-    lib/creation/lc_creation_arc.h \
-    lib/creation/lc_creation_circle.h \
-    lib/creation/lc_creation_ellipse.h \
-    lib/debug/rs_debug.h \
-    lib/engine/document/ucs/lc_ucs.h \
-    lib/engine/document/views/lc_view.h \
-    lib/engine/document/views/lc_viewslist.h \
-    lib/engine/document/entities/lc_cachedlengthentity.h \
-    lib/engine/overlays/crosshair/lc_crosshair.h \
-    lib/engine/document/container/lc_looputils.h \
-    lib/engine/document/entities/lc_parabola.h \
-    lib/engine/overlays/references/lc_refarc.h \
-    lib/engine/overlays/references/lc_refcircle.h \
-    lib/engine/overlays/references/lc_refconstructionline.h \
-    lib/engine/overlays/references/lc_refellipse.h \
-    lib/engine/overlays/references/lc_refline.h \
-    lib/engine/overlays/references/lc_refpoint.h \
-    lib/engine/overlays/references/lc_refpoint.h \
     lib/engine/overlays/references/lc_ref_snap_arc.h \
     lib/engine/overlays/references/lc_ref_snap_circle.h \
     lib/engine/overlays/references/lc_ref_snap_construction_line.h \
     lib/engine/overlays/references/lc_ref_snap_entity.h \
     lib/engine/overlays/references/lc_ref_snap_line.h \
     lib/engine/overlays/references/lc_ref_snap_mark.h \
+    lib/engine/overlays/references/lc_refarc.h \
+    lib/engine/overlays/references/lc_refcircle.h \
+    lib/engine/overlays/references/lc_refconstructionline.h \
+    lib/engine/overlays/references/lc_refellipse.h \
+    lib/engine/overlays/references/lc_refline.h \
+    lib/engine/overlays/references/lc_refpoint.h \
+    lib/engine/overlays/rs_overlayline.h \
     lib/engine/overlays/ucs_mark/lc_overlayrelativezero.h \
     lib/engine/overlays/ucs_mark/lc_overlayucszero.h \
     lib/engine/overlays/ucs_mark/lc_ucs_mark.h \
     lib/engine/rs.h \
-    lib/engine/document/entities/rs_arc.h \
-    lib/engine/document/entities/rs_atomicentity.h \
-    lib/engine/document/blocks/rs_block.h \
-    lib/engine/document/blocks/rs_blocklist.h \
-    lib/engine/document/blocks/rs_blocklistlistener.h \
-    lib/engine/clipboard/rs_clipboard.h \
-    lib/engine/document/entities/rs_circle.h \
     lib/engine/rs_color.h \
-    lib/engine/document/entities/rs_constructionline.h \
-    lib/engine/document/entities/rs_dimaligned.h \
-    lib/engine/document/entities/rs_dimangular.h \
-    lib/engine/document/entities/rs_dimdiametric.h \
-    lib/engine/document/entities/rs_dimension.h \
-    lib/engine/document/entities/rs_dimlinear.h \
-    lib/engine/document/entities/lc_dimordinate.h \
-    lib/engine/document/entities/rs_dimradial.h \
-    lib/engine/document/entities/lc_dimarc.h \
-    lib/engine/document/rs_document.h \
-    lib/engine/document/entities/rs_ellipse.h \
-    lib/engine/document/entities/rs_entity.h \
-    lib/engine/document/container/rs_entitycontainer.h \
     lib/engine/rs_flags.h \
-    lib/engine/document/fonts/rs_font.h \
-    lib/engine/document/fonts/rs_fontchar.h \
-    lib/engine/document/fonts/lc_opentypefont.h \
-    lib/engine/document/fonts/lc_opentypefont_p.h \
-    lib/engine/document/fonts/lc_textfontregistry.h \
-    lib/engine/document/fonts/rs_fontlist.h \
-    lib/engine/document/rs_graphic.h \
-    lib/engine/document/entities/rs_hatch.h \
-    lib/engine/document/entities/lc_hyperbola.h \
-    lib/engine/document/entities/lc_insert_transform.h \
-    lib/engine/document/entities/rs_insert.h \
-    lib/engine/document/entities/rs_image.h \
-    lib/engine/document/entities/lc_wipeout.h \
-    lib/engine/document/layers/rs_layer.h \
-    lib/engine/document/layers/rs_layerlist.h \
-    lib/engine/document/layers/rs_layerlistlistener.h \
-    lib/engine/document/linetypes/lc_linetype.h \
-    lib/engine/document/linetypes/lc_linetypelist.h \
-    lib/engine/document/entities/rs_leader.h \
-    lib/engine/document/entities/rs_line.h \
-    lib/engine/document/entities/rs_mtext.h \
-    lib/engine/overlays/rs_overlayline.h \
-    lib/engine/overlays/overlay_box/rs_overlaybox.h \
-    lib/engine/document/patterns/rs_pattern.h \
-    lib/engine/document/patterns/rs_patternlist.h \
-    lib/engine/lc_colornumbers.h \
-    lib/engine/lc_linetypenames.h \
     lib/engine/rs_pen.h \
-    lib/engine/document/entities/rs_point.h \
-    lib/engine/document/entities/rs_polyline.h \
+    lib/engine/rs_system.h \
+    lib/engine/rs_units.h \
+    lib/engine/rs_vector.h \
+    lib/engine/settings/lc_setting.h \
     lib/engine/settings/lc_settingsexporter.h \
     lib/engine/settings/rs_settings.h \
-    lib/engine/document/entities/rs_solid.h \
-    lib/engine/document/entities/rs_spline.h \
-    lib/engine/document/entities/lc_splinepoints.h \
-    lib/engine/document/entities/lc_secondmoment.h \
-    lib/engine/rs_system.h \
-    lib/engine/document/entities/rs_text.h \
     lib/engine/undo/lc_undoablerelzero.h \
+    lib/engine/undo/lc_undosection.h \
     lib/engine/undo/rs_undo.h \
     lib/engine/undo/rs_undoable.h \
     lib/engine/undo/rs_undocycle.h \
-    lib/engine/rs_units.h \
-    lib/engine/lc_drawable.h \
     lib/engine/utils/lc_rectregion.h \
+    lib/engine/utils/lc_rtree.h \
     lib/engine/utils/rs_utility.h \
-    lib/engine/document/variables/rs_variable.h \
-    lib/engine/document/variables/rs_variabledict.h \
-    lib/engine/rs_vector.h \
-    lib/fileio/rs_fileio.h \
     lib/fileio/lc_filenameselectionservice.h \
-    lib/filters/lc_embeddedtextxdata.h \
+    lib/fileio/rs_fileio.h \
     lib/filters/lc_embeddedtextmodel.h \
+    lib/filters/lc_embeddedtextxdata.h \
     lib/filters/lc_hyperbolaspline.h \
     lib/filters/lc_parabolaspline.h \
     lib/filters/rs_filtercxf.h \
-    lib/filters/rs_filterdxfrw.h \
-    lib/filters/lc_shxshapenames.h \
     lib/filters/rs_filterdxf1.h \
+    lib/filters/rs_filterdxfrw.h \
+    lib/filters/rs_filterinterface.h \
     lib/filters/rs_filterjww.h \
     lib/filters/rs_filterlff.h \
     lib/filters/rs_filtershp.h \
-    lib/filters/rs_filterinterface.h \
-    lib/generators/layers/lc_layersexporter.h \
     lib/generators/image/lc_imageexporter.h \
+    lib/generators/layers/lc_layersexporter.h \
+    lib/generators/makercamsvg/lc_makercamsvg.h \
+    lib/generators/makercamsvg/lc_xmlwriterinterface.h \
+    lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.h \
+    lib/gui/grid/lc_grid_options.h \
+    lib/gui/grid/lc_gridsystem.h \
+    lib/gui/grid/lc_isometricgrid.h \
+    lib/gui/grid/lc_lattice.h \
+    lib/gui/grid/lc_orthogonalgrid.h \
+    lib/gui/grid/rs_grid.h \
+    lib/gui/lc_coordinates_mapper.h \
     lib/gui/lc_coordinates_parser.h \
     lib/gui/lc_eventhandler.h \
     lib/gui/lc_graphicviewport.h \
     lib/gui/lc_graphicviewportlistener.h \
-    lib/gui/lc_scrollmodel.h \
-    lib/gui/lc_viewmath.h \
     lib/gui/lc_latecompletionrequestor.h \
-    lib/gui/render/headless/lc_printviewportrenderer.h \
-    lib/gui/render/lc_graphicviewportrenderer.h \
     lib/gui/lc_relative_point_data.h \
     lib/gui/lc_relative_point_input_widget.h \
+    lib/gui/lc_scrollmodel.h \
+    lib/gui/lc_viewmath.h \
+    lib/gui/render/headless/lc_printviewportrenderer.h \
+    lib/gui/render/lc_graphicviewportrenderer.h \
+    lib/gui/render/rs_painter.h \
+    lib/gui/render/widget/lc_graphicviewrenderer.h \
+    lib/gui/render/widget/lc_printpreviewviewrenderer.h \
+    lib/gui/render/widget/lc_widgetviewportrenderer.h \
+    lib/gui/rs_commandevent.h \
+    lib/gui/rs_coordinateevent.h \
+    lib/gui/rs_dialogfactory.h \
+    lib/gui/rs_dialogfactoryinterface.h \
+    lib/gui/rs_graphicview.h \
+    lib/gui/rs_linetypepattern.h \
+    lib/gui/rs_mainwindowinterface.h \
+    lib/information/rs_infoarea.h \
+    lib/information/rs_information.h \
+    lib/information/rs_locale.h \
+    lib/math/lc_archparser.h \
+    lib/math/lc_convert.h \
+    lib/math/lc_formatter.h \
+    lib/math/lc_interval.h \
+    lib/math/lc_linemath.h \
+    lib/math/lc_quadratic.h \
     lib/math/lc_quadraticutils.h \
-    lib/modification/lc_division.h \
+    lib/math/rs_math.h \
+    lib/modification/lc_align.h \
     lib/modification/lc_copyutils.h \
+    lib/modification/lc_division.h \
+    lib/modification/rs_modification.h \
+    lib/presets/lc_preset_error.h \
+    lib/presets/lc_preset_file_io.h \
+    lib/presets/lc_preset_repository.h \
+    lib/presets/lc_preset_repository_base.h \
+    lib/presets/lc_presets_index_helper.h \
+    lib/printing/lc_printing.h \
     lib/properties/lc_property.h \
     lib/properties/lc_property_atomic.h \
     lib/properties/lc_property_container.h \
@@ -651,152 +904,39 @@ HEADERS += \
     lib/properties/lc_property_utils.h \
     lib/properties/lc_property_valuestorage.h \
     lib/properties/lc_property_view_descriptor.h \
-    plugins/lc_plugininvoker.h \
-    lib/actions/lc_actioncontext.h \
-    ui/action_options/line/lc_line_radiant_options_widget.h \
-    ui/action_options/line/lc_line_radiant_options_filler.h \
-    ui/components/relative_position_assistant/lc_relative_position_editing_widget.h \
-    ui/components/relative_position_assistant/lc_relative_position_evaluator.h \
-    ui/components/utils/lc_entitymetauiutils.h \
-    ui/components/utils/lc_guarded_signals_blocker.h \
-    ui/components/utils/lc_mouse_tracking_table_view.h \
-    ui/components/utils/lc_tableitem_delegate_base.h \
-    ui/components/creators/lc_creatorinvoker.h \
-    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.h \
-    ui/dialogs/creators/lc_dlg_menu_assigner.h \
-    ui/dialogs/creators/lc_dlg_widget_creator.h \
-    ui/components/creators/lc_menuactivator.h \
-    ui/dialogs/creators/lc_dlg_new_widget.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_arc.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_circle.h \
-    ui/dialogs/entity/lc_dlg_dimension.h \
-    ui/dialogs/entity/lc_dlg_entityproperties.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h \
-    ui/dialogs/entity/lc_hatchpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_mtextpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_textpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_entitypropertieseditor.h \
-    ui/dialogs/entity/lc_entitypropertieseditorsupport.h \
-    ui/dialogs/entity/lc_entitypropertieseditorwidget.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_image.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_insert.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_line.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_parabola.h \
-    ui/dialogs/entity/lc_pointpickbutton.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_point.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_polyline.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_spline.h \
-    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.h \
-    ui/dialogs/file/export/image/lc_exporttoimageservice.h \
-    ui/dialogs/file/export/layers/lc_exportlayersdialogservice.h \
-    ui/dialogs/lc_inputtextdialog.h \
-    ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.h \
-    ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.h \
-    ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.h \
-    ui/dialogs/settings/options_drawing/lc_dimstylesexporter.h \
-    ui/dialogs/settings/options_widget/lc_dlgiconssetup.h \
-    ui/dialogs/settings/dimstyles/lc_dimstyleitem.h \
-    ui/dialogs/settings/dimstyles/lc_dimstyleslistmodel.h \
-    ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.h \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.h \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewgraphicview.h \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.h \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_tabproxywidget.h \
-    ui/dialogs/file/export/layers/lc_layerexportoptions.h \
-    ui/dock_widgets/lc_dockwidget.h \
-    ui/dock_widgets/lc_graphicviewawarewidget.h \
-    ui/dock_widgets/lc_widgets_common.h \
-    ui/lc_actionhandlerfactory.h \
-    ui/lc_graphicviewaware.h \
-    ui/lc_snapmanager.h \
-    ui/lc_uiutils.h \
-    ui/main/fontviewer/lc_fontfileviewer.h \
-    ui/main/init/lc_applicationwindowinitializer.h \
-    ui/main/support/lc_appwindowdialogsinvoker.h \
-    ui/main/lc_appwindowaware.h \
-    ui/main/lc_defaultactioncontext.h \
-    ui/main/persistence/lc_documentsstorage.h \
-    lib/gui/render/widget/lc_graphicviewrenderer.cpp \
-    lib/gui/render/widget/lc_printpreviewviewrenderer.cpp \
-    lib/gui/render/widget/lc_widgetviewportrenderer.cpp \
-    lib/modification/lc_align.h \
-    ui/action_options/lc_action_options_properties_filler_base.h \
-    ui/action_options/curve/lc_arc_2points_options_widget.h \
-    ui/action_options/curve/lc_arc_2_points_options_widget_filler.h \
-    ui/action_options/misc/lc_center_line_options_widget.h \
-    ui/action_options/misc/lc_center_line_options_filler.h \
-    ui/action_options/misc/lc_draw_bounding_box_options_widget.h \
-    ui/action_options/misc/lc_draw_bounding_box_options_filler.h \
-    ui/action_options/modify/lc_align_options_widget.h \
-    ui/action_options/modify/lc_align_options_filler.h \
-    ui/action_options/modify/lc_align_single_options_filler.h \
-    ui/action_options/modify/lc_align_single_options_widget.h \
-    ui/action_options/modify/lc_align_ref_options_widget.h \
-    ui/action_options/modify/lc_align_ref_options_filler.h \
-    ui/action_options/other/lc_ucs_create_options_widget.h \
-    ui/action_options/other/lc_ucs_create_options_filler.h \
-    ui/action_options/spline/lc_spline_explode_options_widget.h \
-    ui/action_options/spline/lc_spline_explode_options_filler.h \
-    ui/action_options/spline/lc_spline_from_polyline_options_widget.h \
-    ui/action_options/spline/lc_spline_from_polyline_options_filler.h \
-    ui/action_options/edit/lc_paste_to_points_options_widget.h \
-    ui/action_options/edit/lc_paste_to_points_options_filler.h \
-    ui/action_options/point/lc_points_lattice_options_widget.h \
-    ui/action_options/point/lc_points_lattice_options_filler.h \
-    ui/action_options/selection/lc_selectwindowoptions.h \
-    ui/components/status_bar/lc_anglesbasiswidget.h \
-    ui/components/status_bar/lc_qtstatusbarmanager.h \
-    ui/components/status_bar/lc_ucsstatewidget.h \
-    ui/dialogs/entity/lc_entitypropertiesdlg.h \
-    ui/dialogs/main/lc_dlgabout.h \
-    ui/dialogs/main/lc_dlgnewversionavailable.h \
-    ui/dialogs/settings/options_widget/lc_iconcolorsoptions.h \
-    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.h \
-    ui/dock_widgets/ucs_list/lc_dlgucsproperties.h \
-    ui/dock_widgets/ucs_list/lc_ucslistbutton.h \
-    ui/dock_widgets/ucs_list/lc_ucslistmodel.h \
-    ui/dock_widgets/ucs_list/lc_ucslistoptions.h \
-    ui/dock_widgets/ucs_list/lc_ucslistwidget.h \
-    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.h \
-    ui/dock_widgets/views_list/lc_namedviewsbutton.h \
-    ui/dock_widgets/views_list/lc_namedviewslistoptions.h \
-    ui/dock_widgets/views_list/lc_namedviewslistwidget.h \
-    ui/dock_widgets/views_list/lc_namedviewsmodel.h \
-    ui/dock_widgets/workspaces/lc_workspacelistbutton.h \
-    ui/dock_widgets/cad/lc_caddockwidget.h \
-    ui/main/support/lc_lastopenfilesopener.h \
-    ui/main/workspaces/lc_workspacesmanager.h \
-    ui/main/release_check/lc_releasechecker.h \
-    lib/gui/grid/lc_gridsystem.h \
-    lib/gui/grid/lc_isometricgrid.h \
-    lib/gui/grid/lc_lattice.h \
-    lib/gui/grid/lc_orthogonalgrid.h \
-    lib/gui/rs_commandevent.h \
-    lib/gui/rs_coordinateevent.h \
-    lib/gui/rs_dialogfactory.h \
-    lib/gui/rs_dialogfactoryinterface.h \
-    lib/gui/rs_graphicview.h \
-    lib/gui/grid/rs_grid.h \
-    lib/gui/rs_linetypepattern.h \
-    lib/gui/rs_mainwindowinterface.h \
-    lib/gui/render/rs_painter.h \
-    lib/gui/lc_coordinates_mapper.h \
-    ui/main/support/lc_customstylehelper.h \
-    ui/main/support/lc_gridviewinvoker.h \
-    ui/main/support/lc_infocursorsettingsmanager.h \
-    ui/main/workspaces/lc_workspacesinvoker.h \
-    ui/view/lc_printpreviewview.h \
-    lib/information/rs_locale.h \
-    lib/information/rs_information.h \
-    lib/information/rs_infoarea.h \
-    lib/math/lc_archparser.h \
-    lib/math/lc_convert.h \
-    lib/math/lc_linemath.h \
-    lib/math/lc_formatter.h \
-    lib/modification/rs_modification.h \
-    lib/selection/rs_selection.h \
+    lib/scripting/rs_python.h \
+    lib/scripting/rs_python_wrappers.h \
+    lib/scripting/rs_script.h \
+    lib/scripting/rs_scriptlist.h \
+    lib/scripting/rs_simplepython.h \
     lib/selection/lc_selectionpredicate.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_arc.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_base.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_circle.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_image.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_insert.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_leader.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_line.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_point.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_spline.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_text.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h \
     lib/selection/metaentity/lc_entitymatchdescriptor.h \
     lib/selection/metaentity/lc_entitymatchdescriptorsregistry.h \
     lib/selection/metaentity/lc_entitymatcher.h \
@@ -806,57 +946,479 @@ HEADERS += \
     lib/selection/metaentity/lc_typedentitymatcher.h \
     lib/selection/metaentity/lc_vectorentitymatcher.h \
     lib/selection/metaentity/lc_vectorlistentitymatcher.h \
-    lib/selection/metaentity/entities/lc_matchdescriptor_line.h          \
-    lib/selection/metaentity/entities/lc_matchdescriptor_base.h          \
-    lib/selection/metaentity/entities/lc_matchdescriptor_circle.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_arc.h           \
-    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h      \
-    lib/selection/metaentity/entities/lc_matchdescriptor_spline.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h         \
-    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h     \
-    lib/selection/metaentity/entities/lc_matchdescriptor_insert.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_text.h          \
-    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h         \
-    lib/selection/metaentity/entities/lc_matchdescriptor_image.h         \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h       \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h     \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.h    \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h     \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h  \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.h    \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.h   \
-    lib/selection/metaentity/entities/lc_matchdescriptor_leader.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h      \
-    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h     \
-    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h      \
-    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.h       \
-    lib/selection/metaentity/entities/lc_matchdescriptor_point.h         \
-    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.h \
-    lib/math/rs_math.h \
-    lib/math/lc_interval.h \
-    lib/math/lc_quadratic.h \
+    lib/selection/rs_selection.h \
     main/console_command_utils.h \
+    main/console_dxf2dwg.h \
+    main/console_dxf2pdf/console_dxf2pdf.h \
+    main/console_dxf2pdf/pdf_print_loop.h \
     main/console_dxf2png.h \
-    test/lc_simpletests.h \
-    lib/generators/makercamsvg/lc_makercamsvg.h \
-    lib/generators/makercamsvg/lc_xmlwriterinterface.h \
-    lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.h \
-    lib/engine/document/entities/lc_rect.h \
-    lib/engine/utils/lc_rtree.h \
-    lib/engine/undo/lc_undosection.h \
-    lib/printing/lc_printing.h \
+    main/doc_plugin_interface.h \
     main/lc_application.h \
     main/lc_crash_handler.h \
-    ui/action_options/curve/lc_ellipse_arc_options_widget.h \
+    main/main.h \
+    main/qc_dialogfactory.h \
+    plugins/document_interface.h \
+    plugins/intern/qc_actiongetent.h \
+    plugins/intern/qc_actiongetpoint.h \
+    plugins/intern/qc_actiongetselect.h \
+    plugins/lc_plugininvoker.h \
+    plugins/qc_plugininterface.h \
+    settings/lc_settings_app_styling.h \
+    settings/lc_settings_appearance.h \
+    settings/lc_settings_cad_preferences.h \
+    settings/lc_settings_colors.h \
+    settings/lc_settings_colors_semantics.h \
+    settings/lc_settings_commands_promotion.h \
+    settings/lc_settings_defaults.h \
+    settings/lc_settings_grid.h \
+    settings/lc_settings_hardware.h \
+    settings/lc_settings_info_overlay_cursor.h \
+    settings/lc_settings_keyboard.h \
+    settings/lc_settings_modify.h \
+    settings/lc_settings_paths.h \
+    settings/lc_settings_relative_position_assistant.h \
+    settings/lc_settings_render.h \
+    settings/lc_settings_selection.h \
+    settings/lc_settings_snap.h \
+    settings/lc_settings_snap_state.h \
+    settings/lc_settings_snap_visual.h \
+    settings/lc_settings_startup.h \
+    settings/lc_settings_widget.h \
+    ui/action_options/circle/lc_circle_by_arc_options_filler.h \
+    ui/action_options/circle/lc_circle_by_arc_options_widget.h \
+    ui/action_options/circle/lc_circle_center_radius_options_filler.h \
+    ui/action_options/circle/lc_circle_center_radius_options_widget.h \
+    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.h \
+    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.h \
+    ui/action_options/curve/lc_arc_2_points_options_widget_filler.h \
+    ui/action_options/curve/lc_arc_2points_options_widget.h \
+    ui/action_options/curve/lc_arc_center_point_param_options_filler.h \
+    ui/action_options/curve/lc_arc_center_point_param_options_widget.h \
+    ui/action_options/curve/lc_arc_tangential_options_filler.h \
+    ui/action_options/curve/lc_arc_tangential_options_widget.h \
     ui/action_options/curve/lc_ellipse_arc_options_filler.h \
-    ui/action_options/ellipse/lc_ellipse_1point_options_widget.h \
+    ui/action_options/curve/lc_ellipse_arc_options_widget.h \
+    ui/action_options/dimensions/qg_dimoptions.h \
+    ui/action_options/edit/lc_paste_to_points_options_filler.h \
+    ui/action_options/edit/lc_paste_to_points_options_widget.h \
+    ui/action_options/edit/lc_paste_transform_options_filler.h \
+    ui/action_options/edit/lc_paste_transform_options_widget.h \
     ui/action_options/ellipse/lc_ellipse_1_point_options_filler.h \
+    ui/action_options/ellipse/lc_ellipse_1point_options_widget.h \
+    ui/action_options/image/lc_image_options_filler.h \
+    ui/action_options/image/lc_image_options_widget.h \
+    ui/action_options/info/lc_info_dist_point_to_entity_options_filler.h \
+    ui/action_options/info/lc_info_dist_point_to_entity_options_widget.h \
+    ui/action_options/insert/lc_block_insert_options_filler.h \
+    ui/action_options/insert/lc_block_insert_options_widget.h \
+    ui/action_options/insert/lc_block_library_insert_options_filler.h \
+    ui/action_options/insert/lc_block_library_insert_options_widget.h \
+    ui/action_options/lc_action_options_manager.h \
+    ui/action_options/lc_action_options_properties_filler_base.h \
+    ui/action_options/line/lc_line_angle_options_filler.h \
+    ui/action_options/line/lc_line_angle_options_widget.h \
+    ui/action_options/line/lc_line_angle_rel_options_filler.h \
+    ui/action_options/line/lc_line_angle_rel_options_widget.h \
+    ui/action_options/line/lc_line_bisector_options_filler.h \
+    ui/action_options/line/lc_line_bisector_options_widget.h \
+    ui/action_options/line/lc_line_from_point_to_line_options_filler.h \
+    ui/action_options/line/lc_line_from_point_to_line_options_widget.h \
+    ui/action_options/line/lc_line_options_filler.h \
+    ui/action_options/line/lc_line_options_widget.h \
+    ui/action_options/line/lc_line_parallel_options_filler.h \
+    ui/action_options/line/lc_line_parallel_options_widget.h \
+    ui/action_options/line/lc_line_parallel_through_options_filler.h \
+    ui/action_options/line/lc_line_parallel_through_options_widget.h \
+    ui/action_options/line/lc_line_radiant_options_filler.h \
+    ui/action_options/line/lc_line_radiant_options_widget.h \
+    ui/action_options/line/lc_line_rel_angle_options_filler.h \
+    ui/action_options/line/lc_line_rel_angle_options_widget.h \
+    ui/action_options/line/lc_line_snake_options_filler.h \
+    ui/action_options/line/lc_line_snake_options_widget.h \
+    ui/action_options/line/lc_slice_divide_options_filler.h \
+    ui/action_options/line/lc_slice_divide_options_widget.h \
+    ui/action_options/misc/lc_center_line_options_filler.h \
+    ui/action_options/misc/lc_center_line_options_widget.h \
+    ui/action_options/misc/lc_center_mark_options_filler.h \
+    ui/action_options/misc/lc_center_mark_options_widget.h \
+    ui/action_options/misc/lc_draw_bounding_box_options_filler.h \
+    ui/action_options/misc/lc_draw_bounding_box_options_widget.h \
+    ui/action_options/modify/lc_align_options_filler.h \
+    ui/action_options/modify/lc_align_options_widget.h \
+    ui/action_options/modify/lc_align_ref_options_filler.h \
+    ui/action_options/modify/lc_align_ref_options_widget.h \
+    ui/action_options/modify/lc_align_single_options_filler.h \
+    ui/action_options/modify/lc_align_single_options_widget.h \
+    ui/action_options/modify/lc_bevel_options_filler.h \
+    ui/action_options/modify/lc_bevel_options_widget.h \
+    ui/action_options/modify/lc_break_divide_options_filler.h \
+    ui/action_options/modify/lc_break_divide_options_widget.h \
+    ui/action_options/modify/lc_duplicate_options_filler.h \
+    ui/action_options/modify/lc_duplicate_options_widget.h \
+    ui/action_options/modify/lc_line_gap_options_filler.h \
+    ui/action_options/modify/lc_line_gap_options_widget.h \
+    ui/action_options/modify/lc_line_join_options_filler.h \
+    ui/action_options/modify/lc_line_join_options_widget.h \
+    ui/action_options/modify/lc_mirror_options_filler.h \
+    ui/action_options/modify/lc_mirror_options_widget.h \
+    ui/action_options/modify/lc_move_options_filler.h \
+    ui/action_options/modify/lc_move_options_widget.h \
+    ui/action_options/modify/lc_move_rotate_options_filler.h \
+    ui/action_options/modify/lc_move_rotate_options_widget.h \
+    ui/action_options/modify/lc_offset_options_filler.h \
+    ui/action_options/modify/lc_offset_options_widget.h \
+    ui/action_options/modify/lc_rotate_2_options_filler.h \
+    ui/action_options/modify/lc_rotate_2_options_widget.h \
+    ui/action_options/modify/lc_rotate_options_filler.h \
+    ui/action_options/modify/lc_rotate_options_widget.h \
+    ui/action_options/modify/lc_round_options_filler.h \
+    ui/action_options/modify/lc_round_options_widget.h \
+    ui/action_options/modify/lc_scale_options_filler.h \
+    ui/action_options/modify/lc_scale_options_widget.h \
+    ui/action_options/modify/lc_stretch_options_filler.h \
+    ui/action_options/modify/lc_stretch_options_widget.h \
+    ui/action_options/modify/lc_trim_amount_options_filler.h \
+    ui/action_options/modify/lc_trim_amount_options_widget.h \
+    ui/action_options/other/lc_ucs_create_options_filler.h \
+    ui/action_options/other/lc_ucs_create_options_widget.h \
+    ui/action_options/point/lc_points_lattice_options_filler.h \
+    ui/action_options/point/lc_points_lattice_options_widget.h \
+    ui/action_options/point/lc_points_line_options_filler.h \
+    ui/action_options/point/lc_points_line_options_widget.h \
+    ui/action_options/polygon/lc_polygon_options_filler.h \
+    ui/action_options/polygon/lc_polygon_options_widget.h \
+    ui/action_options/polygon/lc_polygon_side_side_options_filler.h \
+    ui/action_options/polygon/lc_star_options_filler.h \
+    ui/action_options/polygon/lc_star_options_widget.h \
+    ui/action_options/polyline/lc_polyline_equidistant_options_filler.h \
+    ui/action_options/polyline/lc_polyline_equidistant_options_widget.h \
+    ui/action_options/polyline/lc_polyline_options_filler.h \
+    ui/action_options/polyline/lc_polyline_options_widget.h \
+    ui/action_options/print_preview/lc_print_preview_options_filler.h \
+    ui/action_options/print_preview/lc_print_preview_options_widget.h \
+    ui/action_options/rect/lc_rectangle_1_point_options_filler.h \
+    ui/action_options/rect/lc_rectangle_1point_options_widget.h \
+    ui/action_options/rect/lc_rectangle_2points_options_filler.h \
+    ui/action_options/rect/lc_rectangle_2points_options_widget.h \
+    ui/action_options/rect/lc_rectangle_3_points_options_filler.h \
+    ui/action_options/rect/lc_rectangle_3points_options_widget.h \
+    ui/action_options/rect/lc_rectangle_abstract_options_filler.h \
+    ui/action_options/selection/lc_select_window_options_filler.h \
+    ui/action_options/selection/lc_selectwindowoptions.h \
+    ui/action_options/snap/qg_snapdistoptions.h \
+    ui/action_options/snap/qg_snapmiddleoptions.h \
+    ui/action_options/spline/lc_spline_explode_options_filler.h \
+    ui/action_options/spline/lc_spline_explode_options_widget.h \
+    ui/action_options/spline/lc_spline_from_polyline_options_filler.h \
+    ui/action_options/spline/lc_spline_from_polyline_options_widget.h \
+    ui/action_options/spline/lc_spline_options_filler.h \
+    ui/action_options/spline/lc_spline_options_widget.h \
+    ui/action_options/text/lc_m_text_options_filler.h \
+    ui/action_options/text/lc_m_text_options_widget.h \
+    ui/action_options/text/lc_text_options_filler.h \
+    ui/action_options/text/lc_text_options_widget.h \
+    ui/actions/lc_action.h \
+    ui/actions/lc_action_factory_base.h \
+    ui/actions/lc_action_group.h \
+    ui/actions/lc_action_group_manager.h \
+    ui/actions/lc_action_tooltip_builder.h \
+    ui/actions/shortcuts/lc_repository_shortcuts.h \
+    ui/actions/shortcuts/lc_shortcut_info.h \
+    ui/actions/shortcuts/lc_shortcuts_manager.h \
+    ui/actions/shortcuts/lc_shortcuts_storage.h \
+    ui/components/buttons/lc_color_button.h \
+    ui/components/buttons/lc_hyperlink_button.h \
+    ui/components/comboboxes/comboboxoption.h \
+    ui/components/comboboxes/lc_content_adjustable_combo_box.h \
+    ui/components/comboboxes/lc_lazy_font_combo_box.h \
+    ui/components/comboboxes/qg_colorbox.h \
+    ui/components/comboboxes/qg_fontbox.h \
+    ui/components/comboboxes/qg_layerbox.h \
+    ui/components/comboboxes/qg_linetypebox.h \
+    ui/components/comboboxes/qg_patternbox.h \
+    ui/components/comboboxes/qg_widthbox.h \
+    ui/components/containers/lc_optionswidgetsholder.h \
+    ui/components/containers/lc_snapoptionswidgetsholder.h \
+    ui/components/creators/actionlist.h \
+    ui/components/edits/lc_search_line_edit.h \
+    ui/components/layouts/lc_flexlayout.h \
+    ui/components/lc_custom_title_bar_widget.h \
+    ui/components/lc_icon_label.h \
+    ui/components/lc_plaintextedit.h \
+    ui/components/lc_textedit.h \
+    ui/components/pen/qg_widgetpen.h \
+    ui/components/qg_scrollbar.h \
+    ui/components/relative_position_assistant/lc_relative_position_editing_widget.h \
+    ui/components/relative_position_assistant/lc_relative_position_evaluator.h \
+    ui/components/status_bar/lc_anglesbasiswidget.h \
+    ui/components/status_bar/lc_qtstatusbarmanager.h \
     ui/components/status_bar/lc_relzerocoordinateswidget.h \
+    ui/components/status_bar/lc_ucsstatewidget.h \
+    ui/components/status_bar/qg_activelayername.h \
+    ui/components/status_bar/qg_coordinatewidget.h \
+    ui/components/status_bar/qg_mousewidget.h \
+    ui/components/status_bar/qg_selectionwidget.h \
+    ui/components/status_bar/twostackedlabels.h \
+    ui/components/textfileviewer.h \
+    ui/components/toolbars/qg_pentoolbar.h \
+    ui/components/toolbars/qg_snaptoolbar.h \
+    ui/components/treeviews/lc_placeholder_tree_view.h \
+    ui/components/utils/lc_entitymetauiutils.h \
+    ui/components/utils/lc_guarded_signals_blocker.h \
+    ui/components/utils/lc_item_info.h \
+    ui/components/utils/lc_mouse_tracking_table_view.h \
+    ui/components/utils/lc_rotated_icon_engine.h \
+    ui/components/utils/lc_tableitem_delegate_base.h \
+    ui/components/utils/lc_wait_cursor_guard.h \
+    ui/dialogs/actions/qg_layerdialog.h \
+    ui/dialogs/actions/quick_selection/lc_dlgquickselection.h \
+    ui/dialogs/entity/lc_dlg_dimension.h \
+    ui/dialogs/entity/lc_dlg_entityproperties.h \
+    ui/dialogs/entity/lc_dlg_tolerance.h \
+    ui/dialogs/entity/lc_entitypropertiesdlg.h \
+    ui/dialogs/entity/lc_entitypropertieseditor.h \
+    ui/dialogs/entity/lc_entitypropertieseditorsupport.h \
+    ui/dialogs/entity/lc_entitypropertieseditorwidget.h \
+    ui/dialogs/entity/lc_hatchpropertieseditingwidget.h \
+    ui/dialogs/entity/lc_mtextpropertieseditingwidget.h \
+    ui/dialogs/entity/lc_pointpickbutton.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_arc.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_circle.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_image.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_insert.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_line.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_parabola.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_point.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_polyline.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_spline.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.h \
+    ui/dialogs/entity/lc_textpropertieseditingwidget.h \
+    ui/dialogs/entity/qg_blockdialog.h \
+    ui/dialogs/entity/qg_dimensionlabeleditor.h \
+    ui/dialogs/entity/qg_dlg_attributes.h \
+    ui/dialogs/entity/qg_dlg_hatch.h \
+    ui/dialogs/entity/qg_dlg_mtext.h \
+    ui/dialogs/entity/qg_dlg_text.h \
+    ui/dialogs/file/export/image/lc_exporttoimageservice.h \
+    ui/dialogs/file/export/image/lc_settings_export_to_image.h \
+    ui/dialogs/file/export/image/qg_dlgimageoptions.h \
+    ui/dialogs/file/export/layers/lc_exportlayersdialogservice.h \
+    ui/dialogs/file/export/layers/lc_filedialogservice.h \
+    ui/dialogs/file/export/layers/lc_layerexportoptions.h \
+    ui/dialogs/file/export/layers/lc_settings_export_layers.h \
+    ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.h \
+    ui/dialogs/file/qg_filedialog.h \
     ui/dialogs/lc_dialog.h \
-    ui/main/lc_mdiapplicationwindow.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h \
+    ui/dialogs/lc_inputtextdialog.h \
+    ui/dialogs/main/lc_dlgabout.h \
+    ui/dialogs/main/lc_dlgnewversionavailable.h \
+    ui/dialogs/main/qg_dlginitial.h \
+    ui/dialogs/main/qg_exitdialog.h \
+    ui/dialogs/qg_dialogfactory.h \
+    ui/dialogs/settings/backup/lc_application_backup_service.h \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.h \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewgraphicview.h \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.h \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_tabproxywidget.h \
+    ui/dialogs/settings/dimstyles/lc_dimstyleitem.h \
+    ui/dialogs/settings/dimstyles/lc_dimstyleslistmodel.h \
+    ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.h \
+    ui/dialogs/settings/options_customization/lc_settings_manager_customization.h \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_commands.h \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus.h \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus_toolbars.h \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_shortcuts.h \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_commands.h \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_custom_menus.h \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_customization_profiles.h \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_menus_toolbars.h \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_shortcuts.h \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_generator.h \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_options.h \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_dlg_cheatsheet_options.h \
+    ui/dialogs/settings/options_customization/support/lc_abstract_tree_item.h \
+    ui/dialogs/settings/options_customization/support/lc_action_mapping_item_base.h \
+    ui/dialogs/settings/options_customization/support/lc_action_mapping_tree_model_base.h \
+    ui/dialogs/settings/options_customization/support/lc_actions_dual_list_widget.h \
+    ui/dialogs/settings/options_customization/support/lc_actions_tree_model.h \
+    ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.h \
+    ui/dialogs/settings/options_customization/support/lc_commands_tree_item.h \
+    ui/dialogs/settings/options_customization/support/lc_commands_tree_model.h \
+    ui/dialogs/settings/options_customization/support/lc_customization_import_export_helper.h \
+    ui/dialogs/settings/options_customization/support/lc_dlg_action_group_config.h \
+    ui/dialogs/settings/options_customization/support/lc_dlg_icon_picker.h \
+    ui/dialogs/settings/options_customization/support/lc_menu_trigger_inspector.h \
+    ui/dialogs/settings/options_customization/support/lc_pages_utils.h \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_button.h \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_search_popup.h \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_tree_item.h \
+    ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_model.h \
+    ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_view.h \
+    ui/dialogs/settings/options_device/lc_deviceoptions.h \
+    ui/dialogs/settings/options_drafting/lc_settings_manager_drafting.h \
+    ui/dialogs/settings/options_drafting/managers/lc_drafting_metrics_defaults.h \
+    ui/dialogs/settings/options_drafting/managers/lc_preset_manager_drafting_metrics.h \
+    ui/dialogs/settings/options_drafting/managers/lc_preset_manager_drafting_theme.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.h \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.h \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_markers.h \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_overlays.h \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_renderer.h \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_snapping.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_points.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_info_cursor.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_preview.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_indicator.h \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_visual.h \
+    ui/dialogs/settings/options_drafting/support/lc_drafting_preview_bottom_bar.h \
+    ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.h \
+    ui/dialogs/settings/options_drafting/support/lc_graphic_view_preview_widget.h \
+    ui/dialogs/settings/options_drawing/lc_dimstylesexporter.h \
+    ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.h \
+    ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.h \
+    ui/dialogs/settings/options_drawing/lc_settings_manager_drawing.h \
+    ui/dialogs/settings/options_drawing/lg_dimzerosbox.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_dimensions.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_grid.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_meta.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_paper.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_points.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_splines.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_units.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_user_data.h \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_variables.h \
+    ui/dialogs/settings/options_drawing/support/lc_document_settings_backend.h \
+    ui/dialogs/settings/options_general/lc_settings_manager_application.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_startup.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_language.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_maintenance.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_paths.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.h \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.h \
+    ui/dialogs/settings/options_widget/lc_settings_manager_styling.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_metrics.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_skin.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_icons_style.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_styling_base.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_typography.h \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_icons_style.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_behavior.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_controls.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_views_tabs.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_containers.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_palette.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_toolbars_menus.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_toolbars_and_docks.h \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_typography.h \
+    ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.h \
+    ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.h \
+    ui/dialogs/settings/options_widget/support/lc_skin_archetype_header_bar.h \
+    ui/dialogs/settings/options_widget/support/lc_skin_preview_window.h \
+    ui/dialogs/settings/options_widget/support/lc_styling_preview_bottom_bar.h \
+    ui/dialogs/settings/options_widget/support/lc_styling_preview_controller.h \
+    ui/dialogs/settings/support/lc_abstract_preset_manager.h \
+    ui/dialogs/settings/support/lc_dlg_checklist_selection.h \
+    ui/dialogs/settings/support/lc_editor_utils.h \
+    ui/dialogs/settings/support/lc_highlight_overlay.h \
+    ui/dialogs/settings/support/lc_preset_management_bar.h \
+    ui/dialogs/settings/support/lc_preset_manager_config_base.h \
+    ui/dialogs/settings/support/lc_preset_manager_interface.h \
+    ui/dialogs/settings/support/lc_preview_visibility_controller.h \
+    ui/dialogs/settings/support/lc_profile_helper_base.h \
+    ui/dialogs/settings/support/lc_settings_backend.h \
+    ui/dialogs/settings/support/lc_settings_banner_widget.h \
+    ui/dialogs/settings/support/lc_settings_binder.h \
+    ui/dialogs/settings/support/lc_settings_dialog.h \
+    ui/dialogs/settings/support/lc_settings_filter_model.h \
+    ui/dialogs/settings/support/lc_settings_list_widget.h \
+    ui/dialogs/settings/support/lc_settings_manager_base.h \
+    ui/dialogs/settings/support/lc_settings_page_adapter.h \
+    ui/dialogs/settings/support/lc_settings_page_base.h \
+    ui/dialogs/settings/support/lc_settings_page_index.h \
+    ui/dialogs/settings/support/lc_settings_page_interface.h \
+    ui/dialogs/settings/support/lc_settings_page_profile_exchange_base.h \
+    ui/dialogs/settings/support/lc_settings_registry.h \
+    ui/dialogs/settings/support/lc_settings_types.h \
+    ui/dock_widgets/block_widget/qg_blockwidget.h \
+    ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.h \
+    ui/dock_widgets/cad/lc_caddockwidget.h \
+    ui/dock_widgets/command_line/qg_commandedit.h \
+    ui/dock_widgets/command_line/qg_commandhistory.h \
+    ui/dock_widgets/command_line/qg_commandwidget.h \
+    ui/dock_widgets/entity_info/lc_quickinfobasedata.h \
+    ui/dock_widgets/entity_info/lc_quickinfoentitydata.h \
+    ui/dock_widgets/entity_info/lc_quickinfopointsdata.h \
+    ui/dock_widgets/entity_info/lc_quickinfowidget.h \
+    ui/dock_widgets/entity_info/lc_quickinfowidgetoptions.h \
+    ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.h \
+    ui/dock_widgets/entity_info/lc_settings_quick_info_widget.h \
+    ui/dock_widgets/layer_widget/qg_layerwidget.h \
+    ui/dock_widgets/layers_tree/lc_layerdialog_ex.h \
+    ui/dock_widgets/layers_tree/lc_layertreeitem.h \
+    ui/dock_widgets/layers_tree/lc_layertreemodel.h \
+    ui/dock_widgets/layers_tree/lc_layertreemodel_options.h \
+    ui/dock_widgets/layers_tree/lc_layertreeoptionsdialog.h \
+    ui/dock_widgets/layers_tree/lc_layertreeview.h \
+    ui/dock_widgets/layers_tree/lc_layertreewidget.h \
+    ui/dock_widgets/layers_tree/lc_settings_layer_tree_widget.h \
+    ui/dock_widgets/lc_dock_widget_base.h \
+    ui/dock_widgets/lc_dockwidget.h \
+    ui/dock_widgets/lc_graphicviewawarewidget.h \
+    ui/dock_widgets/library_widget/qg_librarywidget.h \
+    ui/dock_widgets/pen_palette/lc_peninforegistry.h \
+    ui/dock_widgets/pen_palette/lc_penitem.h \
+    ui/dock_widgets/pen_palette/lc_penpalettedata.h \
+    ui/dock_widgets/pen_palette/lc_penpalettemodel.h \
+    ui/dock_widgets/pen_palette/lc_penpaletteoptions.h \
+    ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.h \
+    ui/dock_widgets/pen_palette/lc_penpalettewidget.h \
+    ui/dock_widgets/pen_palette/lc_settings_pen_palette_widget.h \
+    ui/dock_widgets/pen_wizard/colorcombobox.h \
+    ui/dock_widgets/pen_wizard/colorwizard.h \
+    ui/dock_widgets/pen_wizard/lc_penwizard.h \
+    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.h \
+    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.h \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
+    ui/dock_widgets/property_sheet/lc_settings_property_sheet_widget.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_stopper.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_button_handler.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_value_typed.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_paint_context.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.h \
@@ -865,29 +1427,60 @@ HEADERS += \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed_compound.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_value_typed.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_button_handler.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_stopper.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.h \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.h \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.h \
     ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.h \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.h \
     ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.h \
-    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.h \
-    ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_component.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h \
+    ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.h \
     ui/dock_widgets/property_sheet/properties/action/lc_property_action.h \
     ui/dock_widgets/property_sheet/properties/action/lc_property_action_link_view.h \
     ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.h \
@@ -897,12 +1490,12 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox.h \
     ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox_view.h \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double.h \
-    ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.h \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.h \
-    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.h \
+    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_property_enum_combobox_view.h \
     ui/dock_widgets/property_sheet/properties/int/lc_property_int.h \
     ui/dock_widgets/property_sheet/properties/int/lc_property_int_list_combobox_view.h \
@@ -910,6 +1503,8 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/layer/lc_property_layer.h \
     ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox.h \
     ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h \
+    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.h \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype.h \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox.h \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.h \
@@ -921,66 +1516,143 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.h \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view_handler.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox_view.h \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.h \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_lineedit_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.h \
-    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
-    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.h \
-    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h \
-    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h \
-    ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h  \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.h  \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_component.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.h
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.h \
+    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.h \
+    ui/dock_widgets/ucs_list/lc_dlgucsproperties.h \
+    ui/dock_widgets/ucs_list/lc_settings_ucs_list_widget.h \
+    ui/dock_widgets/ucs_list/lc_ucslistbutton.h \
+    ui/dock_widgets/ucs_list/lc_ucslistmodel.h \
+    ui/dock_widgets/ucs_list/lc_ucslistoptions.h \
+    ui/dock_widgets/ucs_list/lc_ucslistwidget.h \
+    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.h \
+    ui/dock_widgets/views_list/lc_namedviewsbutton.h \
+    ui/dock_widgets/views_list/lc_namedviewslistoptions.h \
+    ui/dock_widgets/views_list/lc_namedviewslistwidget.h \
+    ui/dock_widgets/views_list/lc_namedviewsmodel.h \
+    ui/dock_widgets/views_list/lc_settings_named_views_list_widget.h \
+    ui/dock_widgets/workspaces/lc_workspacelistbutton.h \
+    ui/lc_actionhandlerfactory.h \
+    ui/lc_snapmanager.h \
+    ui/lc_uiutils.h \
+    ui/main/customization/lc_customization_manager.h \
+    ui/main/fontviewer/lc_fontfileviewer.h \
+    ui/main/init/lc_action_factory.h \
+    ui/main/init/lc_application_window_initializer.h \
+    ui/main/init/lc_default_context_menus_builder.h \
+    ui/main/init/lc_default_navigation_layout_builder.h \
+    ui/main/init/lc_dock_names.h \
+    ui/main/init/lc_group_names.h \
+    ui/main/init/lc_menu_factory_base.h \
+    ui/main/init/lc_special_menu_service.h \
+    ui/main/init/lc_toolbar_names.h \
+    ui/main/init/lc_widget_factory.h \
+    ui/main/lc_appwindowaware.h \
+    ui/main/lc_defaultactioncontext.h \
+    ui/main/lc_layouttabbar.h \
+    ui/main/lc_mdiapplicationwindow.h \
+    ui/main/mainwindowx.h \
+    ui/main/persistence/lc_documentsstorage.h \
+    ui/main/qc_applicationwindow.h \
+    ui/main/qc_mdiwindow.h \
+    ui/main/release_check/lc_releasechecker.h \
+    ui/main/support/lc_app_window_dock_layout_manger.h \
+    ui/main/support/lc_app_window_tool_bar_manager.h \
+    ui/main/support/lc_appwindowdialogsinvoker.h \
+    ui/main/support/lc_dock_tab_bar_manager.h \
+    ui/main/support/lc_gridviewinvoker.h \
+    ui/main/support/lc_infocursorsettingsmanager.h \
+    ui/main/support/lc_lastopenfilesopener.h \
+    ui/main/support/qg_recentfiles.h \
+    ui/main/workspaces/lc_workspacesinvoker.h \
+    ui/main/workspaces/lc_workspacesmanager.h \
+    ui/main/workspaces/navigation/lc_action_node.h \
+    ui/main/workspaces/navigation/lc_navigation_creator.h \
+    ui/main/workspaces/navigation/menus/lc_graphic_view_context_menu_provider.h \
+    ui/main/workspaces/navigation/menus/lc_menu_activator.h \
+    ui/main/workspaces/navigation/menus/lc_menu_builder_base.h \
+    ui/main/workspaces/navigation/menus/lc_special_menu_service_interface.h \
+    ui/main/workspaces/navigation/repository/lc_repository_graphic_view_context_menus.h \
+    ui/main/workspaces/navigation/repository/lc_repository_menu_bar_and_toolbars.h \
+    ui/qg_actionhandler.h \
+    ui/styling/fusion_skin/lc_palette_color_utils.h \
+    ui/styling/fusion_skin/lc_repository_fusion_colors_palette.h \
+    ui/styling/fusion_skin/lc_repository_fusion_metrics.h \
+    ui/styling/fusion_skin/lc_repository_fusion_skin.h \
+    ui/styling/fusion_skin/lc_style_metrics_utils.h \
+    ui/styling/icons_styling/lc_icon_colors_options.h \
+    ui/styling/icons_styling/lc_icon_engine_shared.h \
+    ui/styling/icons_styling/lc_icons_color_utils.h \
+    ui/styling/icons_styling/lc_icons_style_manager.h \
+    ui/styling/icons_styling/lc_icons_style_shared.h \
+    ui/styling/icons_styling/lc_repository_icons_style.h \
+    ui/styling/lc_palette_editor_shared.h \
+    ui/styling/lc_ui_style_manager.h \
+    ui/styling/presets_generator/lc_dlg_styles_presets_generator.h \
+    ui/styling/presets_generator/lc_style_preset_generator.h \
+    ui/styling/proxy_style/events/lc_event_filter_auto_popup_controller.h \
+    ui/styling/proxy_style/events/lc_event_filter_dialog.h \
+    ui/styling/proxy_style/events/lc_event_filter_floating_hud.h \
+    ui/styling/proxy_style/events/lc_event_filter_mnemonic.h \
+    ui/styling/proxy_style/events/lc_event_filter_tool_tip.h \
+    ui/styling/proxy_style/events/lc_event_filter_win_32_window_cloaking.h \
+    ui/styling/proxy_style/events/lc_event_filter_win_resize_native_event.h \
+    ui/styling/proxy_style/events/lc_proxy_style_event_filter.h \
+    ui/styling/proxy_style/lc_detached_menu.h \
+    ui/styling/proxy_style/lc_dock_title_bar.h \
+    ui/styling/proxy_style/lc_proxy_style.h \
+    ui/styling/proxy_style/lc_proxy_style_shared.h \
+    ui/styling/proxy_style/lc_skin_colors_resolver.h \
+    ui/styling/proxy_style/lc_skin_scaled_geometry_provider.h \
+    ui/styling/proxy_style/lc_skin_widgets_layout_resolver.h \
+    ui/styling/support/lc_custom_style_helper.h \
+    ui/styling/support/lc_styling_profile_import_export_helper.h \
+    ui/styling/typography/lc_repository_typography.h \
+    ui/styling/typography/lc_typography_utils.h \
+    ui/styling/viewport/lc_repository_drafting_metrics.h \
+    ui/styling/viewport/lc_repository_drafting_theme.h \
+    ui/styling/widgets/lc_repository_widgets.h \
+    ui/styling/widgets/lc_widgets_config.h \
+    ui/view/lc_centralwidget.h \
+    ui/view/lc_preview_graphic_view.h \
+    ui/view/lc_printpreviewview.h \
+    ui/view/qg_graphicview.h
 
+# ##############################################################################
+# Sources
 SOURCES += \
+    actions/dock_widgets/block/lc_action_block_insert.cpp \
+    actions/dock_widgets/block/rs_actionblocksadd.cpp \
+    actions/dock_widgets/block/rs_actionblocksattributes.cpp \
+    actions/dock_widgets/block/rs_actionblockscreate.cpp \
+    actions/dock_widgets/block/rs_actionblocksedit.cpp \
+    actions/dock_widgets/block/rs_actionblocksfreezeall.cpp \
+    actions/dock_widgets/block/rs_actionblocksremove.cpp \
+    actions/dock_widgets/block/rs_actionblockssave.cpp \
+    actions/dock_widgets/block/rs_actionblockstoggleview.cpp \
+    actions/dock_widgets/entity_info/lc_actioninfopickcoordinates.cpp \
     actions/dock_widgets/layer/lc_actionentitylayerbase.cpp \
     actions/dock_widgets/layer/lc_actionentitylayertoggle.cpp \
     actions/dock_widgets/layer/lc_actionlayerscmd.cpp \
+    actions/dock_widgets/layer/lc_actionlayersexport.cpp \
+    actions/dock_widgets/layer/lc_actionlayerstoggleconstruction.cpp \
+    actions/dock_widgets/layer/rs_actionlayersadd.cpp \
+    actions/dock_widgets/layer/rs_actionlayersedit.cpp \
+    actions/dock_widgets/layer/rs_actionlayersfreezeall.cpp \
+    actions/dock_widgets/layer/rs_actionlayerslockall.cpp \
+    actions/dock_widgets/layer/rs_actionlayersremove.cpp \
+    actions/dock_widgets/layer/rs_actionlayerstogglelock.cpp \
+    actions/dock_widgets/layer/rs_actionlayerstoggleprint.cpp \
+    actions/dock_widgets/layer/rs_actionlayerstoggleview.cpp \
+    actions/dock_widgets/library/lc_action_block_library_insert.cpp \
     actions/dock_widgets/ucs_list/lc_actionucsbydimordinate.cpp \
     actions/dock_widgets/ucs_list/lc_actionucscreate.cpp \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_angle.cpp \
@@ -988,48 +1660,244 @@ SOURCES += \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_height.cpp \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_length.cpp \
     actions/drawing/draw/arc/lc_action_draw_arc_2points_radius.cpp \
+    actions/drawing/draw/arc/lc_action_draw_arc_3points.cpp \
+    actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.cpp \
+    actions/drawing/draw/arc/lc_action_draw_arc_tangential.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_2points.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_3points.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_base.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_by_arc.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_center_point.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_center_radius.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_inscribe.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.cpp \
+    actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.cpp \
+    actions/drawing/draw/curve/lc_action_draw_line_freehand.cpp \
+    actions/drawing/draw/curve/lc_actiondrawdual.cpp \
     actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp \
-    actions/drawing/draw/dimensions/lc_actiondimstyleapply.cpp \
-    actions/drawing/draw/dimensions/lc_actiondrawgdtfeaturecontrolframe.cpp \
+    actions/drawing/draw/curve/lc_actiondrawparabola4points.cpp \
+    actions/drawing/draw/curve/lc_actiondrawparabolaFD.cpp \
+    actions/drawing/draw/dimensions/lc_actioncircledimbase.cpp \
+    actions/drawing/draw/dimensions/lc_actiondimarc.cpp \
+    actions/drawing/draw/dimensions/lc_actiondimlinearbase.cpp \
     actions/drawing/draw/dimensions/lc_actiondimordinate.cpp \
     actions/drawing/draw/dimensions/lc_actiondimordinaterebase.cpp \
+    actions/drawing/draw/dimensions/lc_actiondimstyleapply.cpp \
+    actions/drawing/draw/dimensions/lc_actiondrawdimbaseline.cpp \
+    actions/drawing/draw/dimensions/lc_actiondrawgdtfeaturecontrolframe.cpp \
     actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.cpp \
-    actions/drawing/draw/line/misc/lc_action_draw_center_line.cpp \
-    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimaligned.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimangular.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimdiametric.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimension.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimleader.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimlinear.cpp \
+    actions/drawing/draw/dimensions/rs_actiondimradial.cpp \
+    actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.cpp \
+    actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.cpp \
+    actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.cpp \
+    actions/drawing/draw/ellipse/rs_actiondrawellipse4points.cpp \
+    actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.cpp \
+    actions/drawing/draw/ellipse/rs_actiondrawellipsefocipoint.cpp \
+    actions/drawing/draw/ellipse/rs_actiondrawellipseinscribe.cpp \
+    actions/drawing/draw/hatch/rs_actiondrawhatch.cpp \
+    actions/drawing/draw/image/lc_action_draw_image.cpp \
+    actions/drawing/draw/line/lc_abstractactiondrawline.cpp \
+    actions/drawing/draw/line/lc_action_draw_line.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_angle.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_angle_rel.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_bisector.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_from_point_to_line.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_parallel.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_parallel_through.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_rel_angle.cpp \
+    actions/drawing/draw/line/lc_action_draw_line_snake.cpp \
+    actions/drawing/draw/line/lc_action_draw_slice_divide.cpp \
+    actions/drawing/draw/line/lc_actiondrawlinedirect.cpp \
     actions/drawing/draw/line/misc/lc_action_draw_bounding_box.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.cpp \
-    actions/drawing/draw/spline/lc_action_spline_remove_points.cpp \
-    actions/drawing/draw/spline/lc_action_spline_add_point.cpp \
-    actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp \
-    actions/drawing/draw/spline/lc_action_spline_from_polyline.cpp \
-    actions/drawing/draw/spline/lc_action_spline_remove_between.cpp \
+    actions/drawing/draw/line/misc/lc_action_draw_center_line.cpp \
+    actions/drawing/draw/line/misc/lc_action_draw_center_mark.cpp \
+    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp \
+    actions/drawing/draw/line/rs_actiondrawlinehorvert.cpp \
+    actions/drawing/draw/line/rs_actiondrawlineorthtan.cpp \
+    actions/drawing/draw/line/rs_actiondrawlinetangent1.cpp \
+    actions/drawing/draw/line/rs_actiondrawlinetangent2.cpp \
+    actions/drawing/draw/point/lc_action_draw_point.cpp \
     actions/drawing/draw/point/lc_action_draw_points_lattice.cpp \
+    actions/drawing/draw/point/lc_action_draw_points_line.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_base.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.cpp \
+    actions/drawing/draw/polygon/lc_action_draw_star.cpp \
+    actions/drawing/draw/polyline/lc_action_draw_polyline.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_add.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_append.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_base.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_node.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_equidistant.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_from_segment.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_trim.cpp \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_1point.cpp \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_2points.cpp \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_3points.cpp \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.cpp \
+    actions/drawing/draw/rect/lc_action_draw_rectangle_simple.cpp \
+    actions/drawing/draw/spline/lc_action_draw_spline.cpp \
+    actions/drawing/draw/spline/lc_action_draw_spline_points.cpp \
+    actions/drawing/draw/spline/lc_action_spline_add_point.cpp \
+    actions/drawing/draw/spline/lc_action_spline_append_point.cpp \
+    actions/drawing/draw/spline/lc_action_spline_from_polyline.cpp \
+    actions/drawing/draw/spline/lc_action_spline_modify_base.cpp \
+    actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp \
+    actions/drawing/draw/spline/lc_action_spline_remove_between.cpp \
+    actions/drawing/draw/spline/lc_action_spline_remove_points.cpp \
+    actions/drawing/draw/text/lc_action_draw_mtext.cpp \
+    actions/drawing/draw/text/lc_action_draw_text.cpp \
+    actions/drawing/edit/lc_action_edit_copy_cut.cpp \
     actions/drawing/edit/lc_action_edit_paste_to_points.cpp \
-    actions/drawing/selection/lc_action_select_points.cpp \
+    actions/drawing/edit/lc_action_edit_paste_transform.cpp \
+    actions/drawing/edit/lc_action_edit_undo_redo.cpp \
+    actions/drawing/info/lc_action_info_dist_point_to_entity.cpp \
+    actions/drawing/info/lc_actioninfo3pointsangle.cpp \
     actions/drawing/info/lc_actioninfopoint.cpp \
+    actions/drawing/info/lc_actioninfoproperties.cpp \
+    actions/drawing/info/rs_actioninfoangle.cpp \
+    actions/drawing/info/rs_actioninfoarea.cpp \
+    actions/drawing/info/rs_actioninfodist.cpp \
+    actions/drawing/info/rs_actioninfoinside.cpp \
+    actions/drawing/info/rs_actioninfototallength.cpp \
+    actions/drawing/lc_abstractactionwithpreview.cpp \
+    actions/drawing/modify/lc_action_block_explode.cpp \
     actions/drawing/modify/lc_action_modify_align.cpp \
     actions/drawing/modify/lc_action_modify_align_ref.cpp \
     actions/drawing/modify/lc_action_modify_align_single.cpp \
+    actions/drawing/modify/lc_action_modify_attributes.cpp \
+    actions/drawing/modify/lc_action_modify_base.cpp \
+    actions/drawing/modify/lc_action_modify_bevel.cpp \
+    actions/drawing/modify/lc_action_modify_break_divide.cpp \
+    actions/drawing/modify/lc_action_modify_cut.cpp \
+    actions/drawing/modify/lc_action_modify_delete.cpp \
+    actions/drawing/modify/lc_action_modify_delete_free.cpp \
+    actions/drawing/modify/lc_action_modify_duplicate.cpp \
+    actions/drawing/modify/lc_action_modify_entity.cpp \
+    actions/drawing/modify/lc_action_modify_explode_text.cpp \
+    actions/drawing/modify/lc_action_modify_line_gap.cpp \
+    actions/drawing/modify/lc_action_modify_line_join.cpp \
+    actions/drawing/modify/lc_action_modify_mirror.cpp \
+    actions/drawing/modify/lc_action_modify_move.cpp \
     actions/drawing/modify/lc_action_modify_move_adjust.cpp \
+    actions/drawing/modify/lc_action_modify_move_rotate.cpp \
+    actions/drawing/modify/lc_action_modify_offset.cpp \
+    actions/drawing/modify/lc_action_modify_order.cpp \
+    actions/drawing/modify/lc_action_modify_revert_direction.cpp \
+    actions/drawing/modify/lc_action_modify_rotate.cpp \
+    actions/drawing/modify/lc_action_modify_rotate_twice.cpp \
+    actions/drawing/modify/lc_action_modify_round.cpp \
+    actions/drawing/modify/lc_action_modify_scale.cpp \
+    actions/drawing/modify/lc_action_modify_stretch.cpp \
+    actions/drawing/modify/lc_action_modify_trim.cpp \
+    actions/drawing/modify/lc_action_modify_trim_amount.cpp \
+    actions/drawing/pen/lc_actionpenapply.cpp \
+    actions/drawing/pen/lc_actionpenpick.cpp \
+    actions/drawing/pen/lc_actionpensyncactivebylayer.cpp \
     actions/drawing/pick/lc_actioninteractivepickangle.cpp \
     actions/drawing/pick/lc_actioninteractivepickbase.cpp \
     actions/drawing/pick/lc_actioninteractivepickdistance.cpp \
     actions/drawing/pick/lc_actioninteractivepickposition.cpp \
-    actions/drawing/selection/lc_action_select_quick.cpp \
-    actions/drawing/selection/lc_action_select_single_entity_base.cpp \
+    actions/drawing/rel_zero/rs_actionlockrelativezero.cpp \
+    actions/drawing/rel_zero/rs_actionsetrelativezero.cpp \
+    actions/drawing/rs_actiondefault.cpp \
+    actions/drawing/selection/lc_action_select_all.cpp \
+    actions/drawing/selection/lc_action_select_contour.cpp \
     actions/drawing/selection/lc_action_select_generic.cpp \
+    actions/drawing/selection/lc_action_select_intersected.cpp \
+    actions/drawing/selection/lc_action_select_invert.cpp \
+    actions/drawing/selection/lc_action_select_layer.cpp \
+    actions/drawing/selection/lc_action_select_mode_toggle.cpp \
+    actions/drawing/selection/lc_action_select_points.cpp \
+    actions/drawing/selection/lc_action_select_quick.cpp \
+    actions/drawing/selection/lc_action_select_single.cpp \
+    actions/drawing/selection/lc_action_select_single_entity_base.cpp \
+    actions/drawing/selection/lc_action_select_window.cpp \
+    actions/drawing/snap/lc_actionsnapmiddlemanual.cpp \
+    actions/drawing/snap/rs_actionsnapintersectionmanual.cpp \
+    actions/drawing/zoom/rs_actionzoomauto.cpp \
+    actions/drawing/zoom/rs_actionzoomin.cpp \
+    actions/drawing/zoom/rs_actionzoompan.cpp \
+    actions/drawing/zoom/rs_actionzoomprevious.cpp \
+    actions/drawing/zoom/rs_actionzoomredraw.cpp \
+    actions/drawing/zoom/rs_actionzoomscroll.cpp \
+    actions/drawing/zoom/rs_actionzoomwindow.cpp \
+    actions/file/lc_actionfileexportmakercam.cpp \
+    actions/options/rs_actionoptionsdrawing.cpp \
+    actions/print_preview/rs_actionprintpreview.cpp \
+    cmd/lc_action_command_updater.cpp \
+    cmd/lc_action_type_mapper.cpp \
+    cmd/lc_command_manager.cpp \
+    cmd/lc_default_commands_builder.cpp \
+    cmd/lc_repository_commands.cpp \
+    cmd/rs_commands.cpp \
+    lib/actions/lc_actioncontext.cpp \
     lib/actions/lc_actioninfomessagebuilder.cpp \
+    lib/actions/lc_actionpreselectionawarebase.cpp \
+    lib/actions/lc_modifiersinfo.cpp \
     lib/actions/lc_overlayboxaction.cpp \
-    lib/engine/document/container/lc_pathbuilder.cpp \
     lib/actions/lc_undoabledocumentmodificationaction.cpp \
+    lib/actions/options/lc_action_options_base.cpp \
+    lib/actions/options/lc_action_options_editor_typed.cpp \
+    lib/actions/options/lc_action_options_properties_filler.cpp \
+    lib/actions/options/lc_action_options_support.cpp \
+    lib/actions/options/lc_action_options_widget.cpp \
+    lib/actions/rs_actioninterface.cpp \
+    lib/actions/rs_actionselectbase.cpp \
+    lib/actions/rs_previewactioninterface.cpp \
+    lib/actions/rs_snapper.cpp \
+    lib/actions/visual_snap/lc_visual_snap_data.cpp \
+    lib/actions/visual_snap/lc_visual_snap_manager.cpp \
+    lib/actions/visual_snap/lc_visual_snap_options.cpp \
+    lib/actions/visual_snap/lc_visual_snap_solution_solver.cpp \
+    lib/actions/visual_snap/lc_visual_snap_solution_visualizer.cpp \
+    lib/creation/lc_creation_arc.cpp \
+    lib/creation/lc_creation_circle.cpp \
+    lib/creation/lc_creation_ellipse.cpp \
+    lib/creation/rs_creation.cpp \
+    lib/debug/rs_debug.cpp \
+    lib/engine/clipboard/rs_clipboard.cpp \
+    lib/engine/document/blocks/rs_block.cpp \
+    lib/engine/document/blocks/rs_blocklist.cpp \
+    lib/engine/document/container/lc_containertraverser.cpp \
+    lib/engine/document/container/lc_looputils.cpp \
+    lib/engine/document/container/lc_pathbuilder.cpp \
+    lib/engine/document/container/rs_entitycontainer.cpp \
+    lib/engine/document/dimstyles/lc_dimarrowregistry.cpp \
     lib/engine/document/dimstyles/lc_dimstyle.cpp \
     lib/engine/document/dimstyles/lc_dimstyleslist.cpp \
-    lib/engine/document/dimstyles/lc_dimarrowregistry.cpp \
     lib/engine/document/dimstyles/lc_dimstyletovariablesmapper.cpp \
+    lib/engine/document/entities/lc_cachedlengthentity.cpp \
+    lib/engine/document/entities/lc_curveoffset.cpp \
+    lib/engine/document/entities/lc_dimarc.cpp \
+    lib/engine/document/entities/lc_dimordinate.cpp \
     lib/engine/document/entities/lc_extentitydata.cpp \
+    lib/engine/document/entities/lc_hyperbola.cpp \
+    lib/engine/document/entities/lc_insert_transform.cpp \
+    lib/engine/document/entities/lc_mleader.cpp \
+    lib/engine/document/entities/lc_offsetoutputbudget.cpp \
+    lib/engine/document/entities/lc_offsetresultcheck.cpp \
+    lib/engine/document/entities/lc_parabola.cpp \
+    lib/engine/document/entities/lc_parametriccurveintersection.cpp \
+    lib/engine/document/entities/lc_rect.cpp \
+    lib/engine/document/entities/lc_splinehelper.cpp \
+    lib/engine/document/entities/lc_splinepoints.cpp \
     lib/engine/document/entities/lc_textbidi.cpp \
     lib/engine/document/entities/lc_textdocument.cpp \
-    lib/engine/document/entities/lc_textsourcecodec.cpp \
     lib/engine/document/entities/lc_textentitystate.cpp \
     lib/engine/document/entities/lc_textlayout.cpp \
     lib/engine/document/entities/lc_textoutline.cpp \
@@ -1037,14 +1905,32 @@ SOURCES += \
     lib/engine/document/entities/lc_textprofilebinding.cpp \
     lib/engine/document/entities/lc_textruns.cpp \
     lib/engine/document/entities/lc_textshaper.cpp \
-    lib/engine/document/container/lc_containertraverser.cpp \
-    lib/engine/document/entities/lc_mleader.cpp \
-    lib/engine/document/entities/lc_curveoffset.cpp \
-    lib/engine/document/entities/lc_parametriccurveintersection.cpp \
-    lib/engine/document/entities/lc_offsetoutputbudget.cpp \
-    lib/engine/document/entities/lc_offsetresultcheck.cpp \
-    lib/engine/document/entities/lc_splinehelper.cpp \
+    lib/engine/document/entities/lc_textsourcecodec.cpp \
     lib/engine/document/entities/lc_tolerance.cpp \
+    lib/engine/document/entities/lc_wipeout.cpp \
+    lib/engine/document/entities/rs_arc.cpp \
+    lib/engine/document/entities/rs_atomicentity.cpp \
+    lib/engine/document/entities/rs_circle.cpp \
+    lib/engine/document/entities/rs_constructionline.cpp \
+    lib/engine/document/entities/rs_dimaligned.cpp \
+    lib/engine/document/entities/rs_dimangular.cpp \
+    lib/engine/document/entities/rs_dimdiametric.cpp \
+    lib/engine/document/entities/rs_dimension.cpp \
+    lib/engine/document/entities/rs_dimlinear.cpp \
+    lib/engine/document/entities/rs_dimradial.cpp \
+    lib/engine/document/entities/rs_ellipse.cpp \
+    lib/engine/document/entities/rs_entity.cpp \
+    lib/engine/document/entities/rs_hatch.cpp \
+    lib/engine/document/entities/rs_image.cpp \
+    lib/engine/document/entities/rs_insert.cpp \
+    lib/engine/document/entities/rs_leader.cpp \
+    lib/engine/document/entities/rs_line.cpp \
+    lib/engine/document/entities/rs_mtext.cpp \
+    lib/engine/document/entities/rs_point.cpp \
+    lib/engine/document/entities/rs_polyline.cpp \
+    lib/engine/document/entities/rs_solid.cpp \
+    lib/engine/document/entities/rs_spline.cpp \
+    lib/engine/document/entities/rs_text.cpp \
     lib/engine/document/entities/support/lc_arrow_box.cpp \
     lib/engine/document/entities/support/lc_arrow_circle.cpp \
     lib/engine/document/entities/support/lc_arrow_datum.cpp \
@@ -1058,1023 +1944,328 @@ SOURCES += \
     lib/engine/document/entities/support/lc_arrow_tick.cpp \
     lib/engine/document/entities/support/lc_dimarrowblock.cpp \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.cpp \
+    lib/engine/document/fonts/lc_opentypefont.cpp \
+    lib/engine/document/fonts/lc_textfontregistry.cpp \
+    lib/engine/document/fonts/rs_font.cpp \
+    lib/engine/document/fonts/rs_fontlist.cpp \
+    lib/engine/document/layers/rs_layer.cpp \
+    lib/engine/document/layers/rs_layerlist.cpp \
     lib/engine/document/lc_graphicvariables.cpp \
+    lib/engine/document/lc_plot_settings.cpp \
+    lib/engine/document/linetypes/lc_linetype.cpp \
+    lib/engine/document/linetypes/lc_linetypelist.cpp \
+    lib/engine/document/patterns/rs_pattern.cpp \
+    lib/engine/document/patterns/rs_patternlist.cpp \
+    lib/engine/document/rs_document.cpp \
+    lib/engine/document/rs_graphic.cpp \
     lib/engine/document/selection/lc_selectedset.cpp \
     lib/engine/document/textstyles/lc_textstyle.cpp \
     lib/engine/document/textstyles/lc_textstylelist.cpp \
+    lib/engine/document/ucs/lc_ucs.cpp \
     lib/engine/document/ucs/lc_ucslist.cpp \
-    lib/engine/document/lc_plot_settings.cpp \
+    lib/engine/document/variables/rs_variabledict.cpp \
+    lib/engine/document/views/lc_view.cpp \
+    lib/engine/document/views/lc_viewslist.cpp \
+    lib/engine/lc_colornumbers.cpp \
+    lib/engine/lc_linetypenames.cpp \
     lib/engine/overlays/angles_base/lc_overlayanglesbasemark.cpp \
+    lib/engine/overlays/crosshair/lc_crosshair.cpp \
+    lib/engine/overlays/highlight/lc_highlight.cpp \
     lib/engine/overlays/info_cursor/lc_cursoroverlayinfo.cpp \
     lib/engine/overlays/lc_overlayentitiescontainer.cpp \
     lib/engine/overlays/lc_overlayentity.cpp \
     lib/engine/overlays/lc_overlaysmanager.cpp \
-    lib/engine/overlays/references/lc_refconstructionline.cpp \
-    lib/engine/overlays/ucs_mark/lc_overlayrelativezero.cpp \
-    lib/engine/overlays/ucs_mark/lc_overlayucszero.cpp \
-    lib/engine/overlays/ucs_mark/lc_ucs_mark.cpp \
-    lib/engine/settings/lc_settingsexporter.cpp \
-    lib/engine/undo/lc_undoablerelzero.cpp \
-    lib/engine/utils/lc_rectregion.cpp \
-    lib/filters/lc_embeddedtextxdata.cpp \
-    lib/filters/lc_embeddedtextmodel.cpp \
-    lib/filters/lc_hyperbolaspline.cpp \
-    lib/filters/lc_parabolaspline.cpp \
-    lib/generators/layers/lc_layersexporter.cpp \
-    lib/generators/image/lc_imageexporter.cpp \
-    lib/gui/lc_coordinates_parser.cpp \
-    lib/gui/lc_eventhandler.cpp \
-    lib/gui/lc_graphicviewport.cpp \
-    lib/gui/lc_scrollmodel.cpp \
-    lib/gui/render/headless/lc_printviewportrenderer.cpp \
-    lib/gui/lc_relative_point_input_widget.cpp \
-    lib/math/lc_quadraticutils.cpp \
-    lib/modification/lc_division.cpp \
-    lib/modification/lc_copyutils.cpp \
-    plugins/lc_plugininvoker.cpp \
-    lib/actions/lc_actioncontext.cpp \
-    lib/actions/options/lc_action_options_base.cpp \
-    ui/action_options/lc_action_options_properties_filler_base.cpp \
-    ui/action_options/line/lc_line_radiant_options_widget.cpp \
-    ui/action_options/line/lc_line_radiant_options_filler.cpp \
-    ui/components/qg_scrollbar.cpp \
-    ui/components/relative_position_assistant/lc_relative_position_editing_widget.cpp \
-    ui/components/relative_position_assistant/lc_relative_position_evaluator.cpp \
-    ui/components/utils/lc_entitymetauiutils.cpp \
-    ui/components/creators/lc_creatorinvoker.cpp \
-    ui/components/utils/lc_mouse_tracking_table_view.cpp \
-    ui/components/utils/lc_tableitem_delegate_base.cpp \
-    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp  \
-    ui/dialogs/creators/lc_dlg_menu_assigner.cpp \
-    ui/dialogs/creators/lc_dlg_widget_creator.cpp \
-    ui/components/creators/lc_menuactivator.cpp \
-    ui/dialogs/creators/lc_dlg_new_widget.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp \
-    ui/dialogs/entity/lc_dlg_dimension.cpp \
-    ui/dialogs/entity/lc_dlg_entityproperties.cpp \
-    ui/dialogs/entity/lc_dlg_tolerance.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp \
-    ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_mtextpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_textpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_entitypropertieseditor.cpp \
-    ui/dialogs/entity/lc_entitypropertieseditorsupport.cpp \
-    ui/dialogs/entity/lc_entitypropertieseditorwidget.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_image.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_insert.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_line.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_parabola.cpp \
-    ui/dialogs/entity/lc_pointpickbutton.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_point.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_polyline.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.cpp \
-    ui/dialogs/entity/lc_propertieseditingwidget_spline.cpp \
-    ui/dialogs/file/export/image/lc_exporttoimageservice.cpp \
-    ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp \
-    ui/dialogs/lc_inputtextdialog.cpp \
-    ui/dialogs/settings/dimstyles/lc_dimstyleitem.cpp \
-    ui/dialogs/settings/dimstyles/lc_dimstyleslistmodel.cpp \
-    ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.cpp \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewgraphicview.cpp \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.cpp \
-    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_tabproxywidget.cpp \
-    ui/dialogs/settings/options_drawing/lc_dimstylesexporter.cpp \
-    ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.cpp \
-    ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp \
-    ui/dialogs/settings/options_widget/lc_dlgiconssetup.cpp \
-    ui/dialogs/file/export/layers/lc_layerexportoptions.cpp \
-    ui/dock_widgets/cad/lc_caddockwidget.cpp \
-    ui/dock_widgets/lc_dockwidget.cpp \
-    ui/dock_widgets/lc_graphicviewawarewidget.cpp \
-    ui/lc_actionhandlerfactory.cpp \
-    ui/lc_snapmanager.cpp \
-    ui/lc_uiutils.cpp \
-    ui/main/fontviewer/lc_fontfileviewer.cpp \
-    ui/main/init/lc_applicationwindowinitializer.cpp \
-    ui/main/support/lc_appwindowdialogsinvoker.cpp \
-    ui/main/lc_appwindowaware.cpp \
-    ui/main/lc_defaultactioncontext.cpp \
-    ui/main/persistence/lc_documentsstorage.cpp \
-    lib/gui/render/lc_graphicviewportrenderer.cpp \
-    lib/gui/render/widget/lc_graphicviewrenderer.cpp \
-    lib/gui/render/widget/lc_printpreviewviewrenderer.cpp \
-    lib/gui/render/widget/lc_widgetviewportrenderer.cpp \
-    lib/modification/lc_align.cpp \
-    ui/action_options/lc_action_options_manager.cpp \
-    ui/action_options/curve/lc_arc_2points_options_widget.cpp \
-    ui/action_options/curve/lc_arc_2_points_options_widget_filler.cpp \
-    ui/action_options/misc/lc_center_line_options_widget.cpp \
-    ui/action_options/misc/lc_center_line_options_filler.cpp \
-    ui/action_options/misc/lc_draw_bounding_box_options_widget.cpp \
-    ui/action_options/misc/lc_draw_bounding_box_options_filler.cpp \
-    ui/action_options/modify/lc_align_options_widget.cpp \
-    ui/action_options/modify/lc_align_options_filler.cpp \
-    ui/action_options/modify/lc_align_single_options_widget.cpp \
-    ui/action_options/modify/lc_align_single_options_filler.cpp \
-    ui/action_options/modify/lc_align_ref_options_widget.cpp \
-    ui/action_options/modify/lc_align_ref_options_filler.cpp \
-    ui/action_options/other/lc_ucs_create_options_widget.cpp \
-    ui/action_options/other/lc_ucs_create_options_filler.cpp \
-    ui/action_options/spline/lc_spline_explode_options_widget.cpp \
-    ui/action_options/spline/lc_spline_explode_options_filler.cpp \
-    ui/action_options/spline/lc_spline_from_polyline_options_widget.cpp \
-    ui/action_options/spline/lc_spline_from_polyline_options_filler.cpp \
-    actions/drawing/draw/spline/lc_action_spline_append_point.cpp \
-    actions/drawing/draw/spline/lc_action_spline_modify_base.cpp \
-    actions/drawing/draw/dimensions/lc_actioncircledimbase.cpp \
-    actions/drawing/draw/dimensions/lc_actiondrawdimbaseline.cpp \
-    actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.cpp \
-    lib/engine/overlays/highlight/lc_highlight.cpp \
-    lib/actions/lc_modifiersinfo.cpp \
-    lib/actions/rs_actioninterface.cpp \
+    lib/engine/overlays/overlay_box/rs_overlaybox.cpp \
     lib/engine/overlays/preview/rs_preview.cpp \
-    lib/actions/rs_previewactioninterface.cpp \
-    lib/actions/rs_snapper.cpp \
-    lib/actions/visual_snap/lc_visual_snap_data.cpp \
-    lib/actions/visual_snap/lc_visual_snap_options.cpp \
-    lib/actions/visual_snap/lc_visual_snap_solution_solver.cpp \
-    lib/actions/visual_snap/lc_visual_snap_solution_visualizer.cpp \
-    lib/actions/visual_snap/lc_visual_snap_manager.cpp \
-    lib/actions/options/lc_action_options_widget.cpp \
-    lib/actions/options/lc_action_options_editor_typed.cpp \
-    lib/actions/options/lc_action_options_properties_filler.cpp \
-    lib/actions/options/lc_action_options_support.cpp \
-    lib/creation/rs_creation.cpp \
-    lib/creation/lc_creation_arc.cpp \
-    lib/creation/lc_creation_circle.cpp \
-    lib/creation/lc_creation_ellipse.cpp \
-    lib/debug/rs_debug.cpp \
-    lib/engine/document/ucs/lc_ucs.cpp \
-    lib/engine/document/views/lc_view.cpp \
-    lib/engine/document/views/lc_viewslist.cpp \
-    lib/engine/document/entities/lc_cachedlengthentity.cpp \
-    lib/engine/overlays/crosshair/lc_crosshair.cpp \
-    lib/engine/document/container/lc_looputils.cpp \
-    lib/engine/document/entities/lc_parabola.cpp \
-    lib/engine/overlays/references/lc_refarc.cpp \
-    lib/engine/overlays/references/lc_refcircle.cpp \
-    lib/engine/overlays/references/lc_refellipse.cpp \
-    lib/engine/overlays/references/lc_refline.cpp \
-    lib/engine/overlays/references/lc_refpoint.cpp \
     lib/engine/overlays/references/lc_ref_snap_arc.cpp \
     lib/engine/overlays/references/lc_ref_snap_circle.cpp \
     lib/engine/overlays/references/lc_ref_snap_construction_line.cpp \
     lib/engine/overlays/references/lc_ref_snap_entity.cpp \
     lib/engine/overlays/references/lc_ref_snap_line.cpp \
     lib/engine/overlays/references/lc_ref_snap_mark.cpp \
-    lib/engine/document/entities/rs_arc.cpp \
-    lib/engine/document/blocks/rs_block.cpp \
-    lib/engine/document/blocks/rs_blocklist.cpp \
-    lib/engine/clipboard/rs_clipboard.cpp \
-    lib/engine/document/entities/rs_circle.cpp \
-    lib/engine/document/entities/rs_constructionline.cpp \
-    lib/engine/document/entities/rs_dimaligned.cpp \
-    lib/engine/document/entities/rs_dimangular.cpp \
-    lib/engine/document/entities/rs_dimdiametric.cpp \
-    lib/engine/document/entities/rs_dimension.cpp \
-    lib/engine/document/entities/rs_dimlinear.cpp \
-    lib/engine/document/entities/lc_dimordinate.cpp \
-    lib/engine/document/entities/rs_dimradial.cpp \
-    lib/engine/document/entities/lc_dimarc.cpp \
-    lib/engine/document/rs_document.cpp \
-    lib/engine/document/entities/rs_ellipse.cpp \
-    lib/engine/document/entities/rs_entity.cpp \
-    lib/engine/document/container/rs_entitycontainer.cpp \
-    lib/engine/document/fonts/rs_font.cpp \
-    lib/engine/document/fonts/rs_fontlist.cpp \
-    lib/engine/document/fonts/lc_opentypefont.cpp \
-    lib/engine/document/fonts/lc_textfontregistry.cpp \
-    lib/engine/document/rs_graphic.cpp \
-    lib/engine/document/entities/rs_hatch.cpp \
-    lib/engine/document/entities/lc_hyperbola.cpp \
-    lib/engine/document/entities/lc_insert_transform.cpp \
-    lib/engine/document/entities/rs_insert.cpp \
-    lib/engine/document/entities/rs_image.cpp \
-    lib/engine/document/entities/lc_wipeout.cpp \
-    lib/engine/document/layers/rs_layer.cpp \
-    lib/engine/document/layers/rs_layerlist.cpp \
-    lib/engine/document/linetypes/lc_linetype.cpp \
-    lib/engine/document/linetypes/lc_linetypelist.cpp \
-    lib/engine/document/entities/rs_leader.cpp \
-    lib/engine/document/entities/rs_line.cpp \
-    lib/engine/document/entities/rs_mtext.cpp \
+    lib/engine/overlays/references/lc_refarc.cpp \
+    lib/engine/overlays/references/lc_refcircle.cpp \
+    lib/engine/overlays/references/lc_refconstructionline.cpp \
+    lib/engine/overlays/references/lc_refellipse.cpp \
+    lib/engine/overlays/references/lc_refline.cpp \
+    lib/engine/overlays/references/lc_refpoint.cpp \
     lib/engine/overlays/rs_overlayline.cpp \
-    lib/engine/overlays/overlay_box/rs_overlaybox.cpp \
-    lib/engine/document/patterns/rs_pattern.cpp \
-    lib/engine/document/patterns/rs_patternlist.cpp \
-    lib/engine/document/entities/rs_point.cpp \
-    lib/engine/document/entities/rs_polyline.cpp \
-    lib/engine/settings/rs_settings.cpp \
-    lib/engine/document/entities/rs_solid.cpp \
-    lib/engine/document/entities/rs_spline.cpp \
-    lib/engine/document/entities/lc_splinepoints.cpp \
+    lib/engine/overlays/ucs_mark/lc_overlayrelativezero.cpp \
+    lib/engine/overlays/ucs_mark/lc_overlayucszero.cpp \
+    lib/engine/overlays/ucs_mark/lc_ucs_mark.cpp \
+    lib/engine/rs.cpp \
+    lib/engine/rs_color.cpp \
+    lib/engine/rs_flags.cpp \
+    lib/engine/rs_pen.cpp \
     lib/engine/rs_system.cpp \
-    lib/engine/document/entities/rs_text.cpp \
+    lib/engine/rs_units.cpp \
+    lib/engine/rs_vector.cpp \
+    lib/engine/settings/lc_settingsexporter.cpp \
+    lib/engine/settings/rs_settings.cpp \
+    lib/engine/undo/lc_undoablerelzero.cpp \
+    lib/engine/undo/lc_undosection.cpp \
     lib/engine/undo/rs_undo.cpp \
     lib/engine/undo/rs_undoable.cpp \
-    lib/engine/rs_units.cpp \
+    lib/engine/undo/rs_undocycle.cpp \
+    lib/engine/utils/lc_rectregion.cpp \
+    lib/engine/utils/lc_rtree.cpp \
     lib/engine/utils/rs_utility.cpp \
-    lib/engine/document/variables/rs_variabledict.cpp \
-    lib/engine/rs_vector.cpp \
-    lib/fileio/rs_fileio.cpp \
     lib/fileio/lc_filenameselectionservice.cpp \
+    lib/fileio/rs_fileio.cpp \
+    lib/filters/lc_embeddedtextmodel.cpp \
+    lib/filters/lc_embeddedtextxdata.cpp \
+    lib/filters/lc_hyperbolaspline.cpp \
+    lib/filters/lc_parabolaspline.cpp \
     lib/filters/rs_filtercxf.cpp \
-    lib/filters/rs_filterdxfrw.cpp \
     lib/filters/rs_filterdxf1.cpp \
+    lib/filters/rs_filterdxfrw.cpp \
     lib/filters/rs_filterjww.cpp \
     lib/filters/rs_filterlff.cpp \
     lib/filters/rs_filtershp.cpp \
-    #lib/gui/no_used/rs_painterold.cpp \
-   # lib/gui/no_used/rs_painterqtold.cpp \
-    ui/action_options/edit/lc_paste_to_points_options_widget.cpp \
-    ui/action_options/edit/lc_paste_to_points_options_filler.cpp \
-    ui/action_options/point/lc_points_lattice_options_widget.cpp \
-    ui/action_options/point/lc_points_lattice_options_filler.cpp \
-    ui/action_options/selection/lc_selectwindowoptions.cpp \
-    ui/components/status_bar/lc_anglesbasiswidget.cpp \
-    ui/components/status_bar/lc_qtstatusbarmanager.cpp \
-    ui/components/status_bar/lc_ucsstatewidget.cpp \
-    ui/dialogs/entity/lc_entitypropertiesdlg.cpp \
-    ui/dialogs/main/lc_dlgabout.cpp \
-    ui/dialogs/main/lc_dlgnewversionavailable.cpp \
-    ui/dialogs/settings/options_widget/lc_iconcolorsoptions.cpp \
-    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.cpp \
-    ui/dock_widgets/ucs_list/lc_dlgucsproperties.cpp \
-    ui/dock_widgets/ucs_list/lc_ucslistbutton.cpp \
-    ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp \
-    ui/dock_widgets/ucs_list/lc_ucslistoptions.cpp \
-    ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp \
-    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.cpp \
-    ui/dock_widgets/views_list/lc_namedviewsbutton.cpp \
-    ui/dock_widgets/views_list/lc_namedviewslistoptions.cpp \
-    ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp \
-    ui/dock_widgets/views_list/lc_namedviewsmodel.cpp \
-    ui/dock_widgets/workspaces/lc_workspacelistbutton.cpp \
-    ui/main/release_check/lc_releasechecker.cpp \
-    ui/main/support/lc_lastopenfilesopener.cpp \
-    ui/main/workspaces/lc_workspacesmanager.cpp\
+    lib/generators/image/lc_imageexporter.cpp \
+    lib/generators/layers/lc_layersexporter.cpp \
+    lib/generators/makercamsvg/lc_makercamsvg.cpp \
+    lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.cpp \
+    lib/gui/grid/lc_grid_options.cpp \
     lib/gui/grid/lc_gridsystem.cpp \
     lib/gui/grid/lc_isometricgrid.cpp \
     lib/gui/grid/lc_lattice.cpp \
     lib/gui/grid/lc_orthogonalgrid.cpp \
-    lib/gui/rs_dialogfactory.cpp \
-    #lib/gui/rs_eventhandler.cpp \
-    lib/gui/rs_graphicview.cpp \
     lib/gui/grid/rs_grid.cpp \
-    lib/gui/rs_linetypepattern.cpp \
-    lib/gui/render/rs_painter.cpp \
     lib/gui/lc_coordinates_mapper.cpp \
-    ui/main/support/lc_customstylehelper.cpp \
-    ui/main/support/lc_gridviewinvoker.cpp \
-    ui/main/support/lc_infocursorsettingsmanager.cpp \
-    ui/main/workspaces/lc_workspacesinvoker.cpp \
-    ui/view/lc_printpreviewview.cpp \
-    lib/information/rs_locale.cpp \
-    lib/information/rs_information.cpp \
+    lib/gui/lc_coordinates_parser.cpp \
+    lib/gui/lc_eventhandler.cpp \
+    lib/gui/lc_graphicviewport.cpp \
+    lib/gui/lc_relative_point_input_widget.cpp \
+    lib/gui/lc_scrollmodel.cpp \
+    lib/gui/render/headless/lc_printviewportrenderer.cpp \
+    lib/gui/render/lc_graphicviewportrenderer.cpp \
+    lib/gui/render/rs_painter.cpp \
+    lib/gui/render/widget/lc_graphicviewrenderer.cpp \
+    lib/gui/render/widget/lc_printpreviewviewrenderer.cpp \
+    lib/gui/render/widget/lc_widgetviewportrenderer.cpp \
+    lib/gui/rs_dialogfactory.cpp \
+    lib/gui/rs_graphicview.cpp \
+    lib/gui/rs_linetypepattern.cpp \
     lib/information/rs_infoarea.cpp \
+    lib/information/rs_information.cpp \
+    lib/information/rs_locale.cpp \
     lib/math/lc_archparser.cpp \
     lib/math/lc_convert.cpp \
-    lib/math/lc_linemath.cpp \
-    lib/math/rs_math.cpp \
-    lib/math/lc_quadratic.cpp \
     lib/math/lc_formatter.cpp \
+    lib/math/lc_linemath.cpp \
+    lib/math/lc_quadratic.cpp \
+    lib/math/lc_quadraticutils.cpp \
+    lib/math/rs_math.cpp \
+    lib/modification/lc_align.cpp \
+    lib/modification/lc_copyutils.cpp \
+    lib/modification/lc_division.cpp \
     lib/modification/rs_modification.cpp \
-    lib/selection/rs_selection.cpp \
-    lib/selection/lc_selectionpredicate.cpp \
-    lib/selection/metaentity/lc_entitymatchdescriptorsregistry.cpp \
-    lib/selection/metaentity/lc_propertymatchertypes.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_line.cpp       \
-    lib/selection/metaentity/entities/lc_matchdescriptor_circle.cpp     \
-    lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_image.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_leader.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_point.cpp \
-    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp \
+    lib/presets/lc_preset_file_io.cpp \
+    lib/presets/lc_presets_index_helper.cpp \
+    lib/printing/lc_printing.cpp \
     lib/properties/lc_property.cpp \
     lib/properties/lc_property_atomic.cpp \
     lib/properties/lc_property_container.cpp \
     lib/properties/lc_property_multi.cpp \
     lib/properties/lc_property_utils.cpp \
     lib/properties/lc_property_view_descriptor.cpp \
-    lib/engine/lc_colornumbers.cpp \
-    lib/engine/lc_linetypenames.cpp \
-    lib/engine/rs_color.cpp \
-    lib/engine/rs_pen.cpp \
+    lib/scripting/rs_python.cpp \
+    lib/scripting/rs_python_wrappers.cpp \
+    lib/scripting/rs_script.cpp \
+    lib/scripting/rs_scriptlist.cpp \
+    lib/scripting/rs_simplepython.cpp \
+    lib/selection/lc_selectionpredicate.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_circle.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_image.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_leader.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_line.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_point.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.cpp \
+    lib/selection/metaentity/lc_entitymatchdescriptorsregistry.cpp \
+    lib/selection/metaentity/lc_propertymatchertypes.cpp \
+    lib/selection/rs_selection.cpp \
     main/console_command_utils.cpp \
+    main/console_dxf2dwg.cpp \
+    main/console_dxf2pdf/console_dxf2pdf.cpp \
+    main/console_dxf2pdf/pdf_print_loop.cpp \
     main/console_dxf2png.cpp \
-    test/lc_simpletests.cpp \
-    lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.cpp \
-    lib/generators/makercamsvg/lc_makercamsvg.cpp \
-    lib/engine/document/entities/rs_atomicentity.cpp \
-    lib/engine/undo/rs_undocycle.cpp \
-    lib/engine/rs_flags.cpp \
-    lib/engine/document/entities/lc_rect.cpp \
-    lib/engine/utils/lc_rtree.cpp \
-    lib/engine/undo/lc_undosection.cpp \
-    lib/engine/rs.cpp \
-    lib/printing/lc_printing.cpp \
+    main/doc_plugin_interface.cpp \
     main/lc_application.cpp \
     main/lc_crash_handler.cpp \
-    ui/action_options/curve/lc_ellipse_arc_options_widget.cpp \
-    ui/action_options/curve/lc_ellipse_arc_options_filler.cpp \
-    ui/action_options/ellipse/lc_ellipse_1point_options_widget.cpp \
-    ui/action_options/ellipse/lc_ellipse_1_point_options_filler.cpp \
-    ui/components/status_bar/lc_relzerocoordinateswidget.cpp \
-    ui/dialogs/lc_dialog.cpp \
-    ui/main/lc_mdiapplicationwindow.cpp  \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.cpp     \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.cpp     \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.cpp  \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.cpp     \
-    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp
-    # ui/not_used/lc_dlgdimordinate.cpp \
-
-# ################################################################################
-# Command
-HEADERS += cmd/rs_commands.h
-HEADERS += cmd/lc_commandItems.h
-SOURCES += cmd/rs_commands.cpp
-
-# ################################################################################
-# Actions
-HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
-    actions/dock_widgets/block/rs_actionblocksattributes.h \
-    actions/dock_widgets/block/rs_actionblockscreate.h \
-    actions/dock_widgets/block/rs_actionblocksedit.h \
-    actions/dock_widgets/block/rs_actionblocksfreezeall.h \
-    actions/dock_widgets/block/lc_action_block_insert.h \
-    actions/dock_widgets/block/rs_actionblocksremove.h \
-    actions/dock_widgets/block/rs_actionblockssave.h \
-    actions/dock_widgets/block/rs_actionblockstoggleview.h \
-    actions/dock_widgets/entity_info/lc_actioninfopickcoordinates.h \
-    actions/dock_widgets/layer/lc_actionlayersexport.h \
-    actions/dock_widgets/layer/lc_actionlayerstoggleconstruction.h \
-    actions/dock_widgets/layer/rs_actionlayersadd.h \
-    actions/dock_widgets/layer/rs_actionlayersedit.h \
-    actions/dock_widgets/layer/rs_actionlayersfreezeall.h \
-    actions/dock_widgets/layer/rs_actionlayerslockall.h \
-    actions/dock_widgets/layer/rs_actionlayersremove.h \
-    actions/dock_widgets/layer/rs_actionlayerstogglelock.h \
-    actions/dock_widgets/layer/rs_actionlayerstoggleprint.h \
-    actions/dock_widgets/layer/rs_actionlayerstoggleview.h \
-    actions/dock_widgets/library/lc_action_block_library_insert.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_base.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_by_arc.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_center_point.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_2points.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_3points.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_center_radius.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_inscribe.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.h \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.h \
-    actions/drawing/draw/curve/lc_actiondrawparabola4points.h \
-    actions/drawing/draw/curve/lc_actiondrawparabolaFD.h \
-    actions/drawing/draw/spline/lc_action_draw_spline_points.h \
-    actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.h \
-    actions/drawing/draw/arc/lc_action_draw_arc_3points.h \
-    actions/drawing/draw/arc/lc_action_draw_arc_tangential.h \
-    actions/drawing/draw/curve/lc_action_draw_line_freehand.h \
-    actions/drawing/draw/curve/lc_actiondrawdual.h \
-    actions/drawing/draw/spline/lc_action_draw_spline.h \
-    actions/drawing/draw/dimensions/lc_actiondimarc.h \
-    actions/drawing/draw/dimensions/lc_actiondimlinearbase.h \
-    actions/drawing/draw/dimensions/rs_actiondimaligned.h \
-    actions/drawing/draw/dimensions/rs_actiondimangular.h \
-    actions/drawing/draw/dimensions/rs_actiondimdiametric.h \
-    actions/drawing/draw/dimensions/rs_actiondimension.h \
-    actions/drawing/draw/dimensions/rs_actiondimleader.h \
-    actions/drawing/draw/dimensions/rs_actiondimlinear.h \
-    actions/drawing/draw/dimensions/rs_actiondimradial.h \
-    actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.h \
-    actions/drawing/draw/ellipse/rs_actiondrawellipse4points.h \
-    actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.h \
-    actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.h \
-    actions/drawing/draw/ellipse/rs_actiondrawellipsefocipoint.h \
-    actions/drawing/draw/ellipse/rs_actiondrawellipseinscribe.h \
-    actions/drawing/draw/hatch/rs_actiondrawhatch.h \
-    actions/drawing/draw/image/lc_action_draw_image.h \
-    actions/drawing/draw/line/lc_abstractactiondrawline.h \
-    actions/drawing/draw/line/misc/lc_action_draw_center_mark.h \
-    actions/drawing/draw/line/lc_action_draw_line_angle_rel.h \
-    actions/drawing/draw/line/lc_action_draw_line_from_point_to_line.h \
-    actions/drawing/draw/point/lc_action_draw_points_line.h \
-    actions/drawing/draw/line/lc_action_draw_line_snake.h \
-    actions/drawing/draw/line/lc_action_draw_slice_divide.h \
-    actions/drawing/draw/line/lc_action_draw_line.h \
-    actions/drawing/draw/line/lc_action_draw_line_angle.h \
-    actions/drawing/draw/line/lc_action_draw_line_bisector.h \
-    actions/drawing/draw/line/lc_actiondrawlinedirect.h \
-    actions/drawing/draw/line/rs_actiondrawlinehorvert.h \
-    actions/drawing/draw/line/rs_actiondrawlineorthtan.h \
-    actions/drawing/draw/line/lc_action_draw_line_parallel.h \
-    actions/drawing/draw/line/lc_action_draw_line_parallel_through.h \
-    actions/drawing/draw/line/lc_action_draw_line_rel_angle.h \
-    actions/drawing/draw/line/rs_actiondrawlinetangent1.h \
-    actions/drawing/draw/line/rs_actiondrawlinetangent2.h \
-    actions/drawing/draw/point/lc_action_draw_point.h \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.h \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_base.h \
-    actions/drawing/draw/polygon/lc_action_draw_star.h \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.h \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.h \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.h \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_1point.h \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_2points.h \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_3points.h \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_simple.h \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_base.h \
-    actions/drawing/draw/polyline/lc_action_draw_polyline.h \
-    actions/drawing/draw/polyline/lc_action_polyline_add.h \
-    actions/drawing/draw/polyline/lc_action_polyline_append.h \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_node.h \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.h \
-    actions/drawing/draw/polyline/lc_action_polyline_equidistant.h \
-    actions/drawing/draw/polyline/lc_action_polyline_from_segment.h \
-    actions/drawing/draw/polyline/lc_action_polyline_trim.h \
-    actions/drawing/draw/text/lc_action_draw_mtext.h \
-    actions/drawing/draw/text/lc_action_draw_text.h \
-    actions/drawing/edit/lc_action_edit_paste_transform.h \
-    actions/drawing/edit/lc_action_edit_copy_cut.h \
-    actions/drawing/edit/lc_action_edit_undo_redo.h \
-    actions/drawing/info/lc_actioninfo3pointsangle.h \
-    actions/drawing/info/lc_actioninfoproperties.h \
-    actions/drawing/info/rs_actioninfoangle.h \
-    actions/drawing/info/rs_actioninfoarea.h \
-    actions/drawing/info/rs_actioninfodist.h \
-    actions/drawing/info/lc_action_info_dist_point_to_entity.h \
-    actions/drawing/info/rs_actioninfototallength.h \
-    actions/drawing/info/rs_actioninfoinside.h \
-    actions/drawing/lc_abstractactionwithpreview.h \
-    actions/drawing/modify/lc_action_modify_base.h \
-    actions/drawing/modify/lc_action_modify_break_divide.h \
-    actions/drawing/modify/lc_action_modify_duplicate.h \
-    actions/drawing/modify/lc_action_modify_line_gap.h \
-    actions/drawing/modify/lc_action_modify_line_join.h \
-    lib/actions/lc_actionpreselectionawarebase.h \
-    actions/drawing/modify/lc_action_block_explode.h \
-    actions/drawing/modify/lc_action_modify_attributes.h \
-    actions/drawing/modify/lc_action_modify_bevel.h \
-    actions/drawing/modify/lc_action_modify_cut.h \
-    actions/drawing/modify/lc_action_modify_delete.h \
-    actions/drawing/modify/lc_action_modify_delete_free.h \
-    actions/drawing/modify/lc_action_modify_entity.h \
-    actions/drawing/modify/lc_action_modify_explode_text.h \
-    actions/drawing/modify/lc_action_modify_mirror.h \
-    actions/drawing/modify/lc_action_modify_move.h \
-    actions/drawing/modify/lc_action_modify_move_rotate.h \
-    actions/drawing/modify/lc_action_modify_offset.h \
-    actions/drawing/modify/lc_action_modify_revert_direction.h \
-    actions/drawing/modify/lc_action_modify_rotate.h \
-    actions/drawing/modify/lc_action_modify_rotate_twice.h \
-    actions/drawing/modify/lc_action_modify_round.h \
-    actions/drawing/modify/lc_action_modify_scale.h \
-    actions/drawing/modify/lc_action_modify_stretch.h \
-    actions/drawing/modify/lc_action_modify_trim.h \
-    actions/drawing/modify/lc_action_modify_trim_amount.h \
-    actions/drawing/modify/lc_action_modify_order.h \
-    actions/drawing/pen/lc_actionpenapply.h \
-    actions/drawing/pen/lc_actionpenpick.h \
-    actions/drawing/pen/lc_actionpensyncactivebylayer.h \
-    actions/drawing/rel_zero/rs_actionlockrelativezero.h \
-    actions/drawing/rel_zero/rs_actionsetrelativezero.h \
-    actions/drawing/rs_actiondefault.h \
-    actions/drawing/selection/lc_action_select_all.h \
-    lib/actions/rs_actionselectbase.h \
-    actions/drawing/selection/lc_action_select_contour.h \
-    actions/drawing/selection/lc_action_select_intersected.h \
-    actions/drawing/selection/lc_action_select_invert.h \
-    actions/drawing/selection/lc_action_select_layer.h \
-    actions/drawing/selection/lc_action_select_single.h \
-    actions/drawing/selection/lc_action_select_window.h \
-    actions/drawing/selection/lc_action_select_mode_toggle.h \
-    actions/drawing/snap/lc_actionsnapmiddlemanual.h \
-    actions/drawing/snap/rs_actionsnapintersectionmanual.h \
-    actions/drawing/zoom/rs_actionzoomauto.h \
-    actions/drawing/zoom/rs_actionzoomin.h \
-    actions/drawing/zoom/rs_actionzoompan.h \
-    actions/drawing/zoom/rs_actionzoomprevious.h \
-    actions/drawing/zoom/rs_actionzoomredraw.h \
-    actions/drawing/zoom/rs_actionzoomscroll.h \
-    actions/drawing/zoom/rs_actionzoomwindow.h \
-    actions/file/lc_actionfileexportmakercam.h \
-    actions/options/rs_actionoptionsdrawing.h \
-    actions/print_preview/rs_actionprintpreview.h
-
-SOURCES += actions/dock_widgets/block/rs_actionblocksadd.cpp \
-    actions/dock_widgets/block/rs_actionblocksattributes.cpp \
-    actions/dock_widgets/block/rs_actionblockscreate.cpp \
-    actions/dock_widgets/block/rs_actionblocksedit.cpp \
-    actions/dock_widgets/block/rs_actionblocksfreezeall.cpp \
-    actions/dock_widgets/block/lc_action_block_insert.cpp \
-    actions/dock_widgets/block/rs_actionblocksremove.cpp \
-    actions/dock_widgets/block/rs_actionblockssave.cpp \
-    actions/dock_widgets/block/rs_actionblockstoggleview.cpp \
-    actions/dock_widgets/entity_info/lc_actioninfopickcoordinates.cpp \
-    actions/dock_widgets/layer/lc_actionlayersexport.cpp \
-    actions/dock_widgets/layer/lc_actionlayerstoggleconstruction.cpp \
-    actions/dock_widgets/layer/rs_actionlayersadd.cpp \
-    actions/dock_widgets/layer/rs_actionlayersedit.cpp \
-    actions/dock_widgets/layer/rs_actionlayersfreezeall.cpp \
-    actions/dock_widgets/layer/rs_actionlayerslockall.cpp \
-    actions/dock_widgets/layer/rs_actionlayersremove.cpp \
-    actions/dock_widgets/layer/rs_actionlayerstogglelock.cpp \
-    actions/dock_widgets/layer/rs_actionlayerstoggleprint.cpp \
-    actions/dock_widgets/layer/rs_actionlayerstoggleview.cpp \
-    actions/dock_widgets/library/lc_action_block_library_insert.cpp \
-    actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.cpp \
-    actions/drawing/draw/arc/lc_action_draw_arc_3points.cpp \
-    actions/drawing/draw/arc/lc_action_draw_arc_tangential.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_base.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_by_arc.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_center_point.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_2points.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_3points.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_center_radius.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_inscribe.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.cpp \
-    actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.cpp \
-    actions/drawing/draw/curve/lc_actiondrawparabola4points.cpp \
-    actions/drawing/draw/curve/lc_actiondrawparabolaFD.cpp \
-    actions/drawing/draw/curve/lc_action_draw_line_freehand.cpp \
-    actions/drawing/draw/spline/lc_action_draw_spline_points.cpp \
-    actions/drawing/draw/curve/lc_actiondrawdual.cpp \
-    actions/drawing/draw/spline/lc_action_draw_spline.cpp \
-    actions/drawing/draw/dimensions/lc_actiondimarc.cpp \
-    actions/drawing/draw/dimensions/lc_actiondimlinearbase.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimaligned.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimangular.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimdiametric.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimension.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimleader.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimlinear.cpp \
-    actions/drawing/draw/dimensions/rs_actiondimradial.cpp \
-    actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.cpp \
-    actions/drawing/draw/ellipse/rs_actiondrawellipse4points.cpp \
-    actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.cpp \
-    actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.cpp \
-    actions/drawing/draw/ellipse/rs_actiondrawellipsefocipoint.cpp \
-    actions/drawing/draw/ellipse/rs_actiondrawellipseinscribe.cpp \
-    actions/drawing/draw/hatch/rs_actiondrawhatch.cpp \
-    actions/drawing/draw/image/lc_action_draw_image.cpp \
-    actions/drawing/draw/line/lc_abstractactiondrawline.cpp \
-    actions/drawing/draw/line/misc/lc_action_draw_center_mark.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_angle_rel.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_from_point_to_line.cpp \
-    actions/drawing/draw/point/lc_action_draw_points_line.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_snake.cpp \
-    actions/drawing/draw/line/lc_action_draw_slice_divide.cpp \
-    actions/drawing/draw/line/lc_action_draw_line.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_angle.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_bisector.cpp \
-    actions/drawing/draw/line/lc_actiondrawlinedirect.cpp \
-    actions/drawing/draw/line/rs_actiondrawlinehorvert.cpp \
-    actions/drawing/draw/line/rs_actiondrawlineorthtan.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_parallel.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_parallel_through.cpp \
-    actions/drawing/draw/line/lc_action_draw_line_rel_angle.cpp \
-    actions/drawing/draw/line/rs_actiondrawlinetangent1.cpp \
-    actions/drawing/draw/line/rs_actiondrawlinetangent2.cpp \
-    actions/drawing/draw/point/lc_action_draw_point.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_base.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_star.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.cpp \
-    actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.cpp \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.cpp \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_1point.cpp \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_2points.cpp \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_3points.cpp \
-    actions/drawing/draw/rect/lc_action_draw_rectangle_simple.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_base.cpp \
-    actions/drawing/draw/polyline/lc_action_draw_polyline.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_add.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_append.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_node.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_equidistant.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_from_segment.cpp \
-    actions/drawing/draw/polyline/lc_action_polyline_trim.cpp \
-    actions/drawing/draw/text/lc_action_draw_mtext.cpp \
-    actions/drawing/draw/text/lc_action_draw_text.cpp \
-    actions/drawing/edit/lc_action_edit_paste_transform.cpp \
-    actions/drawing/edit/lc_action_edit_copy_cut.cpp \
-    actions/drawing/edit/lc_action_edit_undo_redo.cpp \
-    actions/drawing/info/lc_actioninfo3pointsangle.cpp \
-    actions/drawing/info/lc_actioninfoproperties.cpp \
-    actions/drawing/info/rs_actioninfoangle.cpp \
-    actions/drawing/info/rs_actioninfoarea.cpp \
-    actions/drawing/info/rs_actioninfodist.cpp \
-    actions/drawing/info/lc_action_info_dist_point_to_entity.cpp \
-    actions/drawing/info/rs_actioninfototallength.cpp \
-    actions/drawing/info/rs_actioninfoinside.cpp \
-    actions/drawing/lc_abstractactionwithpreview.cpp \
-    actions/drawing/modify/lc_action_modify_base.cpp \
-    actions/drawing/modify/lc_action_modify_break_divide.cpp \
-    actions/drawing/modify/lc_action_modify_duplicate.cpp \
-    actions/drawing/modify/lc_action_modify_line_gap.cpp \
-    actions/drawing/modify/lc_action_modify_line_join.cpp \
-    lib/actions/lc_actionpreselectionawarebase.cpp \
-    actions/drawing/modify/lc_action_block_explode.cpp \
-    actions/drawing/modify/lc_action_modify_attributes.cpp \
-    actions/drawing/modify/lc_action_modify_bevel.cpp \
-    actions/drawing/modify/lc_action_modify_cut.cpp \
-    actions/drawing/modify/lc_action_modify_delete.cpp \
-    actions/drawing/modify/lc_action_modify_delete_free.cpp \
-    actions/drawing/modify/lc_action_modify_entity.cpp \
-    actions/drawing/modify/lc_action_modify_explode_text.cpp \
-    actions/drawing/modify/lc_action_modify_mirror.cpp \
-    actions/drawing/modify/lc_action_modify_move.cpp \
-    actions/drawing/modify/lc_action_modify_move_rotate.cpp \
-    actions/drawing/modify/lc_action_modify_offset.cpp \
-    actions/drawing/modify/lc_action_modify_revert_direction.cpp \
-    actions/drawing/modify/lc_action_modify_rotate.cpp \
-    actions/drawing/modify/lc_action_modify_rotate_twice.cpp \
-    actions/drawing/modify/lc_action_modify_round.cpp \
-    actions/drawing/modify/lc_action_modify_scale.cpp \
-    actions/drawing/modify/lc_action_modify_stretch.cpp \
-    actions/drawing/modify/lc_action_modify_trim.cpp \
-    actions/drawing/modify/lc_action_modify_trim_amount.cpp \
-    actions/drawing/modify/lc_action_modify_order.cpp \
-    actions/drawing/pen/lc_actionpenapply.cpp \
-    actions/drawing/pen/lc_actionpenpick.cpp \
-    actions/drawing/pen/lc_actionpensyncactivebylayer.cpp \
-    actions/drawing/rel_zero/rs_actionlockrelativezero.cpp \
-    actions/drawing/rel_zero/rs_actionsetrelativezero.cpp \
-    actions/drawing/rs_actiondefault.cpp \
-    actions/drawing/selection/lc_action_select_all.cpp \
-    lib/actions/rs_actionselectbase.cpp \
-    actions/drawing/selection/lc_action_select_contour.cpp \
-    actions/drawing/selection/lc_action_select_intersected.cpp \
-    actions/drawing/selection/lc_action_select_invert.cpp \
-    actions/drawing/selection/lc_action_select_layer.cpp \
-    actions/drawing/selection/lc_action_select_single.cpp \
-    actions/drawing/selection/lc_action_select_window.cpp \
-    actions/drawing/selection/lc_action_select_mode_toggle.cpp \
-    actions/drawing/snap/lc_actionsnapmiddlemanual.cpp \
-    actions/drawing/snap/rs_actionsnapintersectionmanual.cpp \
-    actions/drawing/zoom/rs_actionzoomauto.cpp \
-    actions/drawing/zoom/rs_actionzoomin.cpp \
-    actions/drawing/zoom/rs_actionzoompan.cpp \
-    actions/drawing/zoom/rs_actionzoomprevious.cpp \
-    actions/drawing/zoom/rs_actionzoomredraw.cpp \
-    actions/drawing/zoom/rs_actionzoomscroll.cpp \
-    actions/drawing/zoom/rs_actionzoomwindow.cpp \
-    actions/file/lc_actionfileexportmakercam.cpp \
-    actions/options/rs_actionoptionsdrawing.cpp \
-    actions/print_preview/rs_actionprintpreview.cpp
-
-
-# ################################################################################
-# UI
-HEADERS += ui/action_options/lc_action_options_manager.h \
-    ui/action_options/circle/lc_circle_by_arc_options_widget.h \
-    ui/action_options/circle/lc_circle_by_arc_options_filler.h \
-    ui/action_options/circle/lc_circle_center_radius_options_widget.h \
-    ui/action_options/circle/lc_circle_center_radius_options_filler.h \
-    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.h \
-    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.h \
-    ui/action_options/curve/lc_arc_center_point_param_options_widget.h \
-    ui/action_options/curve/lc_arc_center_point_param_options_filler.h \
-    ui/action_options/curve/lc_arc_tangential_options_widget.h \
-    ui/action_options/curve/lc_arc_tangential_options_filler.h \
-    ui/action_options/spline/lc_spline_options_widget.h \
-    ui/action_options/spline/lc_spline_options_filler.h \
-    ui/action_options/dimensions/qg_dimoptions.h \
-    ui/action_options/edit/lc_paste_transform_options_widget.h \
-    ui/action_options/edit/lc_paste_transform_options_filler.h \
-    ui/action_options/image/lc_image_options_widget.h \
-    ui/action_options/image/lc_image_options_filler.h \
-    ui/action_options/info/lc_info_dist_point_to_entity_options_widget.h \
-    ui/action_options/info/lc_info_dist_point_to_entity_options_filler.h \
-    ui/action_options/insert/lc_block_insert_options_widget.h \
-    ui/action_options/insert/lc_block_insert_options_filler.h \
-    ui/action_options/insert/lc_block_library_insert_options_widget.h \
-    ui/action_options/insert/lc_block_library_insert_options_filler.h \
-    ui/action_options/misc/lc_center_mark_options_widget.h \
-    ui/action_options/misc/lc_center_mark_options_filler.h \
-    ui/action_options/line/lc_line_angle_rel_options_widget.h \
-    ui/action_options/line/lc_line_angle_rel_options_filler.h \
-    ui/action_options/line/lc_line_from_point_to_line_options_widget.h \
-    ui/action_options/line/lc_line_from_point_to_line_options_filler.h \
-    ui/action_options/line/lc_line_snake_options_widget.h \
-    ui/action_options/line/lc_line_snake_options_filler.h \
-    ui/action_options/point/lc_points_line_options_widget.h \
-    ui/action_options/point/lc_points_line_options_filler.h \
-    ui/action_options/rect/lc_rectangle_abstract_options_filler.h \
-    ui/action_options/rect/lc_rectangle_1point_options_widget.h \
-    ui/action_options/rect/lc_rectangle_1_point_options_filler.h \
-    ui/action_options/rect/lc_rectangle_2points_options_widget.h \
-    ui/action_options/rect/lc_rectangle_2points_options_filler.h \
-    ui/action_options/rect/lc_rectangle_3points_options_widget.h \
-    ui/action_options/rect/lc_rectangle_3_points_options_filler.h \
-    ui/action_options/line/lc_slice_divide_options_widget.h \
-    ui/action_options/line/lc_slice_divide_options_filler.h \
-    ui/action_options/polygon/lc_star_options_widget.h \
-    ui/action_options/polygon/lc_star_options_filler.h \
-    ui/action_options/line/lc_line_angle_options_widget.h \
-    ui/action_options/line/lc_line_angle_options_filler.h \
-    ui/action_options/line/lc_line_bisector_options_widget.h \
-    ui/action_options/line/lc_line_bisector_options_filler.h \
-    ui/action_options/line/lc_line_options_widget.h \
-    ui/action_options/line/lc_line_options_filler.h \
-    ui/action_options/line/lc_line_parallel_options_widget.h \
-    ui/action_options/line/lc_line_parallel_options_filler.h \
-    ui/action_options/line/lc_line_parallel_through_options_widget.h \
-    ui/action_options/line/lc_line_parallel_through_options_filler.h \
-     ui/action_options/polygon/lc_polygon_side_side_options_filler.h \
-    ui/action_options/polygon/lc_polygon_options_widget.h \
-    ui/action_options/polygon/lc_polygon_options_filler.h \
-    ui/action_options/line/lc_line_rel_angle_options_widget.h \
-    ui/action_options/line/lc_line_rel_angle_options_filler.h \
-    ui/action_options/modify/lc_duplicate_options_widget.h \
-    ui/action_options/modify/lc_duplicate_options_filler.h \
-    ui/action_options/modify/lc_line_join_options_widget.h \
-    ui/action_options/modify/lc_line_join_options_filler.h \
-    ui/action_options/modify/lc_break_divide_options_widget.h \
-    ui/action_options/modify/lc_break_divide_options_filler.h \
-    ui/action_options/modify/lc_line_gap_options_widget.h \
-    ui/action_options/modify/lc_line_gap_options_filler.h \
-    ui/action_options/modify/lc_mirror_options_widget.h \
-    ui/action_options/modify/lc_mirror_options_filler.h \
-    ui/action_options/modify/lc_rotate_options_widget.h \
-    ui/action_options/modify/lc_rotate_options_filler.h \
-    ui/action_options/modify/lc_scale_options_widget.h \
-    ui/action_options/modify/lc_scale_options_filler.h \
-    ui/action_options/modify/lc_stretch_options_widget.h \
-    ui/action_options/modify/lc_stretch_options_filler.h \
-    ui/action_options/modify/lc_move_options_widget.h \
-    ui/action_options/modify/lc_move_options_filler.h \
-    ui/action_options/modify/lc_rotate_2_options_widget.h \
-    ui/action_options/modify/lc_rotate_2_options_filler.h \
-    ui/action_options/modify/lc_bevel_options_widget.h \
-    ui/action_options/modify/lc_bevel_options_filler.h \
-    ui/action_options/modify/lc_offset_options_widget.h \
-    ui/action_options/modify/lc_offset_options_filler.h \
-    ui/action_options/modify/lc_move_rotate_options_widget.h \
-    ui/action_options/modify/lc_move_rotate_options_filler.h \
-    ui/action_options/modify/lc_round_options_widget.h \
-    ui/action_options/modify/lc_round_options_filler.h \
-    ui/action_options/modify/lc_trim_amount_options_widget.h \
-    ui/action_options/modify/lc_trim_amount_options_filler.h \
-    ui/action_options/polyline/lc_polyline_equidistant_options_widget.h \
-    ui/action_options/polyline/lc_polyline_equidistant_options_filler.h \
-    ui/action_options/polyline/lc_polyline_options_widget.h \
-    ui/action_options/polyline/lc_polyline_options_filler.h \
-    ui/action_options/print_preview/lc_print_preview_options_widget.h \
-    ui/action_options/print_preview/lc_print_preview_options_filler.h \
-    ui/action_options/snap/qg_snapdistoptions.h \
-    ui/action_options/snap/qg_snapmiddleoptions.h \
-    ui/action_options/text/lc_m_text_options_widget.h \
-    ui/action_options/text/lc_m_text_options_filler.h \
-    ui/action_options/text/lc_text_options_widget.h \
-    ui/action_options/text/lc_text_options_filler.h \
-    ui/actions/lc_action.h \
-    ui/actions/lc_actionfactorybase.h \
-    ui/actions/lc_actiongroup.h \
-    ui/actions/lc_actiongroupmanager.h \
-    ui/actions/lc_shortcutinfo.h \
-    ui/actions/lc_shortcuts_manager.h \
-    ui/actions/lc_shortcutsstorage.h \
-    ui/components/comboboxes/comboboxoption.h \
-    ui/components/comboboxes/qg_colorbox.h \
-    ui/components/comboboxes/qg_fontbox.h \
-    ui/components/comboboxes/qg_layerbox.h \
-    ui/components/comboboxes/qg_linetypebox.h \
-    ui/components/comboboxes/qg_patternbox.h \
-    ui/components/comboboxes/qg_widthbox.h \
-    ui/components/containers/lc_optionswidgetsholder.h \
-    ui/components/containers/lc_snapoptionswidgetsholder.h \
-    ui/components/creators/actionlist.h \
-    ui/components/layouts/lc_flexlayout.h \
-    ui/components/lc_plaintextedit.h \
-    ui/components/lc_textedit.h \
-    ui/components/pen/qg_widgetpen.h \
-    ui/components/qg_scrollbar.h \
-    ui/components/status_bar/qg_activelayername.h \
-    ui/components/status_bar/qg_coordinatewidget.h \
-    ui/components/status_bar/qg_mousewidget.h \
-    ui/components/status_bar/qg_selectionwidget.h \
-    ui/components/status_bar/twostackedlabels.h \
-    ui/components/textfileviewer.h \
-    ui/components/toolbars/qg_pentoolbar.h \
-    ui/components/toolbars/qg_snaptoolbar.h \
-    ui/dialogs/actions/quick_selection/lc_dlgquickselection.h \
-    ui/dialogs/actions/qg_layerdialog.h \
-    ui/dialogs/entity/qg_blockdialog.h \
-    ui/dialogs/entity/qg_dimensionlabeleditor.h \
-    ui/dialogs/entity/qg_dlg_attributes.h \
-    ui/dialogs/entity/lc_dlg_tolerance.h \
-    ui/dialogs/entity/qg_dlg_hatch.h \
-    ui/dialogs/file/export/image/qg_dlgimageoptions.h \
-    ui/dialogs/entity/qg_dlg_mtext.h \
-    ui/dialogs/entity/qg_dlg_text.h \
-    ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.h \
-    ui/dialogs/file/export/layers/lc_filedialogservice.h \
-    ui/dialogs/file/qg_filedialog.h \
-    ui/dialogs/main/qg_dlginitial.h \
-    ui/dialogs/main/qg_exitdialog.h \
-    ui/dialogs/qg_dialogfactory.h \
-    ui/dialogs/settings/options_device/lc_deviceoptions.h \
-    ui/dialogs/settings/options_drawing/lg_dimzerosbox.h \
-    ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.h \
-    ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.h \
-    ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.h \
-    ui/dialogs/settings/options_widget/lc_iconengineshared.h \
-    ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.h \
-    ui/dialogs/settings/shortcuts/lc_shortcutbutton.h \
-    ui/dialogs/settings/shortcuts/lc_shortcutstreemodel.h \
-    ui/dialogs/settings/shortcuts/lc_shortcutstreeview.h \
-    ui/dialogs/settings/shortcuts/lc_shortcuttreeitem.h \
-    ui/dock_widgets/block_widget/qg_blockwidget.h \
-    ui/dock_widgets/command_line/qg_commandedit.h \
-    ui/dock_widgets/command_line/qg_commandhistory.h \
-    ui/dock_widgets/command_line/qg_commandwidget.h \
-    ui/dock_widgets/entity_info/lc_quickinfobasedata.h \
-    ui/dock_widgets/entity_info/lc_quickinfoentitydata.h \
-    ui/dock_widgets/entity_info/lc_quickinfopointsdata.h \
-    ui/dock_widgets/entity_info/lc_quickinfowidget.h \
-    ui/dock_widgets/entity_info/lc_quickinfowidgetoptions.h \
-    ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.h \
-    ui/dock_widgets/layer_widget/qg_layerwidget.h \
-    ui/dock_widgets/layers_tree/lc_layerdialog_ex.h \
-    ui/dock_widgets/layers_tree/lc_layertreeitem.h \
-    ui/dock_widgets/layers_tree/lc_layertreemodel.h \
-    ui/dock_widgets/layers_tree/lc_layertreemodel_options.h \
-    ui/dock_widgets/layers_tree/lc_layertreeoptionsdialog.h \
-    ui/dock_widgets/layers_tree/lc_layertreeview.h \
-    ui/dock_widgets/layers_tree/lc_layertreewidget.h \
-    ui/dock_widgets/library_widget/qg_librarywidget.h \
-    ui/dock_widgets/pen_palette/lc_peninforegistry.h \
-    ui/dock_widgets/pen_palette/lc_penitem.h \
-    ui/dock_widgets/pen_palette/lc_penpalettedata.h \
-    ui/dock_widgets/pen_palette/lc_penpalettemodel.h \
-    ui/dock_widgets/pen_palette/lc_penpaletteoptions.h \
-    ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.h \
-    ui/dock_widgets/pen_palette/lc_penpalettewidget.h \
-    ui/dock_widgets/pen_wizard/colorcombobox.h \
-    ui/dock_widgets/pen_wizard/colorwizard.h \
-    ui/dock_widgets/pen_wizard/lc_penwizard.h \
-    ui/main/init/lc_actionfactory.h \
-    ui/main/init/lc_widgetfactory.h \
-    ui/main/init/lc_menufactory.h \
-    ui/main/init/lc_menufactory_base.h \
-    ui/main/init/lc_menufactory_main.h \
-    ui/main/init/lc_menufactory_graphicview.h \
-    ui/main/init/lc_toolbarfactory.h \
-    ui/main/lc_layouttabbar.h \
-    ui/main/mainwindowx.h \
-    ui/main/qc_applicationwindow.h \
-    ui/main/qc_mdiwindow.h \
-    ui/main/support/qg_recentfiles.h\
-    ui/qg_actionhandler.h \
-    ui/view/lc_centralwidget.h \
-    ui/view/qg_graphicview.h
-
-SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
+    main/lc_release_label.cpp \
+    main/main.cpp \
+    main/qc_dialogfactory.cpp \
+    plugins/intern/qc_actiongetent.cpp \
+    plugins/intern/qc_actiongetpoint.cpp \
+    plugins/intern/qc_actiongetselect.cpp \
+    plugins/lc_plugininvoker.cpp \
     ui/action_options/circle/lc_circle_by_arc_options_filler.cpp \
-    ui/action_options/circle/lc_circle_center_radius_options_widget.cpp \
+    ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/action_options/circle/lc_circle_center_radius_options_filler.cpp \
-    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.cpp \
+    ui/action_options/circle/lc_circle_center_radius_options_widget.cpp \
     ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.cpp \
-    ui/action_options/curve/lc_arc_center_point_param_options_widget.cpp \
+    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.cpp \
+    ui/action_options/curve/lc_arc_2_points_options_widget_filler.cpp \
+    ui/action_options/curve/lc_arc_2points_options_widget.cpp \
     ui/action_options/curve/lc_arc_center_point_param_options_filler.cpp \
-    ui/action_options/curve/lc_arc_tangential_options_widget.cpp \
+    ui/action_options/curve/lc_arc_center_point_param_options_widget.cpp \
     ui/action_options/curve/lc_arc_tangential_options_filler.cpp \
-    ui/action_options/spline/lc_spline_options_widget.cpp \
-    ui/action_options/spline/lc_spline_options_filler.cpp \
+    ui/action_options/curve/lc_arc_tangential_options_widget.cpp \
+    ui/action_options/curve/lc_ellipse_arc_options_filler.cpp \
+    ui/action_options/curve/lc_ellipse_arc_options_widget.cpp \
     ui/action_options/dimensions/qg_dimoptions.cpp \
-    ui/action_options/edit/lc_paste_transform_options_widget.cpp \
+    ui/action_options/edit/lc_paste_to_points_options_filler.cpp \
+    ui/action_options/edit/lc_paste_to_points_options_widget.cpp \
     ui/action_options/edit/lc_paste_transform_options_filler.cpp \
-    ui/action_options/image/lc_image_options_widget.cpp \
+    ui/action_options/edit/lc_paste_transform_options_widget.cpp \
+    ui/action_options/ellipse/lc_ellipse_1_point_options_filler.cpp \
+    ui/action_options/ellipse/lc_ellipse_1point_options_widget.cpp \
     ui/action_options/image/lc_image_options_filler.cpp \
-    ui/action_options/info/lc_info_dist_point_to_entity_options_widget.cpp \
+    ui/action_options/image/lc_image_options_widget.cpp \
     ui/action_options/info/lc_info_dist_point_to_entity_options_filler.cpp \
-    ui/action_options/insert/lc_block_insert_options_widget.cpp \
+    ui/action_options/info/lc_info_dist_point_to_entity_options_widget.cpp \
     ui/action_options/insert/lc_block_insert_options_filler.cpp \
-    ui/action_options/insert/lc_block_library_insert_options_widget.cpp \
+    ui/action_options/insert/lc_block_insert_options_widget.cpp \
     ui/action_options/insert/lc_block_library_insert_options_filler.cpp \
-    ui/action_options/misc/lc_center_mark_options_widget.cpp \
-    ui/action_options/misc/lc_center_mark_options_filler.cpp \
-    ui/action_options/line/lc_line_angle_rel_options_widget.cpp \
-    ui/action_options/line/lc_line_angle_rel_options_filler.cpp \
-    ui/action_options/line/lc_line_from_point_to_line_options_widget.cpp \
-    ui/action_options/line/lc_line_from_point_to_line_options_filler.cpp \
-    ui/action_options/line/lc_line_snake_options_widget.cpp \
-    ui/action_options/line/lc_line_snake_options_filler.cpp \
-    ui/action_options/point/lc_points_line_options_widget.cpp \
-    ui/action_options/point/lc_points_line_options_filler.cpp \
-    ui/action_options/rect/lc_rectangle_abstract_options_filler.cpp \
-    ui/action_options/rect/lc_rectangle_1point_options_widget.cpp \
-    ui/action_options/rect/lc_rectangle_1_point_options_filler.cpp \
-    ui/action_options/rect/lc_rectangle_2points_options_widget.cpp \
-    ui/action_options/rect/lc_rectangle_2points_options_filler.cpp \
-    ui/action_options/rect/lc_rectangle_3points_options_widget.cpp \
-    ui/action_options/rect/lc_rectangle_3_points_options_filler.cpp \
-    ui/action_options/line/lc_slice_divide_options_widget.cpp \
-    ui/action_options/line/lc_slice_divide_options_filler.cpp \
-    ui/action_options/polygon/lc_star_options_widget.cpp \
-    ui/action_options/polygon/lc_star_options_filler.cpp \
-    ui/action_options/line/lc_line_angle_options_widget.cpp \
+    ui/action_options/insert/lc_block_library_insert_options_widget.cpp \
+    ui/action_options/lc_action_options_manager.cpp \
+    ui/action_options/lc_action_options_properties_filler_base.cpp \
     ui/action_options/line/lc_line_angle_options_filler.cpp \
-    ui/action_options/line/lc_line_bisector_options_widget.cpp \
+    ui/action_options/line/lc_line_angle_options_widget.cpp \
+    ui/action_options/line/lc_line_angle_rel_options_filler.cpp \
+    ui/action_options/line/lc_line_angle_rel_options_widget.cpp \
     ui/action_options/line/lc_line_bisector_options_filler.cpp \
-    ui/action_options/line/lc_line_options_widget.cpp \
+    ui/action_options/line/lc_line_bisector_options_widget.cpp \
+    ui/action_options/line/lc_line_from_point_to_line_options_filler.cpp \
+    ui/action_options/line/lc_line_from_point_to_line_options_widget.cpp \
     ui/action_options/line/lc_line_options_filler.cpp \
-    ui/action_options/line/lc_line_parallel_options_widget.cpp \
+    ui/action_options/line/lc_line_options_widget.cpp \
     ui/action_options/line/lc_line_parallel_options_filler.cpp \
-    ui/action_options/line/lc_line_parallel_through_options_widget.cpp \
+    ui/action_options/line/lc_line_parallel_options_widget.cpp \
     ui/action_options/line/lc_line_parallel_through_options_filler.cpp \
+    ui/action_options/line/lc_line_parallel_through_options_widget.cpp \
+    ui/action_options/line/lc_line_radiant_options_filler.cpp \
+    ui/action_options/line/lc_line_radiant_options_widget.cpp \
+    ui/action_options/line/lc_line_rel_angle_options_filler.cpp \
+    ui/action_options/line/lc_line_rel_angle_options_widget.cpp \
+    ui/action_options/line/lc_line_snake_options_filler.cpp \
+    ui/action_options/line/lc_line_snake_options_widget.cpp \
+    ui/action_options/line/lc_slice_divide_options_filler.cpp \
+    ui/action_options/line/lc_slice_divide_options_widget.cpp \
+    ui/action_options/misc/lc_center_line_options_filler.cpp \
+    ui/action_options/misc/lc_center_line_options_widget.cpp \
+    ui/action_options/misc/lc_center_mark_options_filler.cpp \
+    ui/action_options/misc/lc_center_mark_options_widget.cpp \
+    ui/action_options/misc/lc_draw_bounding_box_options_filler.cpp \
+    ui/action_options/misc/lc_draw_bounding_box_options_widget.cpp \
+    ui/action_options/modify/lc_align_options_filler.cpp \
+    ui/action_options/modify/lc_align_options_widget.cpp \
+    ui/action_options/modify/lc_align_ref_options_filler.cpp \
+    ui/action_options/modify/lc_align_ref_options_widget.cpp \
+    ui/action_options/modify/lc_align_single_options_filler.cpp \
+    ui/action_options/modify/lc_align_single_options_widget.cpp \
+    ui/action_options/modify/lc_bevel_options_filler.cpp \
+    ui/action_options/modify/lc_bevel_options_widget.cpp \
+    ui/action_options/modify/lc_break_divide_options_filler.cpp \
+    ui/action_options/modify/lc_break_divide_options_widget.cpp \
+    ui/action_options/modify/lc_duplicate_options_filler.cpp \
+    ui/action_options/modify/lc_duplicate_options_widget.cpp \
+    ui/action_options/modify/lc_line_gap_options_filler.cpp \
+    ui/action_options/modify/lc_line_gap_options_widget.cpp \
+    ui/action_options/modify/lc_line_join_options_filler.cpp \
+    ui/action_options/modify/lc_line_join_options_widget.cpp \
+    ui/action_options/modify/lc_mirror_options_filler.cpp \
+    ui/action_options/modify/lc_mirror_options_widget.cpp \
+    ui/action_options/modify/lc_move_options_filler.cpp \
+    ui/action_options/modify/lc_move_options_widget.cpp \
+    ui/action_options/modify/lc_move_rotate_options_filler.cpp \
+    ui/action_options/modify/lc_move_rotate_options_widget.cpp \
+    ui/action_options/modify/lc_offset_options_filler.cpp \
+    ui/action_options/modify/lc_offset_options_widget.cpp \
+    ui/action_options/modify/lc_rotate_2_options_filler.cpp \
+    ui/action_options/modify/lc_rotate_2_options_widget.cpp \
+    ui/action_options/modify/lc_rotate_options_filler.cpp \
+    ui/action_options/modify/lc_rotate_options_widget.cpp \
+    ui/action_options/modify/lc_round_options_filler.cpp \
+    ui/action_options/modify/lc_round_options_widget.cpp \
+    ui/action_options/modify/lc_scale_options_filler.cpp \
+    ui/action_options/modify/lc_scale_options_widget.cpp \
+    ui/action_options/modify/lc_stretch_options_filler.cpp \
+    ui/action_options/modify/lc_stretch_options_widget.cpp \
+    ui/action_options/modify/lc_trim_amount_options_filler.cpp \
+    ui/action_options/modify/lc_trim_amount_options_widget.cpp \
+    ui/action_options/other/lc_ucs_create_options_filler.cpp \
+    ui/action_options/other/lc_ucs_create_options_widget.cpp \
+    ui/action_options/point/lc_points_lattice_options_filler.cpp \
+    ui/action_options/point/lc_points_lattice_options_widget.cpp \
+    ui/action_options/point/lc_points_line_options_filler.cpp \
+    ui/action_options/point/lc_points_line_options_widget.cpp \
+    ui/action_options/polygon/lc_polygon_options_filler.cpp \
     ui/action_options/polygon/lc_polygon_options_widget.cpp \
     ui/action_options/polygon/lc_polygon_side_side_options_filler.cpp \
-    ui/action_options/polygon/lc_polygon_options_filler.cpp \
-    ui/action_options/line/lc_line_rel_angle_options_widget.cpp \
-    ui/action_options/line/lc_line_rel_angle_options_filler.cpp \
-    ui/action_options/modify/lc_duplicate_options_widget.cpp \
-    ui/action_options/modify/lc_duplicate_options_filler.cpp \
-    ui/action_options/modify/lc_line_join_options_widget.cpp \
-    ui/action_options/modify/lc_line_join_options_filler.cpp \
-    ui/action_options/modify/lc_break_divide_options_widget.cpp \
-    ui/action_options/modify/lc_break_divide_options_filler.cpp \
-    ui/action_options/modify/lc_line_gap_options_widget.cpp \
-    ui/action_options/modify/lc_line_gap_options_filler.cpp \
-    ui/action_options/modify/lc_mirror_options_widget.cpp \
-    ui/action_options/modify/lc_mirror_options_filler.cpp \
-    ui/action_options/modify/lc_rotate_options_widget.cpp \
-    ui/action_options/modify/lc_rotate_options_filler.cpp \
-    ui/action_options/modify/lc_scale_options_widget.cpp \
-    ui/action_options/modify/lc_scale_options_filler.cpp \
-    ui/action_options/modify/lc_stretch_options_widget.cpp \
-    ui/action_options/modify/lc_stretch_options_filler.cpp \
-    ui/action_options/modify/lc_move_options_widget.cpp \
-    ui/action_options/modify/lc_move_options_filler.cpp \
-    ui/action_options/modify/lc_rotate_2_options_widget.cpp \
-    ui/action_options/modify/lc_rotate_2_options_filler.cpp \
-    ui/action_options/modify/lc_bevel_options_widget.cpp \
-    ui/action_options/modify/lc_bevel_options_filler.cpp \
-    ui/action_options/modify/lc_offset_options_widget.cpp \
-    ui/action_options/modify/lc_offset_options_filler.cpp \
-    ui/action_options/modify/lc_move_rotate_options_widget.cpp \
-    ui/action_options/modify/lc_move_rotate_options_filler.cpp \
-    ui/action_options/modify/lc_round_options_widget.cpp \
-    ui/action_options/modify/lc_round_options_filler.cpp \
-    ui/action_options/modify/lc_trim_amount_options_widget.cpp \
-    ui/action_options/modify/lc_trim_amount_options_filler.cpp \
-    ui/action_options/polyline/lc_polyline_equidistant_options_widget.cpp \
+    ui/action_options/polygon/lc_star_options_filler.cpp \
+    ui/action_options/polygon/lc_star_options_widget.cpp \
     ui/action_options/polyline/lc_polyline_equidistant_options_filler.cpp \
-    ui/action_options/polyline/lc_polyline_options_widget.cpp \
+    ui/action_options/polyline/lc_polyline_equidistant_options_widget.cpp \
     ui/action_options/polyline/lc_polyline_options_filler.cpp \
-    ui/action_options/print_preview/lc_print_preview_options_widget.cpp \
+    ui/action_options/polyline/lc_polyline_options_widget.cpp \
     ui/action_options/print_preview/lc_print_preview_options_filler.cpp \
+    ui/action_options/print_preview/lc_print_preview_options_widget.cpp \
+    ui/action_options/rect/lc_rectangle_1_point_options_filler.cpp \
+    ui/action_options/rect/lc_rectangle_1point_options_widget.cpp \
+    ui/action_options/rect/lc_rectangle_2points_options_filler.cpp \
+    ui/action_options/rect/lc_rectangle_2points_options_widget.cpp \
+    ui/action_options/rect/lc_rectangle_3_points_options_filler.cpp \
+    ui/action_options/rect/lc_rectangle_3points_options_widget.cpp \
+    ui/action_options/rect/lc_rectangle_abstract_options_filler.cpp \
+    ui/action_options/selection/lc_select_window_options_filler.cpp \
+    ui/action_options/selection/lc_selectwindowoptions.cpp \
     ui/action_options/snap/qg_snapdistoptions.cpp \
     ui/action_options/snap/qg_snapmiddleoptions.cpp \
-    ui/action_options/text/lc_m_text_options_widget.cpp \
+    ui/action_options/spline/lc_spline_explode_options_filler.cpp \
+    ui/action_options/spline/lc_spline_explode_options_widget.cpp \
+    ui/action_options/spline/lc_spline_from_polyline_options_filler.cpp \
+    ui/action_options/spline/lc_spline_from_polyline_options_widget.cpp \
+    ui/action_options/spline/lc_spline_options_filler.cpp \
+    ui/action_options/spline/lc_spline_options_widget.cpp \
     ui/action_options/text/lc_m_text_options_filler.cpp \
-    ui/action_options/text/lc_text_options_widget.cpp \
+    ui/action_options/text/lc_m_text_options_widget.cpp \
     ui/action_options/text/lc_text_options_filler.cpp \
+    ui/action_options/text/lc_text_options_widget.cpp \
     ui/actions/lc_action.cpp \
-    ui/actions/lc_actionfactorybase.cpp \
-    ui/actions/lc_actiongroup.cpp \
-    ui/actions/lc_actiongroupmanager.cpp \
-    ui/actions/lc_shortcutinfo.cpp \
-    ui/actions/lc_shortcuts_manager.cpp \
-    ui/actions/lc_shortcutsstorage.cpp \
+    ui/actions/lc_action_factory_base.cpp \
+    ui/actions/lc_action_group.cpp \
+    ui/actions/lc_action_group_manager.cpp \
+    ui/actions/lc_action_tooltip_builder.cpp \
+    ui/actions/shortcuts/lc_repository_shortcuts.cpp \
+    ui/actions/shortcuts/lc_shortcut_info.cpp \
+    ui/actions/shortcuts/lc_shortcuts_manager.cpp \
+    ui/actions/shortcuts/lc_shortcuts_storage.cpp \
+    ui/components/buttons/lc_color_button.cpp \
+    ui/components/buttons/lc_hyperlink_button.cpp \
     ui/components/comboboxes/comboboxoption.cpp \
+    ui/components/comboboxes/lc_content_adjustable_combo_box.cpp \
+    ui/components/comboboxes/lc_lazy_font_combo_box.cpp \
     ui/components/comboboxes/qg_colorbox.cpp \
     ui/components/comboboxes/qg_fontbox.cpp \
     ui/components/comboboxes/qg_layerbox.cpp \
@@ -2084,9 +2275,19 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/components/containers/lc_optionswidgetsholder.cpp \
     ui/components/containers/lc_snapoptionswidgetsholder.cpp \
     ui/components/creators/actionlist.cpp \
+    ui/components/edits/lc_search_line_edit.cpp \
     ui/components/layouts/lc_flexlayout.cpp \
+    ui/components/lc_custom_title_bar_widget.cpp \
+    ui/components/lc_icon_label.cpp \
     ui/components/lc_textedit.cpp \
     ui/components/pen/qg_widgetpen.cpp \
+    ui/components/qg_scrollbar.cpp \
+    ui/components/relative_position_assistant/lc_relative_position_editing_widget.cpp \
+    ui/components/relative_position_assistant/lc_relative_position_evaluator.cpp \
+    ui/components/status_bar/lc_anglesbasiswidget.cpp \
+    ui/components/status_bar/lc_qtstatusbarmanager.cpp \
+    ui/components/status_bar/lc_relzerocoordinateswidget.cpp \
+    ui/components/status_bar/lc_ucsstatewidget.cpp \
     ui/components/status_bar/qg_activelayername.cpp \
     ui/components/status_bar/qg_coordinatewidget.cpp \
     ui/components/status_bar/qg_mousewidget.cpp \
@@ -2095,33 +2296,197 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/components/textfileviewer.cpp \
     ui/components/toolbars/qg_pentoolbar.cpp \
     ui/components/toolbars/qg_snaptoolbar.cpp \
-    ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp \
+    ui/components/treeviews/lc_placeholder_tree_view.cpp \
+    ui/components/utils/lc_entitymetauiutils.cpp \
+    ui/components/utils/lc_mouse_tracking_table_view.cpp \
+    ui/components/utils/lc_rotated_icon_engine.cpp \
+    ui/components/utils/lc_tableitem_delegate_base.cpp \
     ui/dialogs/actions/qg_layerdialog.cpp \
+    ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp \
+    ui/dialogs/entity/lc_dlg_dimension.cpp \
+    ui/dialogs/entity/lc_dlg_entityproperties.cpp \
+    ui/dialogs/entity/lc_dlg_tolerance.cpp \
+    ui/dialogs/entity/lc_entitypropertiesdlg.cpp \
+    ui/dialogs/entity/lc_entitypropertieseditor.cpp \
+    ui/dialogs/entity/lc_entitypropertieseditorsupport.cpp \
+    ui/dialogs/entity/lc_entitypropertieseditorwidget.cpp \
+    ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp \
+    ui/dialogs/entity/lc_mtextpropertieseditingwidget.cpp \
+    ui/dialogs/entity/lc_pointpickbutton.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_image.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_insert.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_line.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_parabola.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_point.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_polyline.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_spline.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.cpp \
+    ui/dialogs/entity/lc_textpropertieseditingwidget.cpp \
     ui/dialogs/entity/qg_blockdialog.cpp \
     ui/dialogs/entity/qg_dimensionlabeleditor.cpp \
     ui/dialogs/entity/qg_dlg_attributes.cpp \
     ui/dialogs/entity/qg_dlg_hatch.cpp \
-    ui/dialogs/file/export/image/qg_dlgimageoptions.cpp \
     ui/dialogs/entity/qg_dlg_mtext.cpp \
     ui/dialogs/entity/qg_dlg_text.cpp \
-    ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.cpp \
+    ui/dialogs/file/export/image/lc_exporttoimageservice.cpp \
+    ui/dialogs/file/export/image/qg_dlgimageoptions.cpp \
+    ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp \
     ui/dialogs/file/export/layers/lc_filedialogservice.cpp \
+    ui/dialogs/file/export/layers/lc_layerexportoptions.cpp \
+    ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.cpp \
     ui/dialogs/file/qg_filedialog.cpp \
+    ui/dialogs/lc_dialog.cpp \
+    ui/dialogs/lc_inputtextdialog.cpp \
+    ui/dialogs/main/lc_dlgabout.cpp \
+    ui/dialogs/main/lc_dlgnewversionavailable.cpp \
     ui/dialogs/main/qg_dlginitial.cpp \
     ui/dialogs/main/qg_exitdialog.cpp \
     ui/dialogs/qg_dialogfactory.cpp \
+    ui/dialogs/settings/backup/lc_application_backup_service.cpp \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewgraphicview.cpp \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.cpp \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_tabproxywidget.cpp \
+    ui/dialogs/settings/dimstyles/lc_dimstyleitem.cpp \
+    ui/dialogs/settings/dimstyles/lc_dimstyleslistmodel.cpp \
+    ui/dialogs/settings/dimstyles/lc_dimstylestreemodel.cpp \
+    ui/dialogs/settings/options_customization/lc_settings_manager_customization.cpp \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_commands.cpp \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus.cpp \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus_toolbars.cpp \
+    ui/dialogs/settings/options_customization/managers/lc_preset_manager_shortcuts.cpp \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_commands.cpp \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_custom_menus.cpp \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_customization_profiles.cpp \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_menus_toolbars.cpp \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_shortcuts.cpp \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_generator.cpp \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_dlg_cheatsheet_options.cpp \
+    ui/dialogs/settings/options_customization/support/lc_action_mapping_tree_model_base.cpp \
+    ui/dialogs/settings/options_customization/support/lc_actions_dual_list_widget.cpp \
+    ui/dialogs/settings/options_customization/support/lc_actions_tree_model.cpp \
+    ui/dialogs/settings/options_customization/support/lc_command_trigger_validator.cpp \
+    ui/dialogs/settings/options_customization/support/lc_commands_tree_item.cpp \
+    ui/dialogs/settings/options_customization/support/lc_commands_tree_model.cpp \
+    ui/dialogs/settings/options_customization/support/lc_customization_import_export_helper.cpp \
+    ui/dialogs/settings/options_customization/support/lc_dlg_action_group_config.cpp \
+    ui/dialogs/settings/options_customization/support/lc_dlg_icon_picker.cpp \
+    ui/dialogs/settings/options_customization/support/lc_menu_trigger_inspector.cpp \
+    ui/dialogs/settings/options_customization/support/lc_pages_utils.cpp \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_button.cpp \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_search_popup.cpp \
+    ui/dialogs/settings/options_customization/support/lc_shortcut_tree_item.cpp \
+    ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_model.cpp \
+    ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_view.cpp \
     ui/dialogs/settings/options_device/lc_deviceoptions.cpp \
+    ui/dialogs/settings/options_drafting/lc_settings_manager_drafting.cpp \
+    ui/dialogs/settings/options_drafting/managers/lc_drafting_metrics_defaults.cpp \
+    ui/dialogs/settings/options_drafting/managers/lc_preset_manager_drafting_metrics.cpp \
+    ui/dialogs/settings/options_drafting/managers/lc_preset_manager_drafting_theme.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.cpp \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.cpp \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_markers.cpp \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_overlays.cpp \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_renderer.cpp \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_snapping.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_points.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_info_cursor.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_preview.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_indicator.cpp \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_visual.cpp \
+    ui/dialogs/settings/options_drafting/support/lc_drafting_preview_bottom_bar.cpp \
+    ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.cpp \
+    ui/dialogs/settings/options_drafting/support/lc_graphic_view_preview_widget.cpp \
+    ui/dialogs/settings/options_drawing/lc_dimstylesexporter.cpp \
+    ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.cpp \
+    ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.cpp \
+    ui/dialogs/settings/options_drawing/lc_settings_manager_drawing.cpp \
     ui/dialogs/settings/options_drawing/lg_dimzerosbox.cpp \
-    ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp \
-    ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp \
-    ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.cpp \
-    ui/dialogs/settings/options_widget/lc_iconengineshared.cpp \
-    ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp \
-    ui/dialogs/settings/shortcuts/lc_shortcutbutton.cpp \
-    ui/dialogs/settings/shortcuts/lc_shortcutstreemodel.cpp \
-    ui/dialogs/settings/shortcuts/lc_shortcutstreeview.cpp \
-    ui/dialogs/settings/shortcuts/lc_shortcuttreeitem.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_dimensions.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_grid.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_meta.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_paper.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_points.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_splines.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_units.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_user_data.cpp \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_variables.cpp \
+    ui/dialogs/settings/options_general/lc_settings_manager_application.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_startup.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_language.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_maintenance.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_paths.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.cpp \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.cpp \
+    ui/dialogs/settings/options_widget/lc_settings_manager_styling.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_colors_palette.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_metrics.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_skin.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_icons_style.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_typography.cpp \
+    ui/dialogs/settings/options_widget/managers/lc_preset_manager_widgets.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_icons_style.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_behavior.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_controls.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_views_tabs.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_containers.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_palette.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_toolbars_menus.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_toolbars_and_docks.cpp \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_typography.cpp \
+    ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.cpp \
+    ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.cpp \
+    ui/dialogs/settings/options_widget/support/lc_skin_archetype_header_bar.cpp \
+    ui/dialogs/settings/options_widget/support/lc_skin_preview_window.cpp \
+    ui/dialogs/settings/options_widget/support/lc_styling_preview_bottom_bar.cpp \
+    ui/dialogs/settings/options_widget/support/lc_styling_preview_controller.cpp \
+    ui/dialogs/settings/support/lc_abstract_preset_manager.cpp \
+    ui/dialogs/settings/support/lc_dlg_checklist_selection.cpp \
+    ui/dialogs/settings/support/lc_editor_utils.cpp \
+    ui/dialogs/settings/support/lc_highlight_overlay.cpp \
+    ui/dialogs/settings/support/lc_preset_management_bar.cpp \
+    ui/dialogs/settings/support/lc_preset_manager_config_base.cpp \
+    ui/dialogs/settings/support/lc_preset_manager_interface.cpp \
+    ui/dialogs/settings/support/lc_profile_helper_base.cpp \
+    ui/dialogs/settings/support/lc_settings_backend.cpp \
+    ui/dialogs/settings/support/lc_settings_banner_widget.cpp \
+    ui/dialogs/settings/support/lc_settings_binder.cpp \
+    ui/dialogs/settings/support/lc_settings_dialog.cpp \
+    ui/dialogs/settings/support/lc_settings_filter_model.cpp \
+    ui/dialogs/settings/support/lc_settings_page_adapter.cpp \
+    ui/dialogs/settings/support/lc_settings_page_base.cpp \
+    ui/dialogs/settings/support/lc_settings_page_index.cpp \
+    ui/dialogs/settings/support/lc_settings_page_profile_exchange_base.cpp \
+    ui/dialogs/settings/support/lc_settings_registry.cpp \
     ui/dock_widgets/block_widget/qg_blockwidget.cpp \
+    ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.cpp \
+    ui/dock_widgets/cad/lc_caddockwidget.cpp \
     ui/dock_widgets/command_line/qg_commandedit.cpp \
     ui/dock_widgets/command_line/qg_commandhistory.cpp \
     ui/dock_widgets/command_line/qg_commandwidget.cpp \
@@ -2139,6 +2504,9 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/dock_widgets/layers_tree/lc_layertreeoptionsdialog.cpp \
     ui/dock_widgets/layers_tree/lc_layertreeview.cpp \
     ui/dock_widgets/layers_tree/lc_layertreewidget.cpp \
+    ui/dock_widgets/lc_dock_widget_base.cpp \
+    ui/dock_widgets/lc_dockwidget.cpp \
+    ui/dock_widgets/lc_graphicviewawarewidget.cpp \
     ui/dock_widgets/library_widget/qg_librarywidget.cpp \
     ui/dock_widgets/pen_palette/lc_peninforegistry.cpp \
     ui/dock_widgets/pen_palette/lc_penitem.cpp \
@@ -2150,8 +2518,16 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/dock_widgets/pen_wizard/colorcombobox.cpp \
     ui/dock_widgets/pen_wizard/colorwizard.cpp \
     ui/dock_widgets/pen_wizard/lc_penwizard.cpp \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.cpp \
+    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp \
+    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.cpp \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_paint_context.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.cpp \
@@ -2159,24 +2535,57 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.cpp \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed_compound.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.cpp \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.cpp \
-    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.cpp \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.cpp \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.cpp \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.cpp \
-    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp \
+    ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.cpp \
     ui/dock_widgets/property_sheet/properties/action/lc_property_action.cpp \
     ui/dock_widgets/property_sheet/properties/action/lc_property_action_link_view.cpp \
     ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_checkbox_view.cpp \
@@ -2184,254 +2593,337 @@ SOURCES +=  ui/action_options/circle/lc_circle_by_arc_options_widget.cpp \
     ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double.cpp \
-    ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.cpp \
-    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_property_enum_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/int/lc_property_int_list_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/int/lc_property_int_spinbox_view.cpp \
     ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.cpp \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.cpp \
-    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.cpp  \
+    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.cpp \
     ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.cpp \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view_handler.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox_view.cpp \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.cpp \
-    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_lineedit_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.cpp \
-    ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
-    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.cpp \
-    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp \
-    ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.cpp \
-    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp \
-    ui/main/init/lc_actionfactory.cpp \
-    ui/main/init/lc_widgetfactory.cpp \
-    ui/main/init/lc_menufactory.cpp \
-    ui/main/init/lc_menufactory_base.cpp \
-    ui/main/init/lc_menufactory_main.cpp \
-    ui/main/init/lc_menufactory_graphicview.cpp \
-    ui/main/init/lc_toolbarfactory.cpp \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.cpp \
+    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.cpp \
+    ui/dock_widgets/ucs_list/lc_dlgucsproperties.cpp \
+    ui/dock_widgets/ucs_list/lc_ucslistbutton.cpp \
+    ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp \
+    ui/dock_widgets/ucs_list/lc_ucslistoptions.cpp \
+    ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp \
+    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.cpp \
+    ui/dock_widgets/views_list/lc_namedviewsbutton.cpp \
+    ui/dock_widgets/views_list/lc_namedviewslistoptions.cpp \
+    ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp \
+    ui/dock_widgets/views_list/lc_namedviewsmodel.cpp \
+    ui/dock_widgets/workspaces/lc_workspacelistbutton.cpp \
+    ui/lc_actionhandlerfactory.cpp \
+    ui/lc_snapmanager.cpp \
+    ui/lc_uiutils.cpp \
+    ui/main/customization/lc_customization_manager.cpp \
+    ui/main/fontviewer/lc_fontfileviewer.cpp \
+    ui/main/init/lc_action_factory.cpp \
+    ui/main/init/lc_application_window_initializer.cpp \
+    ui/main/init/lc_default_context_menus_builder.cpp \
+    ui/main/init/lc_default_navigation_layout_builder.cpp \
+    ui/main/init/lc_menu_factory_base.cpp \
+    ui/main/init/lc_special_menu_service.cpp \
+    ui/main/init/lc_widget_factory.cpp \
+    ui/main/lc_appwindowaware.cpp \
+    ui/main/lc_defaultactioncontext.cpp \
     ui/main/lc_layouttabbar.cpp \
+    ui/main/lc_mdiapplicationwindow.cpp \
     ui/main/mainwindowx.cpp \
+    ui/main/persistence/lc_documentsstorage.cpp \
     ui/main/qc_applicationwindow.cpp \
     ui/main/qc_mdiwindow.cpp \
+    ui/main/release_check/lc_releasechecker.cpp \
+    ui/main/support/lc_app_window_dock_layout_manger.cpp \
+    ui/main/support/lc_app_window_tool_bar_manager.cpp \
+    ui/main/support/lc_appwindowdialogsinvoker.cpp \
+    ui/main/support/lc_dock_tab_bar_manager.cpp \
+    ui/main/support/lc_gridviewinvoker.cpp \
+    ui/main/support/lc_infocursorsettingsmanager.cpp \
+    ui/main/support/lc_lastopenfilesopener.cpp \
     ui/main/support/qg_recentfiles.cpp \
+    ui/main/workspaces/lc_workspacesinvoker.cpp \
+    ui/main/workspaces/lc_workspacesmanager.cpp \
+    ui/main/workspaces/navigation/lc_navigation_creator.cpp \
+    ui/main/workspaces/navigation/menus/lc_graphic_view_context_menu_provider.cpp \
+    ui/main/workspaces/navigation/menus/lc_menu_activator.cpp \
+    ui/main/workspaces/navigation/menus/lc_menu_builder_base.cpp \
+    ui/main/workspaces/navigation/repository/lc_repository_graphic_view_context_menus.cpp \
+    ui/main/workspaces/navigation/repository/lc_repository_menu_bar_and_toolbars.cpp \
     ui/qg_actionhandler.cpp \
+    ui/styling/fusion_skin/lc_palette_color_utils.cpp \
+    ui/styling/fusion_skin/lc_repository_fusion_colors_palette.cpp \
+    ui/styling/fusion_skin/lc_repository_fusion_metrics.cpp \
+    ui/styling/fusion_skin/lc_repository_fusion_skin.cpp \
+    ui/styling/fusion_skin/lc_style_metrics_utils.cpp \
+    ui/styling/icons_styling/lc_icon_colors_options.cpp \
+    ui/styling/icons_styling/lc_icon_engine_shared.cpp \
+    ui/styling/icons_styling/lc_icons_color_utils.cpp \
+    ui/styling/icons_styling/lc_icons_style_manager.cpp \
+    ui/styling/icons_styling/lc_repository_icons_style.cpp \
+    ui/styling/lc_ui_style_manager.cpp \
+    ui/styling/presets_generator/lc_dlg_styles_presets_generator.cpp \
+    ui/styling/presets_generator/lc_style_preset_generator.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_auto_popup_controller.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_dialog.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_floating_hud.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_mnemonic.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_tool_tip.cpp \
+    ui/styling/proxy_style/events/lc_event_filter_win_32_window_cloaking.cpp \
+    ui/styling/proxy_style/lc_detached_menu.cpp \
+    ui/styling/proxy_style/lc_dock_title_bar.cpp \
+    ui/styling/proxy_style/lc_proxy_style.cpp \
+    ui/styling/proxy_style/lc_skin_colors_resolver.cpp \
+    ui/styling/proxy_style/lc_skin_scaled_geometry_provider.cpp \
+    ui/styling/proxy_style/lc_skin_widgets_layout_resolver.cpp \
+    ui/styling/support/lc_custom_style_helper.cpp \
+    ui/styling/support/lc_styling_profile_import_export_helper.cpp \
+    ui/styling/typography/lc_repository_typography.cpp \
+    ui/styling/typography/lc_typography_utils.cpp \
+    ui/styling/viewport/lc_repository_drafting_metrics.cpp \
+    ui/styling/viewport/lc_repository_drafting_theme.cpp \
+    ui/styling/widgets/lc_repository_widgets.cpp \
+    ui/styling/widgets/lc_widgets_config.cpp \
     ui/view/lc_centralwidget.cpp \
+    ui/view/lc_preview_graphic_view.cpp \
+    ui/view/lc_printpreviewview.cpp \
     ui/view/qg_graphicview.cpp
 
-FORMS = ui/action_options/circle/lc_circle_by_arc_options_widget.ui \
-       ui/action_options/circle/lc_circle_center_radius_options_widget.ui \
-       ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.ui \
-       ui/action_options/curve/lc_arc_2points_options_widget.ui \
-       ui/action_options/curve/lc_ellipse_arc_options_widget.ui \
-       ui/action_options/line/lc_line_radiant_options_widget.ui \
-       ui/action_options/misc/lc_center_line_options_widget.ui \
-       ui/action_options/misc/lc_draw_bounding_box_options_widget.ui \
-       ui/action_options/modify/lc_align_options_widget.ui \
-       ui/action_options/modify/lc_align_single_options_widget.ui \
-       ui/action_options/modify/lc_align_ref_options_widget.ui \
-       ui/action_options/other/lc_ucs_create_options_widget.ui \
-       ui/action_options/spline/lc_spline_explode_options_widget.ui \
-       ui/action_options/spline/lc_spline_from_polyline_options_widget.ui \
-       ui/action_options/curve/lc_arc_center_point_param_options_widget.ui \
-       ui/action_options/curve/lc_arc_tangential_options_widget.ui \
-       ui/action_options/spline/lc_spline_options_widget.ui \
-       ui/action_options/dimensions/qg_dimoptions.ui \
-       ui/action_options/edit/lc_paste_transform_options_widget.ui \
-       ui/action_options/ellipse/lc_ellipse_1point_options_widget.ui \
-       ui/action_options/image/lc_image_options_widget.ui \
-       ui/action_options/info/lc_info_dist_point_to_entity_options_widget.ui \
-       ui/action_options/insert/lc_block_insert_options_widget.ui \
-       ui/action_options/insert/lc_block_library_insert_options_widget.ui \
-       ui/action_options/misc/lc_center_mark_options_widget.ui \
-       ui/action_options/line/lc_line_angle_rel_options_widget.ui \
-       ui/action_options/line/lc_line_from_point_to_line_options_widget.ui \
-       ui/action_options/line/lc_line_snake_options_widget.ui \
-       ui/action_options/point/lc_points_line_options_widget.ui \
-       ui/action_options/rect/lc_rectangle_1point_options_widget.ui \
-       ui/action_options/rect/lc_rectangle_2points_options_widget.ui \
-       ui/action_options/rect/lc_rectangle_3points_options_widget.ui \
-       ui/action_options/line/lc_slice_divide_options_widget.ui \
-       ui/action_options/polygon/lc_star_options_widget.ui \
-       ui/action_options/line/lc_line_angle_options_widget.ui \
-       ui/action_options/line/lc_line_bisector_options_widget.ui \
-       ui/action_options/line/lc_line_options_widget.ui \
-       ui/action_options/line/lc_line_parallel_options_widget.ui \
-       ui/action_options/line/lc_line_parallel_through_options_widget.ui \
-       ui/action_options/polygon/lc_polygon_options_widget.ui \
-       ui/action_options/line/lc_line_rel_angle_options_widget.ui \
-       ui/action_options/modify/lc_duplicate_options_widget.ui \
-       ui/action_options/modify/lc_line_join_options_widget.ui \
-       ui/action_options/modify/lc_break_divide_options_widget.ui \
-       ui/action_options/modify/lc_line_gap_options_widget.ui \
-       ui/action_options/modify/lc_mirror_options_widget.ui \
-       ui/action_options/modify/lc_rotate_options_widget.ui \
-       ui/action_options/modify/lc_scale_options_widget.ui \
-       ui/action_options/modify/lc_stretch_options_widget.ui \
-       ui/action_options/modify/lc_move_options_widget.ui \
-       ui/action_options/modify/lc_rotate_2_options_widget.ui \
-       ui/action_options/modify/lc_bevel_options_widget.ui \
-       ui/action_options/modify/lc_offset_options_widget.ui \
-       ui/action_options/modify/lc_move_rotate_options_widget.ui \
-       ui/action_options/modify/lc_round_options_widget.ui \
-       ui/action_options/modify/lc_trim_amount_options_widget.ui \
-       ui/action_options/edit/lc_paste_to_points_options_widget.ui \
-       ui/action_options/point/lc_points_lattice_options_widget.ui \
-       ui/action_options/polyline/lc_polyline_equidistant_options_widget.ui \
-       ui/action_options/polyline/lc_polyline_options_widget.ui \
-       ui/action_options/print_preview/lc_print_preview_options_widget.ui \
-       ui/action_options/selection/lc_selectwindowoptions.ui \
-       ui/action_options/snap/qg_snapdistoptions.ui \
-       ui/action_options/snap/qg_snapmiddleoptions.ui \
-       ui/action_options/text/lc_m_text_options_widget.ui \
-       ui/action_options/text/lc_text_options_widget.ui \
-       ui/components/comboboxes/comboboxoption.ui \
-       ui/components/containers/lc_optionswidgetsholder.ui \
-       ui/components/containers/lc_snapoptionswidgetsholder.ui \
-       ui/components/relative_position_assistant/lc_relative_position_editing_widget.ui \
-       ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui \
-       ui/dialogs/creators/lc_dlg_menu_assigner.ui \
-       ui/dialogs/creators/lc_dlg_widget_creator.ui \
-       ui/components/pen/qg_widgetpen.ui \
-       ui/components/status_bar/lc_anglesbasiswidget.ui \
-       ui/components/status_bar/lc_relzerocoordinateswidget.ui \
-       ui/components/status_bar/lc_ucsstatewidget.ui \
-       ui/components/status_bar/qg_activelayername.ui \
-       ui/components/status_bar/qg_coordinatewidget.ui \
-       ui/components/status_bar/qg_mousewidget.ui \
-       ui/components/status_bar/qg_selectionwidget.ui \
-       ui/components/textfileviewer.ui \
-       ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui \
-       ui/dialogs/actions/qg_layerdialog.ui \
-       ui/dialogs/creators/lc_dlg_new_widget.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_arc.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_circle.ui \
-       ui/dialogs/entity/lc_dlg_dimension.ui \
-       ui/dialogs/entity/lc_dlg_entityproperties.ui \
-       ui/dialogs/entity/lc_dlg_tolerance.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui \
-       ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_textpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_image.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_insert.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_line.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \       
-       ui/dialogs/entity/lc_pointpickbutton.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_point.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_spline.ui \
-       ui/dialogs/entity/qg_blockdialog.ui \
-       ui/dialogs/entity/qg_dimensionlabeleditor.ui \
-       ui/dialogs/entity/qg_dlg_attributes.ui \
-       ui/dialogs/entity/qg_dlg_hatch.ui \
-       ui/dialogs/file/export/image/qg_dlgimageoptions.ui \
-       ui/dialogs/entity/qg_dlg_mtext.ui \
-       ui/dialogs/entity/qg_dlg_text.ui \
-       ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.ui \
-       ui/dialogs/lc_inputtextdialog.ui \
-       ui/dialogs/main/lc_dlgabout.ui \
-       ui/dialogs/main/lc_dlgnewversionavailable.ui \
-       ui/dialogs/main/qg_dlginitial.ui \
-       ui/dialogs/main/qg_exitdialog.ui \
-       ui/dialogs/settings/options_device/lc_deviceoptions.ui \
-       ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.ui \
-       ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.ui \
-       ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui \
-       ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.ui \
-       ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.ui \
-       ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui \
-       ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.ui \
-       ui/dialogs/settings/options_widget/lc_dlgiconssetup.ui \
-       ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.ui \
-       ui/dock_widgets/command_line/qg_commandwidget.ui \
-       ui/dock_widgets/entity_info/lc_quickinfowidget.ui \
-       ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui \
-       ui/dock_widgets/layers_tree/lc_layerdialog_ex.ui \
-       ui/dialogs/file/export/layers/lc_layerexportoptions.ui \
-       ui/dock_widgets/layers_tree/lc_layertreeoptionsdialog.ui \
-       ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui \
-       ui/dock_widgets/pen_palette/lc_penpalettewidget.ui \
-       ui/dock_widgets/pen_wizard/colorwizard.ui \
-       ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
-       ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.ui \
-       ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui \
-       ui/dock_widgets/ucs_list/lc_dlgucsproperties.ui \
-       ui/dock_widgets/ucs_list/lc_ucslistwidget.ui \
-       ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui \
-       ui/dock_widgets/views_list/lc_namedviewslistwidget.ui
-
-
-
-# ################################################################################
-# Main
-HEADERS += \
-    main/qc_dialogfactory.h \
-    main/doc_plugin_interface.h \
-    plugins/document_interface.h \
-    plugins/qc_plugininterface.h \
-    plugins/intern/qc_actiongetpoint.h \
-    plugins/intern/qc_actiongetselect.h \
-    plugins/intern/qc_actiongetent.h \
-    main/main.h \
-    main/console_dxf2dwg.h \
-    main/console_dxf2pdf/console_dxf2pdf.h \
-    main/console_dxf2pdf/pdf_print_loop.h
-
-SOURCES += \
-    main/qc_dialogfactory.cpp \
-    main/doc_plugin_interface.cpp \
-    plugins/intern/qc_actiongetpoint.cpp \
-    plugins/intern/qc_actiongetselect.cpp \
-    plugins/intern/qc_actiongetent.cpp \
-    main/main.cpp \
-    main/lc_release_label.cpp \
-    main/console_dxf2dwg.cpp \
-    main/console_dxf2pdf/console_dxf2pdf.cpp \
-    main/console_dxf2pdf/pdf_print_loop.cpp
+# ##############################################################################
+# Forms (.ui)
+FORMS += \
+    ui/action_options/circle/lc_circle_by_arc_options_widget.ui \
+    ui/action_options/circle/lc_circle_center_radius_options_widget.ui \
+    ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.ui \
+    ui/action_options/curve/lc_arc_2points_options_widget.ui \
+    ui/action_options/curve/lc_arc_center_point_param_options_widget.ui \
+    ui/action_options/curve/lc_arc_tangential_options_widget.ui \
+    ui/action_options/curve/lc_ellipse_arc_options_widget.ui \
+    ui/action_options/dimensions/qg_dimoptions.ui \
+    ui/action_options/edit/lc_paste_to_points_options_widget.ui \
+    ui/action_options/edit/lc_paste_transform_options_widget.ui \
+    ui/action_options/ellipse/lc_ellipse_1point_options_widget.ui \
+    ui/action_options/image/lc_image_options_widget.ui \
+    ui/action_options/info/lc_info_dist_point_to_entity_options_widget.ui \
+    ui/action_options/insert/lc_block_insert_options_widget.ui \
+    ui/action_options/insert/lc_block_library_insert_options_widget.ui \
+    ui/action_options/line/lc_line_angle_options_widget.ui \
+    ui/action_options/line/lc_line_angle_rel_options_widget.ui \
+    ui/action_options/line/lc_line_bisector_options_widget.ui \
+    ui/action_options/line/lc_line_from_point_to_line_options_widget.ui \
+    ui/action_options/line/lc_line_options_widget.ui \
+    ui/action_options/line/lc_line_parallel_options_widget.ui \
+    ui/action_options/line/lc_line_parallel_through_options_widget.ui \
+    ui/action_options/line/lc_line_radiant_options_widget.ui \
+    ui/action_options/line/lc_line_rel_angle_options_widget.ui \
+    ui/action_options/line/lc_line_snake_options_widget.ui \
+    ui/action_options/line/lc_slice_divide_options_widget.ui \
+    ui/action_options/misc/lc_center_line_options_widget.ui \
+    ui/action_options/misc/lc_center_mark_options_widget.ui \
+    ui/action_options/misc/lc_draw_bounding_box_options_widget.ui \
+    ui/action_options/modify/lc_align_options_widget.ui \
+    ui/action_options/modify/lc_align_ref_options_widget.ui \
+    ui/action_options/modify/lc_align_single_options_widget.ui \
+    ui/action_options/modify/lc_bevel_options_widget.ui \
+    ui/action_options/modify/lc_break_divide_options_widget.ui \
+    ui/action_options/modify/lc_duplicate_options_widget.ui \
+    ui/action_options/modify/lc_line_gap_options_widget.ui \
+    ui/action_options/modify/lc_line_join_options_widget.ui \
+    ui/action_options/modify/lc_mirror_options_widget.ui \
+    ui/action_options/modify/lc_move_options_widget.ui \
+    ui/action_options/modify/lc_move_rotate_options_widget.ui \
+    ui/action_options/modify/lc_offset_options_widget.ui \
+    ui/action_options/modify/lc_rotate_2_options_widget.ui \
+    ui/action_options/modify/lc_rotate_options_widget.ui \
+    ui/action_options/modify/lc_round_options_widget.ui \
+    ui/action_options/modify/lc_scale_options_widget.ui \
+    ui/action_options/modify/lc_stretch_options_widget.ui \
+    ui/action_options/modify/lc_trim_amount_options_widget.ui \
+    ui/action_options/other/lc_ucs_create_options_widget.ui \
+    ui/action_options/point/lc_points_lattice_options_widget.ui \
+    ui/action_options/point/lc_points_line_options_widget.ui \
+    ui/action_options/polygon/lc_polygon_options_widget.ui \
+    ui/action_options/polygon/lc_star_options_widget.ui \
+    ui/action_options/polyline/lc_polyline_equidistant_options_widget.ui \
+    ui/action_options/polyline/lc_polyline_options_widget.ui \
+    ui/action_options/print_preview/lc_print_preview_options_widget.ui \
+    ui/action_options/rect/lc_rectangle_1point_options_widget.ui \
+    ui/action_options/rect/lc_rectangle_2points_options_widget.ui \
+    ui/action_options/rect/lc_rectangle_3points_options_widget.ui \
+    ui/action_options/selection/lc_selectwindowoptions.ui \
+    ui/action_options/snap/qg_snapdistoptions.ui \
+    ui/action_options/snap/qg_snapmiddleoptions.ui \
+    ui/action_options/spline/lc_spline_explode_options_widget.ui \
+    ui/action_options/spline/lc_spline_from_polyline_options_widget.ui \
+    ui/action_options/spline/lc_spline_options_widget.ui \
+    ui/action_options/text/lc_m_text_options_widget.ui \
+    ui/action_options/text/lc_text_options_widget.ui \
+    ui/components/comboboxes/comboboxoption.ui \
+    ui/components/containers/lc_optionswidgetsholder.ui \
+    ui/components/containers/lc_snapoptionswidgetsholder.ui \
+    ui/components/pen/qg_widgetpen.ui \
+    ui/components/relative_position_assistant/lc_relative_position_editing_widget.ui \
+    ui/components/status_bar/lc_anglesbasiswidget.ui \
+    ui/components/status_bar/lc_relzerocoordinateswidget.ui \
+    ui/components/status_bar/lc_ucsstatewidget.ui \
+    ui/components/status_bar/qg_activelayername.ui \
+    ui/components/status_bar/qg_coordinatewidget.ui \
+    ui/components/status_bar/qg_mousewidget.ui \
+    ui/components/status_bar/qg_selectionwidget.ui \
+    ui/components/textfileviewer.ui \
+    ui/dialogs/actions/qg_layerdialog.ui \
+    ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui \
+    ui/dialogs/entity/lc_dlg_dimension.ui \
+    ui/dialogs/entity/lc_dlg_entityproperties.ui \
+    ui/dialogs/entity/lc_dlg_tolerance.ui \
+    ui/dialogs/entity/lc_hatchpropertieseditingwidget.ui \
+    ui/dialogs/entity/lc_mtextpropertieseditingwidget.ui \
+    ui/dialogs/entity/lc_pointpickbutton.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_arc.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_circle.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_image.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_insert.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_line.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_point.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_spline.ui \
+    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui \
+    ui/dialogs/entity/lc_textpropertieseditingwidget.ui \
+    ui/dialogs/entity/qg_blockdialog.ui \
+    ui/dialogs/entity/qg_dimensionlabeleditor.ui \
+    ui/dialogs/entity/qg_dlg_attributes.ui \
+    ui/dialogs/entity/qg_dlg_hatch.ui \
+    ui/dialogs/entity/qg_dlg_mtext.ui \
+    ui/dialogs/entity/qg_dlg_text.ui \
+    ui/dialogs/file/export/image/qg_dlgimageoptions.ui \
+    ui/dialogs/file/export/layers/lc_layerexportoptions.ui \
+    ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.ui \
+    ui/dialogs/lc_inputtextdialog.ui \
+    ui/dialogs/main/lc_dlgabout.ui \
+    ui/dialogs/main/lc_dlgnewversionavailable.ui \
+    ui/dialogs/main/qg_dlginitial.ui \
+    ui/dialogs/main/qg_exitdialog.ui \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.ui \
+    ui/dialogs/settings/dimstyles/dimstyle_manager/support/lc_dimstylepreviewpanel.ui \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_commands.ui \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_custom_menus.ui \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_menus_toolbars.ui \
+    ui/dialogs/settings/options_customization/pages/lc_settings_page_shortcuts.ui \
+    ui/dialogs/settings/options_customization/support/cheatsheet/lc_dlg_cheatsheet_options.ui \
+    ui/dialogs/settings/options_customization/support/lc_actions_dual_list_widget.ui \
+    ui/dialogs/settings/options_customization/support/lc_dlg_action_group_config.ui \
+    ui/dialogs/settings/options_customization/support/lc_dlg_icon_picker.ui \
+    ui/dialogs/settings/options_customization/support/lc_menu_trigger_inspector.ui \
+    ui/dialogs/settings/options_device/lc_deviceoptions.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_input_assistant.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.ui \
+    ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.ui \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_markers.ui \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_overlays.ui \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_renderer.ui \
+    ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_snapping.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_points.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_info_cursor.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_preview.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_indicator.ui \
+    ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_snap_visual.ui \
+    ui/dialogs/settings/options_drafting/support/lc_drafting_preview_bottom_bar.ui \
+    ui/dialogs/settings/options_drawing/lc_dlgnewcustomvariable.ui \
+    ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_dimensions.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_grid.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_meta.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_paper.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_points.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_splines.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_units.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_user_data.ui \
+    ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_variables.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_startup.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_language.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_maintenance.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_paths.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.ui \
+    ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_icons_style.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_behavior.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_controls.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_views_tabs.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_containers.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_palette.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_toolbars_menus.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_styling_profiles.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_toolbars_and_docks.ui \
+    ui/dialogs/settings/options_widget/pages/lc_settings_page_typography.ui \
+    ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.ui \
+    ui/dialogs/settings/options_widget/support/lc_skin_archetype_header_bar.ui \
+    ui/dialogs/settings/options_widget/support/lc_skin_preview_window.ui \
+    ui/dialogs/settings/options_widget/support/lc_styling_preview_bottom_bar.ui \
+    ui/dialogs/settings/support/lc_preset_management_bar.ui \
+    ui/dialogs/settings/support/lc_settings_dialog.ui \
+    ui/dock_widgets/command_line/qg_commandwidget.ui \
+    ui/dock_widgets/entity_info/lc_quickinfowidget.ui \
+    ui/dock_widgets/entity_info/lc_quickinfowidgetoptionsdialog.ui \
+    ui/dock_widgets/layers_tree/lc_layerdialog_ex.ui \
+    ui/dock_widgets/layers_tree/lc_layertreeoptionsdialog.ui \
+    ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui \
+    ui/dock_widgets/pen_palette/lc_penpalettewidget.ui \
+    ui/dock_widgets/pen_wizard/colorwizard.ui \
+    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.ui \
+    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui \
+    ui/dock_widgets/ucs_list/lc_dlgucsproperties.ui \
+    ui/dock_widgets/ucs_list/lc_ucslistwidget.ui \
+    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.ui \
+    ui/dock_widgets/views_list/lc_namedviewslistwidget.ui \
+    ui/styling/presets_generator/lc_dlg_styles_presets_generator.ui
 
 # If C99 emulation is needed, add the respective source files.
 contains(DEFINES, EMU_C99) {

@@ -82,6 +82,4 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
     bindComboIndex({
         { ui->cbAnglesBaseShowPolicy, o_AnglesBasisMarkPolicy }
     });
-
-
 }

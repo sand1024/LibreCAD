@@ -80,14 +80,14 @@ void RS_ActionDimAngular::onMouseMoveEvent(const int status, const LC_MouseEvent
     RS_Vector snap = e->snapPoint;
     switch (status) {
         case SetLine1: {
-            const RS_Entity *en = catchEntityByEvent(e, RS2::EntityLine, RS2::ResolveAll);
+            const RS_Entity *en = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAll);
             if (en != nullptr){
                 highlightHover(en);
             }
             break;
         }
         case SetLine2: {
-            const RS_Entity *en = catchEntityByEvent(e, RS2::EntityLine, RS2::ResolveAll);
+            const RS_Entity *en = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAll);
             if (en != nullptr && en != m_line1){
                 highlightHover(en);
             }
@@ -235,6 +235,22 @@ void RS_ActionDimAngular::updateActionPrompt(){
             break;
     }
 }
+
+RS2::CursorType RS_ActionDimAngular::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetLine1:
+           return RS2::SelectCursor;
+        case SetLine2:
+            return RS2::SelectCursor;
+        case SetPos:
+            return RS2::CadCursor;
+        case SetText:
+            return RS2::CadCursor;
+        default:
+            return RS2::CadCursor;
+    }
+}
+
 
 /**
  * Justify one of the angle lines to ensure that the starting point

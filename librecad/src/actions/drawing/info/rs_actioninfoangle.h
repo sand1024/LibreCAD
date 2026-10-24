@@ -42,7 +42,6 @@ public:
     explicit RS_ActionInfoAngle(LC_ActionContext *actionContext);
     ~RS_ActionInfoAngle() override;
     void init(int status) override;
-    void drawSnapper() override;
 protected:
     /**
   * Action States.

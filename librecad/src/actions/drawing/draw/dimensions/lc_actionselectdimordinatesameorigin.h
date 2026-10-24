@@ -40,6 +40,7 @@ protected:
     void doTrigger() override;
     bool doCheckMaySelectEntity(RS_Entity* e) override;
     QString doGetMouseButtonHint() override;
+    RS2::CursorType doGetMouseCursor(int status) override;
 };
 
 #endif

@@ -80,7 +80,6 @@ class LC_ActionModifyLineJoin : public LC_AbstractActionWithPreview {
         return m_attributesSource;
     }
 
-    void drawSnapper() override;
     /**
       * Enums that controls which pen and layer should be applied to created entities
       */

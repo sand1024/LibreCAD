@@ -233,7 +233,20 @@ void LC_ActionPolylineChangeSegmentType::onMouseRightButtonRelease(const int sta
 }
 
 RS2::CursorType LC_ActionPolylineChangeSegmentType::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::CadCursor;
+    switch (getStatus()){
+        case SetEntity: {
+            return RS2::SelectCursor;
+        }
+        case SetSegment:{
+            return RS2::SelectCursor;
+        }
+        case SetArcPoint:{
+            return RS2::CadCursor;
+        }
+        default:{
+            return RS2::SelectCursor;
+        }
+    }
 }
 
 void LC_ActionPolylineChangeSegmentType::updateActionPrompt() {

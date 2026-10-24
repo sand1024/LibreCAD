@@ -139,7 +139,7 @@ public:
     void setDraftLinesMode(bool mode) const;
     bool isDraftLinesMode() const;
 
-    void setCursorHiding(bool state);
+    void setCursorHidingWhenSnapping(bool state);
     void addScrollbars(bool scrollbarsEnabled = true);
     bool hasScrollbars() const;
     /**

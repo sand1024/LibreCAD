@@ -117,5 +117,5 @@ void LC_ActionPolylineArcsToLines::updateActionPrompt() {
 }
 
 RS2::CursorType LC_ActionPolylineArcsToLines::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::CadCursor;
+    return RS2::SelectCursor;
 }

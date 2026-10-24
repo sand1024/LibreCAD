@@ -1016,7 +1016,7 @@ QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w)
         const bool showScrollbars = o_ScrollBars;
         const bool cursor_hiding = o_CursorHidingWhenSnapping;
         view->setAntialiasing(antialiasing);
-        view->setCursorHiding(cursor_hiding);
+        view->setCursorHidingWhenSnapping(cursor_hiding);
         view->addScrollbars(showScrollbars);
     }
 

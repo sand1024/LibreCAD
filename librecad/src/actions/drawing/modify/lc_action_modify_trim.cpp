@@ -203,7 +203,7 @@ void LC_ActionModifyTrim::onMouseMoveEvent(const int status, const LC_MouseEvent
         case ChooseLimitEntity: {
             RS_Entity* se = catchLimitEntity(e);
             if (se != nullptr) {
-                prepareEntityDescription(se, RS2::EntityDescriptionLevel::DescriptionCatched);
+                prepareEntityDescription(se, RS2::EntityDescriptionLevel::DescriptionCaught);
             }
             if (m_trimEntity != nullptr && se != nullptr) {
                 previewTrim(m_trimEntity, se, m_actionData->trimCoord, mouse, trimInvalid);

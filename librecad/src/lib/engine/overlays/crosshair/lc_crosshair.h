@@ -25,6 +25,7 @@
 
 #include "lc_defaults.h"
 #include "lc_overlayentity.h"
+#include "lc_settings_appearance.h"
 #include "lc_settings_colors.h"
 #include "lc_settings_snap.h"
 #include "rs_pen.h"
@@ -44,13 +45,21 @@ public:
     };
 
     enum LinesShape{
+        NoLines,
         Adaptive,
         Crosshair,
         Spiderweb,
-        NoLines
+        AdaptiveShort
+    };
+
+    enum PickBoxLines {
+        NoBoxLines = 0,
+        ShortLines = 1,
+        AsForSnapIndicator = 2
     };
 
     LC_Crosshair(const RS_Vector &coord, SnapIndicatorOptions& options, RS2::SnapType snapType);
+    LC_Crosshair(const RS_Vector& coord, const RS_Pen& linesPen, const RS_Pen& shapePen, int shapeSize, int showLinesMode, int snapIndicatorLinesType,  int linesPercent);
     void draw(RS_Painter *painter) override;
     void setLinesPen(const RS_Pen &pen);
     void setPointType(int type);
@@ -68,8 +77,10 @@ protected:
     RS2::SnapType m_snapType = RS2::NO_SNAP;
     int m_crossHairLinesPersent = 100;
 
-    double drawIndicator(RS_Painter *painter, const RS_Vector& uiPos) const;
-    bool drawSnapModeAdaptiveIndicator(RS_Painter* painter, const RS_Vector& uiPos) const;
+    double drawShape(RS_Painter *painter, const RS_Vector& uiPos) const;
+    void drawSnapModeAdaptiveShape(RS_Painter* painter, const RS_Vector& uiPos) const;
+    void drawLines(RS_Painter* painter, RS_Vector uiCoord, double offset, int width, int height, double halfWidth);
+    void drawLines(RS_Painter* painter, RS_Vector uiCoord, double offset);
 
     void drawCrosshairLines(
         RS_Painter *painter, const RS_Vector &guiCoord, double offset, const RS_Vector &p1, const RS_Vector &p2, const RS_Vector &p3,
@@ -86,6 +97,8 @@ struct SnapIndicatorOptions {
     bool drawShape = false;
     int shape_Type = 0;
     RS_Pen shape_Pen;
+    RS_Pen pickBox_Pen;
+    int pickBoxLinesSize = 0;
 
     int pointType = LC_DEFAULTS_PDMode;
     int pointSize = LC_DEFAULTS_PDSize;
@@ -96,7 +109,7 @@ struct SnapIndicatorOptions {
         const int snapIndicatorLineWidth = o_IndicatorScreenLinesLineWidth;
         drawLines = o_IndicatorDrawLines;
         if (drawLines) {
-            lines_Type = o_IndicatorLinesType;
+            lines_Type = o_IndicatorLinesType  + 1; // 0 is for NoLines
             const auto snapIndicatorLineType = o_IndicatorLinesLineType;
             const QColor snapLinesColor = CFG_Colors::o_SnapIndicatorLines;
             lines_Pen = RS_Pen(RS_Color(snapLinesColor), RS2::Width00, snapIndicatorLineType);
@@ -118,6 +131,16 @@ struct SnapIndicatorOptions {
         }
         crossHairLinesPercent = o_IndicatorCrosshairLinesSizePercents;
         shapeSize = o_IndicatorShapeSize;
+
+        const QColor pickBoxColor = CFG_Colors::o_SelectionPickBoxColor;
+        pickBox_Pen = RS_Pen(RS_Color(pickBoxColor), RS2::Width00, RS2::SolidLine);
+        pickBox_Pen.setScreenWidth(snapIndicatorLineWidth);
+
+        if (!drawLines) {
+            lines_Pen = pickBox_Pen; // needed for AdaptiveShort
+        }
+
+        pickBoxLinesSize = CFG_Appearance::o_SelectionPickBoxLinesSizeType;
     }
 };
 

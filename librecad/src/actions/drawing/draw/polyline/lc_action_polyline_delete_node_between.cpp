@@ -46,9 +46,6 @@ void LC_ActionPolylineDeleteNodeBetween::doInitWithContextEntity(RS_Entity* cont
     setPolylineToModify(contextEntity);
 }
 
-void LC_ActionPolylineDeleteNodeBetween::drawSnapper() {
-    // disable snapper for action
-}
 
 bool LC_ActionPolylineDeleteNodeBetween::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Polyline* modifiedPolyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2,

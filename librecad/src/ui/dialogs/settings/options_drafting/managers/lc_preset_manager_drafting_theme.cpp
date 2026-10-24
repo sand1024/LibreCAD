@@ -112,6 +112,9 @@ namespace {
             o_OverlayBoxTransparency,
             o_SelectionOverlayLineType,
             o_SelectionOverlayInvertedLineType,
+            o_SelectionPickBoxColor,
+            o_SelectionPickBoxLinesSizeType,
+
             // Cursor & Assistant
             o_InfoOverlayAbsoluteCoordinatesColor,
             o_InfoOverlayRelativeColor,

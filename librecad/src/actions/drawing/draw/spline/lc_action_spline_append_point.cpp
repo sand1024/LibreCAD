@@ -92,6 +92,19 @@ void LC_ActionSplineAppendPoint::setEntityToModify(RS_Entity* entity) {
     setStatus(SetBeforeControlPoint);
 }
 
+RS2::CursorType LC_ActionSplineAppendPoint::doGetMouseCursor(int status) {
+    switch (status) {
+        case SetEntity:
+            return RS2::SelectCursor;
+        case SetBeforeControlPoint:
+            return RS2::CadCursor;
+        case SetControlPoint:
+            return RS2::CadCursor;
+        default:
+            return RS2::CadCursor;
+    }
+}
+
 void LC_ActionSplineAppendPoint::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status){
         case SetEntity:{

@@ -112,7 +112,7 @@ void LC_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]] const i
         case SetEntity: {
             const auto entity = splineOrSelf(catchEntityByEvent(e, RS2::ResolveAll));
             if (entity != nullptr) {
-                prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+                prepareEntityDescription(entity, RS2::EntityDescriptionLevel::DescriptionCaught);
             }
             if (entity != nullptr && g_supportedEntityTypes.contains(entity->rtti())) {
                 m_entity = entity;

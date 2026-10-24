@@ -121,7 +121,7 @@ void LC_ActionDrawLineParallel::onMouseMoveEvent(const int status, const LC_Mous
         m_entity = m_entity->getParent();
     }
     if (m_entity != nullptr) {
-        prepareEntityDescription(m_entity, RS2::EntityDescriptionLevel::DescriptionCatched);
+        prepareEntityDescription(m_entity, RS2::EntityDescriptionLevel::DescriptionCaught);
     }
 
     switch (status) {

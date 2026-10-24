@@ -32,6 +32,7 @@ public:
     ~LC_ActionRemoveSplinePoints() override = default;
     void setStatus(int status) override;
 protected:
+    RS2::CursorType doGetMouseCursor(int status) override;
     void setEntityToModify(RS_Entity* entity) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) override;

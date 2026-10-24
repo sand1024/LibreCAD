@@ -206,6 +206,7 @@ protected:
     struct ImpData {
         RS_Vector snapCoord{false};
         RS_Vector snapSpot{false};
+        RS_Vector graphPoint{false};
         double angle = 0.;
         RS2::SnapType snapType = RS2::SnapType::GRID;
         RS2::SnapType restrictedSnapType = RS2::SnapType::GRID;
@@ -265,6 +266,8 @@ protected:
     bool m_angleSnapSnapToGridLinesIfGrid = true;
     bool m_softSnapEnabled = false;
     double m_softSnapSensitivityRad = 0.0;
+    bool m_inSelectionMode = false;
+    bool m_showPickBoxForSelection = false;
 
     RS_Vector toGraph(const QMouseEvent* e) const;
     void updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel) const;

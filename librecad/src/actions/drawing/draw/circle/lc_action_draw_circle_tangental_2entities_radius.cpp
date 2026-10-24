@@ -117,10 +117,6 @@ bool LC_ActionDrawCircleTangental2EntitiesRadius::doUpdateDistanceByInteractiveI
     return false;
 }
 
-void LC_ActionDrawCircleTangental2EntitiesRadius::drawSnapper() {
-    // disable snapper for action
-}
-
 void LC_ActionDrawCircleTangental2EntitiesRadius::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     for (RS_AtomicEntity* const pc : m_actionData->circles) {
         // highlight already selected

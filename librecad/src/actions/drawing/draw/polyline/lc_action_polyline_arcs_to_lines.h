@@ -38,6 +38,7 @@ protected:
     enum Status{
         SetEntity = InitialActionStatus
     };
+
     RS_Polyline* m_polyline;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;

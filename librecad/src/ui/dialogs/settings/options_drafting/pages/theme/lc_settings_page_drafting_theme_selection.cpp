@@ -58,8 +58,14 @@ void LC_SettingsPageDraftingThemeSelection::setupBindings() {
             {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_OverlayBoxLineColor, tr("Select Overlay Line Color")},
             {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_OverlayBoxFillColor, tr("Select Overlay Fill Color")},
             {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_OverlayBoxLineInvertedColor, tr("Select Inverted Line Color")},
-            {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_OverlayBoxFillInvertedColor, tr("Select Inverted Fill Color")}
+            {ui->cbPickBox, ui->pbPickBoxColor, o_SelectionPickBoxColor, tr("Select Pick Box Color")}
+
     });
+
+    bindComboIndex({
+        { ui->cbPickBoxLinesSize, o_SelectionPickBoxLinesSizeType }
+    });
+
 
     ui->wOverlaySelectionLineType->init(false, false, false);
 

@@ -64,8 +64,6 @@ public:
         return m_layerMode;
     }
 
-    void drawSnapper() override;
-
 protected:
     enum {
         SetArc = InitialActionStatus

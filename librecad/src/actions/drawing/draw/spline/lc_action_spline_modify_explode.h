@@ -53,6 +53,7 @@ protected:
     bool m_useCurrentAttributes {false};
     bool m_useCustomSegmentsCount {false};
     int m_customSegmentsCount = 8;
+    RS2::CursorType doGetMouseCursor(int status) override;
     bool mayModifySplineEntity(RS_Entity* entity) override;
     RS_Entity *createPolylineByVertexes(const std::vector<RS_Vector> &strokePoints, bool closed) const;
     int obtainSegmentsCount() const;

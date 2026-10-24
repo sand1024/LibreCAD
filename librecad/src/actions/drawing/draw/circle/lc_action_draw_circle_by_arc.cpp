@@ -185,9 +185,6 @@ bool LC_ActionDrawCircleByArc::doCheckMayDrawPreview([[maybe_unused]] const LC_M
     return status == SetArc;
 }
 
-void LC_ActionDrawCircleByArc::drawSnapper() {
-    // disable snapper
-}
 
 void LC_ActionDrawCircleByArc::doPreparePreviewEntities([[maybe_unused]] const LC_MouseEvent* e, [[maybe_unused]] RS_Vector& snap,
                                                         QList<RS_Entity*>& list, [[maybe_unused]] int status) {

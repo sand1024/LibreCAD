@@ -38,7 +38,6 @@ class LC_ActionPolylineDeleteNode:public LC_ActionPolylineDeleteBase {
 public:
     explicit LC_ActionPolylineDeleteNode(LC_ActionContext *actionContext);
     ~LC_ActionPolylineDeleteNode() override;
-    void drawSnapper() override;
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void doInitialInit() override;
