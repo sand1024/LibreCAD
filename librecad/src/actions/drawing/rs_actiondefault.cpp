@@ -298,6 +298,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                     m_actionData->refMovingEntity = refInfo.entity;
                     m_actionData->v1 = ref;
                     moveRelativeZero(m_actionData->v1);
+                    addSnappedPointToVisualSnap(m_actionData->v1);
                     setStatus(MovingRef);
                 } else {
                     // test for an entity to drag:
@@ -307,6 +308,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                             m_actionData->v1 = m_actionData->pressSnapPoint;
                         }
                         moveRelativeZero(m_actionData->v1);
+                        addSnappedPointToVisualSnap(m_actionData->v1);
                         setStatus(Moving);
                     }
                     // no entity found. start area selection:
@@ -645,6 +647,7 @@ RS_Entity* RS_ActionDefault::getClone(const RS_Entity* e){
     return clone;
 }
 
+
 void RS_ActionDefault::createEditedLineDescription([[maybe_unused]]RS_Line* clone, [[maybe_unused]]bool ctrlPressed,  [[maybe_unused]]bool shiftPressed) const {
     msg(tr("Line"))
         .linear(tr("Length: "), m_actionData->v1.distanceTo(m_actionData->v2))
@@ -864,6 +867,24 @@ void RS_ActionDefault::onMouseRightButtonPress([[maybe_unused]]int status, const
     deleteSnapper();
     e->originalEvent->accept();
 }
+
+void RS_ActionDefault:: onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) {
+    switch (status) {
+        case Moving: {
+            onMouseMovingCompleted(event);
+            break;
+        }
+        case MovingRef: {
+            // fixme - sand - review, it could be that some additional handling may be required.
+            // fixme - sand - especially for cases like arc's sagitta point etc (where snap point does not directly correspond to resulting point).
+            onMouseMovingRefCompleted(event);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 
 void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEvent* e) {
     switch (status) {

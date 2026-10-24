@@ -100,6 +100,7 @@ protected:
     void forceUpdateInfoCursor(const LC_MouseEvent *event) const;
     RS_Entity* getClone(const RS_Entity* e);
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;}
+    void onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) override;
 private:
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;

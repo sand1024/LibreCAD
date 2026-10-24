@@ -163,7 +163,8 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
         // prevent focus for graphic-view specific keys
         if (isGraphicViewEvent) {
             if (!leCommand->hasFocus()) {
-                auto currentAction = m_actionHandler->getCurrentNonDefaultAction();
+                // auto currentAction = m_actionHandler->getCurrentNonDefaultAction();
+                 auto currentAction = m_actionHandler->getCurrentAction();
                 if (currentAction != nullptr) {
                     bool numberKey = false;
                     switch (e->key()) {
@@ -176,7 +177,11 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
                         case Qt::Key_6:
                         case Qt::Key_7:
                         case Qt::Key_8:
-                        case Qt::Key_9: {
+                        case Qt::Key_9:
+                        case Qt::Key_Minus:
+                        case Qt::Key_Period:
+                        case Qt::Key_Comma:
+                        {
                             numberKey = true;
                             break;
                         }

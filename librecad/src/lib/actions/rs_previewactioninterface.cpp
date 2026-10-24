@@ -977,6 +977,10 @@ QWidget* RS_PreviewActionInterface::tryShowRelativeInput(RS2::RelativePointParam
     return nullptr;
 }
 
+void RS_PreviewActionInterface::onApplyProjectedRelativePoint(const int status, LC_MouseEvent* const event, [[maybe_unused]]const LC_RelativePositionData* relativePositionData) {
+    onMouseLeftButtonRelease(status, event);
+}
+
 void RS_PreviewActionInterface::addProjectedRelativePointToVisualSnap(const LC_RelativePositionData* relativePositionData, bool applyProjectedPosition) {
     const auto projectedPoint = relativePositionData->wcsProjection;
     const bool apply = applyProjectedPosition && relativePositionData->isSingleSolution;
@@ -985,7 +989,9 @@ void RS_PreviewActionInterface::addProjectedRelativePointToVisualSnap(const LC_R
         m_lastMouseMoveEvent.graphPoint = projectedPoint;
         // fixme - sand - review this. Why shift is cleared there? How this will affect preview???
         m_lastMouseMoveEvent.isShift = false; // a typed point: not the Shift of the last mouse move
-        onMouseLeftButtonRelease(getStatus(), &m_lastMouseMoveEvent);
+        const int status = getStatus();
+        const auto event = &m_lastMouseMoveEvent;
+        onApplyProjectedRelativePoint(status, event, relativePositionData);
         // fixme - or it's better to use coordinate event? what about modifiers?
         // fireCoordinateEvent(projectedPoint);
     }
