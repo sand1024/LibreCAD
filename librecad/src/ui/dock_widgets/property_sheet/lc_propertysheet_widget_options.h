@@ -40,6 +40,7 @@ struct LC_PropertySheetWidgetOptions {
     bool showSingleEntityCommands = true;
     bool showMultiEntityCommands = true;
     bool showToolOptions = true;
+    bool showEntityId = false;
 
     int fontSize = 9;
 

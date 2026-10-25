@@ -608,7 +608,7 @@ void LC_ActionFactory::createInfoCursorActions(QMap<QString, QAction *> &map, QA
         {"InfoCursorSnap",         tr("Snap"),              ":/icons/info_cursor_zone2.lci",       tr("Displays active magnetic snap mode details on the cursor overlay.")},
         {"InfoCursorRel",          tr("Relative"),          ":/icons/info_cursor_zone3.lci",       tr("Displays relative coordinates from relative zero on cursor overlay.")},
         {"InfoCursorPrompt",       tr("Prompt"),            ":/icons/info_cursor_zone4.lci",       tr("Displays action instructions and prompts beside the cursor.")},
-        {"InfoCursorCatchedEntity",tr("Caught Entity"),     ":/icons/info_cursor_zone2_entity.lci",tr("Displays hovered entity properties and type on cursor overlay.")}
+        {"InfoCursorCaughtEntity", tr("Caught Entity"),     ":/icons/info_cursor_zone2_entity.lci",tr("Displays hovered entity properties and type on cursor overlay.")}
     });
 }
 
@@ -1056,10 +1056,10 @@ void LC_ActionFactory::updateSnapActionsBySettings(const QMap<QString, QAction*>
 }
 
 void LC_ActionFactory::setupActionInfoSettingAction(QMap<QString, QAction*>& map, const std::unique_ptr<LC_InfoCursorSettingsManager>::pointer infoCursorSettingsManager, const char* actionName, int tag) {
-    auto actionInfoCursorAbs = map[actionName];
-    actionInfoCursorAbs->setProperty("InfoCursorActionTag", tag);
-    connect(actionInfoCursorAbs, &QAction::triggered, infoCursorSettingsManager, &LC_InfoCursorSettingsManager::slotInfoCursorSetting);
-    connect(infoCursorSettingsManager, &LC_InfoCursorSettingsManager::showInfoCursorSettingChanged, actionInfoCursorAbs, &QAction::setEnabled);
+    auto infoCursorAction = map[actionName];
+    infoCursorAction->setProperty("InfoCursorActionTag", tag);
+    connect(infoCursorAction, &QAction::triggered, infoCursorSettingsManager, &LC_InfoCursorSettingsManager::slotInfoCursorSetting);
+    connect(infoCursorSettingsManager, &LC_InfoCursorSettingsManager::showInfoCursorSettingChanged, infoCursorAction, &QAction::setEnabled);
 }
 
 void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
@@ -1100,7 +1100,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     setupActionInfoSettingAction(map, infoCursorSettingsManager, "InfoCursorSnap", 2);
     setupActionInfoSettingAction(map, infoCursorSettingsManager, "InfoCursorRel", 3);
     setupActionInfoSettingAction(map, infoCursorSettingsManager, "InfoCursorPrompt", 4);
-    setupActionInfoSettingAction(map, infoCursorSettingsManager, "InfoCursorCatchedEntity", 5);
+    setupActionInfoSettingAction(map, infoCursorSettingsManager, "InfoCursorCaughtEntity", 5);
     // setupActionInfoSettingAction(map, infoCursorSettingsManager, "EntityDescriptionInfo", 6);
     auto actionInfoCursorAbs = map["EntityDescriptionInfo"];
     actionInfoCursorAbs->setProperty("InfoCursorActionTag", 6);

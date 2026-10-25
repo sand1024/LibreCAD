@@ -114,7 +114,7 @@ QString LC_QuickInfoEntityData::prepareGenericEntityDescription(RS_Entity* e, co
     if (m_options->displayEntityID) {
         QString idStr;
         idStr.setNum(id);
-        result.append(" ").append(tr("ID"));
+        result.append(" ").append(tr("#")).append(idStr);
     }
 
     // getLayer(true) already drops dangling post-import layer pointers.

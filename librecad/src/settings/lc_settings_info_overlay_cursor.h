@@ -40,9 +40,10 @@ namespace CFG_InfoOverlayCursor {
     inline const LC_Setting<int> o_FontSize(&Group, "FontSize", 10);
     inline const LC_Setting<QString> o_FontName(&Group, "FontName", "Verdana");
     inline const LC_Setting<int> o_OffsetFromCursor(&Group, "OffsetFromCursor", 15);
-    inline const LC_Setting<bool> o_ShowPropertiesCatched(&Group, "ShowPropertiesCatched", true);
-    inline const LC_Setting<bool> o_ShowPropertiesEdit(&Group, "ShowPropertiesEdit", true);
-    inline const LC_Setting<bool> o_ShowPropertiesCreating(&Group, "ShowPropertiesCreating", true);
+    inline const LC_Setting<bool> o_ShowEntityCaughtProperties(&Group, "ShowPropertiesCaughtEntity", true);
+    inline const LC_Setting<bool> o_ShowEntityEditingProperties(&Group, "ShowPropertiesEdit", true);
+    inline const LC_Setting<bool> o_ShowEntityCreatingProperties(&Group, "ShowPropertiesCreating", true);
+    inline const LC_Setting<bool> o_ShowEntityPropertiesOnHover(&Group, "ShowEntityPropertiesOnHover", true);
 }
 
 #endif 

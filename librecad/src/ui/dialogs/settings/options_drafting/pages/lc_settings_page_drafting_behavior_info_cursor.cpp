@@ -61,9 +61,9 @@ void LC_SettingsPageDraftingBehaviorInfoCursor::setupBindings() {
         { ui->cbInfoOverlayAbsolutePosition, o_ShowAbsolute },
         { ui->cbShowWorldCoordinates, o_ShowAbsoluteWCS },
         { ui->cbInfoOverlaySnap, o_ShowSnapInfo },
-        { ui->cbInfoOverlaySnapEntityInfo, o_ShowPropertiesCatched },
-        { ui->cbInfoOverlayPreviewCreatingEntity, o_ShowPropertiesCreating },
-        { ui->cbInfoOverlayPreviewEditingEntity, o_ShowPropertiesEdit },
+        { ui->cbInfoOverlaySnapEntityInfo, o_ShowEntityCaughtProperties },
+        { ui->cbInfoOverlayPreviewCreatingEntity, o_ShowEntityCreatingProperties },
+        { ui->cbInfoOverlayPreviewEditingEntity, o_ShowEntityEditingProperties },
         { ui->cbInfoOverlayShowLabels, o_ShowLabels },
         { ui->cbInfoOverlayInOneLine, o_SingleLine }
     });

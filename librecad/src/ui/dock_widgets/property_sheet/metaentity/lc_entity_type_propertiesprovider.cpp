@@ -30,6 +30,7 @@
 #include "lc_property_rscolor.h"
 #include "lc_property_rsvector_view.h"
 #include "lc_propertyprovider_utils.h"
+#include "rs_arc.h"
 #include "rs_document.h"
 #include "rs_graphic.h"
 #include "rs_selection.h"
@@ -81,7 +82,6 @@ LC_PropertyContainer* LC_EntityTypePropertiesProvider::createMultipleEntityActio
     return result;
 }
 
-
 void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, [[maybe_unused]]const QList<RS_Entity*>& list) {
     const std::list<CommandLinkInfo> commands = {
         {tr("Moving or rotating operations"), RS2::ActionModifyMove, RS2::ActionModifyRotate},
@@ -127,7 +127,6 @@ void LC_EntityTypePropertiesProvider::fillEntityProperties(LC_PropertyContainer*
     }
 }
 
-
 void LC_EntityTypePropertiesProvider::addCommon(const LC_Property::Names& names, const FunCreateGenericProperty& propertyInit,
                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     QList<LC_PropertyAtomic*> props;
@@ -138,7 +137,6 @@ void LC_EntityTypePropertiesProvider::addCommon(const LC_Property::Names& names,
     addMultipleProperties(cont, props);
 }
 
-
 void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto containerGeneric = createSection(container, {SECTION_GENERAL, tr("General"), tr("General properties")});
 
@@ -146,6 +144,14 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
     RS_Graphic* graphic = doc->getGraphic();
     RS_LayerList* layerList = graphic->getLayerList();
     bool allowByBlock = doc->getBlock() != nullptr;
+
+    if (isShowEntityIDs()) {
+        addReadOnlyString<RS_Entity>({"entityID", tr("ID"), tr("Entity identifier")}, [this](const RS_Entity* e)-> QString {
+            const double id = e->getId();
+            QString value = formatInt(id);
+            return value;
+        }, list, containerGeneric);
+    }
 
     addCommon({"layer", tr("Layer"), tr("Layer of entity")},
               [this, layerList, allowByBlock](const LC_Property::Names& names, RS_Entity* entity, LC_PropertyContainer* cont,
@@ -197,7 +203,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
         createDelegatedStorage<RS_Color, RS_Entity>([](const RS_Entity* e) -> RS_Color {
                                                         return e->getPen(false).getColor();
                                                     }, [](const RS_Color& color, const RS_Entity* e) -> void {
-                                                        RS_Pen pen = e->getPen(false);
+                                                        auto pen = e->getPen(false);
                                                         pen.setColor(color);
                                                         e->setPen(pen);
                                                     }, [](const RS_Color& l, const RS_Entity* e) -> bool {
@@ -215,7 +221,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                   createDelegatedStorage([](const RS_Entity* e) -> RS2::LineType {
                                              return e->getPen(false).getLineType();
                                          }, [](const RS2::LineType& linetype, const RS_Entity* e) -> void {
-                                             RS_Pen pen = e->getPen(false);
+                                             auto pen = e->getPen(false);
                                              pen.setLineType(linetype);
                                              e->setPen(pen);
                                          }, [](const RS2::LineType& l, const RS_Entity* e) -> bool {
@@ -233,7 +239,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                   createDelegatedStorage([](const RS_Entity* e) -> RS2::LineWidth {
                                              return e->getPen(false).getWidth();
                                          }, [](const RS2::LineWidth& width, const RS_Entity* e) -> void {
-                                             RS_Pen pen = e->getPen(false);
+                                             auto pen = e->getPen(false);
                                              pen.setWidth(width);
                                              e->setPen(pen);
                                          }, [](const RS2::LineWidth& l, const RS_Entity* e) -> bool {
@@ -244,8 +250,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
               }, list, containerGeneric);
 }
 
-void LC_EntityTypePropertiesProvider::createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName,
-    QString commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const {
+void LC_EntityTypePropertiesProvider::createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName, const QString& commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const {
     auto pickClickHandler = [this, actionType1, actionType2]([[maybe_unused]] RS_Document* g, const int linkIndex) {
         switch (linkIndex) {
             case 0: {

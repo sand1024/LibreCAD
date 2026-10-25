@@ -61,7 +61,7 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
                         break;
                     }
                     case 5: {
-                        CFG_InfoOverlayCursor::o_ShowPropertiesCatched = toggle;
+                        CFG_InfoOverlayCursor::o_ShowEntityCaughtProperties = toggle;
                         break;
                     }
                     case 6: {
@@ -102,5 +102,5 @@ void LC_InfoCursorSettingsManager::loadFromSettings() const {
     m_appWin->checkAction("InfoCursorSnap",o_ShowSnapInfo);
     m_appWin->checkAction("InfoCursorRel",o_ShowRelativeDA);
     m_appWin->checkAction("InfoCursorPrompt",o_ShowPrompt);
-    m_appWin->checkAction("InfoCursorCatchedEntity",o_ShowPropertiesCatched);
+    m_appWin->checkAction("InfoCursorCaughtEntity",o_ShowEntityCaughtProperties);
 }

@@ -549,7 +549,7 @@ QList<ToolbarDef> LC_DefaultNavigationLayoutBuilder::buildStandardToolbars(const
                 "InfoCursorSnap",
                 "InfoCursorRel",
                 "InfoCursorPrompt",
-                "InfoCursorCatchedEntity",
+                "InfoCursorCaughtEntity",
                 "EntityDescriptionInfo"
             }, ToolButtonPopupMode::SplitFirstAction}
         }),

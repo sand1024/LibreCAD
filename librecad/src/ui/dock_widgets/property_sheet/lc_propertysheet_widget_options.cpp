@@ -25,6 +25,7 @@
 
 #include <QFont>
 
+#include "lc_settings_appearance.h"
 #include "lc_settings_property_sheet_widget.h"
 #include "rs_settings.h"
 
@@ -64,4 +65,6 @@ void LC_PropertySheetWidgetOptions::load() {
     showComputed = o_showComputed;
     duplicateSelectionAction = o_duplicateSelectionAction;
     showToolOptions = o_showToolOptions;
+
+    showEntityId = CFG_Appearance::o_ShowEntityIDs;
 }

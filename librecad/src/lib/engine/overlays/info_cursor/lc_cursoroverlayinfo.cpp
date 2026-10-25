@@ -76,9 +76,9 @@ void LC_InfoCursorOverlayPrefs::loadSettings() {
         showLabels = o_ShowLabels;
         multiLine = !o_SingleLine;
 
-        showEntityInfoOnCatch = o_ShowPropertiesCatched;
-        showEntityInfoOnCreation = o_ShowPropertiesCreating;
-        showEntityInfoOnModification = o_ShowPropertiesEdit;
+        showEntityInfoOnCatch = o_ShowEntityCaughtProperties;
+        showEntityInfoOnCreation = o_ShowEntityCreatingProperties;
+        showEntityInfoOnModification = o_ShowEntityEditingProperties;
 
         const int infoCursorFontSize = o_FontSize;
         // todo - potentially, we may use different font sizes for different zones later

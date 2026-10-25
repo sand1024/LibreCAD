@@ -92,6 +92,10 @@ protected:
         return m_widget->getOptions()->showComputed;
     }
 
+    bool isShowEntityIDs() const {
+        return m_widget->getOptions()->showEntityId;
+    }
+
     template <typename EntityType>
     void add(const LC_Property::Names& names,
              std::function<void(const LC_Property::Names& names, EntityType* entity, LC_PropertyContainer* container,
@@ -114,7 +118,7 @@ protected:
     template <class EntityClass>
     void createEntityContextCommands(const std::list<CommandLinkInfo>& links, LC_PropertyContainer* container, EntityClass* entity, const QString& namePrefix, bool setContextEntity = true);
 
-    void createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName, QString commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const;
+    void createActionBasedCommands(LC_PropertyContainer* cont, const char* propertyName, const QString& commonDescription, RS2::ActionType actionType1, RS2::ActionType actionType2) const;
 
     template <class EntityClass>
     void doCreateDelegatedVector(const LC_Property::Names& names,
