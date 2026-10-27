@@ -104,6 +104,7 @@ LC_ReleaseChecker::LC_ReleaseChecker(const QString& ownTagName, const bool ownPr
     connect(&m_webCtrl, &QNetworkAccessManager::finished, this, &LC_ReleaseChecker::infoReceived);
 }
 
+// fixme - sand - move to separate utility to avoid not needed depencencies in caller code
 bool LC_ReleaseChecker::runsFromStorePackage() {
 #ifdef Q_OS_WIN
     UINT32 length = 0;

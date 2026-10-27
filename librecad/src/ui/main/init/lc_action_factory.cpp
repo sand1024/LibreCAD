@@ -38,6 +38,7 @@
 #include "lc_group_names.h"
 #include "lc_settings_manager_drawing.h"
 #include "lc_infocursorsettingsmanager.h"
+#include "lc_releasechecker.h"
 #include "lc_settings_keyboard.h"
 #include "lc_settings_selection.h"
 #include "lc_settings_snap.h"
@@ -875,7 +876,16 @@ void LC_ActionFactory::createHelpActionsUncheckable(QMap<QString, QAction*>& map
     addUrlAction("HelpZulip",         tr("Zulip &Chat"),     "",                           "https://librecad.zulipchat.com/",              tr("Opens the LibreCAD developer chat on Zulip."));
     addUrlAction("HelpSubmitError",   tr("&Submit Error"),   "",                           "https://github.com/LibreCAD/LibreCAD/issues/new", tr("Opens GitHub issues to report a bug."));
     addUrlAction("HelpRequestFeature",tr("&Request Feature"),"",                           "https://github.com/LibreCAD/LibreCAD/issues",   tr("Opens GitHub issues to request a new feature."));
-    addUrlAction("HelpReleases",      tr("&Releases Page"),  ":/icons/feature_request.lci","https://github.com/LibreCAD/LibreCAD/releases", tr("Opens the GitHub releases page for version updates."));
+
+    const bool fromStore = LC_ReleaseChecker::runsFromStorePackage();
+    if (fromStore) {
+        // fixme - sand - there should be page of the application in store
+        addUrlAction("HelpReleases",      tr("&Releases Page"),  ":/icons/feature_request.lci","https://github.com/LibreCAD/LibreCAD/releases", tr("Opens the page of the application in MS Store."));
+    }
+    else {
+        addUrlAction("HelpReleases",      tr("&Releases Page"),  ":/icons/feature_request.lci","https://github.com/LibreCAD/LibreCAD/releases", tr("Opens the GitHub releases page for version updates."));
+    }
+
     addUrlAction("HelpDonate",        tr("&Donate"),         "",                           "https://librecad.org/donate.html",              tr("Opens the donation page to support LibreCAD development."));
     addUrlAction("HelpGitHub",        tr("&GitHub Page"),    ":/icons/github.lci",         "https://github.com/LibreCAD/LibreCAD",          tr("Opens the LibreCAD source code repository on GitHub."));
     addUrlAction("HelpHome",          tr("librecad.org"),    "",                           "https://librecad.org",                          tr("Opens the official LibreCAD homepage."));
@@ -1119,7 +1129,9 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["LockRelativeZero"]->setProperty("_SetAsCurrentActionInView", false);
     map["SelectionModeToggle"]->setProperty("_SetAsCurrentActionInView", false);
 
-    connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, [[maybe_unused]]QVariant oldValue, const QVariant& newValue) -> void {
+    // RS_SETTINGS outlives the window, so these connections end with the factory,
+    // which the window owns along with the actions and their map.
+    connect(RS_SETTINGS, &RS_Settings::optionChanged, this, [map](const QString& groupName, const QString &propertyName, [[maybe_unused]]QVariant oldValue, const QVariant& newValue) -> void {
         if (groupName == CFG_Selection::Group.groupName() && propertyName == CFG_Selection::o_Additivity.key()) {
             const auto action = map["SelectionModeToggle"];
             const bool value = newValue.toBool();
@@ -1144,7 +1156,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
         }
     });
 
-    connect(RS_SETTINGS, &RS_Settings::optionsChanged, [this, &map]() {
+    connect(RS_SETTINGS, &RS_Settings::optionsChanged, this, [this, &map]() {
         updateSnapActionsBySettings(map);
     });
 

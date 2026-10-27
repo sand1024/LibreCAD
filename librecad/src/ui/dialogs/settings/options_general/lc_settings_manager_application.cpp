@@ -22,6 +22,7 @@
 #include "lc_settings_manager_application.h"
 
 #include "lc_graphic_view_preview_widget.h"
+#include "lc_releasechecker.h"
 
 #include "lc_settings_page_autosave.h"
 #include "lc_settings_page_cad_preferences.h"
@@ -54,7 +55,7 @@ void LC_SettingsManagerApplication::initialize([[maybe_unused]] QC_ApplicationWi
     reg->configureDialog(targetDialog, {QObject::tr("Application Preferences"), true, false, false,":/icons/settings.lci"});
 
     // Pages Registration
-    const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
+    std::vector<LC_SettingsRegistry::PageRegistration> pages = {
         { PAGE_APP, "", index(QObject::tr("Application"),
             QObject::tr("Configure general application settings, defaults, workspace "
                         "profiles, paths, and update preferences.")) },
@@ -65,11 +66,21 @@ void LC_SettingsManagerApplication::initialize([[maybe_unused]] QC_ApplicationWi
         { PAGE_APP_CAD_PREFERENCES, PAGE_APP, page<LC_SettingsPageCadPreferences>(),50},
         { PAGE_APP_KEYBOARD, PAGE_APP, page<LC_SettingsPageKeyboard>(),60},
         { PAGE_APP_COMMAND_LINE, PAGE_APP, page<LC_SettingsPageCommandLine>(),70},
-        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>(),80},
-        { PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>(),90},
-        { PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>(),100},
-        { PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>(),110}
+        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>(),80}
     };
+    if (!LC_ReleaseChecker::runsFromStorePackage()) {
+        pages.push_back({PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>(), 90});
+    }
+
+    pages.push_back({PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>(), 100});
+    pages.push_back({PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>(), 110});
+
 
     reg->registerPages(targetDialog, pages);
+
+
+
+
+
+
 }

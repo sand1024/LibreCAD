@@ -48,6 +48,13 @@ void LC_SettingsRegistry::registerPages(const QString& dialogId, const std::init
     }
 }
 
+void LC_SettingsRegistry::registerPages(const QString& dialogId, const std::vector<PageRegistration>& pages) {
+    auto& reg = m_registrations[dialogId];
+    for (const auto& page : pages) {
+        reg.pageCreators.push_back(page); // Standard vector insertion
+    }
+}
+
 void LC_SettingsRegistry::registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator) {
     m_registrations[dialogId].presetCreators[groupPathId] = creator;
 }

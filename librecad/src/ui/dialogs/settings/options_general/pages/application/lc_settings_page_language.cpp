@@ -39,6 +39,22 @@ void LC_SettingsPageLanguage::setupUi() {
     m_initialLanguageGUIIdx = ui->cbLanguage->currentIndex();
 }
 
+namespace {
+    // set current language by code: the combos list canonical codes ("de_DE"),
+    // settings may hold an older bare code ("de") or an empty one
+    int languageIndex(const QComboBox* combo, const QString& lang, const QString defLang) {
+        QStringList languages;
+        for (int i = 0; i < combo->count(); ++i) {
+            languages << combo->itemData(i).toString();
+        }
+        QString match = RS_System::matchLanguage(languages, lang);
+        if (match.isEmpty()) {
+            match = RS_System::matchLanguage(languages, defLang);
+        }
+        return combo->findData(match);
+    };
+}
+
 
 void LC_SettingsPageLanguage::populateLanguages() const {
     QStringList languageList = RS_SYSTEM->getLanguageList();
@@ -62,16 +78,16 @@ void LC_SettingsPageLanguage::setupBindings() {
     bindCustom<QComboBox, QString>(ui->cbLanguage, o_Language, true /*requiresRestart*/,
          &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentData().toString(); },
-        [](QComboBox* w, const QString& v) {
-            const int idx = w->findData(v);
+        [this](QComboBox* w, const QString& v) {
+            const int idx = languageIndex(ui->cbLanguage,v, o_Language.defaultValue());
             if (idx >= 0) w->setCurrentIndex(idx);
         });
 
     bindCustom<QComboBox, QString>(ui->cbLanguageCmd, o_LanguageCmd, false,
     &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentData().toString(); },
-        [](QComboBox* w, const QString& v) {
-            const int idx = w->findData(v);
+        [this](QComboBox* w, const QString& v) {
+            const int idx = languageIndex(ui->cbLanguage,v, o_Language.defaultValue());
             if (idx >= 0) w->setCurrentIndex(idx);
         });
 }

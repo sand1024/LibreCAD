@@ -58,6 +58,7 @@ public:
     void configureDialog(const QString& dialogId, const DialogProperties& props);
     void registerPage(const QString& dialogId, const QString& id, const QString& parentId, const PageCreator& creator);
     void registerPages(const QString& dialogId, const std::initializer_list<PageRegistration>& pages);
+    void registerPages(const QString& dialogId, const std::vector<PageRegistration>& pages);
     void registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator);
     bool showDialog(const QString& dialogId,
                 const QString& initialPageId = QString(),
