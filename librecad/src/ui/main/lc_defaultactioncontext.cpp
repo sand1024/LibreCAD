@@ -24,10 +24,10 @@
 
 #include "lc_action_options_manager.h"
 #include "lc_command_manager.h"
+#include "lc_coordinates_widget.h"
 #include "lc_qtstatusbarmanager.h"
 #include "qg_actionhandler.h"
 #include "qg_commandwidget.h"
-#include "qg_coordinatewidget.h"
 #include "qg_mousewidget.h"
 
 LC_DefaultActionContext::LC_DefaultActionContext(QG_ActionHandler* actionHandler):m_actionHandler{actionHandler} {

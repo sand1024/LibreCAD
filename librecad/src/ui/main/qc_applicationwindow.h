@@ -47,6 +47,7 @@
 #include "lc_app_window_dock_layout_manger.h"
 #include "lc_app_window_tool_bar_manager.h"
 
+class LC_CoordinatesWidget;
 class LC_AppWindowToolBarManager;
 class LC_ShortcutsManager;
 class LC_DockTabBarManager;
@@ -84,7 +85,6 @@ class QG_ActionHandler;
 class QG_ActiveLayerName;
 class QG_BlockWidget;
 class QG_CommandWidget;
-class QG_CoordinateWidget;
 class QG_LayerWidget;
 class QG_LibraryWidget;
 class QG_MouseWidget;
@@ -180,6 +180,8 @@ public slots:
     void toggleTopDockArea(bool state);
     void toggleBottomDockArea(bool state);
     void toggleLeftToolbarArea(bool state);
+    void toggleCoordinatesWidgetLock(bool state);
+    void toggleRelativeZeroWidgetLock(bool state);
     void toggleRightToolbarArea(bool state);
     void toggleTopToolbarArea(bool state);
     void toggleBottomToolbarArea(bool state);
@@ -551,7 +553,7 @@ protected:
     std::unique_ptr<LC_DockTabBarManager> m_dockTabBarManager;
 
     // --- Statusbar ---
-    QG_CoordinateWidget* m_coordinateWidget{nullptr};
+    LC_CoordinatesWidget* m_coordinateWidget{nullptr};
     LC_RelZeroCoordinatesWidget* m_relativeZeroCoordinatesWidget{nullptr};
     QG_MouseWidget* m_mouseWidget{nullptr};
     QG_SelectionWidget* m_selectionWidget{nullptr};

@@ -30,40 +30,61 @@
 #include "rs_units.h"
 #include "ui_lc_relzerocoordinateswidget.h"
 
-
-LC_RelZeroCoordinatesWidget::LC_RelZeroCoordinatesWidget(QWidget *parent, const char* name)
-    : QWidget(parent)
-    , ui(new Ui::LC_RelZeroCoordinatesWidget){
-    ui->setupUi(this);
+LC_RelZeroCoordinatesWidget::LC_RelZeroCoordinatesWidget(QWidget* parent, const char* name)
+    : LC_CoordinateWidgetBase(parent)
+    , m_ui(new Ui::LC_RelZeroCoordinatesWidget) {
     setObjectName(name);
+    m_ui->setupUi(this);
 
-    ui->lCartesianCoordinates->setText("");
-    ui->lCartesianCoordinates->setText("");
+    m_ui->lCartesianCoordinates->setText(QString());
+    m_ui->lPolarCoordinates->setText(QString());
 
     m_graphic = nullptr;
     m_formatter = nullptr;
+
+    initLockControl(m_ui->tbLock);
+    registerCoordinateField(m_ui->lCartesianCoordinates, tr("Relative Zero Cartesian"), [this]() {
+        return m_currentRelZero;
+    });
+    registerCoordinateField(m_ui->lPolarCoordinates, tr("Relative Zero Polar"), [this]() {
+        return m_currentRelZero;
+    });
 }
 
-LC_RelZeroCoordinatesWidget::~LC_RelZeroCoordinatesWidget(){
-    delete ui;
+LC_RelZeroCoordinatesWidget::~LC_RelZeroCoordinatesWidget() {
+    delete m_ui;
+}
+
+void LC_RelZeroCoordinatesWidget::languageChange() {
+    if (m_ui != nullptr) {
+        m_ui->retranslateUi(this);
+    }
 }
 
 void LC_RelZeroCoordinatesWidget::clearContent() const {
-    ui->lCartesianCoordinates->setText("0 , 0");
-    ui->lPolarCoordinates->setText("0 < 0");
+    if (m_isLocked || m_ui == nullptr) {
+        return;
+    }
+
+    m_ui->lCartesianCoordinates->setText(QStringLiteral("0 , 0"));
+    m_ui->lPolarCoordinates->setText(QStringLiteral("0 < 0"));
 }
 
-void LC_RelZeroCoordinatesWidget::setGraphicView(RS_GraphicView *gv) {
+void LC_RelZeroCoordinatesWidget::setGraphicView(RS_GraphicView* gv) {
     if (m_graphicView != nullptr) {
         disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_RelZeroCoordinatesWidget::relativeZeroChanged);
     }
-    if (m_viewport != nullptr){
+
+    if (m_viewport != nullptr) {
         m_viewport->removeViewportListener(this);
     }
-    if (gv == nullptr){
-        setRelativeZero(RS_Vector(0.0,0.0), true); // in which system? ucs? wcs?
+
+    if (gv == nullptr) {
+        if (!m_isLocked) {
+            setRelativeZero(RS_Vector(0.0, 0.0), true);
+        }
         m_viewport = nullptr;
-        m_graphicView  = nullptr;
+        m_graphicView = nullptr;
         m_graphic = nullptr;
         m_formatter = nullptr;
     }
@@ -71,21 +92,30 @@ void LC_RelZeroCoordinatesWidget::setGraphicView(RS_GraphicView *gv) {
         m_graphicView = gv;
         m_graphic = m_graphicView->getGraphic();
         m_viewport = gv->getViewPort();
-        m_formatter = m_viewport->getFormatter();
+        m_formatter = (m_viewport != nullptr) ? m_viewport->getFormatter() : nullptr;
 
         m_viewport->addViewportListener(this);
-
         connect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_RelZeroCoordinatesWidget::relativeZeroChanged);
-        setRelativeZero(m_viewport->getRelativeZero(), true);
+
+        if (!m_isLocked) {
+            setRelativeZero(m_viewport->getRelativeZero(), true);
+        }
     }
 }
 
-void LC_RelZeroCoordinatesWidget::relativeZeroChanged(const RS_Vector &pos) {
+void LC_RelZeroCoordinatesWidget::relativeZeroChanged(const RS_Vector& pos) {
+    if (m_isLocked) {
+        return;
+    }
     setRelativeZero(pos, true);
 }
 
 void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
-    if (m_viewport != nullptr) {
+    if (m_isLocked || m_ui == nullptr) {
+        return;
+    }
+
+    if (m_viewport != nullptr && m_formatter != nullptr) {
         const RS_Vector ucsRelZero = m_viewport->toUCS(rel);
 
         double x = ucsRelZero.x;
@@ -95,8 +125,8 @@ void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
         double len = magnitude;
         double angle = ucsRelZero.angle();
         if (LC_LineMath::isNotMeaningful(magnitude)) {
-            len = 0;
-            angle = 0;
+            len = 0.0;
+            angle = 0.0;
         }
 
         angle = m_viewport->toBasisUCSAngle(angle);
@@ -107,43 +137,54 @@ void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
             len = RS_Units::convert(magnitude);
         }
 
-        // cartesian coordinates
+        // Cartesian coordinates
         const QString relX = m_formatter->formatLinear(x);
         const QString relY = m_formatter->formatLinear(y);
+        m_ui->lCartesianCoordinates->setText(relX + QStringLiteral(" , ") + relY);
 
-        ui->lCartesianCoordinates->setText(relX + " , " + relY);
-
-        // polar coordinates:
-
+        // Polar coordinates
         const QString rStr = m_formatter->formatLinear(len);
         const QString aStr = m_formatter->formatRawAngle(angle);
-        const QString str = rStr + " < " + aStr;
-        ui->lPolarCoordinates->setText(str);
+        m_ui->lPolarCoordinates->setText(rStr + QStringLiteral(" < ") + aStr);
     }
     else {
-        ui->lPolarCoordinates->setText("");
-        ui->lCartesianCoordinates->setText("");
+        m_ui->lPolarCoordinates->setText(QString());
+        m_ui->lCartesianCoordinates->setText(QString());
     }
 }
 
-void LC_RelZeroCoordinatesWidget::setRelativeZero(const RS_Vector &rel, const bool updateFormat) {
+void LC_RelZeroCoordinatesWidget::setRelativeZero(const RS_Vector& rel, const bool updateFormat) {
+    if (m_isLocked) {
+        return;
+    }
+
     if (m_graphic != nullptr) {
-        if (updateFormat) {
-            m_formatter = m_viewport->getFormatter();  // fixme - fmt - most probably it should be removed
+        if (updateFormat && m_viewport != nullptr) {
+            m_formatter = m_viewport->getFormatter();
         }
         m_currentRelZero = rel;
         showRelZero(rel);
     }
     else {
-        ui->lCartesianCoordinates->setText("");
-        ui->lPolarCoordinates->setText("");
+        if (m_ui != nullptr) {
+            m_ui->lCartesianCoordinates->setText(QString());
+            m_ui->lPolarCoordinates->setText(QString());
+        }
     }
 }
 
 void LC_RelZeroCoordinatesWidget::updateFormats() {
+    if (m_isLocked) {
+        return;
+    }
     setRelativeZero(m_currentRelZero, true);
 }
 
-void LC_RelZeroCoordinatesWidget::onUCSChanged([[maybe_unused]]LC_UCS *ucs) {
-    setRelativeZero(m_viewport->getRelativeZero(), true);
+void LC_RelZeroCoordinatesWidget::onUCSChanged([[maybe_unused]] LC_UCS* ucs) {
+    if (m_isLocked) {
+        return;
+    }
+    if (m_viewport != nullptr) {
+        setRelativeZero(m_viewport->getRelativeZero(), true);
+    }
 }

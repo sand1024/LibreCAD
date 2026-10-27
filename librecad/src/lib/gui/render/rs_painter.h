@@ -127,7 +127,7 @@ public:
     void drawSplinePointsWCS(const std::vector<RS_Vector> &wcsControlPoints, bool closed);
     void drawCircleWCS(const RS_Vector &wcsCenter, double wcsRadius);
     void drawPointEntityWCS(const RS_Vector &wcsPos);
-    void drawRefPointEntityWCS(const RS_Vector &wcsPos, int pdMode, double pdSize);
+    void drawRefPointEntityWCS(const RS_Vector &wcsPos, int pdMode, int screenSize);
     void drawSolidWCS(const RS_Vector &wcsP0, const RS_Vector &wcsP1, const RS_Vector &wcsP2, const RS_Vector &wcsP3);
     void drawSolidWCS(const RS_VectorSolutions& wcsVertices);
     void drawFilledPolygonWCS(const RS_Vector& wcsV1, const RS_Vector& wcsV2, const RS_Vector& wcsV3,

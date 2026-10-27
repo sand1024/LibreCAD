@@ -99,6 +99,10 @@ void LC_ActionDrawLineFreehand::onMouseLeftButtonPress([[maybe_unused]]int statu
     }
 }
 
+bool LC_ActionDrawLineFreehand::isInVisualSnapStatus([[maybe_unused]] int status) {
+    return true;
+}
+
 void LC_ActionDrawLineFreehand::onMouseLeftButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     if(status == Dragging){
         m_vertex = {};

@@ -215,7 +215,7 @@ If selected, modified properties while
 dragging or editing entities will be shown.</string>
         </property>
         <property name="text">
-         <string>Show properties for entity that is edited by handles</string>
+         <string>Show properties for entity that is edited</string>
         </property>
        </widget>
       </item>

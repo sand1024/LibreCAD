@@ -200,7 +200,7 @@ protected:
 
     bool m_modifyOnZoom = true;
 
-    double m_refPointSize = 2.0;
+    int m_refPointSize = 8;
     int m_refPointMode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot);
 
     /** Grid */

@@ -442,13 +442,8 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap) const
         m_previewView->addOverlayDrawable(crosshair, RS2::OverlayGraphics::Snapper);
     }
 
-    int m_refPointMode = CFG_Appearance::o_RefPointType;
-    const QString pdsizeStr = CFG_Appearance::o_RefPointSize;
-    bool ok = false;
-    double m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
-    if (!ok) {
-        m_refPointSize = LC_DEFAULTS_PDSize;
-    }
+    int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
+    int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
 
     RS_Vector basePoint(20, 10);
     auto* point = new LC_RefPoint(this->m_preview.get(), basePoint, m_refPointSize, m_refPointMode);
@@ -520,14 +515,8 @@ void LC_GraphicViewPreviewWidget::updateGrid(int forcedType) const {
 
 void LC_GraphicViewPreviewWidget::preparePreviewPreview() const {
     m_preview->loadSettings();
-    int m_refPointMode = CFG_Appearance::o_RefPointType;
-    const QString pdsizeStr = CFG_Appearance::o_RefPointSize;
-
-    bool ok = false;
-    double m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
-    if (!ok) {
-        m_refPointSize = LC_DEFAULTS_PDSize;
-    }
+    int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
+    int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
 
     m_preview->clear();
 
@@ -759,14 +748,8 @@ void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* p
 
 void LC_GraphicViewPreviewWidget::previewRelativePointInputAssistant() const {
     m_previewView->showRelativeInputWidget({50, 50}, {20, 10}, true, RS2::REL_POINT_LENGTH, true);
-    int m_refPointMode = CFG_Appearance::o_RefPointType;
-    const QString pdsizeStr = CFG_Appearance::o_RefPointSize;
-
-    bool ok = false;
-    double m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
-    if (!ok) {
-        m_refPointSize = LC_DEFAULTS_PDSize;
-    }
+    int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
+    int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
 
     auto viewport = m_previewView->getViewPort();
     RS_EntityContainer* container = viewport->getOverlayEntitiesContainer(RS2::ActionPreviewEntity);

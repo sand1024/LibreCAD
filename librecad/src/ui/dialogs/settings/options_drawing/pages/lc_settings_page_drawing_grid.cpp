@@ -68,7 +68,7 @@ void LC_SettingsPageDrawingGrid::loadSettings() {
     ui->lGridStateScaling->setText(stateStr(o_ScaleGrid));
     ui->lGridStateUnitless->setText(stateStr(o_UnitlessGrid));
     ui->lGridStateDrawGrid->setText(stateStr(o_GridDraw));
-    ui->lGridStateDrawMetaGrid->setText(stateStr(o_metaGridDraw));
+    ui->lGridStateDrawMetaGrid->setText(stateStr(o_MetaGridDraw));
 
     updateSpacingEnabledState();
 }

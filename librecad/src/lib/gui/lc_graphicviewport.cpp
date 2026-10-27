@@ -79,14 +79,8 @@ void LC_GraphicViewport::loadSettings() {
         using namespace CFG_Appearance;
         m_ucsApplyingPolicy = o_UCSApplyPolicy;
         m_modifyOnZoom = o_ModifyOnViewChange;
-        m_refPointMode = o_RefPointType;
-        const QString pdsizeStr = o_RefPointSize;
-
-        bool ok = false;
-        m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
-        if (!ok) {
-            m_refPointSize = LC_DEFAULTS_PDSize;
-        }
+        m_refPointMode = o_PreviewRefPointType;
+        m_refPointSize = o_PreviewRefPointSize;
     }
 
     if (m_grid != nullptr){

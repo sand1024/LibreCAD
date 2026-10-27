@@ -25,12 +25,12 @@
 #include "lc_actioncontext.h"
 #include "lc_propertysheetwidget.h"
 
+class LC_CoordinatesWidget;
 class QG_ActionHandler;
 class LC_QTStatusbarManager;
 class QG_MouseWidget;
 class QG_SelectionWidget;
 class QG_CommandWidget;
-class QG_CoordinateWidget;
 class LC_ActionOptionsManager;
 
 class LC_DefaultActionContext: public LC_ActionContext{
@@ -52,7 +52,7 @@ public:
         m_actionOptionsManager = actionOptionsManager;
     }
 
-    void setCoordinateWidget(QG_CoordinateWidget *coordinateWidget){
+    void setCoordinateWidget(LC_CoordinatesWidget *coordinateWidget){
         m_coordinateWidget = coordinateWidget;
     }
 
@@ -81,7 +81,7 @@ protected:
     void deleteActionHandler() const;
 private:
     LC_ActionOptionsManager* m_actionOptionsManager {nullptr};
-    QG_CoordinateWidget* m_coordinateWidget{nullptr};
+    LC_CoordinatesWidget* m_coordinateWidget{nullptr};
     QG_CommandWidget* m_commandWidget{nullptr};
     QG_MouseWidget* m_mouseWidget{nullptr};
     LC_QTStatusbarManager* m_statusBarManager{nullptr};

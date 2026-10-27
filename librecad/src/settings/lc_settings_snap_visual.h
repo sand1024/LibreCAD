@@ -49,8 +49,8 @@ namespace CFG_VisualSnap {
     inline const LC_Setting<RS2::LineType> o_VSGuidingEntitiesLineType(&Group, "VSGuidingEntitiesLineType", RS2::DashLine2);
     inline const LC_Setting<RS2::LineType> o_VSActiveGuidingEntityLineType(&Group, "VSActiveGuidingEntitiesLineType", RS2::DashLineTiny);
     inline const LC_Setting<RS2::LineType> o_VSDocGuidingEntitiesLineType(&Group, "VSDocGuidingEntitiesLineType", RS2::SolidLine);
-    inline const LC_Setting<int> o_VSGuidingEntitiesLineWidth(&Group, "VSGuidingEntitiesScreenWidth", 2);
-    inline const LC_Setting<int> o_VSGuidingPointsLineWidth(&Group, "VSGuidingPointsScreenWidth", 2);
+    inline const LC_Setting<double> o_VSGuidingEntitiesScreenLineWidth(&Group, "VSGuidingEntitiesScreenWidth", 2);
+    inline const LC_Setting<double> o_VSGuidingPointsScreenLineWidth(&Group, "VSGuidingPointsScreenWidth", 2);
 }
 
 

@@ -50,13 +50,16 @@ void LC_SettingsPageDraftingMetricsOverlays::setupBindings() {
     using namespace CFG_RelativePositionAssistant;
 
     bindInt({
-        { ui->sbGridLinesLineWidth, o_GridLinesLineWidth },
-        { ui->sbMetaGridLinesLineWidth, o_MetaGridLinesLineWidth },
-        { ui->sbMetaGridPointsLineWidth, o_MetaGridPointsLineWidth },
-        { ui->sbGridPointsPointSize, o_GridPointsPointSize },
         { ui->sbInfoOverlayFontSize, o_FontSize },
         { ui->sbOffsetFromCursor, o_OffsetFromCursor },
         { ui->sbAssistantFontSize, o_AssistantFontSize },
         { ui->sbMinGridSpacing, o_MinGridSpacing }
+    });
+
+    bindDouble({
+         { ui->sbGridPointsPointSize, o_GridPointsPointScreenSize },
+         { ui->sbGridLinesLineWidth, o_GridLinesScreenLineWidth},
+         { ui->sbMetaGridLinesLineWidth, o_MetaGridLinesScreenLineWidth },
+         { ui->sbMetaGridPointsLineWidth, o_MetaGridPointsScreenLineWidth },
     });
 }

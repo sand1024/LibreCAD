@@ -562,15 +562,11 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                     m_preview->addEntity(clone);
                 }
             }
-
-            auto *line = new RS_Line(m_actionData->v1, m_actionData->v2);
-            m_preview->addEntity(line);
+            previewRefLine(m_actionData->v1, m_actionData->v2);
             if (m_showRefEntitiesOnPreview) {
-                previewRefLine(m_actionData->v1, m_actionData->v2);
                 previewRefPoint(m_actionData->v1);
                 previewRefSelectablePoint(m_actionData->v2);
             }
-            line->setSelectionFlag(true); // just use for drawing in preview, so just flag is ok
             if (isInfoCursorForModificationEnabled()){
                 QString type;
                 if (e->isControl) {

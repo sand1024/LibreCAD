@@ -75,7 +75,7 @@ Distance in screen coordinates that is used for catching entities as part of sna
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="1">
-       <widget class="QSpinBox" name="sbIndicatorLinesLineWidth">
+       <widget class="QDoubleSpinBox" name="sbIndicatorLinesLineWidth">
         <property name="toolTip">
          <string>Indicator Lines Width
 
@@ -85,10 +85,13 @@ Screen line thickness (line width), in pixels, of snap crosshair lines.</string>
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
        </widget>
       </item>
@@ -345,22 +348,25 @@ Sizes of Visual Snap elements are customized below.</string>
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="QSpinBox" name="sbVSGuidingEntitiesLineWidth">
+       <widget class="QDoubleSpinBox" name="sbVSGuidingEntitiesLineWidth">
         <property name="toolTip">
          <string>Guiding Entities Line Width
 
 Screen width (line thickness) in pixels for guiding lines
 that are part of Visual Snap solution (such as projection
-rays or tangent guide lines).</string>
+rays or tangent guiding lines).</string>
         </property>
         <property name="suffix">
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
        </widget>
       </item>
@@ -468,7 +474,7 @@ Size of font, in points, used for displaying labels for guiding entities
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QSpinBox" name="sbVSGuidingPointsLineWidth">
+       <widget class="QDoubleSpinBox" name="sbVSGuidingPointsLineWidth">
         <property name="toolTip">
          <string>Guide Point Line Width
 
@@ -480,10 +486,13 @@ used to draw guiding point marker.
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
        </widget>
       </item>

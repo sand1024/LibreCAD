@@ -84,7 +84,7 @@ void LC_GridSystem::doCreateGrid(const LC_GraphicViewport* view, const RS_Vector
 
         if (m_gridOptions->drawLines || m_hasAxisIndefinite) {
             // grid lines data
-            const int lineOffsetPx = m_gridOptions->metaGridLineWidthPx * 2;
+            const int lineOffsetPx = m_gridOptions->metaGridScreenLineWidthPx * 2;
 
             const double ucsOffsetX = view->toUcsDX(lineOffsetPx);
             const double ucsOffsetY = view->toUcsDY(lineOffsetPx);
@@ -146,7 +146,7 @@ void LC_GridSystem::draw(RS_Painter* painter, LC_GraphicViewport* view) {
 
 void LC_GridSystem::drawMetaGrid(RS_Painter* painter, LC_GraphicViewport* view) {
     auto pen = RS_Pen(m_gridOptions->metaGridColor, RS2::Width00, m_gridOptions->metaGridLineType);
-    pen.setScreenWidth(m_gridOptions->metaGridLineWidthPx);
+    pen.setScreenWidth(m_gridOptions->metaGridScreenLineWidthPx);
     painter->setPen(pen, RS_Painter::DashSpace::Screen);
     painter->noCapStyle();
     drawMetaGridLines(painter, view);
@@ -155,7 +155,7 @@ void LC_GridSystem::drawMetaGrid(RS_Painter* painter, LC_GraphicViewport* view) 
 void LC_GridSystem::drawGrid(RS_Painter* painter, LC_GraphicViewport* view) {
     if (m_gridOptions->drawLines || m_hasAxisIndefinite) {
         auto pen = RS_Pen(m_gridOptions->gridColorLine, RS2::Width00, m_gridOptions->gridLineType);
-        pen.setScreenWidth(m_gridOptions->gridWidthPx);
+        pen.setScreenWidth(m_gridOptions->gridLineScreenWidthPx);
         painter->setPen(pen, RS_Painter::DashSpace::Screen);
         painter->noCapStyle();
         drawGridLines(painter, view);
@@ -191,7 +191,7 @@ void LC_GridSystem::drawGridPoints(RS_Painter* painter, [[maybe_unused]] LC_Grap
 
 void LC_GridSystem::drawGridPointsBulk(RS_Painter *painter) const {
     QPen pen(m_gridOptions->gridColorPoint);
-    const int width = m_gridOptions->gridPointSize;
+    const double width = m_gridOptions->gridPointSize;
     const double dpr = painter->getDevicePixelRatio();
     double widthF = (width == 0? 1: width)*dpr;
     pen.setWidthF(widthF);

@@ -41,6 +41,8 @@ public:
     explicit LC_CADDockWidget(QWidget* parent);
     ~LC_CADDockWidget() override = default;
 
+    virtual void init();
+
     void addActions(const QList<QAction*>& list, int columns, int iconSize, bool flatButton);
     void doUpdateWidgetSettings(int columnsCount,
                                 int iconSize,
@@ -52,7 +54,6 @@ public:
     static constexpr const char* PROPERTY_CAD_DOC_WIDGET = "_lc_cad_doc_widget";
 
     static bool isCADDockWidget(const QWidget* dw);
-
 protected:
     virtual void setupUI();
     virtual void getMetrics(int& cols, int& sz, bool& flat) const;

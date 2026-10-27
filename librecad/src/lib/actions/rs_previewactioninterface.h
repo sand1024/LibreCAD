@@ -99,7 +99,7 @@ protected:
 
     std::unique_ptr<LC_Highlight> m_highlight;
 
-    double m_refPointSize = 2.0;
+    int m_refPointSize = 0;
     int m_refPointMode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot);
     bool m_showRefEntitiesOnPreview = false;
     bool m_highlightEntitiesOnHover = false;

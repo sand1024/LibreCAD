@@ -30,7 +30,7 @@
 
 
 LC_SettingsDraftingThemeMainColors::LC_SettingsDraftingThemeMainColors(QObject* parent)
-    : LC_SettingsPageBase(tr("Main Colors"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
+    : LC_SettingsPageBase(tr("General"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsDraftingThemeMainColors>()) {
     setSortWeight(30);
 }
@@ -51,6 +51,9 @@ void LC_SettingsDraftingThemeMainColors::setupBindings() {
     bindComboText({
         { ui->fcbDraftModeFont, o_DraftMarkerFontName }
     });
+
+    ui->wHighlightedEntityLineType->init(false, false, false);
+    bindLineType(ui->wHighlightedEntityLineType, o_HighlightedEntityLineType);
 
     bindColor({
         { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_DraftModeMarkerColor, tr("Select Draft Marker Color") },

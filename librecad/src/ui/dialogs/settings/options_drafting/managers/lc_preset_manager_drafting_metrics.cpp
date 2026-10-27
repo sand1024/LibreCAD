@@ -80,8 +80,8 @@ namespace {
             o_VSProjectedSnapSize,
             o_VSHighlightedVertexSize,
             o_VSVertexSize,
-            o_VSGuidingEntitiesLineWidth,
-            o_VSGuidingPointsLineWidth,
+            o_VSGuidingEntitiesScreenLineWidth,
+            o_VSGuidingPointsScreenLineWidth,
             o_VSGuidingEntityLabelFontSize,
             o_VSGuidingLabelOffsetPx,
             o_VSGuidingEntitiesCatchDistance,
@@ -90,15 +90,26 @@ namespace {
             // Screen Line Widths & Grid Points
             o_OverlaysScreenLineWidth,
             o_MinGridSpacing,
-            o_MetaGridPointsLineWidth,
-            o_MetaGridLinesLineWidth,
-            o_GridLinesLineWidth,
-            o_GridPointsPointSize,
+            o_MetaGridPointsScreenLineWidth,
+            o_MetaGridLinesScreenLineWidth,
+            o_GridLinesScreenLineWidth,
+            o_GridPointsPointScreenSize,
 
             // Overlay Fonts & Offsets
             o_FontSize,
             o_OffsetFromCursor,
             o_AssistantFontSize,
+
+            // preview
+            o_PreviewScreenLineWidth,
+            o_PreviewRefPointSize,
+
+            // highlight and selection
+            o_HighlightedEntityScreenLineWidth,
+            o_SelectedEntityScreenLineWidth,
+
+            // draft mode
+            o_DraftModeScreenLineWidth,
 
              // renderer
             o_CircleRenderAsArcs,

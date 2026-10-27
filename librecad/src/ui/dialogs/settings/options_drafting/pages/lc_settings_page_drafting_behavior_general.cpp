@@ -64,7 +64,7 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
         { ui->cbClassicRendering, o_ClassicRenderer },
         {ui->cb_autopanning, CFG_ZoomAndPan::o_Autopanning},
         {ui->cbDrawGrid, o_GridDraw},
-        {ui->cbDrawMetaGrid, o_metaGridDraw},
+        {ui->cbDrawMetaGrid, o_MetaGridDraw},
         {ui->cbDrawVerticalForIsoTop, o_GridDrawIsoVerticalForTop},
         {ui->cbScaleGrid, o_ScaleGrid},
         {ui->cbUnitlessGrid, o_UnitlessGrid},

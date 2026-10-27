@@ -27,10 +27,8 @@
 #include "ui_lc_settings_page_drafting_metrics_markers.h"
 
 LC_SettingsPageDraftingMetricsMarkers::LC_SettingsPageDraftingMetricsMarkers(QObject* parent)
-    : LC_SettingsPageBase(tr("Markers and Handles"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
-                          parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsMarkers>()) {
+    : LC_SettingsPageBase(tr("Markers and Handles"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group), parent),
+      ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsMarkers>()) {
     setSortWeight(10);
 }
 
@@ -38,18 +36,24 @@ LC_SettingsPageDraftingMetricsMarkers::~LC_SettingsPageDraftingMetricsMarkers() 
 
 void LC_SettingsPageDraftingMetricsMarkers::setupUi() {
     ui->setupUi(m_widget);
+    ui->sbHighlightedEntityScreenLineWidth->setSpecialValueText("Auto");
+    ui->sbSelectedEntityScreenLineWidth->setSpecialValueText("Auto");
 }
 
 void LC_SettingsPageDraftingMetricsMarkers::setupBindings() {
     using namespace CFG_Appearance;
 
     bindInt({
-        { ui->sbHandleSize, o_EntityHandleSize },
-        { ui->sbOverlaysLineWidth, o_OverlaysScreenLineWidth },
-        { ui->sbZeroMarkerSize, o_ZeroMarkerSize },
-        { ui->sbZeroMarkerFontSize, o_ZeroMarkerFontSize },
-        { ui->sbZeroShortAxisMarkSize, o_ZeroShortAxisMarkSize },
-        { ui->sbRelZeroRadius, o_RelZeroMarkerRadius },
-        { ui->sbDraftMarkerFontSize, o_DraftMarkerFontSize }
+        {ui->sbHandleSize, o_EntityHandleSize},
+        {ui->sbDraftMarkerFontSize, o_DraftMarkerFontSize},
+        {ui->sbPreviewRefPointsSize, o_PreviewRefPointSize}
+    });
+
+    bindDouble({
+        {ui->sbOverlaysLineWidth, o_OverlaysScreenLineWidth},
+        {ui->sbDraftModeScreenLineWidth, o_DraftModeScreenLineWidth},
+        {ui->sbPreviewScreenLineWidth, o_PreviewScreenLineWidth},
+        {ui->sbHighlightedEntityScreenLineWidth, o_HighlightedEntityScreenLineWidth},
+        {ui->sbSelectedEntityScreenLineWidth, o_SelectedEntityScreenLineWidth}
     });
 }

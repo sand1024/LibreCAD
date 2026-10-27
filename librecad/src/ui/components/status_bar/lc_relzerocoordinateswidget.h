@@ -25,6 +25,7 @@
 
 #include <QWidget>
 
+#include "lc_coordinate_widget_base.h"
 #include "lc_formatter.h"
 #include "lc_graphicviewaware.h"
 #include "lc_graphicviewportlistener.h"
@@ -37,7 +38,7 @@ namespace Ui {
     class LC_RelZeroCoordinatesWidget;
 }
 
-class LC_RelZeroCoordinatesWidget : public QWidget, public LC_GraphicViewAware, public  LC_GraphicViewPortListener{
+class LC_RelZeroCoordinatesWidget : public LC_CoordinateWidgetBase, public LC_GraphicViewPortListener {
     Q_OBJECT
 public:
     explicit LC_RelZeroCoordinatesWidget(QWidget *parent = nullptr, const char *name = nullptr);
@@ -46,18 +47,21 @@ public:
     void setGraphicView( RS_GraphicView * gv ) override;
     void setRelativeZero( const RS_Vector & rel, bool updateFormat );
     void updateFormats();
+
 public slots:
     void relativeZeroChanged(const RS_Vector &pos);
     void showRelZero(const RS_Vector& rel) const;
+
+protected slots:
+    void languageChange();
+
 protected:
-    RS_Graphic* m_graphic = nullptr;
-    RS_GraphicView* m_graphicView = nullptr;
-    LC_Formatter* m_formatter = nullptr;
-    LC_GraphicViewport* m_viewport = nullptr;
-    RS_Vector m_currentRelZero{0,0};
+    RS_Vector m_currentRelZero{0.0, 0.0};
+
 private:
-    void onUCSChanged(LC_UCS *ucs) override;
-    Ui::LC_RelZeroCoordinatesWidget *ui;
+    void onUCSChanged(LC_UCS* ucs) override;
+
+    Ui::LC_RelZeroCoordinatesWidget* m_ui = nullptr;
 };
 
 #endif

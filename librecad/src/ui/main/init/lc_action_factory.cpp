@@ -333,6 +333,8 @@ void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const boo
     createToolbarAreasActions(actionMap, agm->getGroupByName(TB_AREAS));
     createFileActions(actionMap, agm->getGroupByName(FILES));
 
+    createCoordinatesLockActions(actionMap, agm->getGroupByName(WORKSPACES));
+
     createSnapActions(actionMap, agm->getGroupByName(SNAP));
     createRelativeInputActions(actionMap, agm->getGroupByName(RELATIVE_INPUT));
     createInfoCursorActions(actionMap, agm->getGroupByName(INFO_CURSOR));
@@ -799,8 +801,8 @@ void LC_ActionFactory::createViewActions(QMap<QString, QAction*>& map, QActionGr
         {"MainMenu",         &QC_ApplicationWindow::toggleMainMenu,       tr("&Main Menu"),            ":/icons/main_menu.lci",         tr("Toggles visibility of the top menu bar.")},
         {"Fullscreen",       &QC_ApplicationWindow::toggleFullscreen,     tr("&Fullscreen"),           ":/icons/fullscreen.lci",        tr("Toggles full screen application display mode.")},
         {"ViewGrid",         &QC_ApplicationWindow::slotViewGrid,         tr("&Grid"),                 ":/icons/grid.lci",              tr("Toggles visibility of the drawing grid.")},
-        {"ViewDraft",        &QC_ApplicationWindow::slotViewDraft,        tr("&Draft"),                ":/icons/draft.lci",             tr("Toggles draft mode: hides line widths for maximum redraw speed.")},
-        {"ViewLinesDraft",   &QC_ApplicationWindow::slotViewDraftLines,   tr("&Draft Lines"),          ":/icons/draftLineWidth.lci",    tr("Toggles draft mode for zero-width hair lines.")},
+        {"ViewDraft",        &QC_ApplicationWindow::slotViewDraft,        tr("&Draft"),                ":/icons/draft.lci",             tr("Toggles draft mode: uses fixed line widths and\nsimple text and image rendering\nfor maximum redraw speed.")},
+        {"ViewLinesDraft",   &QC_ApplicationWindow::slotViewDraftLines,   tr("&Draft Lines"),          ":/icons/draftLineWidth.lci",    tr("Toggles draft mode line widths (no width scaling, fixed line width).")},
         {"ViewAntialiasing", &QC_ApplicationWindow::slotViewAntialiasing, tr("&Antialiasing"),         ":/icons/anti_aliasing.lci",     tr("Toggles smooth anti-aliased rendering for graphics.")},
         {"ViewStatusBar",    &QC_ApplicationWindow::slotViewStatusBar,    tr("&Statusbar"),            ":/icons/status_bar.lci",        tr("Toggles visibility of the bottom status bar.")},
         {"ViewGridOrtho",    &QC_ApplicationWindow::slotViewGridOrtho,    tr("&Orthogonal Grid"),      ":/icons/grid_ortho.lci",        tr("Switches drawing grid to standard Cartesian orthogonal grid.")},
@@ -949,6 +951,13 @@ void LC_ActionFactory::createToolbarAreasActions(QMap<QString, QAction*>& map, Q
         {"RightTBAreaToggle",  &QC_ApplicationWindow::toggleRightToolbarArea,  tr("Right Toolbar Area"),  ":/icons/dockwidgets_right.lci",  tr("Toggles visibility of toolbars in the right dock area.")},
         {"TopTBAreaToggle",    &QC_ApplicationWindow::toggleTopToolbarArea,    tr("Top Toolbar Area"),    ":/icons/dockwidgets_top.lci",    tr("Toggles visibility of toolbars in the top dock area.")},
         {"BottomTBAreaToggle", &QC_ApplicationWindow::toggleBottomToolbarArea, tr("Bottom Toolbar Area"), ":/icons/dockwidgets_bottom.lci", tr("Toggles visibility of toolbars in the bottom dock area.")}
+    }, true);
+}
+
+void LC_ActionFactory::createCoordinatesLockActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) {
+    createMainWindowActions(map, group, {
+        {"LockWidgetCoordinatesToggle",   &QC_ApplicationWindow::toggleCoordinatesWidgetLock,   tr("Toggle Coordinates Widget Lock"),   ":/icons/info_point.lci",   tr("Toggles locked state for coordinates widget.")},
+        {"LockWidgetRelZeroToggle",   &QC_ApplicationWindow::toggleCoordinatesWidgetLock,   tr("Toggle Relative Zero Widget Lock"),   ":/icons/set_rel_zero.lci",   tr("Toggles locked state for relative zero widget.")},
     }, true);
 }
 

@@ -38,8 +38,8 @@
 
 class LC_ProxyStyle;
 
-LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent)
-    : LC_CADDockWidget(parent) {
+void LC_CADToolMatrixDockWidget::init() {
+    LC_CADDockWidget::init();
     if (m_frame) {
         m_frame->installEventFilter(this); // Intercept m_frame paint events
     }
@@ -47,6 +47,10 @@ LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent)
         m_gridLayout->setContentsMargins(1, 1, 1, 1);
     }
     m_addHorizontalSpacer = true;
+}
+
+LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent)
+    : LC_CADDockWidget(parent) {
 }
 
 bool LC_CADToolMatrixDockWidget::eventFilter(QObject* watched, QEvent* event) {

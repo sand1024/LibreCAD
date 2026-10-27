@@ -43,7 +43,7 @@ public:
     QAction* getDockingAction() const {
         return m_docking;
     }
-    void setInput(const QString &cmd) const;
+    void setInput(const QString &cmd, bool append) const;
     void setGraphicView([[maybe_unused]]RS_GraphicView* gview) override {}
 protected:
     QLayout* getTopLevelLayout() const override {return layout();}

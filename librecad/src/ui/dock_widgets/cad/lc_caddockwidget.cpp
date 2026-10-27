@@ -42,14 +42,16 @@ void LC_CADDockWidget::setupUI() {
     doSetupGridLayout(m_gridLayout);
 }
 
+void LC_CADDockWidget::init() {
+    m_frame->setContentsMargins(0, 0, 0, 0);
+    setupUI();
+    m_frame->setLayout(m_gridLayout);
+}
+
 LC_CADDockWidget::LC_CADDockWidget(QWidget *parent)
     : LC_DockWidgetBase(parent, QString(), QString(), /*isCadDock=*/true),
       m_frame(new QFrame(this)),
       m_gridLayout(new QGridLayout) {
-
-  m_frame->setContentsMargins(0, 0, 0, 0);
-  setupUI();
-  m_frame->setLayout(m_gridLayout);
 }
 
 void LC_CADDockWidget::addSpacers(QGridLayout *layout, const int columns, bool addHorizontal) {

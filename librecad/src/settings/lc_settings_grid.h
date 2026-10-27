@@ -30,13 +30,13 @@ namespace CFG_Grid {
     inline const LC_SettingsGroupBase Group("Grid");
 
     inline const LC_Setting<int> o_GridType(&Group, "GridType", 0);
-    inline const LC_Setting<RS2::LineType> o_metaGridPointsLineType(&Group, "metaGridPointsLineType", RS2::DotLineTiny);
+    inline const LC_Setting<RS2::LineType> o_MetaGridPointsLineType(&Group, "metaGridPointsLineType", RS2::DotLineTiny);
     inline const LC_Setting<RS2::LineType> o_metaGridLinesLineType(&Group, "metaGridLinesLineType", RS2::SolidLine);
     inline const LC_Setting<RS2::LineType> o_GridLinesLineType(&Group, "GridLinesLineType", RS2::SolidLine);
-    inline const LC_Setting<int> o_MetaGridPointsLineWidth(&Group, "metaGridPointsLineWidth", 1);
-    inline const LC_Setting<int> o_GridPointsPointSize(&Group, "GridPointsPointSize", 1);
-    inline const LC_Setting<int> o_MetaGridLinesLineWidth(&Group, "metaGridLinesLineWidth", 1);
-    inline const LC_Setting<int> o_GridLinesLineWidth(&Group, "GridLinesLineWidth", 1);
+    inline const LC_Setting<double> o_MetaGridPointsScreenLineWidth(&Group, "metaGridPointsLineWidth", 1.0);
+    inline const LC_Setting<double> o_GridPointsPointScreenSize(&Group, "GridPointsPointSize", 1);
+    inline const LC_Setting<double> o_MetaGridLinesScreenLineWidth(&Group, "metaGridLinesLineWidth", 1.0);
+    inline const LC_Setting<double> o_GridLinesScreenLineWidth(&Group, "GridLinesLineWidth", 1.0);
 }
 
 #endif

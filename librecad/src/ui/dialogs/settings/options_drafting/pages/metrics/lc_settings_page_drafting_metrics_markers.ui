@@ -1,26 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  - *
-  - This file is part of the LibreCAD project, a 2D CAD program
-  -
-  - Copyright (C) 2026 LibreCAD.org
-  - Copyright (C) 2026 sand1024
-  -
-  - This program is free software; you can redistribute it and/or
-  - modify it under the terms of the GNU General Public License
-  - as published by the Free Software Foundation; either version 2
-  - of the License, or (at your option) any later version.
-  -
-  - This program is distributed in the hope that it will be useful,
-  - but WITHOUT ANY WARRANTY; without even the implied warranty of
-  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  - GNU General Public License for more details.
-  -
-  - You should have received a copy of the GNU General Public License
-  - along with this program; if not, write to the Free Software
-  - Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
-
 <ui version="4.0">
  <class>LC_SettingsPageDraftingMetricsMarkers</class>
  <widget class="QWidget" name="LC_SettingsPageDraftingMetricsMarkers">
@@ -28,278 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
-    <height>747</height>
+    <width>629</width>
+    <height>699</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_7">
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="gbOriginMarkers">
-     <property name="title">
-      <string>Coordinate System Origin</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="2">
-       <widget class="QSpinBox" name="sbZeroMarkerFontSize">
-        <property name="toolTip">
-         <string>Axis Font Size\n\nFont size that should be used for drawing name of axis in coordinate system zero.</string>
-        </property>
-        <property name="suffix">
-         <string> pt</string>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>48</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblZeroMarkerFontSize">
-        <property name="text">
-         <string>Axis font size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>These are settings for the marker that is shown in the origin point (0,0) of the coordinate system,</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblZeroMarkerSize">
-        <property name="text">
-         <string>Marker size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QSpinBox" name="sbZeroMarkerSize">
-        <property name="toolTip">
-         <string>Origin Marker Size
-
-Diameter of UCS and WCS origin markers in screen pixels.
-
-</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>10</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Relative Zero</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbRelZeroRadius">
-        <property name="toolTip">
-         <string>Relative Zero Radius
-
-Radius of the Relative Zero marker in screen pixels.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>50</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblRelZeroRadius">
-        <property name="text">
-         <string>Mark Radius:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Relative Zero Marker is an overlay that is drawn in the location of drawing's Relative Zero Point.
-If coordinates or distances are entered as relative ones, resulting absolute coordinates are calculated using Relative Zero as their base point.  </string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="6" column="0" rowspan="2" colspan="2">
-    <spacer name="spacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QGroupBox" name="gbWatermarks">
-     <property name="title">
-      <string>Draft Mode Indicator</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblDraftMarkerFontSize">
-        <property name="text">
-         <string>Font size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbDraftMarkerFontSize">
-        <property name="toolTip">
-         <string>Font Size
-
-Font size used for Draft Mode indicator watermark.</string>
-        </property>
-        <property name="suffix">
-         <string> pt</string>
-        </property>
-        <property name="minimum">
-         <number>5</number>
-        </property>
-        <property name="maximum">
-         <number>99</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Draft Mode is a simplified mode of drawings rendering. It is used mostly for increasing drawing speed and responsiveness of UI. In that mode all texts, hatches and images are rendered as placeholders, and default linewidth is used for all entities.&lt;br&gt;Draft Mode Marker is an overlay text that is shown in corners of the drawing area for clear visual indication that Draft Mode is currently enabled.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Axis Lines Mark</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblZeroShortAxisMarkSize">
-        <property name="text">
-         <string>Short axis mark size:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbZeroShortAxisMarkSize">
-        <property name="toolTip">
-         <string>Short Axis Line Size
-
-Size of fixed Axis Lines drawn in absolute zero point.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Axis Lines could be drawn in the origin point of the current coordinate system and highlights X and Y axis. Both short (with fixed size) and extended (infinite size) axis lines are supported.</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="gbOvelaysLineWidth">
      <property name="title">
@@ -324,21 +35,27 @@ Size of fixed Axis Lines drawn in absolute zero point.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="sbOverlaysLineWidth">
+       <widget class="QDoubleSpinBox" name="sbOverlaysLineWidth">
         <property name="toolTip">
          <string>Overlay Line Width
 
-Width of line, in pixels, used for drawing various overlays (like relative point marker, axises, preview entities and so on).
+Screen width of line, in pixels, used for drawing various overlays (like relative point marker, axises, preview entities and so on).
 For high-DPI screens, setting larger values may increase visitility of them.</string>
         </property>
         <property name="suffix">
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>4</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -358,7 +75,103 @@ For high-DPI screens, setting larger values may increase visitility of them.</st
      </layout>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbWatermarks">
+     <property name="title">
+      <string>Draft Mode Indicator</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="4" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblDraftMarkerFontSize">
+        <property name="text">
+         <string>Marker font size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="sbDraftMarkerFontSize">
+        <property name="toolTip">
+         <string>Font Size
+
+Font size used for Draft Mode indicator watermark.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>99</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Draft Mode is a simplified mode of drawings rendering. It is used mostly for increasing drawing speed and responsiveness of UI. In that mode all texts, hatches and images are rendered as placeholders, and default linewidth is used for all entities.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Fixed entities screen line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Draft Mode Marker is an overlay text that is shown in corners of the drawing area for clear visual indication that Draft Mode is currently enabled.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="sbDraftModeScreenLineWidth">
+        <property name="toolTip">
+         <string>Draft Line Width
+
+Screen size in pixels used for rendering entities 
+in draft mode. </string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <widget class="QGroupBox" name="gbHandles">
      <property name="title">
       <string>Entity Handles</string>
@@ -369,11 +182,9 @@ For high-DPI screens, setting larger values may increase visitility of them.</st
         <property name="toolTip">
          <string>Entity Handle Size
 
-                                  Size of entities interactive selection handle
-                                  (square that is highlights entities reference points)
-                                  in screen pixels.
-
-                              </string>
+Size of entities interactive selection handle
+(square that is highlights entities reference points)
+in screen pixels.</string>
         </property>
         <property name="suffix">
          <string> px</string>
@@ -421,6 +232,211 @@ For high-DPI screens, setting larger values may increase visitility of them.</st
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbOriginMarkers">
+     <property name="title">
+      <string>Highlighted and Selected Entities</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="2">
+       <widget class="QDoubleSpinBox" name="sbHighlightedEntityScreenLineWidth">
+        <property name="toolTip">
+         <string>Highlighted Entity Line Width
+
+Screen width of line, in pixels, used for rendering
+highighted entiites. </string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <double>0.750000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Screen width of highlighted and selected entities could be customized below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblZeroMarkerSize">
+        <property name="text">
+         <string>Highlighted entity screen line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblZeroShortAxisMarkSize">
+        <property name="text">
+         <string>Selected entities screen line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QDoubleSpinBox" name="sbSelectedEntityScreenLineWidth">
+        <property name="toolTip">
+         <string>Selected Entities Screen Line Width
+
+Screen width of line, in pixels, used for rendering selected entities.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <double>0.750000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gbPointSize">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_sz">
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbPreviewRefPointsSize">
+        <property name="toolTip">
+         <string>Explanatory Point Size
+
+Screen size of explanatory points that are 
+part of temporary  preview and illustrate
+important points of projected result of 
+current command.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Explanatory refrence points size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Preview is a visual feedback mechanism supported by various commands that creates or modifies entities in the drawing. 
+Entities preview shows a real-time, temporary preview of geometric modifications on  screen before officially commit to finalization of the command. In addition to entities that will be created or modified,  preview may include various explanatory entities that illustrate current command.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Preview screen line width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="sbPreviewScreenLineWidth">
+        <property name="toolTip">
+         <string>Preview Line Width
+
+Width of line, in pixels, used for drawing 
+entities that are included into preview. 
+</string>
+        </property>
+        <property name="prefix">
+         <string/>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0" rowspan="2" colspan="2">
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

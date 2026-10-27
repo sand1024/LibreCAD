@@ -51,15 +51,18 @@ void LC_SettingsPageDraftingMetricsSnapping::setupBindings() {
         { ui->sbCatchEntitySnapDistance, o_AdvSnapEntityCatchRange },
         { ui->sbVSCatchDistance, o_VSGuidingEntitiesCatchDistance },
         { ui->sbIndicatorShapeSize, o_IndicatorShapeSize },
-        { ui->sbIndicatorLinesLineWidth, o_IndicatorScreenLinesLineWidth },
         { ui->sbIndicatorCrosshairLinesSizePercents, o_IndicatorCrosshairLinesSizePercents },
         { ui->sbVSProjectedSnapSize, o_VSProjectedSnapSize },
         { ui->sbVSHighlightedVertexSize, o_VSHighlightedVertexSize },
         { ui->sbVSVertexSize, o_VSVertexSize },
-        { ui->sbVSGuidingEntitiesLineWidth, o_VSGuidingEntitiesLineWidth },
-        { ui->sbVSGuidingPointsLineWidth, o_VSGuidingPointsLineWidth },
         { ui->sbVSGuidingEntityLabelFontSize, o_VSGuidingEntityLabelFontSize },
         { ui->sbAngleSnapMarkerSize, o_AngleSnapMarkerSize },
         { ui->sbVSGuidingLabelOffsetPx, o_VSGuidingLabelOffsetPx }
+    });
+
+    bindDouble({
+           { ui->sbIndicatorLinesLineWidth, o_IndicatorScreenLinesLineWidth },
+           { ui->sbVSGuidingPointsLineWidth, o_VSGuidingPointsScreenLineWidth },
+           { ui->sbVSGuidingEntitiesLineWidth, o_VSGuidingEntitiesScreenLineWidth }
     });
 }

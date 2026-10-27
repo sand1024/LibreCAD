@@ -39,8 +39,8 @@ void RS_Preview::loadSettings() {
     const auto highLight = RS_Color(CFG_Colors::o_PreviewEntitiesColor);
 
     RS_Pen pen(highLight, RS2::Width00, RS2::SolidLine);
-    int screenLineWidth = CFG_Appearance::o_OverlaysScreenLineWidth;
-    if (screenLineWidth == 1) {
+    double screenLineWidth = CFG_Appearance::o_PreviewScreenLineWidth;
+    if (LC_LineMath::isSameLength(screenLineWidth,1.0)) {
         screenLineWidth = 0;
     }
     pen.setScreenWidth(screenLineWidth);

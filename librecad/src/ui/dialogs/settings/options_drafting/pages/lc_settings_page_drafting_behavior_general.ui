@@ -305,7 +305,8 @@ entities creation or modification operation.</string>
         <property name="toolTip">
          <string>Hover in Draft Mode
 
-If selected, entity will be highlighted in &quot;Draft&quot; mode using entity's linewidth instead of 1px.</string>
+If selected, entity will be highlighted in &quot;Draft&quot; mode
+using entity's linewidth instead of draft mode line width.</string>
         </property>
         <property name="styleSheet">
          <string notr="true">margin-left:15px</string>

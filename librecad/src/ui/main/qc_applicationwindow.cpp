@@ -100,6 +100,7 @@
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_command_manager.h"
+#include "lc_coordinates_widget.h"
 #include "lc_default_navigation_layout_builder.h"
 #include "lc_dock_names.h"
 #include "lc_snapmanager.h"
@@ -113,7 +114,6 @@
 #include "qg_activelayername.h"
 #include "qg_blockwidget.h"
 #include "qg_commandwidget.h"
-#include "qg_coordinatewidget.h"
 #include "qg_exitdialog.h"
 #include "qg_graphicview.h"
 #include "qg_layerwidget.h"
@@ -266,6 +266,17 @@ void QC_ApplicationWindow::toggleBottomDockArea(bool state) {
 void QC_ApplicationWindow::toggleLeftToolbarArea(bool state) {
     if (m_toolBarManager != nullptr) {
         m_toolBarManager->toggleLeftToolBarArea(state);
+    }
+}
+
+void QC_ApplicationWindow::toggleCoordinatesWidgetLock(bool state) {
+    if (m_coordinateWidget != nullptr) {
+        m_coordinateWidget->setLocked(state);
+    }
+}
+void QC_ApplicationWindow::toggleRelativeZeroWidgetLock(bool state) {
+    if (m_relativeZeroCoordinatesWidget != nullptr) {
+        m_relativeZeroCoordinatesWidget->setLocked(state);
     }
 }
 

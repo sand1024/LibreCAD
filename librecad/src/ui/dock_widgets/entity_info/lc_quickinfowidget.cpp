@@ -467,12 +467,12 @@ void LC_QuickInfoWidget::processURLCommand(const QString &path, const int index)
     else if (path == "val"){ // copy value to Cmd widget
         if (m_entityData->hasData()){
             const QString value = m_entityData->getValue(index);
-            RS_DIALOGFACTORY->command(value);
+            RS_DIALOGFACTORY->command(value, false);// fixme - sand  - review later how to pass data to input, as cmd will be reworked
         }
     }
     else if (path == "coord"){ // copy coordinate to Cmd widget
         const QString data = retrievePositionStringForModelIndex(index);
-        RS_DIALOGFACTORY->command(data);
+        RS_DIALOGFACTORY->command(data, false);
     }
 }
 

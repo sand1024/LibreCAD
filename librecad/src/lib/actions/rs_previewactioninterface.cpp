@@ -606,18 +606,12 @@ void RS_PreviewActionInterface::initRefEntitiesMetrics() {
     using namespace CFG_Appearance;
     {
         // Points drawing style:
-        m_refPointMode = o_RefPointType;
-        const QString pdsizeStr = o_RefPointSize;;
+        m_refPointMode = o_PreviewRefPointType;
+        m_refPointSize = o_PreviewRefPointSize;
 
         m_showRefEntitiesOnPreview = o_VisualizePreviewRefPoints;
         m_highlightEntitiesOnHover = o_VisualizeHovering;
         m_highlightEntitiesRefPointsOnHover = o_VisualizeHoveringRefPoints;
-
-        bool ok = false;
-        m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
-        if (!ok) {
-            m_refPointSize = LC_DEFAULTS_PDSize;
-        }
     }
 }
 

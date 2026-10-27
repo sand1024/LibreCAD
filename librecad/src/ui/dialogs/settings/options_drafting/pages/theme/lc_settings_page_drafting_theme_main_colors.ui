@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>306</width>
-    <height>465</height>
+    <height>560</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_main">
@@ -200,15 +200,18 @@ blackwhite color on entities rendering.</string>
       <string>Hovering Highlight</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_hi">
-      <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Entities in drawing may be highlighted on mouse hover. </string>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
-       </widget>
+       </spacer>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="lHighlightedColor">
@@ -236,6 +239,16 @@ for highlighted entities.</string>
         </property>
        </widget>
       </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label1">
+        <property name="text">
+         <string>Entities in drawing may be highlighted on mouse hover. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2">
        <widget class="LC_ColorButton" name="pb_highlighted">
         <property name="toolTip">
@@ -246,18 +259,21 @@ highlighted on hover.</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="3">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Highlighted entity line type:</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QG_LineTypeBox" name="wHighlightedEntityLineType" native="true">
+        <property name="toolTip">
+         <string>Highlighted Entity Line Type
+
+Line type used to render highlighted entity within drawing.</string>
         </property>
-       </spacer>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -324,7 +340,7 @@ for Draft Mode Marker</string>
        </widget>
       </item>
       <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label2">
         <property name="text">
          <string>Draft Mode is a simplified mode of drawings rendering. It is used mostly for increasing drawing speed and responsiveness of UI. In this mode all texts, hatches and images are rendered as placeholders, and default linewidth is used for all entities.&lt;br&gt; Draft Mode Marker is an overlay that is shown in corners of the drawing area for clear visual indication that Draft Mode is currently enabled.</string>
         </property>
@@ -378,6 +394,11 @@ Font family for Draft mode marker.</string>
    <class>LC_LazyFontComboBox</class>
    <extends>QFontComboBox</extends>
    <header>lc_lazy_font_combo_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QG_LineTypeBox</class>
+   <extends>QWidget</extends>
+   <header>qg_linetypebox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

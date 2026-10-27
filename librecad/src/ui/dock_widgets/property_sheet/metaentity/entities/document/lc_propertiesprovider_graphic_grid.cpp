@@ -188,7 +188,7 @@ bool LC_PropertiesProviderGraphicGrid::createShowMetaGrid(LC_PropertyContainer* 
             const LC_Property::Names names = {"gridMetaVisible", tr("Show meta-grid"), tr("Defines whether meta-grid is shown or not")};
             if (showGrid) {
                 auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]]RS_Graphic* e) -> void {
-                    CFG_Appearance::o_metaGridDraw = v;
+                    CFG_Appearance::o_MetaGridDraw = v;
                     const auto viewport = m_actionContext->getViewport();
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();

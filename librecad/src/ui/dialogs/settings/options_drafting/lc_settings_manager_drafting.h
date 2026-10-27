@@ -63,6 +63,7 @@ namespace LC_SettingsPagesDrafting {
 
     const QString PAGE_DRAFTING_METRICS                     = "drafting.metrics";
     const QString PAGE_DRAFTING_METRICS_MARKERS             = "drafting.metrics.markers";
+    const QString PAGE_DRAFTING_METRICS_COORDINATE_SYSTEM   = "drafting.metrics.coordinate_system";
     const QString PAGE_DRAFTING_METRICS_SNAPPING            = "drafting.metrics.snapping";
     const QString PAGE_DRAFTING_METRICS_OVERLAYS            = "drafting.metrics.overlays";
     const QString PAGE_DRAFTING_METRICS_RENDERER            = "drafting.metrics.renderer";

@@ -36,7 +36,7 @@ struct LC_AnglesBaseMarkOptions{
     int markerRadius = 30;
     RS_Color colorAnglePointer = Qt::blue;
     RS_Color colorRadius = Qt::blue;
-    int overlayScreenLineWidth = 0;
+    double overlayScreenLineWidth = 0;
     void loadSettings();
 };
 

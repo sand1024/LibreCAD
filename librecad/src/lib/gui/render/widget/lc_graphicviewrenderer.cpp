@@ -86,6 +86,34 @@ void LC_GraphicViewRenderer::loadSettings() {
         m_draftSignFont = QFont(draftMarkerFontName, draftMarkerFontSize);
 
         m_drawDrawSign = o_ShowDraftModeMarker;
+
+        m_draftEntityScreenLineWidth = o_DraftModeScreenLineWidth;
+        if (LC_LineMath::isSameLength(m_draftEntityScreenLineWidth, 1.0)) {
+            m_draftEntityScreenLineWidth = 0;
+        }
+
+        m_highlightedEntityScreenLineWith = o_HighlightedEntityScreenLineWidth;
+        if (m_highlightedEntityScreenLineWith > 0.75) {
+            if (LC_LineMath::isSameLength(m_highlightedEntityScreenLineWith, 1.0)) {
+                m_highlightedEntityScreenLineWith = 0;
+            }
+        }
+        else { // don't draw
+            m_highlightedEntityScreenLineWith = -1;
+        }
+
+        m_selectedEntityScreenLineWidth = o_SelectedEntityScreenLineWidth;
+        if (m_selectedEntityScreenLineWidth > 0.75) {
+            if (LC_LineMath::isSameLength(m_selectedEntityScreenLineWidth, 1.0)) {
+                m_selectedEntityScreenLineWidth = 0;
+            }
+        }
+        else { // don't draw
+            m_selectedEntityScreenLineWidth = -1;
+        }
+
+        m_highlightedEntityLineType = o_HighlightedEntityLineType;
+        m_selectedEntityLineType = o_SelectedEntityLineType;
     }
 
     {
@@ -125,13 +153,13 @@ void LC_GraphicViewRenderer::loadSettings() {
 
     {
         using namespace CFG_VisualSnap;
-        m_VisualSnapGuidingEntitiesLineWidth = o_VSGuidingEntitiesLineWidth;
-        if (m_VisualSnapGuidingEntitiesLineWidth == 1) {
-            m_VisualSnapGuidingEntitiesLineWidth = 0;
+        m_VisualSnapGuidingEntitiesScreenLineWidth = o_VSGuidingEntitiesScreenLineWidth;
+        if (LC_LineMath::isSameLength(m_VisualSnapGuidingEntitiesScreenLineWidth,1.0)) {
+            m_VisualSnapGuidingEntitiesScreenLineWidth = 0;
         }
-        m_VisualSnapGuidingPointsLineWidth = o_VSGuidingPointsLineWidth;
-        if (m_VisualSnapGuidingEntitiesLineWidth == 1) {
-            m_VisualSnapGuidingEntitiesLineWidth = 0;
+        m_VisualSnapGuidingPointsScreenLineWidth = o_VSGuidingPointsScreenLineWidth;
+        if (LC_LineMath::isSameLength(m_VisualSnapGuidingEntitiesScreenLineWidth,1.0)) {
+            m_VisualSnapGuidingEntitiesScreenLineWidth = 0;
         }
 
         m_visualSnapGuidingEntitiesLineType = o_VSGuidingEntitiesLineType;
@@ -422,7 +450,7 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
     }
     else {
         pen.setWidth(RS2::LineWidth::Width00);
-        pen.setScreenWidth(m_VisualSnapGuidingEntitiesLineWidth);
+        pen.setScreenWidth(m_VisualSnapGuidingEntitiesScreenLineWidth);
     }
 
     const double width = pen.getWidth();
@@ -476,7 +504,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             }
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
-            pen.setScreenWidth(m_VisualSnapGuidingEntitiesLineWidth);
+            pen.setScreenWidth(m_VisualSnapGuidingEntitiesScreenLineWidth);
 
             // todo - sand - ucs -  USE THE SAME CACHING OF THE PEN!!!! The amount of overlay entities should be small, yet still...
             e->setPen(pen);
@@ -490,7 +518,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             pen.setColor(snapMark->getMarkType() == LC_RefSnapMark::PROJECTED ? m_colorVisualSnapProjectedSnap : m_colorVisualSnapVertexes);
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
-            pen.setScreenWidth(m_VisualSnapGuidingPointsLineWidth);
+            pen.setScreenWidth(m_VisualSnapGuidingPointsScreenLineWidth);
             painter->setPen(pen);
             break;
         }
@@ -586,45 +614,55 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
 #ifdef DEBUG_RENDERING
     setPenTimer.start();
 #endif
-    // Avoid negative widths
-    //    int w = std::max(static_cast<int>(pen.getWidth()), 0);
-    const double width = pen.getWidth();
-    if (pen.isFullyOpaque()) {
-        if (width > 0) {
-            // todo - sand - ucs - investigate were it's possible to cache calculated screen width at least during the same render pass.
-            // The amount of pens widths is limited - so probably accessing precalculated width will be slightly faster
-            double screenWidth = painter->toGuiDX(width * m_unitFactor100);
-            // prevent drawing with 1-width which is slow:
-            /* if (RS_Math::round(screenWidth) == 1) {
-                 screenWidth = 0.0;
-             }
-             else*/
-            // fixme - not sure about this check. However, without it, lines will stay transparent and then disappear on zooming out. Probably some other threshold value (instead 1) should be used?
-            if (screenWidth < 1) {
-                screenWidth = 0.0;
-            }
-            pen.setScreenWidth(screenWidth);
-        }
-        else {
-            pen.setScreenWidth(0.0);
+    if (overlayPaint) {
+        bool forPreview = e->rtti() == RS2::EntityPreview;
+        if (forPreview) {
+            pen.setScreenWidth(pen.getScreenWidth());
         }
     }
     else {
-        // fixme - if we'll support transparency, add necessary processing there
-        if (RS_Math::round(pen.getScreenWidth()) == 1) {
-            pen.setScreenWidth(0.0);
+        // Avoid negative widths
+        //    int w = std::max(static_cast<int>(pen.getWidth()), 0);
+        const double width = pen.getWidth();
+        if (pen.isFullyOpaque()) {
+            if (width > 0) {
+                // todo - sand - ucs - investigate were it's possible to cache calculated screen width at least during the same render pass.
+                // The amount of pens widths is limited - so probably accessing precalculated width will be slightly faster
+                double screenWidth = painter->toGuiDX(width * m_unitFactor100);
+                // prevent drawing with 1-width which is slow:
+                /* if (RS_Math::round(screenWidth) == 1) {
+                     screenWidth = 0.0;
+                 }
+                 else*/
+                // fixme - not sure about this check. However, without it, lines will stay transparent and then disappear on zooming out. Probably some other threshold value (instead 1) should be used?
+                if (screenWidth < 1) {
+                    screenWidth = 0.0;
+                }
+                pen.setScreenWidth(screenWidth);
+            }
+            else {
+                pen.setScreenWidth(0.0);
+            }
+        }
+        else {
+            // fixme - if we'll support transparency, add necessary processing there
+            if (RS_Math::round(pen.getScreenWidth()) == 1) {
+                pen.setScreenWidth(0.0);
+            }
         }
     }
 
-
     if (overlayPaint) {
-        // fixme - sand - ucs - rethink style for overlay entity!!
+              // fixme - sand - ucs - rethink style for overlay entity!!
         if (highlighted) {
             // Glowing effects on mouse hovering: use the "selected" color
             // for glowing effects on mouse hovering, draw solid lines
             // pen.setColor(m_colorSelectedEntity);
             pen.setColor(m_colorHighlightedEntity);
-            pen.setLineType(RS2::SolidLine);
+            pen.setLineType(m_highlightedEntityLineType);
+            if (m_highlightedEntityScreenLineWith > 1) {
+                pen.setScreenWidth(m_highlightedEntityScreenLineWith);
+            }
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);
@@ -657,7 +695,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         // this entity is highlighted:
         else if (highlighted) {
             pen.setColor(m_colorHighlightedEntity);
-            pen.setLineType(RS2::SolidLine);
+            pen.setLineType(m_highlightedEntityLineType);
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);
@@ -699,6 +737,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
 #endif
 }
 
+// fixme - sand - completely review pen resolution... it's quite historically messy..
 void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_Entity* e, const bool inOverlay) {
 #ifdef DEBUG_RENDERING
     setPenTimer.start();
@@ -726,7 +765,17 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     }
     m_lastPaintEntityPen.updateBy(pen);
     m_lastPaintEntityPen.setDashOffset(patternOffset);
-    pen.setScreenWidth(0.0);
+    if (inOverlay) {
+        if (e->rtti() == RS2::EntityPreview) {
+            pen.setScreenWidth(pen.getScreenWidth());
+        }
+        else {
+            pen.setScreenWidth(0.0);
+        }
+    }
+    else {
+        pen.setScreenWidth(m_draftEntityScreenLineWidth);
+    }
 
     if (overlayPaint) {
         if (highlighted) {
@@ -734,7 +783,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
             // for glowing effects on mouse hovering, draw solid lines
             pen.setColor(m_colorHighlightedEntity);
             // pen.setColor(m_colorSelectedEntity);
-            pen.setLineType(RS2::SolidLine);
+            pen.setLineType(m_highlightedEntityLineType);
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);

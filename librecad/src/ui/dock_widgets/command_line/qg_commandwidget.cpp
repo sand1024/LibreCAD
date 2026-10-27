@@ -243,8 +243,13 @@ void QG_CommandWidget::setCommand(const QString& cmd) const {
     }
 }
 
-void QG_CommandWidget::setInput(const QString& cmd) const {
-    leCommand->setText(cmd);
+void QG_CommandWidget::setInput(const QString& cmd, bool append) const {
+    if (append) {
+        leCommand->insert(cmd);
+    }
+    else {
+        leCommand->setText(cmd);
+    }
     leCommand->setFocus();
 }
 

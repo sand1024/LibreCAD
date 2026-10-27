@@ -40,6 +40,7 @@
 #include "lc_settings_page_drafting_behavior_snap_visual.h"
 #include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
 #include "lc_settings_page_drafting_metrics_markers.h"
+#include "lc_settings_page_drafting_metrics_origin_markers.h"
 #include "lc_settings_page_drafting_metrics_overlays.h"
 #include "lc_settings_page_drafting_metrics_renderer.h"
 #include "lc_settings_page_drafting_metrics_snapping.h"
@@ -115,9 +116,10 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_METRICS, "", index(QObject::tr("Drafting Metrics (Sizes)"),
             QObject::tr("Metrics preset specifies sizes for various elements of drawing area and related overlays.\n\nUse it to configure handle sizes, marker scales, line thicknesses, and text overlay sizes and so on.")), 20 },
         { PAGE_DRAFTING_METRICS_MARKERS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsMarkers>(), 10 },
-        { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 20 },
-        { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 30 },
-        { PAGE_DRAFTING_METRICS_RENDERER, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsRenderer>(), 40 },
+        { PAGE_DRAFTING_METRICS_COORDINATE_SYSTEM, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOriginMarkers>(), 20 },
+        { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 30 },
+        { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 40 },
+        { PAGE_DRAFTING_METRICS_RENDERER, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsRenderer>(), 50 },
 
         // ═════════════════════════════════════════════════════════════════════
         // TOP-LEVEL 3: DRAFTING BEHAVIOR (Direct Settings: No Bar, Never Gated)

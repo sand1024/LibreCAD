@@ -70,11 +70,6 @@ void LC_SettingsPageDraftingThemePreview::setupUi() {
 }
 
 void LC_SettingsPageDraftingThemePreview::setupBehavior() {
-    connect(ui->rbRelSize, &QRadioButton::toggled, this, [this](bool) {
-      if (ui->lePointSize != nullptr) {
-          emit ui->lePointSize->textChanged(ui->lePointSize->text());
-      }
-  });
 }
 
 void LC_SettingsPageDraftingThemePreview::setupBindings() {
@@ -89,40 +84,8 @@ void LC_SettingsPageDraftingThemePreview::setupBindings() {
         { ui->cbPreviewRefHighlightColor, ui->pb_previewRefHighlightColor, o_PreviewReferencesHighlightColor, tr("Select Active Explanatory Entity Color") }
     });
 
-    bindCustom<QLineEdit, QString>(ui->lePointSize, o_RefPointSize, false,
-        &QLineEdit::textChanged,
-        [this](QLineEdit* w) {
-            bool ok = false;
-            double val = (w != nullptr) ? w->text().toDouble(&ok) : 2.0;
-            if (!ok) {
-                val = 2.0;
-            }
-            if (ui->rbRelSize != nullptr && ui->rbRelSize->isChecked()) {
-                val = -std::abs(val);
-            }
-            else {
-                val = std::abs(val);
-            }
-            return QString::number(val);
-        },
-        [this](QLineEdit* w, const QString& v) {
-            bool ok = false;
-            double val = v.toDouble(&ok);
-            if (!ok) {
-                val = 2.0;
-            }
-            if (ui->rbRelSize != nullptr) {
-                ui->rbRelSize->setChecked(val <= 0.0);
-            }
-            if (ui->rbAbsSize != nullptr) {
-                ui->rbAbsSize->setChecked(val > 0.0);
-            }
-            if (w != nullptr) {
-                w->setText(QString::number(std::abs(val), 'g', 6));
-            }
-        });
 
-    bindCustom<QButtonGroup, int>(m_buttonGroup, o_RefPointType, false,
+    bindCustom<QButtonGroup, int>(m_buttonGroup, o_PreviewRefPointType, false,
         &QButtonGroup::buttonToggled,
         [](QButtonGroup* w) { return w != nullptr ? w->checkedId() : 0; },
         [](QButtonGroup* w, int id) {

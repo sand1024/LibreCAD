@@ -30,15 +30,15 @@ struct LC_GridOptions{
     RS_Color metaGridColor;
     RS2::LineType gridLineType{};
     RS2::LineType metaGridLineType{};
-    int gridWidthPx = 1;
-    int metaGridLineWidthPx = 1;
+    double gridLineScreenWidthPx = 1;
+    double metaGridScreenLineWidthPx = 1;
     bool drawMetaGrid = true;
     bool disableGridOnPanning = false;
     bool drawIsometricVerticalsAlways = true; // fixme - complete initialization
     bool simpleGridRendering = false;
     bool drawLines = false;
     bool drawGrid = true;
-    int gridPointSize = 2;
+    double gridPointSize = 2;
     Qt::PenCapStyle capStyle = Qt::PenCapStyle::SquareCap; //Qt::PenCapStyle::RoundCap - is too slow;
 
     int forcedGridType = -1; // ability to override setting for displaying grid in preview

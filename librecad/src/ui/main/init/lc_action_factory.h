@@ -124,6 +124,7 @@ private:
     void initActionGroupManager(LC_ActionGroupManager* agm);
     void createBuiltInSystemShortcutActions(QMap<QString, QAction*>& map, QActionGroup* group);
     void createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) const;
+    void createCoordinatesLockActions(QMap<QString, QAction*>& map, LC_ActionGroup* actionGroup);
     void fillActionContainer(LC_ActionGroupManager* agm, bool useTheme);
     void createDrawLineActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createDrawPointsActions(QMap<QString, QAction *> &map, QActionGroup *group) const;

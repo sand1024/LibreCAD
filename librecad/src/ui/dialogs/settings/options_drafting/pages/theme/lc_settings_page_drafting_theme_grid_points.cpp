@@ -50,5 +50,5 @@ void LC_SettingsPageDraftingThemeGridPoints::setupBindings() {
     });
 
     ui->wMetaGridPointsLineType->init(false, false, false);
-    bindLineType(ui->wMetaGridPointsLineType, o_metaGridPointsLineType);
+    bindLineType(ui->wMetaGridPointsLineType, o_MetaGridPointsLineType);
 }

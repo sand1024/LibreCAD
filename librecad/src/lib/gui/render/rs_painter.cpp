@@ -247,12 +247,10 @@ void RS_Painter::drawPointEntityWCS(const RS_Vector& wcsPos) {
     drawPointEntityUI(uiPos, m_pointsMode, m_screenPointsSize);
 }
 
-void RS_Painter::drawRefPointEntityWCS(const RS_Vector& wcsPos, const int pdMode, const double pdSize) {
-    // fixme - sand - may we cache size of refPoints? It's hardly possible that they will have different size during the same point run...
-    const int screenPDSize = determinePointScreenSize(pdSize);
+void RS_Painter::drawRefPointEntityWCS(const RS_Vector& wcsPos, const int pdMode, int screenSize) {
     double uiX, uiY;
     toGui(wcsPos, uiX, uiY);
-    drawPointEntityUI({uiX, uiY}, pdMode, screenPDSize);
+    drawPointEntityUI({uiX, uiY}, pdMode, screenSize);
 }
 
 /**

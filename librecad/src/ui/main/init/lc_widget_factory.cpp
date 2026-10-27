@@ -30,6 +30,7 @@
 #include "lc_anglesbasiswidget.h"
 #include "lc_caddockwidget.h"
 #include "lc_cad_tool_matrix_dock_widget.h"
+#include "lc_coordinates_widget.h"
 #include "lc_custom_title_bar_widget.h"
 #include "lc_dockwidget.h"
 #include "lc_dock_names.h"
@@ -51,7 +52,6 @@
 #include "qg_activelayername.h"
 #include "qg_blockwidget.h"
 #include "qg_commandwidget.h"
-#include "qg_coordinatewidget.h"
 #include "qg_layerwidget.h"
 #include "qg_librarywidget.h"
 #include "qg_mousewidget.h"
@@ -185,6 +185,7 @@ void LC_WidgetFactory::createCADDockWidgetsSidebar() {
 
 void LC_WidgetFactory::createCADToolsMatrixSidebar() {
     auto* result = new LC_CADToolMatrixDockWidget(m_appWin);
+    result->init();
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     result->setObjectName(LC_DockNames::cadDockName(LC_DockNames::CAD_MEGA));
     result->setWindowTitle(tr("Tools"));
@@ -597,6 +598,7 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& groupName) {
     const QString iconName = (group != nullptr) ? group->getIconPath() : QString();
 
     auto* result = new LC_CADDockWidget(m_appWin);
+    result->init();
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     result->setObjectName(LC_DockNames::cadDockName(groupName));
     result->setWindowTitle(title);
@@ -625,7 +627,7 @@ void LC_WidgetFactory::initStatusBar() {
     RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init status bar");
     QStatusBar* status_bar = m_appWin->statusBar();
 
-    m_appWin->m_coordinateWidget = new QG_CoordinateWidget(status_bar, "coordinates");
+    m_appWin->m_coordinateWidget = new LC_CoordinatesWidget(status_bar, "coordinates");
     m_appWin->m_relativeZeroCoordinatesWidget = new LC_RelZeroCoordinatesWidget(status_bar, "relZeroCordinates");
     m_appWin->m_mouseWidget = new QG_MouseWidget(status_bar, "mouse info");
     m_appWin->m_selectionWidget = new QG_SelectionWidget(status_bar, "selections");

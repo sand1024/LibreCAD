@@ -27,7 +27,6 @@
 
 class QWidget;
 class QG_CommandWidget;
-class QG_CoordinateWidget;
 class QG_MouseWidget;
 class QG_SelectionWidget;
 class RS_ActionInterface;
@@ -337,7 +336,7 @@ public:
     virtual void commandMessage([[maybe_unused]] const QString& message) {
     }
 
-    virtual void command([[maybe_unused]] const QString& message) {
+    virtual void command([[maybe_unused]] const QString& message, [[maybe_unused]]bool append) {
     }
 
     virtual void commandPrompt([[maybe_unused]] const QString& message) {

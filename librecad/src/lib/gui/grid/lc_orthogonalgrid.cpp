@@ -449,7 +449,7 @@ void LC_OrthogonalGrid::drawMetaGridLines(RS_Painter* painter, LC_GraphicViewpor
     doDrawLines(painter, view, m_metaGridLattice.get());
 
 #ifdef DEBUG_META_GRID
-    RS2::LineType penLineType = m_gridOptions->metaGridLineType; int metaGridLineWidthPx = m_gridOptions->metaGridLineWidthPx; double
+    RS2::LineType penLineType = m_gridOptions->metaGridLineType; int metaGridLineWidthPx = m_gridOptions->metaGridScreenLineWidthPx; double
         uiFirstMX = view->toGuiX(m_metaGridMin.x); double uiFirstMY = view->toGuiY(m_metaGridMin.y); RS_Vector viewMetaGridCellSize = view->
         toGuiD(m_metaGridCellSize); if (m_numMetaX > 0) {
         const double mx0 = uiFirstMX;

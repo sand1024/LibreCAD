@@ -103,8 +103,16 @@ protected:
     RS2::LineType m_visualSnapActiveGuidingEntitiesLineType = RS2::LineType::DashLine2;
     RS2::LineType m_visualSnapDocEntitiesLineType = RS2::LineType::SolidLine;
 
-    int m_VisualSnapGuidingEntitiesLineWidth = 0;
-    int m_VisualSnapGuidingPointsLineWidth = 0;
+    RS2::LineType m_highlightedEntityLineType = RS2::LineType::SolidLine;
+    RS2::LineType m_selectedEntityLineType = RS2::LineType::DotLineTiny;
+
+    double m_highlightedEntityScreenLineWith = -1.0;
+    double m_selectedEntityScreenLineWidth = -1;
+
+    double m_VisualSnapGuidingEntitiesScreenLineWidth = 0.0;
+    double m_VisualSnapGuidingPointsScreenLineWidth = 0.0;
+
+    double m_draftEntityScreenLineWidth = 0.0;
 
     bool m_lastPaintedHighlighted = false;
     bool m_lastPaintedSelected = false;

@@ -66,10 +66,11 @@ void LC_SettingsPageDraftingThemeSelection::setupBindings() {
         { ui->cbPickBoxLinesSize, o_SelectionPickBoxLinesSizeType }
     });
 
-
     ui->wOverlaySelectionLineType->init(false, false, false);
-
     bindLineType(ui->wOverlaySelectionLineType, o_SelectionOverlayLineType);
+
+    ui->wSelectedEntityLineType->init(false, false, false);
+    bindLineType(ui->wSelectedEntityLineType, o_SelectedEntityLineType);
 
     ui->wOverlaySelectionInvertedLineType->init(false, false, false);
     bindLineType(ui->wOverlaySelectionInvertedLineType, o_SelectionOverlayInvertedLineType);

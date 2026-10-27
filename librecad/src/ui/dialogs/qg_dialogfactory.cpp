@@ -703,10 +703,10 @@ void QG_DialogFactory::commandMessage(const QString& message) {
     RS_DEBUG->print("QG_DialogFactory::commandMessage: OK");
 }
 
-void QG_DialogFactory::command(const QString& message) {
+void QG_DialogFactory::command(const QString& message, bool append) {
     RS_DEBUG->print("QG_DialogFactory::command");
     if (m_commandWidget != nullptr) {
-        m_commandWidget->setInput(message);
+        m_commandWidget->setInput(message, append);
     }
     RS_DEBUG->print("QG_DialogFactory::command: OK");
 }

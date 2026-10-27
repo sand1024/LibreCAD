@@ -25,8 +25,8 @@
 #include "rs_painter.h"
 
 LC_RefPoint::LC_RefPoint(RS_EntityContainer* parent,
-                         const RS_Vector & d, const double size, const int mode)
-    :RS_Point(parent, RS_PointData(d)), m_pdmode{mode},m_pdsize{size}  {
+                         const RS_Vector & d, int size, const int mode)
+    :RS_Point(parent, RS_PointData(d)), m_pdmode{mode},m_screenSize{size}  {
     LC_RefPoint::calculateBorders();
 }
 
@@ -40,5 +40,5 @@ RS2::EntityType LC_RefPoint::rtti() const{
 }
 
 void LC_RefPoint::draw(RS_Painter *painter){
-    painter->drawRefPointEntityWCS(m_data.pos, m_pdmode, m_pdsize);
+    painter->drawRefPointEntityWCS(m_data.pos, m_pdmode, m_screenSize);
 }

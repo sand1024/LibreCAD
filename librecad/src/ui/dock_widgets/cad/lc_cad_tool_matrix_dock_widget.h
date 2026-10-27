@@ -32,6 +32,7 @@ class LC_CADToolMatrixDockWidget : public LC_CADDockWidget {
 public:
     explicit LC_CADToolMatrixDockWidget(QWidget* parent);
     ~LC_CADToolMatrixDockWidget() override = default;
+    void init() override;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm) override;
 protected:
@@ -44,11 +45,8 @@ protected:
     void configureButton(QToolButton* toolButton, QAction* action) override;
     void onLayoutUpdated() override;
     void doSetupGridLayout(QGridLayout* newGridLayout) override;
-
 private:
     void updateSegmentedButtonsMask() const;
     int m_currentGroupId{1};
 };
-
-
 #endif

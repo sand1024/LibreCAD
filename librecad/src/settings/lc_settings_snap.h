@@ -40,7 +40,7 @@ namespace CFG_Snap {
     inline const LC_Setting<int> o_IndicatorShapeType(&Group, "indicator_shape_type", 0);
     inline const LC_Setting<int> o_IndicatorShapeSize(&Group, "indicator_shape_size", 4);
     inline const LC_Setting<RS2::LineType> o_IndicatorLinesLineType(&Group, "indicator_lines_line_type", RS2::DashLine);
-    inline const LC_Setting<int> o_IndicatorScreenLinesLineWidth(&Group, "indicator_lines_line_width", 1);
+    inline const LC_Setting<double> o_IndicatorScreenLinesLineWidth(&Group, "indicator_lines_line_width", 1);
     inline const LC_Setting<int> o_IndicatorCrosshairLinesSizePercents(&Group, "indicator_cross_hair_lines_size", 100);
 
     inline const LC_Setting<bool> o_SelectionPickboxInsteadOfCursor(&Group, "SelectionPickBoxShow", true);

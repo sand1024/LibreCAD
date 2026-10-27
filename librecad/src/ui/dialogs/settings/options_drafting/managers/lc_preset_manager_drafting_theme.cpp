@@ -74,7 +74,7 @@ namespace {
             o_MetaGridLinesColor,
             o_GridLinesLineType,
             o_metaGridLinesLineType,
-            o_metaGridPointsLineType,
+            o_MetaGridPointsLineType,
             o_GridType, o_MetaGridEvery,
             // Coordinate System & Markers
             o_RelativeZeroColor,
@@ -124,6 +124,9 @@ namespace {
             o_RelativePositionAssistantTextColor,
             o_FontName,
             o_AssistantFontName,
+            // selection and highlight
+            o_SelectedEntityLineType,
+            o_HighlightedEntityLineType,
             // Handles & Preview
             o_EntityHandleStartColor,
             o_EntityHandleInternalColor,
@@ -131,8 +134,8 @@ namespace {
             o_PreviewEntitiesColor,
             o_PreviewReferencesColor,
             o_PreviewReferencesHighlightColor,
-            o_RefPointType,
-            o_RefPointSize,
+            o_PreviewRefPointType,
+            o_PreviewRefPointSize,
             o_MaxPreview,
             o_HighlightedEntityColor
         });

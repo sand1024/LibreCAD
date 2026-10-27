@@ -89,6 +89,7 @@ namespace CFG_Appearance {
     inline const LC_Setting<int> o_DraftMarkerFontSize(&Group, "DraftMarkerFontSize", 10);
     inline const LC_Setting<bool> o_IgnoreDraftForHighlight(&Group, "IgnoreDraftForHighlight", false);
 
+
     // --- Coordinate & Angles System ---
     inline const LC_Setting<bool> o_AnglesBasisMarkEnabled(&Group, "AnglesBasisMarkEnabled", true);
 
@@ -101,8 +102,6 @@ namespace CFG_Appearance {
     inline const LC_Setting<bool> o_ModifyOnViewChange(&Group, "ModifyOnViewChange", true);
     inline const LC_Setting<bool> o_SnapGridIgnoreIfNoGrid(&Group, "SnapGridIgnoreIfNoGrid", false);
 
-    inline const LC_Setting<int> o_RefPointType(&Group, "RefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
-    inline const LC_Setting<QString> o_RefPointSize(&Group, "RefPointSize", "2.0");
     inline const LC_Setting<RS2::LineType> o_SelectionOverlayLineType(&Group, "selection_overlay_line_type", RS2::SolidLine);
     inline const LC_Setting<RS2::LineType> o_SelectionOverlayInvertedLineType(&Group, "selection_overlay_inverted_line_type", RS2::DashLine);
 
@@ -131,15 +130,28 @@ namespace CFG_Appearance {
     inline const LC_Setting<bool> o_GridDisableWithinPan(&Group, "GridDisableWithinPan", false);
     inline const LC_Setting<bool> o_ScaleGrid(&Group, "ScaleGrid", true);
     inline const LC_Setting<bool> o_GridDraw(&Group, "GridDraw", true);
-    inline const LC_Setting<bool> o_metaGridDraw(&Group, "metaGridDraw", true);
+    inline const LC_Setting<bool> o_MetaGridDraw(&Group, "metaGridDraw", true);
     inline const LC_Setting<bool> o_GridDrawIsoVerticalForTop(&Group, "GridDrawIsoVerticalForTop", true);
     inline const LC_Setting<int> o_MetaGridEvery(&Group, "MetaGridEvery", 10);
     inline const LC_Setting<int> o_MinGridSpacing(&Group, "MinGridSpacing", 10);
 
-    // --- Preview Option Limits ---
+    // --- Preview Option  ---
     inline const LC_Setting<int> o_MaxPreview(&Group, "MaxPreview", 100);
+    inline const LC_Setting<double> o_PreviewScreenLineWidth(&Group, "PreviewScreenLineWidth", 1);
+    inline const LC_Setting<int> o_PreviewRefPointType(&Group, "PreviewRefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
+    inline const LC_Setting<int> o_PreviewRefPointSize(&Group, "PreviewRefPointSize", 8);
 
-    inline const LC_Setting<int> o_OverlaysScreenLineWidth(&Group, "overlayScreenLineWidth", 1);
+    inline const LC_Setting<double> o_OverlaysScreenLineWidth(&Group, "overlayScreenLineWidth", 1);
+
+    // --- draft mode
+    inline const LC_Setting<double> o_DraftModeScreenLineWidth(&Group, "DraftScreenLineWidth", 1);
+
+    // selection
+    inline const LC_Setting<double> o_SelectedEntityScreenLineWidth(&Group, "SelectedScreenLineWidth", 0);
+    inline const LC_Setting<double> o_HighlightedEntityScreenLineWidth(&Group, "HighlightedScreenLineWidth", 0);
+
+    inline const LC_Setting<RS2::LineType> o_SelectedEntityLineType(&Group, "SelectedEntityLineType", RS2::SolidLine);
+    inline const LC_Setting<RS2::LineType> o_HighlightedEntityLineType(&Group, "HighlightedEntityLineType", RS2::DashLineTiny);
 
     // ucs
     inline const LC_Setting<int> o_UCSApplyPolicy(&Group, "UCSApplyPolicy", 0);

@@ -33,7 +33,6 @@ class QG_SnapMiddleOptions;
 class QG_SnapDistOptions;
 class QWidget;
 class QToolBar;
-class QG_CoordinateWidget;
 class QG_SelectionWidget;
 class QG_MouseWidget;
 class QG_CommandWidget;
@@ -101,7 +100,7 @@ public:
     QString requestFileSaveAsDialog(const QString& caption, const QString& dir, const QString& filter, QString* selectedFilter) override;
 
     void commandMessage(const QString& message) override;
-    void command(const QString& message) override;
+    void command(const QString& message, bool append) override;
     void commandPrompt(const QString& message) override;
 
     static QString extToFormat(const QString& ext);

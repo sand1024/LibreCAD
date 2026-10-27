@@ -106,14 +106,14 @@ struct SnapIndicatorOptions {
 
     void loadSettings() {
         using namespace CFG_Snap;
-        const int snapIndicatorLineWidth = o_IndicatorScreenLinesLineWidth;
+        const double snapIndicatorScreenLineWidth = o_IndicatorScreenLinesLineWidth;
         drawLines = o_IndicatorDrawLines;
         if (drawLines) {
             lines_Type = o_IndicatorLinesType  + 1; // 0 is for NoLines
             const auto snapIndicatorLineType = o_IndicatorLinesLineType;
             const QColor snapLinesColor = CFG_Colors::o_SnapIndicatorLines;
             lines_Pen = RS_Pen(RS_Color(snapLinesColor), RS2::Width00, snapIndicatorLineType);
-            lines_Pen.setScreenWidth(snapIndicatorLineWidth);
+            lines_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
         }
         else {
             lines_Type = LC_Crosshair::NoLines;
@@ -124,7 +124,7 @@ struct SnapIndicatorOptions {
             shape_Type = o_IndicatorShapeType + 1; // in UI, NO Shape is not shown in combobox
             const QColor snapColor = CFG_Colors::o_SnapIndicator;
             shape_Pen = RS_Pen(RS_Color(snapColor), RS2::Width00, RS2::SolidLine);
-            shape_Pen.setScreenWidth(snapIndicatorLineWidth);
+            shape_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
         }
         else {
             shape_Type = LC_Crosshair::NoShape;
@@ -134,7 +134,7 @@ struct SnapIndicatorOptions {
 
         const QColor pickBoxColor = CFG_Colors::o_SelectionPickBoxColor;
         pickBox_Pen = RS_Pen(RS_Color(pickBoxColor), RS2::Width00, RS2::SolidLine);
-        pickBox_Pen.setScreenWidth(snapIndicatorLineWidth);
+        pickBox_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
 
         if (!drawLines) {
             lines_Pen = pickBox_Pen; // needed for AdaptiveShort

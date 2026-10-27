@@ -1557,8 +1557,6 @@ set (SHARED_SOURCES
      librecad/src/ui/components/status_bar/lc_ucsstatewidget.h
      librecad/src/ui/components/status_bar/qg_activelayername.cpp
      librecad/src/ui/components/status_bar/qg_activelayername.h
-     librecad/src/ui/components/status_bar/qg_coordinatewidget.cpp
-     librecad/src/ui/components/status_bar/qg_coordinatewidget.h
      librecad/src/ui/components/status_bar/qg_mousewidget.cpp
      librecad/src/ui/components/status_bar/qg_mousewidget.h
      librecad/src/ui/components/status_bar/qg_selectionwidget.cpp
@@ -1589,6 +1587,8 @@ set (SHARED_SOURCES
      #     librecad/src/ui/not_used/lc_dlg_new_widget.h
      #     librecad/src/ui/not_used/lc_dlg_widget_creator.cpp
      #     librecad/src/ui/not_used/lc_dlg_widget_creator.h
+     #     librecad/src/ui/not_used/qg_coordinatewidget.cpp
+     #     librecad/src/ui/not_used/qg_coordinatewidget.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp
@@ -2720,6 +2720,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_profiles.h
      librecad/src/ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.cpp
      librecad/src/ui/dialogs/settings/options_drafting/support/lc_drafting_profile_import_export_helper.h
+     librecad/src/ui/components/status_bar/lc_coordinate_widget_base.cpp
+     librecad/src/ui/components/status_bar/lc_coordinate_widget_base.h
+     librecad/src/ui/components/status_bar/lc_coordinates_widget.cpp
+     librecad/src/ui/components/status_bar/lc_coordinates_widget.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_origin_markers.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_origin_markers.h
 )
 
 set (MUPARSER_SOURCES

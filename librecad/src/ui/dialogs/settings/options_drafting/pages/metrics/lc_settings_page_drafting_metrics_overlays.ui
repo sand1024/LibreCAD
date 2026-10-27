@@ -25,7 +25,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="sbMetaGridLinesLineWidth">
+       <widget class="QDoubleSpinBox" name="sbMetaGridLinesLineWidth">
         <property name="toolTip">
          <string>Meta-Grid Line Type
 
@@ -35,10 +35,13 @@ Thickness of major meta-grid lines in screen pixels.</string>
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
        </widget>
       </item>
@@ -63,7 +66,7 @@ Thickness of major meta-grid lines in screen pixels.</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="sbGridLinesLineWidth">
+       <widget class="QDoubleSpinBox" name="sbGridLinesLineWidth">
         <property name="toolTip">
          <string>Grid Line Width
 
@@ -73,10 +76,13 @@ Thickness of primary grid lines in screen pixels.</string>
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>6</number>
+         <double>6.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
        </widget>
       </item>
@@ -320,7 +326,7 @@ the crosshair center and areas text labels.</string>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="sbMetaGridPointsLineWidth">
+       <widget class="QDoubleSpinBox" name="sbMetaGridPointsLineWidth">
         <property name="toolTip">
          <string>Meta-Grid Line Type
 
@@ -330,18 +336,21 @@ Thickness of major meta-grid lines in screen pixels.</string>
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>4</number>
+         <double>4.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
         </property>
         <property name="value">
-         <number>1</number>
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="sbGridPointsPointSize">
+       <widget class="QDoubleSpinBox" name="sbGridPointsPointSize">
         <property name="toolTip">
          <string>Point Size
 
@@ -356,10 +365,16 @@ If &quot;Auto&quot; is selected - the size will be 1 logical pixel (adjusted for
          <string> px</string>
         </property>
         <property name="minimum">
-         <number>0</number>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>5</number>
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.250000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
