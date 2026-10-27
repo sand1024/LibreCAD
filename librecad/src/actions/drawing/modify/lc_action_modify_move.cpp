@@ -48,7 +48,7 @@ LC_ActionModifyMove::~LC_ActionModifyMove() = default;
 void LC_ActionModifyMove::doSaveOptions() {
     save("UseCurrentLayer", isUseCurrentLayer());
     save("UseCurrentAttributes", isUseCurrentAttributes());
-    // save("KeepOriginals", isKeepOriginals());
+    save("KeepOriginals", isKeepOriginals());
     save("MultipleCopies", isUseMultipleCopies());
     save("Copies", getCopiesNumber());
 }
@@ -97,7 +97,10 @@ void LC_ActionModifyMove::doTriggerSelectionUpdate(const bool keepSelected, cons
 }
 
 void LC_ActionModifyMove::doTriggerCompletion([[maybe_unused]] bool success) {
-    if (!m_actionData->createCopy) {
+    if (m_actionData->createCopy) {
+        updateActionPrompt();
+    }
+    else {
         finish();
     }
 }
@@ -180,6 +183,11 @@ void LC_ActionModifyMove::onMouseRightButtonReleaseSelected(const int status, [[
             initPrevious(status);
         }
     }
+    else if (m_actionData->createCopy) {
+        // copies are placed: finish rather than go back to a reference point
+        // for the originals, which are no longer selected
+        finish();
+    }
     else {
         initPrevious(status);
     }
@@ -217,7 +225,12 @@ void LC_ActionModifyMove::updateActionPromptForSelected(const int status) {
         }
         case SetTargetPoint: {
             bool copy = m_actionData->data.keepOriginals;
-            updatePromptTRBack(tr("Specify target point"), MOD_SHIFT_AND_CTRL_ANGLE(copy? tr("Move") : tr("Create a Copy")));
+            if (copy) {
+                updatePrompt(tr("Specify target point"),tr("Finish"), MOD_SHIFT_AND_CTRL_ANGLE(copy? tr("Move") : tr("Create a Copy")));
+            }
+            else {
+                updatePromptTRBack(tr("Specify target point"), MOD_SHIFT_AND_CTRL_ANGLE(copy? tr("Move") : tr("Create a Copy")));
+            }
             break;
         }
         default: {
