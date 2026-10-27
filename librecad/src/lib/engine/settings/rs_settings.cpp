@@ -414,8 +414,14 @@ int RS_Settings::readIntSingle(const QString& group, const QString &key, const i
     const QString fullName = getFullName(group, key);
     QVariant value = readEntryCache(fullName);
     if (!value.isValid()) {
-        value = m_settings->value(fullName, QVariant(def));
-        writeEntryCache(fullName, value);
+        value = m_settings->value(fullName);
+        if (value.isValid()) {
+            writeEntryCache(fullName, value);
+        }
+        else {
+            value = QVariant(def);
+            writeEntryCache(fullName, value);
+        }
     }
     const int result = value.toInt();
     return result;

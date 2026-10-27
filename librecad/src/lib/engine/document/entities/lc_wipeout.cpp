@@ -99,13 +99,15 @@ void LC_Wipeout::draw(RS_Painter *painter) {
   fillPen.setColor(painter->getBackgroundColor());
   painter->setPen(fillPen);
   painter->fillPolygonUI(uiPoly);
-  painter->setPen(savedPen);
+
+  painter->setPen(savedPen, RS_Painter::DashSpace::Screen);
 
   for (size_t i = 0; i < m_data.vertices.size(); ++i) {
     const RS_Vector &a = m_data.vertices[i];
     const RS_Vector &b = m_data.vertices[(i + 1) % m_data.vertices.size()];
     painter->drawLineWCS(a, b);
   }
+  painter->setPen(savedPen);
 }
 
 RS_Vector LC_Wipeout::doGetNearestEndpoint(const RS_Vector& coord, double* dist, RS_Entity**) const{

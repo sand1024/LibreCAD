@@ -591,6 +591,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
     const bool selected = e->getFlag(RS2::FlagSelected);
     const bool overlayPaint = inOverlay || m_inOverlayDrawing;
     const bool inVisualSnap = e->getFlag(RS2::FlagInVisualSnap);
+    auto dashSpace = selected && !overlayPaint ? RS_Painter::DashSpace::Screen : RS_Painter::DashSpace::Model;
     // try to avoid pen setup if the pen and entity flags are the same as for previous entity. This is important for performance reasons, so we'll reuse
     // painter pen set previously. This check assumed that that all previous entity drawing were performed via this function and no
     // arbitrary QPainter::setPen was called between drawing entities.
@@ -663,6 +664,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
             if (m_highlightedEntityScreenLineWith > 1) {
                 pen.setScreenWidth(m_highlightedEntityScreenLineWith);
             }
+            dashSpace = RS_Painter::DashSpace::Screen;
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);
@@ -688,14 +690,18 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
     else {
         // this entity is selected:
         if (selected) {
-            pen.setLineType(RS2::DashLineTiny);
-            pen.setWidth(RS2::Width00); // fixme - move to settings?
+            pen.setLineType(m_selectedEntityLineType);
             pen.setColor(m_colorSelectedEntity);
+            if (m_selectedEntityScreenLineWidth > 1.0) {
+                pen.setScreenWidth(m_selectedEntityScreenLineWidth);
+            }
+            dashSpace = RS_Painter::DashSpace::Screen;
         }
         // this entity is highlighted:
         else if (highlighted) {
             pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(m_highlightedEntityLineType);
+            dashSpace = RS_Painter::DashSpace::Screen;
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);
@@ -730,7 +736,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
     setPenTime += setPenTimer.nsecsElapsed(); painterSetPenTimer.start();
 #endif
     m_lastPaintedPattern = pen.getLineType() != RS2::SolidLine;
-    painter->setPen(pen, selected && !overlayPaint ? RS_Painter::DashSpace::Screen : RS_Painter::DashSpace::Model);
+    painter->setPen(pen, dashSpace);
 #ifdef DEBUG_RENDERING
     painterSetPenTime += painterSetPenTimer.nsecsElapsed();
 
@@ -747,6 +753,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     const bool selected = e->getFlag(RS2::FlagSelected);
     const bool overlayPaint = inOverlay || m_inOverlayDrawing;
     const bool inVisualSnap = e->getFlag(RS2::FlagInVisualSnap);
+    auto dashSpace = selected && !overlayPaint ? RS_Painter::DashSpace::Screen : RS_Painter::DashSpace::Model;
     // try to avoid pen setup if the pen and entity flags are the same as for previous entity. This is important for performance reasons, so we'll reuse
     // painter pen set previously. This check assumed that that all previous entity drawing were performed via this function and no
     // arbitrary QPainter::setPen was called between drawing entities.
@@ -782,8 +789,11 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
             // Glowing effects on mouse hovering: use the "selected" color
             // for glowing effects on mouse hovering, draw solid lines
             pen.setColor(m_colorHighlightedEntity);
-            // pen.setColor(m_colorSelectedEntity);
             pen.setLineType(m_highlightedEntityLineType);
+            if (m_highlightedEntityScreenLineWith > 1) {
+                pen.setScreenWidth(m_highlightedEntityScreenLineWith);
+            }
+            dashSpace = RS_Painter::DashSpace::Screen;
         }
         else if (inVisualSnap) {
             pen.setColor(m_colorVisualSnapDocumentEntities);
@@ -804,9 +814,12 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     else {
         // this entity is selected:
         if (selected) {
-            pen.setLineType(RS2::DashLineTiny);
-            pen.setWidth(RS2::Width00);
+            pen.setLineType(m_selectedEntityLineType);
             pen.setColor(m_colorSelectedEntity);
+            if (m_selectedEntityScreenLineWidth > 1.0) {
+                pen.setScreenWidth(m_selectedEntityScreenLineWidth);
+            }
+            dashSpace = RS_Painter::DashSpace::Screen;
         }
         else if (highlighted) {
             pen.setColor(m_colorHighlightedEntity);
@@ -836,7 +849,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
 
     // LC_ERR << "PEN " << pen.getColor().name() << "Width: " << pen.getWidth() <<  " | " << pen.getScreenWidth() << " LT " << pen.getLineType();
     m_lastPaintedPattern = pen.getLineType() != RS2::SolidLine;
-    painter->setPen(pen, selected && !overlayPaint ? RS_Painter::DashSpace::Screen : RS_Painter::DashSpace::Model);
+    painter->setPen(pen, dashSpace);
 #ifdef DEBUG_RENDERING
     setPenTime += setPenTimer.nsecsElapsed();
 #endif

@@ -146,12 +146,12 @@ namespace CFG_Appearance {
     // --- draft mode
     inline const LC_Setting<double> o_DraftModeScreenLineWidth(&Group, "DraftScreenLineWidth", 1);
 
-    // selection
+    // selection and highlight
     inline const LC_Setting<double> o_SelectedEntityScreenLineWidth(&Group, "SelectedScreenLineWidth", 0);
     inline const LC_Setting<double> o_HighlightedEntityScreenLineWidth(&Group, "HighlightedScreenLineWidth", 0);
 
-    inline const LC_Setting<RS2::LineType> o_SelectedEntityLineType(&Group, "SelectedEntityLineType", RS2::SolidLine);
-    inline const LC_Setting<RS2::LineType> o_HighlightedEntityLineType(&Group, "HighlightedEntityLineType", RS2::DashLineTiny);
+    inline const LC_Setting<RS2::LineType> o_SelectedEntityLineType(&Group, "SelectedEntityLineType", RS2::DashLineTiny);
+    inline const LC_Setting<RS2::LineType> o_HighlightedEntityLineType(&Group, "HighlightedEntityLineType", RS2::SolidLine);
 
     // ucs
     inline const LC_Setting<int> o_UCSApplyPolicy(&Group, "UCSApplyPolicy", 0);

@@ -244,8 +244,8 @@ in screen pixels.</string>
         <property name="toolTip">
          <string>Highlighted Entity Line Width
 
-Screen width of line, in pixels, used for rendering
-highighted entiites. </string>
+Screen width of line, in pixels, used for rendering highighted entities.  
+Use &quot;Auto&quot; value to render highlighted entities by entities own line width.</string>
         </property>
         <property name="suffix">
          <string> px</string>
@@ -306,7 +306,8 @@ highighted entiites. </string>
         <property name="toolTip">
          <string>Selected Entities Screen Line Width
 
-Screen width of line, in pixels, used for rendering selected entities.</string>
+Screen width of line, in pixels, used for rendering selected entities.
+Use &quot;Auto&quot; value to render selected entities by entities own line width.</string>
         </property>
         <property name="suffix">
          <string> px</string>

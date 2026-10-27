@@ -53,6 +53,7 @@ namespace {
     const QColor Q_COLOR_BLACK = COLOR_BLACK.toQColor();
     const QColor Q_COLOR_WHITE = COLOR_WHITE.toQColor();
 
+    // fixme - sand - this is just suxx... why checking for finite value on ALL painting instead of eliminating invalid values once????
     bool hasFiniteValue(double value) {
         return std::isfinite(value);
     }

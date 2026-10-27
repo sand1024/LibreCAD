@@ -225,12 +225,12 @@ void LC_Crosshair::draw(RS_Painter *painter) {
 
     double offset = m_shapeSize;
     if (m_indicatorShape != NoShape) {
-        painter->setPen(m_shapePen);
+        painter->setPen(m_shapePen, RS_Painter::DashSpace::Screen);
         offset = drawShape(painter, uiCoord);
     }
 
     if (m_indicatorShape != NoShape) {
-        painter->setPen(m_linesPen);
+        painter->setPen(m_linesPen, RS_Painter::DashSpace::Screen);
         drawLines(painter, uiCoord, offset);
     }
 

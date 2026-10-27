@@ -74,14 +74,14 @@ void RS_OverlayBox::draw(RS_Painter* painter) {
     if (v1x > v2x) {
         RS_Pen p(m_options->colorLineInverted, RS2::Width00, m_options->invertedLineType);
         p.setScreenWidth(m_options->overlayScreenLineWidth);
-        painter->setPen(p);
+        painter->setPen(p, RS_Painter::DashSpace::Screen);
         const RS_Color &fillColor = m_options->colorBoxFillInverted;
         painter->fillRect(selectRect, fillColor);
     }
     else {
         RS_Pen p(m_options->colorBoxLine, RS2::Width00, m_options->lineType);
         p.setScreenWidth(m_options->overlayScreenLineWidth);
-        painter->setPen(p);
+        painter->setPen(p, RS_Painter::DashSpace::Screen);
         const RS_Color &fillColor = m_options->colorBoxFill;
         painter->fillRect(selectRect, fillColor);
     }
