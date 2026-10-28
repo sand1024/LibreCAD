@@ -347,6 +347,9 @@ bool LC_AbstractActionWithPreview::doCheckMayDrawPreview([[maybe_unused]] const 
  */
 void LC_AbstractActionWithPreview::highlightEntity(RS_Entity* en){
     unHighlightEntity();
+    if (en == nullptr){
+        return;
+    }
     m_highlightedEntity = en;
     m_highlightedEntity->setHighlighted(true);
     redraw(RS2::RedrawDrawing);
