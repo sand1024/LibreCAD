@@ -230,29 +230,69 @@ int LC_LineMath::getPointPosition(const RS_Vector& startPos, const RS_Vector& en
  * @param line2End
  * @return
  */
-bool LC_LineMath::areLinesOnSameRay(const RS_Vector& line1Start, const RS_Vector& line1End, const RS_Vector& line2Start,
-                                    const RS_Vector& line2End) {
-    // TODO: create a generic algorithm to find whether points are collinear
-    // Find the rank of the matrix formed by point homogeneous coordinates:
-    // coincidence: rank = 1
-    // collinear:   rank = 2
-    // coplanar:    rank = 3
-    double angle1 = line1Start.angleTo(line1End);
-    double angle2 = line1Start.angleTo(line2End);
-    double angle3 = line1Start.angleTo(line2Start);
+bool LC_LineMath::areLinesOnSameRay(const RS_Vector &line1Start, const RS_Vector &line1End,
+                                    const RS_Vector &line2Start, const RS_Vector& line2End)
+{
+    // 1. Calculate direction and squared length of the first line
+    const RS_Vector direction = line1End - line1Start;
+    const double len1Sq = direction.x * direction.x + direction.y * direction.y;
 
-    // if all points are on the same ray, the angles from first point to remaining 3 points will be the same
-
-    angle1 = RS_Math::correctAngle0To2Pi(angle1);
-    angle2 = RS_Math::correctAngle0To2Pi(angle2);
-    angle3 = RS_Math::correctAngle0To2Pi(angle3);
-
-    bool sameLine = false;
-    if (std::abs(angle1 - angle2) < RS_TOLERANCE_ANGLE && std::abs(angle1 - angle3) < RS_TOLERANCE_ANGLE) {
-        sameLine = true;
+    const double linearTolSq = RS_TOLERANCE * RS_TOLERANCE;
+    if (len1Sq < linearTolSq) {
+        return false;
     }
-    return sameLine;
+
+    // 2. Guard against degenerate second segment to avoid merging with "ghost" points
+    const RS_Vector dir2 = line2End - line2Start;
+    const double len2Sq = dir2.x * dir2.x + dir2.y * dir2.y;
+    if (len2Sq < linearTolSq) {
+        return false;
+    }
+
+    const double TOLERANCE_ANGLE_SQ = RS_TOLERANCE_ANGLE * RS_TOLERANCE_ANGLE;
+
+    // Pre-scale the angular tolerance by the first line's squared length once.
+    // This saves one double multiplication inside the checks below.
+    const double scaledAngleTol = TOLERANCE_ANGLE_SQ * len1Sq;
+
+    // 3. Check the FIRST point (line2Start)
+    {
+        const RS_Vector toPoint = line2Start - line1Start;
+        const double lenPointSq = toPoint.x * toPoint.x + toPoint.y * toPoint.y;
+
+        // Process only if the point does not directly coincide with line1Start
+        if (lenPointSq >= linearTolSq) {
+            const double cross = direction.x * toPoint.y - direction.y * toPoint.x;
+            const double crossSq = cross * cross;
+
+            // Balanced grouping prevents precision loss in the double's mantissa under huge coordinates
+            if (crossSq > scaledAngleTol * lenPointSq) {
+                return false;
+            }
+        }
+    }
+
+    // 4. Check the SECOND point (line2End)
+    {
+        const RS_Vector toPoint = line2End - line1Start;
+        const double lenPointSq = toPoint.x * toPoint.x + toPoint.y * toPoint.y;
+
+        // Process only if the point does not directly coincide with line1Start
+        if (lenPointSq >= linearTolSq) {
+            const double cross = direction.x * toPoint.y - direction.y * toPoint.x;
+            const double crossSq = cross * cross;
+
+            // Balanced grouping prevents precision loss in the double's mantissa under huge coordinates
+            if (crossSq > scaledAngleTol * lenPointSq) {
+                return false;
+            }
+        }
+    }
+
+    // If both endpoints of line2 are collinear with line1, the entire segment is collinear
+    return true;
 }
+
 
 /**
  * Check whether distance between points is meaningful
