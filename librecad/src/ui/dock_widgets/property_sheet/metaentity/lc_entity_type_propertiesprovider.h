@@ -235,7 +235,9 @@ void LC_EntityTypePropertiesProvider::add(const LC_Property::Names& names,
         auto typedEntity = static_cast<EntityType*>(entity);
         propertyInit(names, typedEntity, cont, &props);
     }
-    addMultipleProperties(cont, props);
+    if (!props.empty()) {
+        addMultipleProperties(cont, props);
+    }
 }
 
 template <typename EntityClass>
