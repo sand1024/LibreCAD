@@ -46,6 +46,8 @@ public:
     void setYLength(const double d) {m_lenY = d;}
     void setCrossAngleDegrees(const double d) { m_ucsBasisAngleDegrees = d;}
     void setCrossMode(const int i) {m_crossSizeMode = i;}
+    void setUseActivePenLineType(bool val) {m_useActivePenLineType = val;}
+    bool isUseActivePenLineType() const {return m_useActivePenLineType;}
 
     /**
    * Defines mode for calculation of cross lines size
@@ -74,6 +76,8 @@ protected:
      * Mode that controls how the circle should be drawn
      */
     int m_crossSizeMode = CROSS_SIZE_EXTEND;
+    // defines whether we'll use fixe linetype or will take it form the active pen
+    bool m_useActivePenLineType = false;
     /*
      * length value for axis x
      */

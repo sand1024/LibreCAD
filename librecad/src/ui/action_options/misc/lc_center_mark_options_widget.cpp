@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_guarded_signals_blocker.h"
 #include "ui_lc_center_mark_options_widget.h"
 
+
 LC_CenterMarkOptionsWidget::LC_CenterMarkOptionsWidget() : ui(new Ui::LC_CenterMarkOptionsWidget) {
     ui->setupUi(this);
 
@@ -32,6 +33,7 @@ LC_CenterMarkOptionsWidget::LC_CenterMarkOptionsWidget() : ui(new Ui::LC_CenterM
     connect(ui->leY, &QLineEdit::editingFinished, this, &LC_CenterMarkOptionsWidget::onYEditingFinished);
     connect(ui->leAngle, &QLineEdit::editingFinished, this, &LC_CenterMarkOptionsWidget::onAngleEditingFinished);
     connect(ui->cbMode, &QComboBox::currentIndexChanged, this, &LC_CenterMarkOptionsWidget::onModeIndexChanged);
+    connect(ui->cbLineTypeFromActivePen, &QCheckBox::toggled, this, &LC_CenterMarkOptionsWidget::onLineTypeFromActivePenToggled);
 
     pickAngleSetup("angle", ui->tbPickAngle, ui->leAngle);
     pickDistanceSetup("x", ui->tbPickX, ui->leX);
@@ -50,13 +52,15 @@ void LC_CenterMarkOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     const QString y = fromDouble(m_action->getLenY());
     const QString angle = fromDouble(m_action->getCrossAngleDegrees());
     const int mode = m_action->getCrossMode();
+    bool linetypeByActivePen = m_action->isUseActivePenLineType();
 
-    LC_GuardedSignalsBlocker({ui->leX, ui->leY, ui->leAngle, ui->cbMode});
+    LC_GuardedSignalsBlocker({ui->leX, ui->leY, ui->leAngle, ui->cbMode, ui->cbLineTypeFromActivePen});
 
     ui->leX->setText(x);
     ui->leY->setText(y);
     ui->leAngle->setText(angle);
     ui->cbMode->setCurrentIndex(mode);
+    ui->cbLineTypeFromActivePen->setChecked(linetypeByActivePen);
 }
 
 void LC_CenterMarkOptionsWidget::onXEditingFinished() {
@@ -88,6 +92,11 @@ void LC_CenterMarkOptionsWidget::onAngleEditingFinished() {
 
 void LC_CenterMarkOptionsWidget::onModeIndexChanged(const int index) const {
     m_action->setCrossMode(index);
+    m_action->updateOptions();
+}
+
+void LC_CenterMarkOptionsWidget::onLineTypeFromActivePenToggled(bool val) const {
+    m_action->setUseActivePenLineType(val);
     m_action->updateOptions();
 }
 

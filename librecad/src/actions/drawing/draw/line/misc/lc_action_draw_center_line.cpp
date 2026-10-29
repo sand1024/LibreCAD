@@ -41,10 +41,12 @@ LC_ActionDrawCenterLine::LC_ActionDrawCenterLine(LC_ActionContext *actionContext
 
 void LC_ActionDrawCenterLine::doSaveOptions() {
       save("Offset", m_offset);
+      save("UseActivePenLineType", m_useActivePenLineType);
 }
 
 void LC_ActionDrawCenterLine::doLoadOptions() {
     m_offset  = loadDouble("Offset", 0);
+    m_useActivePenLineType = loadBool("UseActivePenLineType", false);
 }
 
 void LC_ActionDrawCenterLine::init(const int status) {
@@ -90,8 +92,10 @@ void LC_ActionDrawCenterLine::setupCenterlinePenLayer(RS_Line* line) const{
     line->setLayerToActive(); // fixme - sand - change to some annotation layer?
     const RS2::LineType lineType = getLineTypeForCenterLine();
     RS_Pen pen = m_document->getActivePen();
-    if (lineType != RS2::LineTypeUnchanged) {
-        pen.setLineType(lineType);
+    if (!m_useActivePenLineType) {
+        if (lineType != RS2::LineTypeUnchanged) {
+            pen.setLineType(lineType);
+        }
     }
     line->setPen(pen);
 }

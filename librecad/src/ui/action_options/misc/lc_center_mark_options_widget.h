@@ -40,8 +40,9 @@ public slots:
     void onYEditingFinished();
     void onAngleEditingFinished();
     void onModeIndexChanged(int index) const;
-    void languageChange() override;
+    void onLineTypeFromActivePenToggled(bool val) const;
 protected:
+    void languageChange() override;
     void doUpdateByAction(RS_ActionInterface * a) override;
 private:
     Ui::LC_CenterMarkOptionsWidget *ui;

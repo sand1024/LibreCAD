@@ -39,6 +39,7 @@ public:
 protected slots:
     void languageChange() override;
     void onOffsetEditingFinished();
+    void onLineTypeFromActivePenToggled(bool val) const;
 protected:
     void doUpdateByAction(RS_ActionInterface *a) override;
 private:

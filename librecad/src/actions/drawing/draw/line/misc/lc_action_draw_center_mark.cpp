@@ -73,6 +73,7 @@ void LC_ActionDrawCenterMark::doSaveOptions() {
     save("Y", m_lenY);
     save("Angle", m_ucsBasisAngleDegrees);
     save("Mode", m_crossSizeMode);
+    save("UseActivePenLineType", m_useActivePenLineType);
 }
 
 void LC_ActionDrawCenterMark::doLoadOptions() {
@@ -80,6 +81,7 @@ void LC_ActionDrawCenterMark::doLoadOptions() {
     m_lenY = loadDouble("Y", 1.0);
     m_ucsBasisAngleDegrees = loadDouble("Angle", 0.0);
     m_crossSizeMode = loadInt("Mode", 1);
+    m_useActivePenLineType = loadBool("UseActivePenLineType", false);
 }
 
 void LC_ActionDrawCenterMark::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
@@ -119,16 +121,18 @@ bool LC_ActionDrawCenterMark::isSetActivePenAndLayerOnTrigger() {
 
 void LC_ActionDrawCenterMark::setupCrossLinePenAndLayer(RS_Line* line) const {
     line->setLayerToActive(); // fixme - sand - change to some annotation layer?
-    const RS2::LineType lineType = getLineTypeForCenterLine();
     RS_Pen pen = m_document->getActivePen();
-    if (lineType != RS2::LineTypeUnchanged) {
-        pen.setLineType(lineType);
+    if (!m_useActivePenLineType) {
+        const RS2::LineType lineType = getLineTypeForCenterLine();
+        if (lineType != RS2::LineTypeUnchanged) {
+            pen.setLineType(lineType);
+        }
     }
     line->setPen(pen);
 }
 
 RS2::LineType LC_ActionDrawCenterMark::getLineTypeForCenterLine() const{
-    return RS2::CenterLine2; // fixme - retrieve from settings (CENTERLTYPE)
+    return RS2::CenterLine2;
 }
 
 /**

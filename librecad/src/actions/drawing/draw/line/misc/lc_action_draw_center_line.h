@@ -33,6 +33,8 @@ public:
     double getOffset() const;
     void setOffset(double offset);
     void init(int status) override;
+    void setUseActivePenLineType(bool val) {m_useActivePenLineType = val;}
+    bool isUseActivePenLineType() const {return m_useActivePenLineType;}
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
@@ -69,6 +71,8 @@ protected:
 
     RS_Entity* m_firstEntity = nullptr;
     RS_Entity* m_secondEntity = nullptr;
+
+    bool m_useActivePenLineType  = false;
 
     void prepareLine(LineInfo &info, const RS_Entity* ent, bool alternate) const;
     RS2::LineType getLineTypeForCenterLine() const;

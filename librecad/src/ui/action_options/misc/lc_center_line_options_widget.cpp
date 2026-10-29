@@ -22,6 +22,8 @@
 
 #include "lc_center_line_options_widget.h"
 
+#include <QCheckBox>
+
 #include "lc_action_draw_center_line.h"
 #include "lc_guarded_signals_blocker.h"
 #include "lc_guardedconnectionslist.h"
@@ -32,6 +34,7 @@ LC_CenterLineOptionsWidget::LC_CenterLineOptionsWidget()
     ui->setupUi(this);
     connect(ui->leOffset, &QLineEdit::editingFinished, this, &LC_CenterLineOptionsWidget::onOffsetEditingFinished);
     pickDistanceSetup("offset", ui->tbPickOffset, ui->leOffset);
+    connect(ui->cbLineTypeFromActivePen, &QCheckBox::toggled, this, &LC_CenterLineOptionsWidget::onLineTypeFromActivePenToggled);
 }
 
 LC_CenterLineOptionsWidget::~LC_CenterLineOptionsWidget(){
@@ -45,8 +48,12 @@ void LC_CenterLineOptionsWidget::languageChange() {
 void LC_CenterLineOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawCenterLine*>(a);
     const QString offset = fromDouble(m_action->getOffset());
-    LC_GuardedSignalsBlocker({ui->leOffset});
+    bool linetypeByActivePen = m_action->isUseActivePenLineType();
+
+    LC_GuardedSignalsBlocker({ui->leOffset, ui->cbLineTypeFromActivePen});
+
     ui->leOffset->setText(offset);
+    ui->cbLineTypeFromActivePen->setChecked(linetypeByActivePen);
 }
 
 void LC_CenterLineOptionsWidget::onOffsetEditingFinished() {
@@ -55,5 +62,10 @@ void LC_CenterLineOptionsWidget::onOffsetEditingFinished() {
     if (toDouble(expr, value, 0.0, false)) {
         m_action->setOffset(value);
     }
+    m_action->updateOptions();
+}
+
+void LC_CenterLineOptionsWidget::onLineTypeFromActivePenToggled(bool val) const {
+    m_action->setUseActivePenLineType(val);
     m_action->updateOptions();
 }
