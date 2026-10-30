@@ -35,6 +35,7 @@ struct LC_OverlayUCSZeroOptions{
     };
 
     bool extendAxisLines = false;
+    bool showAxisLines = true;
     int extendAxisModeX = 0;
     int extendAxisModeY = 0;
     int zeroShortAxisMarkSize = 20;

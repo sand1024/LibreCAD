@@ -62,7 +62,7 @@ void LC_InfoCursorOptions::setFontSize(const int size) {
 }
 
 void LC_InfoCursorOverlayPrefs::loadSettings() {
-    using namespace CFG_InfoOverlayCursor;
+    using namespace CFG_InfoCursor;
     enabled = o_InfoCursorEnabled;
     if (enabled) {
         showAbsolutePosition = o_ShowAbsolute;
@@ -80,11 +80,11 @@ void LC_InfoCursorOverlayPrefs::loadSettings() {
         showEntityInfoOnCreation = o_ShowEntityCreatingProperties;
         showEntityInfoOnModification = o_ShowEntityEditingProperties;
 
-        const int infoCursorFontSize = o_FontSize;
+        const int infoCursorFontSize = o_InfoCursorFontSize;
         // todo - potentially, we may use different font sizes for different zones later
         options.setFontSize(infoCursorFontSize);
-        options.fontName = o_FontName;
-        options.offset = o_OffsetFromCursor;
+        options.fontName = o_InfoCursorFontName;
+        options.offset = o_InfoCursorOffsetFromSnapPoint;
     }
 
     using namespace CFG_Colors;
@@ -99,6 +99,7 @@ void LC_InfoCursorOverlayPrefs::loadSettings() {
 
 LC_OverlayInfoCursor::LC_OverlayInfoCursor(const RS_Vector& coord, LC_InfoCursorOptions* cursorOverlaySettings) : m_wcsPos(coord) {
     m_options = cursorOverlaySettings;
+    m_wcsPos = coord;
 }
 
 void LC_OverlayInfoCursor::draw(RS_Painter* painter) {

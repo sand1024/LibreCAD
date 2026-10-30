@@ -25,6 +25,7 @@
 
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
+#include "lc_setting.h"
 #include "lc_settings_page_interface.h"
 #include "rs_entity.h"
 
@@ -42,23 +43,30 @@ public:
     LC_GraphicViewPreviewWidget(QWidget* parent);
     ~LC_GraphicViewPreviewWidget() override;
     void updateLivePreview() override;
+    void drawPreview();
     void clearPreview();
+    void clearHighlights() const;
     void doUpdatePreviewForContentCategory(const QString& tag, bool clear);
     void updatePreviewForContentCategory(const QString& tag) override;
     void cleanupPreviewForContentCategory(const QString& tag) override;
 private:
     void previewSelectionOverlayBoxes();
+    void previewEntityPickBox();
     void updateGrid(int forcedType) const;
     void selectAll(RS_Document* document, LC_GraphicViewport* viewport, bool enable = true);
-    void previewSnapIndicator(bool showAngleSnap) const;
-    void preparePreviewPreview() const;
+    void previewSnapIndicator(bool showAngleSnap, const RS_Vector indicatorPosition);
+    void preparePreviewPreview();
     void previewSnapVisual();
+    void drawHighlights() const;
     void addDocumentEntityToVisualSnap(RS_Entity* entity1) const;
     void addEntityPointToVisualSnap(RS_Entity* entity1) const;
     void prepareVisualSnapSolution();
-    void previewInfoCursor();
-    void prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs) const;
-    void previewRelativePointInputAssistant() const;
+    void previewCompleteInfoCursor(const RS_Vector& position);
+    void previewActualInfoCursor(const RS_Vector& position);
+    void prepareInfoCursor(LC_InfoCursorOverlayPrefs* prefs, const RS_Vector& position) const;
+    void previewRelativePointInputAssistant();
+    void showOriginAndAxisLines(bool clear, bool enable = false);
+    void showDraftMode(bool enable);
     LC_DimStylePreviewGraphicView* m_previewView = nullptr;
     std::unique_ptr<RS_Preview> m_preview;
     std::unique_ptr<LC_Highlight> m_highlight;
@@ -67,6 +75,13 @@ private:
     std::unique_ptr<LC_VisualSnapSolution> m_solution;
     std::unique_ptr<LC_InfoCursorData> m_infoCursorOverlayData;
     QString m_currentPageTag;
+    bool m_savedDrawAnglesBasis = false;
+    bool m_savedShowUCSZeroMarker = false;
+    bool m_savedShowWCSZeroMarker = false;
+    bool m_savedShowAxisLines = false;
+    bool m_savedDraftMode = false;
+
+    bool m_hasPreview = false;
 };
 
 #endif

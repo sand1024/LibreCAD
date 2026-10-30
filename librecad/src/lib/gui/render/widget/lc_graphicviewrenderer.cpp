@@ -98,7 +98,7 @@ void LC_GraphicViewRenderer::loadSettings() {
                 m_highlightedEntityScreenLineWith = 0;
             }
         }
-        else { // don't draw
+        else { // use default entity width
             m_highlightedEntityScreenLineWith = -1;
         }
 
@@ -108,8 +108,18 @@ void LC_GraphicViewRenderer::loadSettings() {
                 m_selectedEntityScreenLineWidth = 0;
             }
         }
-        else { // don't draw
+        else { // use default entity width
             m_selectedEntityScreenLineWidth = -1;
+        }
+
+        m_RefEntitiesScreenLineWidth = o_PreviewRefEntityScreenLineWidth;
+        if (m_RefEntitiesScreenLineWidth > 0.75) {
+            if (LC_LineMath::isSameLength(m_RefEntitiesScreenLineWidth, 1.0)) {
+                m_RefEntitiesScreenLineWidth = 0;
+            }
+        }
+        else {
+            m_RefEntitiesScreenLineWidth = 0;
         }
 
         m_highlightedEntityLineType = o_HighlightedEntityLineType;
@@ -158,8 +168,8 @@ void LC_GraphicViewRenderer::loadSettings() {
             m_VisualSnapGuidingEntitiesScreenLineWidth = 0;
         }
         m_VisualSnapGuidingPointsScreenLineWidth = o_VSGuidingPointsScreenLineWidth;
-        if (LC_LineMath::isSameLength(m_VisualSnapGuidingEntitiesScreenLineWidth,1.0)) {
-            m_VisualSnapGuidingEntitiesScreenLineWidth = 0;
+        if (LC_LineMath::isSameLength(m_VisualSnapGuidingPointsScreenLineWidth,1.0)) {
+            m_VisualSnapGuidingPointsScreenLineWidth = 0;
         }
 
         m_visualSnapGuidingEntitiesLineType = o_VSGuidingEntitiesLineType;
@@ -444,6 +454,7 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
         pen.setLineType(m_visualSnapGuidingEntitiesLineType);
     }
     pen.setColor(m_colorVisualSnapGuideEntities); // fixme - cache pen for snap marks in painter!
+
     if (inVisualSnap) {
         pen.setColor(m_colorVisualSnapDocumentEntities);
         pen.setLineType(m_visualSnapDocEntitiesLineType);
@@ -451,6 +462,7 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
     else {
         pen.setWidth(RS2::LineWidth::Width00);
         pen.setScreenWidth(m_VisualSnapGuidingEntitiesScreenLineWidth);
+        return;
     }
 
     const double width = pen.getWidth();
@@ -504,7 +516,12 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             }
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
-            pen.setScreenWidth(m_VisualSnapGuidingEntitiesScreenLineWidth);
+            if (e->getFlag(RS2::FlagInVisualSnap)) {
+                pen.setScreenWidth(m_VisualSnapGuidingEntitiesScreenLineWidth);
+            }
+            else {
+                pen.setScreenWidth(m_RefEntitiesScreenLineWidth);
+            }
 
             // todo - sand - ucs -  USE THE SAME CACHING OF THE PEN!!!! The amount of overlay entities should be small, yet still...
             e->setPen(pen);
@@ -519,7 +536,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
             pen.setScreenWidth(m_VisualSnapGuidingPointsScreenLineWidth);
-            painter->setPen(pen);
+            painter->setPen(pen, RS_Painter::DashSpace::Screen);
             break;
         }
         case RS2::EntitySnapConstructionLine: {
@@ -661,7 +678,7 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
             // pen.setColor(m_colorSelectedEntity);
             pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(m_highlightedEntityLineType);
-            if (m_highlightedEntityScreenLineWith > 1) {
+            if (m_highlightedEntityScreenLineWith > 0) {
                 pen.setScreenWidth(m_highlightedEntityScreenLineWith);
             }
             dashSpace = RS_Painter::DashSpace::Screen;
@@ -701,6 +718,9 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         else if (highlighted) {
             pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(m_highlightedEntityLineType);
+            if (m_highlightedEntityScreenLineWith > 0) {
+                pen.setScreenWidth(m_highlightedEntityScreenLineWith);
+            }
             dashSpace = RS_Painter::DashSpace::Screen;
         }
         else if (inVisualSnap) {
@@ -790,7 +810,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
             // for glowing effects on mouse hovering, draw solid lines
             pen.setColor(m_colorHighlightedEntity);
             pen.setLineType(m_highlightedEntityLineType);
-            if (m_highlightedEntityScreenLineWith > 1) {
+            if (m_highlightedEntityScreenLineWith > 0) {
                 pen.setScreenWidth(m_highlightedEntityScreenLineWith);
             }
             dashSpace = RS_Painter::DashSpace::Screen;
@@ -867,7 +887,7 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
 void LC_GraphicViewRenderer::drawCoordinateSystems(RS_Painter* painter) {
     double originPointX = m_viewport->toGuiX(0.0);
     double originPointY = m_viewport->toGuiY(0.0);
-    if (!m_absZeroOptions.extendAxisLines) {
+    if (m_absZeroOptions.showAxisLines && !m_absZeroOptions.extendAxisLines) {
         //ucs absolute zero, x and y axis
         m_overlayAbsZero.updateOrigin(originPointX, originPointY);
         m_overlayAbsZero.draw(painter);

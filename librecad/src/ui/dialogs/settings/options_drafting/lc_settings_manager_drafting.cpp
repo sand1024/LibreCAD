@@ -39,6 +39,7 @@
 #include "lc_settings_page_drafting_behavior_snap.h"
 #include "lc_settings_page_drafting_behavior_snap_visual.h"
 #include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
+#include "lc_settings_page_drafting_metrics_draft_mode.h"
 #include "lc_settings_page_drafting_metrics_markers.h"
 #include "lc_settings_page_drafting_metrics_origin_markers.h"
 #include "lc_settings_page_drafting_metrics_overlays.h"
@@ -46,6 +47,7 @@
 #include "lc_settings_page_drafting_metrics_snapping.h"
 #include "lc_settings_page_drafting_profiles.h"
 #include "lc_settings_page_drafting_theme_coordinate_system_origin.h"
+#include "lc_settings_page_drafting_theme_draft_mode.h"
 #include "lc_settings_page_drafting_theme_grid_general.h"
 #include "lc_settings_page_drafting_theme_grid_lines.h"
 #include "lc_settings_page_drafting_theme_grid_points.h"
@@ -92,7 +94,8 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_THEME, "", index(QObject::tr("Visual Theme"),
             QObject::tr("Visual Theme includes settings that define how drawing area will look like.\n\nUse it to specify colors for the drawing area and related overlays (like handles, selection, coordinate system and so on).")), 10 },
-        { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsDraftingThemeMainColors>(), 10 },
+        { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeMainColors>(), 10 },
+        { PAGE_DRAFTING_THEME_DRAFT_MODE, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeDraftMode>(), 15 },
         { PAGE_DRAFTING_THEME_SELECTION, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
         { PAGE_DRAFTING_THEME_PREVIEW, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemePreview>(), 30 },
 
@@ -116,6 +119,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_METRICS, "", index(QObject::tr("Drafting Metrics (Sizes)"),
             QObject::tr("Metrics preset specifies sizes for various elements of drawing area and related overlays.\n\nUse it to configure handle sizes, marker scales, line thicknesses, and text overlay sizes and so on.")), 20 },
         { PAGE_DRAFTING_METRICS_MARKERS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsMarkers>(), 10 },
+        { PAGE_DRAFTING_METRICS_DRAFT_MODE, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsDraftMode>(), 15 },
         { PAGE_DRAFTING_METRICS_COORDINATE_SYSTEM, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOriginMarkers>(), 20 },
         { PAGE_DRAFTING_METRICS_OVERLAYS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOverlays>(), 30 },
         { PAGE_DRAFTING_METRICS_SNAPPING, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsSnapping>(), 40 },

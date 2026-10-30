@@ -248,6 +248,9 @@ Color of non-endpoint handle of entity</string>
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
         <item>
          <property name="text">
           <string notr="true">#A54747</string>
@@ -285,7 +288,7 @@ Color of non-endpoint handle of entity</string>
          <number>0</number>
         </property>
         <property name="text">
-         <string>Specify background colors for drawing view and color used for drawing selected entity.</string>
+         <string>Specify how selected entity should be rendered.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -299,15 +302,15 @@ Color of non-endpoint handle of entity</string>
         </property>
        </widget>
       </item>
-         <item row="2" column="1" colspan="1">
-             <widget class="QG_LineTypeBox" name="wSelectedEntityLineType" native="true">
-                 <property name="toolTip">
-                     <string>Selected Entity Line Type
+      <item row="2" column="1">
+       <widget class="QG_LineTypeBox" name="wSelectedEntityLineType" native="true">
+        <property name="toolTip">
+         <string>Selected Entity Line Type
 
 Line type used for rendering selected entities.</string>
-                 </property>
-             </widget>
-         </item>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -340,6 +343,9 @@ Line type used for rendering selected entities.</string>
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
         <item>
          <property name="text">
           <string notr="true">#00FFFF</string>
@@ -356,6 +362,9 @@ Line type used for rendering selected entities.</string>
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <item>
          <property name="text">
@@ -376,15 +385,6 @@ Line type used for rendering selected entities.</string>
          <string>Inverted Selection Boundary
 
                                   Click to select color (inverted mode).</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1" colspan="2">
-       <widget class="QG_LineTypeBox" name="wOverlaySelectionInvertedLineType" native="true">
-        <property name="toolTip">
-         <string>Inverted Selection Boundary Line Type
-
-                                  Overlay selection box boundary line type (inverted mode)</string>
         </property>
        </widget>
       </item>
@@ -433,6 +433,9 @@ Line type used for rendering selected entities.</string>
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <item>
          <property name="text">
@@ -505,6 +508,9 @@ Line type used for rendering selected entities.</string>
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
         <item>
          <property name="text">
           <string notr="true">#00FFFF</string>
@@ -524,15 +530,6 @@ Line type used for rendering selected entities.</string>
         </property>
         <property name="value">
          <number>90</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QG_LineTypeBox" name="wOverlaySelectionLineType" native="true">
-        <property name="toolTip">
-         <string>Selection Boundary Line Type
-
-                                  Overlay selection box boundary line type (normal mode)</string>
         </property>
        </widget>
       </item>
@@ -568,6 +565,24 @@ Line type used for rendering selected entities.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QG_LineTypeBox" name="wOverlaySelectionLineType" native="true">
+        <property name="toolTip">
+         <string>Selection Boundary Line Type
+
+                                  Overlay selection box boundary line type (normal mode)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QG_LineTypeBox" name="wOverlaySelectionInvertedLineType" native="true">
+        <property name="toolTip">
+         <string>Inverted Selection Boundary Line Type
+
+                                  Overlay selection box boundary line type (inverted mode)</string>
         </property>
        </widget>
       </item>
@@ -622,6 +637,9 @@ Line type used for rendering selected entities.</string>
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <item>
          <property name="text">

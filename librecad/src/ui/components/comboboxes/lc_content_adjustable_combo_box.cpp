@@ -27,11 +27,11 @@
 LC_ContentAdjustableComboBox::LC_ContentAdjustableComboBox(QWidget* parent)
     : QComboBox(parent) {
     setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 }
 
 QSize LC_ContentAdjustableComboBox::sizeHint() const {
     QSize hint = QComboBox::sizeHint();
-
     if (count() == 0) {
         return hint;
     }
@@ -39,13 +39,13 @@ QSize LC_ContentAdjustableComboBox::sizeHint() const {
     QStyleOptionComboBox opt;
     initStyleOption(&opt);
 
-    // Compensate for internal delegate/label painting margins (typically ~3px per side)
-    // plus focus frame margin that standard sizeFromContents implementations omit.
-    const int focusMargin = style()->pixelMetric(QStyle::PM_FocusFrameHMargin, &opt, this);
-    const int fontPadding = fontMetrics().horizontalAdvance(QLatin1Char(' '));
-    const int extraHorizontalPadding = (focusMargin * 2) + (fontPadding * 2);
+    // Get the actual rect of the drop-down button
+    QRect arrowRect = style()->subControlRect(QStyle::CC_ComboBox, &opt, QStyle::SC_ComboBoxArrow, this);
 
-    hint.rwidth() += extraHorizontalPadding;
+    // Add extra margin for the delegate's internal margins + text spacing
+    const int extraPadding = arrowRect.isValid() ? 8 : 20;
+
+    hint.rwidth() += extraPadding;
     return hint;
 }
 

@@ -53,9 +53,9 @@ void LC_SettingsPageDraftingThemeSnapVisual::setupBindings() {
     bindLineType(ui->wDocGuidingEntityLineType, o_VSDocGuidingEntitiesLineType);
 
     bindColor({
-        { ui->cbColorVisualSnapGuideEntities, ui->pbVisualSnapGuideEntitiesColor, o_VisualSnapGuideEntitiesColor, tr("Select Visual Snap Guide Color") },
         { ui->cbColorVisualSnapVertexes, ui->pbVisualSnapVertexesColor, o_VisualSnapVertexesColor, tr("Select Visual Snap Point Color") },
         { ui->cbColorVisualSnapProjectedSnap, ui->pbVisualSnapProjectedSnapColor, o_VisualSnapProjectedSnapColor, tr("Select Projected Snap Color") },
-        { ui->cbColorVisualSnapDocumentEntity, ui->pbVisualSnapDocEntitiesColor, o_VisualSnapDocumentEntitiesColor, tr("Select Involved Document Entity Color") }
+        { ui->cbColorVisualSnapGuideEntities, ui->pbVisualSnapGuideEntitiesColor, o_VisualSnapGuideEntitiesColor, tr("Select Visual Snap Guide Color")},
+        { ui->cbColorVisualSnapDocumentEntity, ui->pbVisualSnapDocEntitiesColor, o_VisualSnapDocumentEntitiesColor, tr("Select Involved Document Entity Color")}
     });
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>849</width>
-    <height>931</height>
+    <height>984</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
@@ -248,7 +248,51 @@ If checked, the grid will be scalled automatically</string>
       <string>Preview</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
-      <item row="1" column="0">
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbMaxPreview">
+        <property name="toolTip">
+         <string>Preview Limiting
+
+If more entities in preview than specified, rect will be drawn instead of entities.</string>
+        </property>
+        <property name="specialValueText">
+         <string>Show All</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lMaxPreview">
+        <property name="text">
+         <string>Number of preview entities:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbMaxPreview</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0" colspan="3">
        <widget class="QCheckBox" name="cbDisplayRefPoints">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -268,7 +312,7 @@ entities creation or modification operation.</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Configure details of operation's preview that illustrates result of the current tool execution.</string>
@@ -365,7 +409,7 @@ hover (requires &quot;highlight entities on hover&quot; to be enabled)</string>
       <string>Coordinates System</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="3" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="QCheckBox" name="cbShowUCSZeroMarker">
         <property name="toolTip">
          <string>UCS Marker Visibility
@@ -378,50 +422,17 @@ will be shown in zero point of current UCS.</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbShowWCSZeroMarker">
-        <property name="toolTip">
-         <string>WCS Marker Visibility
-
-If selected and ther there is custom
-User Coordinate System applied,
-the marker for World Coodinate
-System (WCS) will be shown in zero
-point of WCS.</string>
-        </property>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Show WCS zero marker</string>
+         <string>Specify visibility of coordinate system-related markers, such as one usd for Relative Zero, coordinate system origins and angles basis.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbHideRelativeZero">
-        <property name="toolTip">
-         <string>Relative Point Marker Visibility
-
-If checked, relative zero crosshair marker will not be drawn.
-Otherwise, one will be visible. Visibility of the marker does not
-affect relative zero related operations. </string>
-        </property>
-        <property name="text">
-         <string>Hide relative zero</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbAnglesBaseShowPolicy">
         <property name="toolTip">
          <string>Angles Basis Maker Display Mode
@@ -439,7 +450,50 @@ affect relative zero related operations. </string>
         </item>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbShowWCSZeroMarker">
+        <property name="toolTip">
+         <string>WCS Marker Visibility
+
+If selected and ther there is custom
+User Coordinate System applied,
+the marker for World Coodinate
+System (WCS) will be shown in zero
+point of WCS.</string>
+        </property>
+        <property name="text">
+         <string>Show WCS zero marker</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbHideRelativeZero">
+        <property name="toolTip">
+         <string>Relative Point Marker Visibility
+
+If checked, relative zero crosshair marker will not be drawn.
+Otherwise, one will be visible. Visibility of the marker does not
+affect relative zero related operations. </string>
+        </property>
+        <property name="text">
+         <string>Hide relative zero</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QCheckBox" name="cbAnglesMarkVisible">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -458,13 +512,18 @@ in the orign of coordinates system</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Specify visibility of coordinate system-related markers, such as one usd for Relative Zero, coordinate system origins and angles basis.</string>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbShowAxisLines">
+        <property name="toolTip">
+         <string>Axis Lines Visibility
+
+If selected, X and Y axis lines 
+intersected in origin point will be 
+rendered. Otherwise, no axis lines 
+will be present.</string>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+        <property name="text">
+         <string>Show axis lines</string>
         </property>
        </widget>
       </item>

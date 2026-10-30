@@ -43,12 +43,12 @@ void LC_SettingsPageDraftingThemeInfoCursor::setupUi() {
 }
 
 void LC_SettingsPageDraftingThemeInfoCursor::setupBindings() {
-    using namespace CFG_InfoOverlayCursor;
+    using namespace CFG_InfoCursor;
     using namespace CFG_RelativePositionAssistant;
     using namespace CFG_Colors;
 
     bindComboText({
-        { ui->fcbInfoFont, o_FontName },
+        { ui->fcbInfoFont, o_InfoCursorFontName },
         { ui->fcbAssistantFont, o_AssistantFontName }
     });
 

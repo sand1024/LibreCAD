@@ -45,15 +45,14 @@ void LC_SettingsPageDraftingMetricsMarkers::setupBindings() {
 
     bindInt({
         {ui->sbHandleSize, o_EntityHandleSize},
-        {ui->sbDraftMarkerFontSize, o_DraftMarkerFontSize},
         {ui->sbPreviewRefPointsSize, o_PreviewRefPointSize}
     });
 
     bindDouble({
         {ui->sbOverlaysLineWidth, o_OverlaysScreenLineWidth},
-        {ui->sbDraftModeScreenLineWidth, o_DraftModeScreenLineWidth},
         {ui->sbPreviewScreenLineWidth, o_PreviewScreenLineWidth},
         {ui->sbHighlightedEntityScreenLineWidth, o_HighlightedEntityScreenLineWidth},
-        {ui->sbSelectedEntityScreenLineWidth, o_SelectedEntityScreenLineWidth}
+        {ui->sbSelectedEntityScreenLineWidth, o_SelectedEntityScreenLineWidth},
+        {ui->sbPreviewRefEntitiesScreenLineWidth, o_PreviewRefEntityScreenLineWidth}
     });
 }

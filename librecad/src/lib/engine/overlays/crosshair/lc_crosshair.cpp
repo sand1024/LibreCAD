@@ -229,11 +229,10 @@ void LC_Crosshair::draw(RS_Painter *painter) {
         offset = drawShape(painter, uiCoord);
     }
 
-    if (m_indicatorShape != NoShape) {
+    if (m_linesShape != NoShape) {
         painter->setPen(m_linesPen, RS_Painter::DashSpace::Screen);
         drawLines(painter, uiCoord, offset);
     }
-
 }
 
 void LC_Crosshair::setLinesPen(const RS_Pen &pen) {

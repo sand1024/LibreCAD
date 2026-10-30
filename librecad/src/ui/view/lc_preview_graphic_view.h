@@ -39,7 +39,6 @@ public:
    void setHighlightEntitiesOnHover(bool value);
    RS_Entity* getNearestEntity(const RS_Vector& pos) const;
 
-
 protected:
     LC_PreviewGraphicView(QWidget* parent,LC_ActionContext* actionContext);
     ~LC_PreviewGraphicView() override;

@@ -120,7 +120,7 @@ Size of fixed Axis Lines drawn in absolute zero point.</string>
          <number>0</number>
         </property>
         <property name="maximum">
-         <number>150</number>
+         <number>250</number>
         </property>
        </widget>
       </item>

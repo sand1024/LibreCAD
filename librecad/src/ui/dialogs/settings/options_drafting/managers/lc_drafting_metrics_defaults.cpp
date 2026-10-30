@@ -39,7 +39,7 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
     using namespace CFG_Grid;
     using namespace CFG_Snap;
     using namespace CFG_VisualSnap;
-    using namespace CFG_InfoOverlayCursor;
+    using namespace CFG_InfoCursor;
     using namespace CFG_RelativePositionAssistant;
 
     const std::initializer_list<const LC_SettingBase*> settings = {
@@ -65,8 +65,8 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
         &o_MetaGridLinesScreenLineWidth,
         &o_MetaGridPointsScreenLineWidth,
         &o_GridPointsPointScreenSize,
-        &o_FontSize,
-        &o_OffsetFromCursor,
+        &o_InfoCursorFontSize,
+        &o_InfoCursorOffsetFromSnapPoint,
         &o_AssistantFontSize,
         &o_PreviewRefPointSize,
         &o_PreviewScreenLineWidth
@@ -86,7 +86,7 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
     using namespace CFG_Grid;
     using namespace CFG_Snap;
     using namespace CFG_VisualSnap;
-    using namespace CFG_InfoOverlayCursor;
+    using namespace CFG_InfoCursor;
     using namespace CFG_RelativePositionAssistant;
 
     const std::initializer_list<std::pair<const LC_SettingBase*, QVariant>> hiDpiTable = {
@@ -123,8 +123,8 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
         { &o_GridPointsPointScreenSize, 4 },
 
         // Overlay Fonts & Offsets
-        { &o_FontSize, 14 },
-        { &o_OffsetFromCursor, 24 },
+        { &o_InfoCursorFontSize, 14 },
+        { &o_InfoCursorOffsetFromSnapPoint, 24 },
         { &o_AssistantFontSize, 14 }
     };
 

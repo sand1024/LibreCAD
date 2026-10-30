@@ -76,8 +76,6 @@ void LC_SettingsPageDraftingThemePreview::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Colors;
 
-    bind(ui->sbMaxPreview, o_MaxPreview, false);
-
     bindColor({
         { ui->cbPreviewEntitiesColor, ui->pb_previewEntitiesColor, o_PreviewEntitiesColor, tr("Select Preview Entity Color") },
         { ui->cbPreviewRefColor, ui->pb_previewRefColor, o_PreviewReferencesColor, tr("Select Preview Explanatory Entity Color") },

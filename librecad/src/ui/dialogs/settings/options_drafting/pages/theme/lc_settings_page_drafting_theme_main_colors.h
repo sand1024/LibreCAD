@@ -26,19 +26,18 @@
 
 #include "lc_settings_page_base.h"
 
-namespace Ui { class LC_SettingsDraftingThemeMainColors; }
+namespace Ui { class LC_SettingsPageDraftingThemeMainColors; }
 
-class LC_SettingsDraftingThemeMainColors : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingThemeMainColors : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsDraftingThemeMainColors(QObject* parent = nullptr);
-    ~LC_SettingsDraftingThemeMainColors() override;
+    explicit LC_SettingsPageDraftingThemeMainColors(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingThemeMainColors() override;
 protected:
     void setupUi() override;
-    void setupBehavior();
+    void setupBehavior() override;
     void setupBindings() override;
-
 private:
-    std::unique_ptr<Ui::LC_SettingsDraftingThemeMainColors> ui;
+    std::unique_ptr<Ui::LC_SettingsPageDraftingThemeMainColors> ui;
 };
 #endif

@@ -111,6 +111,7 @@ protected:
 
     double m_VisualSnapGuidingEntitiesScreenLineWidth = 0.0;
     double m_VisualSnapGuidingPointsScreenLineWidth = 0.0;
+    double m_RefEntitiesScreenLineWidth = 0.0;
 
     double m_draftEntityScreenLineWidth = 0.0;
 

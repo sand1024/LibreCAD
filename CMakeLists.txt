@@ -2423,6 +2423,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_main_colors.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_draft_mode.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_draft_mode.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_coordinate_system_origin.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.h
@@ -2702,6 +2704,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/managers/lc_preset_manager_drafting_metrics.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_markers.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_markers.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_draft_mode.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_draft_mode.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_snapping.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_snapping.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_overlays.cpp

@@ -43,6 +43,7 @@ namespace LC_SettingsPagesDrafting {
     const QString PAGE_DRAFTING_THEME_MAIN_COLORS           = "drafting.theme.colors";
     const QString PAGE_DRAFTING_THEME_SELECTION             = "drafting.theme.selection";
     const QString PAGE_DRAFTING_THEME_PREVIEW               = "drafting.theme.preview";
+    const QString PAGE_DRAFTING_THEME_DRAFT_MODE           = "drafting.theme.draft_mode";
     // Grid Display
     const QString PAGE_DRAFTING_THEME_GRID                  = "drafting.theme.grid";
     const QString PAGE_DRAFTING_THEME_GRID_POINTS           = "drafting.theme.grid.points";
@@ -63,6 +64,7 @@ namespace LC_SettingsPagesDrafting {
 
     const QString PAGE_DRAFTING_METRICS                     = "drafting.metrics";
     const QString PAGE_DRAFTING_METRICS_MARKERS             = "drafting.metrics.markers";
+    const QString PAGE_DRAFTING_METRICS_DRAFT_MODE           = "drafting.metrics.draft_mode";
     const QString PAGE_DRAFTING_METRICS_COORDINATE_SYSTEM   = "drafting.metrics.coordinate_system";
     const QString PAGE_DRAFTING_METRICS_SNAPPING            = "drafting.metrics.snapping";
     const QString PAGE_DRAFTING_METRICS_OVERLAYS            = "drafting.metrics.overlays";

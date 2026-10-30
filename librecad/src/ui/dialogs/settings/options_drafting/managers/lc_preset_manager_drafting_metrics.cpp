@@ -59,7 +59,7 @@ namespace {
         using namespace CFG_Grid;
         using namespace CFG_Snap;
         using namespace CFG_VisualSnap;
-        using namespace CFG_InfoOverlayCursor;
+        using namespace CFG_InfoCursor;
         using namespace CFG_RelativePositionAssistant;
         using namespace CFG_Render;
 
@@ -96,13 +96,14 @@ namespace {
             o_GridPointsPointScreenSize,
 
             // Overlay Fonts & Offsets
-            o_FontSize,
-            o_OffsetFromCursor,
+            o_InfoCursorFontSize,
+            o_InfoCursorOffsetFromSnapPoint,
             o_AssistantFontSize,
 
             // preview
             o_PreviewScreenLineWidth,
             o_PreviewRefPointSize,
+            o_PreviewRefEntityScreenLineWidth,
 
             // highlight and selection
             o_HighlightedEntityScreenLineWidth,

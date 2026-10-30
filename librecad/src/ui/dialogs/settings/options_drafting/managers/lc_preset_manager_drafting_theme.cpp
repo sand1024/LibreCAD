@@ -57,7 +57,7 @@ namespace {
         using namespace CFG_Grid;
         using namespace CFG_Snap;
         using namespace CFG_VisualSnap;
-        using namespace CFG_InfoOverlayCursor;
+        using namespace CFG_InfoCursor;
         using namespace CFG_RelativePositionAssistant;
 
         mapSettings({
@@ -122,7 +122,7 @@ namespace {
             o_InfoOverlaySnapInfoColor,
             o_RelativePositionAssistantBackgroundColor,
             o_RelativePositionAssistantTextColor,
-            o_FontName,
+            o_InfoCursorFontName,
             o_AssistantFontName,
             // selection and highlight
             o_SelectedEntityLineType,
@@ -136,7 +136,6 @@ namespace {
             o_PreviewReferencesHighlightColor,
             o_PreviewRefPointType,
             o_PreviewRefPointSize,
-            o_MaxPreview,
             o_HighlightedEntityColor
         });
     }

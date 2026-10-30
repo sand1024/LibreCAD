@@ -73,11 +73,14 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
         { ui->cbShowDraftModeMarker, o_ShowDraftModeMarker },
         { ui->cbDisplayRefPoints, o_VisualizePreviewRefPoints} ,
         { ui->cbShowRefPointsOnHovering, o_VisualizeHoveringRefPoints},
+        { ui->cbShowAxisLines, o_ShowAxisLines},
         { ui->cbShowUCSZeroMarker, o_ShowUCSZeroMarker },
         { ui->cbShowWCSZeroMarker, o_ShowWCSZeroMarker },
         { ui->cbHideRelativeZero, o_HideRelativeZero},
         { ui->cbAnglesMarkVisible, o_AnglesBasisMarkEnabled }
     });
+
+    bind(ui->sbMaxPreview, o_MaxPreview, false);
 
     bindComboIndex({
         { ui->cbAnglesBaseShowPolicy, o_AnglesBasisMarkPolicy }

@@ -124,6 +124,8 @@ namespace CFG_Appearance {
     inline const LC_Setting<int> o_ExtendModeXAxis(&Group, "ExtendModeXAxis", 0);
     inline const LC_Setting<int> o_ExtendModeYAxis(&Group, "ExtendModeYAxis", 0);
 
+    inline const LC_Setting<bool> o_ShowAxisLines(&Group, "ShowAxisLines", true);
+
     // --- Grid General Settings ---
     inline const LC_Setting<bool> o_UnitlessGrid(&Group, "UnitlessGrid", false);
     inline const LC_Setting<bool> o_GridRenderSimple(&Group, "GridRenderSimple", false);
@@ -140,6 +142,7 @@ namespace CFG_Appearance {
     inline const LC_Setting<double> o_PreviewScreenLineWidth(&Group, "PreviewScreenLineWidth", 1);
     inline const LC_Setting<int> o_PreviewRefPointType(&Group, "PreviewRefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
     inline const LC_Setting<int> o_PreviewRefPointSize(&Group, "PreviewRefPointSize", 8);
+    inline const LC_Setting<double> o_PreviewRefEntityScreenLineWidth(&Group, "PreviewRefEntityScreenLineWidth", 0);
 
     inline const LC_Setting<double> o_OverlaysScreenLineWidth(&Group, "overlayScreenLineWidth", 1);
 

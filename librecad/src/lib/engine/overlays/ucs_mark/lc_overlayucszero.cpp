@@ -39,6 +39,8 @@ void LC_OverlayUCSZeroOptions::loadSettings(){
         extendAxisModeY = o_ExtendModeYAxis;
         zeroShortAxisMarkSize = o_ZeroShortAxisMarkSize;
 
+        showAxisLines = o_ShowAxisLines;
+
         overlayScreenLineWidth = o_OverlaysScreenLineWidth;
         if (overlayScreenLineWidth == 1 ) {
             overlayScreenLineWidth = 0;
@@ -58,6 +60,11 @@ LC_OverlayUCSZero::LC_OverlayUCSZero(LC_OverlayUCSZeroOptions *options): m_optio
 
 void LC_OverlayUCSZero::draw(RS_Painter *painter) {
     // draw absolute zero point and axies
+
+    if (!m_options->showAxisLines) {
+        return;
+    }
+
     const int zr = m_options->zeroShortAxisMarkSize;
 
     RS_Pen penXAxis (m_options->colorXAxisExtension, RS2::Width00, RS2::SolidLine);

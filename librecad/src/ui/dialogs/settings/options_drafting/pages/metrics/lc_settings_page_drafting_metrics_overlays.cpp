@@ -46,12 +46,12 @@ void LC_SettingsPageDraftingMetricsOverlays::setupUi() {
 void LC_SettingsPageDraftingMetricsOverlays::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Grid;
-    using namespace CFG_InfoOverlayCursor;
+    using namespace CFG_InfoCursor;
     using namespace CFG_RelativePositionAssistant;
 
     bindInt({
-        { ui->sbInfoOverlayFontSize, o_FontSize },
-        { ui->sbOffsetFromCursor, o_OffsetFromCursor },
+        { ui->sbInfoOverlayFontSize, o_InfoCursorFontSize },
+        { ui->sbOffsetFromCursor, o_InfoCursorOffsetFromSnapPoint },
         { ui->sbAssistantFontSize, o_AssistantFontSize },
         { ui->sbMinGridSpacing, o_MinGridSpacing }
     });

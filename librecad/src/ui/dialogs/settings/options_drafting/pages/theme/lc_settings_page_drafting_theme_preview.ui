@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
+    <width>727</width>
     <height>727</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
      <property name="title">
       <string>Preview</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_pr">
+     <layout class="QGridLayout" name="gridLayout_pr" rowstretch="0,0,0,0,0,0,0,0" columnstretch="0,0,0,0">
       <item row="7" column="2">
        <widget class="LC_ColorButton" name="pb_previewRefHighlightColor">
         <property name="toolTip">
@@ -48,6 +48,9 @@ Color of explanatory entity that is currently active according to the command st
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
        </widget>
       </item>
       <item row="6" column="3">
@@ -63,16 +66,6 @@ Color of explanatory entity that is currently active according to the command st
         </property>
        </spacer>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lMaxPreview">
-        <property name="text">
-         <string>Number of preview entities:</string>
-        </property>
-        <property name="buddy">
-         <cstring>sbMaxPreview</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="6" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbPreviewRefColor">
         <property name="toolTip">
@@ -82,6 +75,9 @@ Color for preview explanatory entities. These entities are not created, yet expl
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
        </widget>
       </item>
@@ -145,6 +141,9 @@ Color for entities preview</string>
         <property name="editable">
          <bool>true</bool>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContentsOnFirstShow</enum>
+        </property>
        </widget>
       </item>
       <item row="3" column="2">
@@ -153,27 +152,6 @@ Color for entities preview</string>
          <string>Entities Preview
 
 Click to select color.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbMaxPreview">
-        <property name="toolTip">
-         <string>Preview Limiting
-
-If more entities in preview than specified, rect will be drawn instead of entities.</string>
-        </property>
-        <property name="specialValueText">
-         <string>Show All</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="value">
-         <number>50</number>
         </property>
        </widget>
       </item>

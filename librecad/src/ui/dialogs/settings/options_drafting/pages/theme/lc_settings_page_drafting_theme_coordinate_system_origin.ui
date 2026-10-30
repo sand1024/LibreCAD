@@ -18,7 +18,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="3" column="1">
-       <widget class="LC_LazyFontComboBox" name="fcbUCSFont">
+       <widget class="QFontComboBox" name="fcbUCSFont">
         <property name="toolTip">
          <string>Origin Marker Font
 

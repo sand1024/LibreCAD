@@ -184,15 +184,6 @@ for Meta Grid lines if grid drawn by points</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QG_LineTypeBox" name="wMetaGridPointsLineType" native="true">
-        <property name="toolTip">
-         <string>Meta-Grid Line Type
-
-Type of Meta Grid line if grid is drawn as points</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -200,6 +191,15 @@ Type of Meta Grid line if grid is drawn as points</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QG_LineTypeBox" name="wMetaGridPointsLineType" native="true">
+        <property name="toolTip">
+         <string>Meta-Grid Line Type
+
+Type of Meta Grid line if grid is drawn as points</string>
         </property>
        </widget>
       </item>

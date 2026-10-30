@@ -29,34 +29,29 @@
 #include "qg_linetypebox.h"
 
 
-LC_SettingsDraftingThemeMainColors::LC_SettingsDraftingThemeMainColors(QObject* parent)
-    : LC_SettingsPageBase(tr("General"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
-      ui(std::make_unique<Ui::LC_SettingsDraftingThemeMainColors>()) {
+LC_SettingsPageDraftingThemeMainColors::LC_SettingsPageDraftingThemeMainColors(QObject* parent)
+    : LC_SettingsPageBase(tr("Main Colors"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
+      ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeMainColors>()) {
     setSortWeight(30);
 }
 
-LC_SettingsDraftingThemeMainColors::~LC_SettingsDraftingThemeMainColors() = default;
+LC_SettingsPageDraftingThemeMainColors::~LC_SettingsPageDraftingThemeMainColors() = default;
 
-void LC_SettingsDraftingThemeMainColors::setupUi() {
+void LC_SettingsPageDraftingThemeMainColors::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsDraftingThemeMainColors::setupBehavior() {
+void LC_SettingsPageDraftingThemeMainColors::setupBehavior() {
 }
 
-void LC_SettingsDraftingThemeMainColors::setupBindings() {
+void LC_SettingsPageDraftingThemeMainColors::setupBindings() {
     using namespace CFG_Colors;
     using namespace CFG_Appearance;
-
-    bindComboText({
-        { ui->fcbDraftModeFont, o_DraftMarkerFontName }
-    });
 
     ui->wHighlightedEntityLineType->init(false, false, false);
     bindLineType(ui->wHighlightedEntityLineType, o_HighlightedEntityLineType);
 
     bindColor({
-        { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_DraftModeMarkerColor, tr("Select Draft Marker Color") },
         {ui->cbBackgroundColor, ui->pb_background, o_BackgroundColor, tr("Select Background Color")},
         {ui->cbForegroundColor, ui->pb_selected, o_ForegroundBWColor, tr("Select Foreground Entity Color")},
         { ui->cbHighlightedColor, ui->pb_highlighted, o_HighlightedEntityColor, tr("Select Hover Highlight Color") }
