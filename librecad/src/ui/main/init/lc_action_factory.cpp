@@ -432,8 +432,8 @@ void LC_ActionFactory::createDrawPointsActions(QMap<QString, QAction*>& map, QAc
 void LC_ActionFactory::createSelectActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group,{
         {"SelectSingle",        RS2::ActionSelectSingle,       tr("Select Entity"),                ":/icons/select_entity.lci",                tr("Selects or deselects individual clicked entities.")},
-        {"SelectWindow",        RS2::ActionSelectWindow,       tr("Select Window"),                ":/icons/select_window.lci",                tr("Selects entities fully enclosed within a rectangle window.")},
-        {"DeselectWindow",      RS2::ActionDeselectWindow,     tr("Deselect Window"),              ":/icons/deselect_window.lci",              tr("Deselects entities enclosed within a drawn rectangle window.")},
+        {"SelectWindow",        RS2::ActionSelectWindow,       tr("Select Area"),                  ":/icons/select_window.lci",                tr("Selects entities via rectangle window or lasso area.")},
+        {"DeselectWindow",      RS2::ActionDeselectWindow,     tr("Deselect Area"),               ":/icons/deselect_window.lci",               tr("Deselects entities via rectangle window or lasso area.")},
         {"SelectContour",       RS2::ActionSelectContour,      tr("(De-)Select &Contour"),         ":/icons/deselect_contour.lci",             tr("Selects all continuously connected entities forming a contour.")},
         {"SelectIntersected",   RS2::ActionSelectIntersected,  tr("Select Intersected Entities"),  ":/icons/select_intersected_entities.lci",  tr("Selects entities intersected by a crossing fence line.")},
         {"DeselectIntersected", RS2::ActionDeselectIntersected,tr("Deselect Intersected Entities"),":/icons/deselect_intersected_entities.lci",tr("Deselects entities intersected by a crossing fence line.")},

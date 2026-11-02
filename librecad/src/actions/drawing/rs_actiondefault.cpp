@@ -130,28 +130,32 @@ void RS_ActionDefault::checkSupportOfQuickEntityInfo(){
     }
 }
 
-void RS_ActionDefault::keyPressEvent(QKeyEvent *e){
+void RS_ActionDefault::keyPressEvent(QKeyEvent* e) {
     LC_OverlayBoxAction::keyPressEvent(e);
     if (e->isAccepted()) {
         return;
     }
     switch (e->key()) {
-        case Qt::Key_Shift:
+        case Qt::Key_Shift: {
             e->accept();
             break; //avoid clearing command line at shift key
-            //cleanup default action, issue#285
-        case Qt::Key_Escape:
+        }
+        case Qt::Key_Escape: {
             deleteSnapper();
+            deletePreviewAndHighlights();
             goToNeutralStatus();
             e->accept();
             break;
-        default:
+        }
+        default: {
             e->ignore();
             break;
+        }
     }
 }
 
 void RS_ActionDefault::keyReleaseEvent(QKeyEvent *e){
+    LC_OverlayBoxAction::keyReleaseEvent(e);
     if (e->key() == Qt::Key_Shift){
         e->accept();
     }
@@ -278,18 +282,28 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
         case Dragging:{
             m_actionData->v2 = mouse;
 
-            if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10){
+            if (getMassSelectionMode() == MassSelectionMode::LASSO) {
+                processLassoSelectionMove(mouse, e);
+                break;
+            }
+
+            if (getMassSelectionMode() == MassSelectionMode::BOX) {
+                processBoxSelectionMove(m_actionData->v1, mouse, e);
+                break;
+            }
+
+            if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10.0) {
                 // look for reference points to drag:
                 double dist = NAN;
-                bool singleEntitySelection = m_document->isSingleEntitySelected();
+                const bool singleEntitySelection = m_document->isSingleEntitySelected();
                 RS_EntityContainer::RefInfo refInfo;
                 if (singleEntitySelection) {
                     // we'll try to change ref point if there is single entity selected
                     refInfo = m_document->getNearestSelectedRefInfo(m_actionData->v1, &dist);
                 }
-                RS_Vector ref = refInfo.ref;
+                const RS_Vector ref = refInfo.ref;
                 // dist will be initialized if ref.valid = true.
-                if (ref.valid && toGuiDX(dist) < 8){
+                if (ref.valid && toGuiDX(dist) < 8.0){
                     m_actionData->refMovingEntity = refInfo.entity;
                     m_actionData->v1 = ref;
                     moveRelativeZero(m_actionData->v1);
@@ -306,9 +320,22 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                         addSnappedPointToVisualSnap(m_actionData->v1);
                         setStatus(Moving);
                     }
-                    // no entity found. start area selection:
                     else {
-                        setStatus(SetCorner2);
+                    // no entity found. start area selection:
+                        if (m_allowsLassoSelectionByPressedMouseButton) {
+                            setMassSelectionMode(MassSelectionMode::LASSO);
+                            m_lassoRegion.clear();
+                            m_lassoRegion.addPoint(m_actionData->v1);
+                            processLassoSelectionMove(mouse, e);
+                            updateMouseCursor();
+                            updateActionPrompt();
+                        }
+                        else {
+                            setMassSelectionMode(MassSelectionMode::BOX);
+                            setStatus(SetCorner2);
+                            processBoxSelectionMove(m_actionData->v1, mouse, e);
+                            updateActionPrompt();
+                        }
                     }
                 }
             }
@@ -587,28 +614,9 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
             break;
         }
         case SetCorner2: {
-            if (m_actionData->v1.valid){
+            if (m_actionData->v1.valid) {
                 m_actionData->v2 = mouse;
-                drawOverlaySelectionBox(m_actionData->v1, m_actionData->v2);
-
-                if (isInfoCursorForModificationEnabled()) {
-                    // restore selection box to ucs
-                    RS_Vector ucsP1 = toUCS(m_actionData->v1);
-                    RS_Vector ucsP2 = toUCS(m_actionData->v2);
-                    bool selectIntersecting = ucsP1.x > ucsP2.x;
-
-                    bool alterSelectIntersecting = e->isControl;
-                    if (alterSelectIntersecting) {
-                        selectIntersecting = !selectIntersecting;
-                    }
-                    bool deselect = e->isShift;
-
-                    QString msg = deselect ? tr("De-Selecting") : tr("Selecting");
-                    msg.append(tr(" entities "));
-                    msg.append(selectIntersecting? tr("that intersect with box") : tr("that are within box"));
-                    m_infoCursorOverlayData->setZone2(msg);
-                    forceUpdateInfoCursor(e);
-                }
+                processBoxSelectionMove(m_actionData->v1, mouse, e);
             }
             break;
         }
@@ -869,11 +877,21 @@ void RS_ActionDefault::onMouseMovingCompleted(const LC_MouseEvent* e) {
     m_movingJustCompleted = true;
 }
 
-void RS_ActionDefault::onMouseRightButtonPress([[maybe_unused]]int status, const LC_MouseEvent* e) {
-    //cleanup
-    goToNeutralStatus();
-    deleteSnapper();
-    e->originalEvent->accept();
+void RS_ActionDefault::onMouseRightButtonPress([[maybe_unused]] int status, const LC_MouseEvent* e) {
+    if (isMassSelecting() || status == SetCorner2) {
+        deletePreviewAndHighlights();
+        goToNeutralStatus();
+        if (m_graphicView != nullptr) {
+            m_graphicView->redraw(RS2::RedrawOverlay);
+        }
+    }
+    else {
+        goToNeutralStatus();
+        deleteSnapper();
+    }
+    if (e != nullptr && e->originalEvent != nullptr) {
+        e->originalEvent->accept();
+    }
 }
 
 void RS_ActionDefault::onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) {
@@ -911,14 +929,16 @@ QList<RS2::EntityType> RS_ActionDefault::getEntityTypesToSelect() {
 void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case Neutral: {
-            if (e->isControl){
+            if (e->isControl) {
                 m_actionData->v1 = RS_Vector{e->uiPosition};
                 setStatus(Panning);
-            } else {
+            }
+            else {
                 // dragging should be without modifiers to let custom menu invocation
                 if (e->originalEvent->modifiers() == Qt::NoModifier) {
                     m_actionData->v1 = e->graphPoint;
                     m_actionData->pressSnapPoint = e->snapPoint;
+                    m_lmbPressed = true;
                     setStatus(Dragging);
                 }
             }
@@ -936,8 +956,9 @@ void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEv
             }
             break;
         }
-        default:
+        default: {
             break;
+        }
     }
 }
 
@@ -953,9 +974,22 @@ void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_Mouse
             [[fallthrough]];
         }
         case Dragging: {
-            // select single entity:
-            RS_Entity *en = catchEntityByEvent(e);
-            if (en != nullptr){
+            m_lmbPressed = false;
+            if (getMassSelectionMode() == MassSelectionMode::LASSO) {
+                finishLassoSelection(e);
+                goToNeutralStatus();
+                break;
+            }
+            if (getMassSelectionMode() == MassSelectionMode::BOX) {
+                // Drag with pressed LMB completed in classical mode
+                finishBoxSelection(e);
+                goToNeutralStatus();
+                break;
+            }
+
+            // Single click release without drag threshold (> 10px):
+            RS_Entity* en = catchEntityByEvent(e);
+            if (en != nullptr) {
                 deletePreview();
                 const RS_Selection s(m_document, m_viewport);
                 if (e->isShift) {
@@ -965,42 +999,26 @@ void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_Mouse
                     s.selectSingle(en);
                 }
                 goToNeutralStatus();
-            } else {
-                if (m_allowsLassoSelectionByPressedMouseButton){
-                    goToNeutralStatus();
-                }
+            }
+            else {
+                // Click on empty canvas:
+                if (m_allowsLassoSelectionByPressedMouseButton) {
+                    // AutoCAD mode: single click initiates two-click box selection
+                setMassSelectionMode(MassSelectionMode::BOX);
+                setStatus(SetCorner2);
+                updateActionPrompt();
+            }
                 else {
-                   setStatus(SetCorner2);
+                    // Classical mode: single click does not initiate box selection
+                    goToNeutralStatus();
                 }
             }
             break;
         }
         case SetCorner2: {
-            m_actionData->v2 = e->graphPoint;
-            // select window:
-            deletePreview();
-
-            // restore selection box to ucs
-            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
-            bool selectIntersecting = (ucsP1.x > ucsP2.x);
-
-            const bool select = !e->isShift;
-
-            const bool alterSelectIntersecting = e->isControl;
-            if (alterSelectIntersecting) {
-                selectIntersecting = !selectIntersecting;
-            }
-            // expand selection wcs to ensure that selection box in ucs is fully within bounding rect in wcs
-            RS_Vector wcsP1;
-            RS_Vector wcsP2;
-            m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
-
-            RS_Selection s(m_document, m_viewport);
-            s.selectWindow(m_typeToSelect, wcsP1, wcsP2, select, selectIntersecting);
-
+            m_lmbPressed = false;
+            finishBoxSelection(e);
             goToNeutralStatus();
-            //}
             break;
         }
         case Panning: {
@@ -1019,25 +1037,39 @@ void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_Mouse
             }
             break;
         }
-        default:
+        default: {
             break;
+        }
     }
 }
 
-void RS_ActionDefault::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* e) {
+void RS_ActionDefault::onMouseRightButtonRelease(int status, [[maybe_unused]] const LC_MouseEvent* e) {
     RS_DEBUG->print("RS_ActionDefault::mouseReleaseEvent()");
-    //cleanup
-    goToNeutralStatus();
-    deleteSnapper();
+    if (isMassSelecting() || status == SetCorner2) {
+        deletePreviewAndHighlights();
+        goToNeutralStatus();
+        if (m_graphicView != nullptr) {
+            m_graphicView->redraw(RS2::RedrawOverlay);
+        }
+    }
+    else {
+        goToNeutralStatus();
+        deleteSnapper();
+    }
 }
 
-void RS_ActionDefault::goToNeutralStatus(){
+void RS_ActionDefault::goToNeutralStatus() {
     deletePreview();
     clearHighLighting();
     deleteInfoCursor();
+    setMassSelectionMode(MassSelectionMode::NONE);
+    setMassSelectionStyle(MassSelectionStyle::Auto);
+    invalidateSelectionCorner1();
+    m_lmbPressed = false;
     drawPreview();
     drawHighlights();
     setStatus(Neutral);
+    updateActionPrompt();
 }
 
 // fixme - review and cleanup
@@ -1063,51 +1095,14 @@ QStringList RS_ActionDefault::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionDefault::updateActionPrompt(){
-    switch (getStatus()) {
-        case Moving:{
-            updatePromptTRCancel(tr("Set new position"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Create a copy")));
-            break;
-        }
-        case MovingRef: {
-            LC_ModifiersInfo modifiers;
-            const RS2::EntityType rtti = m_actionData->refMovingEntity->rtti();
-            switch (rtti){
-                case RS2::EntityLine:
-                    modifiers = MOD_SHIFT_AND_CTRL_ANGLE(tr("Lengthen Line"));
-                    break;
-                case RS2::EntityArc:
-                    modifiers = MOD_SHIFT_AND_CTRL(tr("Lengthen/Scale"), tr("Lengthen Chord"));
-                    break;
-                case RS2::EntityPolyline:
-                    modifiers = MOD_SHIFT_AND_CTRL(tr("Move in Previous segment direction"), tr("Move in Next segment direction"));
-                    break;
-                default:
-                    modifiers = MOD_SHIFT_ANGLE_SNAP;
-                    break;
-            }
-            updatePrompt(tr("Set new ref position"), "", modifiers);
-            break;
-        }
-        case Neutral: {
-            updatePrompt(tr("Zoom, pan or select entity"), "", MOD_SHIFT_AND_CTRL(tr("Scroll Horizontally / Select Contour"), tr("Pan / Scroll Vertically / Select Child entities")));
-            commandPrompt("");
-            break;
-        }
-        case SetCorner2: {
-            updatePromptTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
-            break;
-        }
-        default: {
-            updatePrompt();
-            break;
-        }
+RS2::CursorType RS_ActionDefault::doGetMouseCursor(const int status) {
+    if (isMassSelecting() || status == SetCorner2) {
+        return RS2::SelectCursor;
     }
-}
 
-RS2::CursorType RS_ActionDefault::doGetMouseCursor(const int status){
     switch (status) {
         case Neutral:
+        case Dragging:
             return RS2::ArrowCursor;
         case Moving:
         case MovingRef:
@@ -1185,5 +1180,64 @@ void RS_ActionDefault::updateQuickInfoWidget( RS_Entity *pEntity){
     LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
     if (entityInfoWidget != nullptr){
         entityInfoWidget->processEntity(pEntity);
+    }
+}
+
+void RS_ActionDefault::doUpdateActionPromptForSelectionStart() {
+    updateActionPrompt();
+}
+
+void RS_ActionDefault::updateActionPrompt() {
+    if (getMassSelectionMode() == MassSelectionMode::LASSO) {
+        updatePromptTRBack(tr("Draw lasso and release to select | Space: Switch selection style"),
+                           MOD_SHIFT_AND_CTRL(tr("Deselect entities"), tr("Select Intersecting")));
+        return;
+    }
+
+    switch (getStatus()) {
+        case Moving: {
+            updatePromptTRCancel(tr("Set new position"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Create a copy")));
+            break;
+        }
+        case MovingRef: {
+            LC_ModifiersInfo modifiers;
+            const RS2::EntityType rtti = m_actionData->refMovingEntity->rtti();
+            switch (rtti) {
+                case RS2::EntityLine: {
+                    modifiers = MOD_SHIFT_AND_CTRL_ANGLE(tr("Lengthen Line"));
+                    break;
+                }
+                case RS2::EntityArc: {
+                    modifiers = MOD_SHIFT_AND_CTRL(tr("Lengthen/Scale"), tr("Lengthen Chord"));
+                    break;
+                }
+                case RS2::EntityPolyline: {
+                    modifiers = MOD_SHIFT_AND_CTRL(tr("Move in Previous segment direction"), tr("Move in Next segment direction"));
+                    break;
+                }
+                default: {
+                    modifiers = MOD_SHIFT_ANGLE_SNAP;
+                    break;
+                }
+            }
+            updatePrompt(tr("Set new ref position"), "", modifiers);
+            break;
+        }
+        case Neutral: {
+            updatePrompt(tr("Zoom, pan or select entity"), "",
+                         MOD_SHIFT_AND_CTRL(tr("Scroll Horizontally / Select Contour"),
+                                            tr("Pan / Scroll Vertically / Select Child entities")));
+            commandPrompt("");
+            break;
+        }
+        case SetCorner2: {
+            updatePromptTRBack(tr("Choose second edge | Space: Switch selection style"),
+                               MOD_SHIFT_AND_CTRL(tr("Deselect entities"), tr("Select Intersecting")));
+            break;
+        }
+        default: {
+            updatePrompt();
+            break;
+        }
     }
 }
