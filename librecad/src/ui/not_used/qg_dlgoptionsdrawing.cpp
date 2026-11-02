@@ -1,24 +1,28 @@
-/*******************************************************************************
- *
- * This file is part of the LibreCAD project, a 2D CAD program
- *
- * Copyright (C) 2026 LibreCAD.org
- * Copyright (C) 2026 sand1024
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+/****************************************************************************
+**
+** This file is part of the LibreCAD project, a 2D CAD program
+**
+** Copyright (C) 2010 R. van Twisk (librecad@rvt.dds.nl)
+** Copyright (C) 2001-2003 RibbonSoft. All rights reserved.
+**
+**
+** This file may be distributed and/or modified under the terms of the
+** GNU General Public License version 2 as published by the Free Software
+** Foundation and appearing in the file gpl-2.0.txt included in the
+** packaging of this file.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+**
+** This copyright notice MUST APPEAR in all copies of the script!
+**
+**********************************************************************/
 
 #include "qg_dlgoptionsdrawing.h"
 
@@ -102,8 +106,8 @@ void QG_DlgOptionsDrawing::connectUserVarsTab() {
 }
 
 void QG_DlgOptionsDrawing::_to_remove_ConnectLegacyDimsTab() {
-    connect(cbDimLUnit, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateDimLengthPrecision);
-    connect(cbDimAUnit, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateDimAnglePrecision);
+    connect(cbDimLUnit, QOverload<int>::of(&QComboBox::activated), this, &QG_DlgOptionsDrawing::updateDimLengthPrecision);
+    connect(cbDimAUnit, QOverload<int>::of(&QComboBox::activated), this, &QG_DlgOptionsDrawing::updateDimAnglePrecision);
     connect(cbDimFxLon, &QCheckBox::toggled, this, &QG_DlgOptionsDrawing::onDimFxLonToggled);
 }
 
@@ -135,7 +139,7 @@ QG_DlgOptionsDrawing::~QG_DlgOptionsDrawing() {
 }
 
 void QG_DlgOptionsDrawing::connectPaperTab() {
-    connect(cbPaperFormat, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updatePaperSize);
+    connect(cbPaperFormat, QOverload<int>::of(&QComboBox::activated), this, &QG_DlgOptionsDrawing::updatePaperSize);
     connect(lePaperWidth, &QLineEdit::textChanged, this, &QG_DlgOptionsDrawing::updatePaperPreview);
     connect(lePaperHeight, &QLineEdit::textChanged, this, &QG_DlgOptionsDrawing::updatePaperPreview);
     connect(rbLandscape, &QRadioButton::toggled, this, &QG_DlgOptionsDrawing::onLandscapeToggled);
@@ -147,6 +151,8 @@ void QG_DlgOptionsDrawing::connectPaperTab() {
 
 void QG_DlgOptionsDrawing::connectUnitTab() {
     connect(cbUnit, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateUnitsPreview);
+    // not only on a choice in the box: a length format can set the unit too
+    connect(cbUnit, &QComboBox::currentIndexChanged, this, &QG_DlgOptionsDrawing::updatePaperUnit);
     connect(cbLengthFormat, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateLengthPrecision);
     connect(cbLengthFormat, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateUnitsPreview);
     connect(cbLengthPrecision, &QComboBox::activated, this, &QG_DlgOptionsDrawing::updateUnitsPreview);
@@ -279,14 +285,31 @@ void QG_DlgOptionsDrawing::setupDimStylesTab() {
 
 void QG_DlgOptionsDrawing::collectStylesUsage(QMap<QString, int>& map) const {
     for (RS_Entity* e : m_graphic->getEntityList()) {
-        const auto entityType = e->rtti();
-        if (e->isDeleted() || !RS2::isDimensionalEntity(entityType)) {
+        auto entityType = e->rtti();
+        if (e->isDeleted()) {
             continue;
         }
 
-        const auto* dim = static_cast<RS_Dimension*>(e);
-        QString styleName = dim->getStyle();
-        const auto dimStyleForNameAndType = m_graphic->getDimStyleByName(styleName, entityType);
+        QString styleName;
+        if (RS2::isDimensionalEntity(entityType)) {
+            auto* dim = dynamic_cast<RS_Dimension*>(e);
+            if (dim == nullptr) {
+                continue;
+            }
+            styleName = dim->getStyle();
+        }
+        else if (entityType == RS2::EntityTolerance) {
+            auto* tolerance = dynamic_cast<LC_Tolerance*>(e);
+            if (tolerance == nullptr) {
+                continue;
+            }
+            styleName = tolerance->getData().dimStyleName;
+        }
+        else {
+            continue;
+        }
+
+        auto dimStyleForNameAndType = m_graphic->getDimStyleByName(styleName, entityType);
         if (dimStyleForNameAndType != nullptr) {
             QString resolvedStyleName = dimStyleForNameAndType->getName();
             int value = map.value(resolvedStyleName, 0);
@@ -1110,6 +1133,7 @@ void QG_DlgOptionsDrawing::setGraphic(RS_Graphic* g) {
     }
 
     // main drawing unit:
+    m_paperUnit = m_graphic->getUnit();
     const int insunits = m_graphic->getVariableInt("$INSUNITS", 0);
     cbUnit->setCurrentIndex(cbUnit->findText(RS_Units::unitToString(RS_FilterDXFRW::numberToUnit(insunits))));
 
@@ -1556,8 +1580,9 @@ void QG_DlgOptionsDrawing::validate() {
     }
 
     if (m_graphic != nullptr) {
-        validatePaperTab();
+        // the Paper tab shows sizes in the new unit
         validateUnitsTab();
+        validatePaperTab();
         validateGridTab();
         validateSplinesTab();
 
@@ -1747,9 +1772,6 @@ void QG_DlgOptionsDrawing::updatePaperSize() const {
         std::swap(s.x, s.y);
     }
 
-    const LC_PlotSettings* ps = m_graphic->getPlotSettings();
-    ps->setPaperSize(s);
-
     lePaperWidth->blockSignals(true);
     lePaperWidth->setText(QString("%1").setNum(s.x, 'g', 5));
     lePaperWidth->blockSignals(false);
@@ -1766,8 +1788,36 @@ void QG_DlgOptionsDrawing::updatePaperSize() const {
         lePaperWidth->setEnabled(false);
         lePaperHeight->setEnabled(false);
     }
+    // the unit the sizes are in
+    const QString unit = m_paperUnit == RS2::None ? QString() : QString(" (%1)").arg(RS_Units::unitToString(m_paperUnit));
+    formatGroupBox->setTitle(tr("Format") + unit);
+    marginsGroupBox->setTitle(tr("Margins") + unit);
     updateUnitsPreview();
     updatePaperPreview();
+}
+
+/**
+ * Shows the paper size and margins in the unit chosen on the Units tab, the unit
+ * OK applies them in. The paper keeps its size, as it does when the drawing's
+ * unit changes.
+ */
+void QG_DlgOptionsDrawing::updatePaperUnit() {
+    const auto unit = static_cast<RS2::Unit>(cbUnit->currentIndex());
+    if (m_graphic == nullptr || unit == m_paperUnit) {
+        return;
+    }
+    const auto convert = [this, unit](QLineEdit* edit) {
+        return RS_Units::convert(RS_Math::eval(edit->text()), m_paperUnit, unit);
+    };
+    if (cbPaperFormat->currentIndex() == RS2::Custom) {
+        lePaperWidth->setText(QString("%1").setNum(convert(lePaperWidth), 'g', 5));
+        lePaperHeight->setText(QString("%1").setNum(convert(lePaperHeight), 'g', 5));
+    }
+    for (QLineEdit* margin : {leMarginLeft, leMarginTop, leMarginRight, leMarginBottom}) {
+        margin->setText(QString::number(convert(margin)));
+    }
+    m_paperUnit = unit;
+    updatePaperSize();
 }
 
 /**

@@ -23,6 +23,11 @@
 #ifndef LC_GRAPHICVIEWPORTRENDERER_H
 #define LC_GRAPHICVIEWPORTRENDERER_H
 
+#include <QHash>
+#include <QVector>
+
+#include <cstdint>
+
 #include "lc_rect.h"
 #include "rs_color.h"
 #include "rs_pen.h"
@@ -71,6 +76,11 @@ class LC_GraphicViewportRenderer{
      * setBackgroundColor() in concrete renderer subclasses. */
     RS_Color getBackgroundColor() const { return m_colorBackground; }
 
+    /** The dashes a named pen draws from the drawing's line type table, or
+     *  nullptr when the pen's enum decides. The pointer stays valid until the
+     *  next setupPainter(). */
+    const QVector<qreal>* resolveDashPattern(const RS_Pen& pen, qreal* phaseOffset = nullptr);
+
   protected:
     QPaintDevice* m_paintDevice = nullptr;
     LC_GraphicViewport* m_viewport = nullptr;
@@ -99,7 +109,6 @@ class LC_GraphicViewportRenderer{
     // painting cached values
     double m_unitFactor = 1.0;
     double m_unitFactor100 = 0.01;
-    double m_defaultWidthFactor = 1.0;
 
     bool m_scaleLineWidth = true;
 
@@ -119,7 +128,7 @@ class LC_GraphicViewportRenderer{
     void updateJoinStyle(const RS_Graphic *graphic);
     void setForegroundColor(const RS_Color& bg);
     void updatePointEntitiesStyle(const RS_Graphic *graphic);
-    void updateUnitAndDefaultWidthFactors(const RS_Graphic *g);
+    void updateUnitFactors(const RS_Graphic *g);
     bool isOutsideOfBoundingClipRect(const RS_Entity *e, bool constructionEntity) const;
 
     RS_Graphic* getGraphic() const {return m_graphic;}
@@ -144,6 +153,18 @@ class LC_GraphicViewportRenderer{
 
 
     void updateAnglesBasis(const RS_Graphic *g);
+
+private:
+    struct DashPattern {
+        QVector<qreal> dashes;
+        qreal phaseOffset = 0.0;
+    };
+
+    void buildDashPatternCache();
+
+    // Named line type dashes of the drawing, by fold id, built once per pass.
+    QHash<std::uint16_t, DashPattern> m_dashByFold;
+    bool m_dashCacheBuilt = false;
 };
 
 #endif
