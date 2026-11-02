@@ -56,6 +56,7 @@ QString RS_Dimension::getMeasuredValueText() const {
     return QLocale::c().toString(value, 'g', QLocale::FloatingPointShortest);
 }
 
+// fixme - sand - this code looks quite strange... review it.
 QString RS_Dimension::getFormattedValueText() const {
     const RS_MText* primary = nullptr;
     const RS_MText* symbol = nullptr;

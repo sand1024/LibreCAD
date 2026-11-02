@@ -123,6 +123,42 @@ void LC_ActionFactoryBase::makeActionsShortcutsNonEditable(const QMap<QString, Q
     }
 }
 
+void LC_ActionFactoryBase::makeActionsProhibitedForMainMenu(const QMap<QString, QAction*>& map,
+                                                           const std::vector<const char*>& actionNames) {
+    for (const auto name : actionNames) {
+        if (map.contains(name)) {
+            QAction* action = map[name];
+            if (action != nullptr) {
+                LC_ActionKeys::setProhibitedForMainMenu(action);
+            }
+        }
+    }
+}
+
+void LC_ActionFactoryBase::makeActionsProhibitedForContextMenu(const QMap<QString, QAction*>& map,
+                                                           const std::vector<const char*>& actionNames) {
+    for (const auto name : actionNames) {
+        if (map.contains(name)) {
+            QAction* action = map[name];
+            if (action != nullptr) {
+                LC_ActionKeys::setProhibitedForContextMenu(action);
+            }
+        }
+    }
+}
+
+void LC_ActionFactoryBase::makeActionsProhibitedForToolbar(const QMap<QString, QAction*>& map,
+                                                           const std::vector<const char*>& actionNames) {
+    for (const auto name : actionNames) {
+        if (map.contains(name)) {
+            QAction* action = map[name];
+            if (action != nullptr) {
+                LC_ActionKeys::setProhibitedForToolbar(action);
+            }
+        }
+    }
+}
+
 void LC_ActionFactoryBase::addActionsToMainWindow(const QMap<QString, QAction*>& map) const {
     // add actions to the main window to ensure that shortcuts for them will be invoked - even if the action is not visible.
     // without this, pressing shortcut for the action that is not visible does not activate the action

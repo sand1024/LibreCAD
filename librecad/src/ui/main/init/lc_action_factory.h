@@ -170,6 +170,9 @@ private:
     void createInfoCursorActions(QMap<QString, QAction *> &map, QActionGroup *group);
     void createSnapExtraActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void setDefaultShortcuts(QMap<QString, QAction *> &map, const LC_ActionGroupManager* agm);
+    void markActionsProhibitedForMainMenu(const QMap<QString, QAction*>& map);
+    void markActionsProhibitedForToolbar(const QMap<QString, QAction*>& map);
+    void markActionsProhibitedForContextMenu(const QMap<QString, QAction*>& map);
     void setupCreatedActions(QMap<QString, QAction *> &map);
     void markNotEditableActionsShortcuts(const QMap<QString, QAction *> &map);
     void fillActionLists(const QMap<QString, QAction *> &map);

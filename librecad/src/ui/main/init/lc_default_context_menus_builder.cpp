@@ -454,6 +454,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAligned(const LC_ActionGrou
                                      "DimContinue",
                                      "DimRegenerate",
                                      "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
+                                     "-",
                                      "DimStyles",
                                      "-",
                                      "EntityInfo"
@@ -465,6 +468,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimRadial(const LC_ActionGroup
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimRadial}, {
                                      "DimPickApply",
                                      "DimRegenerate",
+                                     "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
                                      "-",
                                      "DimStyles",
                                      "-",
@@ -478,6 +484,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimDiametric(const LC_ActionGr
                                      "DimPickApply",
                                      "DimRegenerate",
                                      "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
+                                     "-",
                                      "DimStyles",
                                      "-",
                                      "EntityInfo"
@@ -489,6 +498,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimArc(const LC_ActionGroupMan
                                  {LC_MenuActivator::RIGHT, LC_MenuActivator::CLICK_RELEASE, true, RS2::EntityDimArc}, {
                                      "DimPickApply",
                                      "DimRegenerate",
+                                     "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
                                      "-",
                                      "DimStyles",
                                      "-",
@@ -504,6 +516,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimOrdinate(const LC_ActionGro
                                      "DimOrdinateReBase",
                                      "UCSSetByDimOrdinate",
                                      "DimRegenerate",
+                                     "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
                                      "-",
                                      "DimStyles",
                                      "-",
@@ -648,6 +663,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimLinear(const LC_ActionGroup
                                      "-",
                                      "DimStyles",
                                      "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
+                                     "-",
                                      "EntityInfo"
                                  }, agm);
 }
@@ -659,6 +677,9 @@ ContextMenuDef LC_DefaultContextMenusBuilder::menuDimAngular(const LC_ActionGrou
                                      "DimBaseline",
                                      "DimContinue",
                                      "DimRegenerate",
+                                     "-",
+                                     "DimMeasuredValueCopy",
+                                     "DimMeasuredValueCopyFormatted",
                                      "-",
                                      "DimStyles",
                                      "-",

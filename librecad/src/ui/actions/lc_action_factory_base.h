@@ -121,6 +121,9 @@ protected:
                             const QString& description = QString()) const;
 
     void makeActionsShortcutsNonEditable(const QMap<QString, QAction*>& map, const std::vector<const char*>& actionNames);
+    void makeActionsProhibitedForMainMenu(const QMap<QString, QAction*>& map, const std::vector<const char*>& actionNames);
+    void makeActionsProhibitedForContextMenu(const QMap<QString, QAction*>& map, const std::vector<const char*>& actionNames);
+    void makeActionsProhibitedForToolbar(const QMap<QString, QAction*>& map, const std::vector<const char*>& actionNames);
     QAction* justCreateAction(QMap<QString, QAction*>& actionsMap, const char* name, const QString& text, const char* iconName,
                               QActionGroup* parent, const QString& description = QString()) const;
     void createActions(QMap<QString, QAction *> &map, QActionGroup *group, const std::vector<ActionInfo> &actionList) const;

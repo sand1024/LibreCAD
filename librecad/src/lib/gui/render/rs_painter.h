@@ -219,7 +219,6 @@ public:
 
     RS_Pen getPen() const;
     void setNativePen(const QPen& pen);
-    enum class DashSpace { Model, Screen };
     void setPen(const RS_Pen& pen);
     void setPen(const RS_Pen& pen, DashSpace dashSpace);
     void setPen(const RS_Color& color);

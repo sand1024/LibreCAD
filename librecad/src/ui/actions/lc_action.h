@@ -73,6 +73,33 @@ namespace LC_ActionKeys {
     inline constexpr const char* PROP_READ_ONLY_SHORTCUT   = "_lc_read_only_shortcut";
     inline constexpr const char* PROP_DATA_ONLY_ACTION     = "_lc_data_only_action";
     inline constexpr const char* PROP_CUSTOM_SHORTCUT_TEXT = "_lc_custom_shortcut_text";
+    inline constexpr const char* PROP_NOT_FOR_MAIN_MENU    = "_lc_action_no_main_menu";
+    inline constexpr const char* PROP_NOT_FOR_CONTEXT_MENU    = "_lc_action_no_context_menu";
+    inline constexpr const char* PROP_NOT_FOR_TOOLBAR_MENU    = "_lc_action_no_toolbar";
+
+    inline bool isProhibitedForContextMenu(const QAction* a) {
+        return a->property(PROP_NOT_FOR_CONTEXT_MENU).toBool();
+    }
+
+    inline bool setProhibitedForContextMenu(QAction* a) {
+        return a->setProperty(PROP_NOT_FOR_CONTEXT_MENU, true);
+    }
+
+    inline bool isProhibitedForMainMenu(const QAction* a) {
+        return a->property(PROP_NOT_FOR_MAIN_MENU).toBool();
+    }
+
+    inline bool setProhibitedForMainMenu(QAction* a) {
+        return a->setProperty(PROP_NOT_FOR_MAIN_MENU, true);
+    }
+
+    inline bool isProhibitedForToolbar(const QAction* a) {
+        return a->property(PROP_NOT_FOR_TOOLBAR_MENU).toBool();
+    }
+
+    inline bool setProhibitedForToolbar(QAction* a) {
+        return a->setProperty(PROP_NOT_FOR_TOOLBAR_MENU, true);
+    }
 
     inline bool isReadOnly(const QAction* a) {
         return a->property(PROP_READ_ONLY_SHORTCUT).toBool();

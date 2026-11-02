@@ -225,28 +225,28 @@ void LC_ActionFactory::createBuiltInSystemShortcutActions(QMap<QString, QAction*
 
      const std::vector<LC_SystemShortcutActionDef> actionDefs = {
         // --- Viewport Navigation ---
-        { "SysNavZoomIn",          tr("Zoom In"),                     QKeySequence(Qt::Key_Plus),                                                                                    tr("Zooms into the active drawing view.") },
-        { "SysNavZoomOut",         tr("Zoom Out"),                    QKeySequence(Qt::Key_Minus),                                                                                   tr("Zooms out of the active drawing view.") },
-        { "SysNavPanScroll",       tr("Pan / Scroll Viewport"),                                                                                 tr("Arrow Keys"),           tr("Scrolls the drawing view in 4 cardinal directions.") },
-        { "SysNavNudgeSubGrid",    tr("Move Selection (Sub-Grid)"),  QKeySequence(Qt::ControlModifier | Qt::Key_Up),                    tr("Ctrl+Arrow"),           tr("Moves selected entities by one sub-grid increment.") },
-        { "SysNavNudgeGrid",       tr("Move Selection (Grid)"),      QKeySequence(Qt::ShiftModifier | Qt::Key_Up),                      tr("Shift+Arrow"),          tr("Moves selected entities by one grid increment.") },
-        { "SysNavNudgeMetaGrid",   tr("Move Selection (Meta-Grid)"), QKeySequence(Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_Up),tr("Ctrl+Shift+Arrow"),     tr("Moves selected entities by one meta-grid increment.") },
+        { "SysNavZoomIn",          tr("Zoom In"),                     QKeySequence(Qt::Key_Plus),                                                                             tr("Zooms into the active drawing view.") },
+        { "SysNavZoomOut",         tr("Zoom Out"),                    QKeySequence(Qt::Key_Minus),                                                                            tr("Zooms out of the active drawing view.") },
+        { "SysNavPanScroll",       tr("Pan / Scroll Viewport"),                                                                                tr("Arrow Keys"),     tr("Scrolls the drawing view in 4 cardinal directions.") },
+        { "SysNavNudgeSubGrid",    tr("Move Selection (Sub-Grid)"),  QKeySequence(Qt::ControlModifier | Qt::Key_Up),                    tr("Ctrl+Arrow"),      tr("Moves selected entities by one sub-grid increment.") },
+        { "SysNavNudgeGrid",       tr("Move Selection (Grid)"),      QKeySequence(Qt::ShiftModifier | Qt::Key_Up),                      tr("Shift+Arrow"),     tr("Moves selected entities by one grid increment.") },
+        { "SysNavNudgeMetaGrid",   tr("Move Selection (Meta-Grid)"), QKeySequence(Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_Up),tr("Ctrl+Shift+Arrow"),tr("Moves selected entities by one meta-grid increment.") },
 
 
         // --- Action State & Drafting Control ---
-        { "SysActionCancel",       tr("Cancel Action / Deselect"),    QKeySequence(Qt::Key_Escape),                                        tr("Terminates the active command or clears entity selection.") },
-        { "SysActionStepBack",     tr("Step Back in Visual Snap"),    QKeySequence(Qt::ShiftModifier | Qt::Key_Escape),                    tr("Removes the last added visual snap point reference.") },
-        { "SysActionAccept",       tr("Accept Action Step / Enter"),  QKeySequence(Qt::Key_Return),                                        tr("Confirms the current drafting step or repeats the last command.") },
-        { "SysActionVisualSnap",   tr("Visual Snap Guides"),          QKeySequence(Qt::Key_Tab),                                           tr("Creates visual snap guides for current point.") },
-        { "SysActionModifierShift",tr("Action Modifier"),             QKeySequence(Qt::Key_Shift),                                         tr("Current Action context-aware modifier (angle snap, alt mode etc.).") },
-        { "SysActionModifierCTRL", tr("Action Modifier"),             QKeySequence(Qt::Key_Control),                                       tr("Current Action context-aware modifier (various modes).") },
-        { "SysActionSelectionEnd", tr("Finsh Selection"),             QKeySequence(Qt::Key_Return),                                        tr("Ends entities selection step in selection-aware actions.") },
-        { "SysActionSelectionEnd1", tr("Finsh Selection"),            tr("CTRL+Left Click"),                                               tr("Ends entities selection step in selection-aware actions.") },
+        { "SysActionCancel",       tr("Cancel Action / Deselect"),    QKeySequence(Qt::Key_Escape),                    tr("Terminates the active command or clears entity selection.") },
+        { "SysActionStepBack",     tr("Step Back in Visual Snap"),    QKeySequence(Qt::ShiftModifier | Qt::Key_Escape),tr("Removes the last added visual snap point reference.") },
+        { "SysActionAccept",       tr("Accept Action Step / Enter"),  QKeySequence(Qt::Key_Return),                    tr("Confirms the current drafting step or repeats the last command.") },
+        { "SysActionVisualSnap",   tr("Visual Snap Guides"),          QKeySequence(Qt::Key_Tab),                       tr("Creates visual snap guides for current point.") },
+        { "SysActionModifierShift",tr("Action Modifier"),             QKeySequence(Qt::Key_Shift),                     tr("Current Action context-aware modifier (angle snap, alt mode etc.).") },
+        { "SysActionModifierCTRL", tr("Action Modifier"),             QKeySequence(Qt::Key_Control),                   tr("Current Action context-aware modifier (various modes).") },
+        { "SysActionSelectionEnd", tr("Finsh Selection"),             QKeySequence(Qt::Key_Return),                    tr("Ends entities selection step in selection-aware actions.") },
+        { "SysActionSelectionEnd1", tr("Finish Selection"),           tr("CTRL+Left Click"),                  tr("Ends entities selection step in selection-aware actions.") },
 
         // --- Command Line Navigation ---
-        { "SysCmdComplete",        tr("Command Auto-Complete"),       QKeySequence(Qt::Key_Tab),                                           tr("Cycles through available command completions in the command line.") },
-        { "SysCmdHistoryUp",       tr("Command History Previous"),    QKeySequence(Qt::Key_Up),                                            tr("Recalls previously executed commands in the command line.") },
-        { "SysCmdHistoryDown",     tr("Command History Next"),        QKeySequence(Qt::Key_Down),                                          tr("Recalls next commands in the command line history.") },
+        { "SysCmdComplete",        tr("Command Auto-Complete"),       QKeySequence(Qt::Key_Tab),                       tr("Cycles through available command completions in the command line.") },
+        { "SysCmdHistoryUp",       tr("Command History Previous"),    QKeySequence(Qt::Key_Up),                        tr("Recalls previously executed commands in the command line.") },
+        { "SysCmdHistoryDown",     tr("Command History Next"),        QKeySequence(Qt::Key_Down),                      tr("Recalls next commands in the command line history.") },
         { "SysCmdRelativeRay",     tr("Directional Relative Ray"),    QKeySequence(Qt::ControlModifier | Qt::Key_Up),tr("Ctrl+Arrow"),  tr("Inserts directional polar distance into command line (@dist,0, etc.).") },
 
         // --- Mouse Gestures ---
@@ -302,6 +302,9 @@ void LC_ActionFactory::setupDefaultShortcutsAndCompleteInit(LC_ActionGroupManage
 
     // todo - may we report errors somehow there?
     markNotEditableActionsShortcuts(actionMap);
+    markActionsProhibitedForMainMenu(actionMap);
+    markActionsProhibitedForContextMenu(actionMap);
+    markActionsProhibitedForToolbar(actionMap);
 
     agm->completeInit();
 
@@ -1028,6 +1031,11 @@ void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> 
         {"DimRegenerate",RS2::ActionDimRegenerate,tr("Regenerate Dimensions"),":/icons/dim_regenerate.lci",tr("Recalculates and redraws all dimension entity geometries.")}
     });
 
+    createMainWindowActions(map, group, {
+     { "DimMeasuredValueCopy", &QC_ApplicationWindow::slotCopyDimMeasuredValue, "Copy Measured Value", "", tr("Copies measured dimension value (raw) to clipboard")},
+     { "DimMeasuredValueCopyFormatted", &QC_ApplicationWindow::slotCopyDimMeasuredValueFormatted, "Copy Formatted Measured Value", "", tr("Copies formatted measured dimension value (raw) to clipboard")},
+     });
+
     const auto dimSettingsAction = justCreateAction(map,"DimStyles",tr( "&Dimension Styles"),
                                                     ":/icons/dim_style_manager.lci", group,
                                                     tr("Opens dimension formatting and styles configuration editor."));
@@ -1240,6 +1248,10 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
          "SetRelativeZero",
          "PenSyncFromLayer",
          "FileExportMakerCam"
+
+         // DimMeasuredValueCopyFormatted
+         "DimMeasuredValueCopy",
+         "DimMeasuredValueCopyFormatted"
      });
 }
 
@@ -1326,6 +1338,25 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, [[maybe
     LC_ShortcutsManager::assignShortcutsToActions(map, shortcutsList);
 }
 
+void LC_ActionFactory::markActionsProhibitedForMainMenu(const QMap<QString, QAction *> &map) {
+    makeActionsProhibitedForMainMenu(map, {
+        "DimMeasuredValueCopy",
+        "DimMeasuredValueCopyFormatted"
+    });
+}
+
+void LC_ActionFactory::markActionsProhibitedForToolbar(const QMap<QString, QAction *> &map) {
+    makeActionsProhibitedForToolbar(map, {
+        "DimMeasuredValueCopy",
+        "DimMeasuredValueCopyFormatted"
+    });
+}
+
+void LC_ActionFactory::markActionsProhibitedForContextMenu(const QMap<QString, QAction *> &map) {
+    makeActionsProhibitedForContextMenu(map, {
+    });
+}
+
 void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QAction *> &map) {
     // placeholder for exclusion of some actions (by name) from editing in shortcuts mapping dialog
     makeActionsShortcutsNonEditable(map, {
@@ -1334,7 +1365,9 @@ void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QActi
         "PickPointX",
         "PickPointY",
         "PickDistance",
-        "PickAngle"
+        "PickAngle",
+        "DimMeasuredValueCopy",
+        "DimMeasuredValueCopyFormatted"
     });
 }
 
@@ -1489,7 +1522,9 @@ void LC_ActionFactory::fillActionLists([[maybe_unused]] const QMap<QString, QAct
         "DimOrdinateReBase",
         "DimPickApply",
         "DimRegenerate",
-        "DimStyles"
+        "DimStyles",
+        "DimMeasuredValueCopy",
+        "DimMeasuredValueCopyFormatted"
     };
 
     otherDrawingActions = {

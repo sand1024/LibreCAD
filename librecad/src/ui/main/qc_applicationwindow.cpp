@@ -59,8 +59,7 @@
 #include <QWindow>
 
 #include <algorithm>
-
-
+#include <QClipboard>
 
 #include "lc_action_group_manager.h"
 #include "lc_action_block_library_insert.h"
@@ -137,6 +136,7 @@
 #include "lc_settings_widget.h"
 #include "lc_wait_cursor_guard.h"
 #include "lc_widget_factory.h"
+#include "rs_dimension.h"
 #include "backup/lc_application_backup_service.h"
 
 #ifndef QC_APP_ICON
@@ -1875,6 +1875,36 @@ void QC_ApplicationWindow::slotHelpCommands() {
 
 void QC_ApplicationWindow::slotHelpShortcuts() {
     m_dlgHelpr->showCustomizationOptionsDialogShortcuts(true);
+}
+
+void QC_ApplicationWindow::copyDimensionMeasuredValueToClipboard(bool formatted) {
+    auto actionContext = getActionContext();
+    if (actionContext == nullptr) {
+        return;
+    }
+    const auto contextEntity = actionContext->getContextMenuActionContextEntity();
+    if (contextEntity != nullptr) {
+        const auto dim = dynamic_cast<RS_Dimension*>(contextEntity);
+        if (dim != nullptr) {
+            QString value;
+            if (formatted) {
+                value = dim->getFormattedValueText();
+            }
+            else {
+                value = dim->getMeasuredValueText();
+            }
+            QApplication::clipboard()->setText(value, QClipboard::Clipboard);
+            actionContext->clearContextMenuActionContext();
+        }
+    }
+}
+
+void QC_ApplicationWindow::slotCopyDimMeasuredValueFormatted() {
+    copyDimensionMeasuredValueToClipboard(true);
+}
+
+void QC_ApplicationWindow::slotCopyDimMeasuredValue() {
+    copyDimensionMeasuredValueToClipboard(false);
 }
 
 void QC_ApplicationWindow::slotOptionsShortcuts() {

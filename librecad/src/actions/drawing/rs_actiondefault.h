@@ -116,5 +116,8 @@ private:
     bool m_allowEntityQuickInfoAuto = false;
     bool m_completeMovingByMousePressed = false;
     bool m_movingJustCompleted = false;
+
+    // true - moving ref for line with angle snap uses entpoint as page point. Otherwise - initial ref point.
+    bool m_angleSnapBasePointForLineRefMoveIsEndpoint = false;
 };
 #endif

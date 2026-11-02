@@ -279,6 +279,8 @@ public slots:
     void slotBackupRestore();
     void slotHelpCommands();
     void slotHelpShortcuts();
+    void slotCopyDimMeasuredValue();
+    void slotCopyDimMeasuredValueFormatted();
 signals:
     void gridChanged(bool on);
     void draftChanged(bool on);
@@ -490,6 +492,9 @@ protected:
     void scheduleDockFit();
     void enableWidgets(bool enable);
     void doRestoreNamedView(int i) const;
+
+    // fixme - sand - this method should be moved outside to some utility
+    void copyDimensionMeasuredValueToClipboard(bool formatted);
 
 #ifdef LC_DEBUGGING
     LC_SimpleTests* m_pSimpleTest{nullptr};

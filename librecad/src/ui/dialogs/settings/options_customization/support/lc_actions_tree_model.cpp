@@ -137,21 +137,34 @@ void LC_ActionsTreeModel::rebuildTree() {
 
                 const QString name = action->objectName();
 
-                if (m_filterMode == ActionsFilterMode::CadToolsOnly) {
-                    if (name.startsWith(LC_ActionNames::PrefixWidget) || name.startsWith(LC_ActionNames::PrefixSpecialMenu) || name.
+                switch (m_filterMode) {
+                    case  ActionsFilterMode::CadToolsOnly: {
+                        if (name.startsWith(LC_ActionNames::PrefixWidget) || name.startsWith(LC_ActionNames::PrefixSpecialMenu) || name.
                         startsWith(LC_ActionNames::PrefixSpecialAction)) {
-                        continue;
+                            continue;
+                        }
+                        break;
                     }
-                }
-                else if (m_filterMode == ActionsFilterMode::ContextMenusOnly) {
-                    if (name.startsWith(LC_ActionNames::PrefixWidget) || name == LC_ActionNames::MenuRecentFiles) {
-                        continue;
+                    case ActionsFilterMode::ContextMenusOnly: {
+                        if (name.startsWith(LC_ActionNames::PrefixWidget) || name == LC_ActionNames::MenuRecentFiles) {
+                            continue;
+                        }
+                        if (LC_ActionKeys::isProhibitedForContextMenu(action)) {
+                            continue;
+                        }
+                        break;
                     }
-                }
-                else if (m_filterMode == ActionsFilterMode::ToolbarsAndMenus) {
-                    if (name.startsWith(LC_ActionNames::PrefixSpecialAction) || name == LC_ActionNames::MenuRecentActions) {
-                        continue;
+                    case ActionsFilterMode::ToolbarsAndMenus: {
+                        if (name.startsWith(LC_ActionNames::PrefixSpecialAction) || name == LC_ActionNames::MenuRecentActions) {
+                            continue;
+                        }
+                        if (LC_ActionKeys::isProhibitedForMainMenu(action)) {
+                            continue;
+                        }
+                        break;
                     }
+                    default:
+                        break;
                 }
 
                 QString cleanText = action->text();

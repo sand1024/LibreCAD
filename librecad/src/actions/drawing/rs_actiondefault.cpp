@@ -330,8 +330,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
             switch (type) {
                 case RS2::EntityLine: {
                     auto *refMovingLine = static_cast<RS_Line *>(refMovingEntity);
-                    bool lineMoveOverEndpoint = true;
-                    if (lineMoveOverEndpoint) {
+                    if (m_angleSnapBasePointForLineRefMoveIsEndpoint) {
                         RS_Vector basePoint;
                         if (refMovingLine->getStartpoint() == m_actionData->v1){
                             basePoint = refMovingLine->getEndpoint();
@@ -349,7 +348,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                         m_actionData->v2 = newEndpoint;
                     }
                     else{
-                        if (lineMoveOverEndpoint) {
+                        if (m_angleSnapBasePointForLineRefMoveIsEndpoint) {
                             m_actionData->v2 = mouse;
                         } else {
                             // As for every other grip and Stretch, the angle snap is of the
@@ -695,8 +694,7 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
     switch (type) {
         case RS2::EntityLine: {
             const auto *refMovingLine = static_cast<RS_Line *>(refMovingEntity);
-            bool lineMoveOverEndpoint = true;
-            if (lineMoveOverEndpoint) {
+            if (m_angleSnapBasePointForLineRefMoveIsEndpoint) {
                 RS_Vector basePoint;
                 if (refMovingLine->getStartpoint() == m_actionData->v1) {
                     basePoint = refMovingLine->getEndpoint();
@@ -713,7 +711,7 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
                 const RS_Vector newEndpoint = constructionLine.getNearestPointOnEntity(mouse, false);
                 m_actionData->v2      = newEndpoint;
             } else {
-                if (lineMoveOverEndpoint) {
+                if (m_angleSnapBasePointForLineRefMoveIsEndpoint) {
                     m_actionData->v2 = mouse;
                 }
                 else{
