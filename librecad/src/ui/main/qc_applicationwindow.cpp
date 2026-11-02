@@ -2049,6 +2049,19 @@ void QC_ApplicationWindow:: keyPressEvent(QKeyEvent* e) {
             }
             break;
         }
+        case Qt::Key_Space: { // selection style switch mode
+            RS_GraphicView* graphicView = getCurrentGraphicView();
+            if (graphicView != nullptr) {
+                const auto currentAction = m_actionHandler->getCurrentAction();
+                if (currentAction != nullptr) {
+                    if (currentAction->isInSelectionMode()) {
+                        graphicView->keyPressEvent(e);
+                        e->accept();
+                    }
+                }
+            }
+            break;
+        }
         /* Fixme - keyboard
          * it might be better to to use backspace instead of SHIFT+ESC?
          * Yet using Backspace may clash with command widget - so let it be commented until Cms will be reworked

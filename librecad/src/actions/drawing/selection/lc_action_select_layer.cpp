@@ -71,6 +71,6 @@ RS2::CursorType LC_ActionSelectLayer::doGetMouseCursor([[maybe_unused]] int stat
     return RS2::SelectCursor;
 }
 
-void LC_ActionSelectLayer::updateActionPrompt() {
+void LC_ActionSelectLayer::doUpdateActionPromptForSelectionStart() {
    updatePromptTRCancel(tr("Specify entity with desired layer") + " " + getSelectionCompletionHintMsg());
 }

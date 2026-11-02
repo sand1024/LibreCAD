@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #ifndef LC_LINEMATH_H
 #define LC_LINEMATH_H
+#include "rs.h"
 
 class RS_Line;
 class RS_Vector;
@@ -64,6 +65,8 @@ namespace LC_LineMath {
     RS_LineData createParallel(const RS_Vector& start, const RS_Vector& end, double distance);
     bool isMeaningfulDistance(const RS_Vector &v1, const RS_Vector &v2);
     bool isNotMeaningfulDistance(const RS_Vector &v1, const RS_Vector &v2);
+    bool isMeaningfulDistanceSquared(const RS_Vector& v1, const RS_Vector& v2, double tolSq = RS_TOLERANCE2);
+    bool isNotMeaningfulDistanceSquared(const RS_Vector& v1, const RS_Vector& v2, double tolSq = RS_TOLERANCE2);
     bool hasLineIntersection(const RS_Vector& p0, const RS_Vector& direction, const RS_Vector& p2, const RS_Vector& p3);
     /**
      * @brief convexHull - find the convex hull of a point cloud

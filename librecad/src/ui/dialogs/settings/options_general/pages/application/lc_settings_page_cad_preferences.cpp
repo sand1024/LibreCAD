@@ -40,11 +40,11 @@ void LC_SettingsPageCadPreferences::setupUi() {
 void LC_SettingsPageCadPreferences::setupBindings() {
     using namespace CFG_CADPreferences;
     bindBoolean({
-       { ui->cbToActiveLayer, CFG_Modify::o_ModifyEntitiesToActiveLayer },
-       { ui->cbKeepModifiedSelected, CFG_Modify::o_KeepModifiedSelected },
+       { ui->cbToActiveLayer, CFG_Modify::o_ModifyEntitiesToActiveLayer},
+       { ui->cbKeepModifiedSelected, CFG_Modify::o_KeepModifiedSelected},
        { ui->cbAutoZoomDrawing, o_AutoZoomDrawing },
        { ui->cbAnglesInputInDecimalDegreesOnly, o_InputAnglesAsDecimalsOnly },
-       { ui->cbFinishMovingByMouseUp, o_AdHockMovingEndsByMouseClick },
-       { ui->cbSelectionWindowByMBClickAndUp, o_SelectionWindowBy2Clicks }
+       { ui->cbFinishMovingByMouseUp, o_AdHockMovingEndsByMouseClick},
+       { ui->cbAllowLassoSelection, o_AllowLassoSelectionByPressedMouseButton }
    });
 }

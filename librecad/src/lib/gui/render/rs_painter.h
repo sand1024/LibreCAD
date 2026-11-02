@@ -81,11 +81,13 @@ public:
 
     // coordinates translations
     RS_Vector toGui(const RS_Vector& worldCoordinates) const;
+    RS_Vector toGuiDirect(const RS_Vector& worldCoordinates) const;
+    QTransform getToGUITransform() const;
     QPointF toGuiPointF(const RS_Vector& worldCoordinates) const;
     void toGui(const RS_Vector& wcsCoordinate, double &uiX, double &uiY) const;
     double toGuiDX(double ucsDX) const;
     double toGuiDY(double ucsDY) const;
-    QTransform getToGuiTransform() const;
+    QTransform prepareToGuiTransform() const;
     using LC_CoordinatesMapper::toUCSAngleDegrees;
 
     bool isPrinting() const
@@ -513,6 +515,23 @@ protected:
 
     void drawArcSegmentBySplinePointsUI(const RS_Vector& uiCenter, double uiRadiusX, double startAngleRad,
                                         double angularLengthRad, QPainterPath &path);
+
+    QPointF toGuiPoint(const QTransform& transform, const RS_Vector& v) const {
+        double tx = 0.0;
+        double ty = 0.0;
+        transform.map(v.x, v.y, &tx, &ty);
+        return QPointF{tx, ty};
+    }
+
+    RS_Vector toGuiVector(const QTransform& transform, const RS_Vector& v) const {
+        double tx = 0.0;
+        double ty = 0.0;
+        transform.map(v.x, v.y, &tx, &ty);
+        return RS_Vector{tx, ty};
+    }
+
+    QTransform m_toGuiTransform;
+
 private:
     void addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& uiRadii, double startAngleDeg, double angularLengthDeg, bool useSpline) const;
     // helper method: approximate a centered ellipse with lc_splinepoints

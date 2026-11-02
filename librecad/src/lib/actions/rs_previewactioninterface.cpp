@@ -446,6 +446,11 @@ void RS_PreviewActionInterface::addOverlay(LC_OverlayDrawable* drawable, const R
     drawablesContainer->add(drawable);
 }
 
+void RS_PreviewActionInterface::replaceOverlay(LC_OverlayDrawable* drawable, const RS2::OverlayGraphics position, const std::function<bool(LC_OverlayDrawable*)> &oldInstanceRemovalPredicate) const {
+    LC_OverlayDrawablesContainer* drawablesContainer = m_viewport->getOverlaysDrawablesContainer(position);
+    drawablesContainer->replace(drawable, oldInstanceRemovalPredicate);
+}
+
 void RS_PreviewActionInterface::previewRefPoint(const RS_Vector& coord) const {
     const auto* point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSize, m_refPointMode);
     m_preview->addEntity(point);

@@ -43,7 +43,7 @@
 #include "qc_applicationwindow.h"
 #include "rs_grid.h"
 #include "rs_layer.h"
-#include "rs_overlaybox.h"
+#include "lc_overlay_selection_box.h"
 #include "rs_preview.h"
 #include "rs_selection.h"
 
@@ -133,7 +133,7 @@ namespace {
 }
 
 LC_GraphicViewPreviewWidget::LC_GraphicViewPreviewWidget(QWidget* parent) : QWidget(parent),
-                                                                            m_overlayBoxOptions{std::make_unique<LC_OverlayBoxOptions>()},
+                                                                            m_overlayBoxOptions{std::make_unique<LC_SelectionBoxOptions>()},
                                                                             m_visualSnapOptions{std::make_unique<LC_VisualSnapOptions>()},
                                                                             m_infoCursorOverlayData{std::make_unique<LC_InfoCursorData>()} {
     auto* layout = new QVBoxLayout(this);
@@ -411,7 +411,7 @@ void LC_GraphicViewPreviewWidget::doUpdatePreviewForContentCategory(const QStrin
             m_previewView->hideRelativeInputWidget();
         }
         else {
-            auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
+            auto* directOverlay = new LC_OverlaySelectionBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
             m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
             // previewSnapIndicator(false, {30, 150});
             previewCompleteInfoCursor({30, 150});
@@ -523,10 +523,10 @@ void LC_GraphicViewPreviewWidget::selectAll(RS_Document* document, LC_GraphicVie
 void LC_GraphicViewPreviewWidget::previewSelectionOverlayBoxes() {
     m_overlayBoxOptions->loadSettings();
 
-    auto* directOverlay = new RS_OverlayBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
+    auto* directOverlay = new LC_OverlaySelectionBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
     m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
 
-    auto* invertedSelectionOverlay = new RS_OverlayBox({100, 100}, {55, 50}, m_overlayBoxOptions.get());
+    auto* invertedSelectionOverlay = new LC_OverlaySelectionBox({100, 100}, {55, 50}, m_overlayBoxOptions.get());
     m_previewView->addOverlayDrawable(invertedSelectionOverlay, RS2::OverlayGraphics::OverlayEffects);
 }
 

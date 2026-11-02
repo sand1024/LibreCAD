@@ -30,7 +30,7 @@ namespace CFG_CADPreferences {
 
     inline const LC_Setting<bool> o_AutoZoomDrawing(&Group, "AutoZoomDrawing", false);
     inline const LC_Setting<bool> o_InputAnglesAsDecimalsOnly(&Group, "InputAnglesAsDecimalsOnly", false);
-    inline const LC_Setting<bool> o_SelectionWindowBy2Clicks(&Group, "SelectionWindowBy2Clicks", false);
+    inline const LC_Setting<bool> o_AllowLassoSelectionByPressedMouseButton(&Group, "SelectionWindowBy2Clicks", false);
     inline const LC_Setting<bool> o_AdHockMovingEndsByMouseClick(&Group, "AdHockMovingEndsByMouseClick", true);
 }
 

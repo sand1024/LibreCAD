@@ -46,7 +46,7 @@ protected:
         Acknowledge    /**< Acknowledge or cancel. */
     };
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

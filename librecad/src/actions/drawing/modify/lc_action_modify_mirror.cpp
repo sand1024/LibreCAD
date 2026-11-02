@@ -247,7 +247,7 @@ void LC_ActionModifyMirror::doPerformTrigger() {
     finish();
 }
 
-void LC_ActionModifyMirror::updateActionPromptForSelection() {
+void LC_ActionModifyMirror::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to mirror") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }
 

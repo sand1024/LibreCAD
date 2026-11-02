@@ -41,15 +41,9 @@ public:
                                    RS_ActionInterface *actionSelect = nullptr,
                                    const QList<RS2::EntityType> &entityTypeList = {});
     LC_ActionSelectSingle(RS2::EntityType typeToSelect,LC_ActionContext *actionContext,
-                    RS_ActionInterface *actionSelect = nullptr,
-                    const QList<RS2::EntityType> &entityTypeList = {});
+                    RS_ActionInterface *actionSelect = nullptr);
     void trigger() override;
-    RS2::EntityType getTypeToSelect() const;
 protected:
-    bool m_selectContour = false;
-    RS_Entity *m_entityToSelect = nullptr;
-    RS_ActionInterface *m_actionSelect = nullptr;
-    RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
@@ -61,8 +55,12 @@ protected:
     // step even with nothing picked, or their event loop never returns.
     bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
-    void updateActionPrompt() override;
+    void doUpdateActionPromptForSelectionStart() override;
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override{return true;}
+
+    bool m_selectContour = false;
+    RS_Entity *m_entityToSelect = nullptr;
+    RS_ActionInterface *m_actionSelect = nullptr;
 };
 
 #endif

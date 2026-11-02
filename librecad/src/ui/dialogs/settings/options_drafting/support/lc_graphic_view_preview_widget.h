@@ -32,7 +32,7 @@
 class LC_VisualSnapManager;
 struct LC_InfoCursorData;
 class LC_VisualSnapSolution;
-struct LC_OverlayBoxOptions;
+struct LC_SelectionBoxOptions;
 struct LC_VisualSnapOptions;
 class LC_Highlight;
 class LC_DimStylePreviewGraphicView;
@@ -71,7 +71,7 @@ private:
     std::unique_ptr<RS_Preview> m_preview;
     std::unique_ptr<LC_Highlight> m_highlight;
     std::unique_ptr<LC_VisualSnapOptions> m_visualSnapOptions;
-    std::unique_ptr<LC_OverlayBoxOptions> m_overlayBoxOptions;
+    std::unique_ptr<LC_SelectionBoxOptions> m_overlayBoxOptions;
     std::unique_ptr<LC_VisualSnapSolution> m_solution;
     std::unique_ptr<LC_InfoCursorData> m_infoCursorOverlayData;
     QString m_currentPageTag;

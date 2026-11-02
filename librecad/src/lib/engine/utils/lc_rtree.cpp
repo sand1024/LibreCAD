@@ -35,9 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
-using BPoint = bg::model::point<double, 2, bg::cs::cartesian> ;
+using BPoint = bg::model::point<double, 2, bg::cs::cartesian>;
 using BBox = bg::model::box<BPoint>;
-using TreeValue = std::pair<BBox, unsigned>;
+using TreeValue = std::pair<BBox, uintptr_t>;
 
 namespace lc {
 
@@ -45,10 +45,14 @@ namespace geo {
 
 struct RTree::RTreeImpl: bgi::rtree< TreeValue, bgi::quadratic<16> >
 {
-    RTreeImpl(const double tolerance):
-        m_tolerance{tolerance},
-        m_halfBox{0.5 * m_tolerance, 0.5 * m_tolerance}
-    {}
+    RTreeImpl(const double tolerance)
+        : m_tolerance{tolerance}
+        , m_halfBox{0.5 * m_tolerance, 0.5 * m_tolerance} {}
+
+    RTreeImpl(const std::vector<TreeValue>& values, const double tolerance)
+        : bgi::rtree<TreeValue, bgi::quadratic<16>>(values.begin(), values.end())
+        , m_tolerance{tolerance}
+        , m_halfBox{0.5 * m_tolerance, 0.5 * m_tolerance} {}
 
     BPoint toPoint(const RS_Vector& point) const
     {
@@ -66,6 +70,10 @@ struct RTree::RTreeImpl: bgi::rtree< TreeValue, bgi::quadratic<16> >
     BBox toBox(const RS_Vector& point) const
     {
         return {toPoint(point - m_halfBox), toPoint(point + m_halfBox)};
+    }
+
+    BBox toBox(const RS_Vector& min, const RS_Vector& max) const {
+        return {toPoint(min), toPoint(max)};
     }
 
     BBox toBox(const LC_Rect& rect) const
@@ -108,59 +116,83 @@ RTree::RTree(double toleranceSize):
     m_pRTree{std::make_unique<RTreeImpl>(toleranceSize)}
 {}
 
-/**
-     * @brief RTree Constructor of a RTree for efficient point look up
-     * @param points - boxes to construct boxes with the tolerance size
-     * @param toleranceSize - the default box size to use to find nearest points,
-     *                        i.e. the node box centers
-     */
-RTree::RTree(const RS_VectorSolutions& points, double toleranceSize):
-    m_pRTree{std::make_unique<RTreeImpl>(toleranceSize)}{
-    for(const RS_Vector& point: points) {
-        Insert(point);
+
+RTree::RTree(const std::vector<std::tuple<RS_Vector, RS_Vector, uintptr_t>>& items, double toleranceSize) {
+    std::vector<TreeValue> treeValues;
+    treeValues.reserve(items.size());
+    const double halfTol = 0.5 * toleranceSize;
+    const RS_Vector halfBox{halfTol, halfTol};
+
+    for (const auto& [min, max, payload] : items) {
+        const BPoint pMin{min.x, min.y};
+        const BPoint pMax{max.x, max.y};
+        treeValues.emplace_back(BBox{pMin, pMax}, payload);
+    }
+    m_pRTree = std::make_unique<RTreeImpl>(treeValues, toleranceSize);
+}
+
+    RTree::~RTree() = default;
+
+bool RTree::insert(const RS_Vector& min, const RS_Vector& max, uintptr_t payload) {
+    if (m_pRTree == nullptr) {
+        return false;
+    }
+    const BBox b = m_pRTree->toBox(min, max);
+    m_pRTree->insert({b, payload});
+    return true;
+}
+
+bool RTree::insert(const Area& area, uintptr_t payload) {
+    if (m_pRTree == nullptr) {
+        return false;
+    }
+    const BBox b = m_pRTree->toBox(area);
+    m_pRTree->insert({b, payload});
+    return true;
+}
+
+bool RTree::remove(const RS_Vector& min, const RS_Vector& max, uintptr_t payload) {
+    if (m_pRTree == nullptr) {
+        return false;
+    }
+    const BBox b = m_pRTree->toBox(min, max);
+    return m_pRTree->remove(std::make_pair(b, payload)) > 0;
+}
+
+bool RTree::remove(const Area& area, uintptr_t payload) {
+    if (m_pRTree == nullptr) {
+        return false;
+    }
+    const BBox b = m_pRTree->toBox(area);
+    return m_pRTree->remove(std::make_pair(b, payload)) > 0;
+}
+
+void RTree::query(const RS_Vector& min, const RS_Vector& max,
+                  const std::function<bool(uintptr_t payload)>& callback) const {
+    if (m_pRTree == nullptr || callback == nullptr) {
+        return;
+    }
+    const BBox box = m_pRTree->toBox(min, max);
+    for (auto it = m_pRTree->qbegin(bgi::intersects(box)); it != m_pRTree->qend(); ++it) {
+        if (!callback(it->second)) {
+            break;
+        }
     }
 }
 
-
-
-/**
- * @brief Insert a point the R-Tree container
- * @return bool - true, if successful; false, if a coincident point is already in the the container
- * @author Dongxu Li
- */
-bool RTree::Insert(const RS_Vector& point) const {
-    // create a box
-    BBox b = m_pRTree->toBox(point);
-    // insert new value
-    m_pRTree->insert({b, m_pRTree->size()});
-    return true;
-}
-/**
-     * @brief Insert insert a new box
-     * @param area box
-     * @return
-     */
-bool RTree::Insert(const Area& area) const {
-    // create a box
-    BBox b = m_pRTree->toBox(area);
-    // insert new value
-    m_pRTree->insert(std::make_pair(b, m_pRTree->size()));
-    return true;
+std::vector<uintptr_t> RTree::query(const RS_Vector& min, const RS_Vector& max) const {
+    std::vector<uintptr_t> result;
+    query(min, max, [&result](uintptr_t payload) -> bool {
+        result.push_back(payload);
+        return true;
+    });
+    return result;
 }
 
-RS_VectorSolutions RTree::nearestNeighbors(const RS_Vector& point) const
-{
-    // convert the point to a box with side length by the default tolerance
-    const BBox box = m_pRTree->toBox(point);
-    // find values intersecting some area defined by a box
-    return m_pRTree->Intersects(box);
-}
-
-RS_VectorSolutions RTree::pointsInBox(const Area& area) const
-{
-    // find values intersecting some area defined by a box
-    const BBox box = m_pRTree->toBox(area);
-    return m_pRTree->Intersects(box);
+void RTree::clear() {
+    if (m_pRTree != nullptr) {
+        m_pRTree->clear();
+    }
 }
 
 } // namespace geo

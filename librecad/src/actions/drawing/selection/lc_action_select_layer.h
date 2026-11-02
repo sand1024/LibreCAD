@@ -44,7 +44,8 @@ protected:
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
-    void updateActionPrompt() override;
+    void updateActionPrompt() override {doUpdateActionPromptForSelectionStart();}
+    void doUpdateActionPromptForSelectionStart() override;
     void doTrigger() override;
     void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
     bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}

@@ -68,7 +68,7 @@ protected:
     void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void updateActionPromptForSelected(int status) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;

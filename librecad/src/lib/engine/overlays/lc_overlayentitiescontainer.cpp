@@ -48,3 +48,9 @@ void LC_OverlayDrawablesContainer::draw(RS_Painter *painter) {
        e->draw(painter);
     }
 }
+
+void LC_OverlayDrawablesContainer::replace(LC_OverlayDrawable* newInstance,
+    const std::function<bool(LC_OverlayDrawable*)> predicate) {
+    m_drawables.removeIf(predicate);
+    add(newInstance);
+}

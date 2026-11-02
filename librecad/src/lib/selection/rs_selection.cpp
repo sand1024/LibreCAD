@@ -28,6 +28,7 @@
 #include "dl_jww.h"
 #include "lc_containertraverser.h"
 #include "lc_graphicviewport.h"
+#include "lc_polygon_selection.h"
 #include "lc_selectedset.h"
 #include "lc_settings_selection.h"
 #include "qc_applicationwindow.h"
@@ -234,24 +235,24 @@ void RS_Selection::invertSelection() const {
  * @param select true: select, false: invertSelectionOperation
  * @param cross
  */
-void RS_Selection::selectWindow(RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross) {
+void RS_Selection::selectWindow(RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross, bool fence) {
     performBulkSelection(
-        [typeToSelect, v1, v2, select, cross, this](const RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        [typeToSelect, v1, v2, select, cross, fence, this](const RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
             if (select) {
                 doUnselectAllIfNeeded(container, doc);
             }
-            doSelectEntitiesWithTypeInWindow(container, doc, typeToSelect, v1, v2, select, cross);
+            doSelectEntitiesWithTypeInWindow(container, doc, typeToSelect, v1, v2, select, cross, fence);
         });
 }
 
 void RS_Selection::selectWindow(const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select,
-                                bool cross) {
+                                bool cross, bool fence) {
     performBulkSelection(
-        [typesToSelect, v1, v2, select, cross, this](const RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        [typesToSelect, v1, v2, select, cross, fence, this](const RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
             if (select) {
                 doUnselectAllIfNeeded(container, doc);
             }
-            doSelectEntitiesWithTypesInWindow(container, doc, typesToSelect, v1, v2, select, cross);
+            doSelectEntitiesWithTypesInWindow(container, doc, typesToSelect, v1, v2, select, cross, fence);
         });
 }
 
@@ -620,14 +621,14 @@ void RS_Selection::collectCurrentSelectionState(CurrentSelectionState& selection
 // Such method is needed for better support UCS with rotation and more precise selection of m_entities.
 void RS_Selection::doSelectEntitiesWithTypeInWindow(const RS_EntityContainer* container, RS_Document* doc,
                                                     const RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2,
-                                                    const bool select, const bool cross) {
+                                                    const bool select, const bool cross, const bool fenceOnly) {
     for (RS_Entity* e : *container) {
         bool included = false;
         if (e->isVisible()) {
-            if (e->isInWindow(v1, v2)) {
+            if (!fenceOnly && e->isInWindow(v1, v2)) {
                 included = true;
             }
-            else if (cross) {
+            else if (cross || fenceOnly) {
                 RS_EntityContainer l;
                 l.addRectangle(v1, v2);
                 RS_VectorSolutions sol;
@@ -670,9 +671,6 @@ void RS_Selection::doSelectEntitiesWithTypeInWindow(const RS_EntityContainer* co
                 if (typeToSelect == e->rtti()) {
                     doc->select(e, select);
                 }
-                else {
-                    //Do not select
-                }
             }
             else {
                 doc->select(e, select);
@@ -694,17 +692,17 @@ void RS_Selection::doSelectEntitiesWithTypeInWindow(const RS_EntityContainer* co
  */
 void RS_Selection::doSelectEntitiesWithTypesInWindow(const RS_EntityContainer* container, RS_Document* doc,
                                                      const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2,
-                                                     const bool select, const bool cross) {
+                                                     const bool select, const bool cross, const bool fenceOnly) {
     for (RS_Entity* e : *container) {
         if (!typesToSelect.contains(e->rtti())) {
             continue;
         }
         bool included = false;
         if (e->isVisible()) {
-            if (e->isInWindow(v1, v2)) {
+            if (!fenceOnly && e->isInWindow(v1, v2)) {
                 included = true;
             }
-            else if (cross) {
+            else if (cross || fenceOnly) {
                 RS_EntityContainer l;
                 l.addRectangle(v1, v2);
                 RS_VectorSolutions sol;

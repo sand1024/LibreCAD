@@ -168,7 +168,7 @@ void RS_ActionEditCopyPaste::onCoordinateEvent( [[maybe_unused]]int status, [[ma
     trigger();
 }
 
-void RS_ActionEditCopyPaste::updateActionPromptForSelection() {
+void RS_ActionEditCopyPaste::doUpdateActionPromptForSelectionStart() {
    switch (m_actionType) {
        case RS2::ActionEditCut: {
            updatePromptTRCancel(tr("Select to cut") + getSelectionCompletionHintMsg(),

@@ -29,9 +29,7 @@
 void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
     auto action = static_cast<LC_ActionModifyRotate*>(m_action);
 
-    addBoolean({
-                   "a_centerFirst",
-                   tr("By Center"),
+    addBoolean({"a_centerFirst",tr("By Center"),
                    tr("If selected, first it is necessary to specify center point. Otherwise - reference point")
                }, [action]()-> bool {
                    return action->isCenterPointFirst();
@@ -55,9 +53,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                     return action->isFreeAngle();
                 });
 
-    addBoolean({
-                   "a_angleRelative",
-                   tr("Relative"),
+    addBoolean({"a_angleRelative",tr("Relative"),
                    tr("If selected, rotation angle is defined as relative angle to reference point, instead of absolute angle")
                }, [action]()-> bool {
                    return action->isRelativeAngle();
@@ -67,9 +63,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                    return !action->isFreeAngle();
                });
 
-    addBoolean({
-                   "a_rotateTwice",
-                   tr("Rotate Twice"),
+    addBoolean({"a_rotateTwice",tr("Rotate Twice"),
                    tr("If checked, second rotation is around reference point")
                }, [action]()-> bool {
                    return action->isRotateAlsoAroundReferencePoint();
@@ -135,9 +129,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                    action->setUseCurrentAttributes(val);
                }, container);
 
-    addBoolean({
-                   "a_currentLayer",
-                   tr("Current layer"),
+    addBoolean({"a_currentLayer",tr("Current layer"),
                    tr("If checked, created entities will be placed into current layer, otherwise they will be in original layers")
                }, [action]()-> bool {
                    return action->isUseCurrentLayer();

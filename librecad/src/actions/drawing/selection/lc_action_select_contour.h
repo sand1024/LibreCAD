@@ -39,7 +39,7 @@ protected:
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
-    void updateActionPrompt() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void doTrigger() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}

@@ -101,7 +101,7 @@ void RS_ActionBlocksCreate::onCoordinateEvent(const int status, [[maybe_unused]]
     }
 }
 
-void RS_ActionBlocksCreate::updateActionPromptForSelection() {
+void RS_ActionBlocksCreate::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to create block") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }
 

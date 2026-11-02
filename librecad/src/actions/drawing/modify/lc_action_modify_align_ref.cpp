@@ -240,7 +240,7 @@ bool LC_ActionModifyAlignRef::doProcessCommand(const int status, const QString &
     return RS_ActionInterface::doProcessCommand(status, command);
 }
 
-void LC_ActionModifyAlignRef::updateActionPromptForSelection() {
+void LC_ActionModifyAlignRef::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to align")+getSelectionCompletionHintMsg(),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Align immediately after selection")));
 }
 

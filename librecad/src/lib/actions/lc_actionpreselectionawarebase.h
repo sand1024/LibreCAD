@@ -41,10 +41,7 @@ protected:
     QList<RS_Entity*> m_selectedEntities;
 
     RS_Vector m_selectionCorner1 = RS_Vector(false);
-    bool m_inBoxSelectionMode = false;
-    bool m_lmbPressed = false;
     bool m_forceSelectContextEntity = false;
-    bool m_secondMousePressWhileInSelectionMode = false;
 
     virtual bool isForceSelectContextEntity() {return true;}
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
@@ -58,14 +55,12 @@ protected:
     virtual void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* event);
     virtual void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event);
     virtual void onMouseMoveEventSelected(int status, const LC_MouseEvent* event);
-    virtual void updateActionPromptForSelection() = 0;
     virtual void updateActionPromptForSelected(int status);
     virtual bool isAllowTriggerOnEmptySelection(){return true;}
     virtual void doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {}
     void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
     virtual void finishMouseMoveOnSelection(const LC_MouseEvent* event);
     virtual void proceedSelectedEntity(const LC_MouseEvent* e);
-    void endBoxSelectionMode(const LC_MouseEvent* e);
     RS2::CursorType doGetMouseCursor(int status) override;
     virtual RS2::CursorType doGetMouseCursorSelected(int status);
     unsigned int collectSelectedEntities();
@@ -73,5 +68,9 @@ protected:
     void updateActionPrompt() override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+
+    RS_Vector getSelectionCorner1() override {return m_selectionCorner1;}
+    void invalidateSelectionCorner1() override {m_selectionCorner1.valid = false;}
+    QList<RS2::EntityType> getEntityTypesToSelect() override {return m_catchForSelectionEntityTypes;}
 };
 #endif

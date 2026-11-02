@@ -55,7 +55,7 @@ protected:
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void updateActionPromptForSelected(int status) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;

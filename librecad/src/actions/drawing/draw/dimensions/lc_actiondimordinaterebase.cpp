@@ -38,7 +38,7 @@ void LC_ActionDimOrdinateRebase::doInitWithContextEntity(RS_Entity* contextEntit
     LC_ActionPreSelectionAwareBase::doInitWithContextEntity(contextEntity, clickPos);
 }
 
-void LC_ActionDimOrdinateRebase::updateActionPromptForSelection() {
+void LC_ActionDimOrdinateRebase::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel("Select Ordinate dimension to rebase (Enter - to complete)", MOD_CTRL(tr("Select and rebase")));
 }
 

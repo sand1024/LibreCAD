@@ -55,7 +55,7 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void updateActionPromptForSelected(int status) override;
     void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;

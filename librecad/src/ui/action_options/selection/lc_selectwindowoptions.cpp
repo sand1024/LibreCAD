@@ -304,7 +304,7 @@ void LC_SelectWindowOptionsWidget::setEntityTypesToActinAndView(QList<RS2::Entit
 
 void LC_SelectWindowOptionsWidget::setSelectAllToActionAndView(const bool value) const {
     ui->cbAll->setChecked(value);
-    m_action->setSelectAllEntityTypes(value);
+    m_action->setSelectAllEntityTypes();
     const bool enable = !value;
     enableEntityTypes(enable);
     if (!value){

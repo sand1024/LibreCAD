@@ -43,7 +43,7 @@ protected:
     void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateActionPromptForSelected(int status) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void doTrigger() override;

@@ -202,6 +202,7 @@ class RS_Snapper : public QObject {
     virtual void refreshBySettings();
     void lockVisualSnap(bool performLock) const;
     virtual bool isVisualSnapApplicable();
+    bool isInSelectionMode() {return m_inSelectionMode;}
 protected:
     struct ImpData {
         RS_Vector snapCoord{false};

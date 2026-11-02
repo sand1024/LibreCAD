@@ -25,6 +25,8 @@
 
 #include <QList>
 
+#include "lc_overlayentity.h"
+
 class LC_OverlayDrawable;
 class RS_Painter;
 
@@ -36,6 +38,7 @@ public:
     void clear();
     LC_OverlayDrawable* first();
     void draw(RS_Painter* painter);
+    void replace(LC_OverlayDrawable* newInstance, const std::function<bool(LC_OverlayDrawable*)> predicate);
 protected:
     QList<LC_OverlayDrawable *> m_drawables;
 };

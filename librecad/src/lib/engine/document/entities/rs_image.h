@@ -201,9 +201,8 @@ public:
     void updateRectRegion();
     void moveSelectedRef(const RS_Vector& ref, const RS_Vector& offset) override;
     void moveRef(const RS_Vector& vector, const RS_Vector& offset) override;
-protected:
-    // whether the point is within image
     bool containsPoint(const RS_Vector& coord) const;
+protected:
     RS_Vector doGetNearestPointOnEntity(const RS_Vector& coord, bool onEntity, double* dist, RS_Entity** entity) const override;
     double doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, RS2::ResolveLevel level, double solidDist) const override;
     RS_Vector doGetNearestEndpoint(const RS_Vector& coord, double* dist, RS_Entity** entity) const override;

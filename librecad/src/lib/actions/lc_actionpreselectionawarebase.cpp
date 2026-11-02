@@ -26,6 +26,7 @@
 
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
+#include "lc_polygon_selection.h"
 #include "lc_settings_modify.h"
 #include "rs_document.h"
 #include "rs_selection.h"
@@ -84,6 +85,7 @@ unsigned int LC_ActionPreSelectionAwareBase::collectSelectedEntities() {
 }
 
 void LC_ActionPreSelectionAwareBase::selectionFinishedByKey([[maybe_unused]]QKeyEvent *e, const bool escape) {
+    setMassSelectionStyle(MassSelectionStyle::Auto);
     if (escape){
         m_selectedEntities.clear();
         finish();
@@ -101,43 +103,13 @@ void LC_ActionPreSelectionAwareBase::proceedSelectedEntity(const LC_MouseEvent* 
     }
 }
 
-void LC_ActionPreSelectionAwareBase::endBoxSelectionMode(const LC_MouseEvent* e) {
-    const RS_Vector mouse = e->graphPoint;
-    // Issue #2299: also delete the overlay box for selection
-    deletePreviewAndHighlights();
-
-    // restore selection box to ucs
-    const RS_Vector ucsP1 = toUCS(m_selectionCorner1);
-    const RS_Vector ucsP2 = toUCS(mouse);
-
-    bool selectIntersecting = ucsP1.x > ucsP2.x;
-
-    const bool performSelection        = !e->isShift;
-    const bool alterSelectIntersecting = e->isControl;
-    if (alterSelectIntersecting) {
-        selectIntersecting = !selectIntersecting;
-    }
-
-    // expand selection wcs to ensure that selection box in ucs is full within bounding rect in wcs
-    RS_Vector wcsP1, wcsP2;
-    m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
-
-    RS_Selection s(m_document, m_viewport);
-    if (m_catchForSelectionEntityTypes.isEmpty()){
-        s.selectWindow(RS2::EntityUnknown, wcsP1, wcsP2, performSelection, selectIntersecting);
-    }
-    else {
-        s.selectWindow(m_catchForSelectionEntityTypes, wcsP1, wcsP2, performSelection, selectIntersecting);
-    }
-}
-
 void LC_ActionPreSelectionAwareBase::onMouseLeftButtonPress([[maybe_unused]]int status, const LC_MouseEvent* e) {
     if (!m_selectionComplete){
-        if (!m_inBoxSelectionMode) {
+        const auto massSelectionMode = getMassSelectionMode();
+        if (massSelectionMode == MassSelectionMode::NONE) {
             m_selectionCorner1 = e->graphPoint;
         }
         m_lmbPressed = true;
-        m_secondMousePressWhileInSelectionMode = m_inBoxSelectionMode;
     }
 }
 
@@ -146,29 +118,27 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(const int status, 
         onMouseLeftButtonReleaseSelected(status, e);
     }
     else{
-        if (m_inBoxSelectionMode){
-            if (m_selectWithPressedMouseOnly || m_lmbPressed) {
-                endBoxSelectionMode(e);
-                m_inBoxSelectionMode = false;
-                m_selectionCorner1.valid = false;
+        auto massSelectionMode = getMassSelectionMode();
+        switch (massSelectionMode) {
+            case MassSelectionMode::BOX: {
+                finishBoxSelection(e);
+                break;
             }
-            else {
-                 if (m_secondMousePressWhileInSelectionMode) {
-                     endBoxSelectionMode(e);
-                     m_inBoxSelectionMode = false;
-                     m_selectionCorner1.valid = false;
-                 }
+            case MassSelectionMode::LASSO: {
+                finishLassoSelection(e);
+                break;
             }
-        }
-        else{
-            RS_Entity* entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
-            const bool selectContour = e->isShift;
-            if (selectEntity(entityToSelect, selectContour)) {
-                m_selectionCorner1.valid = false;
-                proceedSelectedEntity(e);
-            }
-            else if (e->isControl) { // completion of selection by click with CTRL
-                onSelectionCompleted(false, false);
+            case MassSelectionMode::NONE: {
+                RS_Entity* entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
+                const bool selectContour = e->isShift;
+                if (selectEntity(entityToSelect, selectContour)) {
+                    m_selectionCorner1.valid = false;
+                    proceedSelectedEntity(e);
+                }
+                else if (e->isControl) { // completion of selection by click with CTRL
+                    onSelectionCompleted(false, false);
+                }
+                break;
             }
         }
         invalidateSnapSpot();
@@ -187,15 +157,38 @@ void LC_ActionPreSelectionAwareBase::onMouseRightButtonRelease(const int status,
 }
 
 void LC_ActionPreSelectionAwareBase::applyBoxSelectionModeIfNeeded(const RS_Vector mouse) {
-    if (!m_inBoxSelectionMode) {
-        if (m_selectionCorner1.valid && (m_viewport->toGuiDX(m_selectionCorner1.distanceTo(mouse)) > 10.0)){
-            if (m_selectWithPressedMouseOnly) {
-                m_inBoxSelectionMode = m_lmbPressed;
+    auto massSelectionMode = getMassSelectionMode();
+    switch (massSelectionMode) {
+        case (MassSelectionMode::NONE): {
+            if (m_selectionCorner1.valid && (m_viewport->toGuiDX(m_selectionCorner1.distanceTo(mouse)) > 10.0)) {
+                if (!m_lmbPressed) {
+                    if (m_allowsLassoSelectionByPressedMouseButton) {
+                        setMassSelectionMode(MassSelectionMode::BOX); // box only when we allow lasso
+                    }
+                    else {
+                        setMassSelectionMode(MassSelectionMode::NONE);  // we require classical selection with pressed LMB
+                    }
+                }
+                else {
+                    if (m_allowsLassoSelectionByPressedMouseButton) {
+                        setMassSelectionMode(MassSelectionMode::LASSO); // lasso with pressed LMB
+                    }
+                    else {
+                        setMassSelectionMode(MassSelectionMode::BOX); // classical lc selection
+                    }
+                }
             }
-            else {
-                m_inBoxSelectionMode = true;
-            }
+            break;
         }
+        case MassSelectionMode::LASSO: {
+            // fixme - complete lasso
+            break;
+        }
+        case MassSelectionMode::BOX: {
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -206,29 +199,24 @@ void LC_ActionPreSelectionAwareBase::onMouseMoveEvent(const int status, const LC
     else{
         const RS_Vector mouse = e->graphPoint;
         applyBoxSelectionModeIfNeeded(mouse);
-        if (m_inBoxSelectionMode){
-            drawOverlayBox(m_selectionCorner1, mouse);
-            if (m_infoCursorOverlayPrefs->enabled) {
-                // restore selection box to ucs
-                const RS_Vector ucsP1 = toUCS(m_selectionCorner1);
-                const RS_Vector ucsP2 = toUCS(mouse);
-                bool selectIntersecting = ucsP1.x > ucsP2.x;
-                const bool deselect = e->isShift;
-                const bool alterSelectIntersecting = e->isControl;
-                if (alterSelectIntersecting) {
-                    selectIntersecting = !selectIntersecting;
-                }
-                QString msg = deselect ? tr("De-Selecting") : tr("Selecting");
-                msg.append(tr(" entities "));
-                msg.append(selectIntersecting? tr("that intersect with box") : tr("that are within box"));
-                m_infoCursorOverlayData->setZone2(msg);
-                forceUpdateInfoCursor(mouse);
+        auto massSelectionMode = getMassSelectionMode();
+        switch (massSelectionMode) {
+            case (MassSelectionMode::BOX): {
+                processBoxSelectionMove(m_selectionCorner1, mouse, e);
+                break;
             }
-        }
-        else {
-            selectionMouseMove(e);
-            finishMouseMoveOnSelection(e);
-            RS_Snapper::drawSnapper();
+            case (MassSelectionMode::LASSO): {
+                processLassoSelectionMove(mouse, e);
+                break;
+            }
+            case MassSelectionMode::NONE: {
+                selectionMouseMove(e);
+                finishMouseMoveOnSelection(e);
+                RS_Snapper::drawSnapper();
+                break;
+            }
+            default:
+                break;
         }
     }
 }
@@ -240,16 +228,11 @@ void LC_ActionPreSelectionAwareBase::drawSnapper() {
 }
 
 void LC_ActionPreSelectionAwareBase::updateActionPrompt() {
-    if (m_selectionComplete){
+    if (m_selectionComplete) {
         updateActionPromptForSelected(getStatus());
     }
-    else{
-        if (m_inBoxSelectionMode){
-            updatePromptTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
-        }
-        else {
-            updateActionPromptForSelection();
-        }
+    else {
+        updateActionPromptForSelectionMode();
     }
 }
 

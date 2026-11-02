@@ -206,7 +206,8 @@ namespace {
  */
 // RVT_PORT changed from RS_PainterQt::RS_PainterQt( const QPaintDevice* pd)
 RS_Painter::RS_Painter(QPaintDevice* pd)
-    : QPainter{pd}, m_cachedDpmm{getDpmm()} {
+    : QPainter{pd}  {
+    m_cachedDpmm = getDpmm();
 }
 
 /**
@@ -1898,6 +1899,8 @@ void RS_Painter::setViewPort(LC_GraphicViewport* v) {
     m_viewPortOffsetY = v->getOffsetY();
     m_viewPortOffset.set(m_viewPortOffsetX, m_viewPortOffsetY);
     m_viewPortHeight = v->getHeight();
+
+    m_toGuiTransform = prepareToGuiTransform();
 }
 
 // NOTE:
@@ -1912,40 +1915,14 @@ void RS_Painter::setViewPort(LC_GraphicViewport* v) {
 // ----------------------------------------------------------------------------------------------------------------
 
 void RS_Painter::toGui(const RS_Vector& wcsCoordinate, double& uiX, double& uiY) const {
-    //    viewport->toUI(pos, x,y);
-
-    if (hasUCS()) {
-        //   ucsToUCS(wcsCoordinate.x, wcsCoordinate.y, uiX, uiY);
-        // the code below is equivalent to
-
-        /*
-                RS_Vector wcs = RS_Vector(wcsCoordinate.x, wcsCoordinate.y);
-                RS_Vector newPos = wcs-m_ucsOrigin;
-                newPos.rotate(xAxisAngle);
-                uiY = newPos.x;
-                uiX = newPos.y;
-        */
-        const double ucsPositionX = wcsCoordinate.x - getUcsOrigin().x;
-        const double ucsPositionY = wcsCoordinate.y - getUcsOrigin().y;
-
-        const RS_Vector& ucsRotation = getUcsRotation();
-        const double ucsX = ucsPositionX * ucsRotation.x - ucsPositionY * ucsRotation.y;
-        const double ucsY = ucsPositionX * ucsRotation.y + ucsPositionY * ucsRotation.x;
-
-        //        uiX = toGuiX(uiX);
-        uiX = ucsX * m_viewPortFactorX + m_viewPortOffsetX;
-        //        uiY = toGuiY(uiY);
-        uiY = -ucsY * m_viewPortFactorY - m_viewPortOffsetY + m_viewPortHeight;
-    }
-    else {
-        //        uiX = toGuiX(wcsCoordinate.x);
-        uiX = wcsCoordinate.x * m_viewPortFactorX + m_viewPortOffsetX;
-        //        uiY = toGuiY(wcsCoordinate.y);
-        uiY = -wcsCoordinate.y * m_viewPortFactorY - m_viewPortOffsetY + m_viewPortHeight;
-    }
+    m_toGuiTransform.map(wcsCoordinate.x, wcsCoordinate.y, &uiX, &uiY);
 }
 
 RS_Vector RS_Painter::toGui(const RS_Vector& worldCoordinates) const {
+    return toGuiVector(m_toGuiTransform, worldCoordinates);
+}
+
+RS_Vector RS_Painter::toGuiDirect(const RS_Vector& worldCoordinates) const {
     RS_Vector uiPosition = worldCoordinates;
     if (hasUCS()) {
         uiPosition.move(-getUcsOrigin()).rotate(getUcsRotation());
@@ -1970,16 +1947,24 @@ RS_Vector RS_Painter::toGui(const RS_Vector& worldCoordinates) const {
     return uiPosition;
 }
 
-QTransform RS_Painter::getToGuiTransform() const {
-    QPolygonF wcs{{0., 0.}, {1., 0.}, {0., 1.}, {1., 1.}};
-    QPolygonF gui;
-    std::transform(wcs.begin(), wcs.end(), std::back_inserter(gui), [this](const QPointF& wcsPoint) {
-        const RS_Vector guiV = toGui({wcsPoint.x(), wcsPoint.y()});
-        return QPointF{guiV.x, guiV.y};
-    });
-    QTransform transform;
-    QTransform::quadToQuad(wcs, gui, transform);
-    return transform;
+QTransform RS_Painter::getToGUITransform() const {
+    return m_toGuiTransform;
+}
+
+QTransform RS_Painter::prepareToGuiTransform() const {
+    const RS_Vector q0 = toGuiDirect({0.0, 0.0});
+    const RS_Vector qx = toGuiDirect({1.0, 0.0});
+    const RS_Vector qy = toGuiDirect({0.0, 1.0});
+
+    const double m11 = qx.x - q0.x;
+    const double m12 = qx.y - q0.y;
+    const double m21 = qy.x - q0.x;
+    const double m22 = qy.y - q0.y;
+    const double dx  = q0.x;
+    const double dy  = q0.y;
+
+    // Direct affine constructor: guaranteed pure affine (no TxProject flag)
+    return QTransform{m11, m12, m21, m22, dx, dy};
 }
 
 QPointF RS_Painter::toGuiPointF(const RS_Vector& worldCoordinates) const {

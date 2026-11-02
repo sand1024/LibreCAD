@@ -125,7 +125,7 @@ void LC_ActionOrder::onMouseRightButtonReleaseSelected(const int status, [[maybe
      }
 }
 
-void LC_ActionOrder::updateActionPromptForSelection() {
+void LC_ActionOrder::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Choose entities") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Order immediately after selection")));
 }

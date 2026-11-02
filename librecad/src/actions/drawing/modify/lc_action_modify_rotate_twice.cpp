@@ -210,7 +210,7 @@ void LC_ActionModifyRotateTwice::doPerformTrigger() {
     trigger();
 }
 
-void LC_ActionModifyRotateTwice::updateActionPromptForSelection() {
+void LC_ActionModifyRotateTwice::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select for two axis rotation") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Rotate 2 Axis immediately after selection")));
 }

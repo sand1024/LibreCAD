@@ -398,6 +398,29 @@ bool LC_LineMath::isNotMeaningfulDistance(const RS_Vector& v1, const RS_Vector& 
 }
 
 /**
+ * Return true if squared distance between two points is meaningful (>= tolSq)
+ * @param v1 first point
+ * @param v2 second point
+ * @param tolSq squared tolerance threshold (defaults to RS_TOLERANCE2)
+ * @return true if points are distinct, false otherwise
+ */
+bool LC_LineMath::isMeaningfulDistanceSquared(const RS_Vector& v1, const RS_Vector& v2, const double tolSq) {
+    return (v1 - v2).squared() >= tolSq;
+}
+
+/**
+ * Return true if squared distance between two points is not meaningful (< tolSq),
+ * indicating coincident points.
+ * @param v1 first point
+ * @param v2 second point
+ * @param tolSq squared tolerance threshold (defaults to RS_TOLERANCE2)
+ * @return true if coincident, false otherwise
+ */
+bool LC_LineMath::isNotMeaningfulDistanceSquared(const RS_Vector& v1, const RS_Vector& v2, const double tolSq) {
+    return (v1 - v2).squared() < tolSq;
+}
+
+/**
  * Creates line that is parallel to given original line (defined by start and and point), that is located
  * on given distance
  * @param start start of original line

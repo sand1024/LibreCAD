@@ -33,7 +33,6 @@
 /**
  * This action class can handle user events to select all entities.
  *
- * @author Andrew Mustun
  */
 class LC_ActionSelectIntersected:public RS_ActionSelectBase {
     Q_OBJECT
@@ -43,6 +42,35 @@ public:
     void reset();
     void init(int status) override;
 protected:
+    void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
+    RS2::CursorType doGetMouseCursor(int status) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void updateActionPrompt();
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
+    bool isValidEntityForSelection(const RS_Entity* entity);
+    void doUpdateActionPromptForSelectionStart() override;
+    void doTrigger() override;
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override{return true;}
+    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
+    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
+
+    bool isAllowCycleMassSelectionStyle() const override {
+        return false;
+    }
+
+    RS_Vector getSelectionCorner1() override;
+    void invalidateSelectionCorner1() override;
+
+    bool isPerformSelect(const bool isShift) const override {
+        return isShift ? !m_performSelect : m_performSelect;
+    }
+
+    bool isPerformSelect(const LC_MouseEvent* e) const {
+        return isPerformSelect(e != nullptr && e->isShift);
+    }
+
     /**
      * Action States.
      */
@@ -54,19 +82,6 @@ protected:
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     bool m_performSelect = false;
-    void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
-    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
-    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
-    void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
-    bool isValidEntityForSelection(const RS_Entity* entity);
-    void updateActionPrompt() override;
-    void doTrigger() override;
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override{return true;}
-    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
-    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
-private:
-    bool m_mouseIsPressed = false;
+    bool m_currentSelect = false;
 };
 #endif

@@ -195,7 +195,8 @@ void QG_CommandEdit::keyPressEvent(QKeyEvent* e) {
             processInput(text());
             break;
         case Qt::Key_Space:
-            if (CFG_Keyboard::o_EvaluateCommandOnSpace) {
+             // fixme - sand - chack that current action is in selection mode, if it is so - direct event to it
+             if (CFG_Keyboard::o_EvaluateCommandOnSpace) {
                 processInput(text());
             }
             else if (!text().isEmpty()) {

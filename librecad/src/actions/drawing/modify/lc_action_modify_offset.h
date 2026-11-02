@@ -87,7 +87,7 @@ protected:
     LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     void updateActionPromptForSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;

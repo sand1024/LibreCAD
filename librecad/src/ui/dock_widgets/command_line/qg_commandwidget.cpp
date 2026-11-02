@@ -121,6 +121,7 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
     if (event != nullptr && event->type() == QEvent::KeyPress) {
         const auto e = static_cast<QKeyEvent*>(event);
 
+        auto currentAction = m_actionHandler->getCurrentAction();
         const int key{e->key()};
         switch (key) {
             case Qt::Key_Return:
@@ -133,6 +134,13 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
             case Qt::Key_Escape:
                 return false;
             case Qt::Key_Space:
+                if (currentAction != nullptr) {
+                   if (currentAction->isInSelectionMode()) {
+                       // we don't switch to command widget, we'll use space
+                       // to cycle switch mass selection mode
+                       return false;
+                   }
+                }
                 if (!hasFocus() && CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
                     // do not take focus here
                     spacePressed();
@@ -164,7 +172,7 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
         if (isGraphicViewEvent) {
             if (!leCommand->hasFocus()) {
                 // auto currentAction = m_actionHandler->getCurrentNonDefaultAction();
-                 auto currentAction = m_actionHandler->getCurrentAction();
+
                 if (currentAction != nullptr) {
                     bool numberKey = false;
                     switch (e->key()) {

@@ -35,9 +35,7 @@ void LC_ScaleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                    action->setIsotropicScaling(val);
                }, container);
 
-    addBoolean({
-                  "a_free",
-                  tr("Free"),
+    addBoolean({"a_free",tr("Free"),
                   tr("If checked, factor will be freely selected by mouse. Otherwise, specified values of factors will be used.")
               }, [action]()-> bool {
                   return action->isExplicitFactor();
@@ -83,8 +81,7 @@ void LC_ScaleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                   });
 
     addBoolean({
-                   "a_currentAttrs",
-                   tr("Current attributes"),
+                   "a_currentAttrs",tr("Current attributes"),
                    tr("If checked, current attributes will be applied to created entities, otherwise original ones will be used")
                }, [action]()-> bool {
                    return action->isUseCurrentAttributes();
@@ -93,8 +90,7 @@ void LC_ScaleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                }, container);
 
     addBoolean({
-                   "a_currentLayer",
-                   tr("Current layer"),
+                   "a_currentLayer",tr("Current layer"),
                    tr("If checked, created entities will be placed into current layer, otherwise they will be in original layers")
                }, [action]()-> bool {
                    return action->isUseCurrentLayer();

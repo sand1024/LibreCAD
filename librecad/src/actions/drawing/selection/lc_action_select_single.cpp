@@ -38,11 +38,9 @@ LC_ActionSelectSingle::LC_ActionSelectSingle(LC_ActionContext *actionContext,
 
 LC_ActionSelectSingle::LC_ActionSelectSingle(const RS2::EntityType typeToSelect,
                                              LC_ActionContext *actionContext,
-                                             RS_ActionInterface* actionSelect,
-                                             const QList<RS2::EntityType> &entityTypeList)
-    :RS_ActionSelectBase("Select Entities", actionContext, RS2::ActionSelectSingle, entityTypeList)
-    ,m_actionSelect(actionSelect)
-    ,m_typeToSelect(typeToSelect){
+                                             RS_ActionInterface* actionSelect)
+    :RS_ActionSelectBase("Select Entities", actionContext, RS2::ActionSelectSingle, {typeToSelect})
+    ,m_actionSelect(actionSelect){
 }
 
 void LC_ActionSelectSingle::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
@@ -63,7 +61,9 @@ void LC_ActionSelectSingle::onMouseMoveEvent([[maybe_unused]] const int status, 
 
 void LC_ActionSelectSingle::selectionFinishedByKey(QKeyEvent *e, [[maybe_unused]]bool escape) {
     finish();
-    m_actionSelect->keyPressEvent(e);
+    if (m_actionSelect != nullptr) {
+        m_actionSelect->keyPressEvent(e);
+    }
 }
 
 void LC_ActionSelectSingle::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
@@ -93,11 +93,13 @@ void LC_ActionSelectSingle::doSelectEntity(RS_Entity *entityToSelect, const bool
 
 void LC_ActionSelectSingle::onMouseRightButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     finish();
-    if (m_actionSelect->rtti() == RS2::ActionSelect) {
-        m_actionSelect->finish();
-    }
-    else{
-        m_actionSelect->mouseReleaseEvent(e->originalEvent); // fixme - sand - review, rework
+    if (m_actionSelect != nullptr) {
+        if (m_actionSelect->rtti() == RS2::ActionSelect) {
+            m_actionSelect->finish();
+        }
+        else{
+            m_actionSelect->mouseReleaseEvent(e->originalEvent); // fixme - sand - review, rework
+        }
     }
 }
 
@@ -105,17 +107,14 @@ RS2::CursorType LC_ActionSelectSingle::doGetMouseCursor([[maybe_unused]] int sta
     return RS2::SelectCursor;
 }
 
-RS2::EntityType LC_ActionSelectSingle::getTypeToSelect() const {
-    return m_typeToSelect;
-}
-
 bool LC_ActionSelectSingle::isEntityAllowedToSelect(RS_Entity *ent) const {
-    if (m_typeToSelect == RS2::EntityType::EntityUnknown) {
+    if (m_catchForSelectionEntityTypes.isEmpty()) {
         return true;
     }
-    return ent ->rtti() == m_typeToSelect;
+    auto entityType = ent ->rtti();
+    return m_catchForSelectionEntityTypes.contains(entityType);
 }
 
-void LC_ActionSelectSingle::updateActionPrompt() {
+void LC_ActionSelectSingle::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Specify entity to select") + " " + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }

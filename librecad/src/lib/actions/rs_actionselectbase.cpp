@@ -57,8 +57,10 @@ void RS_ActionSelectBase::keyPressEvent(QKeyEvent* e) {
             }
             break;
         }
-        default:
+        default: {
+            LC_OverlayBoxAction::keyPressEvent(e);
             break;
+        }
     }
 }
 

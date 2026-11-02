@@ -91,6 +91,7 @@ protected:
 
     void highlightHoveredEntities(const LC_MouseEvent* event);
     void highlightEntity(const RS_Entity* entity);
+    void doUpdateActionPromptForSelectionStart() override { };
     void updateActionPrompt() override;
     void createEditedLineDescription(RS_Line* clone, bool ctrlPressed, bool shiftPressed) const;
     void createEditedArcDescription(const RS_Arc* clone, bool ctrlPressed, bool shiftPressed) const;
@@ -102,6 +103,10 @@ protected:
     RS_Entity* getClone(const RS_Entity* e);
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;}
     void onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) override;
+    RS_Vector getSelectionCorner1() override;
+    void invalidateSelectionCorner1() override;
+    QList<RS2::EntityType> getEntityTypesToSelect() override;
+
 private:
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;

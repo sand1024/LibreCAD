@@ -119,11 +119,6 @@ void RS_ActionDefault::init(const int status){
     RS_PreviewActionInterface::init(status);
     m_actionData->v1 = {};
     m_actionData->v2 = {};
-    //    snapMode.clear();
-    //    snapMode.restriction = RS2::RestrictNothing;
-    //    restrBak = RS2::RestrictNothing;
-    //        RS_DIALOGFACTORY->requestToolBar(RS2::ToolBarMain);
-
     RS_DEBUG->print("RS_ActionDefault::init: OK");
 }
 
@@ -140,14 +135,12 @@ void RS_ActionDefault::keyPressEvent(QKeyEvent *e){
     if (e->isAccepted()) {
         return;
     }
-    //        std::cout<<"RS_ActionDefault::keyPressEvent(): begin"<<std::endl;
     switch (e->key()) {
         case Qt::Key_Shift:
             e->accept();
             break; //avoid clearing command line at shift key
             //cleanup default action, issue#285
         case Qt::Key_Escape:
-            //        std::cout<<"RS_ActionDefault::keyPressEvent(): Qt::Key_Escape"<<std::endl;
             deleteSnapper();
             goToNeutralStatus();
             e->accept();
@@ -586,7 +579,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
         case SetCorner2: {
             if (m_actionData->v1.valid){
                 m_actionData->v2 = mouse;
-                drawOverlayBox(m_actionData->v1, m_actionData->v2);
+                drawOverlaySelectionBox(m_actionData->v1, m_actionData->v2);
 
                 if (isInfoCursorForModificationEnabled()) {
                     // restore selection box to ucs
@@ -866,7 +859,7 @@ void RS_ActionDefault::onMouseRightButtonPress([[maybe_unused]]int status, const
     e->originalEvent->accept();
 }
 
-void RS_ActionDefault:: onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) {
+void RS_ActionDefault::onApplyProjectedRelativePoint(int status, LC_MouseEvent* event, const LC_RelativePositionData* relativePositionData) {
     switch (status) {
         case Moving: {
             onMouseMovingCompleted(event);
@@ -883,6 +876,20 @@ void RS_ActionDefault:: onApplyProjectedRelativePoint(int status, LC_MouseEvent*
     }
 }
 
+RS_Vector RS_ActionDefault::getSelectionCorner1() {
+    return m_actionData->v1;
+}
+
+void RS_ActionDefault::invalidateSelectionCorner1(){
+    m_actionData->v1.valid = false;
+}
+
+QList<RS2::EntityType> RS_ActionDefault::getEntityTypesToSelect() {
+    if (m_typeToSelect == RS2::EntityUnknown) {
+        return LC_OverlayBoxAction::getEntityTypesToSelect();
+    }
+    return {m_typeToSelect};
+}
 
 void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEvent* e) {
     switch (status) {
@@ -942,7 +949,7 @@ void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_Mouse
                 }
                 goToNeutralStatus();
             } else {
-                if (m_selectWithPressedMouseOnly){
+                if (m_allowsLassoSelectionByPressedMouseButton){
                     goToNeutralStatus();
                 }
                 else {

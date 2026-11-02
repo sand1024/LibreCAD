@@ -52,7 +52,7 @@ public:
 protected:
   void onSelectionCompleted(bool singleEntity, bool fromInit) override;
   bool isAllowTriggerOnEmptySelection() override;
-  void updateActionPromptForSelection() override;
+  void doUpdateActionPromptForSelectionStart() override;
   void updateActionPromptForSelected(int status) override;
 
   bool doCheckMayTrigger() override;

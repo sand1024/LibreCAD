@@ -30,7 +30,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="6" column="0">
-       <widget class="QCheckBox" name="cbSelectionWindowByMBClickAndUp">
+       <widget class="QCheckBox" name="cbAllowLassoSelection">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -38,13 +38,16 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Entities Selection Window
+         <string>Selecting Entities
 
-If selected, entities selection window is defined with pressed left mouse button.
-Otherwirse, 2 mouse clicks are used for corners (LibreCAD classic)</string>
+If selected, selecting objects via lasso is enabled. In this case, 
+click by mouse starts box selection, and mouse move with pressed 
+left mouse button will do lasso selection. 
+If not selected, classical selection mode (selection box when moving 
+mouse with pressed left mouse button) is used.</string>
         </property>
         <property name="text">
-         <string>Select objects in window with pressed mouse button</string>
+         <string>Allow selecting entities with lasso selection</string>
         </property>
        </widget>
       </item>

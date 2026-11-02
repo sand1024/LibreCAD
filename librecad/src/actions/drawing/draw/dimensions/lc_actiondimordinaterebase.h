@@ -32,7 +32,7 @@ public:
     ~LC_ActionDimOrdinateRebase() override = default;
 protected:
      void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-     void updateActionPromptForSelection() override;
+     void doUpdateActionPromptForSelectionStart() override;
      bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
      void doTriggerCompletion(bool success) override;
      void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;

@@ -98,8 +98,8 @@ public:
     void selectAll(bool select=true) const;
     void deselectAll() const {selectAll(false);}
     void invertSelection() const;
-    void selectWindow(RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2,bool select=true, bool cross=false);
-    void selectWindow(const QList<RS2::EntityType> &typesToSelect, const RS_Vector& v1, const RS_Vector& v2,bool select=true, bool cross=false);
+    void selectWindow(RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2,bool select=true, bool cross=false, bool fence = false);
+    void selectWindow(const QList<RS2::EntityType> &typesToSelect, const RS_Vector& v1, const RS_Vector& v2,bool select=true, bool cross=false, bool fence = false);
     void selectIntersected(RS_Entity* entity, bool select) const;
     void deselectWindow(const RS2::EntityType typeToSelect,const RS_Vector& v1, const RS_Vector& v2) {selectWindow(typeToSelect,v1, v2, false);}
     void selectIntersected(const RS_Vector& v1, const RS_Vector& v2,bool select=true) const;
@@ -117,8 +117,11 @@ protected:
     LC_GraphicViewport* m_viewPort = nullptr;
     bool m_additiveSelection = true;
 
-    void doSelectEntitiesWithTypeInWindow(const RS_EntityContainer* container, RS_Document* doc, RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross);
-    void doSelectEntitiesWithTypesInWindow(const RS_EntityContainer* container, RS_Document* doc, const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross);
+    void doSelectEntitiesWithTypeInWindow(const RS_EntityContainer* container, RS_Document* doc, RS2::EntityType typeToSelect,
+                                          const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross, bool fence);
+    void doSelectEntitiesWithTypesInWindow(const RS_EntityContainer* container, RS_Document* doc,
+                                           const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2,
+                                           bool select, bool cross, bool fence);
     void doSelectIntersectedContainer(RS_Entity* entity, RS_Document* doc, bool select) const;
     void doSelectIntersectedAtomic(const RS_Entity* entity, RS_Document* doc, bool select) const;
     void doUnselectAll(const RS_EntityContainer* container, const RS_Document* doc) const;

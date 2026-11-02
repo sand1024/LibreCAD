@@ -73,7 +73,7 @@ void LC_ActionLayerToggle::doWithLayer(RS_Graphic* graphic, RS_Layer* layer) {
     }
 }
 
-void LC_ActionLayerToggle::updateActionPromptForSelection() {
+void LC_ActionLayerToggle::doUpdateActionPromptForSelectionStart() {
     switch (m_actionType) {
         case RS2::ActionLayerEntityActivate: {
             updatePromptTRCancel("Select entity to activate layer");

@@ -24,7 +24,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_RTree_H
 #define LC_RTree_H
 
+#include <functional>
 #include <memory>
+#include <vector>
 
 class RS_Vector;
 class RS_VectorSolutions;
@@ -54,30 +56,25 @@ public:
      *                        i.e. the node box centers
      */
     RTree(double toleranceSize=1e-10);
-    /**
-     * @brief RTree Constructor of a RTree for efficient point look up
-     * @param points - boxes to construct boxes with the tolerance size
-     * @param toleranceSize - the default box size to use to find nearest points,
-     *                        i.e. the node box centers
-     */
-    RTree(const RS_VectorSolutions& points, double toleranceSize=1e-10);
 
+    // Bulk-loading constructor for packed spatial index construction
+    RTree(const std::vector<std::tuple<RS_Vector, RS_Vector, uintptr_t>>& items, double toleranceSize = 1e-10);
 
-    /**
- * @brief Insert a point the R-Tree container
- * @return bool - true, if successful; false, if a coincident point is already in the the container
- * @author Dongxu Li
- */
-    bool Insert(const RS_Vector& point) const;
-    /**
-     * @brief Insert insert a new box
-     * @param area box
-     * @return
-     */
-    bool Insert(const Area& area) const;
+    ~RTree();
 
-    RS_VectorSolutions nearestNeighbors(const RS_Vector& point) const;
-    RS_VectorSolutions pointsInBox(const Area& area) const;
+    // Direct payload insertion
+    bool insert(const RS_Vector& min, const RS_Vector& max, uintptr_t payload);
+    bool insert(const Area& area, uintptr_t payload);
+
+    // Bounding-box based removal
+    bool remove(const RS_Vector& min, const RS_Vector& max, uintptr_t payload);
+    bool remove(const Area& area, uintptr_t payload);
+
+    // Spatial queries
+    void query(const RS_Vector& min, const RS_Vector& max,
+               const std::function<bool(uintptr_t payload)>& callback) const;
+    std::vector<uintptr_t> query(const RS_Vector& min, const RS_Vector& max) const;
+    void clear();
 
 private:
     struct RTreeImpl;
@@ -89,4 +86,3 @@ private:
 using LC_RTree = lc::geo::RTree;
 
 #endif
-//EOF

@@ -697,7 +697,7 @@ void LC_ActionModifyRotate::setRefPointAngleAbsolute(const bool val) const {
     m_rotateData->secondAngleIsAbsolute = val;
 }
 
-void LC_ActionModifyRotate::updateActionPromptForSelection() {
+void LC_ActionModifyRotate::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to rotate") + getSelectionCompletionHintMsg(),
                                MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Rotate immediately after selection")));
 }

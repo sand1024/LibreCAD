@@ -57,7 +57,7 @@ bool LC_ActionModifyRevertDirection::isShowRefPointsOnHighlight() {
     return true;
 }
 
-void LC_ActionModifyRevertDirection::updateActionPromptForSelection() {
+void LC_ActionModifyRevertDirection::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to revert direction") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Revert immediately after selection")));
 }

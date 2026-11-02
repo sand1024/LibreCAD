@@ -56,7 +56,7 @@ void LC_ActionLayerBase::doTrigger() {
 }
 
 void LC_ActionLayerBase::applyBoxSelectionModeIfNeeded([[maybe_unused]]RS_Vector mouse) {
-    m_inBoxSelectionMode = false;
+    setMassSelectionMode(MassSelectionMode::NONE);
 }
 
 void LC_ActionLayerBase::proceedSelectedEntity([[maybe_unused]] const LC_MouseEvent* e) {

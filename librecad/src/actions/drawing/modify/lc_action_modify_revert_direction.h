@@ -42,7 +42,7 @@ protected:
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
     bool isShowRefPointsOnHighlight() override;
 };

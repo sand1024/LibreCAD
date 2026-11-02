@@ -70,7 +70,7 @@ void LC_ActionDrawDual::doTriggerSelectionUpdate(const bool keepSelected, const 
     }
 }
 
-void LC_ActionDrawDual::updateActionPromptForSelection() {
+void LC_ActionDrawDual::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to create dual (Enter to complete)"), MOD_SHIFT_LC(tr("Select contour")));
 }
 

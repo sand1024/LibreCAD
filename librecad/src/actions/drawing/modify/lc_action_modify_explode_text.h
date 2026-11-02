@@ -41,7 +41,7 @@ public:
     explicit LC_ActionModifyExplodeText(LC_ActionContext *actionContext);
     ~LC_ActionModifyExplodeText() override;
 protected:
-    void updateActionPromptForSelection() override;
+    void doUpdateActionPromptForSelectionStart() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

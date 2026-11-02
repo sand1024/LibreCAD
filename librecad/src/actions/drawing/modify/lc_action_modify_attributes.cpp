@@ -67,7 +67,7 @@ void LC_ActionModifyAttributes::doTriggerSelectionUpdate(const bool keepSelected
     }
 }
 
-void LC_ActionModifyAttributes::updateActionPromptForSelection() {
+void LC_ActionModifyAttributes::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to modify attributes") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Modify attributes immediately after selecting")));
 }

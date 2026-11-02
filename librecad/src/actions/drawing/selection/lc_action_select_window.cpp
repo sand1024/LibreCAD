@@ -32,11 +32,6 @@
 #include "lc_selectwindowoptions.h"
 #include "rs_selection.h"
 
-struct LC_ActionSelectWindow::Points {
-    RS_Vector v1;
-    RS_Vector v2;
-};
-
 /**
  * Constructor.
  *
@@ -45,37 +40,47 @@ struct LC_ActionSelectWindow::Points {
  */
 LC_ActionSelectWindow::LC_ActionSelectWindow(LC_ActionContext* actionContext, const bool select)
     : RS_ActionSelectBase(select ? "ActionSelectWindow" : "ActionDeselectWindow", actionContext,
-                          select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow), m_actionData(std::make_unique<Points>()),
-      m_select(select) {
+                          select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow),
+      m_performSelect(select), m_currentSelect(select) {
 }
 
 LC_ActionSelectWindow::LC_ActionSelectWindow(RS2::EntityType typeToSelect, LC_ActionContext* actionContext)
-    : RS_ActionSelectBase("ActionSelectWindow" , actionContext,
-                          RS2::ActionSelectWindow ), m_actionData(std::make_unique<Points>()),
-      m_select(true) {
+    : RS_ActionSelectBase("ActionSelectWindow", actionContext, RS2::ActionSelectWindow),
+      m_performSelect(true), m_currentSelect(true) {
     if (typeToSelect == RS2::EntityUnknown) {
-        setSelectAllEntityTypes(true);
+        m_catchForSelectionEntityTypes = {};
     }
     else {
-        m_entityTypesToSelect.append(typeToSelect);
-        setSelectAllEntityTypes(false);
+        m_catchForSelectionEntityTypes.append(typeToSelect);
     }
 }
 
 LC_ActionSelectWindow::LC_ActionSelectWindow(const QString& name, LC_ActionContext* actionContext,
                                              const RS2::ActionType actionType, const RS2::EntityType typeToSelect, const bool select)
-    : RS_ActionSelectBase(name, actionContext, actionType), m_actionData(std::make_unique<Points>()), m_select(select) {
+    : RS_ActionSelectBase(name, actionContext, actionType),
+      m_performSelect(select), m_currentSelect(select) {
     if (typeToSelect == RS2::EntityUnknown) {
-        setSelectAllEntityTypes(true);
+        m_catchForSelectionEntityTypes = {};
     }
     else {
-        m_entityTypesToSelect.append(typeToSelect);
-        setSelectAllEntityTypes(false);
+        m_catchForSelectionEntityTypes.append(typeToSelect);
     }
 }
 
 LC_ActionSelectWindow::~LC_ActionSelectWindow() = default;
 
+void LC_ActionSelectWindow::reset() {
+    m_corner1.valid = false;
+    m_currentSelect = m_performSelect;
+    m_lmbPressed = false;
+    setMassSelectionMode(MassSelectionMode::NONE);
+    setMassSelectionStyle(MassSelectionStyle::Auto);
+}
+
+void LC_ActionSelectWindow::init(const int status) {
+    reset();
+    RS_ActionSelectBase::init(status);
+}
 void LC_ActionSelectWindow::doSaveOptions() {
     RS_ActionSelectBase::doSaveOptions(); // fixme - complete
 }
@@ -83,119 +88,142 @@ void LC_ActionSelectWindow::doSaveOptions() {
 void LC_ActionSelectWindow::doLoadOptions() {
     RS_ActionSelectBase::doLoadOptions(); // fixme - complete
 }
+void LC_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
+    if (e == nullptr) {
+        return;
+    }
 
-void LC_ActionSelectWindow::init(const int status) {
-    RS_PreviewActionInterface::init(status);
-    m_actionData = std::make_unique<Points>();
-    m_selectIntersecting = false;
-    //snapMode.clear();
-    //snapMode.restriction = RS2::RestrictNothing;
-}
+    const RS_Vector mouse = e->graphPoint;
+    updateCoordinateWidgetByRelZero(mouse);
 
-void LC_ActionSelectWindow::doTrigger() {
-    if (m_actionData->v1.valid && m_actionData->v2.valid) {
-        if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10) {
-            // restore selection box to ucs
-            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
-
-            const bool selectIntersecting = (ucsP1.x > ucsP2.x) || m_selectIntersecting;
-            RS_Selection s(m_document, m_viewport);
-            bool doSelect = m_select;
-            if (m_invertSelectionOperation) {
-                doSelect = !doSelect;
+    if (status == SetCorner1) {
+        // Check press-and-drag threshold to start mass selection gesture
+        if (m_lmbPressed && m_corner1.valid && (toGuiDX(m_corner1.distanceTo(mouse)) > 10.0)) {
+            if (getMassSelectionMode() == MassSelectionMode::NONE) {
+                if (m_allowsLassoSelectionByPressedMouseButton) {
+                    setMassSelectionMode(MassSelectionMode::LASSO);
+                    m_lassoRegion.clear();
+                    m_lassoRegion.addPoint(m_corner1);
+                    updateActionPrompt();
+                }
+                else {
+                    setMassSelectionMode(MassSelectionMode::BOX);
+                    setStatus(SetCorner2);
+                    updateActionPrompt();
+                }
             }
-            // expand selection wcs to ensure that selection box in ucs is full within bounding rect in wcs
-            RS_Vector wcsP1, wcsP2;
-            m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
+        }
 
-            if (m_selectAllEntityTypes) {
-                s.selectWindow(RS2::EntityType::EntityUnknown, wcsP1, wcsP2, doSelect, selectIntersecting);
-            }
-            else {
-                s.selectWindow(m_entityTypesToSelect, wcsP1, wcsP2, doSelect, selectIntersecting);
-            }
-            init(SetCorner1);
+        if (getMassSelectionMode() == MassSelectionMode::LASSO) {
+            processLassoSelectionMove(mouse, e);
+            return;
         }
     }
-}
 
-void LC_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
-    const RS_Vector snapped = e->graphPoint;
-    updateCoordinateWidgetByRelZero(snapped);
-    if (getStatus() == SetCorner2 && m_actionData->v1.valid) {
-        m_actionData->v2 = snapped;
-        drawOverlayBox(m_actionData->v1, m_actionData->v2);
-        if (isInfoCursorForModificationEnabled()) {
-            // restore selection box to ucs
-            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
-            const bool cross = (ucsP1.x > ucsP2.x) || e->isControl;
-            const bool deselect = e->isShift ? m_select : !m_select;
-            QString msg = deselect ? tr("De-Selecting") : tr("Selecting");
-            msg.append(tr(" entities "));
-            msg.append(cross ? tr("that intersect with box") : tr("that are within box"));
-            m_infoCursorOverlayData->setZone2(msg);
-            const RS_Vector pos = e->graphPoint;
-            forceUpdateInfoCursor(pos);
+    if (status == SetCorner2 || getMassSelectionMode() == MassSelectionMode::BOX) {
+        if (m_corner1.valid) {
+            processBoxSelectionMove(m_corner1, mouse, e);
         }
     }
 }
 
 void LC_ActionSelectWindow::onMouseLeftButtonPress(const int status, const LC_MouseEvent* e) {
     switch (status) {
-        case SetCorner1:
-            if (e->isControl) {
+        case SetCorner1: {
+            if (e != nullptr && e->isControl) {
                 finish();
+                return;
             }
-            else {
-                m_actionData->v1 = e->graphPoint;
-                setStatus(SetCorner2);
+            if (e != nullptr) {
+                m_corner1 = e->graphPoint;
+                m_lmbPressed = true;
             }
             break;
-        default:
+        }
+        default: {
             break;
+        }
     }
 }
 
 void LC_ActionSelectWindow::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
-    if (status == SetCorner2) {
-        m_actionData->v2 = e->graphPoint;
-        m_selectIntersecting = e->isControl;
-        m_invertSelectionOperation = e->isShift;
-        trigger();
+    if (getMassSelectionMode() == MassSelectionMode::LASSO) {
+        finishLassoSelection(e);
+        reset();
+        setStatus(SetCorner1);
+        updateActionPrompt();
+        m_lmbPressed = false;
+        return;
     }
+
+    if (status == SetCorner1) {
+        if (m_corner1.valid) {
+            // Click without drag: switch to waiting for second corner
+            setStatus(SetCorner2);
+            setMassSelectionMode(MassSelectionMode::BOX);
+            updateActionPrompt();
+        }
+    }
+    else if (status == SetCorner2) {
+        finishBoxSelection(e);
+        reset();
+        setStatus(SetCorner1);
+        updateActionPrompt();
+    }
+
+    m_lmbPressed = false;
 }
 
 void LC_ActionSelectWindow::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
-    if (status == SetCorner2) {
-        deletePreview();
+    if (isMassSelecting() || status == SetCorner2) {
+        deletePreviewAndHighlights();
+        reset();
+        setStatus(SetCorner1);
+        updateActionPrompt();
+        if (m_graphicView != nullptr) {
+            m_graphicView->redraw(RS2::RedrawOverlay);
+        }
+        return;
     }
-    initPrevious(status);
+
+    finish();
 }
 
 void LC_ActionSelectWindow::updateActionPrompt() {
-    switch (getStatus()) {
-        case SetCorner1:
-            updatePromptTRCancel(tr("Click and drag for the selection window") + " " + getSelectionCompletionHintMsg());
-            break;
-        case SetCorner2:
-            updatePromptTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(m_select ? tr("De-select entities") : tr("Select entities"),
-                                                                            m_select ? tr("Select Intersecting") : tr(
-                                                                                "De-select intersecting")));
-            break;
-        default:
-            updatePrompt();
-            break;
+    const auto mode = getMassSelectionMode();
+    if (mode == MassSelectionMode::LASSO) {
+        const QString actionText = m_performSelect ? tr("select") : tr("deselect");
+        const QString shiftHint = m_performSelect ? tr("Deselect") : tr("Select");
+        updatePromptTRBack(tr("Draw lasso and release to %1 | Space: Switch selection style").arg(actionText),
+                           MOD_SHIFT_AND_CTRL(shiftHint, tr("Select Intersecting")));
+        return;
     }
+
+    if (mode == MassSelectionMode::BOX || getStatus() == SetCorner2) {
+        const QString shiftHint = m_performSelect ? tr("Deselect entities") : tr("Select entities");
+        updatePromptTRBack(tr("Choose second edge | Space: Switch selection style"),
+                           MOD_SHIFT_AND_CTRL(shiftHint, tr("Select Intersecting")));
+        return;
+    }
+
+    doUpdateActionPromptForSelectionStart();
 }
 
-RS2::CursorType LC_ActionSelectWindow::doGetMouseCursor([[maybe_unused]] int status) {
-    return RS2::SelectCursor;
+void LC_ActionSelectWindow::doUpdateActionPromptForSelectionStart() {
+    const QString actionText = m_performSelect ? tr("select entities") : tr("deselect entities");
+    const QString shiftHint = m_performSelect ? tr("Deselect entities") : tr("Select entities");
+    const QString promptText = tr("Click corner or drag for lasso to %1").arg(actionText);
+
+    updatePromptTRCancel(promptText + " " + getSelectionCompletionHintMsg(),
+                         MOD_SHIFT_LC(shiftHint));
 }
 
-QList<RS2::EntityType> LC_ActionSelectWindow::getEntityTypesToSelect() {
-    return m_entityTypesToSelect;
+RS_Vector LC_ActionSelectWindow::getSelectionCorner1() {
+    return m_corner1;
+}
+
+void LC_ActionSelectWindow::invalidateSelectionCorner1() {
+    m_corner1.valid = false;
 }
 
 LC_ActionOptionsWidget* LC_ActionSelectWindow::createOptionsWidget() {
@@ -211,13 +239,13 @@ void LC_ActionSelectWindow::selectionFinishedByKey([[maybe_unused]] QKeyEvent* e
 }
 
 bool LC_ActionSelectWindow::isSelectAllEntityTypes() const {
-    return m_selectAllEntityTypes;
+    return m_catchForSelectionEntityTypes.isEmpty();
 }
 
-void LC_ActionSelectWindow::setSelectAllEntityTypes(const bool val) {
-    m_selectAllEntityTypes = val;
+void LC_ActionSelectWindow::setSelectAllEntityTypes() {
+    m_catchForSelectionEntityTypes.clear();
 }
 
 void LC_ActionSelectWindow::setEntityTypesToSelect(const QList<RS2::EntityType>& types) {
-    m_entityTypesToSelect = types;
+    m_catchForSelectionEntityTypes = types;
 }

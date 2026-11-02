@@ -1119,8 +1119,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/overlays/lc_overlayentity.h
      librecad/src/lib/engine/overlays/lc_overlaysmanager.cpp
      librecad/src/lib/engine/overlays/lc_overlaysmanager.h
-     librecad/src/lib/engine/overlays/overlay_box/rs_overlaybox.cpp
-     librecad/src/lib/engine/overlays/overlay_box/rs_overlaybox.h
+     librecad/src/lib/engine/overlays/overlay_box/lc_overlay_selection_box.cpp
+     librecad/src/lib/engine/overlays/overlay_box/lc_overlay_selection_box.h
      librecad/src/lib/engine/overlays/preview/rs_preview.cpp
      librecad/src/lib/engine/overlays/preview/rs_preview.h
      librecad/src/lib/engine/overlays/references/lc_refarc.cpp
@@ -2443,6 +2443,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_snap_visual_timing.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_keyboard_and_mouse.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_keyboard_and_mouse.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_lines.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_grid_general.cpp
@@ -2730,6 +2732,14 @@ set (SHARED_SOURCES
      librecad/src/ui/components/status_bar/lc_coordinates_widget.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_origin_markers.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/metrics/lc_settings_page_drafting_metrics_origin_markers.h
+     librecad/src/lib/engine/overlays/overlay_box/lc_overlay_selection_lasso.cpp
+     librecad/src/lib/engine/overlays/overlay_box/lc_overlay_selection_lasso.h
+     librecad/src/lib/information/lc_intersection.cpp
+     librecad/src/lib/information/lc_intersection.h
+     librecad/src/lib/selection/lc_lasso_region.cpp
+     librecad/src/lib/selection/lc_lasso_region.h
+     librecad/src/lib/selection/lc_polygon_selection.cpp
+     librecad/src/lib/selection/lc_polygon_selection.h
 )
 
 set (MUPARSER_SOURCES

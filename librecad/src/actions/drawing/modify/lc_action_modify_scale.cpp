@@ -425,7 +425,7 @@ void LC_ActionModifyScale::updateActionPromptForSelected(const int status) {
     }
 }
 
-void LC_ActionModifyScale::updateActionPromptForSelection() {
+void LC_ActionModifyScale::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to scale") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Scale immediately after selection")));
 }

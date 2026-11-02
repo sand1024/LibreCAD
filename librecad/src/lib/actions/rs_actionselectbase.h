@@ -36,7 +36,7 @@ class RS_ActionSelectBase:public LC_OverlayBoxAction {
 public:
     void keyPressEvent(QKeyEvent *e) override;
 protected:
-    const QList<RS2::EntityType> m_catchForSelectionEntityTypes;
+    QList<RS2::EntityType> m_catchForSelectionEntityTypes;
 
     RS_ActionSelectBase(const QString& name,LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone, QList<RS2::EntityType> entityTypeList = {});
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -51,6 +51,10 @@ protected:
         return LC_ModifiersInfo::withNativeCtrlKey(tr(" (Enter or CTRL+LMB click to complete)"));
     }
     virtual bool isAllowSelectionFinishByEnterForEmptySelection() {return false;}
+    void updateActionPrompt() override {doUpdateActionPromptForSelectionStart();}
+    RS_Vector getSelectionCorner1() override {return {};}
+    void invalidateSelectionCorner1() override {}
+    QList<RS2::EntityType> getEntityTypesToSelect() override {return m_catchForSelectionEntityTypes;}
 };
 
 #endif

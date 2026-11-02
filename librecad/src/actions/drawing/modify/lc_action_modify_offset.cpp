@@ -536,7 +536,7 @@ void LC_ActionModifyOffset::updateActionPromptForSelected(const int status) {
     }
 }
 
-void LC_ActionModifyOffset::updateActionPromptForSelection() {
+void LC_ActionModifyOffset::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select entities to offset") + getSelectionCompletionHintMsg(),
                          MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Offset immediately after selection")));
 }

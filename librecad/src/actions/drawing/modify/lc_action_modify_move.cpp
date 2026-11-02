@@ -240,7 +240,7 @@ void LC_ActionModifyMove::updateActionPromptForSelected(const int status) {
     }
 }
 
-void LC_ActionModifyMove::updateActionPromptForSelection() {
+void LC_ActionModifyMove::doUpdateActionPromptForSelectionStart() {
     bool copy = m_actionData->data.keepOriginals;
     updatePromptTRCancel((copy ? tr("Select to copy") : tr("Select to move")) + getSelectionCompletionHintMsg(),
                          MOD_SHIFT_AND_CTRL(tr("Select contour"), copy ? tr("Copy immediately after selection") : tr("Move immediately after selection")));

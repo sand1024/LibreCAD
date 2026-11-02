@@ -139,6 +139,8 @@ protected:
     RS_Vector getFreeSnapAwarePoint(const LC_MouseEvent *e, const RS_Vector &pos) const;
 
     void addOverlay(LC_OverlayDrawable* drawable, RS2::OverlayGraphics position) const;
+    void replaceOverlay(LC_OverlayDrawable* drawable, RS2::OverlayGraphics position,
+                        const std::function<bool(LC_OverlayDrawable*)> &oldInstanceRemovalPredicate) const;
 
     void previewEntity(const RS_Entity *en) const;
     RS_Circle* previewCircle(const RS_CircleData& circleData) const;

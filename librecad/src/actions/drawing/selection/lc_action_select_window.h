@@ -38,45 +38,57 @@
 class LC_ActionSelectWindow:public RS_ActionSelectBase {
     Q_OBJECT
 public:
-    LC_ActionSelectWindow(LC_ActionContext *actionContext,bool select);
+    LC_ActionSelectWindow(LC_ActionContext *actionContext, bool select);
     LC_ActionSelectWindow(RS2::EntityType typeToSelect, LC_ActionContext* actionContext);
     ~LC_ActionSelectWindow() override;
+
+    void reset();
     void init(int status) override;
     bool isSelectAllEntityTypes() const;
-    void setSelectAllEntityTypes(bool val);
-    QList<RS2::EntityType> getEntityTypesToSelect();
+    void setSelectAllEntityTypes();
+    QList<RS2::EntityType> getEntityTypesToSelect() override { return m_catchForSelectionEntityTypes; }
     void setEntityTypesToSelect(const QList<RS2::EntityType>& types);
+
 protected:
     /**
- * Action States.
- */
+     * Action States.
+     */
     enum Status {
         SetCorner1,     /**< Setting the 1st corner of the window.  */
         SetCorner2      /**< Setting the 2nd corner of the window. */
     };
 
-    struct Points;
-    std::unique_ptr<Points> m_actionData;
-    bool m_select = false;
-    bool m_selectIntersecting = false;
-    bool m_invertSelectionOperation = false;
-    bool m_selectAllEntityTypes = true;
-    QList<RS2::EntityType> m_entityTypesToSelect;
-
     LC_ActionSelectWindow(const QString& name, LC_ActionContext* actionContext, RS2::ActionType actionType, RS2::EntityType typeToSelect, bool select);
-    RS2::CursorType doGetMouseCursor(int status) override;
+
     void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
-    void updateActionPrompt() override;
-    void doTrigger() override;
-    LC_ActionOptionsWidget *createOptionsWidget() override;
+
+    void updateActionPrompt();
+    void doUpdateActionPromptForSelectionStart() override;
+
+    LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
-    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;}
+    bool isAllowSelectionFinishByEnterForEmptySelection() override { return true; }
+    bool doTriggerModifications([[maybe_unused]] LC_DocumentModificationBatch& modificationData) override { return true; }
     void doSaveOptions() override;
     void doLoadOptions() override;
+
+    RS_Vector getSelectionCorner1() override;
+    void invalidateSelectionCorner1() override;
+
+    bool isPerformSelect(const bool isShift) const override {
+        return isShift ? !m_performSelect : m_performSelect;
+    }
+
+    bool isPerformSelect(const LC_MouseEvent* e) const {
+        return isPerformSelect(e != nullptr && e->isShift);
+    }
+
+    RS_Vector m_corner1 = RS_Vector(false);
+    bool m_performSelect = false;
+    bool m_currentSelect = false;
 };
 #endif

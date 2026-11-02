@@ -86,6 +86,6 @@ RS2::CursorType LC_ActionSelectContour::doGetMouseCursor([[maybe_unused]] int st
     return RS2::SelectCursor;
 }
 
-void LC_ActionSelectContour::updateActionPrompt() {
+void LC_ActionSelectContour::doUpdateActionPromptForSelectionStart() {
      updatePromptTRCancel(tr("Specify entity to select") +  + " " + getSelectionCompletionHintMsg());
 }

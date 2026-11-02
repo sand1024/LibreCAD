@@ -158,7 +158,7 @@ bool LC_ActionDrawBoundingBox::doUpdateDistanceByInteractiveInput(const QString&
     return false;
 }
 
-void LC_ActionDrawBoundingBox::updateActionPromptForSelection() {
+void LC_ActionDrawBoundingBox::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select entities for bounding box") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Select and draw")));
 }

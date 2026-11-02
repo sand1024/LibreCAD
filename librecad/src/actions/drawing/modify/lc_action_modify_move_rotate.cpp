@@ -370,7 +370,7 @@ RS2::CursorType LC_ActionModifyMoveRotate::doGetMouseCursorSelected([[maybe_unus
     return RS2::CadCursor;
 }
 
-void LC_ActionModifyMoveRotate::updateActionPromptForSelection() {
+void LC_ActionModifyMoveRotate::doUpdateActionPromptForSelectionStart() {
     updatePromptTRCancel(tr("Select to move and rotate") + getSelectionCompletionHintMsg(),
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Move and rotate immediately after selection")));
 }
