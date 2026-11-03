@@ -90,7 +90,7 @@ namespace {
  * Constructor.
  */
 RS_ActionDefault::RS_ActionDefault(LC_ActionContext *actionContext)
-    :LC_OverlayBoxAction("Default",actionContext, RS2::ActionDefault), m_actionData(std::make_unique<ActionData>()){
+    :LC_ActionMassSelectionSupportBase("Default",actionContext, RS2::ActionDefault), m_actionData(std::make_unique<ActionData>()){
 
     RS_DEBUG->print("RS_ActionDefault::RS_ActionDefault");
     m_typeToSelect = m_graphicView->getTypeToSelect();
@@ -131,7 +131,10 @@ void RS_ActionDefault::checkSupportOfQuickEntityInfo(){
 }
 
 void RS_ActionDefault::keyPressEvent(QKeyEvent* e) {
-    LC_OverlayBoxAction::keyPressEvent(e);
+    if (e->isAccepted()) {
+        return;
+    }
+    LC_ActionMassSelectionSupportBase::keyPressEvent(e);
     if (e->isAccepted()) {
         return;
     }
@@ -141,9 +144,14 @@ void RS_ActionDefault::keyPressEvent(QKeyEvent* e) {
             break; //avoid clearing command line at shift key
         }
         case Qt::Key_Escape: {
-            deleteSnapper();
-            deletePreviewAndHighlights();
+            if (isMassSelecting()) {
+                cleanMassSelection();
+            }
             goToNeutralStatus();
+
+            // deleteSnapper();
+            // deletePreviewAndHighlights();
+
             e->accept();
             break;
         }
@@ -155,7 +163,7 @@ void RS_ActionDefault::keyPressEvent(QKeyEvent* e) {
 }
 
 void RS_ActionDefault::keyReleaseEvent(QKeyEvent *e){
-    LC_OverlayBoxAction::keyReleaseEvent(e);
+    LC_ActionMassSelectionSupportBase::keyReleaseEvent(e);
     if (e->key() == Qt::Key_Shift){
         e->accept();
     }
@@ -921,7 +929,7 @@ void RS_ActionDefault::invalidateSelectionCorner1(){
 
 QList<RS2::EntityType> RS_ActionDefault::getEntityTypesToSelect() {
     if (m_typeToSelect == RS2::EntityUnknown) {
-        return LC_OverlayBoxAction::getEntityTypesToSelect();
+        return LC_ActionMassSelectionSupportBase::getEntityTypesToSelect();
     }
     return {m_typeToSelect};
 }
@@ -1069,7 +1077,12 @@ void RS_ActionDefault::goToNeutralStatus() {
     drawPreview();
     drawHighlights();
     setStatus(Neutral);
+    updateMouseCursor();
     updateActionPrompt();
+    drawSnapperOrPickBox();
+    drawInfoCursor();
+
+    redrawImmediately(RS2::RedrawOverlay);
 }
 
 // fixme - review and cleanup
@@ -1170,7 +1183,7 @@ RS2::EntityType RS_ActionDefault::getTypeToSelect() const {
 }
 
 void RS_ActionDefault::initFromSettings() {
-    LC_OverlayBoxAction::initFromSettings();
+    LC_ActionMassSelectionSupportBase::initFromSettings();
     LC_GROUP("CADPreferences"); {
         m_completeMovingByMousePressed = LC_GET_BOOL("AdHockMovingEndsByMouseClick", true);
     }

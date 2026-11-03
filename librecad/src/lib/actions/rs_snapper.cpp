@@ -798,7 +798,7 @@ RS_Vector RS_Snapper::setSnapPoint(const RS_Vector& coord, const bool setSpot) {
         }
         // fixme - sand - it seems that the code below is meaning for preview only?
         updateCoordinateWidgetByRelZero(m_impData->snapCoord);
-        drawSnapper();
+        drawSnapperOrPickBox();
         drawInfoCursor();
     }
     return coord;
@@ -1148,7 +1148,7 @@ void RS_Snapper::suspend() {
 }
 
 void RS_Snapper::resume() {
-    drawSnapper();
+    drawSnapperOrPickBox();
     initSettings();
     // fixme - review/rework this, load from settings as other overlays action(??)
     m_infoCursorOverlayPrefs = m_graphicView->getInfoCursorOverlayPreferences();
@@ -1182,34 +1182,34 @@ void RS_Snapper::deleteInfoCursor() const {
 /**
  * creates the snap indicator
  */
-void RS_Snapper::drawSnapper() {
+void RS_Snapper::drawSnapperOrPickBox() {
     LC_OverlayDrawablesContainer* snapperOverlay = m_viewport->getOverlaysDrawablesContainer(RS2::Snapper);
     snapperOverlay->clear();
-    bool snapExpected = isSnapExpected() && !m_inSelectionMode;
-    if (snapExpected) {
-        bool showSnapIndicator = showSnapIndicator = snapExpected; // LibreCAD#2520
-        if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
-            if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
-                RS2::SnapType snapType = m_impData->snapType;
-                if (snapType == RS2::SnapType::VISUAL_SNAP && m_impData->restrictedSnapType != RS2::SnapType::NO_SNAP) {
-                    snapType = m_impData->restrictedSnapType;
-                }
-                // fixme - sand - should we pass any other snap data there?
-                auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get(), snapType);
-                crosshair->setShapesPen(m_snapIndicator->shape_Pen);
-                snapperOverlay->add(crosshair);
-            }
+    if (m_inSelectionMode) {
+        if (m_showPickBoxForSelection) {
+            const auto snapIndicatorOptions = *m_snapIndicator.get();
+            auto* crosshair = new LC_Crosshair(m_impData->graphPoint, snapIndicatorOptions.lines_Pen, snapIndicatorOptions.pickBox_Pen,
+                                               m_catchEntityGuiRange / 2, snapIndicatorOptions.pickBoxLinesSize,
+                                               snapIndicatorOptions.lines_Type,
+                                               snapIndicatorOptions.crossHairLinesPercent);
+            snapperOverlay->add(crosshair);
         }
     }
     else {
-        if (m_inSelectionMode) {
-            if (m_showPickBoxForSelection) {
-                const auto snapIndicatorOptions = *m_snapIndicator.get();
-                auto* crosshair = new LC_Crosshair(m_impData->graphPoint, snapIndicatorOptions.lines_Pen, snapIndicatorOptions.pickBox_Pen,
-                                                   m_catchEntityGuiRange / 2, snapIndicatorOptions.pickBoxLinesSize,
-                                                   snapIndicatorOptions.lines_Type,
-                                                   snapIndicatorOptions.crossHairLinesPercent);
-                snapperOverlay->add(crosshair);
+        bool snapExpected = isSnapExpected();
+        if (snapExpected) {
+            bool showSnapIndicator = showSnapIndicator = snapExpected; // LibreCAD#2520
+            if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
+                if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
+                    RS2::SnapType snapType = m_impData->snapType;
+                    if (snapType == RS2::SnapType::VISUAL_SNAP && m_impData->restrictedSnapType != RS2::SnapType::NO_SNAP) {
+                        snapType = m_impData->restrictedSnapType;
+                    }
+                    // fixme - sand - should we pass any other snap data there?
+                    auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get(), snapType);
+                    crosshair->setShapesPen(m_snapIndicator->shape_Pen);
+                    snapperOverlay->add(crosshair);
+                }
             }
         }
     }

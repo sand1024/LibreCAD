@@ -144,7 +144,7 @@ void LC_ActionDrawSplinePoints::onCoordinateEvent(const int status, [[maybe_unus
                 splinePoints->addPoint(coord);
                 splinePoints->update();
                 drawPreview();
-                drawSnapper();
+                drawSnapperOrPickBox();
             }
             updateActionPrompt();
             break;

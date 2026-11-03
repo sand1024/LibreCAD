@@ -370,7 +370,7 @@ void LC_ActionDrawPolyline::onCoordinateEvent(const int status, [[maybe_unused]]
                 m_shiftY = true;
                 updatePromptTRBack(tr("Enter the end point x")); // fixme - check if this is correct
             }
-            drawSnapper();
+            drawSnapperOrPickBox();
             moveRelativeZero(mouse);
             addSnappedPointToVisualSnap(mouse);
             setStatus(SetNextPoint);
@@ -441,7 +441,7 @@ void LC_ActionDrawPolyline::onCoordinateEvent(const int status, [[maybe_unused]]
                 m_endPointY = mouse.y;
                 updatePromptTRBack(tr("Enter number of polylines")); // fixme - check if this is correct
             }
-            drawSnapper();
+            drawSnapperOrPickBox();
             addSnappedPointToVisualSnap(mouse);
             moveRelativeZero(mouse);
             break;
@@ -727,7 +727,7 @@ void LC_ActionDrawPolyline::drawEquation(const int numberOfPolylines) {
     equationX -= stepSize;
 
     moveRelativeZero(RS_Vector(plottingX, m_muParserObject->Eval()));
-    drawSnapper();
+    drawSnapperOrPickBox();
 }
 
 QStringList LC_ActionDrawPolyline::getAvailableCommands() {

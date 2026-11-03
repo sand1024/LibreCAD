@@ -29,7 +29,7 @@ class LC_ActionPreSelectionAwareBase:public RS_ActionSelectBase{
     Q_OBJECT
 public:
     void init(int status) override;
-    void drawSnapper() override;
+    void drawSnapperOrPickBox() override;
 protected:
     LC_ActionPreSelectionAwareBase(const QString &name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
         const QList<RS2::EntityType> &entityTypeList = {});
@@ -72,5 +72,6 @@ protected:
     RS_Vector getSelectionCorner1() override {return m_selectionCorner1;}
     void invalidateSelectionCorner1() override {m_selectionCorner1.valid = false;}
     QList<RS2::EntityType> getEntityTypesToSelect() override {return m_catchForSelectionEntityTypes;}
+    void doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) override;
 };
 #endif

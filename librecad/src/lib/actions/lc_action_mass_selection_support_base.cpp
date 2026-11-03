@@ -20,7 +20,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_overlayboxaction.h"
+#include "lc_action_mass_selection_support_base.h"
 
 #include <QKeyEvent>
 
@@ -34,20 +34,20 @@
 #include "rs_selection.h"
 #include "rs_settings.h"
 
-LC_OverlayBoxAction::LC_OverlayBoxAction(const QString& name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
+LC_ActionMassSelectionSupportBase::LC_ActionMassSelectionSupportBase(const QString& name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
     : LC_UndoableDocumentModificationAction(name, actionContext, actionType),
       m_overlayBoxOptions{std::make_unique<LC_SelectionBoxOptions>()} {
 }
 
-LC_OverlayBoxAction::~LC_OverlayBoxAction() = default;
+LC_ActionMassSelectionSupportBase::~LC_ActionMassSelectionSupportBase() = default;
 
-void LC_OverlayBoxAction::init(const int status) {
+void LC_ActionMassSelectionSupportBase::init(const int status) {
     LC_UndoableDocumentModificationAction::init(status);
     m_selectIntersecting = false;
     m_massSelectionStyle = MassSelectionStyle::Auto;
 }
 
-void LC_OverlayBoxAction::drawOverlaySelectionBox(const RS_Vector &corner1, const RS_Vector &corner2, bool replace) const {
+void LC_ActionMassSelectionSupportBase::drawOverlaySelectionBox(const RS_Vector &corner1, const RS_Vector &corner2, bool replace) const {
     const bool isFence = (m_massSelectionStyle == MassSelectionStyle::Fence);
     auto* ob = new LC_OverlaySelectionBox(corner1, corner2, m_overlayBoxOptions.get(),m_selectIntersecting, isFence);
     if (replace) {
@@ -65,7 +65,7 @@ void LC_OverlayBoxAction::drawOverlaySelectionBox(const RS_Vector &corner1, cons
     }
 }
 
-void LC_OverlayBoxAction::drawOverlaySelectionLasso(bool replace) const {
+void LC_ActionMassSelectionSupportBase::drawOverlaySelectionLasso(bool replace) const {
     const bool isFence = (m_massSelectionStyle == MassSelectionStyle::Fence);
     auto* ob = new LC_OverlaySelectionLasso(m_overlayBoxOptions.get());
     ob->update(m_lassoRegion.getPoints(), m_selectIntersecting, isFence);
@@ -85,27 +85,27 @@ void LC_OverlayBoxAction::drawOverlaySelectionLasso(bool replace) const {
     }
 }
 
-void LC_OverlayBoxAction::addPointToSelectionLasso(const RS_Vector& wcsPosition) {
+void LC_ActionMassSelectionSupportBase::addPointToSelectionLasso(const RS_Vector& wcsPosition) {
     m_lassoRegion.addPoint(wcsPosition);
 }
 
-void LC_OverlayBoxAction::setMassSelectionStyle(MassSelectionStyle style) {
+void LC_ActionMassSelectionSupportBase::setMassSelectionStyle(MassSelectionStyle style) {
     m_massSelectionStyle = style;
 }
 
-void LC_OverlayBoxAction::setMassSelectionMode(MassSelectionMode mode) {
+void LC_ActionMassSelectionSupportBase::setMassSelectionMode(MassSelectionMode mode) {
     m_lassoRegion.clear();
     m_massSelectionMode = mode;
     // LC_ERR << "Mass Selection Mode: " << (int)mode;
 }
 
-void LC_OverlayBoxAction::initFromSettings() {
+void LC_ActionMassSelectionSupportBase::initFromSettings() {
     LC_UndoableDocumentModificationAction::initFromSettings();
     m_overlayBoxOptions->loadSettings();
     m_allowsLassoSelectionByPressedMouseButton = CFG_CADPreferences::o_AllowLassoSelectionByPressedMouseButton;
 }
 
-void LC_OverlayBoxAction::cycleMassSelectionStyle() {
+void LC_ActionMassSelectionSupportBase::cycleMassSelectionStyle() {
     switch (m_massSelectionStyle) {
         case MassSelectionStyle::Auto: {
             m_massSelectionStyle = m_selectIntersecting ? MassSelectionStyle::Window : MassSelectionStyle::Crossing;
@@ -126,7 +126,7 @@ void LC_OverlayBoxAction::cycleMassSelectionStyle() {
     }
 }
 
-bool LC_OverlayBoxAction::resolveCrossingMode(const bool naturalCrossing, const bool isControl) const {
+bool LC_ActionMassSelectionSupportBase::resolveCrossingMode(const bool naturalCrossing, const bool isControl) const {
     switch (m_massSelectionStyle) {
         case MassSelectionStyle::Fence:
         case MassSelectionStyle::Crossing: {
@@ -142,8 +142,8 @@ bool LC_OverlayBoxAction::resolveCrossingMode(const bool naturalCrossing, const 
     }
 }
 
-bool LC_OverlayBoxAction::handleMassSelectionKeyEvent(QKeyEvent* e, const bool isPress) {
-    if (e == nullptr || !isMassSelecting()) {
+bool LC_ActionMassSelectionSupportBase::handleMassSelectionKeyEvent(QKeyEvent* e, const bool isPress) {
+    if (e == nullptr) {
         return false;
     }
 
@@ -151,15 +151,23 @@ bool LC_OverlayBoxAction::handleMassSelectionKeyEvent(QKeyEvent* e, const bool i
 
     // 1. Spacebar cycles style: only on key press and ignoring auto-repeat
     if (isPress && key == Qt::Key_Space && !e->isAutoRepeat()) {
-        if (!isAllowCycleMassSelectionStyle()) {
-            return false;
+        if (!isMassSelecting()) {
+            doProcessSpaceKey(e, isPress);
         }
-        cycleMassSelectionStyle();
-        refreshMassSelectionState(e);
+        else {
+            if (!isAllowCycleMassSelectionStyle()) {
+                return false;
+            }
+            cycleMassSelectionStyle();
+            refreshMassSelectionState(e);
+        }
         e->accept();
         return true;
     }
 
+    if (!isMassSelecting()) {
+        return false;
+    }
     // 2. Modifiers Shift and Ctrl affect selection/crossing: updated on both press and release
     if (key == Qt::Key_Shift || key == Qt::Key_Control) {
         refreshMassSelectionState(e);
@@ -170,14 +178,14 @@ bool LC_OverlayBoxAction::handleMassSelectionKeyEvent(QKeyEvent* e, const bool i
     return false;
 }
 
-void LC_OverlayBoxAction::keyPressEvent(QKeyEvent* e) {
+void LC_ActionMassSelectionSupportBase::keyPressEvent(QKeyEvent* e) {
     if (handleMassSelectionKeyEvent(e, true)) {
         return;
     }
     LC_UndoableDocumentModificationAction::keyPressEvent(e);
 }
 
-void LC_OverlayBoxAction::keyReleaseEvent(QKeyEvent* e) {
+void LC_ActionMassSelectionSupportBase::keyReleaseEvent(QKeyEvent* e) {
     if (handleMassSelectionKeyEvent(e, false)) {
         return;
     }
@@ -186,7 +194,7 @@ void LC_OverlayBoxAction::keyReleaseEvent(QKeyEvent* e) {
     LC_UndoableDocumentModificationAction::keyReleaseEvent(e);
 }
 
-void LC_OverlayBoxAction::updateSelectionInfoCursor(const RS_Vector& mouse, const bool isLasso, const bool performSelection) {
+void LC_ActionMassSelectionSupportBase::updateSelectionInfoCursor(const RS_Vector& mouse, const bool isLasso, const bool performSelection) {
     if (m_infoCursorOverlayPrefs == nullptr || !m_infoCursorOverlayPrefs->enabled || m_infoCursorOverlayData == nullptr) {
         return;
     }
@@ -224,14 +232,14 @@ void LC_OverlayBoxAction::updateSelectionInfoCursor(const RS_Vector& mouse, cons
     }
 
     if (isAllowCycleMassSelectionStyle()) {
-    msg.append(tr(" (Space: switch mode)"));
+        msg.append(tr(" (Space: switch mode)"));
     }
 
     m_infoCursorOverlayData->setZone2(msg);
     forceUpdateInfoCursor(mouse);
 }
 
-void LC_OverlayBoxAction::processBoxSelectionMove(const RS_Vector& corner1, const RS_Vector& mouse, const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::processBoxSelectionMove(const RS_Vector& corner1, const RS_Vector& mouse, const LC_MouseEvent* e) {
     const RS_Vector ucsP1 = toUCS(corner1);
     const RS_Vector ucsP2 = toUCS(mouse);
     const bool naturalCrossing = (ucsP1.x > ucsP2.x);
@@ -241,7 +249,7 @@ void LC_OverlayBoxAction::processBoxSelectionMove(const RS_Vector& corner1, cons
     updateSelectionInfoCursor(mouse, false, isPerformSelect(e));
 }
 
-void LC_OverlayBoxAction::processLassoSelectionMove(const RS_Vector& mouse, const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::processLassoSelectionMove(const RS_Vector& mouse, const LC_MouseEvent* e) {
     m_lassoRegion.addPoint(mouse);
     const bool naturalCrossing = m_lassoRegion.isClockwise();
 
@@ -250,7 +258,7 @@ void LC_OverlayBoxAction::processLassoSelectionMove(const RS_Vector& mouse, cons
     updateSelectionInfoCursor(mouse, true, isPerformSelect(e));
 }
 
-void LC_OverlayBoxAction::endBoxSelectionMode(const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::endBoxSelectionMode(const LC_MouseEvent* e) {
     const RS_Vector mouse = e->graphPoint;
     deletePreviewAndHighlights();
 
@@ -275,7 +283,7 @@ void LC_OverlayBoxAction::endBoxSelectionMode(const LC_MouseEvent* e) {
     }
 }
 
-void LC_OverlayBoxAction::endLassoSelectionMode(const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::endLassoSelectionMode(const LC_MouseEvent* e) {
         deletePreviewAndHighlights();
 
     const bool performSelection = isPerformSelect(e);
@@ -293,21 +301,23 @@ void LC_OverlayBoxAction::endLassoSelectionMode(const LC_MouseEvent* e) {
     }
 }
 
-void LC_OverlayBoxAction::finishBoxSelection(const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::finishBoxSelection(const LC_MouseEvent* e) {
     endBoxSelectionMode(e);
     setMassSelectionMode(MassSelectionMode::NONE);
     setMassSelectionStyle(MassSelectionStyle::Auto);
     invalidateSelectionCorner1();
+    cleanMassSelection();
 }
 
-void LC_OverlayBoxAction::finishLassoSelection(const LC_MouseEvent* e) {
+void LC_ActionMassSelectionSupportBase::finishLassoSelection(const LC_MouseEvent* e) {
     endLassoSelectionMode(e);
     setMassSelectionMode(MassSelectionMode::NONE);
     setMassSelectionStyle(MassSelectionStyle::Auto);
     invalidateSelectionCorner1();
+    cleanMassSelection();
 }
 
-void LC_OverlayBoxAction::updateActionPromptForSelectionMode() {
+void LC_ActionMassSelectionSupportBase::updateActionPromptForSelectionMode() {
     const auto massSelectionMode = getMassSelectionMode();
     switch (massSelectionMode) {
         case (MassSelectionMode::BOX): {
@@ -331,7 +341,7 @@ void LC_OverlayBoxAction::updateActionPromptForSelectionMode() {
     }
 }
 
-void LC_OverlayBoxAction::refreshMassSelectionState(const QInputEvent* e) {
+void LC_ActionMassSelectionSupportBase::refreshMassSelectionState(const QInputEvent* e) {
     const auto massSelectionMode = getMassSelectionMode();
     if (!isMassSelecting()){
         return;
@@ -363,4 +373,16 @@ void LC_OverlayBoxAction::refreshMassSelectionState(const QInputEvent* e) {
     }
 
     m_graphicView->redraw(RS2::RedrawOverlay);
+}
+
+void LC_ActionMassSelectionSupportBase::cleanMassSelection() {
+    setMassSelectionMode(MassSelectionMode::NONE);
+    setMassSelectionStyle(MassSelectionStyle::Auto);
+    invalidateSelectionCorner1();
+
+    updateMouseCursor();
+    drawInfoCursor();
+    deleteSnapper();
+    drawSnapperOrPickBox();
+    redrawImmediately(RS2::RedrawOverlay);
 }

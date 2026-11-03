@@ -53,7 +53,7 @@ void RS_ActionDrawEllipseCenter3Points::init(const int status) {
     if (status == SetCenter) {
         m_actionData->points.clear();
     }
-    drawSnapper();
+    drawSnapperOrPickBox();
 }
 
 RS_Entity* RS_ActionDrawEllipseCenter3Points::doTriggerCreateEntity() {

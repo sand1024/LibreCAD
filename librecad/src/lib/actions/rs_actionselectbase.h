@@ -24,14 +24,14 @@
 #ifndef RS_ACTIONSELECTBASE_H
 #define RS_ACTIONSELECTBASE_H
 
-#include "lc_overlayboxaction.h"
+#include "lc_action_mass_selection_support_base.h"
 
 /**
  * This class is the base class to all select actions.
  *
  * @author Andrew Mustun
  */
-class RS_ActionSelectBase:public LC_OverlayBoxAction {
+class RS_ActionSelectBase:public LC_ActionMassSelectionSupportBase {
     Q_OBJECT
 public:
     void keyPressEvent(QKeyEvent *e) override;
@@ -48,13 +48,14 @@ protected:
     void deselectAll() const;
     virtual void doSelectEntity(RS_Entity* entityToSelect, bool selectContour) const;
     QString getSelectionCompletionHintMsg() const {
-        return LC_ModifiersInfo::withNativeCtrlKey(tr(" (Enter or CTRL+LMB click to complete)"));
+        return LC_ModifiersInfo::withNativeCtrlKey(tr(" (Enter,Space or CTRL+LMB click to complete)"));
     }
     virtual bool isAllowSelectionFinishByEnterForEmptySelection() {return false;}
     void updateActionPrompt() override {doUpdateActionPromptForSelectionStart();}
     RS_Vector getSelectionCorner1() override {return {};}
     void invalidateSelectionCorner1() override {}
     QList<RS2::EntityType> getEntityTypesToSelect() override {return m_catchForSelectionEntityTypes;}
+    void doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) override;
 };
 
 #endif

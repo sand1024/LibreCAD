@@ -100,7 +100,7 @@ void LC_ActionDrawLine::init(const int status){
     RS_PreviewActionInterface::init(status);
 
     reset();
-    drawSnapper();
+    drawSnapperOrPickBox();
 }
 
 RS_Entity* LC_ActionDrawLine::doTriggerCreateEntity() {

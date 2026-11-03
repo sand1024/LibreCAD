@@ -33,7 +33,7 @@
 
 struct LC_SelectionBoxOptions;
 
-class LC_OverlayBoxAction:public LC_UndoableDocumentModificationAction{
+class LC_ActionMassSelectionSupportBase:public LC_UndoableDocumentModificationAction{
 public:
     void keyPressEvent(QKeyEvent* e) override;
     void keyReleaseEvent(QKeyEvent* e) override;
@@ -52,8 +52,8 @@ protected:
         Fence
     };
 
-    explicit LC_OverlayBoxAction(const QString &name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
-    ~LC_OverlayBoxAction() override;
+    explicit LC_ActionMassSelectionSupportBase(const QString &name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
+    ~LC_ActionMassSelectionSupportBase() override;
 
     void initFromSettings() override;
     void drawOverlaySelectionBox(const RS_Vector &corner1, const RS_Vector &corner2, bool replace = false) const;
@@ -75,6 +75,7 @@ protected:
         return true;
     }
 
+    virtual void doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) {};
     bool handleMassSelectionKeyEvent(QKeyEvent* e, bool isPress);
     void cycleMassSelectionStyle();
 
@@ -110,6 +111,8 @@ protected:
     bool isPerformSelect(const QInputEvent* e) const {
         return isPerformSelect(e != nullptr && (e->modifiers() & Qt::ShiftModifier) != 0);
     }
+
+    void cleanMassSelection();
 
     std::unique_ptr<LC_SelectionBoxOptions> m_overlayBoxOptions;
     bool m_allowsLassoSelectionByPressedMouseButton = true;

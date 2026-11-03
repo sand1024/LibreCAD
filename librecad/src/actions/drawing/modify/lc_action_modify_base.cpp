@@ -30,6 +30,12 @@ LC_ActionModifyBase::LC_ActionModifyBase(const QString& name, LC_ActionContext *
 void LC_ActionModifyBase::onSelectionCompleted([[maybe_unused]] bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateActionPrompt();
+    updateMouseCursor();
+    drawInfoCursor();
+    deleteSnapper();
+    drawSnapperOrPickBox();
+    redrawImmediately(RS2::RedrawOverlay);
+    // forceUpdateInfoCursor(m_lastMouseMoveEvent.graphPoint);
 }
 
 

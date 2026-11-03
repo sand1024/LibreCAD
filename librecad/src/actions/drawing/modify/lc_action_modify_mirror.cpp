@@ -89,7 +89,7 @@ void LC_ActionModifyMirror::onMouseMoveEventSelected(const int status, const LC_
     switch (status) {
         case SetAxisPoint1: {
             if (m_mirrorToExistingLine){
-//                deleteSnapper();
+                // drawSnapper();
                 if (e->isShift){ // flip vertically
                     auto start = RS_Vector();
                     auto end = RS_Vector();
@@ -279,6 +279,9 @@ void LC_ActionModifyMirror::setMirrorToExistingLine(const bool value){
 }
 
 RS2::CursorType LC_ActionModifyMirror::doGetMouseCursorSelected([[maybe_unused]]int status) {
+    if (m_mirrorToExistingLine) {
+        return RS2::SelectCursor;
+    }
     return RS2::CadCursor;
 }
 

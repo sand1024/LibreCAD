@@ -293,7 +293,7 @@ void LC_ActionPolylineAppend::onCoordinateEvent(int status, [[maybe_unused]] boo
                 m_endPointY = mouse.y;
                 updatePromptTRBack(tr("Enter number of polylines")); // fixme - check if this is correct
             }
-            drawSnapper();
+            drawSnapperOrPickBox();
             addSnappedPointToVisualSnap(mouse);
             moveRelativeZero(mouse);
             break;

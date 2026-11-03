@@ -30,7 +30,7 @@
 
 RS_ActionSelectBase::RS_ActionSelectBase(const QString& name, LC_ActionContext* actionContext, const RS2::ActionType actionType,
                                          QList<RS2::EntityType> entityTypeList)
-    : LC_OverlayBoxAction(name, actionContext, actionType), m_catchForSelectionEntityTypes(std::move(entityTypeList)) {
+    : LC_ActionMassSelectionSupportBase(name, actionContext, actionType), m_catchForSelectionEntityTypes(std::move(entityTypeList)) {
 }
 
 void RS_ActionSelectBase::keyPressEvent(QKeyEvent* e) {
@@ -58,10 +58,14 @@ void RS_ActionSelectBase::keyPressEvent(QKeyEvent* e) {
             break;
         }
         default: {
-            LC_OverlayBoxAction::keyPressEvent(e);
+            LC_ActionMassSelectionSupportBase::keyPressEvent(e);
             break;
         }
     }
+}
+
+void RS_ActionSelectBase::doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) {
+    finish();
 }
 
 RS2::CursorType RS_ActionSelectBase::doGetMouseCursor([[maybe_unused]] int status) {

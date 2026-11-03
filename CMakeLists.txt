@@ -880,8 +880,8 @@ set (SHARED_SOURCES
      librecad/src/lib/actions/lc_actionpreselectionawarebase.h
      librecad/src/lib/actions/lc_modifiersinfo.cpp
      librecad/src/lib/actions/lc_modifiersinfo.h
-     librecad/src/lib/actions/lc_overlayboxaction.cpp
-     librecad/src/lib/actions/lc_overlayboxaction.h
+     librecad/src/lib/actions/lc_action_mass_selection_support_base.cpp
+     librecad/src/lib/actions/lc_action_mass_selection_support_base.h
      librecad/src/lib/actions/lc_undoabledocumentmodificationaction.cpp
      librecad/src/lib/actions/lc_undoabledocumentmodificationaction.h
      librecad/src/lib/actions/rs_actioninterface.cpp
@@ -2431,6 +2431,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_info_cursor.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_general.cpp
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_grid_and_coordinates.h
+     librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_drafting_behavior_grid_and_coordinates.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.h
      librecad/src/ui/dialogs/settings/options_drafting/pages/theme/lc_settings_page_drafting_theme_selection.cpp
      librecad/src/ui/dialogs/settings/options_drafting/pages/lc_settings_page_renderer_text_ops.h

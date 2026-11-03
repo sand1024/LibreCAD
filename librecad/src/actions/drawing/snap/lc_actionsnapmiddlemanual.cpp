@@ -77,7 +77,7 @@ void LC_ActionSnapMiddleManual::init(const int status){
     m_document->setActivePen(m_actionData->currentAppPen); // fixme - sand - check this, it looks like invalid pen is set
     RS_PreviewActionInterface::init(status);
     m_actionData->percentage = g_defaultRatio;
-    drawSnapper();
+    drawSnapperOrPickBox();
 }
 
 void LC_ActionSnapMiddleManual::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {

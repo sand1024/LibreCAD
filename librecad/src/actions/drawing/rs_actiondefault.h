@@ -29,7 +29,7 @@
 
 #include <memory>
 
-#include "lc_overlayboxaction.h"
+#include "lc_action_mass_selection_support_base.h"
 
 /**
  * This action class can handle user events to select all entities.
@@ -37,7 +37,7 @@
  * @author Andrew Mustun
  */
 //todo - joint move of endpoint ref? So if moving ref will move refs for adjusent entities
-class RS_ActionDefault : public LC_OverlayBoxAction {
+class RS_ActionDefault : public LC_ActionMassSelectionSupportBase {
     Q_OBJECT
     using BASE_CLASS = RS_PreviewActionInterface;
 

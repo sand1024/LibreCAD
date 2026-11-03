@@ -125,7 +125,7 @@ void RS_PreviewActionInterface::trigger() {
     if (doCheckMayTrigger()) {
         doTrigger();
     }
-    drawSnapper();
+    drawSnapperOrPickBox();
     m_graphicView->redraw();
 }
 
@@ -318,7 +318,7 @@ RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent*
     m_impData->snapSpot = result;
     m_impData->snapCoord = result;
     m_impData->angle = basepoint.angleTo(result);
-    drawSnapper();
+    drawSnapperOrPickBox();
     return result;
 }
 

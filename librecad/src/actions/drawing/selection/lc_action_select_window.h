@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONSELECTWINDOW_H
 #define RS_ACTIONSELECTWINDOW_H
 
-#include "lc_overlayboxaction.h"
+#include "lc_action_mass_selection_support_base.h"
 #include "rs_actionselectbase.h"
 
 /**

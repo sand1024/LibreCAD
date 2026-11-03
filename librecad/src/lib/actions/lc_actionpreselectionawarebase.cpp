@@ -212,7 +212,7 @@ void LC_ActionPreSelectionAwareBase::onMouseMoveEvent(const int status, const LC
             case MassSelectionMode::NONE: {
                 selectionMouseMove(e);
                 finishMouseMoveOnSelection(e);
-                RS_Snapper::drawSnapper();
+                RS_Snapper::drawSnapperOrPickBox();
                 break;
             }
             default:
@@ -221,10 +221,22 @@ void LC_ActionPreSelectionAwareBase::onMouseMoveEvent(const int status, const LC
     }
 }
 
-void LC_ActionPreSelectionAwareBase::drawSnapper() {
+void LC_ActionPreSelectionAwareBase::doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) {
     if (m_selectionComplete) {
-        RS_Snapper::drawSnapper();
+        m_selectedEntities.clear();
+        finish();
     }
+    else {
+        if (m_document->hasSelection() || isAllowSelectionFinishByEnterForEmptySelection()) {
+            selectionFinishedByKey(keyEvent, false);
+        }
+    }
+}
+
+void LC_ActionPreSelectionAwareBase::drawSnapperOrPickBox() {
+    // if (m_selectionComplete) {
+        RS_Snapper::drawSnapperOrPickBox();
+    // }
 }
 
 void LC_ActionPreSelectionAwareBase::updateActionPrompt() {
@@ -239,6 +251,7 @@ void LC_ActionPreSelectionAwareBase::updateActionPrompt() {
 void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]] const bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateActionPrompt();
+    forceUpdateInfoCursor(m_lastMouseMoveEvent.graphPoint);
     if (m_selectionComplete) {
         trigger();
         if (singleEntity) {

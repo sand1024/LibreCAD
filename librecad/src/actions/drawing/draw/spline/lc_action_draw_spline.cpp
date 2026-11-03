@@ -179,7 +179,7 @@ void LC_ActionDrawSpline::onCoordinateEvent(const int status, [[maybe_unused]] b
             if (m_actionData->spline != nullptr) {
                 m_actionData->spline->addControlPoint(coord);
                 drawPreview();
-                drawSnapper();
+                drawSnapperOrPickBox();
             }
             updateActionPrompt();
             break;

@@ -78,7 +78,7 @@ void RS_ActionZoomWindow::doTrigger() {
 void RS_ActionZoomWindow::mouseMoveEvent(QMouseEvent* e) {
     deletePreview();
     const auto snap = snapFree(e);
-    drawSnapper();
+    drawSnapperOrPickBox();
     if (getStatus() == SetSecondCorner && m_actionData->v1.valid) {
         m_actionData->v2 = snap;
 
@@ -98,7 +98,7 @@ void RS_ActionZoomWindow::mousePressEvent(QMouseEvent* e) {
         switch (getStatus()) {
             case SetFirstCorner:
                 m_actionData->v1 = snapFree(e);
-                drawSnapper();
+                drawSnapperOrPickBox();
                 setStatus(SetSecondCorner);
                 break;
 

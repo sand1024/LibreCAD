@@ -177,7 +177,7 @@ class RS_Snapper : public QObject {
      */
     virtual void resume();
     void hideSnapOptions() const;
-    virtual void drawSnapper();
+    virtual void drawSnapperOrPickBox();
     void drawInfoCursor();
     bool hasNonDefaultAnglesBasis() const;
 

@@ -2071,6 +2071,12 @@ void QC_ApplicationWindow:: keyPressEvent(QKeyEvent* e) {
                         }
                         doDefaultProcessing = false;
                     }
+                    else if (currentAction->isInSelectionMode()) {
+                        doDefaultProcessing = false;
+                        e->setAccepted(false);
+                        graphicView->keyPressEvent(e);
+                        e->accept();
+                    }
                 }
             }
             if (doDefaultProcessing) {
