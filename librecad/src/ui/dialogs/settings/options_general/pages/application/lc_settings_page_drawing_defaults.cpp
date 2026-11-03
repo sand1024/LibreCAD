@@ -26,7 +26,7 @@
 #include "ui_lc_settings_page_drawing_defaults.h"
 
 LC_SettingsPageDrawingDefaults::LC_SettingsPageDrawingDefaults(QObject* parent)
-    : LC_SettingsPageBase(tr("New Drawing Defaults"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group), parent),
+    : LC_SettingsPageBase(tr("Drawing Defaults"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDrawingDefaults>()) {
 }
 

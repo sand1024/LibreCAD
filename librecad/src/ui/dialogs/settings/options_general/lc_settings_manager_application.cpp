@@ -25,15 +25,13 @@
 #include "lc_releasechecker.h"
 
 #include "lc_settings_page_autosave.h"
-#include "lc_settings_page_cad_preferences.h"
 #include "lc_settings_page_command_line.h"
 #include "lc_settings_page_drawing_defaults.h"
 #include "lc_settings_page_general_startup.h"
-#include "lc_settings_page_keyboard.h"
 #include "lc_settings_page_language.h"
 #include "lc_settings_page_maintenance.h"
 #include "lc_settings_page_paths.h"
-#include "lc_settings_page_program_defaults.h"
+#include "lc_settings_page_general_user_interface.h"
 #include "lc_settings_page_updates.h"
 #include "lc_repository_drafting_theme.h"
 #include "lc_visual_snap_data.h"
@@ -59,28 +57,19 @@ void LC_SettingsManagerApplication::initialize([[maybe_unused]] QC_ApplicationWi
         { PAGE_APP, "", index(QObject::tr("Application"),
             QObject::tr("Configure general application settings, defaults, workspace "
                         "profiles, paths, and update preferences.")) },
+
         { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>(), 10},
-        { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageProgramDefaults>(),20},
+        { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageGeneralUserInterface>(),20},
         { PAGE_APP_DEFAULTS, PAGE_APP, page<LC_SettingsPageDrawingDefaults>(),30},
         { PAGE_APP_AUTOSAVE, PAGE_APP, page<LC_SettingsPageAutosave>(),40},
-        { PAGE_APP_CAD_PREFERENCES, PAGE_APP, page<LC_SettingsPageCadPreferences>(),50},
-        { PAGE_APP_KEYBOARD, PAGE_APP, page<LC_SettingsPageKeyboard>(),60},
         { PAGE_APP_COMMAND_LINE, PAGE_APP, page<LC_SettingsPageCommandLine>(),70},
-        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>(),80}
+        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>(),80},
+        {PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>(), 90}
     };
     if (!LC_ReleaseChecker::runsFromStorePackage()) {
-        pages.push_back({PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>(), 90});
+        pages.push_back({PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>(), 100});
     }
 
-    pages.push_back({PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>(), 100});
-    pages.push_back({PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>(), 110});
-
-
+    pages.push_back({PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>(), 110});
     reg->registerPages(targetDialog, pages);
-
-
-
-
-
-
 }

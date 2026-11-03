@@ -22,11 +22,12 @@
 #include "lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
 #include "ui_lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
 #include "lc_settings_backend.h"
+#include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_keyboard.h"
 
 LC_SettingsPageDraftingBehaviorKeyboardAndMouse::LC_SettingsPageDraftingBehaviorKeyboardAndMouse(QObject* parent)
-    : LC_SettingsPageBase(tr("Keyboard and Mouse Wheel"),
+    : LC_SettingsPageBase(tr("Keyboard and Mouse"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Keyboard::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorKeyboardAndMouse>()) {
 }
@@ -42,13 +43,13 @@ void LC_SettingsPageDraftingBehaviorKeyboardAndMouse::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_MouseWheel;
     using namespace CFG_ZoomAndPan;
+    using namespace CFG_CADPreferences;
 
 
     bindBoolean({
         {ui->cbEvaluateOnSpace, o_EvaluateCommandOnSpace},
         {ui->cbToggleFreeSnapOnSpace, o_ToggleFreeSnapOnSpace},
         {ui->cbEnableKeyboardZoomAdjust, o_AllowScrollMoveAdjustByKeys},
-        {ui->cbShowKeyboardShortcutsInToolTips, o_ShowKeyboardShortcutsInTooltips},
 
         {ui->cbFirstTimeNoZoom, o_FirstTimeNoZoom},
         {ui->cbPanOnWheelZoom, o_PanOnZoom},
@@ -56,7 +57,10 @@ void LC_SettingsPageDraftingBehaviorKeyboardAndMouse::setupBindings() {
         {ui->cbWheelScrollInvertH, o_WheelScrollInvertH},
         {ui->cbWheelScrollInvertV, o_WheelScrollInvertV},
         {ui->cbInvertZoomDirection, o_InvertZoomDirection},
-        {ui->cbNonLiniearZoom, o_NonLinearZoomFactor}
+        {ui->cbNonLiniearZoom, o_NonLinearZoomFactor},
+
+        { ui->cbFinishMovingByMouseUp, o_AdHockMovingEndsByMouseClick},
+        { ui->cbAllowLassoSelection, o_AllowLassoSelectionByPressedMouseButton }
     });
 
     bindScaledDouble(ui->sbDefaultZoomFactor, o_ScrollZoomFactor, 1000.0, false);

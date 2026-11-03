@@ -25,7 +25,7 @@
 #include "lc_settings_defaults.h"
 
 LC_SettingsPageAutosave::LC_SettingsPageAutosave(QObject* parent)
-    : LC_SettingsPageBase(tr("Auto-save & Backup"),
+    : LC_SettingsPageBase(tr("Backup and Auto-Save"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageAutosave>()){
 }

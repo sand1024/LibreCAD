@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -19,26 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_KEYBOARD_H
-#define LC_SETTINGS_PAGE_KEYBOARD_H
+#ifndef LC_SETTINGS_PAGE_PROGRAM_DEFAULTS_H
+#define LC_SETTINGS_PAGE_PROGRAM_DEFAULTS_H
 
 #include "lc_settings_page_base.h"
 
 namespace Ui {
-    class LC_SettingsPageKeyboard;
+    class LC_SettingsPageGeneralUserInterface;
 }
 
-class LC_SettingsPageKeyboard : public LC_SettingsPageBase {
-    Q_OBJECT public:
-    explicit LC_SettingsPageKeyboard(QObject* parent = nullptr);
-    ~LC_SettingsPageKeyboard() override;
-
-protected:
-    void setupUi() override;
-    void setupBindings() override;
-
+class LC_SettingsPageGeneralUserInterface : public LC_SettingsPageBase {
+    Q_OBJECT
+public:
+    explicit LC_SettingsPageGeneralUserInterface(QObject* parent = nullptr);
+    ~LC_SettingsPageGeneralUserInterface() override;
 private:
-    std::unique_ptr<Ui::LC_SettingsPageKeyboard> ui;
+    void setupBindings() override;
+    void setupUi() override;
+    void setupBehavior() override;
+
+    std::unique_ptr<Ui::LC_SettingsPageGeneralUserInterface> ui;
 };
 
 #endif

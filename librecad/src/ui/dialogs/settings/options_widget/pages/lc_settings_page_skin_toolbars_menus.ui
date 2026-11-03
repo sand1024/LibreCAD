@@ -76,41 +76,6 @@ tool buttons when hovering.</string>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="gbOverflow">
-     <property name="title">
-      <string>Toolbar Overflows</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_overflow">
-      <item>
-       <widget class="QCheckBox" name="chkCustomToolbarOverflow">
-        <property name="toolTip">
-         <string>Toolbar Overflow Indicator
-
-If selected, clean vector double-chevrons for toolbar overflow 
-extension buttons is rendered. </string>
-        </property>
-        <property name="text">
-         <string>Use custom vector overflow indicator (Double-Chevron)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="chkAutoPopupToolbarOverflow">
-        <property name="toolTip">
-         <string>Toolbar Overflow Popup Auto Expand
-
-If selected, automatically open toolbar overflow popup menu
-when hovering over extension indicator.</string>
-        </property>
-        <property name="text">
-         <string>Enable hover-sensitive auto-popup for toolbar overflow</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="4" column="0" rowspan="2">
     <widget class="QGroupBox" name="gbMenus">
      <property name="title">
@@ -214,7 +179,7 @@ will correspond to style toolbar checkmark indicators. </string>
      </property>
     </spacer>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QGroupBox" name="gbSegmented">
      <property name="title">
       <string>CAD Tools Matrix</string>
@@ -273,6 +238,41 @@ Defines how colors are assigned to segmented groups.</string>
         </property>
         <property name="sizeAdjustPolicy">
          <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QGroupBox" name="gbOverflow">
+     <property name="title">
+      <string>Toolbar Overflows</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_overflow">
+      <item>
+       <widget class="QCheckBox" name="chkCustomToolbarOverflow">
+        <property name="toolTip">
+         <string>Toolbar Overflow Indicator
+
+If selected, clean vector double-chevrons for toolbar overflow 
+extension buttons is rendered. </string>
+        </property>
+        <property name="text">
+         <string>Use custom vector overflow indicator (Double-Chevron)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkAutoPopupToolbarOverflow">
+        <property name="toolTip">
+         <string>Toolbar Overflow Popup Auto Expand
+
+If selected, automatically open toolbar overflow popup menu
+when hovering over extension indicator.</string>
+        </property>
+        <property name="text">
+         <string>Enable hover-sensitive auto-popup for toolbar overflow</string>
         </property>
        </widget>
       </item>

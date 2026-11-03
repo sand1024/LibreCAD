@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
-    <height>224</height>
+    <width>663</width>
+    <height>698</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_main">
@@ -29,17 +29,13 @@
       <string>Exchange</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_50" columnstretch="1,0,0,0">
-      <item row="2" column="1">
-       <widget class="QPushButton" name="pbImportSettings">
-        <property name="toolTip">
-         <string>Imports application's preferences from external file</string>
-        </property>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Import settings from file</string>
+         <string>Import of settings from external file. Existing values will be overriden by imported values. </string>
         </property>
-        <property name="icon">
-         <iconset resource="../../../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/import.lci</normaloff>:/icons/import.lci</iconset>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -57,6 +53,30 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="pbImportSettings">
+        <property name="toolTip">
+         <string>Imports application's preferences from external file</string>
+        </property>
+        <property name="text">
+         <string>Import settings from file</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/import.lci</normaloff>:/icons/import.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Perform export of system settings into external file that may be used for settings exchange.. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="3">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -70,20 +90,10 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Perform export of system settings into external file that may be used for settings exchange.. </string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Import of settings from external file. Existing values will be overriden by imported values. </string>
+         <string>&lt;b&gt;Note:&lt;/b&gt; it is possible to make a full backup/restore of complete configurations, using specialized action (by default, in &lt;i&gt;File -&gt; Export -&gt; Export Configuration&lt;/i&gt; menu). </string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

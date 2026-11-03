@@ -19,31 +19,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_program_defaults.h"
+#include "lc_settings_page_general_user_interface.h"
 
 #include "lc_settings_appearance.h"
+#include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_startup.h"
-#include "ui_lc_settings_page_program_defaults.h"
+#include "ui_lc_settings_page_general_user_interface.h"
 
-LC_SettingsPageProgramDefaults::LC_SettingsPageProgramDefaults(QObject* parent)
+LC_SettingsPageGeneralUserInterface::LC_SettingsPageGeneralUserInterface(QObject* parent)
     : LC_SettingsPageBase(tr("User Interface"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
-                           parent), ui(std::make_unique<Ui::LC_SettingsPageProgramDefaults>()) {
+                           parent), ui(std::make_unique<Ui::LC_SettingsPageGeneralUserInterface>()) {
 }
 
-LC_SettingsPageProgramDefaults::~LC_SettingsPageProgramDefaults() = default;
+LC_SettingsPageGeneralUserInterface::~LC_SettingsPageGeneralUserInterface() = default;
 
-void LC_SettingsPageProgramDefaults::setupUi() {
+void LC_SettingsPageGeneralUserInterface::setupUi() {
     ui->setupUi(m_widget);
 }
 
-void LC_SettingsPageProgramDefaults::setupBehavior() {
+void LC_SettingsPageGeneralUserInterface::setupBehavior() {
     enableWhenChecked(ui->cbPersistentDialogs, ui->cbPersistentDialogSizeOnly);
     enableWhenChecked(ui->cbTabCloseButton, ui->cbTabCloseButtonMode);
 }
 
-void LC_SettingsPageProgramDefaults::setupBindings() {
+void LC_SettingsPageGeneralUserInterface::setupBindings() {
     using namespace CFG_Defaults;
     using namespace CFG_Appearance;
     using namespace CFG_Startup;
@@ -60,7 +61,9 @@ void LC_SettingsPageProgramDefaults::setupBindings() {
         { ui->cbInteractiveInputInActionToolbarEnabled, o_InteractiveInputEnabled },
         {ui->cbAllowMenusDetaching, o_AllowMenusTearOff, true },
         {ui->cbMainMenuShowIcons, o_MainMenuTopLevelIconsOnly },
-        {ui->cbShowToolbarTooltips, o_ShowToolbarsTooltip}
+        {ui->cbShowToolbarTooltips, o_ShowToolbarsTooltip},
+        {ui->cbShowKeyboardShortcutsInToolTips, o_ShowKeyboardShortcutsInTooltips},
+        { ui->cbAnglesInputInDecimalDegreesOnly, CFG_CADPreferences::o_InputAnglesAsDecimalsOnly }
     });
 
     bindComboIndex({

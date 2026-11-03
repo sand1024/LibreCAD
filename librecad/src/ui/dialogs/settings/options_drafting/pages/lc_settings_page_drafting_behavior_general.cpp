@@ -24,8 +24,10 @@
 
 #include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
+#include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_grid.h"
+#include "lc_settings_modify.h"
 #include "ui_lc_settings_page_drafting_behavior_general.h"
 
 LC_SettingsPageDraftingBehaviorGeneral::LC_SettingsPageDraftingBehaviorGeneral(QObject* parent)
@@ -54,6 +56,7 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupUi() {
 void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
     using namespace CFG_Appearance;
     using namespace CFG_Grid;
+    using namespace CFG_Modify;
 
     bindBoolean({
         // Canvas Chrome & Navigation
@@ -63,26 +66,15 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
         { ui->cb_antialiasing, o_Antialiasing },
         { ui->cbClassicRendering, o_ClassicRenderer },
         {ui->cb_autopanning, CFG_ZoomAndPan::o_Autopanning},
-        {ui->cbDrawGrid, o_GridDraw},
-        {ui->cbDrawMetaGrid, o_MetaGridDraw},
-        {ui->cbDrawVerticalForIsoTop, o_GridDrawIsoVerticalForTop},
-        {ui->cbScaleGrid, o_ScaleGrid},
-        {ui->cbUnitlessGrid, o_UnitlessGrid},
         { ui->cbVisualizeHovering, o_VisualizeHovering },
         { ui->cbHighlightWIthLinewidthInDraft, o_IgnoreDraftForHighlight },
         { ui->cbShowDraftModeMarker, o_ShowDraftModeMarker },
         { ui->cbDisplayRefPoints, o_VisualizePreviewRefPoints} ,
         { ui->cbShowRefPointsOnHovering, o_VisualizeHoveringRefPoints},
-        { ui->cbShowAxisLines, o_ShowAxisLines},
-        { ui->cbShowUCSZeroMarker, o_ShowUCSZeroMarker },
-        { ui->cbShowWCSZeroMarker, o_ShowWCSZeroMarker },
-        { ui->cbHideRelativeZero, o_HideRelativeZero},
-        { ui->cbAnglesMarkVisible, o_AnglesBasisMarkEnabled }
+        { ui->cbToActiveLayer, o_ModifyEntitiesToActiveLayer},
+        { ui->cbKeepModifiedSelected, o_KeepModifiedSelected},
+        { ui->cbAutoZoomDrawing, CFG_CADPreferences::o_AutoZoomDrawing },
     });
 
     bind(ui->sbMaxPreview, o_MaxPreview, false);
-
-    bindComboIndex({
-        { ui->cbAnglesBaseShowPolicy, o_AnglesBasisMarkPolicy }
-    });
 }

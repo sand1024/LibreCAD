@@ -75,7 +75,9 @@ namespace LC_SettingsPagesDrafting {
     // ─────────────────────────────────────────────────────────────────────────────
     const QString PAGE_DRAFTING_BEHAVIOR                    = "drafting.behavior";
 
-    const QString PAGE_DRAFTING_BEHAVIOR_NAV_GRID           = "drafting.behavior.navigation";
+    const QString PAGE_DRAFTING_BEHAVIOR_KEYBOARD_AND_MOUSE = "drafting.behavior.keyboard_and_mouse";
+    const QString PAGE_DRAFTING_BEHAVIOR_GENERAL            = "drafting.behavior.general";
+    const QString PAGE_DRAFTING_BEHAVIOR_GRID_AND_ORIGIN    = "drafting.behavior.grid_origin";
     const QString PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL       = "drafting.behavior.snap";
 
     // Visual Snap Solver

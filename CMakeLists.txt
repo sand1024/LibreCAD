@@ -2391,16 +2391,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/support/lc_preset_manager_interface.h
      librecad/src/ui/dialogs/settings/support/lc_preset_management_bar.h
      librecad/src/ui/dialogs/settings/support/lc_preset_management_bar.cpp
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.cpp
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_user_interface.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_user_interface.h
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.h
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.h
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.cpp
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.h
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.cpp
-     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.h
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.cpp
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.h
      librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.cpp

@@ -34,8 +34,10 @@
 #include "lc_repository_drafting_theme.h"
 #include "lc_settings_dialog.h"
 #include "lc_settings_page_drafting_behavior_general.h"
+#include "lc_settings_page_drafting_behavior_grid_and_coordinates.h"
 #include "lc_settings_page_drafting_behavior_info_cursor.h"
 #include "lc_settings_page_drafting_behavior_input_assistant.h"
+#include "lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
 #include "lc_settings_page_drafting_behavior_snap.h"
 #include "lc_settings_page_drafting_behavior_snap_visual.h"
 #include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
@@ -93,7 +95,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         // TOP-LEVEL 1: DRAFTING THEME (Persistent Top Bar + Live CAD Preview)
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_THEME, "", index(QObject::tr("Visual Theme"),
-            QObject::tr("Visual Theme includes settings that define how drawing area will look like.\n\nUse it to specify colors for the drawing area and related overlays (like handles, selection, coordinate system and so on).")), 10 },
+            QObject::tr("Visual Theme includes settings that define how drawing area will look like.\n\nUse it to specify colors for the drawing area and related overlays (like handles, selection, coordinate system and so on).")), 20 },
         { PAGE_DRAFTING_THEME_MAIN_COLORS, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeMainColors>(), 10 },
         { PAGE_DRAFTING_THEME_DRAFT_MODE, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeDraftMode>(), 15 },
         { PAGE_DRAFTING_THEME_SELECTION, PAGE_DRAFTING_THEME, page<LC_SettingsPageDraftingThemeSelection>(), 20 },
@@ -117,7 +119,7 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         // TOP-LEVEL 2: VIEWPORT METRICS (Persistent Sizing Profile Top Bar)
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_METRICS, "", index(QObject::tr("Drafting Metrics (Sizes)"),
-            QObject::tr("Metrics preset specifies sizes for various elements of drawing area and related overlays.\n\nUse it to configure handle sizes, marker scales, line thicknesses, and text overlay sizes and so on.")), 20 },
+            QObject::tr("Metrics preset specifies sizes for various elements of drawing area and related overlays.\n\nUse it to configure handle sizes, marker scales, line thicknesses, and text overlay sizes and so on.")), 30 },
         { PAGE_DRAFTING_METRICS_MARKERS, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsMarkers>(), 10 },
         { PAGE_DRAFTING_METRICS_DRAFT_MODE, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsDraftMode>(), 15 },
         { PAGE_DRAFTING_METRICS_COORDINATE_SYSTEM, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsOriginMarkers>(), 20 },
@@ -126,27 +128,31 @@ void LC_SettingsManagerDrafting::initialize(QC_ApplicationWindow* appWindow) {
         { PAGE_DRAFTING_METRICS_RENDERER, PAGE_DRAFTING_METRICS, page<LC_SettingsPageDraftingMetricsRenderer>(), 50 },
 
         // ═════════════════════════════════════════════════════════════════════
-        // TOP-LEVEL 3: DRAFTING BEHAVIOR (Direct Settings: No Bar, Never Gated)
+        // TOP-LEVEL 1: DRAFTING BEHAVIOR (Direct Settings: No Bar, Never Gated)
         // ═════════════════════════════════════════════════════════════════════
         { PAGE_DRAFTING_BEHAVIOR, "", index(QObject::tr("Drafting Behavior"),
-            QObject::tr("Configure canvas navigation, snapping rules, solver parameters, and renderer engine.")), 30 },
+            QObject::tr("Configure canvas navigation, snapping rules, solver parameters, and renderer engine.")), 10 },
 
-        // Navigation and Grid (Weight 10)
-        { PAGE_DRAFTING_BEHAVIOR_NAV_GRID, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorGeneral>(), 10 },
+        // Navigation and Grid
+        { PAGE_DRAFTING_BEHAVIOR_GENERAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorGeneral>(), 10 },
+        { PAGE_DRAFTING_BEHAVIOR_GRID_AND_ORIGIN, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorGridAndCoordinates>(), 20 },
 
-        // General Snap (Weight 20)
-        { PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnap>(), 20 },
+        // keyboard and mouse
+        { PAGE_DRAFTING_BEHAVIOR_KEYBOARD_AND_MOUSE, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorKeyboardAndMouse>(), 30 },
 
-        // Visual Snap (Weight 30) with child Advanced (Weight 10)
-        { PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnapVisual>(), 30 },
+        // General Snap
+        { PAGE_DRAFTING_BEHAVIOR_SNAP_GENERAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnap>(), 30 },
+
+        // Visual Snap with child Advanced
+        { PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorSnapVisual>(), 40 },
         { PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL_TIMING, PAGE_DRAFTING_BEHAVIOR_SNAP_VISUAL, page<LC_SettingsPageDraftingBeahaviorSnapVisualTiming>(), 10 },
 
         // Cursor Workflow (Direct children of PAGE_DRAFTING_BEHAVIOR)
-        { PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInfoCursor>(), 40 },
-        { PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInputAssistant>(), 50 },
+        { PAGE_DRAFTING_BEHAVIOR_INFO_CURSOR, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInfoCursor>(), 50 },
+        { PAGE_DRAFTING_BEHAVIOR_INPUT_ASSISTANT, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageDraftingBehaviorInputAssistant>(), 60 },
 
-        // Renderer (Weight 60)
-        { PAGE_DRAFTING_RENDERER_TEXT_OPS, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageRendererTextOps>(), 60 },
+        // Renderer
+        { PAGE_DRAFTING_RENDERER_TEXT_OPS, PAGE_DRAFTING_BEHAVIOR, page<LC_SettingsPageRendererTextOps>(), 70 },
 
         // drafting profile
         { PAGE_DRAFTING_PROFILES, "", [appWindow]{return std::make_unique<LC_SettingsPageDraftingProfiles>(appWindow);}, 70 },
@@ -164,10 +170,10 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
     stepTimer.start();
 
     QWidget* previewWidget =  new LC_GraphicViewPreviewWidget(nullptr);
-    LC_ERR << "[PERF] createGraphicViewPreview took:" << stepTimer.restart() << "ms";
+    // LC_ERR << "[PERF] createGraphicViewPreview took:" << stepTimer.restart() << "ms";
 
     auto* bottomBar = new LC_DraftingPreviewBottomBar(nullptr);
-    LC_ERR << "[PERF] bottomBar creation took:" << stepTimer.restart() << "ms";
+    // LC_ERR << "[PERF] bottomBar creation took:" << stepTimer.restart() << "ms";
 
 
     // Keep hidden until mounted into their respective dialog layouts
@@ -205,7 +211,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
                 }
             });
         }
-       LC_ERR << "[PERF] preExecHook took:" << hookTimer.elapsed() << "ms";
+       // LC_ERR << "[PERF] preExecHook took:" << hookTimer.elapsed() << "ms";
     };
 
     auto postExecHook = [](LC_SettingsDialog* dialog, bool /*accepted*/) {
@@ -236,7 +242,7 @@ bool LC_SettingsManagerDrafting::showDraftingSettings(QWidget* parent, const QSt
         startPage = LC_SettingsPagesDrafting::PAGE_DRAFTING_THEME;
     }
 
-    LC_ERR << "[PERF] Time before showDialog():" << totalTimer.elapsed() << "ms";
+    // LC_ERR << "[PERF] Time before showDialog():" << totalTimer.elapsed() << "ms";
     const bool accepted = LC_SettingsRegistry::instance()->showDialog(
         LC_SettingsPagesDrafting::DLG_DRAFTING_PREFERENCES,
         startPage,

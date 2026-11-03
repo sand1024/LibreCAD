@@ -20,26 +20,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_PROGRAM_DEFAULTS_H
-#define LC_SETTINGS_PAGE_PROGRAM_DEFAULTS_H
+#ifndef LC_SETTINGS_PAGE_DRAFTING_BEHAVIOR_GRID_AND_COORDINATES_H
+#define LC_SETTINGS_PAGE_DRAFTING_BEHAVIOR_GRID_AND_COORDINATES_H
 
 #include "lc_settings_page_base.h"
 
-namespace Ui {
-    class LC_SettingsPageProgramDefaults;
-}
+namespace Ui { class LC_SettingsPageDraftingBehaviorGridAndCoordinates; }
 
-class LC_SettingsPageProgramDefaults : public LC_SettingsPageBase {
+class LC_SettingsPageDraftingBehaviorGridAndCoordinates : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageProgramDefaults(QObject* parent = nullptr);
-    ~LC_SettingsPageProgramDefaults() override;
-private:
-    void setupBindings() override;
-    void setupUi() override;
+    explicit LC_SettingsPageDraftingBehaviorGridAndCoordinates(QObject* parent = nullptr);
+    ~LC_SettingsPageDraftingBehaviorGridAndCoordinates() override;
+
+protected:
     void setupBehavior() override;
 
-    std::unique_ptr<Ui::LC_SettingsPageProgramDefaults> ui;
+    void setupUi() override;
+    void setupBindings() override;
+
+private:
+    std::unique_ptr<Ui::LC_SettingsPageDraftingBehaviorGridAndCoordinates> ui;
 };
 
 #endif
