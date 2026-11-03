@@ -2091,6 +2091,7 @@ void QC_ApplicationWindow:: keyPressEvent(QKeyEvent* e) {
                 const auto currentAction = m_actionHandler->getCurrentAction();
                 if (currentAction != nullptr) {
                     if (currentAction->isInSelectionMode()) {
+                        e->setAccepted(false);
                         graphicView->keyPressEvent(e);
                         e->accept();
                     }
