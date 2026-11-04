@@ -201,7 +201,9 @@ void LC_CADDockWidget::updateActionsFromNodes(const QList<ActionNode>& nodes, LC
         } else if (node.type == ActionNodeType::Action) {
             auto* act = agm->getActionByName(node.actionName);
             if (act != nullptr) {
-                actions.append(act);
+                if (!LC_ActionKeys::isProhibitedForToolbar(act)) {
+                    actions.append(act);
+                }
             }
         }
     }

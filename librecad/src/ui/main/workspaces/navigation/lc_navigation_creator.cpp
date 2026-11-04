@@ -336,7 +336,9 @@ void LC_NavigationControlsCreator::populateToolbarNodes(QToolBar* tb, const QLis
                     act = getAction(node.actionName);
                 }
                 if (act != nullptr) {
-                    tb->addAction(act);
+                    if (!LC_ActionKeys::isProhibitedForToolbar(act)) {
+                        tb->addAction(act);
+                    }
                 }
             }
         }

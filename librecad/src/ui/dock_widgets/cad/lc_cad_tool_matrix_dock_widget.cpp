@@ -83,7 +83,9 @@ void LC_CADToolMatrixDockWidget::updateActionsFromNodes(const QList<ActionNode>&
                 if (child.type == ActionNodeType::Action) {
                     auto* act = agm->getActionByName(child.actionName);
                     if (act != nullptr) {
-                        actions.append(act);
+                        if (!LC_ActionKeys::isProhibitedForToolbar(act)) {
+                            actions.append(act);
+                        }
                     }
                 }
             }
@@ -94,7 +96,9 @@ void LC_CADToolMatrixDockWidget::updateActionsFromNodes(const QList<ActionNode>&
         } else if (node.type == ActionNodeType::Action) {
             auto* act = agm->getActionByName(node.actionName);
             if (act != nullptr) {
-                actions.append(act);
+                if (!LC_ActionKeys::isProhibitedForToolbar(act)) {
+                    actions.append(act);
+                }
             }
         }
     }
