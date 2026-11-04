@@ -517,16 +517,17 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap, const
 
 void LC_GraphicViewPreviewWidget::selectAll(RS_Document* document, LC_GraphicViewport* viewport, bool enable) {
     const RS_Selection s(document, viewport);
+    s.selectAll(false);
     s.selectAll(enable);
 }
 
 void LC_GraphicViewPreviewWidget::previewSelectionOverlayBoxes() {
     m_overlayBoxOptions->loadSettings();
 
-    auto* directOverlay = new LC_OverlaySelectionBox({0, 50}, {45, 100}, m_overlayBoxOptions.get());
+    auto* directOverlay = new LC_OverlaySelectionBox({0, 50}, {45, 100}, m_overlayBoxOptions.get(), false);
     m_previewView->addOverlayDrawable(directOverlay, RS2::OverlayGraphics::OverlayEffects);
 
-    auto* invertedSelectionOverlay = new LC_OverlaySelectionBox({100, 100}, {55, 50}, m_overlayBoxOptions.get());
+    auto* invertedSelectionOverlay = new LC_OverlaySelectionBox({100, 100}, {55, 50}, m_overlayBoxOptions.get(), true);
     m_previewView->addOverlayDrawable(invertedSelectionOverlay, RS2::OverlayGraphics::OverlayEffects);
 }
 

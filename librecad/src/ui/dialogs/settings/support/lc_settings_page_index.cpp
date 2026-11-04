@@ -35,7 +35,7 @@ LC_SettingsPageIndex::LC_SettingsPageIndex(const QString& displayName,
 
     m_mainWidget = new QWidget(parentWidget);
     m_mainLayout = new QVBoxLayout(m_mainWidget);
-    m_mainLayout->setContentsMargins(16, 16, 16, 16);
+    m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(12);
 
     m_descLabel = new QLabel(m_description, m_mainWidget);

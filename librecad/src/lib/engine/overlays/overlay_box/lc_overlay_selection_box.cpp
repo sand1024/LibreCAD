@@ -31,13 +31,13 @@
 void LC_SelectionBoxOptions::loadSettings() {
     {
         using namespace CFG_Colors;
-        int overlayTransparency = o_OverlayBoxTransparency;;
-        colorBoxLine = RS_Color(o_OverlayBoxLineColor);
-        auto tmp = RS_Color(o_OverlayBoxFillColor);
+        int overlayTransparency = o_SelectionOverlayTransparency;;
+        colorBoxLine = RS_Color(o_SelectionOverlayLineColor);
+        auto tmp = RS_Color(o_SelectionOverlayFillColor);
         const RS_Color fillColor(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFill = fillColor;
-        colorLineInverted = RS_Color(o_OverlayBoxLineInvertedColor);
-        tmp = RS_Color(o_OverlayBoxFillInvertedColor);
+        colorLineInverted = RS_Color(o_SelectionOverlayInvertedLineColor);
+        tmp = RS_Color(o_SelectionOverlayInvertedFillColor);
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFillInverted = fillColorInverted;
     }

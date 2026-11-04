@@ -54,11 +54,11 @@ namespace CFG_Colors {
     inline const LC_Setting<QColor> o_YAxisColor(&Group, "grid_y_axisColor", QColor("green"));
 
     // Selection Overlay Box
-    inline const LC_Setting<QColor> o_OverlayBoxLineColor(&Group, "overlay_box_line", QColor("#3232ff"));
-    inline const LC_Setting<QColor> o_OverlayBoxFillColor(&Group, "overlay_box_fill", QColor("#0909ff"));
-    inline const LC_Setting<QColor> o_OverlayBoxLineInvertedColor(&Group, "overlay_box_line_inv", QColor("#32ff32"));
-    inline const LC_Setting<QColor> o_OverlayBoxFillInvertedColor(&Group, "overlay_box_fill_inv", QColor("#09ff09"));
-    inline const LC_Setting<int>    o_OverlayBoxTransparency(&Group, "overlay_box_transparency", 90);
+    inline const LC_Setting<QColor> o_SelectionOverlayLineColor(&Group, "overlay_box_line", QColor("#3232ff"));
+    inline const LC_Setting<QColor> o_SelectionOverlayFillColor(&Group, "overlay_box_fill", QColor("#0909ff"));
+    inline const LC_Setting<QColor> o_SelectionOverlayInvertedLineColor(&Group, "overlay_box_line_inv", QColor("#32ff32"));
+    inline const LC_Setting<QColor> o_SelectionOverlayInvertedFillColor(&Group, "overlay_box_fill_inv", QColor("#09ff09"));
+    inline const LC_Setting<int>    o_SelectionOverlayTransparency(&Group, "overlay_box_transparency", 90);
 
     // selection pick box
     inline const LC_Setting<QColor> o_SelectionPickBoxColor(&Group, "SelectionPickBox", QColor("#09ff09"));

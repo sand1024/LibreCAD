@@ -48,18 +48,18 @@ void LC_SettingsPageDraftingThemeSelection::setupBindings() {
     using namespace CFG_Colors;
 
 
-    bindInt({{ui->sbOverlayBoxTransparency, o_OverlayBoxTransparency}});
+    bindInt({{ui->sbOverlayBoxTransparency, o_SelectionOverlayTransparency}});
 
     bindColor({
             { ui->cbStartHandleColor, ui->pb_start, o_EntityHandleStartColor, tr("Select Start Handle Color") },
             { ui->cbHandleColor, ui->pb_handle, o_EntityHandleInternalColor, tr("Select Handle Color") },
             { ui->cbEndHandleColor, ui->pb_end, o_EntityHandleEndColor, tr("Select End Handle Color") },
             {ui->cbSelectedColor, ui->pb_selected, o_SelectedEntityColor, tr("Select Selected Entity Color")},
-            {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_OverlayBoxLineColor, tr("Select Overlay Line Color")},
-            {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_OverlayBoxFillColor, tr("Select Overlay Fill Color")},
-            {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_OverlayBoxLineInvertedColor, tr("Select Inverted Line Color")},
+            {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_SelectionOverlayLineColor, tr("Select Overlay Line Color")},
+            {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_SelectionOverlayFillColor, tr("Select Overlay Fill Color")},
+            {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_SelectionOverlayInvertedLineColor, tr("Select Inverted Line Color")},
+            {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_SelectionOverlayInvertedFillColor, tr("Select Overlay Inverted Fill Color")},
             {ui->cbPickBox, ui->pbPickBoxColor, o_SelectionPickBoxColor, tr("Select Pick Box Color")}
-
     });
 
     bindComboIndex({

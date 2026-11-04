@@ -105,13 +105,13 @@ namespace {
             o_VSDocGuidingEntitiesLineType,
             o_VSGuidingEntitiesShowLabels,
             // Selection & Overlays
-            o_OverlayBoxLineColor,
-            o_OverlayBoxFillColor,
-            o_OverlayBoxLineInvertedColor,
-            o_OverlayBoxFillInvertedColor,
-            o_OverlayBoxTransparency,
+            o_SelectionOverlayLineColor,
+            o_SelectionOverlayFillColor,
             o_SelectionOverlayLineType,
+            o_SelectionOverlayInvertedLineColor,
+            o_SelectionOverlayInvertedFillColor,
             o_SelectionOverlayInvertedLineType,
+            o_SelectionOverlayTransparency,
             o_SelectionPickBoxColor,
             o_SelectionPickBoxLinesSizeType,
 

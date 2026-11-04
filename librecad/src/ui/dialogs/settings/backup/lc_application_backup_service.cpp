@@ -320,7 +320,6 @@ bool LC_ApplicationBackupService::exportBackup(QWidget* parent) {
 
         // Drafting Behavior & Canvas Settings
         draftingObj.insert("settings", exportPortableSettings(PORTABLE_DRAFTING_GROUPS));
-
         root["drafting_environment"] = draftingObj;
     }
 
