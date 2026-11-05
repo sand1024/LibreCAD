@@ -27,11 +27,11 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 
-#include "lc_action_group.h"
 #include "lc_action_group_manager.h"
 #include "lc_navigation_creator.h"
 #include "lc_preset_manager_menus_toolbars.h"
-#include "lc_settings_startup.h"
+#include "lc_settings_app_styling.h"
+
 
 namespace {
     const int ROLE_IS_HEADER = Qt::UserRole + 1;
@@ -42,7 +42,6 @@ namespace {
 LC_SettingsPageMenusToolbars::LC_SettingsPageMenusToolbars(LC_ActionGroupManager* groupManager, QObject* parent)
     : LC_SettingsPageBase(tr("Menus & Toolbars"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageMenusToolbars>()),
       m_actionGroupManager(groupManager) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageMenusToolbars::~LC_SettingsPageMenusToolbars() = default;
@@ -177,7 +176,7 @@ void LC_SettingsPageMenusToolbars::updateActiveMenuBold() {
     if (m_presetManager == nullptr) {
         return;
     }
-    const int activeVar = CFG_Appearance::o_MainMenuType;
+    const int activeVar = CFG_AppStyling::o_MainMenuType;
     auto* model = qobject_cast<QStandardItemModel*>(ui->cbTarget->model());
     if (model == nullptr) {
         return;

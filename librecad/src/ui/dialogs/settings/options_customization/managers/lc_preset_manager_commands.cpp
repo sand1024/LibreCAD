@@ -27,12 +27,11 @@
 #include <QRegularExpression>
 #include <QTextStream>
 
-#include "lc_default_command_aliases.h"
 #include "lc_action_command_updater.h"
 #include "lc_action_group_manager.h"
 #include "lc_default_commands_builder.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_state.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_commands_promotion.h"
 
 LC_PresetManagerCommands::LC_PresetManagerCommands(LC_CommandManager* commandManager, LC_ActionGroupManager* agm, QObject* parent)
@@ -98,7 +97,7 @@ bool LC_PresetManagerCommands::loadPreset(const QString& key) {
 }
 
 void LC_PresetManagerCommands::updateActionForCommandsInMenu() {
-    const bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+    const bool clearTooltips = !(CFG_AppStyling::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
     if (clearTooltips) {
         LC_ActionCommandUpdater::clearActions(m_actionGroupManager);
     }

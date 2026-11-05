@@ -144,7 +144,7 @@ QG_FileDialog::QG_FileDialog(QWidget* parent, Qt::WindowFlags f, FileType type)
     //    and 0 for other OS
     //    this is because QFileDialog is case insensitive for filters and the native not
 
-    setOption(QFileDialog::DontUseNativeDialog,CFG_Defaults::o_UseQtFileOpenDialog);
+    setOption(QFileDialog::DontUseNativeDialog,CFG_Dialogs::o_UseQtFileOpenDialog);
     setOption(QFileDialog::HideNameFilterDetails, false);
     m_type = RS2::FormatDXFRW;
 

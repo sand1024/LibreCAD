@@ -23,15 +23,13 @@
 #include "lc_settings_page_drafting_theme_grid_points.h"
 #include "ui_lc_settings_page_drafting_theme_grid_points.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_grid.h"
 #include "qg_linetypebox.h"
-#include "rs_settings.h"
+
 
 LC_SettingsPageDraftingThemeGridPoints::LC_SettingsPageDraftingThemeGridPoints(QObject* parent)
     : LC_SettingsPageBase(tr("Points"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Grid::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeGridPoints>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingThemeGridPoints::~LC_SettingsPageDraftingThemeGridPoints() = default;
@@ -42,13 +40,12 @@ void LC_SettingsPageDraftingThemeGridPoints::setupUi() {
 
 void LC_SettingsPageDraftingThemeGridPoints::setupBindings() {
     using namespace CFG_Grid;
-    using namespace CFG_Colors;
 
     bindColor({
-        { ui->cbGridPointsColor, ui->pb_gridPoints, o_GridPointsColor, tr("Select Grid Points Color") },
-        { ui->cbMetaGridPointsColor, ui->pb_metaPoints, o_MetaGridColor, tr("Select Meta-grid Points Color") }
+        { ui->cbGridPointsColor, ui->pb_gridPoints, o_ColorGridPoints, tr("Select Grid Points Color") },
+        { ui->cbMetaGridPointsColor, ui->pb_metaPoints, o_ColorMetaGrid, tr("Select Meta-grid Points Color") }
     });
 
     ui->wMetaGridPointsLineType->init(false, false, false);
-    bindLineType(ui->wMetaGridPointsLineType, o_MetaGridPointsLineType);
+    bindLineType(ui->wMetaGridPointsLineType, o_PointsMetaGridLineType);
 }

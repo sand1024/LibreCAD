@@ -47,7 +47,6 @@
 LC_SettingsPageShortcuts::LC_SettingsPageShortcuts(LC_ActionGroupManager* groupManager, QObject* parent)
     : LC_SettingsPageBase(tr("Keymap"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageShortcuts>()),
       m_actionGroupManager(groupManager) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageShortcuts::~LC_SettingsPageShortcuts() {

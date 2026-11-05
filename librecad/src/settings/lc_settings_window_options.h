@@ -26,12 +26,19 @@
 #include "lc_setting.h"
 #include "rs.h"
 
-namespace CFG_WindowOptions {
-    inline const LC_SettingsGroupBase Group("WindowOptions");
+namespace CFG_DrawingDocumentsMDIOptions {
+    inline const LC_SettingsGroupBase Group("DrawingDocumentsMDIOptions");
 
-    inline const LC_Setting<RS2::TabShape> o_TabShape(&Group, "TabShape", RS2::Triangular);
-    inline const LC_Setting<RS2::TabPosition> o_TabPosition(&Group, "TabPosition", RS2::West);
+    inline const LC_Setting<bool> o_ShowDrawingsInTabbedMode(&Group, "ShowInTabMode", false);
+
+    inline const LC_Setting<RS2::TabShape> o_DocumentTabShape(&Group, "DocTabShape", RS2::Triangular);
+    inline const LC_Setting<RS2::TabPosition> o_DocumentTabPosition(&Group, "DocTabPosition", RS2::North);
+
     inline const LC_Setting<RS2::SubWindowMode> o_SubWindowMode(&Group, "SubWindowMode", RS2::Maximized);
     inline const LC_Setting<bool> o_Maximized(&Group, "Maximized", true);
+
+    inline const LC_Setting<bool> o_ShowCloseButtonOnDrawingTab(&Group, "ShowCloseButton", true);
+    inline const LC_Setting<bool> o_ShowCloseButtonOnActiveDrawingTabOnly(&Group, "ShowCloseButtonActiveOnly", true);
+
 }
 #endif

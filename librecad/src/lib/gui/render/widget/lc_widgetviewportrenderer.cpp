@@ -22,7 +22,7 @@
 #include "lc_widgetviewportrenderer.h"
 
 #include "lc_graphicviewport.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_render.h"
 #include "rs_document.h"
 #include "rs_entitycontainer.h"
@@ -45,7 +45,7 @@ LC_WidgetViewPortRenderer::~LC_WidgetViewPortRenderer() = default;
 void LC_WidgetViewPortRenderer::loadSettings() {
     LC_GraphicViewportRenderer::loadSettings();
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
         m_antialiasing  = o_Antialiasing;
         m_classicRenderer =  o_ClassicRenderer;;
     }

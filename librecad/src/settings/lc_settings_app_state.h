@@ -34,7 +34,16 @@ namespace CFG_AppState {
     inline const LC_Setting<QString> o_ActiveNavigationLayoutScheme(&Group, "ActiveNavigationLayoutScheme", DEFAULT_THEME_KEY);
     inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
     inline const LC_Setting<QString> o_ActiveWidgetsScheme(&Group, "ActiveWidgetsScheme", DEFAULT_THEME_KEY);
+
     inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
+
+    inline const LC_Setting<bool> o_MainMenuVisible(&Group, "MainMenuVisible", true);
+    inline const LC_Setting<bool> o_StatusBarVisible(&Group, "StatusBarVisible", false);
+    inline const LC_Setting<bool> o_FullscreenMode(&Group, "FullscreenMode", false);
+
+    // --- Languages ---
+    inline const LC_Setting<QString> o_Language(&Group, "Language", "en");
+    inline const LC_Setting<QString> o_LanguageCmd(&Group, "LanguageCmd", "en");
 }
 
 #endif

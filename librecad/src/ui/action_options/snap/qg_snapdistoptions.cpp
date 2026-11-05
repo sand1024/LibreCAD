@@ -30,7 +30,7 @@
 
 #include "lc_actioncontext.h"
 #include "lc_settings_defaults.h"
-#include "lc_settings_snap_state.h"
+#include "lc_settings_snap.h"
 #include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "rs_math.h"
@@ -61,14 +61,14 @@ void QG_SnapDistOptions::languageChange() {
 }
 
 void QG_SnapDistOptions::saveSettings() {
-    CFG_SnapState::o_Distance = ui->leDist->text();
+    CFG_Snap::o_SnapDistanceValue = ui->leDist->text();
     emit distanceChanged();
     emit distanceChanged();
 }
 
 void QG_SnapDistOptions::useSnapDistanceValue(double* d) {
     m_dist = d;
-    const QString distance = CFG_SnapState::o_Distance;
+    const QString distance = CFG_Snap::o_SnapDistanceValue;
     *m_dist = RS_Math::eval(distance, 1.0);
     const QString value = QString::number(*m_dist, 'g', 6);
     ui->leDist->setText(value);
@@ -91,7 +91,7 @@ void QG_SnapDistOptions::onDistEditingFinished() {
 
 void QG_SnapDistOptions::doShow() {
     const bool interactiveInputControlsAutoRaise = CFG_Widgets::o_PickValueButtonsFlatIcons;
-    const bool interactiveInputControlsVisible = CFG_Defaults::o_InteractiveInputEnabled;
+    const bool interactiveInputControlsVisible = CFG_NewDrawingDefaults::o_InteractiveInputEnabled;
     ui->tbPickDistance->setVisible(interactiveInputControlsVisible);
     ui->tbPickDistance->setAutoRaise(interactiveInputControlsAutoRaise);
 

@@ -27,6 +27,8 @@
 
 namespace CFG_Selection {
     inline const LC_SettingsGroupBase Group("Selection");
-    inline const LC_Setting<bool> o_Additivity(&Group, "Additivity", "true");
+
+    inline const LC_Setting<bool> o_Additivity(&Group, "Additivity", true);
+    inline const LC_Setting<bool> o_AllowLassoSelectionByPressedMouseButton(&Group, "AllowLassoEntitiesSelection", false);
 }
 #endif

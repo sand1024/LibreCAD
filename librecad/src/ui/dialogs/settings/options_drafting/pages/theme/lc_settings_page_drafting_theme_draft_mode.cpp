@@ -22,15 +22,13 @@
 
 #include "lc_settings_page_drafting_theme_draft_mode.h"
 
-#include "lc_settings_appearance.h"
 #include "ui_lc_settings_page_drafting_theme_draft_mode.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
-#include "qg_linetypebox.h"
+#include "lc_settings_draft_mode.h"
 
 
 LC_SettingsPageDraftingThemeDraftMode::LC_SettingsPageDraftingThemeDraftMode(QObject* parent)
-    : LC_SettingsPageBase(tr("Draft Mode"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
+    : LC_SettingsPageBase(tr("Draft Mode"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftMode::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeDraftMode>()) {
 }
 
@@ -44,14 +42,13 @@ void LC_SettingsPageDraftingThemeDraftMode::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemeDraftMode::setupBindings() {
-    using namespace CFG_Colors;
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftMode;
 
     bindComboText({
         { ui->fcbDraftModeFont, o_DraftMarkerFontName }
     });
 
     bindColor({
-        { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_DraftModeMarkerColor, tr("Select Draft Marker Color") }
+        { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_ColorDraftModeMarker, tr("Select Draft Marker Color") }
     });
 }

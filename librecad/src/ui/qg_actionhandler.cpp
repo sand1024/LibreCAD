@@ -33,7 +33,7 @@
 #include "lc_defaultactioncontext.h"
 #include "lc_graphicviewport.h"
 #include "lc_settings_commands_promotion.h"
-#include "lc_settings_keyboard.h"
+#include "lc_settings_drafting_keyboard.h"
 #include "lc_snapmanager.h"
 #include "qc_applicationwindow.h"
 #include "rs_actionlayerstogglelock.h"
@@ -192,7 +192,7 @@ bool QG_ActionHandler::command(const QString& cmd) const {
     }
 
     if (cmd.isEmpty()) {
-        if (CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
+        if (CFG_DraftingKeyboard::o_ToggleFreeSnapOnSpace) {
             RS_DEBUG->print("QG_ActionHandler::command: toggle Snap Free: begin");
             const bool isSnappingFree = m_snapManager->toggleTemporarySnapFree();
             RS_DIALOGFACTORY->commandMessage(isSnappingFree?

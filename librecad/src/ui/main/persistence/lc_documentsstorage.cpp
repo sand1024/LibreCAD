@@ -55,7 +55,7 @@ namespace {
     QString backupFilePath(const QString& path) {
 #ifndef Q_OS_WIN
         const QFileInfo info(path);
-        if (CFG_Defaults::o_MarkBackFilesAsHidden.get() && !info.fileName().startsWith('.')) {
+        if (CFG_DrawingsAutoSaveAndBackup::o_MarkBackFilesAsHidden.get() && !info.fileName().startsWith('.')) {
             return info.dir().filePath("." + info.fileName());
         }
 #endif
@@ -64,7 +64,7 @@ namespace {
 
     void hideBackupFile([[maybe_unused]] const QString& path) {
 #ifdef Q_OS_WIN
-        if (!CFG_Defaults::o_MarkBackFilesAsHidden) {
+        if (!CFG_DrawingsAutoSaveAndBackup::o_MarkBackFilesAsHidden) {
             return;
         }
         QString nativePath = QDir::toNativeSeparators(QDir::cleanPath(QFileInfo(path).absoluteFilePath()));
@@ -229,7 +229,7 @@ bool LC_DocumentsStorage::loadDocumentFromTemplate(const RS_Document* document, 
  */
 bool LC_DocumentsStorage::loadGraphicFromTemplate(RS_Graphic* graphic, const QString &templateFileName, const RS2::FormatType type) const {
     // const QString autosaveFilename = createAutoSaveFileName(QFileInfo(QDir::tempPath() + "/" + tr("Unnamed") + ".dxf"));
-    const QString autosaveFilePrefix = CFG_Defaults::o_AutosaveFilePrefix;
+    const QString autosaveFilePrefix = CFG_DrawingsAutoSaveAndBackup::o_AutosaveFilePrefix;
     const QString autosaveFilename = createAutoSaveFileName(QDir::tempPath (), autosaveFilePrefix, tr("Unnamed")+".dxf");
 
     // clean all:
@@ -300,7 +300,7 @@ bool LC_DocumentsStorage::doSave(RS_Graphic* graphic, const bool sameFile) {
     }
 
     const QString& actualName = filename;
-    if (CFG_Defaults::o_AutoBackupDocument) {
+    if (CFG_DrawingsAutoSaveAndBackup::o_AutoBackupDocument) {
         backupDrawingFile(filename, graphic);
     }
 
@@ -435,7 +435,7 @@ bool LC_DocumentsStorage::saveGraphicAs(RS_Graphic* graphic, const QString &file
 }
 
 bool LC_DocumentsStorage::backupDrawingFile(const QString &drawingFileName, const RS_Graphic* graphic) {
-    const QString backupFileSuffix =  CFG_Defaults::o_BackupFileSuffix;
+    const QString backupFileSuffix =  CFG_DrawingsAutoSaveAndBackup::o_BackupFileSuffix;
     return backupDrawingFile(drawingFileName, backupFileSuffix, graphic);
 }
 
@@ -466,7 +466,7 @@ bool LC_DocumentsStorage::backupDrawingFile(const QString &drawingFileName, cons
 }
 
 QString LC_DocumentsStorage::createAutoSaveFileName(const QFileInfo &fileInfo) const {
-    const QString autosaveFilePrefix = CFG_Defaults::o_AutosaveFilePrefix;
+    const QString autosaveFilePrefix = CFG_DrawingsAutoSaveAndBackup::o_AutosaveFilePrefix;
     QString autosaveFileName = createAutoSaveFileName(fileInfo, autosaveFilePrefix);
     // autosave writes DXF: name the file so that it opens as DXF
     if (fileInfo.suffix().compare("dxf", Qt::CaseInsensitive) != 0) {

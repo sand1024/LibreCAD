@@ -21,15 +21,14 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_behavior_snap_visual.h"
+
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_snap_visual.h"
 #include "ui_lc_settings_page_drafting_behavior_snap_visual.h"
 
 LC_SettingsPageDraftingBehaviorSnapVisual::LC_SettingsPageDraftingBehaviorSnapVisual(QObject* parent)
     : LC_SettingsPageBase(tr("Visual Snap"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorSnapVisual>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingBehaviorSnapVisual::~LC_SettingsPageDraftingBehaviorSnapVisual() = default;
@@ -44,7 +43,6 @@ void LC_SettingsPageDraftingBehaviorSnapVisual::setupBehavior() {
 
 void LC_SettingsPageDraftingBehaviorSnapVisual::setupBindings() {
     using namespace CFG_VisualSnap;
-    using namespace CFG_Colors;
 
     bindBoolean({
         { ui->cbVisualSnapAutoAddSnapPoint, o_VSSnapAutoAddSnapPoint },

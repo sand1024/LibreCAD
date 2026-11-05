@@ -43,8 +43,8 @@ QG_MouseWidget::QG_MouseWidget(QWidget* parent, const char* name, const Qt::Wind
 
     {
         using namespace CFG_Widgets;
-        const bool custom_size = o_ToolbarAllowIconSize;
-        m_iconSize = custom_size ? o_ToolbarIconSize : 24;
+        const bool custom_size = o_ToolbarAllowIconSizeOverride;
+        m_iconSize = custom_size ? o_ToolbarCustomIconSize : 24;
 
 
         if (useClassicalStatusBar) {

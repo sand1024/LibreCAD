@@ -23,8 +23,8 @@
 #include "lc_overlayucszero.h"
 
 #include "lc_graphicviewport.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_coordinates_origin.h"
 #include "rs_painter.h"
 #include "rs_pen.h"
 #include "rs_settings.h"
@@ -33,7 +33,8 @@ class LC_GraphicViewport;
 
 void LC_OverlayUCSZeroOptions::loadSettings(){
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_CoordinatesOrigin;
         extendAxisLines = o_ExtendAxisLines;
         extendAxisModeX = o_ExtendModeXAxis;
         extendAxisModeY = o_ExtendModeYAxis;
@@ -45,11 +46,8 @@ void LC_OverlayUCSZeroOptions::loadSettings(){
         if (overlayScreenLineWidth == 1 ) {
             overlayScreenLineWidth = 0;
         }
-    }
-    {
-        using namespace CFG_Colors;
-        colorXAxisExtension = RS_Color(o_XAxisColor);
-        colorYAxisExtension = RS_Color(o_YAxisColor);
+        colorXAxisExtension = RS_Color(o_ColorXAxis);
+        colorYAxisExtension = RS_Color(o_ColorYAxis);
     }
 }
 

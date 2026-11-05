@@ -36,7 +36,7 @@ class LC_LateCompletionRequestor;
 LC_ActionOptionsWidget::LC_ActionOptionsWidget(QWidget *parent, const Qt::WindowFlags fl) :
     QWidget(parent, fl) {
     m_interactiveInputControlsAutoRaise = CFG_Widgets::o_PickValueButtonsFlatIcons;
-    m_interactiveInputControlsVisible = CFG_Defaults::o_InteractiveInputEnabled;
+    m_interactiveInputControlsVisible = CFG_NewDrawingDefaults::o_InteractiveInputEnabled;
 }
 
 LC_ActionOptionsWidget::~LC_ActionOptionsWidget() = default;

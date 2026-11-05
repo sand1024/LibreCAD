@@ -28,12 +28,10 @@
 #include "lc_action.h"
 #include "lc_action_tooltip_builder.h"
 #include "lc_repository_shortcuts.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_paths.h"
 #include "lc_shortcuts_storage.h"
 #include "lc_wait_cursor_guard.h"
-#include "rs_debug.h"
 
 LC_ShortcutsManager::LC_ShortcutsManager(LC_RepositoryKeymaps* repository) : m_repository(repository) {
 };

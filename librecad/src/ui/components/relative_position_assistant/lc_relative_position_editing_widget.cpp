@@ -100,6 +100,7 @@ LC_RelativePositionEditingWidget::LC_RelativePositionEditingWidget(LC_RelativePo
     ui->cbByOffset->setChecked(true);
 
     const QString tooltip = "<p>" + tr("Relative point assistant. Use keys to activate:") +
+        "<p>"+tr("Start typing distance value - any key from [0123456789,.-]")+"</p></br>"
         "</p><p><span style='font-weight:700;'>D</span> - " + tr("Distance") + "<br/><span style='font-weight:700;'>A</span> - " +
         tr("Angle") + "<br/><span style='font-weight:700;'>X</span> - " + tr("Offset/Abs X") +
         "<br/><span style='font-weight:700;'>S</span> - " + tr("Offset/Abs Y") + "<br/><span style='font-weight:700;'>T</span> - " +

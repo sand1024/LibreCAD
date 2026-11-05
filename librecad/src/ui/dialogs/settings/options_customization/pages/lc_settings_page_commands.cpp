@@ -136,7 +136,7 @@ void LC_SettingsPageCommands::setupUi() {
 
     ui->swDetails->setCurrentWidget(ui->pageEmpty);
 
-    QString commandsLanguageCode = CFG_Appearance::o_LanguageCmd;
+    QString commandsLanguageCode = CFG_AppState::o_LanguageCmd;
     QString commandsLanguageName = RS_SYSTEM->symbolToLanguage(commandsLanguageCode);
     ui->lCurrentCommandsLanguage->setText(commandsLanguageName);
 }
@@ -691,7 +691,7 @@ void LC_SettingsPageCommands::onExportCheatsheetClicked() {
     options.isModelFiltered = (m_commandsTreeModel != nullptr) && m_commandsTreeModel->isFiltered();
     options.onlyFilteredItems = options.isModelFiltered;
 
-    QString commandsLanguageCode = CFG_Appearance::o_LanguageCmd;
+    QString commandsLanguageCode = CFG_AppState::o_LanguageCmd;
     QString languageName = RS_SYSTEM->symbolToLanguage(commandsLanguageCode);
     if (!languageName.isEmpty()) {
         options.commandsLanguageName = languageName;

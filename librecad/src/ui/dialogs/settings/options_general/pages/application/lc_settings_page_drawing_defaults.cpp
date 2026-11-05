@@ -26,7 +26,7 @@
 #include "ui_lc_settings_page_drawing_defaults.h"
 
 LC_SettingsPageDrawingDefaults::LC_SettingsPageDrawingDefaults(QObject* parent)
-    : LC_SettingsPageBase(tr("Drawing Defaults"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group), parent),
+    : LC_SettingsPageBase(tr("Drawing Defaults"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_NewDrawingDefaults::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDrawingDefaults>()) {
 }
 
@@ -44,13 +44,13 @@ void LC_SettingsPageDrawingDefaults::setupUi() {
 }
 
 void LC_SettingsPageDrawingDefaults::setupBindings() {
-    using namespace CFG_Defaults;
+    using namespace CFG_NewDrawingDefaults;
 
     bindString({{ui->leDefAngleBaseZero, o_AnglesBaseAngle}});
 
     bindBoolean({{ui->cbNewDrawingGridOff, o_GridOffForNewDrawing}});
 
-    bindCustom<QComboBox, QString>(ui->cbUnit, o_Unit, false,
+    bindCustom<QComboBox, QString>(ui->cbUnit, o_DefaultUnit, false,
         &QComboBox::currentTextChanged,
         [](QComboBox* w) {
                                        return RS_Units::unitToString(RS_Units::stringToUnit(w->currentText()), false);

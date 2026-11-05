@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -24,8 +25,8 @@
 
 #include "lc_setting.h"
 
-namespace CFG_InfoCursor {
-    inline const LC_SettingsGroupBase Group("InfoOverlayCursor");
+namespace CFG_OverlayInfoCursor {
+    inline const LC_SettingsGroupBase Group("OverlayInfoCursor");
 
     inline const LC_Setting<bool> o_InfoCursorEnabled(&Group, "Enabled", true);
     inline const LC_Setting<bool> o_ShowAbsolute(&Group, "ShowAbsolute", true);
@@ -44,6 +45,13 @@ namespace CFG_InfoCursor {
     inline const LC_Setting<int>  o_InfoCursorFontSize(&Group, "FontSize", 10);
     inline const LC_Setting<int>  o_InfoCursorOffsetFromSnapPoint(&Group, "OffsetFromCursor", 15);
     inline const LC_Setting<QString> o_InfoCursorFontName(&Group, "FontName", "Verdana");
+
+    // Colors for Informational Cursor overlays
+    inline const LC_Setting<QColor> o_ColorInfoOverlayAbsoluteCoordinates(&Group, "ColorAbsoluteCoordinates", QColor("#FFC200"));
+    inline const LC_Setting<QColor> o_ColorInfoOverlaySnapInfo(&Group, "ColorSnapInfo", QColor("Cyan"));
+    inline const LC_Setting<QColor> o_ColorInfoOverlayPrompt(&Group, "ColorPrompt", QColor("Gray"));
+    inline const LC_Setting<QColor> o_ColorInfoOverlayRelative(&Group, "ColorRelativeCoordinates", QColor("Orange"));
+
 }
 
 #endif 

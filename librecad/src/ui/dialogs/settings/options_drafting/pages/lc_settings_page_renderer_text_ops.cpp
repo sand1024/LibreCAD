@@ -21,14 +21,15 @@
  ******************************************************************************/
 
 #include "lc_settings_page_renderer_text_ops.h"
+
 #include "ui_lc_settings_page_renderer_text_ops.h"
 #include "lc_settings_backend.h"
+#include "lc_settings_grid.h"
 #include "lc_settings_render.h"
 
 LC_SettingsPageRendererTextOps::LC_SettingsPageRendererTextOps(QObject* parent)
     : LC_SettingsPageBase(tr("Renderer"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Render::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageRendererTextOps>()) {
-    setSortWeight(110);
 }
 
 LC_SettingsPageRendererTextOps::~LC_SettingsPageRendererTextOps() = default;
@@ -39,14 +40,14 @@ void LC_SettingsPageRendererTextOps::setupUi() {
 
 void LC_SettingsPageRendererTextOps::setupBindings() {
     using namespace CFG_Render;
+    using namespace CFG_Grid;
 
     bindBoolean({
         { ui->cbTextDraftOnPanning, o_DrawTextsAsDraftInPanning },
         { ui->cbTextDraftInPreview, o_DrawTextsAsDraftInPreview },
-        { ui->cbSimpleGridRendering, CFG_Appearance::o_GridRenderSimple },
-        { ui->cbDisableGridOnPanning, CFG_Appearance::o_GridDisableWithinPan }
+        { ui->cbSimpleGridRendering, o_GridRenderSimple },
+        { ui->cbDisableGridOnPanning, o_GridDisableWithinPan }
     });
-
 
     bindInt({
         { ui->sbFontLettersColumnCount, o_FontLettersColumnsCount }

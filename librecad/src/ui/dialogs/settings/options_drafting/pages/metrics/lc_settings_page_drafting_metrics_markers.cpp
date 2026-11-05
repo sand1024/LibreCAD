@@ -22,14 +22,15 @@
 
 #include "lc_settings_page_drafting_metrics_markers.h"
 
-#include "lc_settings_appearance.h"
+
 #include "lc_settings_backend.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_preview.h"
 #include "ui_lc_settings_page_drafting_metrics_markers.h"
 
 LC_SettingsPageDraftingMetricsMarkers::LC_SettingsPageDraftingMetricsMarkers(QObject* parent)
-    : LC_SettingsPageBase(tr("Markers and Handles"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group), parent),
+    : LC_SettingsPageBase(tr("Markers and Handles"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingAreaStyling::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsMarkers>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingMetricsMarkers::~LC_SettingsPageDraftingMetricsMarkers() = default;
@@ -41,7 +42,8 @@ void LC_SettingsPageDraftingMetricsMarkers::setupUi() {
 }
 
 void LC_SettingsPageDraftingMetricsMarkers::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingAreaStyling;
+    using namespace CFG_DraftingPreview;
 
     bindInt({
         {ui->sbHandleSize, o_EntityHandleSize},

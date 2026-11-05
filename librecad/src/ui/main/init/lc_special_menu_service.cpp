@@ -34,7 +34,7 @@
 #include "lc_group_names.h"
 #include "lc_mdiapplicationwindow.h"
 #include "lc_namedviewslistwidget.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_window_options.h"
 #include "lc_ucslistwidget.h"
@@ -62,7 +62,7 @@ QMenu* LC_SpecialMenuService::createDynamicSubMenu(QMenu* parentMenu, const QStr
     }
 
     // Only inherit tear-off if parent menu is also tear-off enabled (main menu bar only)
-    const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
+    const bool allowTearOff = CFG_AppStyling::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
 
     auto* subMenu = parentMenu->addMenu(title);
     if (subMenu == nullptr) {
@@ -236,7 +236,7 @@ void LC_SpecialMenuService::bindRecentFilesMenu(QMenu* parentMenu) const {
     QMenu* recent = m_appWindow->getRecentFilesMenu();
     const bool isEmpty = recent->actions().isEmpty();
 
-    const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
+    const bool allowTearOff = CFG_AppStyling::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
     recent->setTearOffEnabled(allowTearOff);
 
     if (isEmpty) {
@@ -264,7 +264,7 @@ void LC_SpecialMenuService::bindPluginsMenu(QMenu* parentMenu) {
             else {
                 plugins->setEnabled(true);
             }
-            const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
+            const bool allowTearOff = CFG_AppStyling::o_AllowMenusTearOff && parentMenu->isTearOffEnabled();
             plugins->setTearOffEnabled(allowTearOff);
             parentMenu->addMenu(plugins);
         }
@@ -367,7 +367,7 @@ void LC_SpecialMenuService::bindDrawingsMenu(QMenu* parentMenu) {
 }
 
 void LC_SpecialMenuService::bindWorkspacesRescueMenu(QMenu* parentMenu) {
-    if (CFG_Appearance::o_MainMenuVisible || parentMenu == nullptr) {
+    if (CFG_AppState::o_MainMenuVisible || parentMenu == nullptr) {
         return;
     }
 
@@ -445,9 +445,9 @@ void LC_SpecialMenuService::populateDrawings(QMenu* menu) const {
         return;
     }
 
-    using namespace CFG_WindowOptions;
+    using namespace CFG_DrawingDocumentsMDIOptions;
     const bool tabbed = (mdiArea->viewMode() == QMdiArea::TabbedView);
-    const bool allowTearOff = CFG_Appearance::o_AllowMenusTearOff && menu->isTearOffEnabled();
+    const bool allowTearOff = CFG_AppStyling::o_AllowMenusTearOff && menu->isTearOffEnabled();
 
     // 1. MDI View Mode Toggles
     auto* actTab = menu->addAction(QObject::tr("Ta&b mode"), m_appWindow, &LC_MDIApplicationWindow::slotToggleTab);
@@ -466,28 +466,28 @@ void LC_SpecialMenuService::populateDrawings(QMenu* menu) const {
 
             auto* actRounded = layoutSub->addAction(QObject::tr("Rounded"), m_appWindow, &LC_MDIApplicationWindow::slotTabShapeRounded);
             actRounded->setCheckable(true);
-            actRounded->setChecked(o_TabShape == RS2::Rounded);
+            actRounded->setChecked(o_DocumentTabShape == RS2::Rounded);
 
             auto* actTriangular = layoutSub->addAction(QObject::tr("Triangular"), m_appWindow, &LC_MDIApplicationWindow::slotTabShapeTriangular);
             actTriangular->setCheckable(true);
-            actTriangular->setChecked(o_TabShape == RS2::Triangular);
+            actTriangular->setChecked(o_DocumentTabShape == RS2::Triangular);
 
             layoutSub->addSeparator();
 
             auto* actNorth = layoutSub->addAction(QObject::tr("North"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionNorth);
             actNorth->setCheckable(true);
-            actNorth->setChecked(o_TabPosition == RS2::North);
+            actNorth->setChecked(o_DocumentTabPosition == RS2::North);
 
             auto* actSouth = layoutSub->addAction(QObject::tr("South"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionSouth);
             actSouth->setCheckable(true);
-            actSouth->setChecked(o_TabPosition == RS2::South);
+            actSouth->setChecked(o_DocumentTabPosition == RS2::South);
 
             auto* actEast = layoutSub->addAction(QObject::tr("East"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionEast);
             actEast->setCheckable(true);
-            actEast->setChecked(o_TabPosition == RS2::East);
+            actEast->setChecked(o_DocumentTabPosition == RS2::East);
             auto* actWest = layoutSub->addAction(QObject::tr("West"), m_appWindow, &LC_MDIApplicationWindow::slotTabPositionWest);
             actWest->setCheckable(true);
-            actWest->setChecked(o_TabPosition == RS2::West);
+            actWest->setChecked(o_DocumentTabPosition == RS2::West);
         }
     }
     else {

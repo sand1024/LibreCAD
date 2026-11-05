@@ -22,7 +22,6 @@
 
 #include "lc_settings_page_drafting_metrics_overlays.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
@@ -31,10 +30,9 @@
 
 LC_SettingsPageDraftingMetricsOverlays::LC_SettingsPageDraftingMetricsOverlays(QObject* parent)
     : LC_SettingsPageBase(tr("Grid and Tools"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_OverlayInfoCursor::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsOverlays>()) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageDraftingMetricsOverlays::~LC_SettingsPageDraftingMetricsOverlays() = default;
@@ -44,9 +42,8 @@ void LC_SettingsPageDraftingMetricsOverlays::setupUi() {
 }
 
 void LC_SettingsPageDraftingMetricsOverlays::setupBindings() {
-    using namespace CFG_Appearance;
     using namespace CFG_Grid;
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     using namespace CFG_RelativePositionAssistant;
 
     bindInt({
@@ -57,9 +54,9 @@ void LC_SettingsPageDraftingMetricsOverlays::setupBindings() {
     });
 
     bindDouble({
-         { ui->sbGridPointsPointSize, o_GridPointsPointScreenSize },
-         { ui->sbGridLinesLineWidth, o_GridLinesScreenLineWidth},
-         { ui->sbMetaGridLinesLineWidth, o_MetaGridLinesScreenLineWidth },
-         { ui->sbMetaGridPointsLineWidth, o_MetaGridPointsScreenLineWidth },
+         { ui->sbGridPointsPointSize, o_PointsGridPointScreenSize },
+         { ui->sbGridLinesLineWidth, o_LinesGridScreenLineWidth},
+         { ui->sbMetaGridLinesLineWidth, o_LinesMetaGridScreenLineWidth },
+         { ui->sbMetaGridPointsLineWidth, o_PointsMetaGridScreenLineWidth },
     });
 }

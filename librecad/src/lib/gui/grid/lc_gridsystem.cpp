@@ -25,8 +25,6 @@
 #include "lc_graphicviewport.h"
 #include "lc_grid_options.h"
 #include "lc_lattice.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_grid.h"
 #include "rs_painter.h"
 #include "rs_pen.h"

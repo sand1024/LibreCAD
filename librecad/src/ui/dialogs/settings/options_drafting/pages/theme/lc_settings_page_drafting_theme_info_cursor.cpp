@@ -23,17 +23,15 @@
 #include "lc_settings_page_drafting_theme_info_cursor.h"
 
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_info_overlay_cursor.h"
 #include "lc_settings_relative_position_assistant.h"
 #include "ui_lc_settings_page_drafting_theme_info_cursor.h"
 
 LC_SettingsPageDraftingThemeInfoCursor::LC_SettingsPageDraftingThemeInfoCursor(QObject* parent)
     : LC_SettingsPageBase(tr("Info Cursor & Input Assistant"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_RelativePositionAssistant::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeInfoCursor>()) {
-    setSortWeight(45);
 }
 
 LC_SettingsPageDraftingThemeInfoCursor::~LC_SettingsPageDraftingThemeInfoCursor() = default;
@@ -43,9 +41,8 @@ void LC_SettingsPageDraftingThemeInfoCursor::setupUi() {
 }
 
 void LC_SettingsPageDraftingThemeInfoCursor::setupBindings() {
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     using namespace CFG_RelativePositionAssistant;
-    using namespace CFG_Colors;
 
     bindComboText({
         { ui->fcbInfoFont, o_InfoCursorFontName },
@@ -53,11 +50,11 @@ void LC_SettingsPageDraftingThemeInfoCursor::setupBindings() {
     });
 
     bindColor({
-        { ui->cbAbsColor, ui->pbAbsColor, o_InfoOverlayAbsoluteCoordinatesColor, tr("Select Absolute Coordinates Color") },
-        { ui->cbRelColor, ui->pbRelColor, o_InfoOverlayRelativeColor, tr("Select Relative Coordinates Color") },
-        { ui->cbPromptColor, ui->pbPromptColor, o_InfoOverlayPromptColor, tr("Select Command Prompt Color") },
-        { ui->cbSnapColor, ui->pbSnapColor, o_InfoOverlaySnapInfoColor, tr("Select Snap Indicator Text Color") },
-        { ui->cbAssistantBgColor, ui->pbAssistantBgColor, o_RelativePositionAssistantBackgroundColor, tr("Select Assistant Background Color") },
-        { ui->cbAssistantTextColor, ui->pbAssistantTextColor, o_RelativePositionAssistantTextColor, tr("Select Assistant Text Color") }
+        { ui->cbAbsColor, ui->pbAbsColor, o_ColorInfoOverlayAbsoluteCoordinates, tr("Select Absolute Coordinates Color") },
+        { ui->cbRelColor, ui->pbRelColor, o_ColorInfoOverlayRelative, tr("Select Relative Coordinates Color") },
+        { ui->cbPromptColor, ui->pbPromptColor, o_ColorInfoOverlayPrompt, tr("Select Command Prompt Color") },
+        { ui->cbSnapColor, ui->pbSnapColor, o_ColorInfoOverlaySnapInfo, tr("Select Snap Indicator Text Color") },
+        { ui->cbAssistantBgColor, ui->pbAssistantBgColor, o_ColorRelativePositionAssistantBackground, tr("Select Assistant Background Color") },
+        { ui->cbAssistantTextColor, ui->pbAssistantTextColor, o_ColorRelativePositionAssistantText, tr("Select Assistant Text Color") }
     });
 }

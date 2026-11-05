@@ -24,12 +24,10 @@
 
 #include <QMouseEvent>
 #include "lc_actioncontext.h"
-// #include "lc_actions_naming_utils.h"
 #include "lc_action_group_manager.h"
 #include "lc_default_context_menus_builder.h"
 #include "lc_menu_activator.h"
 #include "lc_preset_manager_menus.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_state.h"
 #include "lc_settings_paths.h"
 #include "lc_wait_cursor_guard.h"
@@ -188,13 +186,13 @@ QMenu* LC_GraphicViewContextMenuProvider::createContextMenu(QG_GraphicView* grap
 
     // Entity highlight while menu is visible
     if (entity != nullptr && !entity->isSelected() && graphicView->getDocument() != nullptr) {
-        RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
+        const RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
         sel.justSelect(entity, true);
         graphicView->redraw(RS2::RedrawDrawing);
 
         connect(ctxMenu, &QMenu::aboutToHide, this, [graphicView, entity]() {
             if (graphicView != nullptr && graphicView->getDocument() != nullptr) {
-                RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
+                const RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
                 sel.justSelect(entity, false);
                 graphicView->redraw();
             }
@@ -211,7 +209,7 @@ QMenu* LC_GraphicViewContextMenuProvider::createContextMenu(QG_GraphicView* grap
     m_undoAvailable = false;
     m_redoAvailable = false;
     if (actionContext != nullptr && actionContext->getDocument() != nullptr) {
-        if (auto* doc = actionContext->getDocument()->getDocument()) {
+        if (const auto* doc = actionContext->getDocument()->getDocument()) {
             doc->collectUndoState(m_undoAvailable, m_redoAvailable);
         }
     }
@@ -272,7 +270,7 @@ void LC_GraphicViewContextMenuProvider::appendActionItem(QMenu* parentMenu, cons
         if (entity != nullptr && entity->rtti() == RS2::EntityInsert) {
             const auto* ins = static_cast<const RS_Insert*>(entity);
             const QString title = tr("Edit Block: %1").arg(ins->getName().left(40));
-            auto* act = parentMenu->addAction(QIcon(":/icons/properties.lci"), title);
+            const auto* act = parentMenu->addAction(QIcon(":/icons/properties.lci"), title);
             connect(act, &QAction::triggered, this, [graphicView, entity]() {
                 graphicView->launchEditProperty(entity);
             });
@@ -287,7 +285,7 @@ void LC_GraphicViewContextMenuProvider::appendActionItem(QMenu* parentMenu, cons
             if (graphic != nullptr && entity->getLayer() != nullptr && graphic->getActiveLayer() != entity->getLayer()) {
                 auto* act = getAction(LC_ActionNames::ActionEntityLayerActivate);
                 if (act != nullptr) {
-                    auto* proxy = parentMenu->addAction(act->icon(), act->iconText());
+                    const auto* proxy = parentMenu->addAction(act->icon(), act->iconText());
                     connect(proxy, &QAction::triggered, this, [actionContext, entity, pos, act]() {
                         if (actionContext != nullptr) {
                             actionContext->saveContextMenuActionContext(entity, pos, false);
@@ -344,7 +342,7 @@ bool LC_GraphicViewContextMenuProvider::isDefaultMenuInvokerEvent(const QMouseEv
 }
 
 QAction* LC_GraphicViewContextMenuProvider::getAction(const QString& key) const {
-    auto appWin = QC_ApplicationWindow::getAppWindow();
+    const auto appWin = QC_ApplicationWindow::getAppWindow();
     if (appWin != nullptr) {
         return appWin->getAction(key);
     }

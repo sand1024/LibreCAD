@@ -43,6 +43,7 @@
 #include "lc_qtstatusbarmanager.h"
 #include "lc_quickinfowidget.h"
 #include "lc_relzerocoordinateswidget.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "lc_toolbar_names.h"
@@ -94,12 +95,11 @@ LC_WidgetFactory::LC_WidgetFactory(QC_ApplicationWindow* mainWin)
 
 void LC_WidgetFactory::createStatusToolbars(std::initializer_list<StatusBarInfo> toolbars) {
     constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    const bool showToolbarTooltips = CFG_Startup::o_ShowToolbarsTooltip;
+    const bool showToolbarTooltips = CFG_AppStyling::o_ShowToolbarsTooltip;
     for (auto i: toolbars) {
         createStatusBarToolbar(tbPolicy, i.widget, i.title,  i.iconName,  i.name, showToolbarTooltips, true);
     }
 }
-
 
 QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy& tbPolicy, QWidget* widget, const QString& title, const QString& iconName,
                                      const char* name, const bool showToolTip, bool usePillChips) {
@@ -704,7 +704,7 @@ void LC_WidgetFactory::initStatusBar() {
     connect(m_appWin, &QC_ApplicationWindow::currentActionIconChanged, m_appWin->m_statusbarManager,
             &LC_QTStatusbarManager::setCurrentQAction);
 
-    const bool statusBarVisible = CFG_Appearance::o_StatusBarVisible;
+    const bool statusBarVisible = CFG_AppState::o_StatusBarVisible;
     status_bar->setVisible(statusBarVisible);
 }
 

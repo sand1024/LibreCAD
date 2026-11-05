@@ -23,27 +23,27 @@
 
 #include <math.h>
 
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_selection_overlay.h"
 #include "rs_painter.h"
-#include "rs_settings.h"
 
 void LC_SelectionBoxOptions::loadSettings() {
     {
-        using namespace CFG_Colors;
-        int overlayTransparency = o_SelectionOverlayTransparency;;
-        colorBoxLine = RS_Color(o_SelectionOverlayLineColor);
-        auto tmp = RS_Color(o_SelectionOverlayFillColor);
+        using namespace CFG_OverlaySelection;
+        int overlayTransparency = o_SelectionOverlayTransparency;
+        colorBoxLine = RS_Color(o_ColorSelectionOverlayLine);
+        auto tmp = RS_Color(o_ColorSelectionOverlayFill);
         const RS_Color fillColor(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFill = fillColor;
-        colorLineInverted = RS_Color(o_SelectionOverlayInvertedLineColor);
-        tmp = RS_Color(o_SelectionOverlayInvertedFillColor);
+        colorLineInverted = RS_Color(o_ColorSelectionOverlayInvertedLine);
+        tmp = RS_Color(o_ColorSelectionOverlayInvertedFill);
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFillInverted = fillColorInverted;
     }
 
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_OverlaySelection;
         lineType = o_SelectionOverlayLineType;
         invertedLineType = o_SelectionOverlayInvertedLineType;
         overlayScreenLineWidth = o_OverlaysScreenLineWidth;

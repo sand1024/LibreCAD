@@ -130,11 +130,11 @@ QString LC_UIStyleManager::getActiveStyle() const {
 }
 
 ThemeModeOverride LC_UIStyleManager::getThemeModeOverride() const {
-    return CFG_AppStyling::o_ThemeModeOverride;
+    return CFG_AppStyling::o_FusionThemeModeOverride;
 }
 
 void LC_UIStyleManager::setThemeModeOverride(ThemeModeOverride mode) {
-    CFG_AppStyling::o_ThemeModeOverride = mode;
+    CFG_AppStyling::o_FusionThemeModeOverride = mode;
 }
 
 QString LC_UIStyleManager::getActiveStyleSheet() const {
@@ -605,8 +605,8 @@ void LC_UIStyleManager::applyWidgetsConfig(const LC_WidgetsConfig& config) {
     using namespace CFG_Widgets;
 
     // 1. Commit config values into persistent CFG_Widgets settings
-    o_ToolbarAllowIconSize = config.toolbarAllowIconSize;
-    o_ToolbarIconSize = config.toolbarIconSize;
+    o_ToolbarAllowIconSizeOverride = config.toolbarAllowIconSize;
+    o_ToolbarCustomIconSize = config.toolbarIconSize;
     o_PickValueButtonsFlatIcons = config.pickValueButtonsFlatIcons;
 
     o_DockWidgetsFlatButtons = config.dockWidgetsFlatButtons;
@@ -630,7 +630,7 @@ void LC_UIStyleManager::applyWidgetsConfig(const LC_WidgetsConfig& config) {
     o_CADToolsMatrixIconSize = config.cadToolsMatrixIconSize;
     o_CADToolsMatrixColumnsCount = config.cadToolsMatrixColumnsCount;
 
-    o_DockAllowNested = config.dockAllowNested;
+    o_AllowNestedDocking = config.dockAllowNested;
 
     o_StatusBarAllowHeight = config.allowStatusbarHeight;
     o_StatusbarHeight = config.statusbarHeight;

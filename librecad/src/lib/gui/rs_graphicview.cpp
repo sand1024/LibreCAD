@@ -33,11 +33,8 @@
 #include "lc_eventhandler.h"
 #include "lc_graphicviewport.h"
 #include "lc_relative_point_input_widget.h"
-#include "lc_graphicviewrenderer.h"
-#include "lc_relative_point_input_widget.h"
-#include "lc_settings_defaults.h"
+#include "lc_settings_drafting.h"
 
-#include "lc_visual_snap_data.h"
 #include "lc_visual_snap_data.h"
 #include "lc_widgetviewportrenderer.h"
 #include "rs_actioninterface.h"
@@ -46,7 +43,6 @@
 #include "rs_grid.h"
 #include "rs_linetypepattern.h"
 #include "rs_selection.h"
-#include "rs_settings.h"
 #include "rs_snapper.h"
 
 #ifdef EMU_C99
@@ -75,7 +71,8 @@ RS_GraphicView::~RS_GraphicView() {
 }
 
 void RS_GraphicView::loadSettings() {
-    using namespace CFG_ZoomAndPan;
+    using namespace CFG_DraftingZoomAndPan;
+
     m_panOnZoom = o_PanOnZoom;
     m_skipFirstZoom = o_FirstTimeNoZoom;
 

@@ -35,7 +35,6 @@ LC_SettingsPageFusionTheme::LC_SettingsPageFusionTheme(QObject* parent)
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_AppStyling::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageFusionTheme>()) {
-    setSortWeight(50);
     if (QC_ApplicationWindow::getAppWindow() != nullptr) {
         m_styleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
     }
@@ -67,7 +66,7 @@ void LC_SettingsPageFusionTheme::setupBindings() {
     using namespace CFG_AppStyling;
 
     bindCustom<QComboBox, int>(
-        ui->cbThemeModeOverride, o_ThemeModeOverride.fullKey(), static_cast<int>(o_ThemeModeOverride.defaultValue()), false,
+        ui->cbThemeModeOverride, o_FusionThemeModeOverride.fullKey(), static_cast<int>(o_FusionThemeModeOverride.defaultValue()), false,
         QOverload<int>::of(&QComboBox::currentIndexChanged),
         [](QComboBox* w) { return w->currentData().toInt(); },
         [](QComboBox* w, int val) {
@@ -166,7 +165,7 @@ void LC_SettingsPageFusionTheme::applyTransientTheme() {
     const auto themeModeOverride = static_cast<ThemeModeOverride>(ui->cbThemeModeOverride->currentData().toInt());
     const bool ignoreIcons = ui->cbIgnoreIconStylingInTheme->isChecked();
 
-    CFG_AppStyling::o_ThemeModeOverride.set(themeModeOverride);
+    CFG_AppStyling::o_FusionThemeModeOverride.set(themeModeOverride);
     m_styleManager->setThemeModeOverride(themeModeOverride);
     m_styleManager->setIgnoreIconStylingInPalette(ignoreIcons);
 

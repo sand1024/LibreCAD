@@ -22,20 +22,18 @@
 
 #include "lc_settings_page_drafting_behavior_general.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_cad_preferences.h"
-#include "lc_settings_defaults.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
 #include "lc_settings_grid.h"
-#include "lc_settings_modify.h"
+#include "lc_settings_preview.h"
 #include "ui_lc_settings_page_drafting_behavior_general.h"
 
 LC_SettingsPageDraftingBehaviorGeneral::LC_SettingsPageDraftingBehaviorGeneral(QObject* parent)
     : LC_SettingsPageBase(tr("General"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingAreaStyling::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorGeneral>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingBehaviorGeneral::~LC_SettingsPageDraftingBehaviorGeneral() = default;
@@ -54,27 +52,29 @@ void LC_SettingsPageDraftingBehaviorGeneral::setupUi() {
 }
 
 void LC_SettingsPageDraftingBehaviorGeneral::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingAreaStyling;
+    using namespace CFG_DraftingOperations;
     using namespace CFG_Grid;
-    using namespace CFG_Modify;
+    using namespace CFG_DraftMode;
+    using namespace CFG_DraftingPreview;
 
     bindBoolean({
         // Canvas Chrome & Navigation
-        { ui->cbShowScrollbars, o_ScrollBars },
+        { ui->cbShowScrollbars, o_ScrollBarsVisibleForDraftingArea },
         { ui->cbScrollBarsDrawingExtent, o_ScrollBarsContentBand },
         { ui->cbScrollBarsDrawingExtentTooltip, o_ScrollBarsContentToolTip },
         { ui->cb_antialiasing, o_Antialiasing },
         { ui->cbClassicRendering, o_ClassicRenderer },
-        {ui->cb_autopanning, CFG_ZoomAndPan::o_Autopanning},
-        { ui->cbVisualizeHovering, o_VisualizeHovering },
+        {ui->cb_autopanning, CFG_DraftingZoomAndPan::o_Autopanning},
+        { ui->cbVisualizeHovering, o_HighlightEntitiesOnHover },
         { ui->cbHighlightWIthLinewidthInDraft, o_IgnoreDraftForHighlight },
         { ui->cbShowDraftModeMarker, o_ShowDraftModeMarker },
-        { ui->cbDisplayRefPoints, o_VisualizePreviewRefPoints} ,
-        { ui->cbShowRefPointsOnHovering, o_VisualizeHoveringRefPoints},
+        { ui->cbDisplayRefPoints, o_ShowRefEntitiesOnPreview} ,
+        { ui->cbShowRefPointsOnHovering, o_HighlightEntitiesRefPointsOnHover},
         { ui->cbToActiveLayer, o_ModifyEntitiesToActiveLayer},
-        { ui->cbKeepModifiedSelected, o_KeepModifiedSelected},
-        { ui->cbAutoZoomDrawing, CFG_CADPreferences::o_AutoZoomDrawing },
+        { ui->cbKeepModifiedSelected, o_KeepModifiedEntitiesSelected},
+        { ui->cbAutoZoomDrawing, o_AutoZoomDrawingAfterOpening },
     });
 
-    bind(ui->sbMaxPreview, o_MaxPreview, false);
+    bind(ui->sbMaxPreview, o_MaxEntitiesNumberInPreview, false);
 }

@@ -39,7 +39,7 @@
 #include "lc_graphicviewport.h"
 #include "lc_hyperbola.h"
 #include "lc_linemath.h"
-#include "lc_settings_render.h"
+#include "../gui/render/lc_settings_render.h"
 #include "lc_offsetresultcheck.h"
 #include "lc_splinepoints.h"
 #include "rs_spline.h"

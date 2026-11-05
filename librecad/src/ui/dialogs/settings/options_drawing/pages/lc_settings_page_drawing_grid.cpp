@@ -23,7 +23,7 @@
 #include "lc_settings_page_drawing_grid.h"
 #include "ui_lc_settings_page_drawing_grid.h"
 #include "lc_document_settings_backend.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_grid.h"
 #include "rs_graphic.h"
 
 LC_SettingsPageDrawingGrid::LC_SettingsPageDrawingGrid(RS_Graphic* graphic, QObject* parent)
@@ -63,7 +63,7 @@ void LC_SettingsPageDrawingGrid::loadSettings() {
     ui->cbYSpacing->setEditText(spacing.y == 0.0 ? tr("auto") : QString::number(spacing.y));
 
     // Load read-only info from Application Settings
-    using namespace CFG_Appearance;
+    using namespace CFG_Grid;
     auto stateStr = [](bool s) { return s ? tr("ON") : tr("OFF"); };
     ui->lGridStateScaling->setText(stateStr(o_ScaleGrid));
     ui->lGridStateUnitless->setText(stateStr(o_UnitlessGrid));

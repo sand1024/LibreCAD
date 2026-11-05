@@ -42,6 +42,7 @@
 #include "lc_overlayentitiescontainer.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "rs_debug.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
@@ -294,7 +295,7 @@ void RS_Snapper::initFromSettings() {
     if (m_snapIndicator->shape_Type == LC_Crosshair::Point) {
         m_snapIndicator->pointSize = LC_DEFAULTS_PDSize;
     }
-    m_ignoreSnapToGridIfNoGrid = CFG_Appearance::o_SnapGridIgnoreIfNoGrid;
+    m_ignoreSnapToGridIfNoGrid = CFG_Snap::o_SnapGridIgnoreIfNoGrid;
 
     {
         using namespace CFG_Snap;
@@ -303,14 +304,14 @@ void RS_Snapper::initFromSettings() {
         m_minGridCellSnapFactor = o_AdvSnapGridCellSnapFactor / 100.0;
         m_angleSnapSnapToGridLinesIfGrid = o_AngleSnapToLinesIfGrid;
 
-        m_showPickBoxForSelection = o_SelectionPickboxInsteadOfCursor;
+        m_showPickBoxForSelection = CFG_EntitiesPickBox::o_SelectionPickboxInsteadOfCursor;
     }
 
     m_visualSnapManager->updateOptions();
 }
 
 void RS_Snapper::updateSnapAngleStep() {
-    const int stepType = CFG_Defaults::o_AngleSnapStep;
+    const int stepType = CFG_Snap::o_SnapAngleAnglesStep;
     double snapStepDegrees;
     switch (stepType) {
         case 0:

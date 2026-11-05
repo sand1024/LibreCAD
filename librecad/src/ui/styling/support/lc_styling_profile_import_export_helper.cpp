@@ -25,7 +25,7 @@
 #include "lc_dlg_checklist_selection.h"
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
-#include "../fusion_skin/lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_metrics.h"
 #include "lc_repository_fusion_colors_palette.h"
 #include "lc_repository_typography.h"
 #include "lc_repository_widgets.h"

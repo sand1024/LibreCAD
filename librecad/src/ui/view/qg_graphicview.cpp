@@ -49,13 +49,12 @@
 #include "lc_quickinfowidget.h"
 #include "lc_rect.h"
 #include "lc_relative_point_input_widget.h"
-#include "lc_relative_position_editing_widget.h"
-#include "lc_settings_colors.h"
-#include "lc_settings_defaults.h"
-#include "lc_settings_keyboard.h"
-#include "lc_settings_modify.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_drafting_keyboard.h"
 #include "lc_settings_relative_position_assistant.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
+#include "lc_settings_ucs_origin_rendering.h"
 #include "lc_ucs_mark.h"
 #include "lc_undosection.h"
 #include "lc_viewmath.h"
@@ -1515,7 +1514,7 @@ void QG_GraphicView::setOffset([[maybe_unused]] const int ox, [[maybe_unused]] c
 }
 
 void QG_GraphicView::layerActivated(RS_Layer* layer) {
-    const bool applyLayerToSelectedEntities = CFG_Modify::o_ModifyEntitiesToActiveLayer;
+    const bool applyLayerToSelectedEntities = CFG_DraftingOperations::o_ModifyEntitiesToActiveLayer;
 
     if (applyLayerToSelectedEntities) {
         RS_Graphic* graphic = getGraphic();
@@ -1569,30 +1568,32 @@ void QG_GraphicView::loadSettings() {
     RS_GraphicView::loadSettings();
 
     {
-        using namespace CFG_MouseWheel;
+        using namespace CFG_DraftingMouseWheel;
         const int zoomFactor1000 = o_ScrollZoomFactor;
         m_scrollZoomFactor = zoomFactor1000 / 1000.0;
         m_nonLinearScrollZoomFactor = o_NonLinearZoomFactor;
-    }
 
-    {
-        using namespace CFG_MouseWheel;
         m_invertZoomDirection = o_InvertZoomDirection;
         m_invertHorizontalScroll = o_WheelScrollInvertH;
         m_invertVerticalScroll = o_WheelScrollInvertV;
     }
 
-    m_allowScrollAndMoveAdjustByKeys = CFG_Keyboard::o_AllowScrollMoveAdjustByKeys;
+    m_allowScrollAndMoveAdjustByKeys = CFG_DraftingKeyboard::o_AllowScrollMoveAdjustByKeys;
 
     {
-        using namespace CFG_Appearance;
-        m_cursorHiding = o_CursorHidingWhenSnapping;
-        m_selectCursorHiding = CFG_Snap::o_SelectionPickboxInsteadOfCursor;
+        using namespace CFG_UCSOriginRendering;
         m_ucsHighlightData->maxBlinkNumber = o_UCSHighlightBlinkCount * 2;
         // one blink includes both for visible and invisible phase
         m_ucsHighlightData->timerInterval = o_UCSHighlightBlinkDelay;
+    }
 
-        m_scrollbars = o_ScrollBars;
+    {
+        using namespace CFG_DraftingAreaStyling;
+
+        m_cursorHiding = CFG_Snap::o_CursorHidingWhenSnapping;
+        m_selectCursorHiding = CFG_EntitiesPickBox::o_SelectionPickboxInsteadOfCursor;
+
+        m_scrollbars = o_ScrollBarsVisibleForDraftingArea;
 
         if (m_hScrollBar != nullptr && m_vScrollBar != nullptr) {
             m_scrollBarContentBand = o_ScrollBarsContentBand;
@@ -1608,14 +1609,12 @@ void QG_GraphicView::loadSettings() {
     m_ucsMarkOptions->loadSettings();
 
     {
-        using namespace CFG_Colors;
-        const RS_Color bgColor(o_RelativePositionAssistantBackgroundColor);
-        const RS_Color txtColor(o_RelativePositionAssistantTextColor);
-        m_relativePointWidgetHolder->setWidgetColors(bgColor, txtColor);
-    }
-
-    {
         using namespace CFG_RelativePositionAssistant;
+
+        const RS_Color bgColor(o_ColorRelativePositionAssistantBackground);
+        const RS_Color txtColor(o_ColorRelativePositionAssistantText);
+        m_relativePointWidgetHolder->setWidgetColors(bgColor, txtColor);
+
         const int fontSize = o_AssistantFontSize;
         const QString fontName = o_AssistantFontName;
         m_relativePointWidgetHolder->setFont(fontName, fontSize);
@@ -1808,7 +1807,7 @@ bool QG_GraphicView::isAutoPan(const QMouseEvent* event) const {
         return false;
     }
 
-    const bool autopanEnabled = CFG_ZoomAndPan::o_Autopanning;
+    const bool autopanEnabled = CFG_DraftingZoomAndPan::o_Autopanning;
 
     if (!autopanEnabled) {
         return false;

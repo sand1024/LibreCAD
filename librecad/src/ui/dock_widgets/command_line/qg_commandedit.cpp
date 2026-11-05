@@ -33,12 +33,11 @@
 #include <QKeyEvent>
 #include <QRegularExpression>
 
-#include "lc_settings_keyboard.h"
+#include "lc_settings_drafting_keyboard.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_commands.h"
 #include "rs_math.h"
-#include "rs_settings.h"
 
 namespace {
 // Limits for command file reading
@@ -196,7 +195,7 @@ void QG_CommandEdit::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Space:
              // fixme - sand - chack that current action is in selection mode, if it is so - direct event to it
-             if (CFG_Keyboard::o_EvaluateCommandOnSpace) {
+             if (CFG_DraftingKeyboard::o_EvaluateCommandOnSpace) {
                 processInput(text());
             }
             else if (!text().isEmpty()) {

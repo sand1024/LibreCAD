@@ -37,6 +37,7 @@
 #include "lc_dock_names.h"
 #include "lc_repository_menu_bar_and_toolbars.h"
 #include "lc_settings_app_state.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_special_menu_service_interface.h"
@@ -199,7 +200,8 @@ void LC_NavigationControlsCreator::applyMenuBar(const NavigationLayoutConfig& co
 
     menuBar->clear();
 
-    using namespace CFG_Appearance;
+    using namespace CFG_AppStyling;
+    using namespace CFG_AppState;
     const auto menuType = o_MainMenuType;
     const QList<ActionNode>& activeMenuNodes = (menuType == MENU_Minimal)
                                                    ? config.menuMinimal
@@ -629,7 +631,7 @@ void LC_NavigationControlsCreator::updateToolbarsTooltips(const bool showTooltip
 }
 
 void LC_NavigationControlsCreator::updateToolbarsTooltips() {
-    const bool show = CFG_Startup::o_ShowToolbarsTooltip;
+    const bool show = CFG_AppStyling::o_ShowToolbarsTooltip;
     updateToolbarsTooltips(show);
 }
 

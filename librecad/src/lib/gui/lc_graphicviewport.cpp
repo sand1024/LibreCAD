@@ -31,14 +31,12 @@
 #include <QDateTime>
 
 #include "lc_defaults.h"
-#include "lc_containertraverser.h"
-#include "lc_defaults.h"
 #include "lc_graphicviewportlistener.h"
 #include "lc_linemath.h"
 #include "lc_overlayentitiescontainer.h"
 #include "lc_refpoint.h"
-#include "lc_settings_appearance.h"
-#include "lc_refpoint.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_preview.h"
 #include "lc_undoablerelzero.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -76,9 +74,14 @@ void LC_GraphicViewport::setDocument(RS_Document *c) {
 
 void LC_GraphicViewport::loadSettings() {
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingOperations;
+
         m_ucsApplyingPolicy = o_UCSApplyPolicy;
-        m_modifyOnZoom = o_ModifyOnViewChange;
+        m_modifyOnZoom = o_ModifyDocumentOnViewOnlyChange;
+    }
+    {
+        using namespace CFG_DraftingPreview;
+
         m_refPointMode = o_PreviewRefPointType;
         m_refPointSize = o_PreviewRefPointSize;
     }

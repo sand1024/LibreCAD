@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "lc_action_options_widget.h"
 #include "lc_optionswidgetsholder.h"
-#include "rs_settings.h"
+#include "lc_settings_snap.h"
 
 LC_ActionOptionsManager::LC_ActionOptionsManager([[maybe_unused]]QWidget* parent, QToolBar* optionsToolbar,
                                                  LC_SnapOptionsWidgetsHolder* snapOptionsHolder){
@@ -84,7 +84,7 @@ void LC_ActionOptionsManager::requestSnapDistOptions(double* dist, const bool on
 
 LC_SnapOptionsWidgetsHolder* LC_ActionOptionsManager::getSnapOptionsHolder(){
     LC_SnapOptionsWidgetsHolder* result = nullptr;
-    const bool useSnapToolbar = CFG_Appearance::o_showSnapOptionsInSnapToolbar;
+    const bool useSnapToolbar = CFG_Snap::o_ShowSnapOptionsInSnapToolbar;
     if (useSnapToolbar){
         result = m_snapOptionsWidgetHolderSnapToolbar;
         m_snapOptionsWidgetHolderOptionsToolbar->setVisible(false);

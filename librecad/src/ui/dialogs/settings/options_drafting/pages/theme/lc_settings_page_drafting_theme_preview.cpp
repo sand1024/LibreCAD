@@ -25,14 +25,12 @@
 #include <QButtonGroup>
 
 #include "dxf_format.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_preview.h"
 #include "ui_lc_settings_page_drafting_theme_preview.h"
-#include "rs_settings.h"
 
 LC_SettingsPageDraftingThemePreview::LC_SettingsPageDraftingThemePreview(QObject* parent)
-    : LC_SettingsPageBase(tr("Preview Entities"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group), parent)
+    : LC_SettingsPageBase(tr("Preview Entities"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingPreview::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemePreview>()) {
 }
 
@@ -73,13 +71,12 @@ void LC_SettingsPageDraftingThemePreview::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemePreview::setupBindings() {
-    using namespace CFG_Appearance;
-    using namespace CFG_Colors;
+    using namespace CFG_DraftingPreview;
 
     bindColor({
-        { ui->cbPreviewEntitiesColor, ui->pb_previewEntitiesColor, o_PreviewEntitiesColor, tr("Select Preview Entity Color") },
-        { ui->cbPreviewRefColor, ui->pb_previewRefColor, o_PreviewReferencesColor, tr("Select Preview Explanatory Entity Color") },
-        { ui->cbPreviewRefHighlightColor, ui->pb_previewRefHighlightColor, o_PreviewReferencesHighlightColor, tr("Select Active Explanatory Entity Color") }
+        { ui->cbPreviewEntitiesColor, ui->pb_previewEntitiesColor, o_ColorPreviewEntities, tr("Select Preview Entity Color") },
+        { ui->cbPreviewRefColor, ui->pb_previewRefColor, o_ColorPreviewReferences, tr("Select Preview Explanatory Entity Color") },
+        { ui->cbPreviewRefHighlightColor, ui->pb_previewRefHighlightColor, o_ColorPreviewReferencesHighlight, tr("Select Active Explanatory Entity Color") }
     });
 
 

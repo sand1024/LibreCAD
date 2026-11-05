@@ -129,7 +129,6 @@ void LC_SettingsPageCustomMenus::updateCurrentMenuInCombobox() {
 LC_SettingsPageCustomMenus::LC_SettingsPageCustomMenus(LC_ActionGroupManager* groupManager, QObject* parent)
     : LC_SettingsPageBase(tr("Context Menus"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageCustomMenus>()),
       m_actionGroupManager(groupManager) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageCustomMenus::~LC_SettingsPageCustomMenus() = default;

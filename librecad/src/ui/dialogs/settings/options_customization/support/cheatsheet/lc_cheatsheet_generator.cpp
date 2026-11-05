@@ -36,13 +36,10 @@
 #include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
-#include <QRegularExpression>
-#include <QTextDocument>
 #include <QTextDocumentFragment>
 #include "lc_action.h"
 #include "lc_commands_tree_item.h"
 #include "lc_commands_tree_model.h"
-#include "lc_settings_appearance.h"
 #include "lc_shortcut_tree_item.h"
 #include "lc_shortcuts_tree_model.h"
 #include "lc_wait_cursor_guard.h"

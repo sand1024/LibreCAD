@@ -27,19 +27,18 @@
 #include "rs_preview.h"
 
 #include "lc_graphicviewport.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_preview.h"
 #include "rs_color.h"
 #include "rs_line.h"
 #include "rs_pen.h"
-#include "rs_settings.h"
 
 void RS_Preview::loadSettings() {
-    m_maxEntities = CFG_Appearance::o_MaxPreview;
-    const auto highLight = RS_Color(CFG_Colors::o_PreviewEntitiesColor);
+    using namespace CFG_DraftingPreview;
+    m_maxEntities = o_MaxEntitiesNumberInPreview;
+    const auto highLight = RS_Color(o_ColorPreviewEntities);
 
     RS_Pen pen(highLight, RS2::Width00, RS2::SolidLine);
-    double screenLineWidth = CFG_Appearance::o_PreviewScreenLineWidth;
+    double screenLineWidth = o_PreviewScreenLineWidth;
     if (LC_LineMath::isSameLength(screenLineWidth,1.0)) {
         screenLineWidth = 0;
     }
@@ -181,7 +180,6 @@ void RS_Preview::clear() {
     }
     RS_EntityContainer::clear();
 }
-
 
 /**
  * Adds all entities from 'container' to the preview (unselected).

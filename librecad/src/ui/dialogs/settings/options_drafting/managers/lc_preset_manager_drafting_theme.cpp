@@ -28,13 +28,18 @@
 
 #include "lc_drafting_preview_bottom_bar.h"
 #include "lc_preset_file_io.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_styling.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
+#include "lc_settings_overlay_angles_base_mark.h"
+#include "lc_settings_preview.h"
 #include "lc_settings_relative_position_assistant.h"
+#include "lc_settings_selection_overlay.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "lc_settings_snap_visual.h"
 #include "rs_settings.h"
 
@@ -52,91 +57,97 @@ namespace {
             return;
         }
 
-        using namespace CFG_Colors;
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_DraftMode;
         using namespace CFG_Grid;
         using namespace CFG_Snap;
         using namespace CFG_VisualSnap;
-        using namespace CFG_InfoCursor;
+        using namespace CFG_OverlayInfoCursor;
         using namespace CFG_RelativePositionAssistant;
+        using namespace CFG_SnapIndicator;
+        using namespace CFG_EntitiesPickBox;
+        using namespace CFG_OverlaySelection;
+        using namespace CFG_OverlayAnglesBaseMark;
+        using namespace CFG_CoordinatesOrigin;
+        using namespace CFG_DraftingPreview;
 
         mapSettings({
             // Canvas & Entities
-            o_BackgroundColor,
-            o_ForegroundBWColor,
-            o_SelectedEntityColor,
-            o_HighlightedEntityColor,
-            o_DraftModeMarkerColor,
+            o_ColorBackground,
+            o_ColorForegroundBW,
+            o_ColorSelectedEntity,
+            o_ColorHighlightedEntity,
+            o_ColorDraftModeMarker,
             // Grid Display
-            o_GridPointsColor,
-            o_MetaGridColor,
-            o_GridLinesColor,
-            o_MetaGridLinesColor,
-            o_GridLinesLineType,
-            o_metaGridLinesLineType,
-            o_MetaGridPointsLineType,
+            o_ColorGridPoints,
+            o_ColorMetaGrid,
+            o_ColorGridLines,
+            o_ColorMetaGridLines,
+            o_LinesGridLineType,
+            o_LinesMetaGridLineType,
+            o_PointsMetaGridLineType,
             o_GridType, o_MetaGridEvery,
             // Coordinate System & Markers
-            o_RelativeZeroColor,
-            o_XAxisColor,
-            o_YAxisColor,
+            o_ColorRelativeZero,
+            o_ColorXAxis,
+            o_ColorYAxis,
             o_ZeroMarkerFontName,
             o_DraftMarkerFontName,
-            o_AnglesBasisDirectionIndicatorColor,
-            o_AnglesBasisAngleRayColor,
+            o_ColorAnglesBasisDirectionIndicator,
+            o_ColorAnglesBasisAngleRay,
             o_ExtendAxisLines,
             o_ExtendModeXAxis,
             o_ExtendModeYAxis,
             // Snapping Indicators
-            o_SnapIndicator,
-            o_SnapIndicatorLines,
-            o_IndicatorDrawLines,
-            o_IndicatorDrawShape,
-            o_IndicatorLinesType,
-            o_IndicatorShapeType,
-            o_IndicatorLinesLineType,
+            o_ColorSnapIndicatorShape,
+            o_ColorSnapIndicatorLines,
+            o_DrawLines,
+            o_DrawShape,
+            o_LinesType,
+            o_ShapeType,
+            o_LinesLineType,
             // Visual Snap Guides
-            o_VisualSnapGuideEntitiesColor,
-            o_VisualSnapVertexesColor,
-            o_VisualSnapProjectedSnapColor,
-            o_VisualSnapDocumentEntitiesColor,
+            o_ColorVisualSnapGuideEntities,
+            o_ColorVisualSnapVertexes,
+            o_ColorVisualSnapProjectedSnap,
+            o_ColorVisualSnapDocumentEntities,
             o_VSGuidingEntitiesLineType,
             o_VSActiveGuidingEntityLineType,
             o_VSDocGuidingEntitiesLineType,
             o_VSGuidingEntitiesShowLabels,
             // Selection & Overlays
-            o_SelectionOverlayLineColor,
-            o_SelectionOverlayFillColor,
+            o_ColorSelectionOverlayLine,
+            o_ColorSelectionOverlayFill,
             o_SelectionOverlayLineType,
-            o_SelectionOverlayInvertedLineColor,
-            o_SelectionOverlayInvertedFillColor,
+            o_ColorSelectionOverlayInvertedLine,
+            o_ColorSelectionOverlayInvertedFill,
             o_SelectionOverlayInvertedLineType,
             o_SelectionOverlayTransparency,
-            o_SelectionPickBoxColor,
+            o_ColorSelectionPickBox,
             o_SelectionPickBoxLinesSizeType,
 
             // Cursor & Assistant
-            o_InfoOverlayAbsoluteCoordinatesColor,
-            o_InfoOverlayRelativeColor,
-            o_InfoOverlayPromptColor,
-            o_InfoOverlaySnapInfoColor,
-            o_RelativePositionAssistantBackgroundColor,
-            o_RelativePositionAssistantTextColor,
+            o_ColorInfoOverlayAbsoluteCoordinates,
+            o_ColorInfoOverlayRelative,
+            o_ColorInfoOverlayPrompt,
+            o_ColorInfoOverlaySnapInfo,
+            o_ColorRelativePositionAssistantBackground,
+            o_ColorRelativePositionAssistantText,
             o_InfoCursorFontName,
             o_AssistantFontName,
             // selection and highlight
             o_SelectedEntityLineType,
             o_HighlightedEntityLineType,
             // Handles & Preview
-            o_EntityHandleStartColor,
-            o_EntityHandleInternalColor,
-            o_EntityHandleEndColor,
-            o_PreviewEntitiesColor,
-            o_PreviewReferencesColor,
-            o_PreviewReferencesHighlightColor,
+            o_ColorEntityHandleStart,
+            o_ColorEntityHandleInternal,
+            o_ColorEntityHandleEnd,
+            o_ColorPreviewEntities,
+            o_ColorPreviewReferences,
+            o_ColorPreviewReferencesHighlight,
             o_PreviewRefPointType,
             o_PreviewRefPointSize,
-            o_HighlightedEntityColor
+            o_ColorHighlightedEntity
         });
     }
 

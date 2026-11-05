@@ -31,7 +31,6 @@ LC_SettingsPageDraftingBehaviorInputAssistant::LC_SettingsPageDraftingBehaviorIn
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_RelativePositionAssistant::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorInputAssistant>()) {
-    setSortWeight(45);
 }
 
 LC_SettingsPageDraftingBehaviorInputAssistant::~LC_SettingsPageDraftingBehaviorInputAssistant() = default;

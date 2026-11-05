@@ -25,10 +25,10 @@
 **********************************************************************/
 #include "qg_dlginitial.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_defaults.h"
 #include <QLocale>
 
+#include "lc_settings_app_state.h"
 #include "rs_settings.h"
 #include "rs_system.h"
 #include "rs_units.h"
@@ -107,12 +107,12 @@ void QG_DlgInitial::setPixmap(const QPixmap& p) const {
 
 void QG_DlgInitial::ok() {
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_AppState;
         o_Language = cbLanguage->itemData(cbLanguage->currentIndex()).toString();
         o_LanguageCmd = cbLanguage->itemData(cbLanguage->currentIndex()).toString();
     }
 
-    CFG_Defaults::o_Unit = cbUnit->currentText();
+    CFG_NewDrawingDefaults::o_DefaultUnit = cbUnit->currentText();
 
     accept();
 }

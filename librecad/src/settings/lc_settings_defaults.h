@@ -25,20 +25,10 @@
 #include "lc_setting.h"
 #include "rs.h"
 
-namespace CFG_Defaults {
-    inline const LC_SettingsGroupBase Group("Defaults");
+namespace CFG_NewDrawingDefaults {
+    inline const LC_SettingsGroupBase Group("NewDrawingDefaults");
 
-    inline const LC_Setting<QString> o_Unit(&Group, "Unit", "Millimeter");
-    inline const LC_Setting<int> o_AutoSaveTime(&Group, "AutoSaveTime", 5);
-    inline const LC_Setting<bool> o_AutoBackupDocument(&Group, "AutoBackupDocument", true);
-    inline const LC_Setting<bool> o_MarkBackFilesAsHidden(&Group, "HideBackupFiles", false);
-    inline const LC_Setting<QString> o_AutosaveFilePrefix(&Group, "AutosaveFilePrefix", "#");
-    inline const LC_Setting<QString> o_BackupFileSuffix(&Group, "BackupFileSuffix", "~");
-    inline const LC_Setting<bool> o_UseQtFileOpenDialog(&Group, "UseQtFileOpenDialog", true);
-    inline const LC_Setting<bool> o_UseQtColorPickerDialog(&Group, "UseQtColorPickerDialog", true);
-
-    inline const LC_Setting<int> o_AngleSnapStep(&Group, "AngleSnapStep", 3);
-
+    inline const LC_Setting<QString> o_DefaultUnit(&Group, "Unit", "Millimeter");
     inline const LC_Setting<RS2::IsoGridViewType> o_IsoGridView(&Group, "IsoGridView", RS2::IsoGridViewType::IsoLeft);
 
     inline const LC_Setting<bool> o_GridOffForNewDrawing(&Group, "GridOffForNewDrawing", false);
@@ -49,21 +39,24 @@ namespace CFG_Defaults {
     inline const LC_Setting<QString> o_AnglesBaseAngle(&Group, "AnglesBaseAngle", "0.0");
 }
 
-namespace CFG_MouseWheel {
-    inline const LC_SettingsGroupBase Group("MouseWheel");
+namespace CFG_Dialogs {
+    inline const LC_SettingsGroupBase Group("Dialogs");
 
-    inline const LC_Setting<bool> o_WheelScrollInvertH(&Group, "WheelScrollInvertH", false);
-    inline const LC_Setting<bool> o_WheelScrollInvertV(&Group, "WheelScrollInvertV", false);
-    inline const LC_Setting<bool> o_InvertZoomDirection(&Group, "InvertZoomDirection", false);
-    inline const LC_Setting<int>  o_ScrollZoomFactor(&Group, "ScrollZoomFactor", 1137);
-    inline const LC_Setting<bool>  o_NonLinearZoomFactor(&Group, "NonLinearZoomFactor", false);
+    inline const LC_Setting<bool> o_UseQtFileOpenDialog(&Group, "UseQtFileOpenDialog", true);
+    inline const LC_Setting<bool> o_UseQtColorPickerDialog(&Group, "UseQtColorPickerDialog", true);
+
+    inline const LC_Setting<bool> o_PersistDialogPositions(&Group, "PersistDialogPositions", true);
+    inline const LC_Setting<bool> o_PersistDialogRestoreSizeOnly(&Group, "PersistDialogRestoreSizeOnly", false);
 }
 
-namespace CFG_ZoomAndPan {
-    inline const LC_SettingsGroupBase Group("ScrollAnPan");
-    inline const LC_Setting<bool> o_FirstTimeNoZoom(&Group, "FirstTimeNoZoom", false);
-    inline const LC_Setting<bool> o_PanOnZoom(&Group, "PanOnZoom", false);
-    inline const LC_Setting<bool> o_Autopanning(&Group, "Autopanning", false);
+namespace CFG_DrawingsAutoSaveAndBackup {
+    inline const LC_SettingsGroupBase Group("DrawingsAutoSave");
+
+    inline const LC_Setting<QString> o_AutosaveFilePrefix(&Group, "AutosaveFilePrefix", "#");
+    inline const LC_Setting<QString> o_BackupFileSuffix(&Group, "BackupFileSuffix", "~");
+    inline const LC_Setting<int> o_AutoSaveTime(&Group, "AutoSaveTime", 5);
+    inline const LC_Setting<bool> o_AutoBackupDocument(&Group, "AutoBackupDocument", true);
+    inline const LC_Setting<bool> o_MarkBackFilesAsHidden(&Group, "HideBackupFiles", false);
 }
 
 #endif

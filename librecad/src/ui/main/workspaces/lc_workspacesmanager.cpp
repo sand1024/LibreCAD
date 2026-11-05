@@ -31,13 +31,12 @@
 #include <QMessageBox>
 
 #include "lc_guarded_signals_blocker.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
-#include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
-#include "rs_system.h"
 
 LC_WorkspacesManager::LC_WorkspacesManager() = default;
 
@@ -123,15 +122,15 @@ void LC_WorkspacesManager::fillIconsAndMenuState(LC_Workspace &ws){
         ws.iconsSizeLeftAllDock = o_CADToolsMatrixIconSize;
 
         ws.iconsSizeRightDock = o_DockWidgetsIconSize;
-        ws.iconsSizeToolbar = o_ToolbarIconSize;
+        ws.iconsSizeToolbar = o_ToolbarCustomIconSize;
     }
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_AppStyling;
         ws.mainMenuType = o_MainMenuType;
         ws.mainMenuTopLevelIconsOnly = o_MainMenuTopLevelIconsOnly;
     }
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_AppState;
         ws.showStatusBar = o_StatusBarVisible;
         ws.showMainMenu = o_MainMenuVisible;
         ws.showFullScreen = o_FullscreenMode;
@@ -216,10 +215,11 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &ws){
         o_CADDockWidgetIconSize = ws.iconsSizeLeftDock;
         o_CADToolsMatrixIconSize = ws.iconsSizeLeftAllDock;
         o_DockWidgetsIconSize = ws.iconsSizeRightDock;
-        o_ToolbarIconSize = ws.iconsSizeToolbar;
+        o_ToolbarCustomIconSize = ws.iconsSizeToolbar;
     }
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_AppStyling;
+        using namespace CFG_AppState;
         o_MainMenuType  = ws.mainMenuType;
         o_MainMenuTopLevelIconsOnly = ws.mainMenuTopLevelIconsOnly;
         o_StatusBarVisible = ws.showStatusBar;

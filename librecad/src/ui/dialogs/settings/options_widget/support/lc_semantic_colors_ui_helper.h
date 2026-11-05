@@ -44,4 +44,4 @@ public:
     static void connectChanged(QTableWidget* table, QObject* receiver, const std::function<void()>& callback);
 };
 
-#endif // LC_SEMANTIC_COLORS_UI_HELPER_H
+#endif 

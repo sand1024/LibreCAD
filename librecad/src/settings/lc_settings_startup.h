@@ -28,25 +28,35 @@
 namespace CFG_Startup {
     inline const LC_SettingsGroupBase Group("Startup");
     inline const LC_Setting<bool> o_ShowSplash(&Group, "ShowSplash", true);
-    inline const LC_Setting<bool> o_TabMode(&Group, "TabMode", false);
+
     inline const LC_Setting<bool> o_Maximize(&Group, "Maximize", false);
-    inline const LC_Setting<bool> o_EnableCADDockWidgets(&Group, "EnableLeftSidebar", true);
+
+    inline const LC_Setting<bool> o_EnableCADDockWidgets(&Group, "EnableCADDockWidgets", true);
     inline const LC_Setting<bool> o_EnableCADToolbars(&Group, "EnableCADToolbars", true);
-    inline const LC_Setting<bool> o_OpenLastOpenedFiles(&Group, "OpenLastOpenedFiles", true);
     inline const LC_Setting<bool> o_UseClassicStatusBar(&Group, "UseClassicStatusBar", false);
+
     inline const LC_Setting<bool> o_ShowCommandPromptInStatusBar(&Group, "ShowCommandPromptInStatusBar", true);
-    inline const LC_Setting<bool> o_CheckForNewVersions(&Group, "CheckForNewVersions", true);
-    inline const LC_Setting<bool> o_ShowToolbarsTooltip(&Group, "ShowToolbarsTooltip", true);
+
     inline const LC_Setting<bool> o_ShowVersionInTitle(&Group, "ShowVersionInTitle", true);
 
+    inline const LC_Setting<bool> o_OpenLastOpenedFiles(&Group, "OpenLastOpenedFiles", true);
     inline const LC_Setting<QString> o_LastOpenFilesList(&Group, "LastOpenFilesList", "");
     inline const LC_Setting<QString> o_LastOpenFilesActive(&Group, "LastOpenFilesActive", "");
 
+    inline const LC_Setting<bool> o_FirstLoad(&Group, "FirstLoad", true);
+}
+
+namespace CFG_LastOpenFiles {
+
+}
+
+namespace CFG_VersionCheck {
+    inline const LC_SettingsGroupBase Group("VersionCheck");
+
+    inline const LC_Setting<bool> o_CheckForNewVersions(&Group, "CheckForNewVersions", true);
     inline const LC_Setting<bool> o_IgnorePreReleaseVersions(&Group, "IgnorePreReleaseVersions", true);
     inline const LC_Setting<QString> o_IgnoredRelease(&Group, "IgnoredRelease", "0.0.0.0");
     inline const LC_Setting<QString> o_IgnoredPreRelease(&Group, "IgnoredPreRelease", "0.0.0.0");
-
-    inline const LC_Setting<bool> o_FirstLoad(&Group, "FirstLoad", true);
 }
 
 #endif

@@ -26,7 +26,7 @@
 
 LC_SettingsPageAutosave::LC_SettingsPageAutosave(QObject* parent)
     : LC_SettingsPageBase(tr("Backup and Auto-Save"),
-                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Defaults::Group),
+                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_NewDrawingDefaults::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageAutosave>()){
 }
 
@@ -41,7 +41,7 @@ void LC_SettingsPageAutosave::setupBehavior() {
 }
 
 void LC_SettingsPageAutosave::setupBindings() {
-    using namespace CFG_Defaults;
+    using namespace CFG_DrawingsAutoSaveAndBackup;
 
     bindBoolean({
         { ui->cbAutoBackup, o_AutoBackupDocument },

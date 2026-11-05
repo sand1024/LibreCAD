@@ -44,6 +44,8 @@
 #include "rs_grid.h"
 #include "rs_layer.h"
 #include "lc_overlay_selection_box.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_preview.h"
 #include "rs_preview.h"
 #include "rs_selection.h"
 
@@ -64,7 +66,7 @@ namespace {
         ~PreviewSnapConfigProvider() override = default;
 
         double getAngleStep() override {
-            const int stepType = CFG_Defaults::o_AngleSnapStep;
+            const int stepType = CFG_Snap::o_SnapAngleAnglesStep;
             double snapStepDegrees;
             switch (stepType) {
                 case 0:
@@ -229,25 +231,28 @@ void LC_GraphicViewPreviewWidget::clearHighlights() const {
 void LC_GraphicViewPreviewWidget::showOriginAndAxisLines(bool clear, bool enable) {
     auto* viewport = m_previewView->getViewPort();
     if (clear) {
-        CFG_Appearance::o_AnglesBasisMarkEnabled = m_savedDrawAnglesBasis;
-        CFG_Appearance::o_ShowWCSZeroMarker = m_savedShowWCSZeroMarker;
-        CFG_Appearance::o_ShowUCSZeroMarker = m_savedShowUCSZeroMarker;
-        CFG_Appearance::o_ShowAxisLines = m_savedShowAxisLines;
+        CFG_OverlayAnglesBaseMark::o_AnglesBasisMarkEnabled = m_savedDrawAnglesBasis;
+        using namespace CFG_CoordinatesOrigin;
+        o_ShowWCSZeroMarker = m_savedShowWCSZeroMarker;
+        o_ShowUCSZeroMarker = m_savedShowUCSZeroMarker;
+        o_ShowAxisLines = m_savedShowAxisLines;
 
         viewport->applyUCS(&LC_WCS::instance);
    }
     else {
-        m_savedDrawAnglesBasis = CFG_Appearance::o_AnglesBasisMarkEnabled;
-        CFG_Appearance::o_AnglesBasisMarkEnabled = enable;
+        m_savedDrawAnglesBasis = CFG_OverlayAnglesBaseMark::o_AnglesBasisMarkEnabled;
+        CFG_OverlayAnglesBaseMark::o_AnglesBasisMarkEnabled = enable;
 
-        m_savedShowUCSZeroMarker = CFG_Appearance::o_ShowUCSZeroMarker;
-        CFG_Appearance::o_ShowUCSZeroMarker = enable;
+        using namespace CFG_CoordinatesOrigin;
 
-        m_savedShowWCSZeroMarker = CFG_Appearance::o_ShowWCSZeroMarker;
-        CFG_Appearance::o_ShowWCSZeroMarker = enable;
+        m_savedShowUCSZeroMarker = o_ShowUCSZeroMarker;
+        o_ShowUCSZeroMarker = enable;
 
-        m_savedShowAxisLines = CFG_Appearance::o_ShowAxisLines;
-        CFG_Appearance::o_ShowAxisLines = enable;
+        m_savedShowWCSZeroMarker = o_ShowWCSZeroMarker;
+        o_ShowWCSZeroMarker = enable;
+
+        m_savedShowAxisLines = o_ShowAxisLines;
+        o_ShowAxisLines = enable;
 
         viewport->createUCS({50, 50}, RS_Math::deg2rad(30));
     }
@@ -475,8 +480,8 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap, const
         m_previewView->addOverlayDrawable(crosshair, RS2::OverlayGraphics::Snapper);
     }
 
-    const int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
-    const int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
+    const int m_refPointMode = CFG_DraftingPreview::o_PreviewRefPointType;
+    const int m_refPointSize = CFG_DraftingPreview::o_PreviewRefPointSize;
 
     const RS_Vector basePoint(20, 10);
     const auto* point = new LC_RefPoint(this->m_preview.get(), basePoint, m_refPointSize, m_refPointMode);
@@ -496,14 +501,14 @@ void LC_GraphicViewPreviewWidget::previewSnapIndicator(bool showAngleSnap, const
         const double angle = basePoint.angleTo(indicatorPosition);
 
         const double angleBase = m_previewView->getDocument()->getGraphic()->getAnglesBase();
-        const int radiusInPixels = CFG_Appearance::o_AngleSnapMarkerSize;
+        const int radiusInPixels = CFG_SnapIndicator::o_AngleSnapMarkerSize;
         const int lineInPixels = radiusInPixels * 2; // todo - move to settings
         const double lineLength = viewport->toUcsDX(lineInPixels);
         const double angleZero = viewport->toWorldAngle(angleBase);
         const double correctedAngle = RS_Math::correctAnglePlusMinusPi(angle);
         if (LC_LineMath::isMeaningfulAngle(correctedAngle)) {
             const double radius = viewport->toUcsDX(radiusInPixels);
-            const bool isAnglesCounterClockWise = CFG_Defaults::o_AnglesCounterClockwise;
+            const bool isAnglesCounterClockWise = CFG_NewDrawingDefaults::o_AnglesCounterClockwise;
             const auto* arc = new LC_RefArc(m_preview.get(),
                                             RS_ArcData(basePoint, radius, angleZero, correctedAngle, !isAnglesCounterClockWise));
             m_preview->addEntity(arc);
@@ -554,8 +559,8 @@ void LC_GraphicViewPreviewWidget::updateGrid(int forcedType) const {
 
 void LC_GraphicViewPreviewWidget::preparePreviewPreview() {
     m_preview->loadSettings();
-    const int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
-    const int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
+    const int m_refPointMode = CFG_DraftingPreview::o_PreviewRefPointType;
+    const int m_refPointSize = CFG_DraftingPreview::o_PreviewRefPointSize;
 
     m_preview->clear();
 
@@ -571,7 +576,7 @@ void LC_GraphicViewPreviewWidget::preparePreviewPreview() {
     m_preview->addClonesFromList(entitiesList);
     m_preview->move(RS_Vector(30, 20));
 
-    if (CFG_Appearance::o_VisualizePreviewRefPoints) {
+    if (CFG_DraftingPreview::o_ShowRefEntitiesOnPreview) {
         auto* point = new LC_RefPoint(this->m_preview.get(), RS_Vector(50, 30), m_refPointSize, m_refPointMode);
         point->setHighlighted(true);
         m_preview->addEntity(point);
@@ -815,8 +820,8 @@ void LC_GraphicViewPreviewWidget::prepareInfoCursor(LC_InfoCursorOverlayPrefs* p
 
 void LC_GraphicViewPreviewWidget::previewRelativePointInputAssistant() {
     m_previewView->showRelativeInputWidget({50, 50}, {20, 10}, true, RS2::REL_POINT_LENGTH, true);
-    const int m_refPointMode = CFG_Appearance::o_PreviewRefPointType;
-    const int m_refPointSize = CFG_Appearance::o_PreviewRefPointSize;
+    const int m_refPointMode = CFG_DraftingPreview::o_PreviewRefPointType;
+    const int m_refPointSize = CFG_DraftingPreview::o_PreviewRefPointSize;
 
     const auto viewport = m_previewView->getViewPort();
     RS_EntityContainer* container = viewport->getOverlayEntitiesContainer(RS2::ActionPreviewEntity);

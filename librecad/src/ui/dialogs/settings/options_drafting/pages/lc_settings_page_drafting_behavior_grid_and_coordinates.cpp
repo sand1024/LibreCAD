@@ -22,15 +22,14 @@
 
 #include "lc_settings_page_drafting_behavior_grid_and_coordinates.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_defaults.h"
+#include "lc_settings_coordinates_origin.h"
 #include "lc_settings_grid.h"
 #include "ui_lc_settings_page_drafting_behavior_grid_and_coordinates.h"
 
 LC_SettingsPageDraftingBehaviorGridAndCoordinates::LC_SettingsPageDraftingBehaviorGridAndCoordinates(QObject* parent)
     : LC_SettingsPageBase(tr("Grid and Coordinates"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_CoordinatesOrigin::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorGridAndCoordinates>()) {
 }
@@ -46,8 +45,9 @@ void LC_SettingsPageDraftingBehaviorGridAndCoordinates::setupUi() {
 }
 
 void LC_SettingsPageDraftingBehaviorGridAndCoordinates::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_CoordinatesOrigin;
     using namespace CFG_Grid;
+    using namespace CFG_OverlayAnglesBaseMark;
 
     bindBoolean({
         // Canvas Chrome & Navigation

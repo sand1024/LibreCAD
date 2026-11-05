@@ -33,7 +33,7 @@ LC_DlgNewVersionAvailable::LC_DlgNewVersionAvailable(QWidget *parent, const LC_R
     ui->setupUi(this);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_DlgNewVersionAvailable::onOk);
     {
-        using namespace CFG_Startup;
+        using namespace CFG_VersionCheck;
         const bool checkOnStartup = o_CheckForNewVersions;
         const bool ignorePreRelease = o_IgnorePreReleaseVersions;
 
@@ -116,7 +116,7 @@ void LC_DlgNewVersionAvailable::setup(const LC_ReleaseChecker *releaseChecker) {
 }
 
 void LC_DlgNewVersionAvailable::onOk(){
-    using namespace CFG_Startup;
+    using namespace CFG_VersionCheck;
 
     o_CheckForNewVersions = ui->cbCheckForNewVersion->isChecked();
     o_IgnorePreReleaseVersions = ui->cbIgnorePreReleases->isChecked();

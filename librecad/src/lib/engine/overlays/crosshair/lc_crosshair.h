@@ -25,9 +25,9 @@
 
 #include "lc_defaults.h"
 #include "lc_overlayentity.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "rs_pen.h"
 #include "rs_vector.h"
 
@@ -105,13 +105,13 @@ struct SnapIndicatorOptions {
     int shapeSize = 4;
 
     void loadSettings() {
-        using namespace CFG_Snap;
-        const double snapIndicatorScreenLineWidth = o_IndicatorScreenLinesLineWidth;
-        drawLines = o_IndicatorDrawLines;
+        using namespace CFG_SnapIndicator;
+        const double snapIndicatorScreenLineWidth = o_ScreenLinesLineWidth;
+        drawLines = o_DrawLines;
         if (drawLines) {
-            lines_Type = o_IndicatorLinesType  + 1; // 0 is for NoLines
-            const auto snapIndicatorLineType = o_IndicatorLinesLineType;
-            const QColor snapLinesColor = CFG_Colors::o_SnapIndicatorLines;
+            lines_Type = o_LinesType  + 1; // 0 is for NoLines
+            const auto snapIndicatorLineType = o_LinesLineType;
+            const QColor snapLinesColor = o_ColorSnapIndicatorLines;
             lines_Pen = RS_Pen(RS_Color(snapLinesColor), RS2::Width00, snapIndicatorLineType);
             lines_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
         }
@@ -119,20 +119,20 @@ struct SnapIndicatorOptions {
             lines_Type = LC_Crosshair::NoLines;
         }
 
-        drawShape = o_IndicatorDrawShape;
+        drawShape = o_DrawShape;
         if (drawShape) {
-            shape_Type = o_IndicatorShapeType + 1; // in UI, NO Shape is not shown in combobox
-            const QColor snapColor = CFG_Colors::o_SnapIndicator;
+            shape_Type = o_ShapeType + 1; // in UI, NO Shape is not shown in combobox
+            const QColor snapColor = o_ColorSnapIndicatorShape;
             shape_Pen = RS_Pen(RS_Color(snapColor), RS2::Width00, RS2::SolidLine);
             shape_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
         }
         else {
             shape_Type = LC_Crosshair::NoShape;
         }
-        crossHairLinesPercent = o_IndicatorCrosshairLinesSizePercents;
-        shapeSize = o_IndicatorShapeSize;
+        crossHairLinesPercent = o_CrosshairLinesSizePercents;
+        shapeSize = o_ShapeSize;
 
-        const QColor pickBoxColor = CFG_Colors::o_SelectionPickBoxColor;
+        const QColor pickBoxColor = CFG_EntitiesPickBox::o_ColorSelectionPickBox;
         pickBox_Pen = RS_Pen(RS_Color(pickBoxColor), RS2::Width00, RS2::SolidLine);
         pickBox_Pen.setScreenWidth(snapIndicatorScreenLineWidth);
 
@@ -140,7 +140,7 @@ struct SnapIndicatorOptions {
             lines_Pen = pickBox_Pen; // needed for AdaptiveShort
         }
 
-        pickBoxLinesSize = CFG_Appearance::o_SelectionPickBoxLinesSizeType;
+        pickBoxLinesSize = CFG_EntitiesPickBox::o_SelectionPickBoxLinesSizeType;
     }
 };
 

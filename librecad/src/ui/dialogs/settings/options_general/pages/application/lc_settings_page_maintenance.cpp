@@ -27,11 +27,9 @@
 #include "rs_settings.h"
 #include <QMessageBox>
 
-#include "lc_settings_appearance.h"
-
 LC_SettingsPageMaintenance::LC_SettingsPageMaintenance(QObject* parent)
     : LC_SettingsPageBase(tr("Maintenance"),
-                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                           std::make_unique<LC_LibreCADSettingsBackend>(LC_SettingsGroupBase("none")),
                            parent), ui(std::make_unique<Ui::LC_SettingsPageMaintenance>()) {
 }
 

@@ -28,6 +28,7 @@
 #include <QStyle>
 #include <QToolButton>
 
+#include "lc_settings_app_styling.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
@@ -203,7 +204,7 @@ void LC_AppWindowToolBarManager::reflowToolBars(int availableWidth, int availabl
 
 void LC_AppWindowToolBarManager::updateToolbarsIconSize() {
     using namespace CFG_Widgets;
-    updateToolbarsIconSize(o_ToolbarAllowIconSize, o_ToolbarIconSize);
+    updateToolbarsIconSize(o_ToolbarAllowIconSizeOverride, o_ToolbarCustomIconSize);
 }
 
 void LC_AppWindowToolBarManager::updateToolbarsIconSize(bool allowCustom, int customSize) {
@@ -253,7 +254,7 @@ void LC_AppWindowToolBarManager::updateToolbarsTooltips(bool show) {
 }
 
 void LC_AppWindowToolBarManager::updateToolbarsTooltips() {
-    const bool show = CFG_Startup::o_ShowToolbarsTooltip;
+    const bool show = CFG_AppStyling::o_ShowToolbarsTooltip;
     updateToolbarsTooltips(show);
 }
 

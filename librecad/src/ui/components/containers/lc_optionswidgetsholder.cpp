@@ -23,7 +23,7 @@
 #include "lc_optionswidgetsholder.h"
 
 #include "lc_action.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 #include "ui_lc_optionswidgetsholder.h"
@@ -90,7 +90,7 @@ void LC_OptionsWidgetsHolder::clearActionIcon() {
 void LC_OptionsWidgetsHolder::setCurrentQAction(const QAction *a) {
     QIcon icon;
     QString text="";
-    bool showIcon = a != nullptr && CFG_Appearance::o_ShowActionIconInOptions;
+    bool showIcon = a != nullptr && CFG_AppStyling::o_ShowActionIconInToolOptionsToolbar;
     if (showIcon) {
         // check for actions those icons should not be shown
         const auto property = a->property("_SetAsCurrentActionInView");

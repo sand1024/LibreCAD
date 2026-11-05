@@ -23,11 +23,11 @@
 #include "ui_lc_settings_page_language.h"
 #include "lc_settings_backend.h"
 #include "rs_system.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_state.h"
 
 LC_SettingsPageLanguage::LC_SettingsPageLanguage(QObject* parent)
     : LC_SettingsPageBase(tr("Language"),
-                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_AppState::Group),
                            parent) , ui(std::make_unique<Ui::LC_SettingsPageLanguage>()){
 }
 
@@ -73,7 +73,7 @@ void LC_SettingsPageLanguage::populateLanguages() const {
 }
 
 void LC_SettingsPageLanguage::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_AppState;
 
     bindCustom<QComboBox, QString>(ui->cbLanguage, o_Language, true /*requiresRestart*/,
          &QComboBox::currentTextChanged,

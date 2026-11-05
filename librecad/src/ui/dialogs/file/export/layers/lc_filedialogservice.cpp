@@ -180,7 +180,7 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
     saveFileDialog->setAcceptMode (QFileDialog::AcceptSave);
     saveFileDialog->setOption (QFileDialog::HideNameFilterDetails, false);
 
-    const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
+    const bool useQtFileDialog = CFG_Dialogs::o_UseQtFileOpenDialog;
     saveFileDialog->setOption (QFileDialog::DontUseNativeDialog, useQtFileDialog);
 
     // Overwrite confirmation is handled once, below, on the final

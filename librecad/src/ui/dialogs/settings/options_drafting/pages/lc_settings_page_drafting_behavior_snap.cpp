@@ -22,10 +22,10 @@
 
 #include "lc_settings_page_drafting_behavior_snap.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "ui_lc_settings_page_drafting_behavior_snap.h"
 
 LC_SettingsPageDraftingBehaviorSnap::LC_SettingsPageDraftingBehaviorSnap(QObject* parent)
@@ -33,7 +33,6 @@ LC_SettingsPageDraftingBehaviorSnap::LC_SettingsPageDraftingBehaviorSnap(QObject
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorSnap>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingBehaviorSnap::~LC_SettingsPageDraftingBehaviorSnap() = default;
@@ -47,11 +46,11 @@ void LC_SettingsPageDraftingBehaviorSnap::setupBehavior() {
 
 void LC_SettingsPageDraftingBehaviorSnap::setupBindings() {
     using namespace CFG_Snap;
-    using namespace CFG_Appearance;
+    using namespace CFG_EntitiesPickBox;
 
     bindBoolean({
         { ui->cursor_hiding_checkbox, o_CursorHidingWhenSnapping },
-        { ui->cbShowSnapOptionsInSnapBar, o_showSnapOptionsInSnapToolbar },
+        { ui->cbShowSnapOptionsInSnapBar, o_ShowSnapOptionsInSnapToolbar },
         { ui->cbDontSnapToInvisibleGrid, o_SnapGridIgnoreIfNoGrid },
         { ui->cbAngleSnapToLinesIfGrid, o_AngleSnapToLinesIfGrid },
         { ui->cbHideMouseCursorWhenSelecting, o_SelectionPickboxInsteadOfCursor }
@@ -59,7 +58,7 @@ void LC_SettingsPageDraftingBehaviorSnap::setupBindings() {
     });
 
     bindComboIndex({
-        { ui->cbAngleSnapStep, CFG_Defaults::o_AngleSnapStep }
+        { ui->cbAngleSnapStep, CFG_Snap::o_SnapAngleAnglesStep }
     });
 
     bindScaledDouble(ui->sbFreeSnapSwitchDistance, o_AdvSnapOnEntitySwitchToFreeDistance);

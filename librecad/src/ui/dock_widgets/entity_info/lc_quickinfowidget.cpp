@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QMenu>
 #include <QStandardItemModel>
 
+#include "lc_settings_app_styling.h"
 #include "rs_selection.h"
 #if defined(Q_OS_LINUX)
 #include <QThread>
@@ -117,7 +118,7 @@ LC_QuickInfoWidget::LC_QuickInfoWidget(QWidget *parent, QMap<QString, QAction *>
     m_options->load();
     m_entityData->setOptions(m_options.get());
 
-    m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
+    m_options->displayEntityID = CFG_AppStyling::o_ShowEntityIDs;
 
     {
         using namespace CFG_WidgetQuickInfo;
@@ -146,7 +147,7 @@ void LC_QuickInfoWidget::processEntity( RS_Entity* en){
         clearEntityInfo();
     }
     else { // just delegate action processing to entity data
-        m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
+        m_options->displayEntityID = CFG_AppStyling::o_ShowEntityIDs;
         const bool updated = m_entityData->processEntity(en);
         if (updated){
             updateEntityInfoView();
@@ -214,7 +215,7 @@ void LC_QuickInfoWidget::updateEntityInfoView(const bool forceUpdate, const bool
             RS_Entity *entity = findEntityById(entityId);
             if (entity != nullptr){
                 m_entityData->clear();
-                m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
+                m_options->displayEntityID = CFG_AppStyling::o_ShowEntityIDs;
                 m_entityData->processEntity(entity);
             }
         }

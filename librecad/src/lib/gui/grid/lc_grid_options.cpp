@@ -22,42 +22,50 @@
 
 #include "lc_grid_options.h"
 
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_grid.h"
 #include "rs_color.h"
 
 void LC_GridOptions::loadSettings() {
-    int gridType = CFG_Grid::o_GridType;;
-    if (forcedGridType > -1) {
-        gridType = forcedGridType;
-    }
-    const bool linesGrid = gridType == 1;
-    drawMetaGrid = CFG_Appearance::o_MetaGridDraw;
-    simpleGridRendering = CFG_Appearance::o_GridRenderSimple;
-    gridLineScreenWidthPx = CFG_Grid::o_GridLinesScreenLineWidth;;
-    gridLineType = CFG_Grid::o_GridLinesLineType;
+    {
+        using namespace  CFG_Grid;
 
-    drawGrid = CFG_Appearance::o_GridDraw;
+        int gridType =o_GridType;;
+        if (forcedGridType > -1) {
+            gridType = forcedGridType;
+        }
+        const bool linesGrid = gridType == 1;
 
-    drawLines = linesGrid;
-    gridColorPoint = RS_Color(CFG_Colors::o_GridPointsColor);;
-    gridColorLine = RS_Color(CFG_Colors::o_GridLinesColor);;
-    if (linesGrid){
-        metaGridLineType =  CFG_Grid::o_metaGridLinesLineType;
-        metaGridScreenLineWidthPx = CFG_Grid::o_MetaGridLinesScreenLineWidth;
+        gridLineScreenWidthPx = o_LinesGridScreenLineWidth;
+        gridLineType = o_LinesGridLineType;
+
+        drawLines = linesGrid;
+        gridColorPoint = RS_Color(o_ColorGridPoints);
+        gridColorLine = RS_Color(o_ColorGridLines);
+        if (linesGrid){
+            metaGridLineType =  o_LinesMetaGridLineType;
+            metaGridScreenLineWidthPx = o_LinesMetaGridScreenLineWidth;
+        }
+        else{
+            metaGridLineType =  o_PointsMetaGridLineType;
+            metaGridScreenLineWidthPx =  o_PointsMetaGridScreenLineWidth;
+        }
+        if (linesGrid) {
+            metaGridColor= RS_Color(o_ColorMetaGridLines);
+        }
+        else{
+            metaGridColor= RS_Color(o_ColorMetaGrid);
+        }
+
+        gridPointSize = o_PointsGridPointScreenSize;
     }
-    else{
-        metaGridLineType =  CFG_Grid::o_MetaGridPointsLineType;
-        metaGridScreenLineWidthPx =  CFG_Grid::o_MetaGridPointsScreenLineWidth;
+
+    {
+        using namespace CFG_Grid;
+
+        disableGridOnPanning = o_GridDisableWithinPan;
+        drawIsometricVerticalsAlways = o_GridDrawIsoVerticalForTop;
+        simpleGridRendering = o_GridRenderSimple;
+        drawMetaGrid = o_MetaGridDraw;
+        drawGrid = o_GridDraw;
     }
-    if (linesGrid) {
-        metaGridColor= RS_Color(CFG_Colors::o_MetaGridLinesColor);
-    }
-    else{
-        metaGridColor= RS_Color(CFG_Colors::o_MetaGridColor);
-    }
-    disableGridOnPanning = CFG_Appearance::o_GridDisableWithinPan;
-    drawIsometricVerticalsAlways = CFG_Appearance::o_GridDrawIsoVerticalForTop;
-    gridPointSize = CFG_Grid::o_GridPointsPointScreenSize;
 }

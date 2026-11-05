@@ -39,9 +39,8 @@
 #include "lc_settings_manager_drawing.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_releasechecker.h"
-#include "lc_settings_keyboard.h"
+#include "lc_settings_drafting_keyboard.h"
 #include "lc_settings_selection.h"
-#include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
 #include "lc_shortcuts_manager.h"
 #include "lc_shortcut_info.h"
@@ -49,7 +48,6 @@
 #include "qg_actionhandler.h"
 #include "rs_actioninterface.h"
 #include "rs_previewactioninterface.h"
-
 
 LC_ActionFactory::LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* actionHandler)
     : LC_ActionFactoryBase(parent, actionHandler){
@@ -1093,7 +1091,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["ZoomPrevious"]->setEnabled(false);
     map["RightDockAreaToggle"]->setChecked(true);
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_AppState;
         const bool statusBarVisible = o_StatusBarVisible;
         const bool mainMenuVisible = o_MainMenuVisible;
         const bool fullScreenMode = o_FullscreenMode;
@@ -1258,7 +1256,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
 void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, [[maybe_unused]] const LC_ActionGroupManager* agm) {
     QList<QKeySequence> commandLineShortcuts;
     commandLineShortcuts << QKeySequence(Qt::CTRL | Qt::Key_M) << QKeySequence(Qt::Key_Colon);
-    if (CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
+    if (CFG_DraftingKeyboard::o_ToggleFreeSnapOnSpace) {
         commandLineShortcuts << QKeySequence(Qt::Key_Space);
     }
 

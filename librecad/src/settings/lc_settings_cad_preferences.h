@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
 #ifndef LC_SETTINGS_CAD_PREFERENCES_H
 #define LC_SETTINGS_CAD_PREFERENCES_H
 
@@ -28,10 +27,9 @@
 namespace CFG_CADPreferences {
     inline const LC_SettingsGroupBase Group("CADPreferences");
 
-    inline const LC_Setting<bool> o_AutoZoomDrawing(&Group, "AutoZoomDrawing", false);
+
     inline const LC_Setting<bool> o_InputAnglesAsDecimalsOnly(&Group, "InputAnglesAsDecimalsOnly", false);
-    inline const LC_Setting<bool> o_AllowLassoSelectionByPressedMouseButton(&Group, "SelectionWindowBy2Clicks", false);
-    inline const LC_Setting<bool> o_AdHockMovingEndsByMouseClick(&Group, "AdHockMovingEndsByMouseClick", true);
+
 }
 
 #endif

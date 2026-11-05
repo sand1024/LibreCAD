@@ -33,9 +33,10 @@
 #include "lc_ref_snap_entity.h"
 #include "lc_ref_snap_line.h"
 #include "lc_ref_snap_mark.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
+#include "lc_settings_preview.h"
 #include "lc_settings_render.h"
-#include "lc_settings_snap.h"
 #include "lc_settings_snap_visual.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
@@ -61,11 +62,9 @@ void LC_GraphicViewRenderer::loadSettings() {
     m_anglesBaseOptions.loadSettings();
 
     {
-        using namespace CFG_Appearance;
-        m_entityHandleHalfSize = o_EntityHandleSize/ 2;
-        m_ignoreDraftForHighlight = o_IgnoreDraftForHighlight;
-        m_scaleLineWidth = ! o_DraftLinesMode;
+        using namespace CFG_DraftMode;
 
+        m_ignoreDraftForHighlight = o_IgnoreDraftForHighlight;
         const QString draftMarkerFontName = o_DraftMarkerFontName;
         const int draftMarkerFontSize = o_DraftMarkerFontSize;
         m_draftSignFont = QFont(draftMarkerFontName, draftMarkerFontSize);
@@ -76,6 +75,15 @@ void LC_GraphicViewRenderer::loadSettings() {
         if (LC_LineMath::isSameLength(m_draftEntityScreenLineWidth, 1.0)) {
             m_draftEntityScreenLineWidth = 0;
         }
+    }
+
+    {
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_DraftMode;
+
+        m_entityHandleHalfSize = o_EntityHandleSize/ 2;
+
+        m_scaleLineWidth = ! o_DraftLinesMode;
 
         m_highlightedEntityScreenLineWith = o_HighlightedEntityScreenLineWidth;
         if (m_highlightedEntityScreenLineWith > 0.75) {
@@ -96,8 +104,21 @@ void LC_GraphicViewRenderer::loadSettings() {
         else { // use default entity width
             m_selectedEntityScreenLineWidth = -1;
         }
+        m_highlightedEntityLineType = o_HighlightedEntityLineType;
+        m_selectedEntityLineType = o_SelectedEntityLineType;
+    }
 
-        m_RefEntitiesScreenLineWidth = o_PreviewRefEntityScreenLineWidth;
+    {
+        using namespace CFG_Render;
+
+        m_drawTextsAsDraftForPreview = o_DrawTextsAsDraftInPreview;
+        m_drawTextsAsDraftForPanning = o_DrawTextsAsDraftInPanning;
+    }
+
+    {
+        using namespace CFG_DraftingPreview;
+
+        m_RefEntitiesScreenLineWidth = CFG_DraftingPreview::o_PreviewRefEntityScreenLineWidth;
         if (m_RefEntitiesScreenLineWidth > 0.75) {
             if (LC_LineMath::isSameLength(m_RefEntitiesScreenLineWidth, 1.0)) {
                 m_RefEntitiesScreenLineWidth = 0;
@@ -107,20 +128,16 @@ void LC_GraphicViewRenderer::loadSettings() {
             m_RefEntitiesScreenLineWidth = 0;
         }
 
-        m_highlightedEntityLineType = o_HighlightedEntityLineType;
-        m_selectedEntityLineType = o_SelectedEntityLineType;
+        m_colorPreviewReferenceEntities = RS_Color(o_ColorPreviewReferences);
+        m_colorPreviewReferenceHighlightedEntities = RS_Color(o_ColorPreviewReferencesHighlight);
     }
+    {
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_VisualSnap;
 
-    {
-        using namespace CFG_Render;
-        m_drawTextsAsDraftForPreview = o_DrawTextsAsDraftInPreview;
-        m_drawTextsAsDraftForPanning = o_DrawTextsAsDraftInPanning;
-    }
-    {
-        using namespace CFG_Colors;
-        const RS_Color bgColor(o_BackgroundColor);
+        const RS_Color bgColor(o_ColorBackground);
         setBackground(bgColor);
-        setForegroundColor(RS_Color(o_ForegroundBWColor));
+        setForegroundColor(RS_Color(o_ColorForegroundBW));
 
         // fixme - sand - merge - this actually changes be color! What for? no value.
         // if (background.isValid() && background.toIntColor() == RS_Color::Black) {
@@ -129,21 +146,17 @@ void LC_GraphicViewRenderer::loadSettings() {
         //     setBackground(background);
         // }
 
-        m_colorSelectedEntity =  RS_Color(o_SelectedEntityColor);
-        m_colorHighlightedEntity = RS_Color(o_HighlightedEntityColor);
-        m_colorStartHandle = RS_Color(o_EntityHandleStartColor);
-        m_colorHangle = RS_Color(o_EntityHandleInternalColor);
-        m_colorEndHandleColor = RS_Color(o_EntityHandleEndColor);
+        m_colorSelectedEntity =  RS_Color(o_ColorSelectedEntity);
+        m_colorHighlightedEntity = RS_Color(o_ColorHighlightedEntity);
+        m_colorStartHandle = RS_Color(o_ColorEntityHandleStart);
+        m_colorHangle = RS_Color(o_ColorEntityHandleInternal);
+        m_colorEndHandleColor = RS_Color(o_ColorEntityHandleEnd);
+        m_colorVisualSnapGuideEntities = RS_Color(o_ColorVisualSnapGuideEntities);
+        m_colorVisualSnapVertexes = RS_Color(o_ColorVisualSnapVertexes);
+        m_colorVisualSnapProjectedSnap= RS_Color(o_ColorVisualSnapProjectedSnap);
+        m_colorVisualSnapDocumentEntities= RS_Color(o_ColorVisualSnapDocumentEntities);
 
-        m_colorPreviewReferenceEntities = RS_Color(o_PreviewReferencesColor);
-        m_colorPreviewReferenceHighlightedEntities = RS_Color(o_PreviewReferencesHighlightColor);
-
-        m_colorVisualSnapGuideEntities = RS_Color(o_VisualSnapGuideEntitiesColor);
-        m_colorVisualSnapVertexes = RS_Color(o_VisualSnapVertexesColor);
-        m_colorVisualSnapProjectedSnap= RS_Color(o_VisualSnapProjectedSnapColor);
-        m_colorVisualSnapDocumentEntities= RS_Color(o_VisualSnapDocumentEntitiesColor);
-
-        m_draftSignColor = RS_Color(o_DraftModeMarkerColor);
+        m_draftSignColor = RS_Color(CFG_DraftMode::o_ColorDraftModeMarker);
     }
 
     {
@@ -896,7 +909,7 @@ void LC_GraphicViewRenderer::drawCoordinateSystems(RS_Painter* painter) {
         // fixme - sand - in general, it's not good to use setting in rendering.
         // fixme - sand - however, ther is only one angle mark on drawing, so it could be fine.
         //  fixme - sand - yet should be reworked later anyway.
-        if (m_anglesBaseOptions.displayPolicy != CFG_Appearance::ShowAnglesBaseMarkType::SHOW_ALWAYS) {
+        if (m_anglesBaseOptions.displayPolicy != CFG_OverlayAnglesBaseMark::ShowAnglesBaseMarkType::SHOW_ALWAYS) {
             showByPolicy = LC_LineMath::isMeaningfulAngle(baseAngle) || !counterClockWise;
         }
         if (showByPolicy) {

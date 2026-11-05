@@ -24,7 +24,7 @@
 #define LC_SETTINGS_COLORS_SEMANTICS_H
 
 enum class LC_SemanticColors {
-    FilteredItem = 0, // Default: Blue (#2a82da)
+    FilteredItem = 0,    // Default: Blue (#2a82da)
     ConflictingItem,     // Default: Red (#d9534f / #e06c77)
     SearchResultItem     // Default: Amber (#d97706 / #bd6313)
 };
@@ -37,9 +37,9 @@ struct LC_SemanticColorDef {
     const char* defaultDarkHex;
 };
 
-inline constexpr const char* SEMANTIC_COLOR_KEY_FILTERED_ITEM = "SearchHighlight";
+inline constexpr const char* SEMANTIC_COLOR_KEY_FILTERED_ITEM     = "SearchHighlight";
 inline constexpr const char* SEMANTIC_COLOR_KEY_CONFLICTING_ITEM  = "ConflictingItem";
-inline constexpr const char* SEMANTIC_COLOR_KEY_SEARCH_RESULT    = "SearchResultItem";
+inline constexpr const char* SEMANTIC_COLOR_KEY_SEARCH_RESULT     = "SearchResultItem";
 
 inline constexpr LC_SemanticColorDef SEMANTIC_COLOR_DEFS[] = {
     { LC_SemanticColors::FilteredItem,  SEMANTIC_COLOR_KEY_FILTERED_ITEM, "#2a82da", "#2a82da" },

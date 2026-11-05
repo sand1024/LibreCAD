@@ -227,7 +227,7 @@ void LC_ColorButton::chooseColor() {
     // Use the dynamic dialog title property if set, otherwise fallback to "Select Color"
     QString title = m_dialogTitle.isEmpty() ? tr("Select Color") : m_dialogTitle;
 
-    if (CFG_Defaults::o_UseQtColorPickerDialog) {
+    if (CFG_Dialogs::o_UseQtColorPickerDialog) {
         auto *dialog = new QColorDialog(initial, this);
         dialog->setOption(QColorDialog::DontUseNativeDialog, true);
         dialog->setOption(QColorDialog::ShowAlphaChannel, true);

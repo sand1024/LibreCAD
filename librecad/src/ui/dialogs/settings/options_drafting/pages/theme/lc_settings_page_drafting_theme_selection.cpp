@@ -22,16 +22,16 @@
 
 #include "lc_settings_page_drafting_theme_selection.h"
 
-#include "lc_settings_appearance.h"
+
 #include "ui_lc_settings_page_drafting_theme_selection.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
-#include "rs_settings.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_selection_overlay.h"
+#include "lc_settings_snap_indicator.h"
 
 LC_SettingsPageDraftingThemeSelection::LC_SettingsPageDraftingThemeSelection(QObject* parent)
-    : LC_SettingsPageBase(tr("Selection"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group), parent)
+    : LC_SettingsPageBase(tr("Selection"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingAreaStyling::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeSelection>()) {
-    setSortWeight(40);
 }
 
 LC_SettingsPageDraftingThemeSelection::~LC_SettingsPageDraftingThemeSelection() = default;
@@ -44,22 +44,22 @@ void LC_SettingsPageDraftingThemeSelection::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemeSelection::setupBindings() {
-    using namespace CFG_Appearance;
-    using namespace CFG_Colors;
-
+    using namespace CFG_DraftingAreaStyling;
+    using namespace CFG_EntitiesPickBox;
+    using namespace CFG_OverlaySelection;
 
     bindInt({{ui->sbOverlayBoxTransparency, o_SelectionOverlayTransparency}});
 
     bindColor({
-            { ui->cbStartHandleColor, ui->pb_start, o_EntityHandleStartColor, tr("Select Start Handle Color") },
-            { ui->cbHandleColor, ui->pb_handle, o_EntityHandleInternalColor, tr("Select Handle Color") },
-            { ui->cbEndHandleColor, ui->pb_end, o_EntityHandleEndColor, tr("Select End Handle Color") },
-            {ui->cbSelectedColor, ui->pb_selected, o_SelectedEntityColor, tr("Select Selected Entity Color")},
-            {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_SelectionOverlayLineColor, tr("Select Overlay Line Color")},
-            {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_SelectionOverlayFillColor, tr("Select Overlay Fill Color")},
-            {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_SelectionOverlayInvertedLineColor, tr("Select Inverted Line Color")},
-            {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_SelectionOverlayInvertedFillColor, tr("Select Overlay Inverted Fill Color")},
-            {ui->cbPickBox, ui->pbPickBoxColor, o_SelectionPickBoxColor, tr("Select Pick Box Color")}
+            { ui->cbStartHandleColor, ui->pb_start, o_ColorEntityHandleStart, tr("Select Start Handle Color") },
+            { ui->cbHandleColor, ui->pb_handle, o_ColorEntityHandleInternal, tr("Select Handle Color") },
+            { ui->cbEndHandleColor, ui->pb_end, o_ColorEntityHandleEnd, tr("Select End Handle Color") },
+            {ui->cbSelectedColor, ui->pb_selected, o_ColorSelectedEntity, tr("Select Selected Entity Color")},
+            {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_ColorSelectionOverlayLine, tr("Select Overlay Line Color")},
+            {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_ColorSelectionOverlayFill, tr("Select Overlay Fill Color")},
+            {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_ColorSelectionOverlayInvertedLine, tr("Select Inverted Line Color")},
+            {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_ColorSelectionOverlayInvertedFill, tr("Select Overlay Inverted Fill Color")},
+            {ui->cbPickBox, ui->pbPickBoxColor, o_ColorSelectionPickBox, tr("Select Pick Box Color")}
     });
 
     bindComboIndex({

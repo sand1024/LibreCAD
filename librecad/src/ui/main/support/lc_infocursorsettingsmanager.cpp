@@ -22,7 +22,6 @@
 
 #include "lc_infocursorsettingsmanager.h"
 
-#include "lc_settings_colors.h"
 #include "lc_settings_info_overlay_cursor.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
@@ -40,28 +39,28 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
                 bool doUpdate = true;
                 switch (tagValue) {
                     case 0: {
-                        CFG_InfoCursor::o_InfoCursorEnabled = toggle;
+                        CFG_OverlayInfoCursor::o_InfoCursorEnabled = toggle;
                         emit showInfoCursorSettingChanged(toggle);
                         break;
                     }
                     case 1: {
-                        CFG_InfoCursor::o_ShowAbsolute = toggle;
+                        CFG_OverlayInfoCursor::o_ShowAbsolute = toggle;
                         break;
                     }
                     case 2: {
-                        CFG_InfoCursor::o_ShowSnapInfo = toggle;
+                        CFG_OverlayInfoCursor::o_ShowSnapInfo = toggle;
                         break;
                     }
                     case 3: {
-                        CFG_InfoCursor::o_ShowRelativeDA = toggle;
+                        CFG_OverlayInfoCursor::o_ShowRelativeDA = toggle;
                         break;
                     }
                     case 4: {
-                        CFG_InfoCursor::o_ShowPrompt = toggle;
+                        CFG_OverlayInfoCursor::o_ShowPrompt = toggle;
                         break;
                     }
                     case 5: {
-                        CFG_InfoCursor::o_ShowEntityCaughtProperties = toggle;
+                        CFG_OverlayInfoCursor::o_ShowEntityCaughtProperties = toggle;
                         break;
                     }
                     case 6: {
@@ -87,7 +86,7 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
 }
 
 void LC_InfoCursorSettingsManager::loadFromSettings() const {
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     const bool infoCursorEnabled = o_InfoCursorEnabled;
     QAction* action = m_appWin->getAction("EntityDescriptionInfo");
     if (action != nullptr) {

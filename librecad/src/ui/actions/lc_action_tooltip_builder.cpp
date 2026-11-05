@@ -29,7 +29,7 @@
 
 #include "lc_action.h"
 #include "lc_proxy_style.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_commands_promotion.h"
 
 QString LC_ActionTooltipBuilder::buildTooltip(const QAction* action,
@@ -126,7 +126,7 @@ void LC_ActionTooltipBuilder::updateActionTooltip(QAction* action) {
         return;
     }
 
-    using namespace CFG_Appearance;
+    using namespace CFG_AppStyling;
     const bool showTitle    = o_ShowTooltipActionName;
     const bool showDesc     = o_ShowTooltipDescription;
     const bool showShortcut = o_ShowKeyboardShortcutsInTooltips;
@@ -137,7 +137,7 @@ void LC_ActionTooltipBuilder::updateActionTooltip(QAction* action) {
 }
 
 void LC_ActionTooltipBuilder::updateAllTooltips(const QMap<QString, QAction*>& actionsMap) {
-    using namespace CFG_Appearance;
+    using namespace CFG_AppStyling;
     const bool showTitle    = o_ShowTooltipActionName;
     const bool showDesc     = o_ShowTooltipDescription;
     const bool showShortcut = o_ShowKeyboardShortcutsInTooltips;

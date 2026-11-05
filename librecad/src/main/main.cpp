@@ -61,6 +61,7 @@
 
 #include "lc_uiutils.h"
 #include "lc_palette_color_utils.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_startup.h"
 #include "qc_applicationwindow.h"
 #include "qg_dlginitial.h"
@@ -230,9 +231,9 @@ void initPatternList() {
 void loadTranslations() {
     RS_DEBUG->print("main: loading translation..");
 
-    using namespace CFG_Appearance;
+    using namespace CFG_AppState;
 
-    const QString lang = o_Language;;
+    const QString lang = o_Language;
     const QString langCmd = o_LanguageCmd;
 
     RS_SYSTEM->loadTranslation(lang, langCmd);
@@ -595,7 +596,7 @@ int main(int argc, char** argv) {
     {
         using namespace CFG_Startup;
         // fixme - sand - files - add support of command line flag to suppress version check (may be useful for automation)!
-        const bool checkForNewVersion = o_CheckForNewVersions;
+        const bool checkForNewVersion = CFG_VersionCheck::o_CheckForNewVersions;
         if (checkForNewVersion) {
             appWin->checkForNewVersion();
         }

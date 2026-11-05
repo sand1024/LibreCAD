@@ -89,8 +89,7 @@ protected:
     RS_PreviewActionInterface(const QString& actionName,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
     ~RS_PreviewActionInterface() override;
     std::unique_ptr<LC_ActionInfoMessageBuilder> m_msgBuilder;
-    // fixme - sand - tmp -  move to overlay!!!
-    int m_angleSnapMarkerSize = 20;
+    int m_angleSnapMarkerSizePx = 20;
     /**
      * Preview that holds the entities to be previewed.
      */
@@ -99,7 +98,7 @@ protected:
 
     std::unique_ptr<LC_Highlight> m_highlight;
 
-    int m_refPointSize = 0;
+    int m_refPointSizePx = 0;
     int m_refPointMode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot);
     bool m_showRefEntitiesOnPreview = false;
     bool m_highlightEntitiesOnHover = false;

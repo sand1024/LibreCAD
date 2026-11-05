@@ -31,7 +31,6 @@ LC_SettingsPageDraftingMetricsRenderer::LC_SettingsPageDraftingMetricsRenderer(Q
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Render::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsRenderer>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingMetricsRenderer::~LC_SettingsPageDraftingMetricsRenderer() = default;

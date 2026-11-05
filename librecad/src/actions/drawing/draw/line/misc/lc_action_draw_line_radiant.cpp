@@ -25,10 +25,9 @@
 
 #include "lc_line_radiant_options_filler.h"
 #include "lc_line_radiant_options_widget.h"
-#include "lc_settings_modify.h"
+#include "lc_settings_drafting.h"
 #include "rs_document.h"
 #include "rs_line.h"
-#include "rs_settings.h"
 
 void LC_ActionDrawLineRadiant::doSaveOptions() {
     save("Radiant1" ,m_radiantPoints[ONE]);
@@ -87,7 +86,7 @@ void LC_ActionDrawLineRadiant::doTriggerCompletion(const bool success) {
 
 void LC_ActionDrawLineRadiant::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
     if (ctx.success) {
-        const bool keepSelected = CFG_Modify::o_KeepModifiedSelected;
+        const bool keepSelected = CFG_DraftingOperations::o_KeepModifiedEntitiesSelected;
         if (keepSelected) {
             select(ctx.entitiesToAdd);
         }

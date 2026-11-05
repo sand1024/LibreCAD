@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,17 +20,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
-#ifndef LC_MODIFY_SETTINGS_H
-#define LC_MODIFY_SETTINGS_H
-
+#ifndef LC_SETTINGS_UCS_ORIGIN_RENDERING_H
+#define LC_SETTINGS_UCS_ORIGIN_RENDERING_H
 #include "lc_setting.h"
 
-namespace CFG_Modify {
-    inline const LC_SettingsGroupBase Group("Modify");
+namespace CFG_UCSOriginRendering {
+    inline const LC_SettingsGroupBase Group("UCSOriginRendering");
 
-    inline const LC_Setting<bool> o_ModifyEntitiesToActiveLayer(&Group, "ModifyEntitiesToActiveLayer", false);
-    inline const LC_Setting<bool> o_KeepModifiedSelected(&Group, "KeepModifiedSelected", true);
+    inline const LC_Setting<int> o_UCSHighlightBlinkCount(&Group, "UCSHighlightBlinkCount", 10);
+    inline const LC_Setting<int> o_UCSHighlightBlinkDelay(&Group, "UCSHighlightBlinkDelay", 250);
 }
 
-#endif //LC_MODIFY_SETTINGS_H
+#endif

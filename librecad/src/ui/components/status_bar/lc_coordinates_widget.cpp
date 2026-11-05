@@ -25,6 +25,7 @@
 #include "lc_convert.h"
 #include "lc_formatter.h"
 #include "lc_graphicviewport.h"
+#include "lc_settings_grid.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "rs_settings.h"
@@ -134,7 +135,7 @@ void LC_CoordinatesWidget::setCoordinates(double ucsX, double ucsY,
                 m_formatter = m_viewport->getFormatter();
             }
 
-            if (!CFG_Appearance::o_UnitlessGrid) {
+            if (!CFG_Grid::o_UnitlessGrid) {
                 ucsX = RS_Units::convert(ucsX);
                 ucsY = RS_Units::convert(ucsY);
                 ucsDeltaX = RS_Units::convert(ucsDeltaX);

@@ -49,7 +49,7 @@ bool LC_PaletteColorUtils::isPaletteDarkMode() {
 }
 
 bool LC_PaletteColorUtils::isSystemInDarkMode() {
-    ThemeModeOverride themeMode = CFG_AppStyling::o_ThemeModeOverride;
+    ThemeModeOverride themeMode = CFG_AppStyling::o_FusionThemeModeOverride;
 
     if (themeMode == ThemeModeOverride::ForceLight) {
         return false; // Force Light Palette and Icons

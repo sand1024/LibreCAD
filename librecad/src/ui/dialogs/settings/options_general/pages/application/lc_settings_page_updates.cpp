@@ -28,7 +28,6 @@ LC_SettingsPageUpdates::LC_SettingsPageUpdates(QObject* parent)
     : LC_SettingsPageBase(tr("Updates & Version"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Startup::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageUpdates>()) {
-    setSortWeight(80);
 }
 
 LC_SettingsPageUpdates::~LC_SettingsPageUpdates() = default;
@@ -42,7 +41,7 @@ void LC_SettingsPageUpdates::setupBehavior() {
 }
 
 void LC_SettingsPageUpdates::setupBindings() {
-    using namespace CFG_Startup;
+    using namespace CFG_VersionCheck;
 
     bindBoolean({
         { ui->cbCheckNewVersion, o_CheckForNewVersions },

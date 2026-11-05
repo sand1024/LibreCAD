@@ -97,7 +97,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
     using namespace CFG_Widgets;
 
     // 1. Main Toolbar Icon Sizes
-    const int tbSize = o_ToolbarAllowIconSize.get() ? o_ToolbarIconSize.get() : 24;
+    const int tbSize = o_ToolbarAllowIconSizeOverride.get() ? o_ToolbarCustomIconSize.get() : 24;
     setIconSize(QSize(tbSize, tbSize));
     for (auto* tb : m_mainToolBars) {
         if (tb != nullptr) {
@@ -169,7 +169,7 @@ void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
 
     // 4. Docking Features & Nested Docking Option
     QMainWindow::DockOptions opts = QMainWindow::AnimatedDocks;
-    if (o_DockAllowNested.get()) {
+    if (o_AllowNestedDocking.get()) {
         opts |= QMainWindow::AllowNestedDocks;
         opts |= QMainWindow::GroupedDragging;
     }

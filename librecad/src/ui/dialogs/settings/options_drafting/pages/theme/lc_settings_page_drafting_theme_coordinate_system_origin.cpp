@@ -22,17 +22,15 @@
 
 #include "lc_settings_page_drafting_theme_coordinate_system_origin.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_coordinates_origin.h"
 #include "ui_lc_settings_page_drafting_theme_coordinate_system_origin.h"
 
 LC_SettingsPageDraftingThemeCoordinateSystemOrigin::LC_SettingsPageDraftingThemeCoordinateSystemOrigin(QObject* parent)
     : LC_SettingsPageBase(tr("Coordinates System"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_CoordinatesOrigin::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeCoordinateSystemOrigin>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingThemeCoordinateSystemOrigin::~LC_SettingsPageDraftingThemeCoordinateSystemOrigin() = default;
@@ -50,8 +48,8 @@ void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupBindings() {
-    using namespace CFG_Appearance;
-    using namespace CFG_Colors;
+    using namespace CFG_CoordinatesOrigin;
+    using namespace CFG_OverlayAnglesBaseMark;
 
 
     bindComboText({
@@ -68,10 +66,10 @@ void LC_SettingsPageDraftingThemeCoordinateSystemOrigin::setupBindings() {
     });
 
     bindColor({
-        { ui->cbAxisXColor, ui->pb_axis_X, o_XAxisColor, tr("Select X-Axis Color") },
-        { ui->cbAxisYColor, ui->pb_axis_Y, o_YAxisColor, tr("Select Y-Axis Color") },
-        { ui->cbAnglesMarkColorDirection, ui->pbAnglesMarkDirection, o_AnglesBasisDirectionIndicatorColor, tr("Select Arrow Direction Color") },
-        { ui->cbAnglesMarkColorAngleRay, ui->pbAnglesMarkAngleRay, o_AnglesBasisAngleRayColor, tr("Select Base Angle Ray Color") },
-        { ui->cbRelativeZeroColor, ui->pb_relativeZeroColor, o_RelativeZeroColor, tr("Select Relative Zero Color") }
+        { ui->cbAxisXColor, ui->pb_axis_X, o_ColorXAxis, tr("Select X-Axis Color") },
+        { ui->cbAxisYColor, ui->pb_axis_Y, o_ColorYAxis, tr("Select Y-Axis Color") },
+        { ui->cbAnglesMarkColorDirection, ui->pbAnglesMarkDirection, o_ColorAnglesBasisDirectionIndicator, tr("Select Arrow Direction Color") },
+        { ui->cbAnglesMarkColorAngleRay, ui->pbAnglesMarkAngleRay, o_ColorAnglesBasisAngleRay, tr("Select Base Angle Ray Color") },
+        { ui->cbRelativeZeroColor, ui->pb_relativeZeroColor, o_ColorRelativeZero, tr("Select Relative Zero Color") }
     });
 }

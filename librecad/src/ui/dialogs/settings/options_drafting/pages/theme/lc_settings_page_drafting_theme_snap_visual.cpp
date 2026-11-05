@@ -20,15 +20,14 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_theme_snap_visual.h"
+
 #include "ui_lc_settings_page_drafting_theme_snap_visual.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_snap_visual.h"
 
 LC_SettingsPageDraftingThemeSnapVisual::LC_SettingsPageDraftingThemeSnapVisual(QObject* parent)
     : LC_SettingsPageBase(tr("Visual Snap"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeSnapVisual>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingThemeSnapVisual::~LC_SettingsPageDraftingThemeSnapVisual() = default;
@@ -42,8 +41,6 @@ void LC_SettingsPageDraftingThemeSnapVisual::setupBehavior() {
 
 void LC_SettingsPageDraftingThemeSnapVisual::setupBindings() {
     using namespace CFG_VisualSnap;
-    using namespace CFG_Colors;
-
 
     ui->wGuidingEntityLineType->init(false, false, false);
     bindLineType(ui->wGuidingEntityLineType, o_VSGuidingEntitiesLineType);
@@ -53,9 +50,9 @@ void LC_SettingsPageDraftingThemeSnapVisual::setupBindings() {
     bindLineType(ui->wDocGuidingEntityLineType, o_VSDocGuidingEntitiesLineType);
 
     bindColor({
-        { ui->cbColorVisualSnapVertexes, ui->pbVisualSnapVertexesColor, o_VisualSnapVertexesColor, tr("Select Visual Snap Point Color") },
-        { ui->cbColorVisualSnapProjectedSnap, ui->pbVisualSnapProjectedSnapColor, o_VisualSnapProjectedSnapColor, tr("Select Projected Snap Color") },
-        { ui->cbColorVisualSnapGuideEntities, ui->pbVisualSnapGuideEntitiesColor, o_VisualSnapGuideEntitiesColor, tr("Select Visual Snap Guide Color")},
-        { ui->cbColorVisualSnapDocumentEntity, ui->pbVisualSnapDocEntitiesColor, o_VisualSnapDocumentEntitiesColor, tr("Select Involved Document Entity Color")}
+        { ui->cbColorVisualSnapVertexes, ui->pbVisualSnapVertexesColor, o_ColorVisualSnapVertexes, tr("Select Visual Snap Point Color") },
+        { ui->cbColorVisualSnapProjectedSnap, ui->pbVisualSnapProjectedSnapColor, o_ColorVisualSnapProjectedSnap, tr("Select Projected Snap Color") },
+        { ui->cbColorVisualSnapGuideEntities, ui->pbVisualSnapGuideEntitiesColor, o_ColorVisualSnapGuideEntities, tr("Select Visual Snap Guide Color")},
+        { ui->cbColorVisualSnapDocumentEntity, ui->pbVisualSnapDocEntitiesColor, o_ColorVisualSnapDocumentEntities, tr("Select Involved Document Entity Color")}
     });
 }

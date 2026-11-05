@@ -84,8 +84,8 @@ void LC_PresetManagerWidgets::applyActiveConfigToSystem(const QString& activeKey
 
     // Deferred commit: Write in-memory working config fields directly to CFG_Widgets
     using namespace CFG_Widgets;
-    o_ToolbarAllowIconSize = m_workingConfig.toolbarAllowIconSize;
-    o_ToolbarIconSize = m_workingConfig.toolbarIconSize;
+    o_ToolbarAllowIconSizeOverride = m_workingConfig.toolbarAllowIconSize;
+    o_ToolbarCustomIconSize = m_workingConfig.toolbarIconSize;
     o_PickValueButtonsFlatIcons = m_workingConfig.pickValueButtonsFlatIcons;
 
     o_DockWidgetsFlatButtons = m_workingConfig.dockWidgetsFlatButtons;
@@ -109,7 +109,7 @@ void LC_PresetManagerWidgets::applyActiveConfigToSystem(const QString& activeKey
     o_CADToolsMatrixIconSize = m_workingConfig.cadToolsMatrixIconSize;
     o_CADToolsMatrixColumnsCount = m_workingConfig.cadToolsMatrixColumnsCount;
 
-    o_DockAllowNested = m_workingConfig.dockAllowNested;
+    o_AllowNestedDocking = m_workingConfig.dockAllowNested;
 
     o_StatusBarAllowHeight = m_workingConfig.allowStatusbarHeight;
     o_StatusbarHeight = m_workingConfig.statusbarHeight;

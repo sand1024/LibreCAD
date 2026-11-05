@@ -32,7 +32,7 @@
 #include <QApplication>
 #include <QTimer>
 
-#include "lc_settings_appearance.h"
+#include "lc_settings_defaults.h"
 
 namespace {
 class SpinBoxSelectionFilter : public QObject {
@@ -136,14 +136,15 @@ void LC_Dialog::showEvent(QShowEvent *event) {
 }
 
 void LC_Dialog::loadDialogPosition() {
-    if (CFG_Appearance::o_PersistDialogPositions) {
+    using namespace CFG_Dialogs;
+    if (o_PersistDialogPositions) {
         if (CFG_DlgSettings.o_hasPosition) {
             const int x = CFG_DlgSettings.o_X;
             const int y = CFG_DlgSettings.o_Y;
             const int h = CFG_DlgSettings.o_Height;
             const int w = CFG_DlgSettings.o_Width;
             if (x > 0 && y > 0 && h > 0 && w > 0) {
-                if (!CFG_Appearance::o_PersistDialogRestoreSizeOnly) {
+                if (!o_PersistDialogRestoreSizeOnly) {
                     move(x, y);
                 }
                 resize(w, h);
@@ -158,7 +159,7 @@ void LC_Dialog::loadDialogPosition() {
 
 void LC_Dialog::saveDialogPosition() {
 
-    if (CFG_Appearance::o_PersistDialogPositions) {
+    if (CFG_Dialogs::o_PersistDialogPositions) {
         CFG_DlgSettings.o_hasPosition = true;
 
         const QPoint& point = pos();

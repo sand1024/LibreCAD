@@ -22,9 +22,9 @@
 
 #include "lc_settings_page_drafting_metrics_snapping.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "lc_settings_snap_visual.h"
 #include "ui_lc_settings_page_drafting_metrics_snapping.h"
 
@@ -33,7 +33,6 @@ LC_SettingsPageDraftingMetricsSnapping::LC_SettingsPageDraftingMetricsSnapping(Q
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsSnapping>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingMetricsSnapping::~LC_SettingsPageDraftingMetricsSnapping() = default;
@@ -45,13 +44,13 @@ void LC_SettingsPageDraftingMetricsSnapping::setupUi() {
 void LC_SettingsPageDraftingMetricsSnapping::setupBindings() {
     using namespace CFG_Snap;
     using namespace CFG_VisualSnap;
-    using namespace CFG_Appearance;
+    using namespace CFG_SnapIndicator;
 
     bindInt({
         { ui->sbCatchEntitySnapDistance, o_AdvSnapEntityCatchRange },
         { ui->sbVSCatchDistance, o_VSGuidingEntitiesCatchDistance },
-        { ui->sbIndicatorShapeSize, o_IndicatorShapeSize },
-        { ui->sbIndicatorCrosshairLinesSizePercents, o_IndicatorCrosshairLinesSizePercents },
+        { ui->sbIndicatorShapeSize, o_ShapeSize },
+        { ui->sbIndicatorCrosshairLinesSizePercents, o_CrosshairLinesSizePercents },
         { ui->sbVSProjectedSnapSize, o_VSProjectedSnapSize },
         { ui->sbVSHighlightedVertexSize, o_VSHighlightedVertexSize },
         { ui->sbVSVertexSize, o_VSVertexSize },
@@ -61,7 +60,7 @@ void LC_SettingsPageDraftingMetricsSnapping::setupBindings() {
     });
 
     bindDouble({
-           { ui->sbIndicatorLinesLineWidth, o_IndicatorScreenLinesLineWidth },
+           { ui->sbIndicatorLinesLineWidth, o_ScreenLinesLineWidth },
            { ui->sbVSGuidingPointsLineWidth, o_VSGuidingPointsScreenLineWidth },
            { ui->sbVSGuidingEntitiesLineWidth, o_VSGuidingEntitiesScreenLineWidth }
     });

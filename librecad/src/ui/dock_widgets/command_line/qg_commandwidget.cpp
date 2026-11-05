@@ -26,29 +26,14 @@
 
 #include "qg_commandwidget.h"
 
-#include <QDockWidget>
 #include <QFileDialog>
-#include <QKeyEvent>
 
-#include "lc_action_command_updater.h"
 #include "lc_command_manager.h"
 #include "lc_relative_point_input_widget.h"
 #include "lc_settings_app_state.h"
-#include "lc_settings_keyboard.h"
-#include "lc_settings_widget.h"
+#include "lc_settings_drafting_keyboard.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
-#include "rs_commands.h"
-#include "rs_settings.h"
-
-
-// namespace CFG_WidgetCmd {
-//     inline const LC_SettingsGroupBase Group("Widget.Cmd");
-//
-//     inline const LC_Setting<bool> o_KeycodeMode(&Group, "KeycodeMode", false);
-// }
-//
-
 
 /*
  *  Constructs a QG_CommandWidget as a child of 'parent', with the
@@ -141,7 +126,7 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
                        return false;
                    }
                 }
-                if (!hasFocus() && CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
+                if (!hasFocus() && CFG_DraftingKeyboard::o_ToggleFreeSnapOnSpace) {
                     // do not take focus here
                     spacePressed();
                     e->accept();

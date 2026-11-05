@@ -23,24 +23,21 @@
 #include "lc_overlayrelativezero.h"
 
 #include "lc_graphicviewport.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_coordinates_origin.h"
 #include "rs_painter.h"
-#include "rs_settings.h"
 
 void LC_OverlayRelZeroOptions::loadSettings() {
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
+        using namespace CFG_CoordinatesOrigin;
         hideRelativeZero = o_HideRelativeZero;
         relativeZeroRadius = o_RelZeroMarkerRadius;
         overlayScreenLineWidth = o_OverlaysScreenLineWidth;
         if (overlayScreenLineWidth == 1 ) {
             overlayScreenLineWidth = 0;
         }
-    }
-    {
-        using namespace CFG_Colors;
-        colorRelativeZero = RS_Color(o_RelativeZeroColor);
+        colorRelativeZero = RS_Color(o_ColorRelativeZero);
     }
 }
 

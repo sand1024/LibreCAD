@@ -33,6 +33,10 @@ namespace CFG_RelativePositionAssistant {
     inline const LC_Setting<bool> o_RememberCoordinatesMode(&Group, "RememberCoordinatesMode", false);
     inline const LC_Setting<bool> o_LastInvocationOffsetMode(&Group,"LastInvocationOffsetMode", true);
     inline const LC_Setting<bool> o_StartInOffsetMode(&Group, "StartInOffsetMode", true);
+
+    // Relative Assistant Popup
+    inline const LC_Setting<QColor> o_ColorRelativePositionAssistantBackground(&Group, "RelativePositionAssistantBackground", QColor("#FFC200"));
+    inline const LC_Setting<QColor> o_ColorRelativePositionAssistantText(&Group, "RelativePositionAssistantText", QColor("#1E90FF"));
 }
 
 #endif

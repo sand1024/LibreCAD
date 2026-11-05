@@ -32,8 +32,6 @@
 #include "lc_isometricgrid.h"
 #include "lc_linemath.h"
 #include "lc_orthogonalgrid.h"
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_grid.h"
 #include "rs_graphic.h"
@@ -79,7 +77,7 @@ RS_Vector RS_Grid::snapGrid(const RS_Vector& coord, const RS_Vector& rayStart, c
 void RS_Grid::loadSettings(){
 
     LC_GROUP("Appearance");
-    m_scaleGrid = CFG_Appearance::o_ScaleGrid;
+    m_scaleGrid = CFG_Grid::o_ScaleGrid;
     // get grid setting
     auto graphic = m_viewport->getGraphic();
     if (graphic != nullptr) {
@@ -87,15 +85,15 @@ void RS_Grid::loadSettings(){
         m_isoViewType = graphic->getIsoView();
         m_userGrid = graphic->getVariableVector("$GRIDUNIT", RS_Vector(-1.0, -1.0));
     }else {
-        m_isometric = CFG_Defaults::o_IsometricGrid;
-        m_isoViewType= CFG_Defaults::o_IsoGridView;
+        m_isometric = CFG_NewDrawingDefaults::o_IsometricGrid;
+        m_isoViewType= CFG_NewDrawingDefaults::o_IsoGridView;
         m_userGrid.x = LC_GET_STR("GridSpacingX", QString("-1")).toDouble(); // fixme - sand - settings
         m_userGrid.y = LC_GET_STR("GridSpacingY", QString("-1")).toDouble();
     }
     LC_GROUP_END();
 
-    m_minGridSpacing = CFG_Appearance::o_MinGridSpacing;
-    m_metaGridEvery = CFG_Appearance::o_MetaGridEvery;
+    m_minGridSpacing = CFG_Grid::o_MinGridSpacing;
+    m_metaGridEvery = CFG_Grid::o_MetaGridEvery;
 
     m_gridOptions->loadSettings();
 

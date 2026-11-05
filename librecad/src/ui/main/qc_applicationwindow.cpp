@@ -131,8 +131,13 @@
 #include "twostackedlabels.h"
 #include "lc_icons_style_manager.h"
 #include "lc_settings_app_state.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_commands_promotion.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
 #include "lc_settings_manager_drafting.h"
+#include "lc_settings_snap.h"
 #include "lc_settings_widget.h"
 #include "lc_wait_cursor_guard.h"
 #include "lc_widget_factory.h"
@@ -346,7 +351,7 @@ void QC_ApplicationWindow::startAutoSaveTimer(const bool startAutoBackup) {
         if (!m_autosaveTimer->isActive()) {
             // autosaving has been turned on. Make a backup immediately
             {
-                using namespace CFG_Defaults;
+                using namespace CFG_DrawingsAutoSaveAndBackup;
                 o_AutoBackupDocument =  true;
                 autoSaveCurrentDrawing();
                 const int ms = 60000 * o_AutoSaveTime;
@@ -449,7 +454,7 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
             const bool draftMode = graphicView->isDraftMode();
             setupMDIWindowTitleByFile(w, drawingFileFullPath, draftMode, graphicView->isPrintPreview());
 
-            const bool autoBackup = CFG_Defaults::o_AutoBackupDocument;
+            const bool autoBackup = CFG_DrawingsAutoSaveAndBackup::o_AutoBackupDocument;
             startAutoSaveTimer(autoBackup);
         }
         else {
@@ -711,7 +716,7 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
     }
 
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftMode;
         QAction* viewLinesDraftAction = getAction("ViewLinesDraft");
         viewLinesDraftAction->setChecked(o_DraftLinesMode);
 
@@ -721,7 +726,7 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
         viewLinesDraftAction->setDisabled(draftMode);
 
         QAction* viewAntialiasing = getAction("ViewAntialiasing");
-        const bool antialiasing = o_Antialiasing;
+        const bool antialiasing = CFG_DraftingAreaStyling::o_Antialiasing;
         viewAntialiasing->setChecked(antialiasing);
     }
     m_infoCursorSettingsManager->loadFromSettings();
@@ -968,7 +973,7 @@ QC_MDIWindow* QC_ApplicationWindow::createNewDrawingWindow(RS_Document* doc, con
         }
     }
 
-    const bool draftMode = CFG_Appearance::o_DraftMode;
+    const bool draftMode = CFG_DraftMode::o_DraftMode;
     view->setDraftMode(draftMode);
 
     setupMDIWindowTitleByName(w, baseTitleString, draftMode);
@@ -992,7 +997,7 @@ QMenu* QC_ApplicationWindow::getRecentFilesMenu() const {
 }
 
 void QC_ApplicationWindow::updateActionsForCommandsInMenus(bool keycodeMode) {
-    bool clearTooltips =  !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+    bool clearTooltips =  !(CFG_AppStyling::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
     if (clearTooltips) {
         LC_ActionCommandUpdater::clearActions(m_actionGroupManager.get());
     }
@@ -1022,10 +1027,10 @@ QList<QWidget*> QC_ApplicationWindow::getStatusBarWidgets() const {
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
     QG_GraphicView* view = w->getGraphicView();
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
         const bool antialiasing = o_Antialiasing; // fixme - sand - check whether its not loaded in loadSettings() later!!!
-        const bool showScrollbars = o_ScrollBars;
-        const bool cursor_hiding = o_CursorHidingWhenSnapping;
+        const bool showScrollbars = o_ScrollBarsVisibleForDraftingArea;
+        const bool cursor_hiding = CFG_Snap::o_CursorHidingWhenSnapping;
         view->setAntialiasing(antialiasing);
         view->setCursorHidingWhenSnapping(cursor_hiding);
         view->addScrollbars(showScrollbars);
@@ -1264,7 +1269,7 @@ void QC_ApplicationWindow::updateWidgetsAsDocumentLoaded(const QC_MDIWindow* w) 
 }
 
 void QC_ApplicationWindow::autoZoomAfterLoad(const QG_GraphicView* graphicView) {
-    if (CFG_CADPreferences::o_AutoZoomDrawing) {
+    if (CFG_DraftingOperations::o_AutoZoomDrawingAfterOpening) {
         graphicView->zoomAuto(false);
     }
 }
@@ -1481,7 +1486,7 @@ void QC_ApplicationWindow::slotFileSaveAll() {
  */
 void QC_ApplicationWindow::autoSaveCurrentDrawing() {
     RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): begin");
-    if (!CFG_Defaults::o_AutoBackupDocument) {
+    if (!CFG_DrawingsAutoSaveAndBackup::o_AutoBackupDocument) {
         RS_DEBUG->print("QC_ApplicationWindow::autoSaveCurrentDrawing(): AutoBackupDocument disabled");
         startAutoSaveTimer(false);
         return;
@@ -1698,7 +1703,7 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             m_mdiAreaCAD->addSubWindow(w);
             parent->addChildWindow(w);
 
-            const bool draftMode = CFG_Appearance::o_DraftMode;
+            const bool draftMode = CFG_DraftMode::o_DraftMode;
             setupMDIWindowTitleByFile(w, parent->getFileName(), draftMode, true);
 
             w->setWindowIcon(QIcon(":/icons/document.lci")); // fixme - sand - replace the icon for pint preview!
@@ -1786,7 +1791,7 @@ void QC_ApplicationWindow::slotViewGrid(const bool toggle) {
  * @param toggle true: enable, false: disable.
  */
 void QC_ApplicationWindow::slotViewDraft(bool toggle) {
-    CFG_Appearance::o_DraftMode = toggle;
+    CFG_DraftMode::o_DraftMode = toggle;
     // fixme - sand - files - probably just rely on signal??
 
     doForEachWindowGraphicView([toggle, this](QG_GraphicView* gv, QC_MDIWindow* w) {
@@ -1809,7 +1814,7 @@ void QC_ApplicationWindow::slotShowEntityDescriptionOnHover(bool toggle) {
 }
 
 void QC_ApplicationWindow::slotViewDraftLines(bool toggle) {
-    CFG_Appearance::o_DraftLinesMode = toggle;
+    CFG_DraftMode::o_DraftLinesMode = toggle;
     doForEachWindowGraphicView([toggle](const QG_GraphicView* gv, [[maybe_unused]] QC_MDIWindow* w) {
         // fixme - sand - files - probably just rely on signal??
         gv->setDraftLinesMode(toggle);
@@ -1819,7 +1824,7 @@ void QC_ApplicationWindow::slotViewDraftLines(bool toggle) {
 }
 
 void QC_ApplicationWindow::slotViewAntialiasing(bool toggle) {
-    CFG_Appearance::o_Antialiasing = toggle;
+    CFG_DraftingAreaStyling::o_Antialiasing = toggle;
 
     doForEachSubWindowGraphicView([toggle](const QG_GraphicView* gv, [[maybe_unused]] QC_MDIWindow* w) {
         // fixme - sand - files - probably just rely on signal??
@@ -1846,7 +1851,7 @@ void QC_ApplicationWindow::updateGrids() const {
  */
 void QC_ApplicationWindow::slotViewStatusBar(const bool toggle) {
     statusBar()->setVisible(toggle);
-    CFG_Appearance::o_StatusBarVisible = toggle;
+    CFG_AppState::o_StatusBarVisible = toggle;
 }
 
 void QC_ApplicationWindow::slotViewGridOrtho(const bool toggle) {
@@ -1957,10 +1962,10 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
             }
         }
         // fixme - check this signal, probably it's better to rely on settings change
-        const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
+        const bool hideRelativeZero = CFG_CoordinatesOrigin::o_HideRelativeZero;
         emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
 
-        const bool antialiasing = CFG_Appearance::o_Antialiasing;
+        const bool antialiasing = CFG_DraftingAreaStyling::o_Antialiasing;
         emit antialiasingChanged(antialiasing);
 
         m_statusbarManager->loadSettings();
@@ -2221,12 +2226,12 @@ QMenu* QC_ApplicationWindow::createPopupMenu() {
 
 void QC_ApplicationWindow::toggleFullscreen(const bool checked) {
     checked ? showFullScreen() : showMaximized();
-    CFG_Appearance::o_FullscreenMode = checked;
+    CFG_AppState::o_FullscreenMode = checked;
 }
 
 void QC_ApplicationWindow::toggleMainMenu(const bool toggle) {
     menuBar()->setVisible(toggle);
-    CFG_Appearance::o_MainMenuVisible = toggle;
+    CFG_AppState::o_MainMenuVisible = toggle;
 }
 
 void QC_ApplicationWindow::slotFileOpenRecent(const QAction* action) {

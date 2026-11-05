@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,17 +20,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_KEYBOARD_H
-#define LC_SETTINGS_KEYBOARD_H
-
+#ifndef LC_SETTINGS_SELECTION_OVERLAY_H
+#define LC_SETTINGS_SELECTION_OVERLAY_H
 #include "lc_setting.h"
 
-namespace CFG_Keyboard {
-    inline const LC_SettingsGroupBase Group("Keyboard");
+namespace  CFG_OverlaySelection {
+    inline const LC_SettingsGroupBase Group("OverlayEntitiesSelection");
 
-    inline const LC_Setting<bool> o_EvaluateCommandOnSpace(&Group, "EvaluateCommandOnSpace", false);
-    inline const LC_Setting<bool> o_ToggleFreeSnapOnSpace(&Group, "ToggleFreeSnapOnSpace", false);
-    inline const LC_Setting<bool> o_AllowScrollMoveAdjustByKeys(&Group, "AllowScrollMoveAdjustByKeys", true);
+    // Selection Overlay
+    inline const LC_Setting<QColor> o_ColorSelectionOverlayLine(&Group, "ColorNormalLine", QColor("#3232ff"));
+    inline const LC_Setting<QColor> o_ColorSelectionOverlayFill(&Group, "ColorNormalBoxFill", QColor("#0909ff"));
+    inline const LC_Setting<QColor> o_ColorSelectionOverlayInvertedLine(&Group, "ColorInvertedLine", QColor("#32ff32"));
+    inline const LC_Setting<QColor> o_ColorSelectionOverlayInvertedFill(&Group, "ColorInvertedFill", QColor("#09ff09"));
+    inline const LC_Setting<int>    o_SelectionOverlayTransparency(&Group, "OverlayTransparency", 90);
+
+    inline const LC_Setting<RS2::LineType> o_SelectionOverlayLineType(&Group, "NormalLineType", RS2::SolidLine);
+    inline const LC_Setting<RS2::LineType> o_SelectionOverlayInvertedLineType(&Group, "InvertedLineType", RS2::DashLine);
+
 }
 
 #endif

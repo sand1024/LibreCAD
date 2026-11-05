@@ -21,10 +21,10 @@
 
 #include "lc_settings_page_general_startup.h"
 
-#include "lc_settings_appearance.h"
 #include "ui_lc_settings_page_general_startup.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_startup.h"
+#include "lc_settings_window_options.h"
 
 LC_SettingsPageGeneralStartup::LC_SettingsPageGeneralStartup(QObject* parent)
     : LC_SettingsPageBase(tr("Startup"),
@@ -43,7 +43,7 @@ void LC_SettingsPageGeneralStartup::setupBindings() {
 
     bindBoolean({
         {ui->cbSplash, o_ShowSplash},
-        {ui->tab_mode_check_box, o_TabMode},
+        {ui->tab_mode_check_box, CFG_DrawingDocumentsMDIOptions::o_ShowDrawingsInTabbedMode},
         {ui->maximize_checkbox, o_Maximize},
         {ui->cbOpenLastFiles, o_OpenLastOpenedFiles},
         {ui->cbEnableCADDockWidgets, o_EnableCADDockWidgets, true},

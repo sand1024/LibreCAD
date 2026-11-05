@@ -21,15 +21,14 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_behavior_snap_visual_timing.h"
-#include "ui_lc_settings_page_drafting_behavior_snap_visual_timing.h"
+
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_snap_visual.h"
+#include "ui_lc_settings_page_drafting_behavior_snap_visual_timing.h"
 
 LC_SettingsPageDraftingBeahaviorSnapVisualTiming::LC_SettingsPageDraftingBeahaviorSnapVisualTiming(QObject* parent)
     : LC_SettingsPageBase(tr("Advanced"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBeahaviorSnapVisualTiming>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageDraftingBeahaviorSnapVisualTiming::~LC_SettingsPageDraftingBeahaviorSnapVisualTiming() = default;
@@ -43,7 +42,6 @@ void LC_SettingsPageDraftingBeahaviorSnapVisualTiming::setupBehavior() {
 
 void LC_SettingsPageDraftingBeahaviorSnapVisualTiming::setupBindings() {
     using namespace CFG_VisualSnap;
-    using namespace CFG_Colors;
 
     bindInt({
         { ui->sbVisualSnapPointAddingDelay, o_VSSnapPointAddingDelay },

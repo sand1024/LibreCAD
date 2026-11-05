@@ -27,13 +27,12 @@
 #include "lc_action_modify_stretch.h"
 
 #include "lc_actioninfomessagebuilder.h"
-#include "lc_settings_modify.h"
+#include "lc_settings_drafting.h"
 #include "lc_stretch_options_filler.h"
 #include "lc_stretch_options_widget.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
-#include "rs_settings.h"
 
 struct LC_ActionModifyStretch::StretchActionData {
     RS_Vector firstCorner;
@@ -88,7 +87,7 @@ bool LC_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch
         unselect(m_entitiesList);
     }
     else {
-        const bool keepSelected =  CFG_Modify::o_KeepModifiedSelected;
+        const bool keepSelected = CFG_DraftingOperations::o_KeepModifiedEntitiesSelected;
         if (keepSelected) {
             select(m_entitiesList);
         }

@@ -240,7 +240,7 @@ void LC_ReleaseChecker::processReleasesJSON(const QByteArray& responseContent) {
             QVector<LC_ReleaseInfo> releases;
             QVector<LC_ReleaseInfo> preReleases;
             LC_TagInfo ownTagInfo = m_ownReleaseInfo.getTagInfo();
-            using namespace  CFG_Startup;
+            using namespace  CFG_VersionCheck;
             bool ignorePreReleases = o_IgnorePreReleaseVersions;
             QString ignoredReleaseTagStr = o_IgnoredRelease;
             QString ignoredPreReleaseTag = o_IgnoredPreRelease;

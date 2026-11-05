@@ -28,10 +28,10 @@
 
 LC_SettingsPageDraftingBehaviorInfoCursor::LC_SettingsPageDraftingBehaviorInfoCursor(QObject* parent)
     : LC_SettingsPageBase(tr("Informational Cursor"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_InfoCursor::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_OverlayInfoCursor::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorInfoCursor>()) {
-    setSortWeight(40);
+
 }
 
 LC_SettingsPageDraftingBehaviorInfoCursor::~LC_SettingsPageDraftingBehaviorInfoCursor() = default;
@@ -50,7 +50,7 @@ void LC_SettingsPageDraftingBehaviorInfoCursor::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingBehaviorInfoCursor::setupBindings() {
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
 
     bindBoolean({
         { ui->cbInfoOverlayEnable, o_InfoCursorEnabled },

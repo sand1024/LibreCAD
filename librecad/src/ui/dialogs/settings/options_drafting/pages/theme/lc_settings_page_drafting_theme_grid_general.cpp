@@ -22,7 +22,6 @@
 
 #include "lc_settings_page_drafting_theme_grid_general.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_list_widget.h"
@@ -33,7 +32,6 @@ LC_SettingsPageDraftingThemeGridGeneral::LC_SettingsPageDraftingThemeGridGeneral
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Grid::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeGridGeneral>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingThemeGridGeneral::~LC_SettingsPageDraftingThemeGridGeneral() = default;
@@ -65,7 +63,6 @@ void LC_SettingsPageDraftingThemeGridGeneral::setChildPages(const QList<LC_Setti
 }
 
 void LC_SettingsPageDraftingThemeGridGeneral::setupBindings() {
-    using namespace CFG_Appearance;
     using namespace CFG_Grid;
 
 

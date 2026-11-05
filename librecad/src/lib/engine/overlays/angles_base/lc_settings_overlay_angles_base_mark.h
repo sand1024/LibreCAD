@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,19 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_SNAP_STATE_H
-#define LC_SETTINGS_SNAP_STATE_H
-
+#ifndef LC_SETTINGS_OVERLAY_ANGLES_BASE_MARK_H
+#define LC_SETTINGS_OVERLAY_ANGLES_BASE_MARK_H
 #include "lc_setting.h"
 
-namespace CFG_SnapState {
-    inline const LC_SettingsGroupBase Group("SnapState");
+namespace CFG_OverlayAnglesBaseMark {
+    inline const LC_SettingsGroupBase Group("OverlayAnglesBaseMark");
 
-    // RS_SnapMode::SnapEndpoint | RS_SnapMode::SnapMiddle  | RS_SnapMode::SnapCenter | RS_SnapMode::SnapIntersection
-    inline const LC_Setting<int> o_SnapMode(&Group, "SnapMode",  (1 << 5) | (1 << 4)  | (1 << 2) | (1 << 0));
-    inline const LC_Setting<int> o_MiddlePoints(&Group, "MiddlePoints", 1);
-    inline const LC_Setting<QString> o_Distance(&Group, "Distance", "1.0");
+
+    inline const LC_Setting<bool> o_AnglesBasisMarkEnabled(&Group, "AnglesBasisMarkEnabled", true);
+
+    enum ShowAnglesBaseMarkType{
+        SHOW_ALWAYS = 0,
+        SHOW_IF_NON_DEFAULTS
+    };
+
+    inline const LC_Setting<int> o_AnglesBasisMarkPolicy(&Group, "AnglesBasisMarkPolicy", SHOW_ALWAYS);
+
+    // Angle Basis Ray
+    inline const LC_Setting<QColor> o_ColorAnglesBasisDirectionIndicator(&Group, "ColorDirection", QColor("#017CFF"));
+    inline const LC_Setting<QColor> o_ColorAnglesBasisAngleRay(&Group, "ColorAngleRay", QColor("#00FFFF"));
 }
-
 
 #endif

@@ -22,14 +22,13 @@
 
 #include "lc_settings_page_drafting_metrics_draft_mode.h"
 
-#include "lc_settings_appearance.h"
 #include "lc_settings_backend.h"
+#include "lc_settings_draft_mode.h"
 #include "ui_lc_settings_page_drafting_metrics_draft_mode.h"
 
 LC_SettingsPageDraftingMetricsDraftMode::LC_SettingsPageDraftingMetricsDraftMode(QObject* parent)
-    : LC_SettingsPageBase(tr("Draft Mode"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group), parent),
+    : LC_SettingsPageBase(tr("Draft Mode"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftMode::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsDraftMode>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingMetricsDraftMode::~LC_SettingsPageDraftingMetricsDraftMode() = default;
@@ -39,7 +38,7 @@ void LC_SettingsPageDraftingMetricsDraftMode::setupUi() {
 }
 
 void LC_SettingsPageDraftingMetricsDraftMode::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftMode;
 
     bindInt({
         {ui->sbDraftMarkerFontSize, o_DraftMarkerFontSize}

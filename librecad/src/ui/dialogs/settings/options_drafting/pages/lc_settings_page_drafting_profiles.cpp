@@ -37,7 +37,6 @@
 LC_SettingsPageDraftingProfiles::LC_SettingsPageDraftingProfiles(QObject* parent)
     : LC_SettingsPageProfileExchangeBase(tr("Profiles Exchange"), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingProfiles>()) {
-    setSortWeight(120);
 
     auto* appWin = QC_ApplicationWindow::getAppWindow();
     m_uiStyleManager = appWin->getUiStyleManager();

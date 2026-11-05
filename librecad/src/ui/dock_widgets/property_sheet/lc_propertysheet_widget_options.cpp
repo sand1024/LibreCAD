@@ -25,9 +25,8 @@
 
 #include <QFont>
 
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_property_sheet_widget.h"
-#include "rs_settings.h"
 
 void LC_PropertySheetWidgetOptions::save() const {
     using namespace CFG_WidgetPropertySheet;
@@ -66,5 +65,5 @@ void LC_PropertySheetWidgetOptions::load() {
     duplicateSelectionAction = o_duplicateSelectionAction;
     showToolOptions = o_showToolOptions;
 
-    showEntityId = CFG_Appearance::o_ShowEntityIDs;
+    showEntityId = CFG_AppStyling::o_ShowEntityIDs;
 }

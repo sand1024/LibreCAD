@@ -34,7 +34,6 @@
 
 LC_SettingsPageIconsStyle::LC_SettingsPageIconsStyle(QObject* parent)
     : LC_SettingsPageBase(tr("Icons Style"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageIconsStyle>()) {
-    setSortWeight(40);
 }
 
 LC_SettingsPageIconsStyle::~LC_SettingsPageIconsStyle() = default;

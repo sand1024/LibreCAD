@@ -24,9 +24,9 @@
 
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
+#include "lc_settings_grid.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
-#include "rs_settings.h"
 #include "rs_units.h"
 #include "ui_lc_relzerocoordinateswidget.h"
 
@@ -131,7 +131,7 @@ void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
 
         angle = m_viewport->toBasisUCSAngle(angle);
 
-        if (!CFG_Appearance::o_UnitlessGrid) {
+        if (!CFG_Grid::o_UnitlessGrid) {
             x = RS_Units::convert(x);
             y = RS_Units::convert(y);
             len = RS_Units::convert(magnitude);

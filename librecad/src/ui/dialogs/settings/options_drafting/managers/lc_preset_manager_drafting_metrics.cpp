@@ -29,13 +29,18 @@
 #include "lc_drafting_metrics_defaults.h"
 #include "lc_drafting_preview_bottom_bar.h"
 #include "lc_preset_file_io.h"
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_styling.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
+#include "lc_settings_overlay_angles_base_mark.h"
+#include "lc_settings_preview.h"
 #include "lc_settings_relative_position_assistant.h"
 #include "lc_settings_render.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "lc_settings_snap_visual.h"
 #include "rs_settings.h"
 
@@ -55,13 +60,18 @@ namespace {
             return;
         }
 
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingAreaStyling;
         using namespace CFG_Grid;
         using namespace CFG_Snap;
         using namespace CFG_VisualSnap;
-        using namespace CFG_InfoCursor;
+        using namespace CFG_OverlayInfoCursor;
         using namespace CFG_RelativePositionAssistant;
         using namespace CFG_Render;
+        using namespace CFG_SnapIndicator;
+        using namespace CFG_OverlayAnglesBaseMark;
+        using namespace CFG_CoordinatesOrigin;
+        using namespace CFG_DraftMode;
+        using namespace CFG_DraftingPreview;
 
         mapMetrics({
             // Interactive Handles & Markers
@@ -74,9 +84,9 @@ namespace {
             o_DraftMarkerFontSize,
 
             // Snap & Visual Snap Indicators
-            o_IndicatorShapeSize,
-            o_IndicatorCrosshairLinesSizePercents,
-            o_IndicatorScreenLinesLineWidth,
+            o_ShapeSize,
+            o_CrosshairLinesSizePercents,
+            o_ScreenLinesLineWidth,
             o_VSProjectedSnapSize,
             o_VSHighlightedVertexSize,
             o_VSVertexSize,
@@ -90,10 +100,10 @@ namespace {
             // Screen Line Widths & Grid Points
             o_OverlaysScreenLineWidth,
             o_MinGridSpacing,
-            o_MetaGridPointsScreenLineWidth,
-            o_MetaGridLinesScreenLineWidth,
-            o_GridLinesScreenLineWidth,
-            o_GridPointsPointScreenSize,
+            o_PointsMetaGridScreenLineWidth,
+            o_LinesMetaGridScreenLineWidth,
+            o_LinesGridScreenLineWidth,
+            o_PointsGridPointScreenSize,
 
             // Overlay Fonts & Offsets
             o_InfoCursorFontSize,

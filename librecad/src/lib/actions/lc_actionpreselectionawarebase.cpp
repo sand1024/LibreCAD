@@ -27,10 +27,10 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_polygon_selection.h"
-#include "lc_settings_modify.h"
+#include "lc_settings_drafting.h"
 #include "rs_document.h"
 #include "rs_selection.h"
-#include "rs_settings.h"
+
 
 LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
     const QString& name, LC_ActionContext *actionContext, const RS2::ActionType actionType,
@@ -38,7 +38,7 @@ LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
     :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList){}
 
 bool LC_ActionPreSelectionAwareBase::isKeepModifiedEntitiesSelected() const {
-    const bool keepSelected = CFG_Modify::o_KeepModifiedSelected;
+    const bool keepSelected = CFG_DraftingOperations::o_KeepModifiedEntitiesSelected;
     return keepSelected;
 }
 

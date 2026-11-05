@@ -22,23 +22,24 @@
 
 #include "lc_overlayanglesbasemark.h"
 
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_overlay_angles_base_mark.h"
 #include "rs_painter.h"
 
 void LC_AnglesBaseMarkOptions::loadSettings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_OverlayAnglesBaseMark;
+    using namespace CFG_DraftingAreaStyling;
 
     showAnglesBaseMark = o_AnglesBasisMarkEnabled;
     displayPolicy = o_AnglesBasisMarkPolicy;
-    const int zeroMarkerSize = o_ZeroMarkerSize;
+    const int zeroMarkerSize = CFG_CoordinatesOrigin::o_ZeroMarkerSize;
     markerRadius = zeroMarkerSize / 2;
 
-    using namespace CFG_Colors;
 
-    colorAnglePointer = RS_Color(o_AnglesBasisAngleRayColor);
-    colorDirectionType = RS_Color(o_AnglesBasisDirectionIndicatorColor);
-    // m_colorRadius = RS_Color(LC_GET_STR("colorAnglesBaseRadius", RS_Settings::anglesBasisDirection));
+    colorAnglePointer = RS_Color(o_ColorAnglesBasisAngleRay);
+    colorDirectionType = RS_Color(o_ColorAnglesBasisDirectionIndicator);
+    
     colorRadius = colorDirectionType;
 
     overlayScreenLineWidth = o_OverlaysScreenLineWidth;

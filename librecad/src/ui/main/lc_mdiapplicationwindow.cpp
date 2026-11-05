@@ -32,6 +32,7 @@
 #include <QStyle>
 #include <qtabbar.h>
 
+#include "lc_settings_app_styling.h"
 #include "lc_settings_window_options.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
@@ -199,7 +200,7 @@ void LC_MDIApplicationWindow::activateWindowWithFile(const QString &fileName) {
  * @param actuallyDont just set the setting, don't actually do the arrangement
  */
 void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindowMode, const bool actuallyDont) {
-    using namespace CFG_WindowOptions;
+    using namespace CFG_DrawingDocumentsMDIOptions;
     const RS2::SubWindowMode mode = subwindowMode != RS2::CurrentMode ? subwindowMode :o_SubWindowMode;
 
     if (!actuallyDont) {
@@ -236,14 +237,14 @@ void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindo
  * @param p the tab bar position; if RS2::AnyPosition read the current setting
  */
 void LC_MDIApplicationWindow::setTabLayout(const RS2::TabShape s, const RS2::TabPosition p) {
-    using namespace CFG_WindowOptions;
-    RS2::TabShape shape = (s == RS2::AnyShape) ? o_TabShape : s;
-    RS2::TabPosition position  = (p == RS2::AnyPosition) ? o_TabPosition : p;
+    using namespace CFG_DrawingDocumentsMDIOptions;
+    RS2::TabShape shape = (s == RS2::AnyShape) ? o_DocumentTabShape : s;
+    RS2::TabPosition position  = (p == RS2::AnyPosition) ? o_DocumentTabPosition : p;
     m_mdiAreaCAD->setTabShape(static_cast<QTabWidget::TabShape>(shape));
     m_mdiAreaCAD->setTabPosition(static_cast<QTabWidget::TabPosition>(position));
     doArrangeWindows(RS2::Maximized);
-    o_TabShape = shape;
-    o_TabPosition = position;
+    o_DocumentTabShape = shape;
+    o_DocumentTabPosition = position;
 }
 
 /**
@@ -467,9 +468,9 @@ void LC_MDIApplicationWindow::onCADTabBarIndexChanged([[maybe_unused]]int index)
     if (tabBarList.isEmpty()) {
         return;
     }
-    using namespace CFG_Appearance;
-    const bool showCloseButtons = o_ShowCloseButton;
-    const bool showActive = o_ShowCloseButtonActiveOnly;
+    using namespace CFG_DrawingDocumentsMDIOptions;
+    const bool showCloseButtons = o_ShowCloseButtonOnDrawingTab;
+    const bool showActive = o_ShowCloseButtonOnActiveDrawingTabOnly;
     // setup close button in window tab for tabbed mode
     QTabBar* tabBar = tabBarList.at(0);
     if (tabBar != nullptr) {
@@ -535,7 +536,7 @@ void LC_MDIApplicationWindow::enableWidget(QWidget *win, const bool enable) {
  * Force-Activate this sub window.
  */
 void LC_MDIApplicationWindow::doActivate(QMdiSubWindow *win) {
-    const bool maximized = CFG_WindowOptions::o_Maximized;
+    const bool maximized = CFG_DrawingDocumentsMDIOptions::o_Maximized;
     if (win != nullptr) {
         doWindowActivated(win, true);
         win->activateWindow();

@@ -21,15 +21,17 @@
 
 #include "lc_settings_page_general_user_interface.h"
 
-#include "lc_settings_appearance.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_startup.h"
+#include "lc_settings_window_options.h"
 #include "ui_lc_settings_page_general_user_interface.h"
 
 LC_SettingsPageGeneralUserInterface::LC_SettingsPageGeneralUserInterface(QObject* parent)
     : LC_SettingsPageBase(tr("User Interface"),
-                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingAreaStyling::Group),
                            parent), ui(std::make_unique<Ui::LC_SettingsPageGeneralUserInterface>()) {
 }
 
@@ -45,19 +47,22 @@ void LC_SettingsPageGeneralUserInterface::setupBehavior() {
 }
 
 void LC_SettingsPageGeneralUserInterface::setupBindings() {
-    using namespace CFG_Defaults;
-    using namespace CFG_Appearance;
+    using namespace CFG_NewDrawingDefaults;
+    using namespace CFG_DraftingOperations;
     using namespace CFG_Startup;
+    using namespace CFG_Dialogs;
+    using namespace CFG_AppStyling;
+    using namespace CFG_DrawingDocumentsMDIOptions;
 
     bindBoolean({
         { ui->cbUseQtFileOpenDialog, o_UseQtFileOpenDialog },
         { ui->cbUseQtColorPickerDialog, o_UseQtColorPickerDialog }, // fixme - sand - review usage and picking color via non-OS color picker all over the codebase
         { ui->cbPersistentDialogs, o_PersistDialogPositions },
         { ui->cbPersistentDialogSizeOnly, o_PersistDialogRestoreSizeOnly },
-        { ui->cbTabCloseButton, o_ShowCloseButton },
-        { ui->cbShowCurrentActionIconInOptions, o_ShowActionIconInOptions },
+        { ui->cbTabCloseButton, o_ShowCloseButtonOnDrawingTab },
+        { ui->cbShowCurrentActionIconInOptions, o_ShowActionIconInToolOptionsToolbar },
         { ui->cbShowEntityIDs, o_ShowEntityIDs },
-        { ui->cbChangingViewOnlyModifiesDrawing, o_ModifyOnViewChange },
+        { ui->cbChangingViewOnlyModifiesDrawing, o_ModifyDocumentOnViewOnlyChange },
         { ui->cbInteractiveInputInActionToolbarEnabled, o_InteractiveInputEnabled },
         {ui->cbAllowMenusDetaching, o_AllowMenusTearOff, true },
         {ui->cbMainMenuShowIcons, o_MainMenuTopLevelIconsOnly },
@@ -70,7 +75,7 @@ void LC_SettingsPageGeneralUserInterface::setupBindings() {
        { ui->cbMenuType, o_MainMenuType }
    });
 
-    bindCustom<QComboBox, bool>(ui->cbTabCloseButtonMode, o_ShowCloseButtonActiveOnly, false,
+    bindCustom<QComboBox, bool>(ui->cbTabCloseButtonMode, o_ShowCloseButtonOnActiveDrawingTabOnly, false,
     &QComboBox::currentTextChanged,
         [](QComboBox* w) { return w->currentIndex() == 1; },
         [](QComboBox* w, bool v) { w->setCurrentIndex(v ? 1 : 0); });

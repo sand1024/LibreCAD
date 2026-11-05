@@ -20,15 +20,17 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
-#include "ui_lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
+
 #include "lc_settings_backend.h"
 #include "lc_settings_cad_preferences.h"
-#include "lc_settings_defaults.h"
-#include "lc_settings_keyboard.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_drafting_keyboard.h"
+#include "lc_settings_selection.h"
+#include "ui_lc_settings_page_drafting_behavior_keyboard_and_mouse.h"
 
 LC_SettingsPageDraftingBehaviorKeyboardAndMouse::LC_SettingsPageDraftingBehaviorKeyboardAndMouse(QObject* parent)
     : LC_SettingsPageBase(tr("Keyboard and Mouse"),
-                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Keyboard::Group),
+                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingKeyboard::Group),
                            parent)  , ui(std::make_unique<Ui::LC_SettingsPageDraftingBehaviorKeyboardAndMouse>()) {
 }
 
@@ -39,11 +41,12 @@ void LC_SettingsPageDraftingBehaviorKeyboardAndMouse::setupUi() {
 }
 
 void LC_SettingsPageDraftingBehaviorKeyboardAndMouse::setupBindings() {
-    using namespace CFG_Keyboard;
-    using namespace CFG_Appearance;
-    using namespace CFG_MouseWheel;
-    using namespace CFG_ZoomAndPan;
+    using namespace CFG_DraftingKeyboard;
+    using namespace CFG_DraftingAreaStyling;
+    using namespace CFG_DraftingMouseWheel;
+    using namespace CFG_DraftingZoomAndPan;
     using namespace CFG_CADPreferences;
+    using namespace CFG_Selection;
 
 
     bindBoolean({
@@ -59,7 +62,7 @@ void LC_SettingsPageDraftingBehaviorKeyboardAndMouse::setupBindings() {
         {ui->cbInvertZoomDirection, o_InvertZoomDirection},
         {ui->cbNonLiniearZoom, o_NonLinearZoomFactor},
 
-        { ui->cbFinishMovingByMouseUp, o_AdHockMovingEndsByMouseClick},
+        { ui->cbFinishMovingByMouseUp, CFG_DraftingOperations::o_AdHockMovingEndsByMouseClick},
         { ui->cbAllowLassoSelection, o_AllowLassoSelectionByPressedMouseButton }
     });
 

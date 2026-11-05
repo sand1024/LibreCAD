@@ -22,7 +22,6 @@
 
 #include "lc_cursoroverlayinfo.h"
 
-#include "lc_settings_colors.h"
 #include "lc_settings_info_overlay_cursor.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
@@ -62,7 +61,7 @@ void LC_InfoCursorOptions::setFontSize(const int size) {
 }
 
 void LC_InfoCursorOverlayPrefs::loadSettings() {
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     enabled = o_InfoCursorEnabled;
     if (enabled) {
         showAbsolutePosition = o_ShowAbsolute;
@@ -87,13 +86,11 @@ void LC_InfoCursorOverlayPrefs::loadSettings() {
         options.offset = o_InfoCursorOffsetFromSnapPoint;
     }
 
-    using namespace CFG_Colors;
-
     if (enabled) {
-        options.zone(0).color = RS_Color(o_InfoOverlayAbsoluteCoordinatesColor);
-        options.zone(1).color = RS_Color(o_InfoOverlaySnapInfoColor);;
-        options.zone(2).color = RS_Color(o_InfoOverlayRelativeColor);
-        options.zone(3).color = RS_Color(o_InfoOverlayPromptColor);
+        options.zone(0).color = RS_Color(o_ColorInfoOverlayAbsoluteCoordinates);
+        options.zone(1).color = RS_Color(o_ColorInfoOverlaySnapInfo);;
+        options.zone(2).color = RS_Color(o_ColorInfoOverlayRelative);
+        options.zone(3).color = RS_Color(o_ColorInfoOverlayPrompt);
     }
 }
 

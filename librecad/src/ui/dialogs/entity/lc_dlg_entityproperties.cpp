@@ -41,17 +41,17 @@
 #include "lc_propertieseditingwidget_polyline.h"
 #include "lc_propertieseditingwidget_spline.h"
 #include "lc_propertieseditingwidget_splinepoints.h"
+#include "lc_settings_app_styling.h"
 #include "lc_settings_widget.h"
 #include "lc_textpropertieseditingwidget.h"
 #include "rs_layer.h"
-#include "rs_settings.h"
 #include "ui_lc_dlg_entityproperties.h"
 
 class LC_Dialog;
 
 LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewport* viewport, RS_Entity* entity,
-                                               const InteractiveInputInfo::InputType inputType, const QString& tag,
-                                               const double valueOne, const double valueTwo)
+                                               const InteractiveInputInfo::InputType inputType, const QString& tag, const double valueOne,
+                                               const double valueTwo)
     : LC_Dialog(parent, ""), ui(new Ui::LC_DlgEntityProperties) {
     ui->setupUi(this);
 
@@ -128,8 +128,7 @@ LC_DlgEntityProperties::~LC_DlgEntityProperties() {
     delete ui;
 }
 
-void LC_DlgEntityProperties::onInteractiveInputRequested(const InteractiveInputInfo::InputType inputType,
-                                                         const QString& tag) {
+void LC_DlgEntityProperties::onInteractiveInputRequested(const InteractiveInputInfo::InputType inputType, const QString& tag) {
     m_interactiveInputRequested = inputType;
     m_inputTag = tag;
     accept();
@@ -151,7 +150,7 @@ void LC_DlgEntityProperties::setupEntityLayerAndAttributesUI(RS_Entity* entity) 
     connect(ui->cbLayer, &QG_LayerBox::layerChanged, this, &LC_DlgEntityProperties::onLayerChanged);
     connect(ui->wPen, &QG_WidgetPen::penChanged, this, &LC_DlgEntityProperties::onPenChanged);
 
-    if (CFG_Appearance::o_ShowEntityIDs) {
+    if (CFG_AppStyling::o_ShowEntityIDs) {
         ui->lId->setText(QString("ID: %1").arg(entity->getId()));
     }
     else {
@@ -202,10 +201,10 @@ void LC_DlgEntityProperties::prepareTypeSpecificUI(LC_EntityPropertiesEditorWidg
             break;
         }
         case RS2::EntityHyperbola: {
-          primaryWidget = new LC_PropertiesEditingWidgetHyperbola(this);
-          windowTitle = tr("Hyperbola Properties");
-          dlgName = "DlgHyperbolaProperties";
-          break;
+            primaryWidget = new LC_PropertiesEditingWidgetHyperbola(this);
+            windowTitle = tr("Hyperbola Properties");
+            dlgName = "DlgHyperbolaProperties";
+            break;
         }
         case RS2::EntityPolyline: {
             primaryWidget = new LC_PropertiesEditingWidgetPolyline(this);
@@ -244,16 +243,16 @@ void LC_DlgEntityProperties::prepareTypeSpecificUI(LC_EntityPropertiesEditorWidg
             break;
         }
         case RS2::EntityText: {
-          primaryWidget = new LC_TextPropertiesEditingWidget(this);
-          windowTitle = tr("Text Properties");
-          dlgName = "DlgTextProperties";
-          break;
+            primaryWidget = new LC_TextPropertiesEditingWidget(this);
+            windowTitle = tr("Text Properties");
+            dlgName = "DlgTextProperties";
+            break;
         }
         case RS2::EntityMText: {
-          primaryWidget = new LC_MTextPropertiesEditingWidget(this);
-          windowTitle = tr("MText Properties");
-          dlgName = "DlgMTextProperties";
-          break;
+            primaryWidget = new LC_MTextPropertiesEditingWidget(this);
+            windowTitle = tr("MText Properties");
+            dlgName = "DlgMTextProperties";
+            break;
         }
         case RS2::EntityHatch: {
             primaryWidget = new LC_HatchPropertiesEditingWidget(this);

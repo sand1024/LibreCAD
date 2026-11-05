@@ -22,16 +22,18 @@
 
 #include "lc_ucslistoptions.h"
 
-#include "lc_settings_appearance.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_ucs_list_widget.h"
+#include "lc_settings_ucs_origin_rendering.h"
 #include "rs_settings.h"
 
 LC_UCSListOptions::LC_UCSListOptions() = default;
 
 void LC_UCSListOptions::load() {
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingOperations;
+        using namespace CFG_UCSOriginRendering;
         ucsApplyingPolicy = o_UCSApplyPolicy;
         highlightBlinksCount = o_UCSHighlightBlinkCount;
         highlightBlinksDelay =  o_UCSHighlightBlinkDelay;
@@ -52,7 +54,8 @@ void LC_UCSListOptions::load() {
 
 void LC_UCSListOptions::save() const{
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_DraftingOperations;
+        using namespace CFG_UCSOriginRendering;
         o_UCSApplyPolicy = ucsApplyingPolicy;
         o_UCSHighlightBlinkCount = highlightBlinksCount;
         o_UCSHighlightBlinkDelay = highlightBlinksDelay;

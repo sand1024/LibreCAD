@@ -26,21 +26,30 @@
 #include <utility>
 
 #include "lc_setting.h"
-#include "lc_settings_appearance.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_draft_mode.h"
 #include "lc_settings_grid.h"
 #include "lc_settings_info_overlay_cursor.h"
+#include "lc_settings_overlay_angles_base_mark.h"
+#include "lc_settings_preview.h"
 #include "lc_settings_relative_position_assistant.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "lc_settings_snap_visual.h"
 #include "rs_settings.h"
 
 void LC_DraftingMetricsDefaults::applyStandardDefaults() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingAreaStyling;
     using namespace CFG_Grid;
     using namespace CFG_Snap;
     using namespace CFG_VisualSnap;
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     using namespace CFG_RelativePositionAssistant;
+    using namespace CFG_SnapIndicator;
+    using namespace CFG_CoordinatesOrigin;
+    using namespace CFG_DraftMode;
+    using namespace CFG_DraftingPreview;
 
     const std::initializer_list<const LC_SettingBase*> settings = {
         &o_EntityHandleSize,
@@ -50,9 +59,9 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
         &o_RelZeroMarkerRadius,
         &o_AngleSnapMarkerSize,
         &o_DraftMarkerFontSize,
-        &o_IndicatorShapeSize,
-        &o_IndicatorScreenLinesLineWidth,
-        &o_IndicatorCrosshairLinesSizePercents,
+        &o_ShapeSize,
+        &o_ScreenLinesLineWidth,
+        &o_CrosshairLinesSizePercents,
         &o_VSProjectedSnapSize,
         &o_VSHighlightedVertexSize,
         &o_VSVertexSize,
@@ -61,10 +70,10 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
         &o_VSGuidingEntityLabelFontSize,
         &o_VSGuidingLabelOffsetPx,
         &o_OverlaysScreenLineWidth,
-        &o_GridLinesScreenLineWidth,
-        &o_MetaGridLinesScreenLineWidth,
-        &o_MetaGridPointsScreenLineWidth,
-        &o_GridPointsPointScreenSize,
+        &o_LinesGridScreenLineWidth,
+        &o_LinesMetaGridScreenLineWidth,
+        &o_PointsMetaGridScreenLineWidth,
+        &o_PointsGridPointScreenSize,
         &o_InfoCursorFontSize,
         &o_InfoCursorOffsetFromSnapPoint,
         &o_AssistantFontSize,
@@ -82,17 +91,22 @@ void LC_DraftingMetricsDefaults::applyStandardDefaults() {
 }
 
 void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingAreaStyling;
     using namespace CFG_Grid;
     using namespace CFG_Snap;
     using namespace CFG_VisualSnap;
-    using namespace CFG_InfoCursor;
+    using namespace CFG_OverlayInfoCursor;
     using namespace CFG_RelativePositionAssistant;
+    using namespace CFG_SnapIndicator;
+    using namespace CFG_OverlayAnglesBaseMark;
+    using namespace CFG_CoordinatesOrigin;
+    using namespace CFG_DraftMode;
+    using namespace CFG_DraftingPreview;
 
     const std::initializer_list<std::pair<const LC_SettingBase*, QVariant>> hiDpiTable = {
         // Interactive Handles & Markers
         { &o_EntityHandleSize, 10 },
-        { &o_ZeroMarkerSize, 18 },
+     { &o_ZeroMarkerSize, 18 },
         { &o_ZeroMarkerFontSize, 13 },
         { &o_ZeroShortAxisMarkSize, 10 },
         { &o_RelZeroMarkerRadius, 10 },
@@ -100,9 +114,9 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
         { &o_DraftMarkerFontSize, 20 },
 
         // Snap & Visual Snap Indicators
-        { &o_IndicatorShapeSize, 18 },
-        { &o_IndicatorScreenLinesLineWidth, 2 },
-        { &o_IndicatorCrosshairLinesSizePercents, 100},
+        { &o_ShapeSize, 18 },
+        { &o_ScreenLinesLineWidth, 2 },
+        { &o_CrosshairLinesSizePercents, 100},
         { &o_PreviewRefPointSize, 8 },
         { &o_PreviewScreenLineWidth, 1 },
         { &o_SelectedEntityScreenLineWidth, 1 },
@@ -117,10 +131,10 @@ void LC_DraftingMetricsDefaults::applyHiDpiDefaults() {
 
         // Screen Line Widths & Grid Points
         { &o_OverlaysScreenLineWidth, 2.0 },
-        { &o_GridLinesScreenLineWidth, 2 },
-        { &o_MetaGridLinesScreenLineWidth, 3 },
-        { &o_MetaGridPointsScreenLineWidth, 3 },
-        { &o_GridPointsPointScreenSize, 4 },
+        { &o_LinesGridScreenLineWidth, 2 },
+        { &o_LinesMetaGridScreenLineWidth, 3 },
+        { &o_PointsMetaGridScreenLineWidth, 3 },
+        { &o_PointsGridPointScreenSize, 4 },
 
         // Overlay Fonts & Offsets
         { &o_InfoCursorFontSize, 14 },

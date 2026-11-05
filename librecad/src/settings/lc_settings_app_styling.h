@@ -33,9 +33,10 @@ namespace CFG_AppStyling {
     inline const LC_Setting<bool> o_AllowTheme(&Group, "AllowTheme", false);
     inline const LC_Setting<bool> o_AllowStyle(&Group, "AllowStyle", false);
     inline const LC_Setting<bool> o_IgnoreIconStylingInPalette(&Group, "IgnoreIconStylingInPalette", false);
+
     inline const LC_Setting<QString> o_ActiveStyleEngine(&Group, "Style", "");
     inline const LC_Setting<QString> o_StyleSheet(&Group, "StyleSheet", "");
-    inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
+    inline const LC_Setting<ThemeModeOverride> o_FusionThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
 
     inline const LC_Setting<QColor> o_ColorFilteredItem(&Group, "ColorSearchHighlight", QColor("#2a82da")); // Blue
     inline const LC_Setting<QColor> o_ColorConflictingItem(&Group, "ColorConflictingItem", QColor("#d9534f")); // Red
@@ -49,6 +50,26 @@ namespace CFG_AppStyling {
     inline const LC_Setting<QString> o_ActiveDraftingMetricsName(&Group, "ActiveDraftingMetricsName", CFG_AppState::DEFAULT_THEME_KEY);
     inline const LC_Setting<QString> o_ActiveDraftingThemeName(&Group, "ActiveDraftingThemeName", CFG_AppState::DEFAULT_THEME_KEY);
 
+    // - menus
+    inline const LC_Setting<bool> o_AllowMenusTearOff(&Group, "AllowMenusTearOff", true);
+    inline const LC_Setting<bool> o_MainMenuTopLevelIconsOnly(&Group, "ShowMainMenuIcons", false);
 
+    enum MainMenuBarType {
+        MENU_Minimal = 0,
+        MENU_Compact = 1,
+        MENU_Extended = 2
+    };
+
+    inline const LC_Setting<int> o_MainMenuType(&Group, "MainMenuType", MENU_Compact);
+
+    inline const LC_Setting<bool> o_ShowKeyboardShortcutsInTooltips(&Group, "ShowKeyboardShortcutsInTooltips", true);
+
+    inline const LC_Setting<bool> o_ShowTooltipActionName(&Group, "ShowTooltipActionName", true);
+    inline const LC_Setting<bool> o_ShowTooltipDescription(&Group, "ShowTooltipDescription", true);
+
+    inline const LC_Setting<bool> o_ShowToolbarsTooltip(&Group, "ShowToolbarsTooltip", true);
+
+    inline const LC_Setting<bool> o_ShowActionIconInToolOptionsToolbar(&Group, "ShowActionIconInToolOptionsTB", true);
+    inline const LC_Setting<bool> o_ShowEntityIDs(&Group, "ShowEntityIDs", false);
 }
 #endif

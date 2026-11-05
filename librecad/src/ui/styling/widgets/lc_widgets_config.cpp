@@ -30,8 +30,8 @@ void LC_WidgetsConfigUtils::initializeDefaultConfig(LC_WidgetsConfig& config) {
     using namespace CFG_Widgets;
 
     // General Toolbars
-    config.toolbarAllowIconSize        = o_ToolbarAllowIconSize.defaultValue();
-    config.toolbarIconSize             = o_ToolbarIconSize.defaultValue();
+    config.toolbarAllowIconSize        = o_ToolbarAllowIconSizeOverride.defaultValue();
+    config.toolbarIconSize             = o_ToolbarCustomIconSize.defaultValue();
     config.pickValueButtonsFlatIcons   = o_PickValueButtonsFlatIcons.defaultValue();
 
     // Ordinary Dock Widgets
@@ -59,7 +59,7 @@ void LC_WidgetsConfigUtils::initializeDefaultConfig(LC_WidgetsConfig& config) {
     config.cadToolsMatrixColumnsCount  = o_CADToolsMatrixColumnsCount.defaultValue();
 
     // General Docking
-    config.dockAllowNested             = o_DockAllowNested.defaultValue();
+    config.dockAllowNested             = o_AllowNestedDocking.defaultValue();
 
     // Classic Statusbar
     config.allowStatusbarHeight        = o_StatusBarAllowHeight.defaultValue();

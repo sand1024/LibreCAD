@@ -21,18 +21,15 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_theme_main_colors.h"
-
-#include "lc_settings_appearance.h"
-#include "ui_lc_settings_page_drafting_theme_main_colors.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
 #include "qg_linetypebox.h"
+#include "ui_lc_settings_page_drafting_theme_main_colors.h"
 
 
 LC_SettingsPageDraftingThemeMainColors::LC_SettingsPageDraftingThemeMainColors(QObject* parent)
-    : LC_SettingsPageBase(tr("Main Colors"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Colors::Group), parent),
+    : LC_SettingsPageBase(tr("Main Colors"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_DraftingAreaStyling::Group), parent),
       ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeMainColors>()) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageDraftingThemeMainColors::~LC_SettingsPageDraftingThemeMainColors() = default;
@@ -45,15 +42,14 @@ void LC_SettingsPageDraftingThemeMainColors::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemeMainColors::setupBindings() {
-    using namespace CFG_Colors;
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingAreaStyling;
 
     ui->wHighlightedEntityLineType->init(false, false, false);
     bindLineType(ui->wHighlightedEntityLineType, o_HighlightedEntityLineType);
 
     bindColor({
-        {ui->cbBackgroundColor, ui->pb_background, o_BackgroundColor, tr("Select Background Color")},
-        {ui->cbForegroundColor, ui->pb_selected, o_ForegroundBWColor, tr("Select Foreground Entity Color")},
-        { ui->cbHighlightedColor, ui->pb_highlighted, o_HighlightedEntityColor, tr("Select Hover Highlight Color") }
+        {ui->cbBackgroundColor, ui->pb_background, o_ColorBackground, tr("Select Background Color")},
+        {ui->cbForegroundColor, ui->pb_selected, o_ColorForegroundBW, tr("Select Foreground Entity Color")},
+        { ui->cbHighlightedColor, ui->pb_highlighted, o_ColorHighlightedEntity, tr("Select Hover Highlight Color") }
     });
 }

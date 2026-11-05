@@ -26,9 +26,8 @@
 #include <QDockWidget>
 
 #include "lc_action_group_manager.h"
+#include "lc_settings_app_styling.h"
 #include "qc_applicationwindow.h"
-#include "rs_settings.h"
-
 
 [[deprecated]]
 void LC_MenuFactoryBase::findViewAndUCSToggleActions(QList<QDockWidget*> dockWidgetsList,
@@ -82,7 +81,7 @@ QMenu* LC_MenuFactoryBase::subMenu(QMenu* parent, const QString& title, const QS
 
 LC_MenuFactoryBase::LC_MenuFactoryBase(QC_ApplicationWindow* mainWin,  LC_ActionGroupManager* actionGroupManager, LC_MenusHolder* menusHolder):LC_AppWindowAware(mainWin),
      m_actionGroupManager{actionGroupManager}, m_menusHolder{menusHolder} {
-    m_allowTearOffMenus = CFG_Appearance::o_AllowMenusTearOff;
+    m_allowTearOffMenus = CFG_AppStyling::o_AllowMenusTearOff;
 }
 
 QMenu* LC_MenuFactoryBase::subMenuWithActions(QMenu* parent, const QString& title, const QString& name, const char* icon,

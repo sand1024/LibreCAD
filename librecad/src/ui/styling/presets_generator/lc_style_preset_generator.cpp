@@ -26,12 +26,12 @@
 #include <QSet>
 
 #include "lc_icons_color_utils.h"
-#include "../fusion_skin/lc_repository_fusion_metrics.h"
+#include "lc_repository_fusion_metrics.h"
 #include "lc_palette_color_utils.h"
 #include "lc_repository_fusion_skin.h"
 #include "lc_repository_icons_style.h"
 #include "lc_repository_fusion_colors_palette.h"
-#include "../fusion_skin/lc_style_metrics_utils.h"
+#include "lc_style_metrics_utils.h"
 #include "lc_repository_typography.h"
 #include "lc_ui_style_manager.h"
 #include "rs_debug.h"

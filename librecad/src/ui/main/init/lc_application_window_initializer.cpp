@@ -202,7 +202,7 @@ void LC_ApplicationWindowInitializer::completeActionFactoryInit() const {
 void LC_ApplicationWindowInitializer::initDockCorners() const {
     {
         using namespace CFG_Widgets;
-        const bool allowDockNesting = o_DockAllowNested;
+        const bool allowDockNesting = o_AllowNestedDocking;
         const bool verticalTabs = o_DockTabVertical;
         const bool cadVerticalTabs = o_CADDockTabVertical;
         LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, cadVerticalTabs, verticalTabs);
@@ -223,10 +223,10 @@ void LC_ApplicationWindowInitializer::initCentralWidget(){
     m_appWin->m_mdiAreaCAD = central->getMdiArea();
     m_appWin->m_mdiAreaCAD->setDocumentMode(true);
 
-    using namespace CFG_WindowOptions;
-    m_appWin->setTabLayout(o_TabShape, o_TabPosition);
+    using namespace CFG_DrawingDocumentsMDIOptions;
+    m_appWin->setTabLayout(o_DocumentTabShape, o_DocumentTabPosition);
 
-    const bool tabMode = CFG_Startup::o_TabMode;
+    const bool tabMode = o_ShowDrawingsInTabbedMode;
     if (tabMode) {
         m_appWin->setupCADAreaTabbar();
     }
@@ -245,9 +245,9 @@ void LC_ApplicationWindowInitializer::initCentralWidget(){
 
 void LC_ApplicationWindowInitializer::initIconSize() const {
     using namespace CFG_Widgets;
-    const bool hasCustomIconSize = o_ToolbarAllowIconSize;
+    const bool hasCustomIconSize = o_ToolbarAllowIconSizeOverride;
     if (hasCustomIconSize) {
-        const int iconSize = o_ToolbarIconSize;
+        const int iconSize = o_ToolbarCustomIconSize;
         m_appWin->setIconSize(QSize(iconSize, iconSize));
     }
 }
@@ -278,7 +278,7 @@ void LC_ApplicationWindowInitializer::initCommandsScheme() const {
         const LC_ActionTypeMapper mapper(actionGroupManager);
         m_appWin->m_commandManager->migrateLegacyAliasIfNeeded(&mapper);
         m_appWin->m_commandManager->loadActiveScheme(&mapper);
-        const bool clearTooltips = !(CFG_Appearance::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
+        const bool clearTooltips = !(CFG_AppStyling::o_ShowKeyboardShortcutsInTooltips || !CFG_CommandsPromotion::o_ShowCommandInMenu);
         if (clearTooltips) {
             LC_ActionCommandUpdater::clearActions(actionGroupManager);
         }
@@ -326,7 +326,7 @@ void LC_ApplicationWindowInitializer::initPlugins(){
 }
 
 void LC_ApplicationWindowInitializer::initAutoSaveTimer() const {
-    const bool allowAutoSave = CFG_Defaults::o_AutoBackupDocument;
+    const bool allowAutoSave = CFG_DrawingsAutoSaveAndBackup::o_AutoBackupDocument;
     m_appWin->startAutoSaveTimer(allowAutoSave);
 }
 

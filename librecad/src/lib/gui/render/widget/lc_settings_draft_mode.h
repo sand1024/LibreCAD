@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,24 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
-#ifndef LC_SETTINGS_GRID_H
-#define LC_SETTINGS_GRID_H
-
+#ifndef LC_SETTINGS_DRAFT_MODE_H
+#define LC_SETTINGS_DRAFT_MODE_H
 #include "lc_setting.h"
-#include "rs.h"
 
-namespace CFG_Grid {
-    inline const LC_SettingsGroupBase Group("Grid");
+namespace CFG_DraftMode {
+    inline const LC_SettingsGroupBase Group("DraftMode");
 
-    inline const LC_Setting<int> o_GridType(&Group, "GridType", 0);
-    inline const LC_Setting<RS2::LineType> o_MetaGridPointsLineType(&Group, "metaGridPointsLineType", RS2::DotLineTiny);
-    inline const LC_Setting<RS2::LineType> o_metaGridLinesLineType(&Group, "metaGridLinesLineType", RS2::SolidLine);
-    inline const LC_Setting<RS2::LineType> o_GridLinesLineType(&Group, "GridLinesLineType", RS2::SolidLine);
-    inline const LC_Setting<double> o_MetaGridPointsScreenLineWidth(&Group, "metaGridPointsLineWidth", 1.0);
-    inline const LC_Setting<double> o_GridPointsPointScreenSize(&Group, "GridPointsPointSize", 1);
-    inline const LC_Setting<double> o_MetaGridLinesScreenLineWidth(&Group, "metaGridLinesLineWidth", 1.0);
-    inline const LC_Setting<double> o_GridLinesScreenLineWidth(&Group, "GridLinesLineWidth", 1.0);
+    inline const LC_Setting<bool> o_DraftMode(&Group, "DraftMode", false);
+    inline const LC_Setting<bool> o_DraftLinesMode(&Group, "DraftLinesMode", false);
+
+    // --- Draft Mode Marker ---
+    inline const LC_Setting<QString> o_DraftMarkerFontName(&Group, "DraftMarkerFontName", "Verdana");
+    inline const LC_Setting<int> o_DraftMarkerFontSize(&Group, "DraftMarkerFontSize", 10);
+    inline const LC_Setting<bool> o_ShowDraftModeMarker(&Group, "ShowDraftModeMarker", true);
+    inline const LC_Setting<bool> o_IgnoreDraftForHighlight(&Group, "IgnoreDraftForHighlight", false);
+
+    inline const LC_Setting<QColor> o_ColorDraftModeMarker(&Group, "draft_mode_marker", QColor("#A54747"));
+
+    // --- draft mode
+    inline const LC_Setting<double> o_DraftModeScreenLineWidth(&Group, "DraftScreenLineWidth", 1);
 }
 
 #endif

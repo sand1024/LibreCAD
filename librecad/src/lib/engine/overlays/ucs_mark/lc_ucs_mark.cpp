@@ -23,8 +23,9 @@
 
 #include "lc_ucs_mark.h"
 
-#include "lc_settings_appearance.h"
-#include "lc_settings_colors.h"
+#include "lc_settings_drafting.h"
+#include "lc_settings_coordinates_origin.h"
+#include "lc_settings_preview.h"
 #include "rs_math.h"
 #include "rs_painter.h"
 #include "rs_pen.h"
@@ -32,23 +33,21 @@
 
 void LC_UCSMarkOptions::loadSettings() {
     {
-        using namespace CFG_Appearance;
+        using namespace CFG_CoordinatesOrigin;
+
         showUcsZeroMarker = o_ShowUCSZeroMarker;
         showWcsZeroMarker = o_ShowWCSZeroMarker;
         csZeroMarkerSize = o_ZeroMarkerSize;
         csZeroMarkerFontSize = o_ZeroMarkerFontSize;
         csZeroMarkerfontName = o_ZeroMarkerFontName;
         csZeroMarkerFont = QFont(csZeroMarkerfontName, csZeroMarkerFontSize);
-        overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+        overlayScreenLineWidth = CFG_DraftingAreaStyling::o_OverlaysScreenLineWidth;
         if (overlayScreenLineWidth == 1 ) {
             overlayScreenLineWidth = 0;
         }
-    }
-    {
-        using namespace CFG_Colors;
-        colorXAxisExtension = RS_Color(o_XAxisColor);
-        colorYAxisExtension = RS_Color(o_YAxisColor);
-        colorAngleMark = RS_Color(o_PreviewReferencesColor);
+        colorXAxisExtension = RS_Color(o_ColorXAxis);
+        colorYAxisExtension = RS_Color(o_ColorYAxis);
+        colorAngleMark = RS_Color(CFG_DraftingPreview::o_ColorPreviewReferences);
     }
 }
 

@@ -25,10 +25,10 @@
 
 #include "lc_property_double_line_edit_view.h"
 #include "lc_propertyprovider_utils.h"
+#include "lc_settings_grid.h"
 #include "qc_applicationwindow.h"
 #include "rs_graphic.h"
 #include "rs_grid.h"
-#include "rs_settings.h"
 
 const QString LC_PropertiesProviderGraphicGrid::SECTION_GRID = "_secGrid";
 
@@ -188,7 +188,7 @@ bool LC_PropertiesProviderGraphicGrid::createShowMetaGrid(LC_PropertyContainer* 
             const LC_Property::Names names = {"gridMetaVisible", tr("Show meta-grid"), tr("Defines whether meta-grid is shown or not")};
             if (showGrid) {
                 auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]]RS_Graphic* e) -> void {
-                    CFG_Appearance::o_MetaGridDraw = v;
+                    CFG_Grid::o_MetaGridDraw = v;
                     const auto viewport = m_actionContext->getViewport();
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();
@@ -232,7 +232,7 @@ void LC_PropertiesProviderGraphicGrid::createDecimalMetaGrid(LC_PropertyContaine
                 };
 
                 const auto funSetPagesHor = [this](const int& v, [[maybe_unused]]RS_Graphic* e) -> void {
-                    CFG_Appearance::o_MetaGridEvery = v;
+                    CFG_Grid::o_MetaGridEvery = v;
                     const auto viewport = m_actionContext->getViewport();
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();

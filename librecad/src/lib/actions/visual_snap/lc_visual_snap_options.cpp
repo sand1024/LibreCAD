@@ -55,7 +55,7 @@ void LC_VisualSnapOptions::load() {
         showNotSnappableGuides = o_VSShowNotSnappableGuides;
     }
     {
-        using namespace CFG_InfoCursor;
+        using namespace CFG_OverlayInfoCursor;
         const QString fontName = o_InfoCursorFontName;
         guidingEntitiesFont = QFont(fontName, guidingEntitiesFontSize);
 

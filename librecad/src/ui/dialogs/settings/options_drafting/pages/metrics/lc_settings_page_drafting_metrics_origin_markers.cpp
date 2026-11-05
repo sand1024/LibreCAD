@@ -21,15 +21,16 @@
  ******************************************************************************/
 
 #include "lc_settings_page_drafting_metrics_origin_markers.h"
+
+#include "lc_settings_coordinates_origin.h"
 #include "ui_lc_settings_page_drafting_metrics_origin_markers.h"
 
 
 LC_SettingsPageDraftingMetricsOriginMarkers::LC_SettingsPageDraftingMetricsOriginMarkers(QObject* parent)
     : LC_SettingsPageBase(tr("Coordinates System"),
-                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_Appearance::Group),
+                          std::make_unique<LC_LibreCADSettingsBackend>(CFG_CoordinatesOrigin::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsOriginMarkers>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageDraftingMetricsOriginMarkers::~LC_SettingsPageDraftingMetricsOriginMarkers() = default;
@@ -39,7 +40,7 @@ void LC_SettingsPageDraftingMetricsOriginMarkers::setupUi() {
 }
 
 void LC_SettingsPageDraftingMetricsOriginMarkers::setupBindings() {
-    using namespace CFG_Appearance;
+    using namespace CFG_CoordinatesOrigin;
 
     bindInt({
         { ui->sbZeroMarkerSize, o_ZeroMarkerSize },

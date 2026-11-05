@@ -23,8 +23,8 @@
 #include "lc_settings_page_drafting_theme_snap_indicator.h"
 
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_snap.h"
+#include "lc_settings_snap_indicator.h"
 #include "ui_lc_settings_page_drafting_theme_snap_indicator.h"
 
 LC_SettingsPageDraftingThemeSnapIndicator::LC_SettingsPageDraftingThemeSnapIndicator(QObject* parent)
@@ -32,7 +32,6 @@ LC_SettingsPageDraftingThemeSnapIndicator::LC_SettingsPageDraftingThemeSnapIndic
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeSnapIndicator>()) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageDraftingThemeSnapIndicator::~LC_SettingsPageDraftingThemeSnapIndicator() = default;
@@ -47,24 +46,23 @@ void LC_SettingsPageDraftingThemeSnapIndicator::setupBehavior() {
 }
 
 void LC_SettingsPageDraftingThemeSnapIndicator::setupBindings() {
-    using namespace CFG_Snap;
-    using namespace CFG_Colors;
+    using namespace CFG_SnapIndicator;
 
     bindBoolean({
-        { ui->cbDrawLines, o_IndicatorDrawLines },
-        { ui->cbDrawShape, o_IndicatorDrawShape }
+        { ui->cbDrawLines, o_DrawLines },
+        { ui->cbDrawShape, o_DrawShape }
     });
 
     bindComboIndex({
-        { ui->cbLinesType, o_IndicatorLinesType },
-        { ui->cbShapeType, o_IndicatorShapeType }
+        { ui->cbLinesType, o_LinesType },
+        { ui->cbShapeType, o_ShapeType }
     });
 
     bindColor({
-        { ui->cbShapeColor, ui->pbShapeColor, o_SnapIndicator, tr("Select Snap Indicator Shape Color") },
-        { ui->cbLinesColor, ui->pbLinesColor, o_SnapIndicatorLines, tr("Select Snap Indicator Lines Color") }
+        { ui->cbShapeColor, ui->pbShapeColor, o_ColorSnapIndicatorShape, tr("Select Snap Indicator Shape Color") },
+        { ui->cbLinesColor, ui->pbLinesColor, o_ColorSnapIndicatorLines, tr("Select Snap Indicator Lines Color") }
     });
 
     ui->wSnapLinesLineType->init(false, false, false);
-    bindLineType(ui->wSnapLinesLineType, o_IndicatorLinesLineType);
+    bindLineType(ui->wSnapLinesLineType, o_LinesLineType);
 }

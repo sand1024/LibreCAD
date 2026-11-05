@@ -43,7 +43,10 @@
 #include "lc_refellipse.h"
 #include "lc_refline.h"
 #include "lc_refpoint.h"
+#include "lc_settings_drafting.h"
 #include "lc_settings_cad_preferences.h"
+#include "lc_settings_preview.h"
+#include "lc_settings_snap_indicator.h"
 #include "lc_visual_snap_manager.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
@@ -452,12 +455,12 @@ void RS_PreviewActionInterface::replaceOverlay(LC_OverlayDrawable* drawable, con
 }
 
 void RS_PreviewActionInterface::previewRefPoint(const RS_Vector& coord) const {
-    const auto* point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSize, m_refPointMode);
+    const auto* point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSizePx, m_refPointMode);
     m_preview->addEntity(point);
 }
 
 void RS_PreviewActionInterface::previewRefSelectablePoint(const RS_Vector& coord) const {
-    auto* point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSize, m_refPointMode);
+    auto* point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSizePx, m_refPointMode);
     point->setHighlighted(true);
     m_preview->addEntity(point);
 }
@@ -548,10 +551,9 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center,
 // fixme - sand - move to overlay!
 void RS_PreviewActionInterface::initFromSettings() {
     RS_Snapper::initFromSettings();
-    m_angleSnapMarkerSize = CFG_Appearance::o_AngleSnapMarkerSize;
+    m_angleSnapMarkerSizePx = CFG_SnapIndicator::o_AngleSnapMarkerSize;
     m_doNotAllowNonDecimalAnglesInput = CFG_CADPreferences::o_InputAnglesAsDecimalsOnly;
 }
-
 
 void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle) const {
     const double angleBase = m_formatter->getAnglesBase();
@@ -559,14 +561,12 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, co
     previewSnapAngleMark(center, angle, angleBase, isAnglesCounterClockWise);
 }
 
-
-
 // fixme - sand - snap to relative angle support!!!
 // fixme - rework to natural paint via overlay
 void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle, double angleBase,
                                                      bool isAnglesCounterClockWise) const {
     // todo - add separate option that will control visibility of mark?
-    const int radiusInPixels = m_angleSnapMarkerSize;
+    const int radiusInPixels = m_angleSnapMarkerSizePx;
     const int lineInPixels = radiusInPixels * 2; // todo - move to settings
     const double lineLength = toGraphDX(lineInPixels);
     const double angleZero = toWorldAngle(angleBase);
@@ -608,15 +608,16 @@ RS_Vector RS_PreviewActionInterface::getFreeSnapAwarePoint(const LC_MouseEvent* 
 }
 
 void RS_PreviewActionInterface::initRefEntitiesMetrics() {
-    using namespace CFG_Appearance;
+    using namespace CFG_DraftingPreview;
+    using namespace CFG_DraftingPreview;
     {
         // Points drawing style:
         m_refPointMode = o_PreviewRefPointType;
-        m_refPointSize = o_PreviewRefPointSize;
+        m_refPointSizePx = o_PreviewRefPointSize;
 
-        m_showRefEntitiesOnPreview = o_VisualizePreviewRefPoints;
-        m_highlightEntitiesOnHover = o_VisualizeHovering;
-        m_highlightEntitiesRefPointsOnHover = o_VisualizeHoveringRefPoints;
+        m_showRefEntitiesOnPreview = o_ShowRefEntitiesOnPreview;
+        m_highlightEntitiesOnHover = o_HighlightEntitiesOnHover;
+        m_highlightEntitiesRefPointsOnHover = o_HighlightEntitiesRefPointsOnHover;
     }
 }
 

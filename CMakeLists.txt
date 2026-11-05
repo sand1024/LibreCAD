@@ -2454,19 +2454,16 @@ set (SHARED_SOURCES
      librecad/src/settings/lc_settings_startup.h
      librecad/src/settings/lc_settings_defaults.h
      librecad/src/settings/lc_settings_paths.h
-     librecad/src/settings/lc_settings_keyboard.h
+     librecad/src/settings/lc_settings_drafting_keyboard.h
      librecad/src/settings/lc_settings_cad_preferences.h
      librecad/src/settings/lc_settings_commands_promotion.h
-     librecad/src/settings/lc_settings_modify.h
-     librecad/src/settings/lc_settings_appearance.h
-     librecad/src/settings/lc_settings_colors.h
-     librecad/src/settings/lc_settings_grid.h
+     librecad/src/settings/lc_settings_drafting.h
+     librecad/src/lib/gui/grid/lc_settings_grid.h
      librecad/src/settings/lc_settings_snap.h
-     librecad/src/settings/lc_settings_snap_state.h
-     librecad/src/settings/lc_settings_snap_visual.h
-     librecad/src/settings/lc_settings_info_overlay_cursor.h
-     librecad/src/settings/lc_settings_relative_position_assistant.h
-     librecad/src/settings/lc_settings_render.h
+     librecad/src/lib/actions/visual_snap/lc_settings_snap_visual.h
+     librecad/src/lib/engine/overlays/info_cursor/lc_settings_info_overlay_cursor.h
+     librecad/src/ui/components/relative_position_assistant/lc_settings_relative_position_assistant.h
+     librecad/src/lib/gui/render/lc_settings_render.h
      librecad/src/settings/lc_settings_selection.h
      librecad/src/ui/dialogs/settings/support/lc_settings_page_adapter.cpp
      librecad/src/ui/dialogs/settings/support/lc_settings_page_adapter.h
@@ -2738,6 +2735,13 @@ set (SHARED_SOURCES
      librecad/src/lib/selection/lc_lasso_region.h
      librecad/src/lib/selection/lc_polygon_selection.cpp
      librecad/src/lib/selection/lc_polygon_selection.h
+     librecad/src/lib/engine/overlays/crosshair/lc_settings_snap_indicator.h
+     librecad/src/lib/engine/overlays/overlay_box/lc_settings_selection_overlay.h
+     librecad/src/lib/engine/overlays/angles_base/lc_settings_overlay_angles_base_mark.h
+     librecad/src/lib/engine/overlays/ucs_mark/lc_settings_coordinates_origin.h
+     librecad/src/lib/gui/render/widget/lc_settings_draft_mode.h
+     librecad/src/lib/engine/overlays/preview/lc_settings_preview.h
+     librecad/src/ui/view/lc_settings_ucs_origin_rendering.h
 )
 
 set (MUPARSER_SOURCES

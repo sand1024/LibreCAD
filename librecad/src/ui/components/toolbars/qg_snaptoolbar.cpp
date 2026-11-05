@@ -29,7 +29,7 @@
 #include <QMenu>
 
 #include "lc_action_group_manager.h"
-#include "lc_settings_snap_state.h"
+#include "lc_settings_snap.h"
 #include "lc_snapoptionswidgetsholder.h"
 #include "lc_visual_snap_data.h"
 #include "qg_actionhandler.h"
@@ -133,7 +133,7 @@ QG_SnapToolBar::QG_SnapToolBar(QWidget* parent, QG_ActionHandler* ah, const LC_A
     });
 
     //restore snapMode from saved preferences
-    setSnaps(RS_SnapMode::fromInt(CFG_SnapState::o_SnapMode));
+    setSnaps(RS_SnapMode::fromInt(CFG_Snap::o_SnapMode));
 }
 
 void QG_SnapToolBar::setGraphicView(RS_GraphicView* gview) {
@@ -160,7 +160,7 @@ void QG_SnapToolBar::slotUnsetSnapMiddleManual() const {
 void QG_SnapToolBar::saveSnapMode() const {
     //@write default snap mode from prefrences.
     const unsigned int snapFlags{RS_SnapMode::toInt(getSnaps())};
-    CFG_SnapState::o_SnapMode =  snapFlags;
+    CFG_Snap::o_SnapMode =  snapFlags;
     // no need to delete child widgets, Qt does it all for us
 }
 

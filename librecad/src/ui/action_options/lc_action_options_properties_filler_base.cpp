@@ -35,8 +35,6 @@
 #include "lc_property_qstring_lineedit_view.h"
 #include "lc_property_rsvector_view.h"
 #include "lc_settings_snap.h"
-#include "lc_settings_snap_state.h"
-#include "rs_settings.h"
 
 template <typename T, typename TProperty>
 void LC_ActionOptionsPropertiesFillerBase::setupViewDescriptor(const typename LC_PropertyValueDelegated<T>::FunValueSetShort& funSet,
@@ -295,12 +293,12 @@ void LC_ActionOptionsPropertiesFillerBase::fillSnapToolOptionsContainer(LC_Prope
     if (snapMode->snapDistance) {
         addLinearDistance({"a_snapDistance", tr("Snap Distance"), tr("Distance of snap point from initially resolved snap point")},
                           []()-> double {
-                              const QString distance = CFG_SnapState::o_Distance;
+                              const QString distance = CFG_Snap::o_SnapDistanceValue;
                               double dist = RS_Math::eval(distance, 1.0);
                               return dist;
                           }, [this](double val)-> void {
                               QString value = QString::number(val, 'g', 6);
-                              CFG_SnapState::o_Distance = value;
+                              CFG_Snap::o_SnapDistanceValue = value;
                               double dist = NAN;
                               m_actionContext->requestSnapDistOptions(&dist, true);
                           }, propertyContainer);
@@ -308,13 +306,13 @@ void LC_ActionOptionsPropertiesFillerBase::fillSnapToolOptionsContainer(LC_Prope
 
     if (snapMode->snapMiddle) {
         addIntSpinbox({"a_snapMiddleNum", tr("Snap middle"), tr("Number of equidistant division points")}, []()-> int {
-                          int points = CFG_SnapState::o_MiddlePoints;
+                          int points = CFG_Snap::o_SnapMiddlePointsCount;
                           if (!(points >= 1 && points <= 99)) {
                               points = 1;
                           }
                           return points;
                       }, [this](int val)-> void {
-                          CFG_SnapState::o_MiddlePoints = val;
+                          CFG_Snap::o_SnapMiddlePointsCount = val;
                           int mpoints = 0;
                           m_actionContext->requestSnapMiddleOptions(&mpoints, true);
                       }, propertyContainer);

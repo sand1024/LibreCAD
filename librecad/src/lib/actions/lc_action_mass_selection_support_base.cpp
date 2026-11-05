@@ -29,6 +29,7 @@
 #include "lc_overlay_selection_box.h"
 #include "lc_overlay_selection_lasso.h"
 #include "lc_polygon_selection.h"
+#include "lc_settings_selection.h"
 #include "rs_debug.h"
 #include "rs_graphicview.h"
 #include "rs_selection.h"
@@ -102,7 +103,7 @@ void LC_ActionMassSelectionSupportBase::setMassSelectionMode(MassSelectionMode m
 void LC_ActionMassSelectionSupportBase::initFromSettings() {
     LC_UndoableDocumentModificationAction::initFromSettings();
     m_overlayBoxOptions->loadSettings();
-    m_allowsLassoSelectionByPressedMouseButton = CFG_CADPreferences::o_AllowLassoSelectionByPressedMouseButton;
+    m_allowsLassoSelectionByPressedMouseButton = CFG_Selection::o_AllowLassoSelectionByPressedMouseButton;
 }
 
 void LC_ActionMassSelectionSupportBase::cycleMassSelectionStyle() {

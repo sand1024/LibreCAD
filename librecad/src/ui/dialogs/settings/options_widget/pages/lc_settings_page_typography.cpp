@@ -29,7 +29,6 @@
 
 LC_SettingsPageTypography::LC_SettingsPageTypography(QObject* parent)
     : LC_SettingsPageBase(tr("Typography"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageTypography>()) {
-    setSortWeight(30);
 }
 
 void LC_SettingsPageTypography::bindToPresetManager(LC_PresetManagerInterface* manager) {

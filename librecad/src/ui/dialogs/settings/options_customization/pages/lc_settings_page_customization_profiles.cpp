@@ -42,7 +42,6 @@ LC_SettingsPageCustomizationProfiles::LC_SettingsPageCustomizationProfiles(
     , m_commandManager(commandManager)
     , m_navCreator(navCreator)
     , m_contextMenuProvider(contextMenuProvider) {
-    setSortWeight(50);
 
     auto* shortcutsRepo = (m_shortcutsManager != nullptr) ? m_shortcutsManager->getRepository() : nullptr;
     auto* commandsRepo = (m_commandManager != nullptr) ? m_commandManager->getRepository() : nullptr;

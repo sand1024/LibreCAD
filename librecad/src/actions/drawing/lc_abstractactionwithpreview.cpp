@@ -691,12 +691,12 @@ RS_Point* LC_AbstractActionWithPreview::createPoint(const RS_Vector &coord, QLis
  * @return
  */
 void LC_AbstractActionWithPreview::createRefPoint(const RS_Vector &coord, QList<RS_Entity *> &list) const{
-    auto *result = new LC_RefPoint(m_preview.get(), coord, m_refPointSize, m_refPointMode);
+    auto *result = new LC_RefPoint(m_preview.get(), coord, m_refPointSizePx, m_refPointMode);
     list << result;
 }
 
 void LC_AbstractActionWithPreview::createRefSelectablePoint(const RS_Vector &coord, QList<RS_Entity *> &list) const{
-        auto *result = new LC_RefPoint(m_preview.get(), coord, m_refPointSize, m_refPointMode);
+        auto *result = new LC_RefPoint(m_preview.get(), coord, m_refPointSizePx, m_refPointMode);
         result->setHighlighted(true);
         list << result;
 }

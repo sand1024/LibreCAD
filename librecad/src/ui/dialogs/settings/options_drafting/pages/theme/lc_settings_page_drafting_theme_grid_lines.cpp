@@ -23,13 +23,11 @@
 #include "lc_settings_page_drafting_theme_grid_lines.h"
 #include "ui_lc_settings_page_drafting_theme_grid_lines.h"
 #include "lc_settings_backend.h"
-#include "lc_settings_colors.h"
 #include "lc_settings_grid.h"
 
 LC_SettingsPageDraftingThemeGridLines::LC_SettingsPageDraftingThemeGridLines(QObject* parent)
     : LC_SettingsPageBase(tr("Lines"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Grid::Group), parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeGridLines>()) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageDraftingThemeGridLines::~LC_SettingsPageDraftingThemeGridLines() = default;
@@ -40,16 +38,15 @@ void LC_SettingsPageDraftingThemeGridLines::setupUi() {
 
 void LC_SettingsPageDraftingThemeGridLines::setupBindings() {
     using namespace CFG_Grid;
-    using namespace CFG_Colors;
 
     bindColor({
-        { ui->cbGridLinesColor, ui->pb_gridLines, o_GridLinesColor, tr("Select Grid Lines Color") },
-        { ui->cbMetaGridLinesColor, ui->pb_metaLines, o_MetaGridLinesColor, tr("Select Meta-grid Lines Color") }
+        { ui->cbGridLinesColor, ui->pb_gridLines, o_ColorGridLines, tr("Select Grid Lines Color") },
+        { ui->cbMetaGridLinesColor, ui->pb_metaLines, o_ColorMetaGridLines, tr("Select Meta-grid Lines Color") }
     });
 
     ui->wGridLinesLineType->init(false, false, false);
-    bindLineType(ui->wGridLinesLineType, o_GridLinesLineType);
+    bindLineType(ui->wGridLinesLineType, o_LinesGridLineType);
 
     ui->wMetaGridLinesLineType->init(false, false, false);
-    bindLineType(ui->wMetaGridLinesLineType, o_metaGridLinesLineType);
+    bindLineType(ui->wMetaGridLinesLineType, o_LinesMetaGridLineType);
 }
