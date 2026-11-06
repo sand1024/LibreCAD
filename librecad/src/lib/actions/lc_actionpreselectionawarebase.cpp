@@ -131,12 +131,27 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(const int status, 
             case MassSelectionMode::NONE: {
                 RS_Entity* entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
                 const bool selectContour = e->isShift;
-                if (selectEntity(entityToSelect, selectContour)) {
+                // if (selectEntity(entityToSelect, selectContour)) {
+                //     m_selectionCorner1.valid = false;
+                //     proceedSelectedEntity(e);
+                // }
+                // else if (e->isControl) { // completion of selection by click with CTRL
+                //     onSelectionCompleted(false, false);
+                // }
+                // change from PR LibreCAD#3246
+                if (e->isControl && collectSelectedEntities() > 0) {
+                    // The prompt offers CTRL+LMB click as the mouse's Enter: complete the
+                    // selection that is there. Picking what lies under the cursor would
+                    // toggle it off when it is selected (or, without additive selection,
+                    // replace the whole selection), so the action would run on other
+                    // entities than the ones the user selected (#3084).
+                    m_selectionCorner1.valid = false;
+                    onSelectionCompleted(false, false);
+                }
+                else if (selectEntity(entityToSelect, selectContour)) {
+                    // nothing selected yet: CTRL picks this entity and completes at once
                     m_selectionCorner1.valid = false;
                     proceedSelectedEntity(e);
-                }
-                else if (e->isControl) { // completion of selection by click with CTRL
-                    onSelectionCompleted(false, false);
                 }
                 break;
             }
