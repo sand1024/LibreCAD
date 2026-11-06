@@ -142,7 +142,7 @@
 #include "lc_wait_cursor_guard.h"
 #include "lc_widget_factory.h"
 #include "rs_dimension.h"
-#include "backup/lc_application_backup_service.h"
+#include "lc_application_backup_service.h"
 
 #ifndef QC_APP_ICON
 # define QC_APP_ICON ":/images/librecad.png"

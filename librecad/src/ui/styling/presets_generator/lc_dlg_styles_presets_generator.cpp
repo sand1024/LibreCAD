@@ -117,7 +117,7 @@ QString LC_DlgStylesPresetsGenerator::getEffectiveDir(const QString& uiText, con
     return trimmed.isEmpty() ? fallback : trimmed;
 }
 
-void LC_DlgStylesPresetsGenerator::generateIconStyles(bool checked) {
+void LC_DlgStylesPresetsGenerator::generateIconStyles([[maybe_unused]] bool checked) {
     if (m_styleManager == nullptr) return;
 
     const QString baseDir = m_styleManager->getStyleConfigurationBaseDir();

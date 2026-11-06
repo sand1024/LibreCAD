@@ -19,9 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
 #include "lc_event_filter_win_32_window_cloaking.h"
-
 
 #ifdef Q_OS_WIN
 #include <QApplication>

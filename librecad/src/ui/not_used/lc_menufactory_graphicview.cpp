@@ -21,7 +21,7 @@
  * ********************************************************************************
  */
 
-#include "lc_menufactory_graphicview.h"
+#include "../main/init/lc_menufactory_graphicview.h"
 
 #include <QDockWidget>
 #include <QApplication>

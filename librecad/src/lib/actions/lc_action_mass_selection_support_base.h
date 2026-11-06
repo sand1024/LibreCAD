@@ -75,7 +75,7 @@ protected:
         return true;
     }
 
-    virtual void doProcessSpaceKey(QKeyEvent* keyEvent, bool isPress) {};
+    virtual void doProcessSpaceKey([[maybe_unused]] QKeyEvent* keyEvent, [[maybe_unused]] bool isPress){};
     bool handleMassSelectionKeyEvent(QKeyEvent* e, bool isPress);
     void cycleMassSelectionStyle();
 

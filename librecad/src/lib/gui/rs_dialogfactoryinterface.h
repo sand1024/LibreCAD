@@ -34,7 +34,6 @@ class RS_Block;
 class RS_BlockList;
 class RS_Document;
 class RS_Entity;
-class RS_EventHandler;
 class RS_Graphic;
 class RS_GraphicView;
 class RS_Grid;

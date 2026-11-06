@@ -30,7 +30,6 @@
 #include <QWidget>
 
 #include "rs_document.h"
-#include "rs_eventhandler.h"
 
 #include "qg_graphicview.h"
 

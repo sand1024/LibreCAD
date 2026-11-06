@@ -780,6 +780,7 @@ RS_Layer* RS_Entity::getLayerResolved() const {
     return l;
 }
 
+// fixme - sand - add version of method that takes graphic to avoid double resoling of it
 RS_Layer *RS_Entity::validatedLayer(RS_Layer *layer) const {
     if (layer == nullptr)
         return nullptr;

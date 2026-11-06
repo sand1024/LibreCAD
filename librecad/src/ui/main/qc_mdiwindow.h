@@ -33,7 +33,6 @@
 class QG_GraphicView;
 class LC_ActionContext;
 class LC_LayoutTabBar;
-class RS_EventHandler;
 /**
  * MDI document window. Contains a document and a view (window).
  *

@@ -50,7 +50,6 @@ class QKeyEvent;
 class RS_ActionInterface;
 class RS_Entity;
 class RS_EntityContainer;
-class RS_EventHandler;
 class RS_Color;
 class RS_CommandEvent;
 class RS_Graphic;
