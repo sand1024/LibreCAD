@@ -38,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Show Splah Screen
+         <string>Show Splash Screen
 
 Defines whether splash screen will be shown on startup</string>
         </property>
@@ -130,7 +130,7 @@ If set, previously opened files during previous closing of the application will 
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_31">
      <property name="title">
-      <string>CAD Tools </string>
+      <string>CAD Tools</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_54">
       <item row="2" column="0">
@@ -160,19 +160,19 @@ If checked, toolbars with commands will be enabled. </string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>CAD Dock widgets
+         <string>CAD Dock Tool widgets
 
-If checked, dock widgets with commands for left sidebar will be enabled. Otherwise, they will be disabled. </string>
+If checked, CAD dock tool widgets with commands for left sidebar will be enabled. Otherwise, they will be disabled. </string>
         </property>
         <property name="text">
-         <string>Enable CAD dockwidgets</string>
+         <string>Enable CAD dock tool widgets</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>CAD Tools include set of specialized toolbars and docking widgets that contains drawing editing buttons for fast access.  They may be enabled or disabled completely.</string>
+         <string>CAD Tools include a set of specialized toolbars and docking widgets that contains drawing editing buttons for fast access.  They may be enabled or disabled completely.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

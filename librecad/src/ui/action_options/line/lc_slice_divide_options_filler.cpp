@@ -97,14 +97,14 @@ void LC_SliceDivideOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer*
         }
     };
 
-    addEnum({"a_tickType", tr("Tick Snap"), tr("Defines which point of tick should be placed to intersection point with selected entity")},
+    addEnum({"a_tickType", tr("Tick Snap"), tr("Defines which point of tick should be placed at intersection point with selected entity")},
             &tickSnapTypeDescriptor, [action]() -> LC_PropertyEnumValueType {
                 return action->getTickSnapMode();
             }, [action](const LC_PropertyEnumValueType& v)-> void {
                 action->setTickSnapMode(v);
             }, container);
 
-    addLinearDistance({"a_offset", tr("Offset"), tr("Offset of tick snap point to intersection point")}, [action]() {
+    addLinearDistance({"a_offset", tr("Offset"), tr("Offset of tick snap point from intersection point")}, [action]() {
                           return action->getTickOffset();
                       }, [action](double val) {
                           action->setTickOffset(val);

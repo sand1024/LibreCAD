@@ -62,7 +62,7 @@ void LC_MatchDescriptorEllipse::init(QMap<RS2::EntityType, LC_EntityMatchDescrip
 
     entity->addBoolean("isArc", [](const RS_Ellipse* e) {
         return e->isEllipticArc();
-    }, tr("Is Arc"), tr("Whether ellipse is elliptic arc"));
+    }, tr("Is Arc"), tr("Whether ellipse is an elliptic arc"));
 
     entity->addVectorX("startX", [](const RS_Ellipse* e) {
         return e->getStartpoint();

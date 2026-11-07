@@ -70,12 +70,12 @@ void LC_PropertiesProviderCircle::doCreateSingleEntityCommands(LC_PropertyContai
     const std::list<CommandLinkInfo> commands = {
         {tr("Concentric circles creation"), RS2::ActionModifyOffset, RS2::ActionDrawLineParallelThrough},
         {tr("Circle trimming or dividing"), RS2::ActionModifyCut, RS2::ActionModifyTrim},
-        {tr("Creation of circle tangential to circle"), RS2::ActionDrawCircleTangental1Entity2Points, RS2::ActionDrawCircleTangental2Entities1Point},
+        {tr("Creation of circle tangential to a circle"), RS2::ActionDrawCircleTangental1Entity2Points, RS2::ActionDrawCircleTangental2Entities1Point},
         {tr("Creation of circle tangential"), RS2::ActionDrawCircleTan3Entities, RS2::ActionDrawCircleTan2EntitiesRadius},
-        {tr("Creation of line tangential to circle"), RS2::ActionDrawLineTangent1, RS2::ActionDrawLineTangent2},
-        {tr("Creation of line tangential to circle"), RS2::ActionDrawLineOrthogonal, RS2::ActionDrawLineOrthTan,},
+        {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineTangent1, RS2::ActionDrawLineTangent2},
+        {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineOrthogonal, RS2::ActionDrawLineOrthTan,},
         {tr("Dividing circle"), RS2::ActionDrawSliceDivideCircle, RS2::ActionModifyBreakDivide},
-        {tr("Creation of line tangential to circle"), RS2::ActionDrawLineAngleRel, RS2::ActionModifyRound,},
+        {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineAngleRel, RS2::ActionModifyRound,},
         {tr("Creation of ellipse or bounding box"), RS2::ActionDrawEllipseInscribe, RS2::ActionDrawBoundingBox},
         {tr("Creation of dimension, diametric or radial"), RS2::ActionDimDiametric, RS2::ActionDimRadial},
         {tr("Creation of dimension, angular or ordinate"), RS2::ActionDimOrdinate, RS2::ActionDimLeader,}

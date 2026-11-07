@@ -222,7 +222,7 @@ void RS_ActionDrawEllipseInscribe::onMouseLeftButtonRelease(const int status, co
                     trigger();
                 }
                 else {
-                    commandMessage(tr("Can not determine uniquely an ellipse"));
+                    commandMessage(tr("Cannot determine uniquely an ellipse"));
                 }
                 break;
             }

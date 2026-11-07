@@ -63,7 +63,7 @@ void LC_ActionSelectContour::doTrigger() {
             const RS_Selection s(m_document, m_viewport);
             s.selectContour(m_entity);
         } else {
-            commandMessage(tr("Entity must be an Atomic Entity."));
+            commandMessage(tr("Entity must be an atomic entity."));
         }
     } else{
         RS_DEBUG->print("RS_ActionSelectContour::trigger: Entity is NULL\n");

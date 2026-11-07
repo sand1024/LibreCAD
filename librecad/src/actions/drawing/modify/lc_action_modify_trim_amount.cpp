@@ -204,7 +204,7 @@ void LC_ActionModifyTrimAmount::onMouseLeftButtonRelease(const int status, const
                 trigger();
             }
             else {
-                commandMessage(tr("The chosen Entity is not an atomic entity or cannot be trimmed."));
+                commandMessage(tr("The chosen entity is not an atomic entity or cannot be trimmed."));
             }
             break;
         }

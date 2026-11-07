@@ -56,7 +56,7 @@ void LC_Rectangle1PointOptionsFiller::fillToolOptionsContainer(LC_PropertyContai
         }
     };
 
-    addEnum({"a_snapMode", tr("Snap"), tr("Point of rectangle wich will be placed to insertion point. ")}, &snapModeDescriptor,
+    addEnum({"a_snapMode", tr("Snap"), tr("Point of rectangle which will be placed to insertion point. ")}, &snapModeDescriptor,
             [action]() -> LC_PropertyEnumValueType {
                 return action->getInsertionPointSnapMode();
             }, [action](const LC_PropertyEnumValueType& v)-> void {

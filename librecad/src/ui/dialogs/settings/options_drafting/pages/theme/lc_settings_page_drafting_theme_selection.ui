@@ -243,7 +243,7 @@ Color of non-endpoint handle of entity</string>
         <property name="toolTip">
          <string>Selected Entity Color
 
-                                  Color for selected entities</string>
+Color for selected entities</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -269,7 +269,7 @@ Color of non-endpoint handle of entity</string>
         <property name="toolTip">
          <string>Selected Entity
 
-                                  Click to select color.</string>
+Click to select color.</string>
         </property>
        </widget>
       </item>
@@ -338,7 +338,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Inverted Selection Fill Color
 
-                                  Color for filling inverted overlay selection box</string>
+Color for filling inverted overlay selection box</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -358,7 +358,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Inverted Selection Boundary Color
 
-                                  Color of line for overlay selection box if box is inverted (from right to left)</string>
+Color of line for overlay selection box if box is inverted (from right to left)</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -384,7 +384,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Inverted Selection Boundary
 
-                                  Click to select color (inverted mode).</string>
+Click to select color (inverted mode).</string>
         </property>
        </widget>
       </item>
@@ -429,7 +429,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Fill Color
 
-                                  Fill color for overlay selection box</string>
+Fill color for overlay selection box</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -453,9 +453,9 @@ Line type used for rendering selected entities.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Inverted Selection Fillr
+         <string>Inverted Selection Fill Color
 
-                                  Click to select color (inverted mode).</string>
+Click to select color (inverted mode).</string>
         </property>
        </widget>
       </item>
@@ -484,7 +484,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Boundary
 
-                                  Click to select color.</string>
+Click to select color.</string>
         </property>
        </widget>
       </item>
@@ -503,7 +503,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Boundary Color
 
-                                  Color for line for overlay box</string>
+Color for line of overlay box</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -523,7 +523,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Overlay Transparency
 
-                                  Transparency for overlay selection box. Smaller value - more transparent.</string>
+Transparency for overlay selection box. Smaller value - more transparent.</string>
         </property>
         <property name="minimum">
          <number>10</number>
@@ -544,7 +544,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Fill
 
-                                  Click to select color.</string>
+Click to select color.</string>
         </property>
        </widget>
       </item>
@@ -561,7 +561,7 @@ Line type used for rendering selected entities.</string>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="lOverlayDesc">
         <property name="text">
-         <string>Selection Box Overlay is shown when multiple entities selection is performed by mouse. This overlay highlights selection area. In most cases, the logic of entities selection depends on selection directon (either direct left-to-right or inverted right-to-left) and therefore settings for both modes of displaying the overlay could be customized.</string>
+         <string>Selection Box Overlay is shown when multiple entities selection is performed by mouse. This overlay highlights selection area. In most cases, the logic of entities selection depends on selection direction (either direct left-to-right or inverted right-to-left) and therefore settings for both modes of displaying the overlay could be customized.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -573,7 +573,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Selection Boundary Line Type
 
-                                  Overlay selection box boundary line type (normal mode)</string>
+Overlay selection box boundary line type (normal mode)</string>
         </property>
        </widget>
       </item>
@@ -582,7 +582,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Inverted Selection Boundary Line Type
 
-                                  Overlay selection box boundary line type (inverted mode)</string>
+Overlay selection box boundary line type (inverted mode)</string>
         </property>
        </widget>
       </item>
@@ -633,7 +633,7 @@ Line type used for rendering selected entities.</string>
         <property name="toolTip">
          <string>Inverted Selection Fill Color
 
-                                  Color for filling inverted overlay selection box</string>
+Color for filling inverted overlay selection box</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -657,9 +657,9 @@ Line type used for rendering selected entities.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Inverted Selection Fillr
+         <string>Inverted Selection Fill Color
 
-                                  Click to select color (inverted mode).</string>
+Click to select color (inverted mode).</string>
         </property>
        </widget>
       </item>

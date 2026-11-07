@@ -79,7 +79,7 @@
    <item row="0" column="8">
     <widget class="QComboBox" name="cbSnapPoint">
      <property name="toolTip">
-      <string>Point of rectangle wich will be placed to insertion point.</string>
+      <string>Point of rectangle which will be placed to insertion point.</string>
      </property>
      <item>
       <property name="text">
@@ -255,7 +255,7 @@
    <item row="0" column="22">
     <widget class="QCheckBox" name="cbInnerSize">
      <property name="toolTip">
-      <string>If checked, specified height and width of rectangle defines distance between centers of arcs for rounding corners. Otherwise, these values defines outer size of the rectangle.</string>
+      <string>If checked, specified height and width of rectangle defines distance between centers of arcs for rounding corners. Otherwise, these values define outer size of the rectangle.</string>
      </property>
      <property name="text">
       <string>Size inner</string>
@@ -385,7 +385,7 @@
    <item row="0" column="21">
     <widget class="QCheckBox" name="cbSnapRadiusCenter">
      <property name="toolTip">
-      <string>If checked, specifies that snap point should be shifted by radius of corners.</string>
+      <string>If checked, specifies that snap point should be shifted by radius of corner.</string>
      </property>
      <property name="text">
       <string>Snap shift</string>

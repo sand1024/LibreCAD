@@ -99,7 +99,7 @@
    <item>
     <widget class="QToolButton" name="tbPickLength1">
      <property name="toolTip">
-      <string>Pick first length form drawing</string>
+      <string>Pick first length from drawing</string>
      </property>
      <property name="text">
       <string/>
@@ -130,7 +130,7 @@
    <item>
     <widget class="QToolButton" name="tbPickLength2">
      <property name="toolTip">
-      <string>Pick second length form drawing</string>
+      <string>Pick second length from drawing</string>
      </property>
      <property name="text">
       <string/>

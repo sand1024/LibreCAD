@@ -135,7 +135,7 @@ void RS_ActionInfoAngle::doTrigger() {
 
                     //: %2 completes a right angle with %1; %3 a straight angle; %4 a full turn. Preserve the numbered placeholders.
                     const QString& msgTemplate = tr(
-                        "Angle: %1\nComplementary: %2\nSupplementary: %3\nExplementary angle: %4\nIntersection: (%5 , %6)\nIntersection :@(%7, %8)");
+                        "Angle: %1\nComplementary: %2\nSupplementary: %3\nExplementary: %4\nIntersection: (%5 , %6)\nIntersection :@(%7, %8)");
                     const QString& msg = msgTemplate.arg(str, complimenatryStr, supplimentaryStr, altStr, intersectX, intersectY,
                                                          intersectRelX, intersectRelY);
                     commandMessage("---");

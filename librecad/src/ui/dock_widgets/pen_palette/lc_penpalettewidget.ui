@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>648</width>
+    <width>651</width>
     <height>204</height>
    </rect>
   </property>
@@ -185,7 +185,7 @@
      <item>
       <widget class="QToolButton" name="tbUpdateCurrentPenByActiveLayer">
        <property name="toolTip">
-        <string>Update Current Pen by Active Layer' Pen</string>
+        <string>Update Current Pen by Active Layer's Pen</string>
        </property>
        <property name="text">
         <string/>

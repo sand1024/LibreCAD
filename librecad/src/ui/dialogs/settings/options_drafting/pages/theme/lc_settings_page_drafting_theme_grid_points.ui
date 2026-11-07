@@ -46,6 +46,7 @@
        <widget class="LC_ContentAdjustableComboBox" name="cbGridPointsColor">
         <property name="toolTip">
          <string>Grid Point Color
+
 Color name or hexadecimal code
 for grid points</string>
         </property>
@@ -114,7 +115,7 @@ points.</string>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
-      <string>Meta-grid</string>
+      <string>Meta Grid</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_20">
       <item row="1" column="2">
@@ -126,17 +127,17 @@ points.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Meta-Grid Line
+         <string>Meta Grid Line
 
 Click to choose color for
-meta-grid lines.</string>
+Meta Grid lines.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbMetaGridPointsColor">
         <property name="toolTip">
-         <string>Meta-Grid Color
+         <string>Meta Grid Color
 
 Color name or hexadecimal code
 for Meta Grid lines if grid drawn by points</string>
@@ -177,7 +178,7 @@ for Meta Grid lines if grid drawn by points</string>
       <item row="1" column="0">
        <widget class="QLabel" name="lMetaGridColor">
         <property name="text">
-         <string>&amp;Meta-grid color:</string>
+         <string>&amp;Meta Grid color:</string>
         </property>
         <property name="buddy">
          <cstring>cbMetaGridPointsColor</cstring>
@@ -187,7 +188,7 @@ for Meta Grid lines if grid drawn by points</string>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Meta-Grid lines group the background grid into distinct, readable blocks. </string>
+         <string>Meta Grid lines group the background grid into distinct, readable blocks. </string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -197,7 +198,7 @@ for Meta Grid lines if grid drawn by points</string>
       <item row="2" column="1">
        <widget class="QG_LineTypeBox" name="wMetaGridPointsLineType" native="true">
         <property name="toolTip">
-         <string>Meta-Grid Line Type
+         <string>Meta Grid Line Type
 
 Type of Meta Grid line if grid is drawn as points</string>
         </property>

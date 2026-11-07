@@ -744,13 +744,13 @@ QString QG_DialogFactory::extToFormat(const QString& ext) {
         return QObject::tr("Multiple-image Network Graphics");
     }
     if (e == "pbm") {
-        return QObject::tr("Portable Bit Map");
+        return QObject::tr("Portable Bitmap");
     }
     if (e == "pgm") {
-        return QObject::tr("Portable Grey Map");
+        return QObject::tr("Portable Gray Map");
     }
     if (e == "png") {
-        return QObject::tr("Portable Network Graphic");
+        return QObject::tr("Portable Network Graphics");
     }
     if (e == "ppm") {
         return QObject::tr("Portable Pixel Map");

@@ -47,7 +47,7 @@
    <item row="0" column="0">
     <widget class="QCheckBox" name="cbAnglesMirrored">
      <property name="toolTip">
-      <string>Adjust secondary angle so the sum of angles (relative rotation angle) is 0. With such setting entity will be moved but not rotated.</string>
+      <string>Adjust secondary angle so the sum of angles (relative rotation angle) is 0. With such setting, entity will be moved but not rotated.</string>
      </property>
      <property name="text">
       <string>Angles mirrored</string>
@@ -205,7 +205,7 @@
    <item row="0" column="16">
     <widget class="QCheckBox" name="cbCurrentLayer">
      <property name="toolTip">
-      <string>Specifies whetether copies will be inserted to current or original layer</string>
+      <string>Specifies whether copies will be inserted to current or original layer</string>
      </property>
      <property name="text">
       <string>Use Current Layer</string>

@@ -129,7 +129,7 @@ bool LC_ActionPolylineAppend::setPolylineToModify(RS_Entity* entity, const RS_Ve
         return false;
     }
     if (m_originalPolyline->isClosed()) {
-        commandMessage(tr("Can not append nodes in a closed polyline."));
+        commandMessage(tr("Cannot append nodes in a closed polyline."));
         return false;
     }
     const auto *op = m_originalPolyline;

@@ -342,7 +342,7 @@ will be shown in tooltip for action.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Angles in Degress Only
+         <string>Angles in Degrees Only
 
 If checked, it will be possible to enter value of angle in decimal degrees only.
 Otherwise, angles in surveyor, radiant, imperial degrees and bearing formats are allowed for input.  </string>

@@ -167,7 +167,7 @@ void LC_DlgQuickSelection::accept() {
             }
             if (checkPrecision) {
                 if (ui->lePrecision->text().isEmpty()) {
-                    QMessageBox::warning(this, "Error", tr("Please provide non empty value of precision"), QMessageBox::Ok);
+                    QMessageBox::warning(this, "Error", tr("Please provide a non empty value of precision"), QMessageBox::Ok);
                     return;
                 }
             }

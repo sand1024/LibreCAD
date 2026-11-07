@@ -274,7 +274,7 @@ Left printing area margin</string>
           <item row="1" column="0" colspan="6">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Specify each side margings for printing are within the page.</string>
+             <string>Specify each side margins for printing are within the page.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

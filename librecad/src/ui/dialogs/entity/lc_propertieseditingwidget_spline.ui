@@ -116,10 +116,10 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Defines whether spline defines closed contour</string>
+         <string>Defines whether spline forms closed contour</string>
         </property>
         <property name="accessibleName">
-         <string>Closed Spline CheckBox</string>
+         <string>Closed Spline</string>
         </property>
         <property name="accessibleDescription">
          <string>Toggle whether the spline forms a closed contour</string>

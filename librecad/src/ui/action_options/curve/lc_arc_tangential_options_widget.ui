@@ -64,7 +64,7 @@
    <item row="0" column="2">
     <widget class="QToolButton" name="tbPickRadius">
      <property name="statusTip">
-      <string>Pick radius form drawing</string>
+      <string>Pick radius from drawing</string>
      </property>
      <property name="text">
       <string/>
@@ -84,7 +84,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>If selected, tangental arc with specified radius will be created</string>
+      <string>If selected, tangential arc with specified radius will be created</string>
      </property>
      <property name="text">
       <string extracomment="Draw Tangential Arc by the given radius">Radius</string>

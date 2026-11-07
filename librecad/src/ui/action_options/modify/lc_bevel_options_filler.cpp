@@ -40,7 +40,7 @@ void LC_BevelOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                           action->setLength1(val);
                       }, container);
 
-    addLinearDistance({"a_len2", tr("Lengh 2"), tr("Length of bevel in Y direction")}, [action]() {
+    addLinearDistance({"a_len2", tr("Length 2"), tr("Length of bevel in Y direction")}, [action]() {
                           return action->getLength2();
                       }, [action](double val) {
                           action->setLength2(val);

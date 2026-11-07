@@ -56,7 +56,7 @@
    <item row="0" column="9">
     <widget class="QCheckBox" name="cbPolyline">
      <property name="toolTip">
-      <string>If checked, the entire rectangle will be drawn as polyline.</string>
+      <string>If checked, the entire rectangle will be drawn as a polyline.</string>
      </property>
      <property name="text">
       <string>Polyline</string>

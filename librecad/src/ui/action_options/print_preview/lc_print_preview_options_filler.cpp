@@ -59,7 +59,7 @@ void LC_PrintPreviewOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer
                            }
                        }, tr("Positioning commands"));
 
-    createCommandsLine(container, "a_commands2", tr("Fit to 1 page"), tr("Fit the content to be printed on one page"), tr("Calc pages"),
+    createCommandsLine(container, "a_commands2", tr("Fit to 1 page"), tr("Fit content to be printed on one page"), tr("Calc pages"),
                        tr("Calculate number of pages needed to contain the drawing"), [action](int linkIndex)-> void {
                            if (linkIndex == 0) {
                                action->fit();
@@ -75,7 +75,7 @@ void LC_PrintPreviewOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer
                    action->setLineWidthScaling(val);
                }, container);
 
-    addBoolean({"a_blackWhite", tr("Black&White"), tr("Toggle Black / White mode")}, [action]()-> bool {
+    addBoolean({"a_blackWhite", tr("Black & White"), tr("Toggle Black/White mode")}, [action]()-> bool {
                    return action->isBlackWhite();
                }, [action](bool val)-> void {
                    action->setBlackWhite(val);

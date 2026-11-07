@@ -36,6 +36,7 @@ class RS_Entity;
 class QMouseEvent;
 
 class LC_GraphicViewContextMenuProvider :  public QObject, public LC_MenuBuilderBase {
+    Q_OBJECT
 public:
     explicit LC_GraphicViewContextMenuProvider(LC_RepositoryGraphicViewContextMenus* repository, LC_ActionFactory* actionFactory,
                                                LC_ActionGroupManager* actionGroupManager,

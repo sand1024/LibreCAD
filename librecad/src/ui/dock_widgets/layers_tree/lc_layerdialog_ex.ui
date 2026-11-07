@@ -90,7 +90,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Layer for various infromational elements, notes, drafts etc.</string>
+         <string>Layer for various informational elements, notes, drafts etc.</string>
         </property>
         <property name="text">
          <string>Informational</string>
@@ -103,7 +103,7 @@
       <item row="0" column="0">
        <widget class="QRadioButton" name="rbNormal">
         <property name="toolTip">
-         <string>Normal layer with drawing eleements</string>
+         <string>Normal layer with drawing elements</string>
         </property>
         <property name="text">
          <string>Normal</string>

@@ -71,7 +71,7 @@ if the mouse is near drawing view boundaries.</string>
          <string>Scrollbar Tooltip
 
 Show coordinate tooltips when hovering over scrollbar bands. 
-Tooltip provides information about visible and drawings area.</string>
+Tooltip provides information about visible and drawing area.</string>
         </property>
         <property name="styleSheet">
          <string notr="true">margin-left:15px;</string>
@@ -204,7 +204,7 @@ If more entities in preview than specified, rect will be drawn instead of entiti
          <string>Explanatory Entities Visibility
 
 Show additional operation's preview explanatory entities. 
-Such entities are temporary and explains the logic of
+Such entities are temporary and explain the logic of
 entities creation or modification operation.</string>
         </property>
         <property name="text">
@@ -381,10 +381,10 @@ If selected, drawing will be zoomed automatically after opening.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Modified Entities Stays Selected
+         <string>Modified Entities Stay Selected
 
 If selected, entities will stay selected after completion of Modify operations.
-Otherwise, they will be not selected. </string>
+Otherwise, they will not be selected. </string>
         </property>
         <property name="text">
          <string>Keep modified entities selected</string>

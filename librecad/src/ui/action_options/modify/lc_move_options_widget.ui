@@ -42,7 +42,7 @@
    <item row="0" column="6">
     <widget class="QCheckBox" name="cbCurrentLayer">
      <property name="toolTip">
-      <string>If checked, created entities will be placed to current layer. Otherwise, they will be placed into original layers. </string>
+      <string>If checked, created entities will be placed into current layer. Otherwise, they will be placed into original layers. </string>
      </property>
      <property name="text">
       <string>Use Current Layer</string>
@@ -65,7 +65,7 @@
    <item row="0" column="5">
     <widget class="QCheckBox" name="cbCurrentAttr">
      <property name="toolTip">
-      <string>If checked, current attributes will be applied to created entities, owtherwise original ones will be used. </string>
+      <string>If checked, current attributes will be applied to created entities, otherwise original ones will be used. </string>
      </property>
      <property name="text">
       <string>Use Current Attributes</string>

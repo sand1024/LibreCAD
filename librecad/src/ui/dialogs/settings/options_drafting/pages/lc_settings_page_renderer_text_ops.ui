@@ -48,8 +48,8 @@
          <string>Grid Rendering Mode
 
 If checked, Meta Grid lines will be drawn on top of grid.
-Simple grid is faster yet is less visually lean.
-Otherwise, main and meta-grid will not overlap.
+Simple grid is faster yet is less visually appealing.
+Otherwise, main and Meta Grid will not overlap.
 Use simplified fast grid drawing algorithm for performance.</string>
         </property>
         <property name="text">
@@ -83,7 +83,7 @@ grid drawing is suppressed temporarily while panning canvas for smooth rendering
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_30">
      <property name="title">
-      <string>Fonts Files</string>
+      <string>Font Files</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="2">
@@ -163,7 +163,7 @@ Contains the number of columns in one row for rendering font letter blocks.</str
 If enabled, during pan operation TEXT and MTEXT objects (as well as labels of dimensions) will be drawn schematically</string>
         </property>
         <property name="text">
-         <string>Draw text as draft within paning operations</string>
+         <string>Draw text as draft within panning operations</string>
         </property>
        </widget>
       </item>

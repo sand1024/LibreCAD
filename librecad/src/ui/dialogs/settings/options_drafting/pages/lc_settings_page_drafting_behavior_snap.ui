@@ -88,7 +88,7 @@ If checked, &quot;Snap To Grid&quot; is ignored if grid is not drawn.</string>
          <string>Grid Cell Factor
 
 Grid cell factor used for snapping to grid. Lower value means smaller snap range
-(so the cursor should be closer to the grid).. </string>
+(so the cursor should be closer to the grid).</string>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -148,7 +148,7 @@ Grid cell factor used for snapping to grid. Lower value means smaller snap range
 
 Snap on entity will be invoked if it is enabled and the distance between mouse
 and snapped point is larger than specified value.
-Othersize, it will be &quot;Free Snap&quot; mode.</string>
+Otherwise, it will be &quot;Free Snap&quot; mode.</string>
         </property>
         <property name="prefix">
          <string/>
@@ -270,9 +270,10 @@ Angle between steps for Angle Snap (which is usually by corresponding actions if
         <property name="toolTip">
          <string>Angle Snap To Grid
 
-If selected and &quot;Snap to Grid&quot; is active, snapping will be performed to 
-closest intersection of angle ray and grid lines.
-Otherwirse, angle step will be 90 degrees.</string>
+If selected and &quot;Snap to Grid&quot; is active, snapping
+will be performed to the closest intersection of
+angle ray and grid lines.
+Otherwise, angle step will be 90 degrees.</string>
         </property>
         <property name="text">
          <string>Angle snap to lines if grid active</string>

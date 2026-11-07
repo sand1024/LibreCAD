@@ -44,7 +44,7 @@ If checked, informational cursor will be enabled and shown where applicable.</st
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Informational Cursor is overlay that displays real-time context, tool tips, and snapping details directly next to your mouse pointer inside the drawing window.</string>
+         <string>Informational Cursor is an overlay that displays real-time context, tool tips, and snapping details directly next to your mouse pointer inside the drawing window.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -89,7 +89,7 @@ in the active user coordinate system (UCS) will be shown.</string>
         <property name="toolTip">
          <string>WCS coordinates in UCS
 
-If set and user coordinate system is active, absolute coodinate in
+If set and user coordinate system is active, absolute coordinate in
 world coordinate system (WCS) will be also shown.</string>
         </property>
         <property name="styleSheet">
@@ -261,7 +261,7 @@ Otherwise, each component will be on own line using stacked layout.</string>
 If checked, text prefix labels (e.g. 'Dist:', 'Angle:', 'X:')
 before values for coordinate components will be shown. 
 Otherwise, coordinates will be displayed in 
-standard numberic-only form. </string>
+standard numeric-only form. </string>
         </property>
         <property name="text">
          <string>Show coordinate labels</string>
@@ -271,7 +271,7 @@ standard numberic-only form. </string>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>The following options defines how Informational Cursor should display coordinates.</string>
+         <string>The following options define how Informational Cursor should display coordinates.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

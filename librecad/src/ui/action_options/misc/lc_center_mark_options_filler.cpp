@@ -66,7 +66,7 @@ void LC_CenterMarkOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* 
                  action->setCrossAngleDegrees(val);
              }, container);
 
-    addBoolean({"a_lineType", tr("As Active Pen"), tr("Defines whether linetype from active pen should be used (or Center(small))")}, [action]() {
+    addBoolean({"a_lineType", tr("As Active Pen"), tr("Defines whether linetype from active pen should be used (or Center (small))")}, [action]() {
                  return action->isUseActivePenLineType();
              }, [action](double val) {
                  action->setUseActivePenLineType(val);

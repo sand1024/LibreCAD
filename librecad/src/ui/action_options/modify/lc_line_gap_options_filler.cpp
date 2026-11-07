@@ -29,7 +29,7 @@
 void LC_LineGapOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
     auto action = static_cast<LC_ActionModifyLineGap*>(m_action);
 
-    addBoolean({"a_gapFree", tr("Free size"), tr("If cheched, the size of the gap is determined by mouse")}, [action]()-> bool {
+    addBoolean({"a_gapFree", tr("Free size"), tr("If checked, the size of the gap is determined by mouse")}, [action]()-> bool {
                    return action->isFreeGapSize();
                }, [action](bool val)-> void {
                    action->setFreeGapSize(val);

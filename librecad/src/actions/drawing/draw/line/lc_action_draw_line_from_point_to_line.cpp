@@ -440,7 +440,7 @@ RS_Line* LC_ActionDrawLineFromPointToLine::createLineFromPointToTarget(const RS_
 void LC_ActionDrawLineFromPointToLine::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint:
-            updatePromptTRCancel(tr("Select Initial Point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Select initial point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SelectLine:
             updatePromptTRBack(tr("Select Line"),

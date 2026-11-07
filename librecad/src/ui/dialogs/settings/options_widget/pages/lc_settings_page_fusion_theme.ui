@@ -87,7 +87,7 @@
       <item>
        <widget class="QCheckBox" name="cbIgnoreIconStylingInTheme">
         <property name="toolTip">
-         <string>If checked, activating a Fusion Skin will NOT override your standalone custom icon colors style.</string>
+         <string>If checked, activating a Fusion Skin will NOT override your standalone custom icon style.</string>
         </property>
         <property name="text">
          <string>Ignore linked icon style specified in Fusion skins</string>

@@ -295,7 +295,7 @@
    <item row="1" column="4">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Tick Length:</string>
+      <string>Tick length:</string>
      </property>
     </widget>
    </item>
@@ -379,14 +379,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lblCircleStartAngle">
         <property name="text">
-         <string>Start Circle Angle:</string>
+         <string>Start circle angle:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
        <widget class="QToolButton" name="tbPickCircleAngle">
         <property name="toolTip">
-         <string>PIck start circle angle from drawing</string>
+         <string>Pick start circle angle from drawing</string>
         </property>
         <property name="text">
          <string/>

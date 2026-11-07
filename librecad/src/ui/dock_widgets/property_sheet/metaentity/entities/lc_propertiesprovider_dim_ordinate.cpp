@@ -46,7 +46,7 @@ void LC_PropertiesProviderDimOrdinate::doCreateDimGeometrySection(LC_PropertyCon
                                   e->setLeaderPoint(v);
                               }, list, container);
 
-    addBoolean<LC_DimOrdinate>({"dimForX", tr("Is for X axis"), tr("Defines whether ordinate dimension is for X axis")},
+    addBoolean<LC_DimOrdinate>({"dimForX", tr("Is for X-axis"), tr("Defines whether ordinate dimension is for X-axis")},
                                [](const LC_DimOrdinate* e) -> bool {
                                    return e->isForXDirection();
                                }, [](const bool& v, LC_DimOrdinate* e) -> void {

@@ -173,7 +173,7 @@
    <item row="0" column="10">
     <widget class="QCheckBox" name="cbForAnglesBasis">
      <property name="toolTip">
-      <string>If selected, line will be orhotogonal to axis of angles basis. Otherwise - to screen axis</string>
+      <string>If selected, line will be orthogonal to axis of angles basis. Otherwise - to screen axis</string>
      </property>
      <property name="text">
       <string>To Angles Basis</string>
@@ -216,7 +216,7 @@
    <item row="0" column="6">
     <widget class="QToolButton" name="tbPickLength">
      <property name="toolTip">
-      <string>PIck line length from drawing</string>
+      <string>Pick line length from drawing</string>
      </property>
      <property name="text">
       <string/>

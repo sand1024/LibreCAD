@@ -40,7 +40,7 @@ void LC_ImageOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                           action->setFactor(val);
                       }, container);
 
-    addIntSpinbox({"a_factor", tr("DPI"), tr("DPI of Image")}, [action]() {
+    addIntSpinbox({"a_factor", tr("DPI"), tr("DPI of image")}, [action]() {
                       const double dpi = action->scaleToDpi(action->getFactor());
                       return dpi;
                   }, [action](double val) {

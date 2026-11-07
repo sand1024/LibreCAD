@@ -29,7 +29,7 @@
    <item row="1" column="8">
     <widget class="QCheckBox" name="cbPolyline">
      <property name="toolTip">
-      <string>If checked, the shape will be created as polyline. </string>
+      <string>If checked, the shape will be created as a polyline. </string>
      </property>
      <property name="text">
       <string>Polyline</string>
@@ -83,7 +83,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>If checked, inner angle of quadrangle will be fixed to specified value.</string>
+         <string>If checked, inner angle of quadrilateral will be fixed to specified value.</string>
         </property>
         <property name="text">
          <string>Fixed Inner Angle:</string>
@@ -118,14 +118,14 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Inner angle of quadrangle.</string>
+         <string>Inner angle of quadrilateral.</string>
         </property>
        </widget>
       </item>
       <item row="0" column="4">
        <widget class="QToolButton" name="tbPickAngleInner">
         <property name="toolTip">
-         <string>Pick inner angle of quadrangle from drawing.</string>
+         <string>Pick inner angle of quadrilateral from drawing.</string>
         </property>
         <property name="text">
          <string/>
@@ -191,10 +191,10 @@
    <item row="1" column="0">
     <widget class="QCheckBox" name="cbQuadrangle">
      <property name="toolTip">
-      <string>If checked, quadrangle will be created instead of rectangle.</string>
+      <string>If checked, quadrilateral will be created instead of rectangle.</string>
      </property>
      <property name="text">
-      <string>Quadrangle</string>
+      <string>Quad</string>
      </property>
     </widget>
    </item>

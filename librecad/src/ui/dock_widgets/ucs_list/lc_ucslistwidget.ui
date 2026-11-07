@@ -32,7 +32,7 @@
    <item row="1" column="0">
     <widget class="QToolButton" name="tbAdd">
      <property name="toolTip">
-      <string>Create new user coordinates system.</string>
+      <string>Create new user coordinate system.</string>
      </property>
      <property name="styleSheet">
       <string notr="true"/>
@@ -49,7 +49,7 @@
    <item row="1" column="1">
     <widget class="QToolButton" name="tbRestore">
      <property name="toolTip">
-      <string>Restores selected user coordinates system.</string>
+      <string>Restores selected user coordinate system.</string>
      </property>
      <property name="text">
       <string/>
@@ -145,7 +145,7 @@
    <item row="1" column="6">
     <widget class="QToolButton" name="tbRemove">
      <property name="toolTip">
-      <string>Removes selected user coordinates system.</string>
+      <string>Removes selected user coordinate system.</string>
      </property>
      <property name="text">
       <string>...</string>

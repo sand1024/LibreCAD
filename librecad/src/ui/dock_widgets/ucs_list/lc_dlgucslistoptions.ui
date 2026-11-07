@@ -23,7 +23,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="cbShowTooltip">
         <property name="toolTip">
-         <string>If сhecked, the tooltip with additional information about UCS will be shown for table item.</string>
+         <string>If checked, the tooltip with additional information about UCS will be shown for table item.</string>
         </property>
         <property name="text">
          <string>Tooltip with UCS details for table items</string>
@@ -102,7 +102,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbSilentUpdate">
         <property name="toolTip">
-         <string>If checked and during creation the view with entered name already exists, it will be updated by new position. Otherwise, unique name of new view will be required.</string>
+         <string>If checked and during creation the view with entered name already exists, it will be updated by new position. Otherwise, a unique name of new view will be required.</string>
         </property>
         <property name="text">
          <string>Silently update existing UCS if the same exists</string>
@@ -150,7 +150,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="cbSingleClickRestore">
         <property name="toolTip">
-         <string>If enabled, click on the table item will apply coordinates system. Otherwise, coordinates system should be applied explicitly.</string>
+         <string>If enabled, click on the table item will apply coordinate system. Otherwise, coordinate system should be applied explicitly.</string>
         </property>
         <property name="text">
          <string>Restore UCS on single click of table item</string>

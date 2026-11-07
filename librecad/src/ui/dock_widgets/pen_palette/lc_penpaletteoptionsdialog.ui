@@ -104,7 +104,7 @@ Controls whether tooltip will be shown for table item or not</string>
      <item>
       <widget class="QComboBox" name="cbDoubleClickMode">
        <property name="toolTip">
-        <string>Defines how the program to react on double click on pen item in table</string>
+        <string>Defines how the program will react on double-click on pen item in table</string>
        </property>
        <property name="currentIndex">
         <number>-1</number>
@@ -180,7 +180,7 @@ Controls whether tooltip will be shown for table item or not</string>
    <item row="4" column="0" rowspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Show colorn name as</string>
+      <string>Show color name as</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
@@ -227,7 +227,7 @@ Natural name of color or HEX value of it</string>
      <property name="toolTip">
       <string>No Entities Message
 
-If selected, additional messages will be show as part of pen related operations</string>
+If selected, additional messages will be shown as part of pen related operations</string>
      </property>
      <property name="text">
       <string>Show info message if no entities may be selected by pen</string>
@@ -249,7 +249,7 @@ If selected, additional messages will be show as part of pen related operations<
      <property name="toolTip">
       <string>Pen Filtering
 
-If set, filter will igore the case of pen's name</string>
+If set, filter will ignore the case of pen's name</string>
      </property>
      <property name="text">
       <string>Case-insensitive pens filtering</string>

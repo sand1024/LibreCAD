@@ -289,7 +289,7 @@ void LC_ActionDrawPointsLattice::updateActionPrompt() {
             break;
         }
         case SetPoint4: {
-            updatePromptTRCancel(tr("Specify fourth point"), m_adjustLastPointToFirst ? MOD_SHIFT_AND_CTRL_ANGLE(tr("Last point position is un-adjusted")):
+            updatePromptTRCancel(tr("Specify fourth point"), m_adjustLastPointToFirst ? MOD_SHIFT_AND_CTRL_ANGLE(tr("Last point position is unadjusted")):
                                                                      MOD_SHIFT_AND_CTRL_ANGLE(tr("Last point position is adjusted to first")));
             break;
         }

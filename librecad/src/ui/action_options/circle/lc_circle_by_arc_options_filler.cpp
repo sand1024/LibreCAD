@@ -64,7 +64,7 @@ void LC_CircleByArcOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer*
         }
     };
 
-    addEnum({"a_layerType", tr("Layer to apply"), tr("Defines which layer should created circle be placed in")}, &layerTypeDescriptor,
+    addEnum({"a_layerType", tr("Layer to apply"), tr("Defines which layer the created circle should be placed in")}, &layerTypeDescriptor,
             [action]() -> LC_PropertyEnumValueType {
                 return action->getLayerMode();
             }, [action](const LC_PropertyEnumValueType& v)-> void {

@@ -50,7 +50,7 @@ Use orthogonal grid</string>
          <string>Grid Visibility
 
 If checked, grid will be shown for this particular drawing.
-Otherwise, it will be hidded.</string>
+Otherwise, it will be hidden.</string>
         </property>
         <property name="text">
          <string>Show Grid</string>

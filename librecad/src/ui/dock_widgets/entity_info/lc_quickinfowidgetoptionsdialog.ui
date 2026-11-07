@@ -81,7 +81,7 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, more detailed information about lines and arcs that are part of polyline will be shown in Entity Info widget.&lt;br/&gt;Otherwise, only information about vertexes/bulges will be displayed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Include polyline child entities information to vertexes</string>
+         <string>Include polyline child entities information to vertices</string>
         </property>
        </widget>
       </item>
@@ -123,7 +123,7 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="cbDefaultActionAuto">
         <property name="toolTip">
-         <string>If selected, entities under mouse cursor will be examined for theif settings, if there is no active action</string>
+         <string>If selected, entities under mouse cursor will be examined for their settings, if there is no active action</string>
         </property>
         <property name="text">
          <string>Always select entity under cursor if no active action</string>

@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Dimension styles that are available in the drawing are shown below.&lt;br&gt; Also, specify which style is active one (the style of dimensions that will be applied to the newly created dimension entity by default).</string>
+          <string>Dimension styles that are available in the drawing are shown below.&lt;br&gt; Also, specify which style is active (the style of dimensions that will be applied to the newly created dimension entity by default).</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>

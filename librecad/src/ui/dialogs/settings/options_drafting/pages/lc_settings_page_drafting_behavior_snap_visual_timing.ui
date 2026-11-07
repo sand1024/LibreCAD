@@ -142,7 +142,7 @@ until that point will be added as guiding point to Visual Snap system.</string>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Some operations in Visual Snap (like adding/removing points or enties) requires that for invocation of some action the mouse should stay over specific location for some period of time for. Such periods (or delays) could be configured below.</string>
+         <string>Some operations in Visual Snap (like adding/removing points or entities) requires that for invocation of some action the mouse should stay over specific location for some period of time. Such periods (or delays) could be configured below.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

@@ -996,7 +996,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Codepage to use for characted selection</string>
+           <string>Codepage to use for character selection</string>
           </property>
           <item>
            <property name="text">

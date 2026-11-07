@@ -95,7 +95,7 @@ void LC_PropertiesProviderPolyline::doCreateCalculatedProperties(LC_PropertyCont
 void LC_PropertiesProviderPolyline::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto polyline = static_cast<RS_Polyline*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {tr("Polyline structure expanding"), RS2::ActionPolylineAdd, RS2::ActionPolylineAppend},
+        {tr("Polyline structure expansion"), RS2::ActionPolylineAdd, RS2::ActionPolylineAppend},
         {tr("Polyline nodes removal"), RS2::ActionPolylineDel, RS2::ActionPolylineDelBetween},
         {tr("Trimming and exploding polyline"), RS2::ActionPolylineTrim, RS2::ActionPolylineArcsToLines,},
         {tr("Modification of segments of polyline"), RS2::ActionBlocksExplode, RS2::ActionPolylineChangeSegmentType},

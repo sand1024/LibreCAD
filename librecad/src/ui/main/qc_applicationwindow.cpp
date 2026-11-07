@@ -458,7 +458,7 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
             startAutoSaveTimer(autoBackup);
         }
         else {
-            msg = tr("Cannot save the file ") + w->getFileName() + tr(" , please check the filename and permissions.");
+            msg = tr("Cannot save the file ") + w->getFileName() + tr(", please check the filename and permissions.");
             showStatusMessage(msg, 2000);
             return doSave(w, true);
         }
@@ -1325,7 +1325,7 @@ void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatTy
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     if (m_openedFiles.indexOf(fileName) >= 0) {
-        const QString message = tr("Warning: File already opened : ") + fileName;
+        const QString message = tr("Warning: File already opened: ") + fileName;
         showStatusMessage(message, 2000);
     }
 

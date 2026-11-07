@@ -531,7 +531,7 @@ void LC_WorkspacesManager::saveWorkspaces(QWidget* parent){
     } else {
         if (parent != nullptr) {
             QMessageBox::critical(parent, tr("Saving Workspaces"),
-                                  tr("Workspaces file does not exists."));
+                                  tr("Workspaces file does not exist."));
         } else {
             LC_ERR << "Workspaces file does not exists. File: " + workspacesFile;
         }

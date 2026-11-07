@@ -142,7 +142,7 @@ bool LC_SettingsExporter::importSettings(QWidget* parent) {
     }
     if (!doc.isObject() || doc.object().value(G_KEY_FILE_TYPE).toString() != G_SETTINGS_FILE_TYPE) {
         QMessageBox::critical(parent, tr("Settings Import Error"),
-                              tr("Unexpected format of file, it does not contains LibreCAD preferences."));
+                              tr("Unexpected format of file, it does not contain LibreCAD preferences."));
         return false;
     }
     const QJsonObject& groups = doc.object().value("groups").toObject();

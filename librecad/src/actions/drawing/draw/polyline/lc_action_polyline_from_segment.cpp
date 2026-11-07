@@ -323,7 +323,7 @@ void LC_ActionPolylineFromSegment::onMouseLeftButtonRelease(const int status, co
                 commandMessage(tr("No Entity found."));
             }
             else if (m_targetEntity->rtti() == RS2::EntityPolyline && static_cast<RS_Polyline*>(m_targetEntity)->isClosed()) {
-                commandMessage(tr("Entity can not be a closed polyline."));
+                commandMessage(tr("Entity cannot be a closed polyline."));
             }
             else {
                 redraw();

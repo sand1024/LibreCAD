@@ -199,7 +199,7 @@ void LC_ActionDrawParabola4Points::updateActionPrompt() {
             updatePromptTRBack(tr("Specify the fourth point on parabola"));
             break;
         case SetAxis:
-            updatePromptTRBack(tr("Specify the Axis on parabola"));
+            updatePromptTRBack(tr("Specify the axis on parabola"));
             break;
         default:
             updatePrompt();

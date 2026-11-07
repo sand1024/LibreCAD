@@ -110,7 +110,7 @@
       <item row="18" column="3">
        <widget class="QCheckBox" name="chkPropertiesDockItalic">
         <property name="toolTip">
-         <string>Toggle italic slant for Propertise Tool Window.</string>
+         <string>Toggle italic slant for Properties Tool Window.</string>
         </property>
         <property name="text">
          <string>Italic</string>

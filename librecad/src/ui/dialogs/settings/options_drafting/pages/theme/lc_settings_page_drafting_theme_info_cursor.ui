@@ -99,7 +99,7 @@ relative coordinates text.</string>
         <property name="toolTip">
          <string>Informational Cursor Font
 
-Font family  used for drawing elements of 
+Font family used for drawing elements of
 Informational Cursor around to the crosshair.</string>
         </property>
        </widget>
@@ -164,7 +164,7 @@ command prompts and action hints.</string>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Informational Cursor is an overlay that displays real-time context, tool prompt and tips, and snapping details directly next to your mouse pointer inside the drawing window. There are 4 informational areas displayed around snap point.</string>
+         <string>Informational Cursor is an overlay that displays real-time context, tool prompt and tips, and snapping details directly next to your mouse pointer inside the drawing window. There are 4 informational areas displayed around snapped point.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

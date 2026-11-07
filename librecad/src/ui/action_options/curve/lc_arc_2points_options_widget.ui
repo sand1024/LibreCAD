@@ -58,7 +58,7 @@
    <item row="0" column="2">
     <widget class="QLabel" name="lHeight">
      <property name="toolTip">
-      <string>Height of the arc (the distanсe between chord and top arc point)</string>
+      <string>Height of the arc (the distance between chord and top arc point)</string>
      </property>
      <property name="text">
       <string>Height:</string>

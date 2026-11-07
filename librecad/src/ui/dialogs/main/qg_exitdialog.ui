@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>again Still No Text supplied.</string>
+      <string></string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

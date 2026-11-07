@@ -46,22 +46,22 @@ void LC_PasteTransformOptionsFiller::fillToolOptionsContainer(LC_PropertyContain
                }, container);
 
     addIntSpinbox(
-        {"a_x_number", tr("Columns number"), tr("Array columns number")}, [action]() -> int { return action->getArrayXCount(); },
+        {"a_x_number", tr("Column number"), tr("Array columns number")}, [action]() -> int { return action->getArrayXCount(); },
         [action](int val) -> void { action->setArrayXCount(val); }, container, 1, -1,
         [action](LC_PropertyViewDescriptor&) -> bool { return !action->isArrayCreated(); });
 
     addIntSpinbox(
-        {"a_y_number", tr("Rows number"), tr("Array rows number")}, [action]() -> int { return action->getArrayYCount(); },
+        {"a_y_number", tr("Row number"), tr("Array rows number")}, [action]() -> int { return action->getArrayYCount(); },
         [action](int val) -> void { action->setArrayYCount(val); }, container, 1, -1,
         [action](LC_PropertyViewDescriptor&) -> bool { return !action->isArrayCreated(); });
 
     addLinearDistance(
-        {"a_x_spacing", tr("Columns spacing"), tr("Spacing between insertion points of entities in columns")},
+        {"a_x_spacing", tr("Column spacing"), tr("Spacing between insertion points of entities in columns")},
         [action]() { return action->getArraySpacingX(); }, [action](double val) { action->setArraySpacingX(val); }, container,
         [action](LC_PropertyViewDescriptor&) -> bool { return !action->isArrayCreated(); });
 
     addLinearDistance(
-        {"a_y_spacing", tr("Rows spacing"), tr("Spacing between entities insertion points in rows")},
+        {"a_y_spacing", tr("Row spacing"), tr("Spacing between entities insertion points in rows")},
         [action]() { return action->getArraySpacingY(); }, [action](double val) { action->setArraySpacingY(val); }, container,
         [action](LC_PropertyViewDescriptor&) -> bool { return !action->isArrayCreated(); });
 

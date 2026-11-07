@@ -142,7 +142,7 @@ drawn around snap point (if any).  </string>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Position of snapped point may be higlighted by Snap Indicator.&lt;br&gt;Indicator includes lines and indicator shape, and its parameteres may be customized below.&lt;br&gt;
+         <string>Position of snapped point may be highlighted by Snap Indicator.&lt;br&gt;Indicator includes lines and indicator shape, and its parameters may be customized below.&lt;br&gt;
 Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
         </property>
         <property name="wordWrap">
@@ -176,7 +176,7 @@ Note: Snap indicator is shown in fixed position in preview and does not follow c
         <property name="toolTip">
          <string>Snap Crosshair Size
 
-Size of crosshair and adapive lines in percents
+Size of crosshair and adaptive lines in percents
 of drawing area width. 
 100% means lines are drawn from snap point
 to edges of the drawing area.</string>
@@ -385,7 +385,7 @@ rays or tangent guiding lines).</string>
       <item row="4" column="1">
        <widget class="QSpinBox" name="sbVSHighlightedVertexSize">
         <property name="toolTip">
-         <string>Higlighted Guiding Point
+         <string>Highlighted Guiding Point
 
 Size of the marker used to draw guiding point
 that is added to Visual Snap system.</string>
@@ -411,7 +411,7 @@ that is added to Visual Snap system.</string>
       <item row="2" column="1">
        <widget class="QSpinBox" name="sbVSVertexSize">
         <property name="toolTip">
-         <string>Guding Point Size
+         <string>Guiding Point Size
 
 Size of marker for visual snap guiding points, in screen pixels.
 </string>

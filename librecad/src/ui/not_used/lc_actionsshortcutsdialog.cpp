@@ -191,13 +191,13 @@ void LC_ActionsShortcutsDialog::reportLoadResult(const int loadResult) const {
             break;
         }
         case LC_ShortcutsStorage::ERROR_FILE: {
-            showIOInfoDialog(true, false, tr("Can't read provided file - please check that it is exists and it is allowed to read from it."));
+            showIOInfoDialog(true, false, tr("Can't read provided file - please check that it exists and it is allowed to read from it."));
             break;
         }
         case LC_ShortcutsStorage::ERROR_WRONG_DTD: {
             showIOInfoDialog(true, false, tr(
                                  "Shortcuts mappings were not imported.\n\n "
-                                 "Provided file does exists, however it does not contain LibreCAD shortcuts mapping."));
+                                 "Provided file does exist, however it does not contain LibreCAD shortcuts mapping."));
             break;
         }
         case LC_ShortcutsStorage::ERROR_PARSE: {

@@ -75,7 +75,7 @@
          <string>Draw subtle guidelines linking child nodes to parents.</string>
         </property>
         <property name="text">
-         <string>Draw tree node connecting guidelines</string>
+         <string>Draw tree nodes connecting guidelines</string>
         </property>
        </widget>
       </item>

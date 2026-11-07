@@ -28,7 +28,7 @@
 void LC_PolygonOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
     auto action = static_cast<LC_ActionDrawPolygonBase*>(m_action);
 
-    addIntSpinbox({"a_rays_number", tr("Edges number"), tr("Number of edges")}, [action]()-> int {
+    addIntSpinbox({"a_rays_number", tr("Edge number"), tr("Number of edges")}, [action]()-> int {
                       return action->getNumber();
                   }, [action](int val)-> void {
                       action->setNumber(val);
@@ -40,7 +40,7 @@ void LC_PolygonOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* con
                    action->setPolyline(val);
                }, container);
 
-    addBoolean({"a_rounded", tr("Rounded"), tr("If checked, vertexes of polygon will be rounded")}, [action]()-> bool {
+    addBoolean({"a_rounded", tr("Rounded"), tr("If checked, vertices of polygon will be rounded")}, [action]()-> bool {
                    return action->isCornersRounded();
                }, [action](bool val)-> void {
                    action->setCornersRounded(val);

@@ -217,7 +217,8 @@ overlay, in points. </string>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>The Relative Point Input Assistant is an interactive, on-screen helper overlay that simplifies the process of placing new coordinates relative to the last active point (Relative Zero) without needing to type syntax blindly into the command line.&lt;br&gt;It is is available in any place where coordinate is requested by the active command and could be invoked by configurable keyboard shortcuts.</string>
+         <string>The Relative Point Input Assistant is an interactive, on-screen helper overlay that simplifies the process of placing new coordinates relative to the last active point (Relative Zero) without needing to type syntax blindly into the command line.
+It is available in any place where coordinate is requested by the active command and could be invoked by configurable keyboard shortcuts.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -314,7 +315,7 @@ the crosshair center and areas text labels.</string>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Informational Cursor is overlay that displays real-time context, tool tips, and snapping details directly next to your mouse pointer inside the drawing window.</string>
+         <string>Informational Cursor is an overlay that displays real-time context, tool tips, and snapping details directly next to your mouse pointer inside the drawing window.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

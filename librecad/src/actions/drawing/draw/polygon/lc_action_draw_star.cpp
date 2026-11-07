@@ -653,7 +653,7 @@ void LC_ActionDrawStar::updateActionPrompt() {
             updatePromptTRBack(tr("Set inner point"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetRadiuses:
-            updatePromptTRBack(tr("Set rounding radiuses (outer, inner)"));
+            updatePromptTRBack(tr("Set rounding radii (outer, inner)"));
             break;
         case SetRays:
             updatePromptTRBack(tr("Set rays number"));

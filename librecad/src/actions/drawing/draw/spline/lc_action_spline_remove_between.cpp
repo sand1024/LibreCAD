@@ -38,7 +38,7 @@ void LC_ActionSplineRemoveBetween::doTriggerOther() {
 }
 
 void LC_ActionSplineRemoveBetween::doOnEntityNotCreated() {
-    commandMessage(tr("Not enough points remains for the spline"));
+    commandMessage(tr("Not enough points remain for the spline"));
 }
 
 void LC_ActionSplineRemoveBetween::onMouseMove(const RS_Vector mouse, const int status, const LC_MouseEvent* e) {
@@ -234,7 +234,7 @@ void LC_ActionSplineRemoveBetween::updateActionPrompt() {
         }
         case SetControlPoint: {
             updatePromptTRCancel(tr("Select second point for deletion"),
-                                 m_splineIsClosed ? MOD_SHIFT_LC(tr("Delete from endpoints TO selected points")) : MOD_NONE);
+                                 m_splineIsClosed ? MOD_SHIFT_LC(tr("Delete from endpoints to selected points")) : MOD_NONE);
             break;
         }
         default:

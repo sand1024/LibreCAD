@@ -1049,7 +1049,7 @@
           <item row="5" column="0">
            <widget class="QLabel" name="lblTextGapFromDimLine">
             <property name="text">
-             <string>Broken dim line text gap:</string>
+             <string>Broken dimension line text gap:</string>
             </property>
            </widget>
           </item>
@@ -1108,7 +1108,7 @@
              <string>Draws dimension lines between the measured points even when the arrowheads are placed outside the measured points. (DIMTOFL system variable)</string>
             </property>
             <property name="text">
-             <string>Draw dim line betwen ext lines</string>
+             <string>Draw dim line between ext lines</string>
             </property>
            </widget>
           </item>
@@ -1175,7 +1175,7 @@
              <string>If selected, moves the dimension line whenever dimension text is moved. (DIMTMOVE system variable)</string>
             </property>
             <property name="text">
-             <string>Beside the dimention line</string>
+             <string>Beside the dimension line</string>
             </property>
            </widget>
           </item>
@@ -1300,7 +1300,7 @@
              <string>Always places text between extension lines. (DIMTIX system variable)</string>
             </property>
             <property name="text">
-             <string>Always fit text between ext lines</string>
+             <string>Always fit text between extension lines</string>
             </property>
            </widget>
           </item>
@@ -1359,7 +1359,7 @@
              <item row="0" column="1">
               <widget class="QCheckBox" name="cbAngularZerosTrailing">
                <property name="toolTip">
-                <string>Controls the suppression of  trailing zeros. (DIMAZIN system variable)</string>
+                <string>Controls the suppression of trailing zeros. (DIMAZIN system variable)</string>
                </property>
                <property name="text">
                 <string>Trailing</string>
@@ -1379,7 +1379,7 @@
           <item row="1" column="1">
            <widget class="QG_ColorBox" name="cbAngularPrecision">
             <property name="toolTip">
-             <string>Sets the number of decimal places for angular dimensions. DIMADEC system variable)</string>
+             <string>Sets the number of decimal places for angular dimensions. (DIMADEC system variable)</string>
             </property>
            </widget>
           </item>

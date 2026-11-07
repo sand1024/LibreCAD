@@ -32,7 +32,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Import of settings from external file. Existing values will be overriden by imported values. </string>
+         <string>Import of settings from external file. Existing values will be overridden by imported values. </string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -70,7 +70,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Perform export of system settings into external file that may be used for settings exchange.. </string>
+         <string>Perform export of system settings into external file that may be used for settings exchange.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -134,7 +134,7 @@
          <string>Restores the program settings to its original state</string>
         </property>
         <property name="text">
-         <string>Reset All Settings to Defaults Values</string>
+         <string>Reset All Settings to Default Values</string>
         </property>
         <property name="icon">
          <iconset resource="../../../../../../../res/icons/icons.qrc">
@@ -188,7 +188,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Use the button to resets ALL settings to their default values. </string>
+         <string>Use the button to reset ALL settings to their default values. </string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

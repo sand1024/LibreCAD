@@ -471,7 +471,7 @@
                </font>
               </property>
               <property name="toolTip">
-               <string>Indicates whether style is overriden for specific entity (and so is unique for it).</string>
+               <string>Indicates whether style is overridden for specific entity (and so is unique for it).</string>
               </property>
               <property name="text">
                <string>TextLabel</string>

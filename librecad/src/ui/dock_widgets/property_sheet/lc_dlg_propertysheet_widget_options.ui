@@ -43,7 +43,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbShowSingelEntityCommands">
         <property name="toolTip">
-         <string>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</string>
+         <string>If selected, in case there is only one entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</string>
         </property>
         <property name="text">
          <string>Show single entity commands</string>
@@ -102,7 +102,7 @@
       <item row="4" column="0">
        <widget class="QCheckBox" name="cbUCS">
         <property name="toolTip">
-         <string>User coordinates system sleection and related operations</string>
+         <string>User coordinate system selection and related operations</string>
         </property>
         <property name="text">
          <string>User Coordinate system (UCS)</string>

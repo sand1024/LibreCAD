@@ -95,8 +95,8 @@ void LC_LineAngleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* c
         if (hasCustomAnglesBasis) {
             addBoolean({
                            "a_toBasis",
-                           tr("To Angles Basis"),
-                           tr("If selected, line will be orhotogonal to axis of angles basis. Otherwise - to screen axis")
+                           tr("To Angle Reference"),
+                           tr("If selected, line will be orthogonal to axis of angle reference. Otherwise - to screen axis")
                        }, [action]()-> bool {
                            return action->isInAngleBasis();
                        }, [action](bool val)-> void {

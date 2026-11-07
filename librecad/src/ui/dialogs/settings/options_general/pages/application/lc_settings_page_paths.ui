@@ -123,7 +123,7 @@ Path to file with variables</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Drawings Templates DirectorybbDirectory  </string>
+         <string>Drawings Templates Directory</string>
         </property>
        </widget>
       </item>

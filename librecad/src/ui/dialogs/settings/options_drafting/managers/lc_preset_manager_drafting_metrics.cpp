@@ -191,7 +191,7 @@ LC_PresetManagerUIStrings LC_PresetManagerDraftingMetrics::presetStrings() const
     s.labelText = tr("Sizing profile:");
     s.selectToolTip = tr("Select a display sizing and density profile.");
     s.saveToolTip = tr("Save current sizing profile.");
-    s.saveAsToolTip = tr("Save current sizes as a new custom profile.");
+    s.saveAsToolTip = tr("Save current size metrics set as a new custom profile.");
     s.deleteToolTip = tr("Permanently delete the selected custom sizing profile.");
     s.applyToolTip = tr("Apply the active sizing profile to the viewport.");
     s.revertToolTip = tr("Discard modifications and reload the sizing profile as saved on disk.");

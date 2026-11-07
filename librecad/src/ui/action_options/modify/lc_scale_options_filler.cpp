@@ -43,7 +43,7 @@ void LC_ScaleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                   action->setExplicitFactor(val);
               }, container);
 
-    addLinearDistance({"a_factorX", tr("Factor X"), tr("Scale factor for X axis")}, [action]() {
+    addLinearDistance({"a_factorX", tr("Factor X"), tr("Scale factor for X-axis")}, [action]() {
                           return action->getFactorX();
                       }, [action](double val) {
                           action->setFactorX(val);
@@ -51,7 +51,7 @@ void LC_ScaleOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* conta
                           return action->isExplicitFactor();
                       });
 
-    addLinearDistance({"a_factorY", tr("Factor Y"), tr("Scale factor for Y axis")}, [action]() {
+    addLinearDistance({"a_factorY", tr("Factor Y"), tr("Scale factor for Y-axis")}, [action]() {
                           return action->getFactorX();
                       }, [action](double val) {
                           action->setFactorX(val);

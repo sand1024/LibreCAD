@@ -210,7 +210,7 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(const LC_MouseEvent* e,
                     } else { // lines may merge with angle
                         if (joinData->areLinesAlreadyIntersected()){
                             // both lines are already crossed, do nothing
-                            commandMessage(tr("Lines already intersects, can't merge"));
+                            commandMessage(tr("Lines already intersect, can't merge"));
                             delete joinData;
                         } else {
                             // check whether intersection is on the first line.

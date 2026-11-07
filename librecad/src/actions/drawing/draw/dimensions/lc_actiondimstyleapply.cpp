@@ -161,7 +161,7 @@ void LC_ActionDimStyleApply::onMouseRightButtonRelease(const int status, [[maybe
 void LC_ActionDimStyleApply::updateActionPrompt(){
     switch (getStatus()) {
         case SelectEntity:
-            updatePromptTRCancel(tr("Specify dimension to pick the style"));
+            updatePromptTRCancel(tr("Specify dimension to pick style"));
             break;
         case ApplyToEntity:
             updatePromptTRCancel(tr("Specify dimension to apply style"), MOD_SHIFT_LC(tr("Do not apply style override")));

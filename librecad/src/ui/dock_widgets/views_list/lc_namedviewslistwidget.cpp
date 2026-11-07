@@ -274,7 +274,7 @@ void LC_NamedViewsListWidget::removeAllViews() {
     if (m_currentViewList->count() > 0) {
         bool remove = false;
         const int result = QMessageBox::question(this, tr("Delete View"),
-                                                 tr("Are you sure to delete ALL views?\n Warning: this action can NOT be undone!"),
+                                                 tr("Are you sure to delete ALL views?\nWarning: this action can NOT be undone!"),
                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         remove = result == QMessageBox::Yes;
 
@@ -299,7 +299,7 @@ void LC_NamedViewsListWidget::removeView() {
                         const QString viewName = selectedView->getName();
                         const int result = QMessageBox::question(this, tr("Delete View"),
                                                                  tr(
-                                                                     "Are you sure to delete view\n \"%1\"?\n Warning: this action can NOT be undone!")
+                                                                     "Are you sure to delete view\n \"%1\"?\nWarning: this action can NOT be undone!")
                                                                 .arg(viewName), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
                         remove = result == QMessageBox::Yes;
                     }
@@ -401,7 +401,7 @@ void LC_NamedViewsListWidget::renameExistingView(LC_View* selectedView) {
         if (ok) {
             text = text.trimmed();
             if (text.isEmpty()) {
-                QMessageBox::warning(this, tr("View Rename"), tr("Empty name of View is not allowed"), QMessageBox::Close,
+                QMessageBox::warning(this, tr("Rename View"), tr("Empty name of View is not allowed"), QMessageBox::Close,
                                      QMessageBox::Close);
             }
             else {
@@ -411,7 +411,7 @@ void LC_NamedViewsListWidget::renameExistingView(LC_View* selectedView) {
                     tryRename = false;
                 }
                 else if (existingView != selectedView) {
-                    QMessageBox::warning(this, tr("View Rename"), tr("View with provided name already exists, select another one"),
+                    QMessageBox::warning(this, tr("Rename View"), tr("View with provided name already exists, select another one"),
                                          QMessageBox::Close, QMessageBox::Close);
                 }
             }

@@ -27,7 +27,7 @@
 #include "ui_lc_settings_page_drafting_theme_coordinate_system_origin.h"
 
 LC_SettingsPageDraftingThemeCoordinateSystemOrigin::LC_SettingsPageDraftingThemeCoordinateSystemOrigin(QObject* parent)
-    : LC_SettingsPageBase(tr("Coordinates System"),
+    : LC_SettingsPageBase(tr("Coordinate System"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_CoordinatesOrigin::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingThemeCoordinateSystemOrigin>()) {

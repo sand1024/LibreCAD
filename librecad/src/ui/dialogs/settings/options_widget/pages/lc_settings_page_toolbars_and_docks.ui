@@ -26,7 +26,7 @@
    <item row="4" column="0">
     <widget class="QGroupBox" name="gbCADWidgets">
      <property name="title">
-      <string>CAD Tools Windows</string>
+      <string>CAD Tools Window</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_cadWidgets">
       <item row="4" column="0" colspan="2">
@@ -382,10 +382,10 @@ Icon size for tool buttons within tools window </string>
         <property name="toolTip">
          <string>Title Layout
 
-If selected, title bar for Tool Winwos will be vertical. Otherwise, it will be horizontal.</string>
+If selected, title bar for Tool Windows will be vertical. Otherwise, it will be horizontal.</string>
         </property>
         <property name="text">
-         <string>Titlebar is vertical</string>
+         <string>Title bar is vertical</string>
         </property>
        </widget>
       </item>
@@ -557,13 +557,13 @@ Size of icons that are shown by buttons in the toolbars.</string>
    <item row="2" column="1">
     <widget class="QGroupBox" name="gbStatusBar">
      <property name="title">
-      <string>Classic Statusbar</string>
+      <string>Classic Status Bar</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_statusbar">
       <item row="0" column="0">
        <widget class="QCheckBox" name="cbAllowStatusbarHeight">
         <property name="toolTip">
-         <string>Statusbar Height
+         <string>Status Bar Height
 
 Explicitly set the height of the classic status bar.</string>
         </property>
@@ -596,7 +596,7 @@ Minimum height of the &quot;classical&quot; status bar in pixels.</string>
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbAllowStatusbarFontSize">
         <property name="toolTip">
-         <string>Statusbar Font Size
+         <string>Status Bar Font Size
 
 Explicitly set the font size of the classic status bar.</string>
         </property>
@@ -608,7 +608,7 @@ Explicitly set the font size of the classic status bar.</string>
       <item row="1" column="1">
        <widget class="QSpinBox" name="sbStatusbarFontSize">
         <property name="toolTip">
-         <string>Statusbar Font Size
+         <string>Status Bar Font Size
 
 Status bar font size in points.</string>
         </property>
@@ -635,7 +635,7 @@ Status bar font size in points.</string>
       <string/>
      </property>
      <property name="text">
-      <string>Configure toolbars icons, classic status bar (if enabled), general docking capabilities and appearance of Tool Windows, including docked tabified state of them..</string>
+      <string>Configure toolbars icons, classic status bar (if enabled), general docking capabilities and appearance of Tool Windows, including docked tabified state of them.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -34,7 +34,7 @@
       <item row="2" column="3">
        <widget class="QPushButton" name="btnReset">
         <property name="toolTip">
-         <string>Reset shortcut for current action to it's default value</string>
+         <string>Reset shortcut for current action to its default value</string>
         </property>
         <property name="text">
          <string>Reset</string>
@@ -217,7 +217,7 @@
         <item>
          <widget class="QCheckBox" name="cbMatchHighlight">
           <property name="toolTip">
-           <string>If checked, matched actions will be highlighted onlye, otherwide - non-matched actions are hidden</string>
+           <string>If checked, matched actions will be highlighted only, otherwise - non-matched actions are hidden</string>
           </property>
           <property name="text">
            <string>Highlight</string>

@@ -44,11 +44,11 @@ void LC_MatchDescriptorSpline::init(QMap<RS2::EntityType, LC_EntityMatchDescript
 
     entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](const RS_Spline* e) {
         return e->getControlPoints();
-    }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
+    }, tr("Vertex X"), tr("X coordinate for one of vertices"));
 
     entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](const RS_Spline* e) {
         return e->getControlPoints();
-    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
+    }, tr("Vertex Y"), tr("Y coordinate for one of vertices"));
 
     entity->addBoolean("length", [](const RS_Spline* e) {
         return e->getLength();

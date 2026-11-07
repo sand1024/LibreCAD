@@ -33,7 +33,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbSilentUpdate">
         <property name="toolTip">
-         <string>If checked and during creation the view with entered name already exists, it will be updated by new position. Otherwise, unique name of new view will be required.</string>
+         <string>If checked and during creation the view with entered name already exists, it will be updated by new position. Otherwise, a unique name of new view will be required.</string>
         </property>
         <property name="text">
          <string>Silently update existing view with same name by created one</string>
@@ -92,10 +92,10 @@
       <item row="0" column="1">
        <widget class="QCheckBox" name="cbShowTooltip">
         <property name="toolTip">
-         <string>If show, tooltip with additional information about view will be shown for table item.</string>
+         <string>If checked, tooltip with additional information about view will be shown for table item.</string>
         </property>
         <property name="text">
-         <string>Toolip with view details for table items</string>
+         <string>Tooltip with view details for table items</string>
         </property>
        </widget>
       </item>
@@ -191,7 +191,7 @@
       <item row="0" column="0" colspan="3">
        <widget class="QCheckBox" name="cbSingleClickRestore">
         <property name="toolTip">
-         <string>If enabled, click on the view table item will restore view. Otherwise, view should be restored explicitly.</string>
+         <string>If enabled, clicking an item in the view list will restore the view. Otherwise, view should be restored explicitly.</string>
         </property>
         <property name="text">
          <string>Restore view on single click of table item</string>

@@ -106,7 +106,7 @@ void RS_ActionZoomPan::mouseReleaseEvent(QMouseEvent* e) {
 void RS_ActionZoomPan::updateActionPrompt(){
     switch (getStatus()) {
         case SetPanStart:
-            updatePromptTRCancel(tr("Click and drag to pan zoom"));
+            updatePromptTRCancel(tr("Click and drag to pan/zoom"));
             break;
         case SetPanning:
             updatePromptTRCancel(tr("Zoom panning"));

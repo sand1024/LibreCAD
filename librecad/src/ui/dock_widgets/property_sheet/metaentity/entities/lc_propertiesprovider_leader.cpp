@@ -35,7 +35,7 @@ void LC_PropertiesProviderLeader::doCreateEntitySpecificProperties([[maybe_unuse
                                       e->setHasArrwoHead(v);
                                   }, list, contGeometry);
 
-    addReadOnlyString<RS_Leader>({"numberOfPoints", tr("Vertexes count"), tr("Amount of vertexes")},
+    addReadOnlyString<RS_Leader>({"numberOfPoints", tr("Vertices count"), tr("Amount of vertices")},
                                      [this](const RS_Leader* e) -> QString {
                                          const int len = e->getVertexesCount();
                                          QString value = formatInt(len);
@@ -61,7 +61,7 @@ void LC_PropertiesProviderLeader::doCreateEntitySpecificProperties([[maybe_unuse
                                           "pointIdx",
                                           tr("Vertex index") ,
                                           tr("Index of current vertex of leader")
-                                      }, {"vertexValue", tr("Vertex"), tr("Vertext of leader with given index")}, vertexesCount,
+                                      }, {"vertexValue", tr("Vertex"), tr("Vertex of leader with given index")}, vertexesCount,
                                       initialIndex, [leader](const int newValue) -> RS_Vector {
                                           const RS_Vector wcsVector = leader->getVertexAt(newValue - 1);
                                           return wcsVector;

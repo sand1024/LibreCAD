@@ -68,7 +68,7 @@
       <item>
        <widget class="QLabel" name="lblSemanticInfo">
         <property name="text">
-         <string>Default values of colors used by the appplication. They are applicable if native UI theme is selected. For Fusion theme, values of these colors are managed by Color Palette page.</string>
+         <string>Default values of colors used by the application. They are applicable if native UI theme is selected. For Fusion theme, values of these colors are managed by Color Palette page.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

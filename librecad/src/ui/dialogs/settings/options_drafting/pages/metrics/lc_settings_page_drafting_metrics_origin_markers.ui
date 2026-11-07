@@ -55,7 +55,7 @@
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>These are settings for the marker that is shown in the origin point (0,0) of the coordinate system,</string>
+         <string>These are settings for the marker that is shown in the origin point (0,0) of the coordinate system.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

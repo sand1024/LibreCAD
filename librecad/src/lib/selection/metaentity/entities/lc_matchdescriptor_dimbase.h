@@ -207,7 +207,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
         if (radialOrDiametric) {
             entity->addIntEnumDS("dimCenterMark", [](const LC_DimStyle* ds) {
                 return ds->radial()->drawingMode();
-            }, tr("Center mark"), tr("Specified type of center mark on dimension (DIMCEN variable)"), {
+            }, tr("Center mark"), tr("Specifies type of center mark on dimension (DIMCEN variable)"), {
                 {tr("Mark"), LC_DimStyle::Radial::DRAW_CENTERMARKS},
                 {tr("Line"), LC_DimStyle::Radial::DRAW_CENTERLINES},
                 {tr("Right to left"), LC_DimStyle::Radial::DRAW_NOTHING}
@@ -329,7 +329,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
         entity->addColorDS("dimTextColor", [](const LC_DimStyle* ds) -> RS_Color {
             const auto text = ds->text();
             return text->color();
-        }, tr("Text color"), tr("Specifies the color of the dimension of the text (DIMCLRT variable)"));
+        }, tr("Text color"), tr("Specifies the color of the dimension text (DIMCLRT variable)"));
 
         entity->addDoubleDS("dimTextHeight", [](const LC_DimStyle* ds) -> double {
             return ds->text()->height();
@@ -395,7 +395,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
             entity->addIntEnumDS("dimTextArcLen", [](const LC_DimStyle* ds) -> int {
                 return ds->arc()->arcSymbolPosition();
             }, tr("Arc length symbol"), tr("Specifies placement of the arch length dimension symbol (DIMARCSYM variable)"), {
-                {tr("Preceeding dimension text"), LC_DimStyle::Arc::BEFORE},
+                {tr("Preceding dimension text"), LC_DimStyle::Arc::BEFORE},
                 {tr("Above dimension text"), LC_DimStyle::Arc::ABOVE},
                 {tr("None"), LC_DimStyle::Arc::NONE}
             });
@@ -430,7 +430,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
 
         entity->addString("dimTextOverride", [](EntityType* e) -> QString {
             return e->getText();
-        }, tr("Text override"), tr("Specified the text string of dimension (overrides Measurement string)"));
+        }, tr("Text override"), tr("Specifies the text string of dimension (overrides Measurement string)"));
     }
 
     template <typename EntityType>
@@ -441,7 +441,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
                                      return ds->dimensionLine()->isDrawLineIfArrowsOutside();
                                  }, tr("Dim line forced"),
                                  tr("Force drawing dimension line between extension lines,"
-                                     " even if text placed outside of extension lines (DIMTOFL variable)"));
+                                     " even if text is placed outside of extension lines (DIMTOFL variable)"));
 
             if (entityType != RS2::EntityDimDiametric && entityType != RS2::EntityDimRadial) {
                 entity->addBooleanDS("dimLineInside", [](const LC_DimStyle* ds) -> bool {
@@ -453,7 +453,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
         entity->addDoubleDS("dimScale", [](const LC_DimStyle* ds) -> double {
                                 return ds->scaling()->scale();
                             }, tr("Dim scale overall"),
-                            tr("Specifies the overall scale factor applied to properties, that "
+                            tr("Specifies the overall scale factor applied to properties that "
                                 "specify sizes, distances or offsets (DIMSCALE variable)"));
 
         if (notOrdinateDimension) {
@@ -504,7 +504,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
             entity->addIntEnumDS("textInside", [](const LC_DimStyle* ds) -> bool {
                 return ds->text()->extLinesRelativePlacement();
             }, tr("Text inside"), tr("Sets position of dimension text inside extension lines (DIMTIX variable)"), {
-                {tr("Place bettween if has room"), LC_DimStyle::Text::PLACE_BETWEEN_IF_SUFFICIENT_ROOM},
+                {tr("Place between if has room"), LC_DimStyle::Text::PLACE_BETWEEN_IF_SUFFICIENT_ROOM},
                 {tr("Always inside"), LC_DimStyle::Text::PLACE_ALWAYS_INSIDE}
             });
         }
@@ -964,7 +964,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
                                      return inchesSuppress;
                                  }, tr("Alt tolerance suppress zero inches"),
                                  tr(
-                                     "Sets suppression of zero inches for alterate units tolerance values in dimension (DIMALTTZ variable)"));
+                                     "Sets suppression of zero inches for alternate units tolerance values in dimension (DIMALTTZ variable)"));
         }
     }
 

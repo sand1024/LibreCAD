@@ -138,7 +138,7 @@
    <item row="0" column="2">
     <widget class="QToolButton" name="tbPickSize">
      <property name="toolTip">
-      <string>PIck gap size from drawing</string>
+      <string>Pick gap size from drawing</string>
      </property>
      <property name="text">
       <string/>
@@ -152,7 +152,7 @@
    <item row="0" column="3">
     <widget class="QCheckBox" name="cbFree">
      <property name="toolTip">
-      <string>If cheched, the size of the gap is determined by mouse</string>
+      <string>If checked, the size of the gap is determined by mouse</string>
      </property>
      <property name="text">
       <string>Free</string>

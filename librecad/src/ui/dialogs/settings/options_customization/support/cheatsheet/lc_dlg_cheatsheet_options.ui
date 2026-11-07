@@ -148,7 +148,7 @@ Only export items currently visible in the filtered tree view</string>
          <string>Structure Mode
 
 If selected, commands will not be gathered in groups 
-and so just plaing list of them will be generated.</string>
+and so just plain list of them will be generated.</string>
         </property>
         <property name="text">
          <string>Flat mode without groups</string>

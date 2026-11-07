@@ -33,14 +33,14 @@ void LC_PolylineOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* co
         "modeDescriptor",
         {
             {LC_ActionDrawPolyline::SegmentMode::Line, tr("Line")},
-            {LC_ActionDrawPolyline::SegmentMode::Tangential, tr("Arc tangental")},
+            {LC_ActionDrawPolyline::SegmentMode::Tangential, tr("Arc tangential")},
             {LC_ActionDrawPolyline::SegmentMode::TangentalArcFixedRadius, tr("Arc radius")},
             {LC_ActionDrawPolyline::SegmentMode::TangentalArcFixedAngle, tr("Arc angle")},
             {LC_ActionDrawPolyline::SegmentMode::ArcFixedAngle, tr("Arc")}
         }
     };
     // fixme - probably it will be more efficient for the drawing use 5 checkboxes instead of one combobox? that will save 1 click for switch
-    addEnum({"a_segmentType", tr("Segment type"), tr("Defines type of polyline's segment to be created)")}, &modeDescriptor,
+    addEnum({"a_segmentType", tr("Segment type"), tr("Defines type of polyline's segment to be created")}, &modeDescriptor,
             [action]() -> LC_PropertyEnumValueType {
                 return action->getMode();
             }, [action](const LC_PropertyEnumValueType& v)-> void {

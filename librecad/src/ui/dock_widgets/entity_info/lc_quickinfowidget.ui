@@ -86,7 +86,7 @@
          <item>
           <widget class="QToolButton" name="tbEditProperties">
            <property name="toolTip">
-            <string>Properties Edit</string>
+            <string>Properties Editor</string>
            </property>
            <property name="text">
             <string>...</string>

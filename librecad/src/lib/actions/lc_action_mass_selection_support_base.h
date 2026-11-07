@@ -34,6 +34,7 @@
 struct LC_SelectionBoxOptions;
 
 class LC_ActionMassSelectionSupportBase:public LC_UndoableDocumentModificationAction{
+    Q_OBJECT
 public:
     void keyPressEvent(QKeyEvent* e) override;
     void keyReleaseEvent(QKeyEvent* e) override;

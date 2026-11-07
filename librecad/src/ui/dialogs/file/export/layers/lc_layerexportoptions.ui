@@ -70,7 +70,7 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="cbCreateSeparateDrawingForLayer">
         <property name="toolTip">
-         <string>If checked, each original exported layer will be stored in separate drawing. Otherwise, all layers will be in exported to one combined drawing.</string>
+         <string>If checked, each original exported layer will be stored in separate drawing. Otherwise, all layers will be exported to one combined drawing.</string>
         </property>
         <property name="text">
          <string>Export each layer to own drawing file</string>

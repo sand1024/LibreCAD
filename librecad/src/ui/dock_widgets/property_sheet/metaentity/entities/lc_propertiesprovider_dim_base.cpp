@@ -125,7 +125,7 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
         auto clickHandler = []([[maybe_unused]] RS_Dimension* entity, [[maybe_unused]]const int linkIndex) {
             QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(LC_SettingsPagesDrawing::PAGE_DIMENSIONS);
         };
-        LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles.."),
+        LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles..."),
                                                                        tr("Manage Styles\n\nInvokes dimension styles management UI"), "",
                                                                        "", nullptr,
                                                                        clickHandler, tr("Dimension styles management"));
@@ -234,7 +234,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
     const auto cont = createSection(container, {
                                         SECTION_DIM_LINES_AND_ARROWS,
                                         tr("Lines and Arrows"),
-                                        tr("Dimensions lines and arrows setup")
+                                        tr("Dimension lines and arrows setup")
                                     });
 
     auto funPositiveDoubleSpin = []([[maybe_unused]] RS_Dimension* dimension, LC_PropertyViewDescriptor& descriptor)-> bool {
@@ -332,7 +332,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                 {LC_DimStyle::Radial::DRAW_NOTHING, tr("None")}
             }
         };
-        addEnum_DS({"dimCenterMark", tr("Center mark"), tr("Specified type of center mark on dimension (DIMCEN variable)")},
+        addEnum_DS({"dimCenterMark", tr("Center mark"), tr("Specifies type of center mark on dimension (DIMCEN variable)")},
                    &dimjustPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->radial()->drawingMode();
                    }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
@@ -584,7 +584,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                     text->setExplicitBackgroundFillColor(color);
                 }, list, cont);
 
-    addColor_DS({"dimTextColor", tr("Text color"), tr("Specifies the color of the dimension of the text (DIMCLRT variable)")},
+    addColor_DS({"dimTextColor", tr("Text color"), tr("Specifies the color of the dimension text (DIMCLRT variable)")},
                 [](const LC_DimStyle* ds) -> RS_Color {
                     const auto text = ds->text();
                     return text->color();
@@ -697,7 +697,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
         static LC_EnumDescriptor dimarcsymPolicyDescriptor = {
             "DIMARCSYMPolicy",
             {
-                {LC_DimStyle::Arc::BEFORE, tr("Preceeding dimension text")},
+                {LC_DimStyle::Arc::BEFORE, tr("Preceding dimension text")},
                 {LC_DimStyle::Arc::ABOVE, tr("Above dimension text")},
                 {LC_DimStyle::Arc::NONE, tr("None")}
             }
@@ -744,7 +744,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
     addString<RS_Dimension>({
                                 "dimTextOverride",
                                 tr("Text override"),
-                                tr("Specified the text string of dimension (overrides Measurement string)")
+                                tr("Specifies the text string of dimension (overrides Measurement string)")
                             }, [](const RS_Dimension* e) -> QString {
                                 return e->getText();
                             }, [](const QString& v, RS_Dimension* e) -> void {
@@ -760,7 +760,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                           "dimLinOutside",
                           tr("Dim line forced"),
                           tr("Force drawing dimension line between extension lines,"
-                              " even if text placed outside of extension lines (DIMTOFL variable)")
+                              " even if text is placed outside of extension lines (DIMTOFL variable)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->dimensionLine()->isDrawLineIfArrowsOutside();
                       }, [](const bool& v, const LC_DimStyle* ds) -> void {
@@ -789,7 +789,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
     addDouble_DS({
                      "dimScale",
                      tr("Dim scale overall"),
-                     tr("Specifies the overall scale factor applied to properties, that "
+                     tr("Specifies the overall scale factor applied to properties that "
                          "specify sizes, distances or offsets (DIMSCALE variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->scaling()->scale();
@@ -870,7 +870,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
         static LC_EnumDescriptor dimtixDescriptor = {
             "dimtix",
             {
-                {LC_DimStyle::Text::PLACE_BETWEEN_IF_SUFFICIENT_ROOM, tr("Place bettween if has room")},
+                {LC_DimStyle::Text::PLACE_BETWEEN_IF_SUFFICIENT_ROOM, tr("Place between if has room")},
                 {LC_DimStyle::Text::PLACE_ALWAYS_INSIDE, tr("Always inside")}
             }
         };
@@ -1591,7 +1591,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
         addBoolean_DS({
                           "dimTolAltSuppressZeroInch",
                           tr("Alt tolerance suppress zero inches"),
-                          tr("Sets suppression of zero inches for alterate units tolerance values in dimension (DIMALTTZ variable)")
+                          tr("Sets suppression of zero inches for alternate units tolerance values in dimension (DIMALTTZ variable)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isAltTolSuppressZeroInches();

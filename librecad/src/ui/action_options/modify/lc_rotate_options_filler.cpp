@@ -30,21 +30,21 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
     auto action = static_cast<LC_ActionModifyRotate*>(m_action);
 
     addBoolean({"a_centerFirst",tr("By Center"),
-                   tr("If selected, first it is necessary to specify center point. Otherwise - reference point")
+                   tr("If selected, first it is necessary to specify center point. Otherwise, first is reference point.")
                }, [action]()-> bool {
                    return action->isCenterPointFirst();
                }, [action](bool val)-> void {
                    action->setCenterPointFirst(val);
                }, container);
 
-    addBoolean({"a_angleFree", tr("Free Angle"), tr("Specifies whether angle is defined by entered value or by mouse position")},
+    addBoolean({"a_angleFree", tr("Free Angle"), tr("Specifies whether angle is defined by entered value or by mouse position.")},
                [action]()-> bool {
                    return action->isFreeAngle();
                }, [action](bool val)-> void {
                    action->setFreeAngle(val);
                }, container);
 
-    addRawAngle({"a_angle", tr("Angle"), tr("Angle to rotate entity around rotation center point")}, [action]() {
+    addRawAngle({"a_angle", tr("Angle"), tr("Angle to rotate entity around rotation center point.")}, [action]() {
                     return action->getAngle();
                 }, [action](double val) {
                     action->setAngle(val);
@@ -54,7 +54,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                 });
 
     addBoolean({"a_angleRelative",tr("Relative"),
-                   tr("If selected, rotation angle is defined as relative angle to reference point, instead of absolute angle")
+                   tr("If selected, rotation angle is defined as relative angle to reference point, instead of absolute angle.")
                }, [action]()-> bool {
                    return action->isRelativeAngle();
                }, [action](bool val)-> void {
@@ -64,14 +64,14 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                });
 
     addBoolean({"a_rotateTwice",tr("Rotate Twice"),
-                   tr("If checked, second rotation is around reference point")
+                   tr("If checked, second rotation is around reference point.")
                }, [action]()-> bool {
                    return action->isRotateAlsoAroundReferencePoint();
                }, [action](bool val)-> void {
                    action->setRotateAlsoAroundReferencePoint(val);
                }, container);
 
-    addBoolean({"a_angle2Free", tr("Free Angle 2"), tr("Free selection of factor should be performed by mouse if checked")},
+    addBoolean({"a_angle2Free", tr("Free Angle 2"), tr("Free selection of factor should be performed by mouse if checked.")},
                [action]()-> bool {
                    return action->isFreeRefPointAngle();
                }, [action](bool val)-> void {
@@ -80,7 +80,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                    return !action->isRotateAlsoAroundReferencePoint();
                });
 
-    addRawAngle({"a_angle2", tr("Angle2"), tr("Angle for additional rotation around refrence point")}, [action]() {
+    addRawAngle({"a_angle2", tr("Angle2"), tr("Angle for additional rotation around reference point.")}, [action]() {
                     return action->getAngle();
                 }, [action](double val) {
                     action->setAngle(val);
@@ -89,7 +89,7 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                     return !action->isRotateAlsoAroundReferencePoint() || action->isFreeRefPointAngle();
                 });
 
-    addBoolean({"a_angle2Abs", tr("Absolute Angle 2"), tr("If absolute, reference point will be rotated but entity will be rotated by second angle only, otherwise angles will summ up")},
+    addBoolean({"a_angle2Abs", tr("Absolute Angle 2"), tr("If absolute, reference point will be rotated but entity will be rotated by second angle only, otherwise angles will summ up.")},
                   [action]()-> bool {
                       return action->isRefPointAngleAbsolute();
                   }, [action](bool val)-> void {
@@ -98,14 +98,14 @@ void LC_RotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* cont
                       return !action->isRotateAlsoAroundReferencePoint();
                   });
 
-    addBoolean({"a_keepOriginals", tr("Keep originals"), tr("If checked, original entities will survive, otherwise they will be removed")},
+    addBoolean({"a_keepOriginals", tr("Keep originals"), tr("If checked, original entities will survive, otherwise they will be removed.")},
                [action]()-> bool {
                    return action->isKeepOriginals();
                }, [action](bool val)-> void {
                    action->setKeepOriginals(val);
                }, container);
 
-    addBoolean({"a_multiCopy", tr("Multiple"), tr("If checked, multiple copies will be created")}, [action]()-> bool {
+    addBoolean({"a_multiCopy", tr("Multiple"), tr("If checked, multiple copies will be created.")}, [action]()-> bool {
                    return action->isUseMultipleCopies();
                }, [action](bool val)-> void {
                    action->setUseMultipleCopies(val);

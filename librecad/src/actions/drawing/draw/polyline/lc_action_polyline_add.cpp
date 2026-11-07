@@ -180,7 +180,7 @@ void LC_ActionPolylineAdd::updateActionPrompt(){
             updatePromptTRCancel(tr("Specify polyline to add nodes"));
             break;
         case SetAddCoord:
-            updatePromptTRBack(tr("Specify adding node's point"));
+            updatePromptTRBack(tr("Specify adding node point"));
             break;
         default:
             updatePrompt();

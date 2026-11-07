@@ -42,30 +42,30 @@ LC_PresetManagerMenus::LC_PresetManagerMenus(LC_GraphicViewContextMenuProvider* 
 LC_PresetManagerUIStrings LC_PresetManagerMenus::presetStrings() const {
     LC_PresetManagerUIStrings s;
     s.defaultPresetName = tr("Default Compact");
-    s.labelText = tr("Menus scheme:");
-    s.selectToolTip = tr("Select a custom popup menus scheme or load defaults.");
-    s.saveToolTip = tr("Save changes directly to active menus scheme.");
+    s.labelText = tr("Menu scheme:");
+    s.selectToolTip = tr("Select a custom popup menu scheme or load defaults.");
+    s.saveToolTip = tr("Save changes directly to active menu scheme.");
     s.saveAsToolTip = tr("Save current menus as a new scheme.");
-    s.deleteToolTip = tr("Permanently delete the selected menus scheme from disk.");
-    s.applyToolTip = tr("Apply the active menus scheme to workspace.");
+    s.deleteToolTip = tr("Permanently delete the selected menu scheme from disk.");
+    s.applyToolTip = tr("Apply the active menu scheme to workspace.");
     s.revertToolTip = tr("Discard modifications and reload scheme as saved on disk.");
-    s.saveAsDialogTitle = tr("Save Menus Scheme As");
-    s.saveAsDialogLabel = tr("Enter unique menus scheme name:");
-    s.defaultNewPresetName = tr("Custom Menus");
-    s.deleteConfirmTitle = tr("Delete Menus Scheme");
-    s.deleteConfirmLabel = tr("Are you sure you want to delete the menus scheme '%1'?");
-    s.exportDialogTitle = tr("Export Menus Scheme");
-    s.importDialogTitle = tr("Import Menus Scheme");
-    s.presetFileFilter = tr("Menus Scheme Files (*%1);All Files (*.*)")
+    s.saveAsDialogTitle = tr("Save Menu Scheme As");
+    s.saveAsDialogLabel = tr("Enter unique menu scheme name:");
+    s.defaultNewPresetName = tr("Custom Menu");
+    s.deleteConfirmTitle = tr("Delete Menu Scheme");
+    s.deleteConfirmLabel = tr("Are you sure you want to delete the menu scheme '%1'?");
+    s.exportDialogTitle = tr("Export Menu Scheme");
+    s.importDialogTitle = tr("Import Menu Scheme");
+    s.presetFileFilter = tr("Menu Scheme Files (*%1);All Files (*.*)")
                              .arg(m_repository != nullptr ? m_repository->getFileExtension() : QString(".lcix"));
 
     s.defaultReadOnlyMessage = tr(
-        "The default menus scheme is a read-only template. To customize popup menus, duplicate it as a custom scheme.");
+        "The default menu scheme is a read-only template. To customize popup menus, duplicate it as a custom scheme.");
     s.duplicateActionText = tr("Duplicate Scheme...");
-    s.saveModifiedPromptTitle = tr("Save Menus Scheme");
-    s.saveModifiedPromptMessage = tr("You have unsaved changes to menus scheme '%1'.\n\nDo you want to save them before applying?");
+    s.saveModifiedPromptTitle = tr("Save Menu Scheme");
+    s.saveModifiedPromptMessage = tr("You have unsaved changes to menu scheme '%1'.\n\nDo you want to save them before applying?");
     s.discardConfirmTitle = tr("Discard Changes");
-    s.discardConfirmMessage = tr("You have unsaved modifications to menus scheme '%1'.\n\nAre you sure you want to discard these changes?");
+    s.discardConfirmMessage = tr("You have unsaved modifications to menu scheme '%1'.\n\nAre you sure you want to discard these changes?");
     return s;
 }
 

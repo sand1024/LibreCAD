@@ -89,7 +89,7 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         // ==========================================
         // 3. ANNOTATIONS & MEASUREMENT
         // ==========================================
-        {DIMENSION,     tr("Dimension"),               tr("Dimensions creation commands"),   ":/icons/dim_horizontal.lci",         true, true, true, "Menu:Dimension"},
+        {DIMENSION,     tr("Dimension"),               tr("Dimension creation commands"),   ":/icons/dim_horizontal.lci",         true, true, true, "Menu:Dimension"},
         {INFO,          tr("Info"),                    tr("Informational commands"),         ":/icons/measure.lci",                true, true, true, "Menu:Info"},
 
         // ==========================================
@@ -105,7 +105,7 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         // ==========================================
         // 5. CAD DOCUMENT STRUCTURE & CONTEXT
         // ==========================================
-        {LAYER,         tr("Layer"),                   tr("Layers operations"),              ":/icons/deselect_layer.lci",         false, true, false, "Menu:Layer"},
+        {LAYER,         tr("Layer"),                   tr("Layer operations"),              ":/icons/deselect_layer.lci",         false, true, false, "Menu:Layer"},
         {ENTITY_LAYER,  tr("Entity Layer"),            tr("Entity's Layer"),                 ":/icons/layer_list.lci",             false, true, false},
         {BLOCK,         tr("Block"),                   tr("Block related operations"),       ":/icons/create_block.lci",           false, true, true,  "Menu:Block"},
         {UCS,           tr("UCS"),                     tr("UCS operations"),                 ":/icons/set_ucs.lci",                true,  true, false, "Menu:UCS"},
@@ -122,7 +122,7 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         {NAMED_VIEWS,   tr("Named Views"),             tr("Persistent Views operations"),    ":/icons/visible.lci",                false, true,  false},
         {WORKSPACES,    tr("Workspaces"),              tr("Workspaces operations"),          ":/icons/workspace.lci",              false, true, true, "Menu:Workspace"},
         {CATEGORIES,    tr("Categories"),              tr("CAD tool categories"),            ":/icons/line_polygon_star.lci",      false, false, false},
-        {CREATORS,      tr("Creators"),                tr("Custom toolbars and menus creators"), ":/icons/create_toolbar.lci",     false, false, false},
+        {CREATORS,      tr("Creators"),                tr("Custom toolbars and menus creator"), ":/icons/create_toolbar.lci",     false, false, false},
         {OPTIONS,       tr("Options"),                 tr("Options management"),             ":/icons/settings.lci",               false, true,  false, "Menu:Options"},
         {INTERACTIVE_PICK, tr("Interactive"),          tr("Interactive Pick"),               ":/icons/interactive_pick_point.lci", true,  false, false},
         {HELP,          tr("Help"),                    tr("Help and Online Documentation"),  ":/icons/help.lci",                   false, false, false, "Menu:Help"},
@@ -238,7 +238,7 @@ void LC_ActionFactory::createBuiltInSystemShortcutActions(QMap<QString, QAction*
         { "SysActionVisualSnap",   tr("Visual Snap Guides"),          QKeySequence(Qt::Key_Tab),                       tr("Creates visual snap guides for current point.") },
         { "SysActionModifierShift",tr("Action Modifier"),             QKeySequence(Qt::Key_Shift),                     tr("Current Action context-aware modifier (angle snap, alt mode etc.).") },
         { "SysActionModifierCTRL", tr("Action Modifier"),             QKeySequence(Qt::Key_Control),                   tr("Current Action context-aware modifier (various modes).") },
-        { "SysActionSelectionEnd", tr("Finsh Selection"),             QKeySequence(Qt::Key_Return),                    tr("Ends entities selection step in selection-aware actions.") },
+        { "SysActionSelectionEnd", tr("Finish Selection"),             QKeySequence(Qt::Key_Return),                    tr("Ends entities selection step in selection-aware actions.") },
         { "SysActionSelectionEnd1", tr("Finish Selection"),           tr("CTRL+Left Click"),                  tr("Ends entities selection step in selection-aware actions.") },
 
         // --- Command Line Navigation ---
@@ -395,7 +395,7 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
         {"DrawLineVertical",         RS2::ActionDrawLineVertical,        tr("Vertical"),              ":/icons/line_vertical.lci",             tr("Draws strictly vertical lines through picked points.")},
         {"DrawLineFree",             RS2::ActionDrawLineFreehand,        tr("&Freehand Line"),        ":/icons/line_freehand.lci",             tr("Draws freehand sketch curves following the cursor trajectory.")},
         {"DrawLineParallel",         RS2::ActionDrawLineParallel,        tr("&Parallel"),             ":/icons/line_parallel.lci",             tr("Draws parallel concentric entities at a specified offset distance.")},
-        {"DrawLineParallelThrough",  RS2::ActionDrawLineParallelThrough, tr("Parallel through point"),":/icons/line_parallel_p.lci",           tr("Draws parallel entities passing through a specified point.")},
+        {"DrawLineParallelThrough",  RS2::ActionDrawLineParallelThrough, tr("Parallel through Point"),":/icons/line_parallel_p.lci",           tr("Draws parallel entities passing through a specified point.")},
         {"DrawLineBisector",         RS2::ActionDrawLineBisector,        tr("Bisector"),              ":/icons/line_bisector.lci",             tr("Draws angle bisectors between two intersecting lines.")},
         {"DrawLineTangent1",         RS2::ActionDrawLineTangent1,        tr("Tangent (P,C)"),         ":/icons/line_tangent_pc.lci",           tr("Draws lines tangent to an arc or circle from a point.")},
         {"DrawLineTangent2",         RS2::ActionDrawLineTangent2,        tr("Tangent (C,C)"),         ":/icons/line_tangent_cc.lci",           tr("Draws lines tangent to two existing circles or arcs.")},
@@ -405,12 +405,12 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
         {"DrawLineRel",              RS2::ActionDrawSnakeLine,           tr("Snake"),                 ":/icons/line_rel.lci",                  tr("Draws continuous connected perpendicular snake lines.")},
         {"DrawLineRelX",             RS2::ActionDrawSnakeLineX,          tr("Snake (X)"),             ":/icons/line_rel_x.lci",                tr("Draws snake lines aligned along the X axis.")},
         {"DrawLineRelY",             RS2::ActionDrawSnakeLineY,          tr("Snake (Y)"),             ":/icons/line_rel_y.lci",                tr("Draws snake lines aligned along the Y axis.")},
-        {"DrawLineAngleRel",         RS2::ActionDrawLineAngleRel,        tr("Angle From Line"),       ":/icons/line_angle_rel.lci",            tr("Draws lines at a relative angle from an existing reference line.")},
-        {"DrawLineOrthogonalRel",    RS2::ActionDrawLineOrthogonalRel,   tr("Orthogonal From Line"),  ":/icons/line_ortho_rel.lci",            tr("Draws perpendicular lines starting from a relative offset point.")},
-        {"DrawLineFromPointToLine",  RS2::ActionDrawLineFromPointToLine, tr("From Point To Line"),    ":/icons/line_to_ortho.lci",             tr("Draws perpendicular dropped lines from a point to a target line.")},
+        {"DrawLineAngleRel",         RS2::ActionDrawLineAngleRel,        tr("Angle from Line"),       ":/icons/line_angle_rel.lci",            tr("Draws lines at a relative angle from an existing reference line.")},
+        {"DrawLineOrthogonalRel",    RS2::ActionDrawLineOrthogonalRel,   tr("Orthogonal from Line"),  ":/icons/line_ortho_rel.lci",            tr("Draws perpendicular lines starting from a relative offset point.")},
+        {"DrawLineFromPointToLine",  RS2::ActionDrawLineFromPointToLine, tr("From Point to Line"),    ":/icons/line_to_ortho.lci",             tr("Draws perpendicular dropped lines from a point to a target line.")},
         {"DrawLineMiddle",           RS2::ActionDrawCenterLine,          tr("Centerline"),            ":/icons/line_middle.lci",               tr("Draws centerline entities midway between two lines.")},
         {"DrawCross",                RS2::ActionDrawCenterMark,          tr("Center Mark"),           ":/icons/cross_circle1.lci",             tr("Draws center mark crosshairs for circles and arcs.")},
-        {"DrawSliceDivideLine",      RS2::ActionDrawSliceDivideLine,     tr("Slice/Divide Line"),     ":/icons/slice_divide.lci",              tr("Divides and cuts a line into equal segmented lengths.")},
+        {"DrawSliceDivideLine",      RS2::ActionDrawSliceDivideLine,     tr("Slice/Divide Line"),     ":/icons/slice_divide.lci",              tr("Divides and cuts a line into equal length segments.")},
         {"DrawSliceDivideCircle",    RS2::ActionDrawSliceDivideCircle,   tr("Slice/Divide Circle"),   ":/icons/slice_divide_circle.lci",       tr("Divides and segments circles or arcs into equal angle sections.")},
         {"DrawLineRadiant",          RS2::ActionDrawLineRadiant,         tr("Radiant Line"),          ":/icons/line_far_point.lci",            tr("Draws radiant construction rays emanating from a center point.")}
     });
@@ -588,7 +588,7 @@ void LC_ActionFactory::createModifyActions(QMap<QString, QAction *> &map, QActio
 
 void LC_ActionFactory::createPenActionsUncheckable(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group, {
-        {"PenSyncFromLayer", RS2::ActionPenSyncFromLayer, tr("Set Active Layer' Pen Current"), ":/icons/back.lci", tr("Synchronizes current pen attributes to match the active layer pen settings.")}
+        {"PenSyncFromLayer", RS2::ActionPenSyncFromLayer, tr("Set Active Layer's Pen Current"), ":/icons/back.lci", tr("Synchronizes current pen attributes to match the active layer pen settings.")}
     });
 }
 void LC_ActionFactory::createPenActions(QMap<QString, QAction *> &map, QActionGroup *group) const {
@@ -772,10 +772,10 @@ void LC_ActionFactory::createSnapExtraActions(QMap<QString, QAction *> &map, QAc
 
 void LC_ActionFactory::createOrderActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const {
     createActionHandlerActions(map, group, {
-        {"OrderBottom",RS2::ActionOrderBottom,tr("Move to Bottom"),    ":/icons/downmost.lci",tr("Sends selected entities to the very bottom of the visual draw order.")},
+        {"OrderBottom",RS2::ActionOrderBottom,tr("Move to Bottom"),    ":/icons/downmost.lci",tr("Sends selected entities to the bottom of the visual draw order.")},
         {"OrderLower", RS2::ActionOrderLower, tr("Lower After Entity"),":/icons/down.lci",    tr("Lowers selected entities one step backward in visual draw order.")},
         {"OrderRaise", RS2::ActionOrderRaise, tr("Raise Over Entity"), ":/icons/up.lci",      tr("Raises selected entities one step forward in visual draw order.")},
-        {"OrderTop",   RS2::ActionOrderTop,   tr("Move to Top"),       ":/icons/upmost.lci",  tr("Brings selected entities to the very top of the visual draw order.")}
+        {"OrderTop",   RS2::ActionOrderTop,   tr("Move to Top"),       ":/icons/upmost.lci",  tr("Brings selected entities to the top of the visual draw order.")}
     });
 }
 
@@ -787,7 +787,7 @@ void LC_ActionFactory::createInfoActions(QMap<QString, QAction *> &map, QActionG
         {"InfoDist3",       RS2::ActionInfoDistPoint2Entity,tr("Distance &Point to Entity"),         ":/icons/distance_point_to_entity.lci",   tr("Measures clearance distance between two parallel entities.")},
         {"InfoAngle",       RS2::ActionInfoAngle,           tr("An&gle between two lines"),          ":/icons/angle_line_to_line.lci",         tr("Measures the angle between two selected lines.")},
         {"InfoTotalLength", RS2::ActionInfoTotalLength,     tr("Total &length of selected entities"),":/icons/total_length_selected_entities.lci", tr("Calculates the cumulative perimeter length of selected entities.")},
-        {"InfoArea",        RS2::ActionInfoArea,            tr("Polygonal &Area"),                   ":/icons/polygonal_area.lci",             tr("Calculates the enclosed area and perimeter circumference of a polygon.")},
+        {"InfoArea",        RS2::ActionInfoArea,            tr("Polygonal &Area"),                   ":/icons/polygonal_area.lci",             tr("Calculates the enclosed area and perimeter of a polygon.")},
         {"EntityInfo",      RS2::ActionInfoProperties,      tr("Entity Pro&perties"),                ":/icons/entity_properties_select.lci",   tr("Displays detailed geometry and layer metrics for a clicked entity.")},
         {"PickCoordinates", RS2::ActionInfoPickCoordinates, tr("Collect &Coordinates"),              ":/icons/pick_coordinates.lci",           tr("Collects and logs coordinates sequentially from clicked locations.")},
         {"InfoAngle3Points",RS2::ActionInfoAngle3Points,    tr("Ang&le between 3 points"),           ":/icons/angle_3_points.lci",             tr("Measures the interior angle defined by vertex and two ray points.")}
@@ -904,7 +904,7 @@ void LC_ActionFactory::createOptionsActionsUncheckable(QMap<QString, QAction *> 
 
     createMainWindowActions(map, group, {
         {"OptionsGeneral",      &QC_ApplicationWindow::slotOptionsGeneral,      tr("&Application Preferences"),        ":/icons/settings.lci",          tr("Configures global application settings, paths, and defaults.")},
-        {"OptionsDrafting",     &QC_ApplicationWindow::slotOptionsDrafting,     tr("&Drafting Preferences"),   ":/icons/options_drafting.lci", tr("Customizes visual and other settings that affects drawing area.")},
+        {"OptionsDrafting",     &QC_ApplicationWindow::slotOptionsDrafting,     tr("&Drafting Preferences"),   ":/icons/options_drafting.lci", tr("Customizes visual and other settings that affect drawing area.")},
         {"OptionsCustomization",&QC_ApplicationWindow::slotOptionsCustomization,tr("&Customization"),          ":/icons/options_customize.lci", tr("Customizes keyboard shortcuts, command aliases, menus, and toolbars.")},
         {"OptionsStyling",      &QC_ApplicationWindow::stylingOptionsDialog,    tr("&UI Styling"),             ":/icons/options_styling.lci",   tr("Configures themes, colors, and visual styling for the user interface.")},
         {"ShortcutsOptions",    &QC_ApplicationWindow::slotOptionsShortcuts,    tr("Keyboard Shortcuts"),      ":/icons/shortcuts_settings.lci",tr("Opens keyboard shortcuts customization page.")},

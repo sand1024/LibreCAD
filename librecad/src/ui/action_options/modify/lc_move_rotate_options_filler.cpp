@@ -70,7 +70,7 @@ void LC_MoveRotateOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* 
                    "a_sameAngle",
                    tr("Same angle"),
                    tr(
-                       "If checked, all copies will be rotated by the same agle. Otherwise, angle will be proportional to number of each copy")
+                       "If checked, all copies will be rotated by the same angle. Otherwise, angle will be proportional to number of each copy")
                }, [action]()-> bool {
                    return action->isUseSameAngleForCopies();
                }, [action](bool val)-> void {

@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="lblTopNote">
      <property name="text">
-      <string>Mange command line commands and their aliases. Note that commands collisions are not allowed and should be resolved before keymap saving.</string>
+      <string>Manage command line commands and their aliases. Note that commands collisions are not allowed and should be resolved before keymap saving.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>

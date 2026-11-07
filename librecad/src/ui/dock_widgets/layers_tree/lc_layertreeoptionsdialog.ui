@@ -313,7 +313,7 @@
        <item row="4" column="0">
         <widget class="QCheckBox" name="cbRenameWithPrimary">
          <property name="toolTip">
-          <string>If primary layer is renames, secondary layers are renamed too.</string>
+          <string>If primary layer is renamed, secondary layers are renamed too.</string>
          </property>
          <property name="text">
           <string>Rename secondary layers on primary rename</string>

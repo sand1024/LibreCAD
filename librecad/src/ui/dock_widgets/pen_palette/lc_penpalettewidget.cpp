@@ -430,7 +430,7 @@ void LC_PenPaletteWidget::invokeOptionsDialog(const bool focusOnFile) {
                 QMessageBox::warning(this, tr("Pen palette"),
                                      tr(
                                          "Location of pens file is changed, please restart the application so new pens file will be used.\n\n"
-                                         "Please note that if you'll save pen via editor without restart, current pens from palette will be saved "
+                                         "Please note that if you save pen via editor without restart, current pens from palette will be saved "
                                          "in the new file and therefore existing content of it will be overridden."));
             }
         }
@@ -1451,7 +1451,7 @@ int LC_PenPaletteWidget::invokeItemMultiRemovalDialog(const QList<LC_PenItem*>& 
 void LC_PenPaletteWidget::showNoSelectionDialog(const bool hasOnFrozenLayers, const bool hasOnLockedLayers) const {
     const QString title(QMessageBox::tr("Select Entities "));
     const QStringList text_lines = {
-        QMessageBox::tr("There are no entities that matches pen on visible layers."),
+        QMessageBox::tr("There are no entities match pen on visible layers."),
         (hasOnFrozenLayers) ? QMessageBox::tr("Such entities exist on frozen layers.\n") : "",
         (hasOnLockedLayers) ? QMessageBox::tr("Such entities exist on locked layers.\n") : "",
         QMessageBox::tr("Please use different pen attributes."),
@@ -1477,7 +1477,7 @@ void LC_PenPaletteWidget::showEntitySelectionInfoDialog() {
 bool LC_PenPaletteWidget::invokeUnableToSavePenDataDialog() {
     const QString title(QMessageBox::tr("Saving Pens Data"));
     const QString text = QMessageBox::tr(
-        "Unable to save pens data to specified pens file. Would you like to specify correct path to the file?");
+        "Unable to save pens data to specified pens file. Would you like to specify the correct path to the file?");
     QMessageBox msgBox(QMessageBox::Information, title, text, QMessageBox::Yes | QMessageBox::No);
     const int dlgResult = msgBox.exec();
     const bool result = dlgResult == QMessageBox::Yes;

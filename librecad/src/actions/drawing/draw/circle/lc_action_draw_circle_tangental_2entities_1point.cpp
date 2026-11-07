@@ -338,7 +338,7 @@ void LC_ActionDrawCircleTangental2Entities1Point::updateActionPrompt() {
             updatePromptTRCancel(tr("Specify a line/arc/circle"));
             break;
         case SetCircle2:
-            updatePromptTRBack(tr("Specify the another line/arc/circle"));
+            updatePromptTRBack(tr("Specify another line/arc/circle"));
             break;
         case SetPoint:
             updatePromptTRBack(tr("Specify a point on the tangent circle"));

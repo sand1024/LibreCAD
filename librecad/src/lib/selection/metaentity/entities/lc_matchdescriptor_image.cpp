@@ -52,11 +52,11 @@ void LC_MatchDescriptorImage::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
 
     entity->addDouble("sizeX", [](const RS_Image* e) {
         return e->getData().size.getX();
-    }, tr("Width pixels"), tr("Width of image in pixels"));
+    }, tr("Width in pixels"), tr("Width of image in pixels"));
 
     entity->addDouble("sizeY", [](const RS_Image* e) {
         return e->getData().size.getY();
-    }, tr("Height pixels"), tr("Height of image in pixels"));
+    }, tr("Height in pixels"), tr("Height of image in pixels"));
 
     entity->addLength("width", [](const RS_Image* e) {
         return e->getImageWidth();

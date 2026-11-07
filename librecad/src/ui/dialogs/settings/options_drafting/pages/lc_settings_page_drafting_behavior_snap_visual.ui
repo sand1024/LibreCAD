@@ -108,11 +108,11 @@ If selected, guiding entities will be added for last snapped point only. </strin
         <property name="toolTip">
          <string>Show Far Not Snappable
 
-If selected, guiding entites that are far from the mouse cursor point and
+If selected, guiding entities that are far from the mouse cursor point and
 are not within snap range and therefore will not be snapped 
 will be also shown. 
 That may provide better overview for all possible snap points,
-yet in some cases may visualy overcrowd the snap by guiding entities.
+yet in some cases may visually overcrowd the snap by guiding entities.
 Otherwise, only guiding entities that are within snap range
 and thus may be snapped will be visible.</string>
         </property>
@@ -188,7 +188,7 @@ Otherwise, tangential will not be created.</string>
         <property name="toolTip">
          <string>Relative Rays
 
-If checked, visual snap will also create guiding rays for enpoints of lines from the document,
+If checked, visual snap will also create guiding rays for endpoints of lines from the document,
 added into visual snap with step, similar to angle snap yet which is related to the line's own angle.
 Otherwise, only tangential and normal rays will be considered for vertexes.</string>
         </property>

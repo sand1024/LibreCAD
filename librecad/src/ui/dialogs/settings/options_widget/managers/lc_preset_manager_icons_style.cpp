@@ -45,7 +45,7 @@ LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
     s.revertToolTip = tr("Discard modifications and reload the icon style as saved on disk.");
     s.saveAsDialogTitle = tr("Save Icon Style As");
     s.saveAsDialogLabel = tr("Enter unique icon style name:");
-    s.defaultNewPresetName = tr("Custom Icons Style");
+    s.defaultNewPresetName = tr("Custom Icon Style");
     s.deleteConfirmTitle = tr("Delete Icon Style");
     s.deleteConfirmLabel = tr("Are you sure you want to delete the icon style '%1'?");
     s.presetFileFilter = tr("LibreCAD Icon Style Files (*%1);All Files (*.*)").arg(

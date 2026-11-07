@@ -113,7 +113,7 @@ the Relative Zero marker.</string>
       <item row="2" column="0">
        <widget class="QLabel" name="lblRelZeroColor">
         <property name="text">
-         <string>Relative zero color:</string>
+         <string>Relative Zero color:</string>
         </property>
        </widget>
       </item>
@@ -134,7 +134,7 @@ If coordinates or distances are entered as relative ones, resulting absolute coo
    <item>
     <widget class="QGroupBox" name="groupBox_20">
      <property name="title">
-      <string>Angles Basis Marker</string>
+      <string>Angle Reference Marker</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="2" column="3">
@@ -153,10 +153,10 @@ If coordinates or distances are entered as relative ones, resulting absolute coo
       <item row="4" column="2">
        <widget class="LC_ColorButton" name="pbAnglesMarkAngleRay">
         <property name="toolTip">
-         <string>Base Angle Ray Color
+         <string>Zero Angle Direction Ray Color
 
 Click to choose color for the
-base angle ray.</string>
+zero angle direction ray.</string>
         </property>
        </widget>
       </item>
@@ -165,18 +165,18 @@ base angle ray.</string>
         <property name="toolTip">
          <string>Direction Circle
 
-Click to choose color for the 
- angles direction circle.</string>
+Click to choose color for the
+angle direction circle.</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorAngleRay">
         <property name="toolTip">
-         <string>Base Angle Ray Color
+         <string>Zero Angle Direction Ray Color
 
 Color name or hexadecimal code for
- for Base Angle baseline ray</string>
+Zero Angle direction ray.</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -189,7 +189,7 @@ Color name or hexadecimal code for
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Angles Basis Maker is an overlay that could be drawn in zero point of the coordinate system and which displays current direction of angles (clockwise or counterclockwise), and location of Base Angle. The Base Angle (also known as the angle 0 direction) is the baseline or starting direction from which all other angles are measured and calculated.</string>
+         <string>Angle Reference Maker is an overlay that could be drawn in zero point of the coordinate system and which displays current direction of angles (clockwise or counterclockwise), and location of Base Angle. The Base Angle (also known as the angle 0 direction) is the baseline or starting direction from which all other angles are measured and calculated.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -209,10 +209,10 @@ Color name or hexadecimal code for
       <item row="3" column="1">
        <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorDirection">
         <property name="toolTip">
-         <string>Angles Basis Direction Color
+         <string>Angles Reference Direction Color
 
 Color name or hexadecimal code for
- the angles basis marker</string>
+the angle reference direction marker</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -225,7 +225,7 @@ Color name or hexadecimal code for
       <item row="4" column="0">
        <widget class="QLabel" name="label_29">
         <property name="text">
-         <string>Base angle ray color:</string>
+         <string>Zero Angle direction color:</string>
         </property>
         <property name="buddy">
          <cstring>cbAnglesMarkColorAngleRay</cstring>
@@ -235,7 +235,7 @@ Color name or hexadecimal code for
       <item row="1" column="0" colspan="4">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>By default, the base angle to point due East (horizontally to the right) and angle values increases is counter-clockwise.</string>
+         <string>By default, the Zero Angle direction points to East (horizontally to the right) and angle values increases in counter-clockwise.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -325,7 +325,7 @@ Y axis line.</string>
       <item row="5" column="0">
        <widget class="QLabel" name="lAxisYColor">
         <property name="text">
-         <string>Y-axis color:</string>
+         <string>Y-Axis color:</string>
         </property>
         <property name="buddy">
          <cstring>cbAxisYColor</cstring>
@@ -392,7 +392,7 @@ Click to choose color for the
         <property name="toolTip">
          <string>Extend Axis Lines
 
-If checked, axises will be inifinite lines.</string>
+If checked, axes will be infinite lines.</string>
         </property>
         <property name="text">
          <string>Extend axis lines</string>

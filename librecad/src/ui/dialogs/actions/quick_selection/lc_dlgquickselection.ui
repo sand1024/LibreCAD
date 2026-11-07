@@ -448,7 +448,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Pick X coordinate of point  from drawing</string>
+          <string>Pick X coordinate of point from drawing</string>
          </property>
          <property name="text">
           <string/>
@@ -474,7 +474,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Pick Y coordinate of point  from drawing</string>
+          <string>Pick Y coordinate of point from drawing</string>
          </property>
          <property name="text">
           <string/>
@@ -591,7 +591,7 @@
       <item row="1" column="0">
        <widget class="QRadioButton" name="rbExcludeFromSelectionSet">
         <property name="toolTip">
-         <string>If checked, object that does not match the condition will be included into selection set.</string>
+         <string>If checked, object that does not match the condition will be included in selection set.</string>
         </property>
         <property name="text">
          <string>Exclude from new selection set</string>
@@ -618,7 +618,7 @@
    <item row="0" column="1">
     <widget class="QComboBox" name="cbApplyTo">
      <property name="toolTip">
-      <string>Defines to which objects selection conditions should be applied to</string>
+      <string>Defines to which objects selection conditions should be applied</string>
      </property>
     </widget>
    </item>

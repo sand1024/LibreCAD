@@ -191,7 +191,7 @@ void LC_PropertiesProviderGraphicUCS::createUcsOriginAndDirection(LC_PropertyCon
     const QString strVector = formatter->formatUCSVector(currentUcs->getOrigin());
     const QString originString = QString("[%1]").arg(strVector);
 
-    const LC_Property::Names namesOrigin = {"ucsOrigin", tr("Origin"), tr("Point of coordinates system origin (0,0) in world coordinates")};
+    const LC_Property::Names namesOrigin = {"ucsOrigin", tr("Origin"), tr("Point of coordinate system origin (0,0) in world coordinates")};
     createDirectDelegatedReadonlyString(cont, namesOrigin, originString);
 
     const double xAxisDirection = currentUcs->getXAxisDirection();

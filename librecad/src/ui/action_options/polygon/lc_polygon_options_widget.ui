@@ -67,7 +67,7 @@
    <item row="1" column="8">
     <widget class="QCheckBox" name="cbVertexToVertex">
      <property name="toolTip">
-      <string>If selected, reference points are for vertexes of polygon. Otherwise, they are for middle point of edges. </string>
+      <string>If selected, reference points are for vertices of polygon. Otherwise, they are for middle point of edges. </string>
      </property>
      <property name="text">
       <string>Vertex to Vertex</string>
@@ -77,7 +77,7 @@
    <item row="1" column="5">
     <widget class="QCheckBox" name="cbRadius">
      <property name="toolTip">
-      <string>If checked, vertexes of polygon will be rounded. </string>
+      <string>If checked, vertices of polygon will be rounded. </string>
      </property>
      <property name="text">
       <string>Radius</string>

@@ -29,10 +29,10 @@
    <item row="0" column="0">
     <widget class="QCheckBox" name="cbOnEntity">
      <property name="toolTip">
-      <string>If checked, the point will be always inside selected entity</string>
+      <string>If checked, the point will always be inside selected entity</string>
      </property>
      <property name="text">
-      <string>Snap On Entity</string>
+      <string>Snap on Entity</string>
      </property>
     </widget>
    </item>

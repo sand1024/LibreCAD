@@ -26,7 +26,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Snap functionality is a precision drawing tool that forces cursor to lock exactly onto specific geometric points (defined automatically by current geometry and enabled snap modes). Position of snapped point may be higlighted by Snap Indicator.&lt;br&gt;Indicator contains lines and central shape, both of them are optional.&lt;br&gt;
+      <string>Snap functionality is a precision drawing tool that forces cursor to lock exactly onto specific geometric points (defined automatically by current geometry and enabled snap modes). Position of snapped point may be highlighted by Snap Indicator.&lt;br&gt;Indicator contains lines and central shape, both of them are optional.&lt;br&gt;
 Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
      </property>
      <property name="wordWrap">
@@ -116,7 +116,7 @@ Click to choose color for snap indicator shapes.</string>
       <item row="0" column="0" colspan="5">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Indicators's central shape around snap point could be customized below.</string>
+         <string>Indicator's central shape around snap point could be customized below.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

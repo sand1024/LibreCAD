@@ -32,7 +32,7 @@ void LC_PolygonSideSideOptionsFiller::fillToolOptionsContainer(LC_PropertyContai
     addBoolean({
                    "a_rounded",
                    tr("Vertex to Vertex"),
-                   tr("If selected, reference points are for vertexes of polygon. Otherwise, they are for middle point of edges. ")
+                   tr("If selected, reference points are for vertices of polygon. Otherwise, they are for middle point of edges. ")
                }, [action]()-> bool {
                    return action->isVertexVertexMode();
                }, [action](bool val)-> void {

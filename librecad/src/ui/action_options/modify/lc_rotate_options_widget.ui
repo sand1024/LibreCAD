@@ -86,7 +86,7 @@
    <item row="0" column="18">
     <widget class="QCheckBox" name="cbCurrentAttr">
      <property name="toolTip">
-      <string>If checked, current attributes will be applied to created entities, othewise original ones will be used. </string>
+      <string>If checked, current attributes will be applied to created entities, otherwise original ones will be used. </string>
      </property>
      <property name="text">
       <string>Use Current Attributes</string>
@@ -206,7 +206,7 @@
    <item row="0" column="19">
     <widget class="QCheckBox" name="cbCurrentLayer">
      <property name="toolTip">
-      <string>If checked, new enties will be placed on current layer, otherwise they will be in original layers.</string>
+      <string>If checked, new entities will be placed on current layer, otherwise they will be in original layers.</string>
      </property>
      <property name="text">
       <string>Use Current Layer</string>
@@ -243,7 +243,7 @@
    <item row="0" column="4">
     <widget class="QCheckBox" name="cbFreeAngle">
      <property name="toolTip">
-      <string>Specifies whether angle is defined by entered value or by mouse position</string>
+      <string>Specifies whether angle is defined by entered value or by mouse position.</string>
      </property>
      <property name="text">
       <string>Free</string>
@@ -259,7 +259,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Angle for additional rotation around refrence point</string>
+      <string>Angle for additional rotation around reference point.</string>
      </property>
     </widget>
    </item>
@@ -276,7 +276,7 @@
    <item row="0" column="0">
     <widget class="QCheckBox" name="cbCenterPointFirst">
      <property name="toolTip">
-      <string>If selected, first it is necessary to specify center point. Otherwise - reference point. </string>
+      <string>If selected, first it is necessary to specify center point. Otherwise - reference point.</string>
      </property>
      <property name="text">
       <string>By Center</string>

@@ -27,7 +27,7 @@
 
 
 LC_SettingsPageDraftingMetricsOriginMarkers::LC_SettingsPageDraftingMetricsOriginMarkers(QObject* parent)
-    : LC_SettingsPageBase(tr("Coordinates System"),
+    : LC_SettingsPageBase(tr("Coordinate System"),
                           std::make_unique<LC_LibreCADSettingsBackend>(CFG_CoordinatesOrigin::Group),
                           parent)
     , ui(std::make_unique<Ui::LC_SettingsPageDraftingMetricsOriginMarkers>()) {

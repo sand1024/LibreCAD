@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="lblTopNote">
      <property name="text">
-      <string>Mange keyboard shortcuts keymap using the panel below. Note that shortcuts collisions are not allowed and should be resolved before keymap saving.</string>
+      <string>Manage keyboard shortcuts keymap using the panel below. Note that shortcuts collisions are not allowed and should be resolved before keymap saving.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -153,7 +153,7 @@ Find action by shortcut keys</string>
            <property name="toolTip">
             <string>Cheatsheet
 
-Export cheatsheet with shortccuts as PDF or print...</string>
+Export cheatsheet with shortcuts as PDF or print...</string>
            </property>
            <property name="text">
             <string>Cheatsheet</string>

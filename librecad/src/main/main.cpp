@@ -664,7 +664,7 @@ QPixmap getSplashImage(const std::unique_ptr<QSplashScreen>& splash, const QStri
         splash->setPixmap(splashImage);
         splash->setAttribute(Qt::WA_DeleteOnClose);
         splash->show();
-        splash->showMessage(QObject::tr("Loading.."),
+        splash->showMessage(QObject::tr("Loading..."),
                             Qt::AlignRight|Qt::AlignBottom, Qt::black);
     }
 

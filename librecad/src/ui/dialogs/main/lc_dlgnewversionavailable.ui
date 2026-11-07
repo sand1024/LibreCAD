@@ -83,7 +83,7 @@
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="cbPreReleaseIgnore">
         <property name="toolTip">
-         <string>Check if you prefer not to be notified about this update on subsequent version checks</string>
+         <string>Check if you prefer not to be notified about this update in subsequent version checks</string>
         </property>
         <property name="text">
          <string>Ignore this update</string>
@@ -112,7 +112,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lblEnablePreReleases">
         <property name="text">
-         <string>However, if you'd like to check the most recent and fresh features included into pre-release builds, disable &quot;Ignore pre-release updates&quot; checkbox below.</string>
+         <string>However, if you'd like to check the most recent and fresh features included in pre-release builds, disable &quot;Ignore pre-release updates&quot; checkbox below.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -219,7 +219,7 @@
    <item row="0" column="1">
     <widget class="QGroupBox" name="gbRelease">
      <property name="title">
-      <string>Lateat Release Version</string>
+      <string>Latest Release Version</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
@@ -259,7 +259,7 @@
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="cbReleaseIgnore">
         <property name="toolTip">
-         <string>Check if you prefer not to be notified about this update on subsequent version checks</string>
+         <string>Check if you prefer not to be notified about this update in subsequent version checks</string>
         </property>
         <property name="text">
          <string>Ignore this update</string>

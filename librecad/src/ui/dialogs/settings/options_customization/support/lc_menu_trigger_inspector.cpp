@@ -365,6 +365,6 @@ void LC_MenuTriggerInspector::validateTrigger() {
         ui->bannerStatus->setMessage(warn, LC_SettingsBannerWidget::BannerType::Warning);
     }
     else {
-        ui->bannerStatus->setMessage(tr("Shortcut is valid to use."), LC_SettingsBannerWidget::BannerType::Info);
+        ui->bannerStatus->setMessage(tr("Shortcut is valid for use."), LC_SettingsBannerWidget::BannerType::Info);
     }
 }

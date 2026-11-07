@@ -3265,7 +3265,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="cbAnglesMarkVisible">
             <property name="toolTip">
-             <string>If enabled, angles basis marker will be shown in the orign of coordinates system</string>
+             <string>If enabled, angles basis marker will be shown in the orign of coordinate system</string>
             </property>
             <property name="text">
              <string>Show angles basis marker</string>
@@ -3647,7 +3647,7 @@
           <item row="1" column="0" colspan="3">
            <widget class="QCheckBox" name="cbShowUCSZeroMarker">
             <property name="toolTip">
-             <string>If selected, marker for coodinate system will be shown in zero point of current user coordinates system. </string>
+             <string>If selected, marker for coodinate system will be shown in zero point of current user coordinate system. </string>
             </property>
             <property name="text">
              <string>Show UCS zero marker</string>

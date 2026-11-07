@@ -46,11 +46,11 @@ void LC_MatchDescriptorPolyline::init(QMap<RS2::EntityType, LC_EntityMatchDescri
 
     entity->addContainsXInList<QList<RS_Vector>>("vertexX", [](const RS_Polyline* e) {
         return e->getVertexes();
-    }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
+    }, tr("Vertex X"), tr("X coordinate for one of vertices"));
 
     entity->addContainsYInList<QList<RS_Vector>>("vertexY", [](const RS_Polyline* e) {
         return e->getVertexes();
-    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
+    }, tr("Vertex Y"), tr("Y coordinate for one of vertices"));
 
     entity->addLength("length", [](const RS_Polyline* e) {
         return e->getLength();
@@ -62,11 +62,11 @@ void LC_MatchDescriptorPolyline::init(QMap<RS2::EntityType, LC_EntityMatchDescri
 
     entity->addInt("segmentsCount", [](const RS_Polyline* e) {
         return e->count();
-    }, tr("Segments Count"), tr("Amount of polyline's segment"));
+    }, tr("Segments Count"), tr("Amount of polyline's segments"));
 
     entity->addBoolean("hasArc", [](const RS_Polyline* e) {
         return e->containsArc();
-    }, tr("Contains Arc"), tr("Defines whether polyline include arc"));
+    }, tr("Contains Arc"), tr("Defines whether polyline includes arc"));
 
     map.insert(RS2::EntityPolyline, entity);
 }

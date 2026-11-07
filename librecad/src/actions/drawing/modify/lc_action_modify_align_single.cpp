@@ -52,7 +52,7 @@ bool LC_ActionModifyAlignSingle::isInVisualSnapStatus(int status) {
 void LC_ActionModifyAlignSingle::init(const int status) {
     if (m_viewport->hasUCS()) {
         commandMessage(tr(
-            "Align action at the moment supports only World Coordinates system, and may not be invoked if User Coordinate System is active."));
+            "Align action at the moment supports only World Coordinate system, and may not be invoked if User Coordinate System is active."));
         finish();
     }
     else {

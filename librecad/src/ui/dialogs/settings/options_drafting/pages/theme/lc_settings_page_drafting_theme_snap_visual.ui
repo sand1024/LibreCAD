@@ -133,14 +133,14 @@ Click to select color.</string>
         <property name="toolTip">
          <string>Active Guiding Entities Line Type
 
-Line type for active guiding line that are part of Visual Snap</string>
+Line type for active guiding line that is part of Visual Snap</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Guiding Entities are created dynamically based on existing geometry of drawing. Mostly, they are lines, such as rays, tangents, normals and so on - and circles (such as distances). Snap point may be either intersection of point of guiding entities, or lay on guiding entity.</string>
+         <string>Guiding Entities are created dynamically based on existing geometry of drawing. Mostly, they are lines, such as rays, tangents, normals and so on - and circles (such as distances). Snap point may be either intersection of a point of guiding entities, or lay on a guiding entity.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -200,7 +200,7 @@ Click to select color.</string>
       <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Acttive guiding entity line type:</string>
+         <string>Active guiding entity line type:</string>
         </property>
         <property name="buddy">
          <cstring>wActiveGuidingEntityLineType</cstring>
@@ -273,7 +273,7 @@ Click to select color.</string>
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Guiding points may be either added to the Visual Snap manually, or represent various reference points of entities (endpoints, centers, middle points etc). Also, points indicates possible snap point candidates.</string>
+         <string>Guiding points may be either added to the Visual Snap manually, or represent various reference points of entities (endpoints, centers, middle points etc.). Also, points indicate possible snap point candidates.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

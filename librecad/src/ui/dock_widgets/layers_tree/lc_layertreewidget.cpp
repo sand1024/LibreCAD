@@ -151,7 +151,7 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
     // TODO - in general, it is possible to use persistent settings for the state, yet not sure it is reasonable
     m_matchModeCheckBox = new QCheckBox(this);
     m_matchModeCheckBox->setText(tr("Highlight"));
-    m_matchModeCheckBox->setToolTip(tr("Highlight Mode\n\nIf selected, enables items highlight mode - in that mode,\nlayers that matches filter will be highlighted.\nOtherwise, not-matched layers will not be shown in the list."));
+    m_matchModeCheckBox->setToolTip(tr("Highlight Mode\n\nIf selected, enables items highlight mode - in that mode,\nlayers that match filter will be highlighted.\nOtherwise, not-matched layers will not be shown in the list."));
     m_matchModeCheckBox->setChecked(true);
     connect(m_matchModeCheckBox, &QCheckBox::clicked, this, &LC_LayerTreeWidget::slotFilteringMaskChanged);
 
@@ -261,7 +261,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
     // add dimensional layer:
     but = new QToolButton(this);
     but->setIcon(QIcon(":/icons/dim_horizontal.lci"));
-    but->setToolTip(tr("Add dimensions Layer"));
+    but->setToolTip(tr("Add dimensions layer"));
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::addDimensionalLayerForActiveLayer);
 
     m_btnAddDimensional = but;
@@ -284,7 +284,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
     // rename layer:
     but = new QToolButton(this);
     but->setIcon(QIcon(":/icons/down.lci"));
-    but->setToolTip(tr("Flat List Mode)"));
+    but->setToolTip(tr("Flat List Mode"));
     but->setCheckable(true);
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::toggleFlatView);
 
@@ -766,7 +766,7 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
             // click is not on item
             addActionFunc("add", tr("&Add Layer"), &LC_LayerTreeWidget::addLayer);
         }
-        addActionFunc("visible", tr("&Freeze Others Layers"), &LC_LayerTreeWidget::hideOtherThanSelectedLayers);
+        addActionFunc("visible", tr("&Freeze Other Layers"), &LC_LayerTreeWidget::hideOtherThanSelectedLayers);
         addActionFunc("visible_all",   tr("&Defreeze All Layers"),  &LC_LayerTreeWidget::showAllLayers);
         addActionFunc("not_visible_all",tr("&Hide all layers except current"), &LC_LayerTreeWidget::hideAllLayers);
         addActionFunc("unlocked", tr("&Unlock All Layers"), &LC_LayerTreeWidget::unlockAllLayers);
@@ -785,7 +785,7 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
         }
         addActionFunc("layer_export_visible", tr("Export &Visible Layer(s)"),  &LC_LayerTreeWidget::exportVisibleLayers);
         contextMenu->addSeparator();
-        addActionFunc("close_all", tr("&Find And Remove Empty Layers"), &LC_LayerTreeWidget::removeEmptyLayers);
+        addActionFunc("close_all", tr("&Find and Remove Empty Layers"), &LC_LayerTreeWidget::removeEmptyLayers);
         contextMenu->exec(QCursor::pos());
         delete contextMenu;
     }
@@ -1166,7 +1166,7 @@ void LC_LayerTreeWidget::doAddSecondaryLevelForSelectedItem(const int layerType)
             else{ // duplicate found
                 QMessageBox::information(parentWidget(),
                                          QMessageBox::tr("Add Layer"),
-                                         QMessageBox::tr("Such child layer already exist for \n[%1].\n"
+                                         QMessageBox::tr("Such child layer already exists for \n[%1].\n"
                                                          "Please specify a different name.")
                                              .arg(currentItem->getName()),
                                          QMessageBox::Ok);
@@ -1211,7 +1211,7 @@ void LC_LayerTreeWidget::addDimensionalLayerForActiveLayer(){
                     else{
                         QMessageBox::information(parentWidget(),
                                                  QMessageBox::tr("Add Layer"),
-                                                 QMessageBox::tr("Such child layer already exist for \n[%1].\n")
+                                                 QMessageBox::tr("Such child layer already exists for \n[%1].\n")
                                                      .arg(currentItem->getName()),
                                                  QMessageBox::Ok);
                     }
@@ -1309,7 +1309,7 @@ void LC_LayerTreeWidget::moveOrDuplicateSelectionToSelectedItemLayer(const bool 
                                                          QMessageBox::tr("Replace \"By Layer\" value to source layers values?\n\n"
                                                                          "If Yes - entities with \"By Layer\" pens will look on new layer exactly as on previous layers and "
                                                                          "\"By Layer\" value will be replaced by resolved pens.\n\n"
-                                                                         "If No - \"By Layer\" values remains and so pen of target layer will define pen for such entities."),
+                                                                         "If No - \"By Layer\" values remain and so pen of target layer will define pen for such entities."),
                                                          QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
                 doMoveSelectionToLayer(layerItem, duplicate, resolvePens);
             }

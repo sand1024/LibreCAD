@@ -32,7 +32,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Arcs may be rendered by different ways, and the settings below controls that.</string>
+         <string>Arcs may be rendered by different ways, and the settings below control that.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -58,8 +58,8 @@ rendered with errors near endpoints.</string>
         <property name="toolTip">
          <string>Arcs By Lines
 
-If selected, archs are drawn using staight line chord segments
-interpolation. This eliminates drawing artefacts near to 
+If selected, arcs are drawn using straight line chord segments
+interpolation. This eliminates drawing artifacts near to
 endpoints, yet in some cases resulting arcs may be less
 smooth, yet without drawing errors near endpoints on large zooms.
 </string>
@@ -175,7 +175,7 @@ Smaller angle deliver more smooth arc yet is slower..</string>
       <item>
        <widget class="QCheckBox" name="cbRenderCirclesAsArcs">
         <property name="toolTip">
-         <string>Render Cricles
+         <string>Render Circles
 
 If selected, the same rendering settings
 will be applied also to circles rendering.</string>
@@ -214,7 +214,7 @@ will be applied also to circles rendering.</string>
          <string>Minimal Line Length
 
 If screen length of the line in pixels is less than
-given value, the line is drawn as point.</string>
+given value, the line is drawn as a point.</string>
         </property>
         <property name="suffix">
          <string> px</string>
@@ -236,7 +236,7 @@ given value, the line is drawn as point.</string>
          <string>Minimal Arc Screen Radius
 
 If screen radius of arc in pixels is less than
-provided value, the arc is drawn as point.
+provided value, the arc is drawn as a point.
 </string>
         </property>
         <property name="suffix">

@@ -20,7 +20,7 @@
       <item row="0" column="0" colspan="4">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Settings below allows to customize new drawing that is created not based on template. </string>
+         <string>Settings below allow to customize new drawing that is created not based on template. </string>
         </property>
        </widget>
       </item>
@@ -63,14 +63,14 @@ If checked, new drawing will be created with grid disabled</string>
       <item row="4" column="1">
        <widget class="QRadioButton" name="rbGridIsoRight">
         <property name="text">
-         <string>RIght Isometric Grid</string>
+         <string>Right Isometric Grid</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_30">
         <property name="text">
-         <string>Zero base angle:</string>
+         <string>Zero Angle Direction:</string>
         </property>
         <property name="buddy">
          <cstring>leDefAngleBaseZero</cstring>
@@ -80,9 +80,9 @@ If checked, new drawing will be created with grid disabled</string>
       <item row="5" column="1">
        <widget class="QLineEdit" name="leDefAngleBaseZero">
         <property name="toolTip">
-         <string>Base Angle
+         <string>Zero Angle Direction
 
-Zero base angle relative to the current user coordinate system.
+Zero Angle Direction relative to the current user coordinate system.
 Affects polar coordinates input, snap to angle. 0.0 is 3pm.</string>
         </property>
        </widget>
@@ -153,7 +153,7 @@ Counterclockwise, 90 degrees is north.</string>
            <property name="toolTip">
             <string>Angles Direction
 
-Clockwise, 90 degrees is sourth.</string>
+Clockwise, 90 degrees is south.</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../../../res/icons/icons.qrc">

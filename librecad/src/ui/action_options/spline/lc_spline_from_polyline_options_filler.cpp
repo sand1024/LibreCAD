@@ -41,7 +41,7 @@ void LC_SplineFromPolylineOptionsFiller::fillToolOptionsContainer(LC_PropertyCon
         [action]() -> bool { return action->isUseFitPoints(); }, [action](bool val) -> void { action->setUseFitPoints(val); }, container,
         [action](LC_PropertyViewDescriptor&) -> bool { return action->getSplineDegree() != 2; });
 
-    addIntSpinbox({"a_midpoints", tr("Midle points"), tr("Amount of middle points of polyline segment that will be added to spline. ")},
+    addIntSpinbox({"a_midpoints", tr("Middle points"), tr("Amount of middle points of polyline segment that will be added to spline. ")},
                   [action]() {
                       return action->getSegmentPoints();
                   }, [action](int val) {

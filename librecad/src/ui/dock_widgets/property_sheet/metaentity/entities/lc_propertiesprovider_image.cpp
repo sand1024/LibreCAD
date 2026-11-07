@@ -62,7 +62,7 @@ void LC_PropertiesProviderImage::doCreateEntitySpecificProperties(LC_PropertyCon
                       property->setValueStorage(valueStorage, true);
                   }, list, contGeometry);
 
-    addVector<RS_Image>({"insert", tr("Insertion Point"), tr("Point of image insertion")}, [](const RS_Image* e) -> RS_Vector {
+    addVector<RS_Image>({"insert", tr("Insertion Point"), tr("Point where left bottom corner of the image is placed")}, [](const RS_Image* e) -> RS_Vector {
                             return e->getInsertionPoint();
                         }, [](const RS_Vector& v, RS_Image* e) -> void {
                             e->setInsertionPoint(v);

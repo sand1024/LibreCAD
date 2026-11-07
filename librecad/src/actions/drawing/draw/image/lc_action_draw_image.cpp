@@ -285,7 +285,7 @@ void LC_ActionDrawImage::updateActionPrompt() {
             updatePrompt(tr("Enter factor:"));
             break;
         case SetDPI:
-            updatePrompt(tr("Enter dpi:"));
+            updatePrompt(tr("Enter DPI:"));
             break;
         default:
             updatePrompt();

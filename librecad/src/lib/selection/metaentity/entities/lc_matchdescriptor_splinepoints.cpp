@@ -33,7 +33,7 @@ void LC_MatchDescriptorSplinePoints::init(QMap<RS2::EntityType, LC_EntityMatchDe
 
     entity->addInt("numberOfPoints", [](const LC_SplinePoints* e) {
         return static_cast<int>(e->getNumberOfControlPoints());
-    }, tr("Points Amount"), tr("Amount of spline points"));
+    }, tr("Points amount"), tr("Amount of spline points"));
 
     entity->addBoolean("closed", [](const LC_SplinePoints* e) {
         return e->isClosed();
@@ -53,11 +53,11 @@ void LC_MatchDescriptorSplinePoints::init(QMap<RS2::EntityType, LC_EntityMatchDe
 
     entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](const LC_SplinePoints* e) {
         return e->getControlPoints();
-    }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
+    }, tr("Vertex X"), tr("X coordinate for one of vertices"));
 
     entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](const LC_SplinePoints* e) {
         return e->getControlPoints();
-    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
+    }, tr("Vertex Y"), tr("Y coordinate for one of vertices"));
 
     entity->addBoolean("length", [](const LC_SplinePoints* e) {
         return e->getLength();

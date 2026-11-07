@@ -116,7 +116,7 @@ Render soft hover highlights beneath menu bar items on passive sweeps.</string>
 
 Displays aligned command-line mnemonics (e.g. [LINE], [L]) inside 
 dedicated column of menu items. 
-Note that dislpaying commands should be also enabled in  Application Preferences. </string>
+Note that displaying commands should be also enabled in  Application Preferences. </string>
         </property>
         <property name="text">
          <string>Show Command-Line Mnemonic Aliases</string>
@@ -255,7 +255,7 @@ Defines how colors are assigned to segmented groups.</string>
         <property name="toolTip">
          <string>Toolbar Overflow Indicator
 
-If selected, clean vector double-chevrons for toolbar overflow 
+If selected, clean vector double-chevrons for toolbar overflow
 extension buttons is rendered. </string>
         </property>
         <property name="text">

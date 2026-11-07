@@ -99,7 +99,7 @@
                  <item>
                   <widget class="QToolButton" name="toolButton_8">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -113,7 +113,7 @@
                  <item>
                   <widget class="QToolButton" name="toolButton_9">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -136,7 +136,7 @@
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -153,7 +153,7 @@
                  <item>
                   <widget class="QToolButton" name="toolButton_11">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -173,7 +173,7 @@
                  <item>
                   <widget class="QToolButton" name="toolButton_12">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -199,7 +199,7 @@
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -222,7 +222,7 @@
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -514,7 +514,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QCheckBox" name="checkBox_2">
                    <property name="text">
-                    <string>Not checkale</string>
+                    <string>Not checkable</string>
                    </property>
                    <property name="checkable">
                     <bool>false</bool>
@@ -830,7 +830,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QToolButton" name="toolButton_15">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -844,7 +844,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QToolButton" name="toolButton_16">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -867,7 +867,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -884,7 +884,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QToolButton" name="toolButton_18">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -904,7 +904,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QToolButton" name="toolButton_19">
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -930,7 +930,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -953,7 +953,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <bool>false</bool>
                    </property>
                    <property name="toolTip">
-                    <string>Just sample of toolbar with icon with applied colors styling</string>
+                    <string>Just sample of toolbar with icon with applied color styling</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -1162,7 +1162,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <item>
                   <widget class="QCheckBox" name="checkBox_3">
                    <property name="text">
-                    <string>Not checkale</string>
+                    <string>Not checkable</string>
                    </property>
                    <property name="checkable">
                     <bool>false</bool>
@@ -1388,14 +1388,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <item row="0" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>The label below demostrates higlight overlay for search results</string>
+              <string>The label below demonstrates highlight overlay for search results</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Higlighted item label</string>
+              <string>Highlighted item label</string>
              </property>
             </widget>
            </item>

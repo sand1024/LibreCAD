@@ -83,7 +83,7 @@ void LC_RectangleAbstractOptionsFiller::fillCornersMode(LC_PropertyContainer* co
             addBoolean({
                            "a_snapShift",
                            tr("Snap Shift"),
-                           tr("If checked, specifies that snap point should be shifted by radius of corners.")
+                           tr("If checked, specifies that snap point should be shifted by radius of corner.")
                        }, [action]()-> bool {
                            return action->isSnapToCornerArcCenter();
                        }, [action](bool val)-> void {
@@ -96,7 +96,7 @@ void LC_RectangleAbstractOptionsFiller::fillCornersMode(LC_PropertyContainer* co
                                "a_sizeInner",
                                tr("Size inner"),
                                tr(
-                                   "If checked, specified height and width of rectangle defines distance between centers of arcs for rounding corners. Otherwise, these values defines outer size of the rectangle")
+                                   "If checked, specified height and width of rectangle defines distance between centers of arcs for rounding corners. Otherwise, these values define outer size of the rectangle")
                            }, [action1p]()-> bool {
                                return action1p->isSizeInner();
                            }, [action1p](bool val)-> void {

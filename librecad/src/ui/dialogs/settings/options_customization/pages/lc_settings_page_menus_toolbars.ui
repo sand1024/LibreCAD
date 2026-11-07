@@ -32,8 +32,8 @@
       <string>Workspace scheme configuration</string>
      </property>
      <property name="text">
-      <string>Each navigation scheme contains the entire set of navigation elments, like main menu bar, toolbars and CAD widgets, that are included into the Applications' UI.
-Select navigation element from the comboobx belos (main menu bar, toolbar (ordinary or) CAD-related)  to customize it. </string>
+      <string>Each navigation scheme contains the entire set of navigation elements, like main menu bar, toolbars and CAD widgets, that are included into the Applications' UI.
+Select navigation element from the combo box below (main menu bar, toolbar (ordinary or) CAD-related) to customize it.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

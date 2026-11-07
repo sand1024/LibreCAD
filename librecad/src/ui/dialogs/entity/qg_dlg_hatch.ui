@@ -59,7 +59,7 @@
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="cbSolid">
           <property name="toolTip">
-           <string>If checked, solid will will be used instead of pattern hatch</string>
+           <string>If checked, solid will be used instead of pattern hatch</string>
           </property>
           <property name="text">
            <string>Solid Fill</string>

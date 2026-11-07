@@ -147,7 +147,7 @@
    <item row="2" column="1">
     <widget class="QComboBox" name="cbAlignTo">
      <property name="toolTip">
-      <string>Defines the way of selected entities alignment.</string>
+      <string>Defines the way of selected entities' alignment.</string>
      </property>
      <item>
       <property name="text">

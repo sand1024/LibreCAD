@@ -74,7 +74,7 @@
      <item>
       <widget class="QLabel" name="lblTip">
        <property name="toolTip">
-        <string>Angles basis information. Click to change.</string>
+        <string>Angle Reference information. Click to change.</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
@@ -93,7 +93,7 @@
      <item>
       <widget class="QLabel" name="lblBaseAngle">
        <property name="toolTip">
-        <string>Zero base angle relative to the current user coordinate system. 0.0 is 3pm.</string>
+        <string>Zero Angle Direction relative to the current user coordinate system. 0.0 is 3pm.</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>

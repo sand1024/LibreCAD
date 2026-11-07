@@ -29,7 +29,7 @@ QG_DlgOptionsMakerCam::QG_DlgOptionsMakerCam(QWidget* parent, const bool modal, 
     setModal(modal);
     setupUi(this);
     this->gbLayers->setToolTip(tr(
-        "MakerCAM as of November 2014 does not hide SVG content \nthat has been set invisibe (\"display: none\" or \"visibility: hidden\")."));
+        "MakerCAM as of November 2014 does not hide SVG content \nthat has been set invisible (\"display: none\" or \"visibility: hidden\")."));
     this->gbBlocks->setToolTip(tr(
         "MakerCAM as of November 2014 cannot correctly deal with blocks,\nbecause it does not take into account the reference point in the <use>."));
     this->gbEllipses->setToolTip(tr(
@@ -37,11 +37,11 @@ QG_DlgOptionsMakerCam::QG_DlgOptionsMakerCam(QWidget* parent, const bool modal, 
         "the <transform> attribute or as <path> using elliptic arc segments."));
     this->gbImages->setToolTip(tr("Exported images can be useful in SVG editors (Inkscape, etc), \nbut avoided in some CAM's."));
     this->gbDashLines->setToolTip(tr(
-        "Many CAM's(MakerCAM, EleskCAM, LaserWeb) ignore dashed/doted line style, \nwhich can be useful in lasercut of plywood or for papercraft. "));
+        "Many CAM's(MakerCAM, EleskCAM, LaserWeb) ignore dashed/dotted line style, \nwhich can be useful in lasercut of plywood or for papercraft. "));
     this->dSpinBoxDefaultElementWidth->
-          setToolTip(tr("Default width of elements can affect some CAM's/SVG Editors, \nbut ignored by other"));
+          setToolTip(tr("Default width of elements can affect some CAM's/SVG Editors, \nbut ignored by others"));
     this->dSpinBoxDashLinePatternLength->setToolTip(
-        tr("Length of line pattern related to zoom, \nso default step value required for baking"));
+        tr("Length of line pattern related to zoom, \nso default step value is required for baking"));
     gbImages->setToolTip(tr("Whether to export points"));
 
     loadSettings();

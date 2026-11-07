@@ -180,7 +180,7 @@
       <item row="2" column="2">
        <widget class="QToolButton" name="tbPickMajor">
         <property name="toolTip">
-         <string>Pick length of major axis radius from drawing</string>
+         <string>Pick length of major axis from drawing</string>
         </property>
         <property name="text">
          <string/>
@@ -229,7 +229,7 @@
       <item row="3" column="2">
        <widget class="QToolButton" name="tbPickMinor">
         <property name="toolTip">
-         <string>Pick length of minor axis radius from drawing</string>
+         <string>Pick length of minor axis from drawing</string>
         </property>
         <property name="text">
          <string/>

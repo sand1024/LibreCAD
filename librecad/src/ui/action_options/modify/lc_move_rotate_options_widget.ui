@@ -87,7 +87,7 @@
    <item row="0" column="10">
     <widget class="QCheckBox" name="cbSameAngleForCopies">
      <property name="toolTip">
-      <string>If checked, all copies will be rotated by the same agle. Otherwise, angle will be proportional to number of each copy. </string>
+      <string>If checked, all copies will be rotated by the same angle. Otherwise, angle will be proportional to number of each copy. </string>
      </property>
      <property name="text">
       <string>Same angle for copies</string>
@@ -141,7 +141,7 @@
    <item row="0" column="13">
     <widget class="QCheckBox" name="cbCurrentLayer">
      <property name="toolTip">
-      <string>If checked, created entities will be placed into current layer, otherwise the will be in original layers. </string>
+      <string>If checked, created entities will be placed into current layer, otherwise they will be in original layers. </string>
      </property>
      <property name="text">
       <string>Use Current Layer</string>

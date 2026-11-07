@@ -112,7 +112,7 @@
       <item row="0" column="3">
        <widget class="QCheckBox" name="cbWithinLine">
         <property name="toolTip">
-         <string>Specifies whether all points should fit between start/end points of line or whether the length of line is calculated based on number of points and distance between points.</string>
+         <string>Specifies whether all points should fit between start/end points of line or whether the length of line is calculated based on the number of points and distance between points.</string>
         </property>
         <property name="text">
          <string>Fit Line</string>

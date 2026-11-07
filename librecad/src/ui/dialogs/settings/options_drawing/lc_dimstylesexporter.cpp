@@ -110,7 +110,7 @@ bool LC_DimStylesExporter::exportStyles(QWidget* parent, const QList<LC_DimStyle
 
     CFG_Paths::o_ExportSettingsDir =QFileInfo(jsonFile).absolutePath();
 
-    QMessageBox::information(parent, tr("Dimension Styles Export"), tr("Dimensions Styles were exported."));
+    QMessageBox::information(parent, tr("Dimension Styles Export"), tr("Dimension Styles were exported."));
     return true;
 }
 
@@ -133,7 +133,7 @@ bool LC_DimStylesExporter::importStyles(QWidget* parent, QList<LC_DimStyle*>& st
         return false;
     }
     if (!doc.isObject() || doc.object().value(G_KEY_FILE_TYPE).toString() != G_DIMSTYLES_FILE_TYPE) {
-        QMessageBox::critical(parent, errorDialogCaption, tr("Unexpected format of file, it does not contains LibreCAD dimension styles."));
+        QMessageBox::critical(parent, errorDialogCaption, tr("Unexpected format of file, it does not contain LibreCAD dimension styles."));
         return false;
     }
 

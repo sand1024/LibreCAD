@@ -29,6 +29,7 @@
 
 template <typename TConfig, typename TRepo>
 class LC_PresetManagerConfigBase : public LC_AbstractPresetManager {
+    
 public:
 
     explicit LC_PresetManagerConfigBase(TRepo* repo, const QString& initialKey, QObject* parent = nullptr)

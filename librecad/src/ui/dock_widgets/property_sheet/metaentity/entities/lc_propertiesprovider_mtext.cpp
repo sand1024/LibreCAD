@@ -124,7 +124,7 @@ void LC_PropertiesProviderMText::doCreateEntitySpecificProperties(LC_PropertyCon
         {{RS_MTextData::MTextLineSpacingStyle::AtLeast, tr("At Least")}, {RS_MTextData::MTextLineSpacingStyle::Exact, tr("Exact")}}
     };
 
-    addEnum<RS_MText>({"linespacingStyle", tr("Line spacing style"), tr("Style of linespacing")}, &linespaceingEnumDescriptor,
+    addEnum<RS_MText>({"linespacingStyle", tr("Line spacing style"), tr("Style of line spacing")}, &linespaceingEnumDescriptor,
                       [](const RS_MText* e) -> LC_PropertyEnumValueType {
                           return e->getLineSpacingStyle();
                       }, [](LC_PropertyEnumValueType& v, RS_MText* e) -> void {
@@ -132,7 +132,7 @@ void LC_PropertiesProviderMText::doCreateEntitySpecificProperties(LC_PropertyCon
                           e->setLineSpacingFactor(valign);
                       }, list, contText);
 
-    addLinearDistance<RS_MText>({"linespacingFactor", tr("Linespacing"), tr("Linespacing factor for the text")},
+    addLinearDistance<RS_MText>({"linespacingFactor", tr("Line spacing"), tr("Line spacing factor for the text")},
                                 [](const RS_MText* e) -> double {
                                     return e->getLineSpacingFactor();
                                 }, [](const double& v, RS_MText* l) -> void {

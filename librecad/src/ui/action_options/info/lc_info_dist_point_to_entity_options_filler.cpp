@@ -30,7 +30,7 @@ class LC_ActionInfoDistPointToEntity;
 void LC_InfoDistPointToEntityOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
     auto action = static_cast<LC_ActionInfoDistPointToEntity*>(m_action);
 
-    addBoolean({"a_snapOnentity", tr("Snap On Entity"), tr("If checked, the point will be always inside selected entity")}, [action]()-> bool {
+    addBoolean({"a_snapOnentity", tr("Snap on Entity"), tr("If checked, the point will always be inside selected entity")}, [action]()-> bool {
                return action->isUseNearestPointOnEntity();
            }, [action](bool val)-> void {
                action->setUseNearestPointOnEntity(val);

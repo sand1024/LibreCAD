@@ -109,7 +109,7 @@ void LC_PropertiesProviderGraphicGrid::createGridType(LC_PropertyContainer* cont
         m_widget->refill();
     };
 
-    const LC_Property::Names names = {"gridType", tr("Grid Type"), tr("Defines which time of grid should be drawn")};
+    const LC_Property::Names names = {"gridType", tr("Grid Type"), tr("Defines which type of grid should be drawn")};
     if (showGrid) {
         addDirectEnum<LC_PropertyEnumValueType, RS_Graphic>(cont, names, &enumDescriptor, funGet, funSet, graphic);
     }
@@ -218,7 +218,7 @@ void LC_PropertiesProviderGraphicGrid::createDecimalMetaGrid(LC_PropertyContaine
                 propertyMetaStepEvery->setNames({
                     "gridMetaEvery",
                     tr("Meta grid every"),
-                    tr("Frequency of major grid lines compared to minor grid lines (amount of minor cells in major one).")
+                    tr("Frequency of major grid lines compared to minor grid lines (amount of minor cells in a major one).")
                 });
                 LC_PropertyViewDescriptor viewDescriptor;
                 viewDescriptor.viewName = LC_PropertyIntSpinBoxView::VIEW_NAME;
