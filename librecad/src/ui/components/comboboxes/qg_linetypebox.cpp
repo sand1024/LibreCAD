@@ -38,7 +38,7 @@
 #include <utility>
 #include <vector>
 
-#include "lc_iconengineshared.h"
+#include "lc_icon_engine_shared.h"
 #include "lc_linetype.h"
 #include "lc_linetypelist.h"
 #include "lc_linetypenames.h"
