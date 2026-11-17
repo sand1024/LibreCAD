@@ -613,7 +613,9 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
     const double patternOffset = painter->currentDashOffset(dashSpace);
     // fixme - replace several booleans by Flags value
     if (!m_lastPaintedDraft && m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
-        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern)) {
+        // A named and an unnamed pen of one enum may draw different dashes.
+        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern) &&
+            m_lastPaintEntityPen.hasLineTypeName() == pen.hasLineTypeName()) {
             return;
         }
     }
@@ -775,7 +777,9 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
     // arbitrary QPainter::setPen was called between drawing entities.
     const double patternOffset = painter->currentDashOffset(dashSpace);
     if (m_lastPaintedDraft && m_lastPaintedHighlighted == highlighted && m_lastPaintedSelected == selected && m_lastPaintOverlay == overlayPaint && m_lastPenInVisualSnap == inVisualSnap) {
-        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern)) {
+        // A named and an unnamed pen of one enum may draw different dashes.
+        if (m_lastPaintEntityPen.isSameAs(pen, patternOffset, m_lastPaintedPattern) &&
+            m_lastPaintEntityPen.hasLineTypeName() == pen.hasLineTypeName()) {
             return;
         }
     }

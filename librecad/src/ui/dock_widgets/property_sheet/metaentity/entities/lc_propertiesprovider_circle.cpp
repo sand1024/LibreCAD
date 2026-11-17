@@ -75,10 +75,10 @@ void LC_PropertiesProviderCircle::doCreateSingleEntityCommands(LC_PropertyContai
         {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineTangent1, RS2::ActionDrawLineTangent2},
         {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineOrthogonal, RS2::ActionDrawLineOrthTan,},
         {tr("Dividing circle"), RS2::ActionDrawSliceDivideCircle, RS2::ActionModifyBreakDivide},
-        {tr("Creation of line tangential to a circle"), RS2::ActionDrawLineAngleRel, RS2::ActionModifyRound,},
+        {tr("Creation of line with relative angle or fillet"), RS2::ActionDrawLineAngleRel, RS2::ActionModifyRound,},
         {tr("Creation of ellipse or bounding box"), RS2::ActionDrawEllipseInscribe, RS2::ActionDrawBoundingBox},
         {tr("Creation of dimension, diametric or radial"), RS2::ActionDimDiametric, RS2::ActionDimRadial},
-        {tr("Creation of dimension, angular or ordinate"), RS2::ActionDimOrdinate, RS2::ActionDimLeader,}
+        {tr("Creation of ordinate dimension or leader"), RS2::ActionDimOrdinate, RS2::ActionDimLeader,}
     };
 
     createEntityContextCommands<RS_Circle>(commands, cont, circle, "circleCommands");

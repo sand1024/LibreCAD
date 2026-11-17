@@ -250,6 +250,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
     but->setToolTip(tr("Lock all layers"));
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::lockAllLayers);
     layButtons->addWidget(but);
+    m_btnLockAll = but;
 
     // add layer:
     but = new QToolButton(this);
@@ -294,10 +295,6 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
     return layButtons;
 }
 
-template <typename>
-constexpr auto LC_LayerTreeWidget::qt_create_metaobjectdata() {
-}
-
 /**
  * Sets the RS_LayerList this layer widget should show. If layer list does not equal to previously
  * set one, that leads to complete rebuild of underlying model
@@ -339,6 +336,8 @@ void LC_LayerTreeWidget::update() const {
         // layer is activated by our widget, not externally via listener, so we need just modify active
         // path for currently active layer and do not rebuild existing model
         m_layerTreeModel->proceedActiveLayerChanged(m_layerList);
+        // which lock icons are disabled follows the current layer
+        m_layerTreeView->viewport()->update();
     } else {
         // complete rebuild of the model and update of UI
         const int yPos = m_layerTreeView->verticalScrollBar()->value();
@@ -356,7 +355,32 @@ void LC_LayerTreeWidget::update() const {
         m_layerTreeView->viewport()->update();
     }
 
+    if (m_btnLockAll != nullptr) {
+        m_btnLockAll->setEnabled(canLockAllLayers());
+    }
+
     RS_DEBUG->print("QG_LayerWidget::update(): OK");
+}
+
+/**
+ * The lock icon is disabled: say on the command line why a click on it did nothing
+ */
+void LC_LayerTreeWidget::reportLockUnavailable() const {
+    if (m_graphic != nullptr) {
+        m_graphic->reportLockUnavailable();
+    }
+}
+
+/**
+ * @return true if Lock All Layers locks a layer: it locks the layers the tree lists, and the
+ * current layer is not locked when no other layer is unlocked (RS_LayerList::canLockAny())
+ */
+bool LC_LayerTreeWidget::canLockAllLayers() const {
+    if (m_layerList == nullptr) {
+        return false;
+    }
+    const LC_LayerTreeItemAcceptor acceptAll;
+    return m_layerList->canLockAny(m_layerTreeModel->collectLayers(acceptAll));
 }
 
 /**
@@ -378,7 +402,7 @@ void LC_LayerTreeWidget::activateLayer(RS_Layer *layer) const {
     m_layerTreeView->viewport()->update();
 
     //update active layer name in main window status bar
-    QC_ApplicationWindow::getAppWindow()->slotUpdateActiveLayer();
+    // QC_ApplicationWindow::getAppWindow()->slotUpdateActiveLayer();
 
     RS_DEBUG->print("QG_LayerWidget::activateLayer() end");
 }
@@ -489,6 +513,10 @@ void LC_LayerTreeWidget::slotTreeClicked(const QModelIndex &layerIdx /*const QSt
                 break;
             }
             case LC_LayerTreeModel::COLUMN_LOCKED:{
+                 if (!m_layerTreeModel->isLockAvailable(layerItem)) {
+                     reportLockUnavailable();
+                     break;
+                 }
                  if (layerItem->isLocked()){
                      layerItem->collectLayers(layersToDisable, acceptAll);
                  }
@@ -541,7 +569,7 @@ void LC_LayerTreeWidget::slotTreeClicked(const QModelIndex &layerIdx /*const QSt
             // to selected layer will be updated.
 
             m_withinSelfActivation = true;
-            m_graphic->activateLayer(lay, true);
+            m_graphic->activateChosenLayer(lay);
             m_withinSelfActivation = false;
 
             return;
@@ -570,6 +598,10 @@ void LC_LayerTreeWidget::slotTreeClicked(const QModelIndex &layerIdx /*const QSt
                 break;
             }
             case LC_LayerTreeModel::COLUMN_LOCKED:
+                if (!m_layerTreeModel->isLockAvailable(layerItem)) {
+                    reportLockUnavailable();
+                    break;
+                }
                 if (normalLayerWithChildren){
                     if (layerItem->isLocked()){
                         layerItem->collectLayers(layersToDisable, acceptAll, true);
@@ -648,7 +680,7 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
 
         using ActionMemberFunc = void (LC_LayerTreeWidget::*)();
         const auto addActionFunc = [this, &contextMenu](const QString& iconName, const QString& name, ActionMemberFunc func) {
-            contextMenu->addAction(QIcon(":/icons/" + iconName + ".lci"), name, this, func);
+            return contextMenu->addAction(QIcon(":/icons/" + iconName + ".lci"), name, this, func);
         };
 
         const QModelIndex index = m_layerTreeView->indexAt(point);
@@ -770,7 +802,8 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
         addActionFunc("visible_all",   tr("&Defreeze All Layers"),  &LC_LayerTreeWidget::showAllLayers);
         addActionFunc("not_visible_all",tr("&Hide all layers except current"), &LC_LayerTreeWidget::hideAllLayers);
         addActionFunc("unlocked", tr("&Unlock All Layers"), &LC_LayerTreeWidget::unlockAllLayers);
-        addActionFunc("locked", tr("&Lock All Layers"), &LC_LayerTreeWidget::lockAllLayers);
+        QAction* lockAllAction = addActionFunc("locked", tr("&Lock All Layers"), &LC_LayerTreeWidget::lockAllLayers);
+        lockAllAction->setEnabled(canLockAllLayers());
         addActionFunc("print", tr("Enable &Printing All Layers"),  &LC_LayerTreeWidget::printAllLayers);
         addActionFunc("noprint", tr("&Disable Printing All Layers"), &LC_LayerTreeWidget::noPrintAllLayers);
         contextMenu->addSeparator();
@@ -831,7 +864,7 @@ void LC_LayerTreeWidget::hideAllLayers() {
     const QList<RS_Layer *> layersToShow;
     QList<RS_Layer *> layersToHide = m_layerTreeModel->collectLayers(acceptAll);
     if (m_layerList != nullptr) {
-        // frozen, the active layer would be replaced by one the filter left visible
+        // "Hide all layers except current"
         layersToHide.removeAll(m_layerList->getActive());
     }
     manageLayersVisibilityFlag(layersToShow, layersToHide, false);
@@ -854,10 +887,12 @@ void LC_LayerTreeWidget::hideOtherThanSelectedLayers()  {
             RS_Layer* layer = layersToShow.at(i);
             layersToHide.removeAll(layer);
         }
-        manageLayersVisibilityFlag(layersToShow, layersToHide, false);
+        // first, so that what hears of the change of visibility (the status bar, the Layer List)
+        // finds the layer current: the activation is not notified
         if (count > 0){
             activateLayer(layersToShow.at(0));
         }
+        manageLayersVisibilityFlag(layersToShow, layersToHide, false);
     }
 }
 /**
@@ -1703,6 +1738,7 @@ void LC_LayerTreeWidget::copyLayerAttributes(RS_Layer *copyLayer, const RS_Layer
 
     copyLayer->setPen(pen);
     copyLayer->freeze(sourceLayer->isFrozen());
+    copyLayer->setHiddenAs(sourceLayer->getHiddenAs());
 }
 
 void LC_LayerTreeWidget::redrawView() const {
@@ -1817,11 +1853,12 @@ void LC_LayerTreeWidget::doRemoveLayerItems(QList<LC_LayerTreeItem *> &itemsToRe
         if (!item->isVirtual()){
             if (item->isZero()){ // don't let removing zero layer
                 QMessageBox::information(this, QMessageBox::tr("Remove Layer"), QMessageBox::tr("Layer \"0\" can never be removed."), QMessageBox::Ok);
+            } else if (!m_layerList->canRemoveChosen(item->getLayer())) {
+                // the current layer, when no other layer is unlocked to take its place; a locked layer
+                // is removed, as the original Layer List does
+                QMessageBox::information(this, QMessageBox::tr("Remove Layer"),
+                                         RS_LayerList::removalNoTakeoverText(item->getName()), QMessageBox::Ok);
             } else {
-                if (item->isLocked()){
-                    // well, the original LayersWidget allows to remove locked layers...
-                    // so we'll do so and will not treat this separately
-                }
                 layerNames << item->getDisplayName();
                 layersToRemove << item->getLayer();
             }
@@ -1845,7 +1882,7 @@ void LC_LayerTreeWidget::doRemoveLayers(QList<RS_Layer *> &layers) const {
     for (const auto layer: layers) {
         RS_Graphic *graphic = m_document->getGraphic();
         if (graphic != nullptr){
-            graphic->removeLayer(layer);
+            graphic->removeChosenLayer(layer);
         }
     }
     m_document->updateInserts();

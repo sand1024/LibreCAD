@@ -86,13 +86,13 @@ void LC_PropertiesProviderArc::doCreateCalculatedProperties(LC_PropertyContainer
         return e->getEndpoint();
     }, nullptr, list, container);
 
-    addReadOnlyString<RS_Arc>({"arcLength", tr("Arc Length"), tr("Total angle of arc")}, [this](const RS_Arc* e)-> QString {
+    addReadOnlyString<RS_Arc>({"angleLength", tr("Angle Length"), tr("Total angle of arc")}, [this](const RS_Arc* e)-> QString {
         const double angleRad = e->getAngleLength();
         QString value = formatRawAngle(angleRad);
         return value;
     }, list, container);
 
-    addReadOnlyString<RS_Arc>({"circumference", tr("Circumference", "arc"), tr("Total linear length of arc")},
+    addReadOnlyString<RS_Arc>({"arcLength", tr("Arc Length"), tr("Total linear length of arc")},
                               [this](const RS_Arc* e)-> QString {
                                   const double len = e->getLength();
                                   QString value = formatLinear(len);

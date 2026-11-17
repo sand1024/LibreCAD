@@ -2719,6 +2719,10 @@ bool RS_Modification::stretch(const RS_Vector& firstCorner, const RS_Vector& sec
 
     for (const auto e : entitiesList) {
         // fixme - sand - iteration over all entities in container???
+        if (e == nullptr || e->isLocked()) {
+            // an entity of a locked layer is not modified
+            continue;
+        }
         /*if (e != nullptr && e->isVisible() && !e->isLocked()) {
             if ((e->isInWindow(firstCorner, secondCorner) ||
                 e->hasEndpointsWithinWindow(firstCorner, secondCorner))) {*/
@@ -2757,7 +2761,8 @@ static void updateExplodedChildrenRecursively(const RS_EntityContainer* ec, cons
 
     clone->update();
 
-    if (clone->isContainer()) {
+    // the lines update() has just built for a spline follow it
+    if (clone->isContainer() && clone->rtti() != RS2::EntitySpline) {
         const auto subContainer = static_cast<RS_EntityContainer*>(clone);
         // fixme - sand - while we can't iterate just by children and go deeper???
         for (RS_Entity* en : lc::LC_ContainerTraverser{*subContainer, rl}.entities()) {
@@ -2784,7 +2789,8 @@ bool RS_Modification::explode(const QList<RS_Entity*>& entitiesList, LC_Document
                 case RS2::EntityMText:
                 case RS2::EntityText:
                 case RS2::EntityHatch:
-                case RS2::EntityPolyline: {
+                case RS2::EntityPolyline:
+                case RS2::EntitySpline: { // its lines have no pen of their own
                     resolveLevel = RS2::ResolveAll;
                     resolveLayer = true;
                     resolvePen = true;

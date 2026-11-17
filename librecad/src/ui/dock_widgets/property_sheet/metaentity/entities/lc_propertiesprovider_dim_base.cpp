@@ -639,7 +639,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                 {LC_DimStyle::Text::ABOVE_ALIGN_EXT_TWO, tr("Over second ext line")}
             }
         };
-        addEnum_DS({"dimTextHor", tr("Text pos hor"), tr("Specified horizontal dimension text position (DIMJUST variable)")},
+        addEnum_DS({"dimTextHor", tr("Text pos hor"), tr("Specifies horizontal dimension text position (DIMJUST variable)")},
                    &dimjustPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->text()->horizontalPositioning();
                    }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
@@ -657,7 +657,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
         }
     };
 
-    addEnum_DS({"dimTextVert", tr("Text pos vert"), tr("Specified vertical dimension text position (DIMTAD variable)")},
+    addEnum_DS({"dimTextVert", tr("Text pos vert"), tr("Specifies vertical dimension text position (DIMTAD variable)")},
                &dimtadPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                    return ds->text()->verticalPositioning();
                }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
@@ -706,7 +706,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
         addEnum_DS({
                        "dimTextArcLen",
                        tr("Arc length symbol"),
-                       tr("Specifies placement of the arch length dimension symbol (DIMARCSYM variable)")
+                       tr("Specifies placement of the arc length dimension symbol (DIMARCSYM variable)")
                    }, &dimarcsymPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->arc()->arcSymbolPosition();
                    }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {

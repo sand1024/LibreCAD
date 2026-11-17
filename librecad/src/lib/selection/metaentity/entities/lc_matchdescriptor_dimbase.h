@@ -350,7 +350,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
         if ((entityType != RS2::EntityDimOrdinate) && (entityType != RS2::EntityDimRadial) && (entityType != RS2::EntityDimDiametric)) {
             entity->addIntEnumDS("dimTextHor", [](const LC_DimStyle* ds) -> int {
                 return ds->text()->horizontalPositioning();
-            }, tr("Text pos hor"), tr("Specified horizontal dimension text position (DIMJUST variable)"), {
+            }, tr("Text pos hor"), tr("Specifies horizontal dimension text position (DIMJUST variable)"), {
                 {tr("Centered"), LC_DimStyle::Text::ABOVE_AND_CENTERED},
                 {tr("First ext line"), LC_DimStyle::Text::NEXT_TO_EXT_ONE},
                 {tr("Second ext line"), LC_DimStyle::Text::NEXT_TO_EXT_TWO},
@@ -361,7 +361,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
 
         entity->addIntEnumDS("dimTextVert", [](const LC_DimStyle* ds) -> int {
             return ds->text()->verticalPositioning();
-        }, tr("Text pos vert"), tr("Specified vertical dimension text position (DIMTAD variable)"), {
+        }, tr("Text pos vert"), tr("Specifies vertical dimension text position (DIMTAD variable)"), {
             {tr("Centered"), LC_DimStyle::Text::CENTER_BETWEEN_EXT_LINES},
             {tr("Above"), LC_DimStyle::Text::ABOVE_DIM_LINE_EXCEPT_NOT_HORIZONTAL},
             {tr("Outside"), LC_DimStyle::Text::FAREST_SIDE_FROM_DEF_POINTS},
@@ -394,7 +394,7 @@ class LC_MatchDescriptorDimBase : public LC_MatchDescriptorBase {
         if (entityType == RS2::EntityDimArc) {
             entity->addIntEnumDS("dimTextArcLen", [](const LC_DimStyle* ds) -> int {
                 return ds->arc()->arcSymbolPosition();
-            }, tr("Arc length symbol"), tr("Specifies placement of the arch length dimension symbol (DIMARCSYM variable)"), {
+            }, tr("Arc length symbol"), tr("Specifies placement of the arc length dimension symbol (DIMARCSYM variable)"), {
                 {tr("Preceding dimension text"), LC_DimStyle::Arc::BEFORE},
                 {tr("Above dimension text"), LC_DimStyle::Arc::ABOVE},
                 {tr("None"), LC_DimStyle::Arc::NONE}

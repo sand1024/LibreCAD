@@ -204,7 +204,9 @@ void doSetMouseCursor(RS2::CursorType cursor);
     void initPrevious(int status);
     void preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers) const;
 
-     void undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
+     /// @return false when the replacement was refused (the drawing's current layer is locked): the entity replacing
+     /// is then not in the drawing, and is the caller's to delete
+     bool undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
 
     void setPenAndLayerToActive(RS_Entity* e);
     void suspendRelativeInputWidget() override;

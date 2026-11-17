@@ -98,6 +98,8 @@ public slots :
 protected:
     void setLayerList(RS_LayerList* ll);
     void update() const;
+    bool canLockAllLayers() const;
+    void reportLockUnavailable() const;
     void keyPressEvent(QKeyEvent* e) override;
     void expandItems(int depth) const;
     QModelIndex getSelectedItemIndex() const;
@@ -136,6 +138,7 @@ private:
     bool m_flatListMode{false};
     QToolButton* m_btnCollapseSecondary{nullptr};
     QToolButton* m_btnCollapseAll{nullptr};
+    QToolButton* m_btnLockAll{nullptr};
     QToolButton* m_btnExpandAll{nullptr};
     QToolButton* m_btnListMode{nullptr};
     QToolButton* m_btnShowSecondaryLayers{nullptr};

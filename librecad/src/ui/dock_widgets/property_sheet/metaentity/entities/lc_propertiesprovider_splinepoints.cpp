@@ -95,10 +95,10 @@ void LC_PropertiesProviderSplinePoints::doCreateCalculatedProperties(LC_Property
 void LC_PropertiesProviderSplinePoints::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
     const auto spline = static_cast<LC_SplinePoints*>(entity);
     const std::list<CommandLinkInfo> commands = {
-        {tr("Spline points adding"), RS2::ActionDrawSplinePointAdd, RS2::ActionDrawSplinePointAppend},
-        {tr("Spline points removal"), RS2::ActionDrawSplinePointRemove, RS2::ActionDrawSplinePointDelTwo},
-        {tr("Dividing and exploding spline"), RS2::ActionModifyCut, RS2::ActionDrawSplineExplode,},
-        {tr("Tangent and rounding box"), RS2::ActionDrawLineTangent1, RS2::ActionDrawBoundingBox}
+        {tr("Spline points adding"),RS2::ActionDrawSplinePointAdd, RS2::ActionDrawSplinePointAppend},
+        {tr("Spline points removal"),RS2::ActionDrawSplinePointRemove, RS2::ActionDrawSplinePointDelTwo},
+        {tr("Dividing and exploding spline"),RS2::ActionModifyCut, RS2::ActionDrawSplineExplode,},
+        {tr("Tangent and bounding box"),RS2::ActionDrawLineTangent1, RS2::ActionDrawBoundingBox}
     };
     createEntityContextCommands<LC_SplinePoints>(commands, cont, spline, "splineCommands");
 }

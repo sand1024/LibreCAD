@@ -127,7 +127,11 @@ public:
     static QVector<qreal> canonicalDashPattern(const std::vector<double>& raw,
                                                qreal* phaseOffset = nullptr);
     /// Scale a table pattern for QPen and make its lengths strictly positive.
+    /// The list must alternate dash and gap (even length); longer lists fold
+    /// to the 32 elements Qt's stroker honours.
     static QVector<qreal> dashPatternForQt(const QVector<qreal>& canonical, double k);
+    /// Whether a Qt-scaled dash period survives Qt's stroker limits.
+    static bool periodFitsQt(double periodPx, double diagonalPx);
 
     void drawEntityArc(RS_Arc* arc);
     void drawEntityPolyline(const RS_Polyline *polyline);
@@ -264,7 +268,11 @@ public:
 
     void disableUCS();
 
-    void setWorldBoundingRect(const LC_Rect &worldBoundingRect) {m_wcsBoundingRect = worldBoundingRect;}
+    void setWorldBoundingRect(const LC_Rect &worldBoundingRect) {
+        m_wcsBoundingRect = worldBoundingRect;
+        // The period floor reads the view diagonal, so the memo cannot stay valid.
+        invalidateDashPattern();
+    }
     bool isFullyWithinBoundingRect(const RS_Entity* e) const;
     bool isFullyWithinBoundingRect(const LC_Rect &rect) const;
 
@@ -316,6 +324,10 @@ public:
      * respect to this base.
      *      * @param fullParamLength   Total parameter range covered by the
      * entity (e.g. 2*M_PI for full circle/ellipse, getAngleLength() for arcs).
+     * Never negative.
+     *
+     * @param reversed          The entity runs clockwise from baseParam, as a
+     * reversed arc does, instead of counter-clockwise.
      *      * @param getParamFromPoint Function that converts a world point →
      * parameter value on the curve. Example for arc/circle:    [](const
      * RS_Vector& p){ return (p - center).angle(); } Example for ellipse:
@@ -369,6 +381,7 @@ public:
         const RS_Entity* entity,
         double baseParam,
         double fullParamLength,
+        bool reversed,
         const std::function<double(const RS_Vector&)>& getParamFromPoint,
         const std::function<RS_Vector(double)>& getPointFromParam,
         double approxRadius
@@ -454,6 +467,8 @@ protected:
     RS2::LineType m_lastDashLineType = RS2::SolidLine;
     double m_lastDashScreenWidth = 0.;
     double m_lastDashDeviceScale = 0.;
+    // The memo holds a floor rejection, so the dash branch installs solid.
+    bool m_lastDashSolid = false;
     double m_cachedDpmm = 0.;
     double m_minCircleDrawingRadius = 2.0;
     double m_minArcDrawingRadius = 0.8;

@@ -31,7 +31,9 @@ void LC_PropertiesProviderPolyline::doCreateEntitySpecificProperties(LC_Property
     addBoolean<RS_Polyline>({"closed", tr("Is Closed"), tr("Determines whether polyline is closed")}, [](const RS_Polyline* e) -> bool {
                                 return e->isClosed();
                             }, [](const bool& v, RS_Polyline* e) -> void {
-                                e->setClosed(v);
+                                // the two-argument form also adds or removes the segment that closes the outline;
+                                // setClosed(bool) alone only flips the flag, and the polyline kept being drawn open
+                                e->setClosed(v, 0.0);
                             }, list, contGeometry);
 
     addReadOnlyString<RS_Polyline>({"segmentsCount", tr("Segments Count"), tr("Amount of polyline segments")},
@@ -57,7 +59,7 @@ void LC_PropertiesProviderPolyline::doCreateEntitySpecificProperties(LC_Property
         const int initialIndex = polylineVertexIndex;
 
         createIndexAndPointProperties(contGeometry, polyline, {"vertexIdx", tr("Vertex Index"), tr("Index of current vertex of polyline")},
-                                      {"vertexValue", tr("Vertex"), tr("Index of current vertex of polyline")}, vertexesCount, initialIndex,
+                                      {"vertexValue", tr("Vertex"), tr("Vertex of polyline with given index")}, vertexesCount, initialIndex,
                                       [polyline](const int newValue) -> RS_Vector {
                                           const RS_Vector wcsVector = polyline->getVertex(newValue - 1);
                                           return wcsVector;
@@ -100,12 +102,7 @@ void LC_PropertiesProviderPolyline::doCreateSingleEntityCommands(LC_PropertyCont
         {tr("Trimming and exploding polyline"), RS2::ActionPolylineTrim, RS2::ActionPolylineArcsToLines,},
         {tr("Modification of segments of polyline"), RS2::ActionBlocksExplode, RS2::ActionPolylineChangeSegmentType},
         {tr("Parallel polyline and changing direction"), RS2::ActionPolylineEquidistant, RS2::ActionModifyRevertDirection},
-        {
-            tr("Creation of bounding box or spline"),
-            RS2::ActionDrawBoundingBox,
-
-            RS2::ActionDrawSplineFromPolyline
-        }
+        {tr("Creation of bounding box or spline"),RS2::ActionDrawBoundingBox,RS2::ActionDrawSplineFromPolyline}
     };
     createEntityContextCommands<RS_Polyline>(commands, cont, polyline, "polylineCommands");
 }

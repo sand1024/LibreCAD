@@ -911,8 +911,12 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/blocks/rs_blocklistlistener.h
      librecad/src/lib/engine/document/container/lc_containertraverser.cpp
      librecad/src/lib/engine/document/container/lc_containertraverser.h
+     librecad/src/lib/engine/document/container/lc_loopclassifier.cpp
+     librecad/src/lib/engine/document/container/lc_loopclassifier.h
      librecad/src/lib/engine/document/container/lc_looputils.cpp
      librecad/src/lib/engine/document/container/lc_looputils.h
+     librecad/src/lib/engine/document/container/lc_patternlinededup.cpp
+     librecad/src/lib/engine/document/container/lc_patternlinededup.h
      librecad/src/lib/engine/document/container/lc_pathbuilder.h
      librecad/src/lib/engine/document/container/lc_pathbuilder.cpp
      librecad/src/lib/engine/document/container/rs_entitycontainer.cpp
@@ -940,6 +944,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/lc_rect.cpp
      librecad/src/lib/engine/document/entities/lc_rect.h
      librecad/src/lib/engine/document/entities/lc_secondmoment.h
+     librecad/src/lib/engine/document/entities/lc_momentquadrature.cpp
+     librecad/src/lib/engine/document/entities/lc_momentquadrature.h
      librecad/src/lib/engine/document/entities/lc_curvejet.h
      librecad/src/lib/engine/document/entities/lc_curveoffset.cpp
      librecad/src/lib/engine/document/entities/lc_curveoffset.h
@@ -979,6 +985,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/rs_ellipse.h
      librecad/src/lib/engine/document/entities/rs_entity.cpp
      librecad/src/lib/engine/document/entities/rs_entity.h
+     librecad/src/lib/engine/document/entities/lc_hatchdensity.cpp
+     librecad/src/lib/engine/document/entities/lc_hatchdensity.h
      librecad/src/lib/engine/document/entities/rs_hatch.cpp
      librecad/src/lib/engine/document/entities/rs_hatch.h
      librecad/src/lib/engine/document/entities/rs_image.cpp
@@ -1071,6 +1079,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/lc_graphicvariables.cpp
      librecad/src/lib/engine/document/lc_graphicvariables.h
      librecad/src/lib/engine/document/lc_trackedlistener.h
+     librecad/src/lib/engine/document/linetypes/lc_linfile.cpp
+     librecad/src/lib/engine/document/linetypes/lc_linfile.h
      librecad/src/lib/engine/document/linetypes/lc_linetype.cpp
      librecad/src/lib/engine/document/linetypes/lc_linetype.h
      librecad/src/lib/engine/document/linetypes/lc_linetypelist.cpp
@@ -1184,6 +1194,8 @@ set (SHARED_SOURCES
      librecad/src/lib/filters/lc_embeddedtextxdata.h
      librecad/src/lib/filters/lc_embeddedtextmodel.cpp
      librecad/src/lib/filters/lc_embeddedtextmodel.h
+     librecad/src/lib/filters/lc_hatchdefinitionlines.cpp
+     librecad/src/lib/filters/lc_hatchdefinitionlines.h
      librecad/src/lib/filters/lc_hyperbolaspline.cpp
      librecad/src/lib/filters/lc_hyperbolaspline.h
      librecad/src/lib/filters/lc_parabolaspline.cpp
@@ -1248,6 +1260,8 @@ set (SHARED_SOURCES
      librecad/src/lib/gui/rs_dialogfactory.cpp
      librecad/src/lib/gui/rs_dialogfactory.h
      librecad/src/lib/gui/rs_dialogfactoryinterface.h
+     librecad/src/lib/gui/lc_hatchdensitytext.cpp
+     librecad/src/lib/gui/lc_hatchdensitytext.h
      librecad/src/lib/gui/rs_graphicview.cpp
      librecad/src/lib/gui/rs_graphicview.h
      librecad/src/lib/gui/rs_linetypepattern.cpp
@@ -3173,8 +3187,12 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/entities/tests/lc_polylineclosing_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_dimarrowtests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_hatch_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_secondmoment_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_hatchmovetests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_hatchdensity_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_hatchpattern_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_image_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_splinelayertests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_insert_transform_tests.cpp
         librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
         librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
@@ -3183,12 +3201,18 @@ if (BUILD_TESTS)
         librecad/src/lib/engine/document/entities/tests/rs_text_alignment_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_container_ownership_tests.cpp
         librecad/src/lib/engine/document/container/tests/lc_copy_semantics_tests.cpp
+        librecad/src/lib/engine/document/container/tests/lc_loopclassifier_tests.cpp
+        librecad/src/lib/engine/document/container/tests/lc_looputils_tests.cpp
+        librecad/src/lib/information/tests/lc_insidecontour_tests.cpp
         librecad/src/lib/engine/tests/rs_color_tests.cpp
         librecad/src/lib/engine/document/layers/tests/lc_layerlist_tests.cpp
+        librecad/src/lib/engine/document/layers/tests/lc_activelayer_tests.cpp
+        librecad/src/lib/engine/document/layers/tests/lc_lockedhiddenlayer_tests.cpp
         librecad/src/lib/engine/document/tests/lc_trackedlistener_tests.cpp
         librecad/src/lib/engine/document/blocks/tests/lc_blocklist_tests.cpp
         librecad/src/lib/engine/document/ucs/tests/lc_ucslist_tests.cpp
         librecad/src/lib/engine/document/ucs/tests/lc_wcs_tests.cpp
+        librecad/src/lib/engine/document/linetypes/tests/lc_linfile_tests.cpp
         librecad/src/lib/engine/document/linetypes/tests/lc_linetypelist_tests.cpp
         librecad/src/lib/engine/document/views/tests/lc_view_tests.cpp
         librecad/src/lib/engine/tests/rs_pen_tests.cpp
@@ -3198,6 +3222,7 @@ if (BUILD_TESTS)
         librecad/src/actions/drawing/modify/tests/lc_action_modify_trim_tests.cpp
         librecad/src/actions/drawing/modify/tests/lc_actionmodifylinejointests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_move_tests.cpp
+        librecad/src/actions/drawing/draw/hatch/tests/lc_actiondrawhatch_tests.cpp
         librecad/src/actions/drawing/draw/curve/tests/lc_actiondrawdualtests.cpp
         librecad/src/actions/drawing/modify/tests/lc_action_modify_offset_tests.cpp
         librecad/src/actions/drawing/modify/tests/lc_offsetmatrixtests.cpp
@@ -3205,6 +3230,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_pre_r13_section_size_tests.cpp
         librecad/src/lib/filters/tests/dwg_pre_r13_record_layout_tests.cpp
         librecad/src/lib/filters/tests/dwg_textcodec_tables_tests.cpp
+        librecad/src/lib/filters/tests/lc_dwg_layer_flags_tests.cpp
         librecad/src/lib/filters/tests/dxf_cjk_codepage_tests.cpp
         librecad/src/lib/math/tests/lc_archparser_tests.cpp
         librecad/src/lib/math/tests/rs_math_tests.cpp
@@ -3222,6 +3248,7 @@ if (BUILD_TESTS)
         librecad/src/lib/modification/tests/lc_offsetresultchecktests.cpp
         librecad/src/lib/modification/tests/rs_modification_attributes_tests.cpp
         librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
+        librecad/src/lib/filters/tests/lc_layer_off_state_tests.cpp
         librecad/src/lib/filters/tests/spline_offset_representation_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_line_parallel_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_fast_tests.cpp
@@ -3229,6 +3256,7 @@ if (BUILD_TESTS)
         librecad/src/lib/creation/tests/lc_action_draw_circle_2points_radius_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_polyline_tests.cpp
         librecad/src/lib/creation/tests/lc_action_draw_spline_tests.cpp
+        librecad/src/lib/creation/tests/lc_action_draw_line_snake_commands_tests.cpp
         librecad/src/lib/creation/tests/lc_closedshapetoolstests.cpp
         librecad/src/cmd/tests/rs_commands_tests.cpp
         librecad/src/lib/engine/undo/tests/rs_undo_tests.cpp
@@ -3236,6 +3264,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/lc_attrib_embedded_mtext_dwg_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_handseed_tests.cpp
+        librecad/src/lib/filters/tests/lc_dwg_current_layer_tests.cpp
         librecad/src/lib/filters/tests/dwg_header_app_vars_tests.cpp
         librecad/src/lib/filters/tests/dwg_visibility_read_tests.cpp
         librecad/src/lib/filters/tests/libdxfrw_debug_tests.cpp
@@ -3243,6 +3272,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dwg_object_encode_round_trip_tests.cpp
         librecad/src/lib/filters/tests/dwg_class_table_tests.cpp
         librecad/src/lib/filters/tests/dwg_smoke_tests.cpp
+        librecad/src/lib/filters/tests/lc_hatchloopcorpus_tests.cpp
         librecad/src/lib/filters/tests/dwg_write_smoke_tests.cpp
         librecad/src/lib/filters/tests/eed_tests.cpp
         librecad/src/lib/filters/tests/dbcolor_tests.cpp
@@ -3272,6 +3302,8 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/dxf_object_tests.cpp
         librecad/src/lib/filters/tests/mpolygon_tests.cpp
         librecad/src/lib/filters/tests/mpolygon_dwg_tests.cpp
+        librecad/src/lib/filters/tests/lc_mpolygon_dxf_tests.cpp
+        librecad/src/lib/filters/tests/lc_mpolygon_dwg_tests.cpp
         librecad/src/lib/filters/tests/mesh_tests.cpp
         librecad/src/lib/filters/tests/acis_wireframe_tests.cpp
         librecad/src/lib/filters/tests/helix_tests.cpp
@@ -3294,6 +3326,8 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/lc_dxf_shape_name_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_appid_registration_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_xdata_appid_tests.cpp
+        librecad/src/lib/filters/tests/lc_hatch_angle_units_tests.cpp
+        librecad/src/lib/filters/tests/lc_hatch_export_tests.cpp
         librecad/src/lib/filters/tests/lc_export_commit_tests.cpp
         librecad/src/lib/filters/tests/lc_attribute_export_tests.cpp
         librecad/src/lib/filters/tests/dxf_closed_spline_tests.cpp
@@ -3319,9 +3353,13 @@ if (BUILD_TESTS)
         librecad/src/actions/drawing/draw/dimensions/tests/rs_actiondimleader_tests.cpp
         librecad/src/ui/dock_widgets/command_line/tests/qg_commandwidget_tests.cpp
         librecad/src/ui/dock_widgets/layer_widget/tests/lc_layerblockwidgets_tests.cpp
+        librecad/src/ui/dock_widgets/layer_widget/tests/lc_activelayerdocks_tests.cpp
         librecad/src/ui/dock_widgets/ucs_list/tests/lc_ucsviewsselectiondocks_tests.cpp
         librecad/src/ui/dock_widgets/property_sheet/tests/lc_propertysheetlifetime_tests.cpp
+        librecad/src/ui/dock_widgets/property_sheet/tests/lc_layerstateproperties_tests.cpp
+        librecad/src/ui/dock_widgets/property_sheet/tests/lc_propertysheet_polyline_closed_tests.cpp
         librecad/src/ui/dock_widgets/property_sheet/tests/lc_property_copy_tests.cpp
+        librecad/src/ui/dock_widgets/property_sheet/tests/lc_propertysheetarctests.cpp
         librecad/src/actions/dock_widgets/block/tests/lc_actionblockssave_tests.cpp
         librecad/src/ui/dock_widgets/ucs_list/tests/lc_ucslistmodel_tests.cpp
         librecad/src/ui/dock_widgets/views_list/tests/lc_namedviewsmodel_tests.cpp
@@ -3330,9 +3368,14 @@ if (BUILD_TESTS)
         librecad/src/ui/main/tests/lc_mdiwindow_close_tests.cpp
         librecad/src/ui/main/tests/lc_docklayout_tests.cpp
         librecad/src/ui/components/pen/tests/qg_widgetpen_tests.cpp
+        librecad/src/ui/components/comboboxes/tests/qg_linetypebox_tests.cpp
         librecad/src/ui/dialogs/tests/lc_dialog_tests.cpp
         librecad/src/ui/dialogs/tests/lc_language_selection_tests.cpp
+        librecad/src/ui/dialogs/tests/lc_translation_catalog_tests.cpp
+        librecad/src/ui/dialogs/tests/lc_infocursor_colors_tests.cpp
+        librecad/src/ui/dock_widgets/block_widget/tests/lc_blockwidget_filter_tests.cpp
         librecad/src/ui/dialogs/settings/options_drawing/tests/lc_dlgoptionsdrawingtests.cpp
+        librecad/src/ui/dialogs/settings/options_widget/tests/lc_stylesheetoptiontests.cpp
         librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreewidget_tests.cpp
         librecad/src/ui/dock_widgets/layers_tree/tests/lc_layertreemodel_tests.cpp
         librecad/src/plugins/tests/qc_actiongetselect_tests.cpp
@@ -3735,6 +3778,7 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/eed_tests.cpp
         librecad/src/lib/filters/tests/datastorage_tests.cpp
         librecad/src/lib/filters/tests/lc_export_commit_tests.cpp
+        librecad/src/lib/filters/tests/lc_mpolygon_dwg_tests.cpp
     )
     add_executable(librecad_dwg_fast_tests
         EXCLUDE_FROM_ALL
@@ -3810,6 +3854,7 @@ if (BUILD_TESTS)
     )
 
     set(LIBRECAD_DXF_FAST_TEST_SOURCES
+        librecad/src/lib/engine/document/linetypes/tests/lc_linfile_tests.cpp
         librecad/src/lib/engine/document/linetypes/tests/lc_linetypelist_tests.cpp
         librecad/src/lib/filters/tests/dxf_attribute_tests.cpp
         librecad/src/lib/filters/tests/dxf_object_tests.cpp
@@ -3824,6 +3869,9 @@ if (BUILD_TESTS)
         librecad/src/lib/filters/tests/lc_dxf_shape_name_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_appid_registration_tests.cpp
         librecad/src/lib/filters/tests/lc_dxf_xdata_appid_tests.cpp
+        librecad/src/lib/filters/tests/lc_hatch_angle_units_tests.cpp
+        librecad/src/lib/filters/tests/lc_hatch_export_tests.cpp
+        librecad/src/lib/filters/tests/lc_mpolygon_dxf_tests.cpp
         librecad/src/lib/filters/tests/lc_hatch_closed_spline_export_tests.cpp
         librecad/src/lib/filters/tests/mleader_dxf_context_tests.cpp
     )
@@ -3920,6 +3968,20 @@ if (BUILD_TESTS)
         librecad_entity_container_replace_tests
         librecad/src/lib/engine/document/entities/tests/rs_entitycontainer_replace_tests.cpp)
 
+    # Exercise the hatch geometry without building the complete test suite.
+    add_librecad_filter_micro_test(
+        librecad_hatch_tests
+        librecad/src/lib/engine/document/entities/tests/rs_hatch_tests.cpp)
+    target_sources(librecad_hatch_tests PRIVATE
+        librecad/src/lib/engine/document/container/tests/lc_loopclassifier_tests.cpp
+        librecad/src/lib/engine/document/container/tests/lc_looputils_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_hatchdensity_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_hatchpattern_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_hyperbola_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_secondmoment_tests.cpp
+        librecad/src/lib/engine/document/entities/tests/lc_splinepoints_tests.cpp
+        librecad/src/lib/information/tests/lc_insidecontour_tests.cpp)
+
     # This standalone main interposes C++ allocation only in its own process.
     # Never link these overrides into a Catch2 or application executable.
     add_executable(librecad_entity_container_replace_failure_tests EXCLUDE_FROM_ALL
@@ -4007,6 +4069,17 @@ if (BUILD_TESTS)
     target_compile_definitions(librecad_dock_layout_tests PRIVATE
         LIBRECAD_TEST_TRANSLATION_DIR="${CMAKE_CURRENT_BINARY_DIR}")
     add_dependencies(librecad_dock_layout_tests librecad_test_translations)
+    # lc_docklayout_tests.cpp includes qg_activelayername.h, which includes its uic output.
+    target_include_directories(librecad_dock_layout_tests PRIVATE
+        "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include")
+    add_librecad_filter_micro_test(
+        librecad_linetype_ui_tests
+        librecad/src/ui/components/comboboxes/tests/qg_linetypebox_tests.cpp)
+    target_sources(librecad_linetype_ui_tests PRIVATE ${LIBRECAD_RES})
+    set_target_properties(librecad_linetype_ui_tests PROPERTIES AUTORCC ON)
+    # Later rungs test widgets whose headers include their uic output.
+    target_include_directories(librecad_linetype_ui_tests PRIVATE
+        "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include")
     add_librecad_filter_micro_test(
         librecad_dimension_clipboard_tests
         librecad/src/lib/engine/document/entities/tests/lc_dimension_clipboard_tests.cpp)
@@ -4019,6 +4092,9 @@ if (BUILD_TESTS)
     target_compile_definitions(librecad_dimension_clipboard_tests PRIVATE
         LIBRECAD_TEST_TRANSLATION_DIR="${CMAKE_CURRENT_BINARY_DIR}")
     add_dependencies(librecad_dimension_clipboard_tests librecad_test_translations)
+    # it compiles lc_docklayout_tests.cpp too (see librecad_dock_layout_tests)
+    target_include_directories(librecad_dimension_clipboard_tests PRIVATE
+        "${CMAKE_CURRENT_BINARY_DIR}/librecad_lib_autogen/include")
     add_librecad_filter_micro_test(
         librecad_printing_tests
         librecad/src/lib/printing/tests/lc_printingtests.cpp)
@@ -4315,6 +4391,13 @@ if (BUILD_TESTS)
             TIMEOUT 120)
     endif()
     if (LIBRECAD_REGISTER_INTEGRATION_TESTS)
+        add_test(NAME librecad_hatch_tests
+            COMMAND $<TARGET_FILE:librecad_hatch_tests>
+                ${LIBRECAD_FAST_TEST_EXCLUDES} --reporter compact)
+        set_tests_properties(librecad_hatch_tests PROPERTIES
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+            LABELS hatch TIMEOUT 300)
         add_test(NAME librecad_dimension_clipboard_tests
             COMMAND $<TARGET_FILE:librecad_dimension_clipboard_tests> "[clipboard]" --reporter compact)
         set_tests_properties(librecad_dimension_clipboard_tests PROPERTIES
@@ -4324,6 +4407,10 @@ if (BUILD_TESTS)
         add_test(NAME librecad_painter_tests
             COMMAND $<TARGET_FILE:librecad_painter_tests> --reporter compact)
         set_tests_properties(librecad_painter_tests PROPERTIES
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+        add_test(NAME librecad_linetype_ui_tests
+            COMMAND $<TARGET_FILE:librecad_linetype_ui_tests> --reporter compact)
+        set_tests_properties(librecad_linetype_ui_tests PROPERTIES
             ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
         add_test(NAME librecad_console_svg_tests
             COMMAND $<TARGET_FILE:librecad_lc_consolesvgexporttests>

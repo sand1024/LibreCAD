@@ -84,12 +84,12 @@ LC_PropertyContainer* LC_EntityTypePropertiesProvider::createMultipleEntityActio
 
 void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, [[maybe_unused]]const QList<RS_Entity*>& list) {
     const std::list<CommandLinkInfo> commands = {
-        {tr("Moving or rotating operations"), RS2::ActionModifyMove, RS2::ActionModifyRotate},
+        {tr("Moving or rotating operations"),RS2::ActionModifyMove, RS2::ActionModifyRotate},
         {tr("Duplicating or mirroring"), RS2::ActionModifyCopy, RS2::ActionModifyDuplicate,},
         {tr("Scaling and stretching"), RS2::ActionModifyScale, RS2::ActionModifyStretch},
         {tr("Mirroring"), RS2::ActionModifyMirror},
         {tr("Aligning selection"), RS2::ActionModifyAlign, RS2::ActionModifyAlignRef},
-        {tr("Aligning selection"), RS2::ActionModifyMoveRotate, RS2::ActionModifyRotateTwice}
+        {tr("Complex moving"), RS2::ActionModifyMoveRotate, RS2::ActionModifyRotateTwice}
     };
 
     createEntityContextCommands<RS_Document>(commands, propertyContainer, nullptr, "multiEntityCommands", false);

@@ -660,6 +660,8 @@ HEADERS += \
     lib/engine/overlays/references/lc_ref_snap_entity.h \
     lib/engine/overlays/references/lc_ref_snap_line.h \
     lib/engine/overlays/references/lc_ref_snap_mark.h \
+    lib/engine/document/container/lc_loopclassifier.h \
+    lib/engine/document/container/lc_patternlinededup.h \
     lib/engine/overlays/references/lc_refarc.h \
     lib/engine/overlays/references/lc_refcircle.h \
     lib/engine/overlays/references/lc_refconstructionline.h \
@@ -674,6 +676,35 @@ HEADERS += \
     lib/engine/rs.h \
     lib/engine/rs_color.h \
     lib/engine/rs_flags.h \
+    lib/engine/document/fonts/rs_font.h \
+    lib/engine/document/fonts/rs_fontchar.h \
+    lib/engine/document/fonts/lc_opentypefont.h \
+    lib/engine/document/fonts/lc_opentypefont_p.h \
+    lib/engine/document/fonts/lc_textfontregistry.h \
+    lib/engine/document/fonts/rs_fontlist.h \
+    lib/engine/document/rs_graphic.h \
+    lib/engine/document/entities/lc_hatchdensity.h \
+    lib/engine/document/entities/rs_hatch.h \
+    lib/engine/document/entities/lc_hyperbola.h \
+    lib/engine/document/entities/lc_insert_transform.h \
+    lib/engine/document/entities/rs_insert.h \
+    lib/engine/document/entities/rs_image.h \
+    lib/engine/document/entities/lc_wipeout.h \
+    lib/engine/document/layers/rs_layer.h \
+    lib/engine/document/layers/rs_layerlist.h \
+    lib/engine/document/layers/rs_layerlistlistener.h \
+    lib/engine/document/linetypes/lc_linfile.h \
+    lib/engine/document/linetypes/lc_linetype.h \
+    lib/engine/document/linetypes/lc_linetypelist.h \
+    lib/engine/document/entities/rs_leader.h \
+    lib/engine/document/entities/rs_line.h \
+    lib/engine/document/entities/rs_mtext.h \
+    lib/engine/overlays/rs_overlayline.h \
+    lib/engine/overlays/overlay_box/rs_overlaybox.h \
+    lib/engine/document/patterns/rs_pattern.h \
+    lib/engine/document/patterns/rs_patternlist.h \
+    lib/engine/lc_colornumbers.h \
+    lib/engine/lc_linetypenames.h \
     lib/engine/rs_pen.h \
     lib/engine/rs_system.h \
     lib/engine/rs_units.h \
@@ -681,6 +712,13 @@ HEADERS += \
     lib/engine/settings/lc_setting.h \
     lib/engine/settings/lc_settingsexporter.h \
     lib/engine/settings/rs_settings.h \
+    lib/engine/document/entities/rs_solid.h \
+    lib/engine/document/entities/rs_spline.h \
+    lib/engine/document/entities/lc_splinepoints.h \
+    lib/engine/document/entities/lc_secondmoment.h \
+    lib/engine/document/entities/lc_momentquadrature.h \
+    lib/engine/rs_system.h \
+    lib/engine/document/entities/rs_text.h \
     lib/engine/undo/lc_undoablerelzero.h \
     lib/engine/undo/lc_undosection.h \
     lib/engine/undo/rs_undo.h \
@@ -694,6 +732,7 @@ HEADERS += \
     lib/fileio/rs_fileio.h \
     lib/filters/lc_dwgsectiondiagnostics.h \
     lib/filters/lc_embeddedtextmodel.h \
+    lib/filters/lc_hatchdefinitionlines.h \
     lib/filters/lc_embeddedtextxdata.h \
     lib/filters/lc_hyperbolaspline.h \
     lib/filters/lc_parabolaspline.h \
@@ -961,6 +1000,156 @@ HEADERS += \
     ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.h \
+    ui/dock_widgets/lc_widgets_common.h \
+    ui/lc_actionhandlerfactory.h \
+    ui/lc_graphicviewaware.h \
+    ui/lc_snapmanager.h \
+    ui/lc_uiutils.h \
+    ui/main/fontviewer/lc_fontfileviewer.h \
+    ui/main/init/lc_applicationwindowinitializer.h \
+    ui/main/support/lc_appwindowdialogsinvoker.h \
+    ui/main/lc_appwindowaware.h \
+    ui/main/lc_defaultactioncontext.h \
+    ui/main/persistence/lc_documentsstorage.h \
+    lib/gui/render/widget/lc_graphicviewrenderer.cpp \
+    lib/gui/render/widget/lc_printpreviewviewrenderer.cpp \
+    lib/gui/render/widget/lc_widgetviewportrenderer.cpp \
+    lib/modification/lc_align.h \
+    ui/action_options/lc_action_options_properties_filler_base.h \
+    ui/action_options/curve/lc_arc_2points_options_widget.h \
+    ui/action_options/curve/lc_arc_2_points_options_widget_filler.h \
+    ui/action_options/misc/lc_center_line_options_widget.h \
+    ui/action_options/misc/lc_center_line_options_filler.h \
+    ui/action_options/misc/lc_draw_bounding_box_options_widget.h \
+    ui/action_options/misc/lc_draw_bounding_box_options_filler.h \
+    ui/action_options/modify/lc_align_options_widget.h \
+    ui/action_options/modify/lc_align_options_filler.h \
+    ui/action_options/modify/lc_align_single_options_filler.h \
+    ui/action_options/modify/lc_align_single_options_widget.h \
+    ui/action_options/modify/lc_align_ref_options_widget.h \
+    ui/action_options/modify/lc_align_ref_options_filler.h \
+    ui/action_options/other/lc_ucs_create_options_widget.h \
+    ui/action_options/other/lc_ucs_create_options_filler.h \
+    ui/action_options/spline/lc_spline_explode_options_widget.h \
+    ui/action_options/spline/lc_spline_explode_options_filler.h \
+    ui/action_options/spline/lc_spline_from_polyline_options_widget.h \
+    ui/action_options/spline/lc_spline_from_polyline_options_filler.h \
+    ui/action_options/edit/lc_paste_to_points_options_widget.h \
+    ui/action_options/edit/lc_paste_to_points_options_filler.h \
+    ui/action_options/point/lc_points_lattice_options_widget.h \
+    ui/action_options/point/lc_points_lattice_options_filler.h \
+    ui/action_options/selection/lc_selectwindowoptions.h \
+    ui/components/status_bar/lc_anglesbasiswidget.h \
+    ui/components/status_bar/lc_qtstatusbarmanager.h \
+    ui/components/status_bar/lc_ucsstatewidget.h \
+    ui/dialogs/entity/lc_entitypropertiesdlg.h \
+    ui/dialogs/main/lc_dlgabout.h \
+    ui/dialogs/main/lc_dlgnewversionavailable.h \
+    ui/dialogs/settings/options_widget/lc_iconcolorsoptions.h \
+    ui/dock_widgets/ucs_list/lc_dlgucslistoptions.h \
+    ui/dock_widgets/ucs_list/lc_dlgucsproperties.h \
+    ui/dock_widgets/ucs_list/lc_ucslistbutton.h \
+    ui/dock_widgets/ucs_list/lc_ucslistmodel.h \
+    ui/dock_widgets/ucs_list/lc_ucslistoptions.h \
+    ui/dock_widgets/ucs_list/lc_ucslistwidget.h \
+    ui/dock_widgets/views_list/lc_dlgnamedviewslistoptions.h \
+    ui/dock_widgets/views_list/lc_namedviewsbutton.h \
+    ui/dock_widgets/views_list/lc_namedviewslistoptions.h \
+    ui/dock_widgets/views_list/lc_namedviewslistwidget.h \
+    ui/dock_widgets/views_list/lc_namedviewsmodel.h \
+    ui/dock_widgets/workspaces/lc_workspacelistbutton.h \
+    ui/dock_widgets/cad/lc_caddockwidget.h \
+    ui/main/support/lc_lastopenfilesopener.h \
+    ui/main/workspaces/lc_workspacesmanager.h \
+    ui/main/release_check/lc_releasechecker.h \
+    lib/gui/grid/lc_gridsystem.h \
+    lib/gui/grid/lc_isometricgrid.h \
+    lib/gui/grid/lc_lattice.h \
+    lib/gui/grid/lc_orthogonalgrid.h \
+    lib/gui/rs_commandevent.h \
+    lib/gui/rs_coordinateevent.h \
+    lib/gui/rs_dialogfactory.h \
+    lib/gui/rs_dialogfactoryinterface.h \
+    lib/gui/lc_hatchdensitytext.h \
+    lib/gui/rs_graphicview.h \
+    lib/gui/grid/rs_grid.h \
+    lib/gui/rs_linetypepattern.h \
+    lib/gui/rs_mainwindowinterface.h \
+    lib/gui/render/rs_painter.h \
+    lib/gui/lc_coordinates_mapper.h \
+    ui/main/support/lc_customstylehelper.h \
+    ui/main/support/lc_gridviewinvoker.h \
+    ui/main/support/lc_infocursorsettingsmanager.h \
+    ui/main/workspaces/lc_workspacesinvoker.h \
+    ui/view/lc_printpreviewview.h \
+    lib/information/rs_locale.h \
+    lib/information/rs_information.h \
+    lib/information/rs_infoarea.h \
+    lib/math/lc_archparser.h \
+    lib/math/lc_convert.h \
+    lib/math/lc_linemath.h \
+    lib/math/lc_formatter.h \
+    lib/modification/rs_modification.h \
+    lib/selection/rs_selection.h \
+    lib/selection/lc_selectionpredicate.h \
+    lib/selection/metaentity/lc_entitymatchdescriptor.h \
+    lib/selection/metaentity/lc_entitymatchdescriptorsregistry.h \
+    lib/selection/metaentity/lc_entitymatcher.h \
+    lib/selection/metaentity/lc_propertymatcher.h \
+    lib/selection/metaentity/lc_propertymatchertypes.h \
+    lib/selection/metaentity/lc_propertymatchtypedescriptor.h \
+    lib/selection/metaentity/lc_typedentitymatcher.h \
+    lib/selection/metaentity/lc_vectorentitymatcher.h \
+    lib/selection/metaentity/lc_vectorlistentitymatcher.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_line.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_base.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_circle.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_arc.h           \
+    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_spline.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_insert.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_text.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_image.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h       \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.h    \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h  \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.h    \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.h   \
+    lib/selection/metaentity/entities/lc_matchdescriptor_leader.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.h       \
+    lib/selection/metaentity/entities/lc_matchdescriptor_point.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.h \
+    lib/math/rs_math.h \
+    lib/math/lc_interval.h \
+    lib/math/lc_quadratic.h \
+    main/console_command_utils.h \
+    main/console_dxf2png.h \
+    test/lc_simpletests.h \
+    lib/generators/makercamsvg/lc_makercamsvg.h \
+    lib/generators/makercamsvg/lc_xmlwriterinterface.h \
+    lib/generators/makercamsvg/lc_xmlwriterqxmlstreamwriter.h \
+    lib/engine/document/entities/lc_rect.h \
+    lib/engine/utils/lc_rtree.h \
+    lib/engine/undo/lc_undosection.h \
+    lib/printing/lc_printing.h \
+    main/lc_application.h \
+    main/lc_crash_handler.h \
+    ui/action_options/curve/lc_ellipse_arc_options_widget.h \
+    ui/action_options/curve/lc_ellipse_arc_options_filler.h \
+    ui/action_options/ellipse/lc_ellipse_1point_options_widget.h \
+    ui/action_options/ellipse/lc_ellipse_1_point_options_filler.h \
+    ui/components/status_bar/lc_relzerocoordinateswidget.h \
+    ui/dialogs/lc_dialog.h \
+    ui/main/lc_mdiapplicationwindow.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h \
     ui/dock_widgets/property_sheet/lib/view/lc_property_view.h \
@@ -1333,6 +1522,7 @@ SOURCES += \
     lib/fileio/lc_filenameselectionservice.cpp \
     lib/fileio/rs_fileio.cpp \
     lib/filters/lc_embeddedtextmodel.cpp \
+    lib/filters/lc_hatchdefinitionlines.cpp \
     lib/filters/lc_embeddedtextxdata.cpp \
     lib/filters/lc_hyperbolaspline.cpp \
     lib/filters/lc_parabolaspline.cpp \
@@ -1532,6 +1722,165 @@ SOURCES += \
     ui/dock_widgets/cad/lc_caddockwidget.cpp \
     ui/dock_widgets/lc_dockwidget.cpp \
     ui/dock_widgets/lc_graphicviewawarewidget.cpp \
+    ui/lc_actionhandlerfactory.cpp \
+    ui/lc_snapmanager.cpp \
+    ui/lc_uiutils.cpp \
+    ui/main/fontviewer/lc_fontfileviewer.cpp \
+    ui/main/init/lc_applicationwindowinitializer.cpp \
+    ui/main/support/lc_appwindowdialogsinvoker.cpp \
+    ui/main/lc_appwindowaware.cpp \
+    ui/main/lc_defaultactioncontext.cpp \
+    ui/main/persistence/lc_documentsstorage.cpp \
+    lib/gui/render/lc_graphicviewportrenderer.cpp \
+    lib/gui/render/widget/lc_graphicviewrenderer.cpp \
+    lib/gui/render/widget/lc_printpreviewviewrenderer.cpp \
+    lib/gui/render/widget/lc_widgetviewportrenderer.cpp \
+    lib/modification/lc_align.cpp \
+    ui/action_options/lc_action_options_manager.cpp \
+    ui/action_options/curve/lc_arc_2points_options_widget.cpp \
+    ui/action_options/curve/lc_arc_2_points_options_widget_filler.cpp \
+    ui/action_options/misc/lc_center_line_options_widget.cpp \
+    ui/action_options/misc/lc_center_line_options_filler.cpp \
+    ui/action_options/misc/lc_draw_bounding_box_options_widget.cpp \
+    ui/action_options/misc/lc_draw_bounding_box_options_filler.cpp \
+    ui/action_options/modify/lc_align_options_widget.cpp \
+    ui/action_options/modify/lc_align_options_filler.cpp \
+    ui/action_options/modify/lc_align_single_options_widget.cpp \
+    ui/action_options/modify/lc_align_single_options_filler.cpp \
+    ui/action_options/modify/lc_align_ref_options_widget.cpp \
+    ui/action_options/modify/lc_align_ref_options_filler.cpp \
+    ui/action_options/other/lc_ucs_create_options_widget.cpp \
+    ui/action_options/other/lc_ucs_create_options_filler.cpp \
+    ui/action_options/spline/lc_spline_explode_options_widget.cpp \
+    ui/action_options/spline/lc_spline_explode_options_filler.cpp \
+    ui/action_options/spline/lc_spline_from_polyline_options_widget.cpp \
+    ui/action_options/spline/lc_spline_from_polyline_options_filler.cpp \
+    actions/drawing/draw/spline/lc_action_spline_append_point.cpp \
+    actions/drawing/draw/spline/lc_action_spline_modify_base.cpp \
+    actions/drawing/draw/dimensions/lc_actioncircledimbase.cpp \
+    actions/drawing/draw/dimensions/lc_actiondrawdimbaseline.cpp \
+    actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.cpp \
+    actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.cpp \
+    lib/engine/overlays/highlight/lc_highlight.cpp \
+    lib/actions/lc_modifiersinfo.cpp \
+    lib/actions/rs_actioninterface.cpp \
+    lib/engine/overlays/preview/rs_preview.cpp \
+    lib/actions/rs_previewactioninterface.cpp \
+    lib/actions/rs_snapper.cpp \
+    lib/actions/visual_snap/lc_visual_snap_data.cpp \
+    lib/actions/visual_snap/lc_visual_snap_options.cpp \
+    lib/actions/visual_snap/lc_visual_snap_solution_solver.cpp \
+    lib/actions/visual_snap/lc_visual_snap_solution_visualizer.cpp \
+    lib/actions/visual_snap/lc_visual_snap_manager.cpp \
+    lib/actions/options/lc_action_options_widget.cpp \
+    lib/actions/options/lc_action_options_editor_typed.cpp \
+    lib/actions/options/lc_action_options_properties_filler.cpp \
+    lib/actions/options/lc_action_options_support.cpp \
+    lib/creation/rs_creation.cpp \
+    lib/creation/lc_creation_arc.cpp \
+    lib/creation/lc_creation_circle.cpp \
+    lib/creation/lc_creation_ellipse.cpp \
+    lib/debug/rs_debug.cpp \
+    lib/engine/document/ucs/lc_ucs.cpp \
+    lib/engine/document/views/lc_view.cpp \
+    lib/engine/document/views/lc_viewslist.cpp \
+    lib/engine/document/entities/lc_cachedlengthentity.cpp \
+    lib/engine/overlays/crosshair/lc_crosshair.cpp \
+    lib/engine/document/container/lc_loopclassifier.cpp \
+    lib/engine/document/container/lc_looputils.cpp \
+    lib/engine/document/container/lc_patternlinededup.cpp \
+    lib/engine/document/entities/lc_parabola.cpp \
+    lib/engine/overlays/references/lc_refarc.cpp \
+    lib/engine/overlays/references/lc_refcircle.cpp \
+    lib/engine/overlays/references/lc_refellipse.cpp \
+    lib/engine/overlays/references/lc_refline.cpp \
+    lib/engine/overlays/references/lc_refpoint.cpp \
+    lib/engine/overlays/references/lc_ref_snap_arc.cpp \
+    lib/engine/overlays/references/lc_ref_snap_circle.cpp \
+    lib/engine/overlays/references/lc_ref_snap_construction_line.cpp \
+    lib/engine/overlays/references/lc_ref_snap_entity.cpp \
+    lib/engine/overlays/references/lc_ref_snap_line.cpp \
+    lib/engine/overlays/references/lc_ref_snap_mark.cpp \
+    lib/engine/document/entities/rs_arc.cpp \
+    lib/engine/document/blocks/rs_block.cpp \
+    lib/engine/document/blocks/rs_blocklist.cpp \
+    lib/engine/clipboard/rs_clipboard.cpp \
+    lib/engine/document/entities/rs_circle.cpp \
+    lib/engine/document/entities/rs_constructionline.cpp \
+    lib/engine/document/entities/rs_dimaligned.cpp \
+    lib/engine/document/entities/rs_dimangular.cpp \
+    lib/engine/document/entities/rs_dimdiametric.cpp \
+    lib/engine/document/entities/rs_dimension.cpp \
+    lib/engine/document/entities/rs_dimlinear.cpp \
+    lib/engine/document/entities/lc_dimordinate.cpp \
+    lib/engine/document/entities/rs_dimradial.cpp \
+    lib/engine/document/entities/lc_dimarc.cpp \
+    lib/engine/document/rs_document.cpp \
+    lib/engine/document/entities/rs_ellipse.cpp \
+    lib/engine/document/entities/rs_entity.cpp \
+    lib/engine/document/container/rs_entitycontainer.cpp \
+    lib/engine/document/fonts/rs_font.cpp \
+    lib/engine/document/fonts/rs_fontlist.cpp \
+    lib/engine/document/fonts/lc_opentypefont.cpp \
+    lib/engine/document/fonts/lc_textfontregistry.cpp \
+    lib/engine/document/rs_graphic.cpp \
+    lib/engine/document/entities/lc_hatchdensity.cpp \
+    lib/engine/document/entities/rs_hatch.cpp \
+    lib/engine/document/entities/lc_hyperbola.cpp \
+    lib/engine/document/entities/lc_insert_transform.cpp \
+    lib/engine/document/entities/rs_insert.cpp \
+    lib/engine/document/entities/rs_image.cpp \
+    lib/engine/document/entities/lc_wipeout.cpp \
+    lib/engine/document/layers/rs_layer.cpp \
+    lib/engine/document/layers/rs_layerlist.cpp \
+    lib/engine/document/linetypes/lc_linfile.cpp \
+    lib/engine/document/linetypes/lc_linetype.cpp \
+    lib/engine/document/linetypes/lc_linetypelist.cpp \
+    lib/engine/document/entities/rs_leader.cpp \
+    lib/engine/document/entities/rs_line.cpp \
+    lib/engine/document/entities/rs_mtext.cpp \
+    lib/engine/overlays/rs_overlayline.cpp \
+    lib/engine/overlays/overlay_box/rs_overlaybox.cpp \
+    lib/engine/document/patterns/rs_pattern.cpp \
+    lib/engine/document/patterns/rs_patternlist.cpp \
+    lib/engine/document/entities/rs_point.cpp \
+    lib/engine/document/entities/rs_polyline.cpp \
+    lib/engine/settings/rs_settings.cpp \
+    lib/engine/document/entities/rs_solid.cpp \
+    lib/engine/document/entities/rs_spline.cpp \
+    lib/engine/document/entities/lc_splinepoints.cpp \
+    lib/engine/document/entities/lc_momentquadrature.cpp \
+    lib/engine/rs_system.cpp \
+    lib/engine/document/entities/rs_text.cpp \
+    lib/engine/undo/rs_undo.cpp \
+    lib/engine/undo/rs_undoable.cpp \
+    lib/engine/rs_units.cpp \
+    lib/engine/utils/rs_utility.cpp \
+    lib/engine/document/variables/rs_variabledict.cpp \
+    lib/engine/rs_vector.cpp \
+    lib/fileio/rs_fileio.cpp \
+    lib/fileio/lc_filenameselectionservice.cpp \
+    lib/filters/rs_filtercxf.cpp \
+    lib/filters/rs_filterdxfrw.cpp \
+    lib/filters/rs_filterdxf1.cpp \
+    lib/filters/rs_filterjww.cpp \
+    lib/filters/rs_filterlff.cpp \
+    lib/filters/rs_filtershp.cpp \
+    #lib/gui/no_used/rs_painterold.cpp \
+   # lib/gui/no_used/rs_painterqtold.cpp \
+    ui/action_options/edit/lc_paste_to_points_options_widget.cpp \
+    ui/action_options/edit/lc_paste_to_points_options_filler.cpp \
+    ui/action_options/point/lc_points_lattice_options_widget.cpp \
+    ui/action_options/point/lc_points_lattice_options_filler.cpp \
+    ui/action_options/selection/lc_selectwindowoptions.cpp \
+    ui/components/status_bar/lc_anglesbasiswidget.cpp \
+    ui/components/status_bar/lc_qtstatusbarmanager.cpp \
+    ui/components/status_bar/lc_ucsstatewidget.cpp \
+    ui/dialogs/entity/lc_entitypropertiesdlg.cpp \
+    ui/dialogs/main/lc_dlgabout.cpp \
+    ui/dialogs/main/lc_dlgnewversionavailable.cpp \
+    ui/dialogs/settings/options_widget/lc_iconcolorsoptions.cpp \
     ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.cpp \
@@ -1569,6 +1918,21 @@ SOURCES += \
     ui/main/release_check/lc_releasechecker.cpp \
     ui/main/support/lc_appwindowdialogsinvoker.cpp \
     # ui/main/support/lc_customstylehelper.cpp \
+    ui/main/support/lc_lastopenfilesopener.cpp \
+    ui/main/workspaces/lc_workspacesmanager.cpp\
+    lib/gui/grid/lc_gridsystem.cpp \
+    lib/gui/grid/lc_isometricgrid.cpp \
+    lib/gui/grid/lc_lattice.cpp \
+    lib/gui/grid/lc_orthogonalgrid.cpp \
+    lib/gui/rs_dialogfactory.cpp \
+    lib/gui/lc_hatchdensitytext.cpp \
+    #lib/gui/rs_eventhandler.cpp \
+    lib/gui/rs_graphicview.cpp \
+    lib/gui/grid/rs_grid.cpp \
+    lib/gui/rs_linetypepattern.cpp \
+    lib/gui/render/rs_painter.cpp \
+    lib/gui/lc_coordinates_mapper.cpp \
+    ui/main/support/lc_customstylehelper.cpp \
     ui/main/support/lc_gridviewinvoker.cpp \
     ui/main/support/lc_infocursorsettingsmanager.cpp \
     ui/main/support/lc_lastopenfilesopener.cpp \
@@ -2307,7 +2671,7 @@ HEADERS += \
     ui/main/init/lc_dock_names.h \
     ui/main/init/lc_group_names.h \
     ui/main/init/lc_menu_factory_base.h \
-    # ui/main/init/lc_menufactory.h \        
+    # ui/main/init/lc_menufactory.h \
     # ui/main/init/lc_menufactory_main.h \
     ui/main/init/lc_special_menu_service.h \
     ui/main/init/lc_toolbar_names.h \
@@ -2864,7 +3228,7 @@ SOURCES += \
     ui/main/init/lc_default_context_menus_builder.cpp \
     ui/main/init/lc_default_navigation_layout_builder.cpp \
     ui/main/init/lc_menu_factory_base.cpp \
-    # ui/main/init/lc_menufactory.cpp \        
+    # ui/main/init/lc_menufactory.cpp \
     # ui/main/init/lc_menufactory_main.cpp \
     ui/main/init/lc_special_menu_service.cpp \
     # ui/main/init/lc_toolbarfactory.cpp \
